@@ -75,16 +75,6 @@ const ForgotPasswordControl = () => {
     location.state?.email ?? "",
     initStateFn
   );
-  const handleValidation = () => {
-    let res = yupSchemaValidatorSingle(schema, state.username);
-    if (res.type === "error") {
-      dispatch({ type: "setError", value: res.result });
-    } else if (res.type === "failure") {
-      dispatch({ type: "submitFailure", value: res.result });
-    } else {
-      dispatch({ type: "setError", value: null });
-    }
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     let res = yupSchemaValidatorSingle(schema, state.username);
@@ -103,12 +93,22 @@ const ForgotPasswordControl = () => {
       }
     }
   };
+  const handleValidation = () => {
+    let res = yupSchemaValidatorSingle(schema, state.username);
+    if (res.type === "error") {
+      dispatch({ type: "setError", value: res.result });
+    } else if (res.type === "failure") {
+      dispatch({ type: "submitFailure", value: res.result });
+    } else {
+      dispatch({ type: "setError", value: null });
+    }
+  };
   const handleChange = (e) => {
     dispatch({ type: "setValue", value: e.target.value });
   };
   const handleBlur = () => {
     dispatch({ type: "setTouched" });
-    setTimeout(handleValidation(), 1);
+    handleValidation();
   };
   const goBackToLoginPageHandler = () => {
     navigate("/login");
@@ -136,9 +136,13 @@ const ForgotPasswordControl = () => {
           }
         >
           {state.isSuccessful ? (
-            <Typography component="body2" color="textSecondary" align="center">
-              Password reset link has been sent to {state.username}
-            </Typography>
+            <Alert
+              severity="success"
+              variant="filled"
+              className={classes.alert}
+            >
+              We have just sent you a reset password link
+            </Alert>
           ) : (
             <TextField
               variant="outlined"

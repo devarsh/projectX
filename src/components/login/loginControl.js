@@ -39,9 +39,9 @@ const serverLogin = (username, password) => {
 const schema = yup.object().shape({
   username: yup
     .string()
-    .required("username is a required field")
-    .email("username should be a valid email"),
-  password: yup.string().required("password is required field"),
+    .required("Enter an email address")
+    .email("Enter a valid email address"),
+  password: yup.string().required("Enter a password"),
 });
 
 const initialState = {
@@ -99,7 +99,6 @@ const LoginControl = () => {
   const classes = useStyles();
   const [state, dispatch] = React.useReducer(loginReducer, initialState);
   const navigate = useNavigate();
-  console.log("rendered");
   const handleSubmit = async (e) => {
     e.persist();
     e.preventDefault();
@@ -132,17 +131,14 @@ const LoginControl = () => {
       } else {
         dispatch({
           type: "submitFailure",
-          value: "Invalid Username or Password supplied.",
+          value:
+            "Wrong Username or Password. Try again or click Forgot password to reset it",
         });
       }
     }
   };
-  const handleChange = (e) => {
-    dispatch({ type: "setValue", name: e.target.name, value: e.target.value });
-  };
-  const handleBlur = (e) => {
+  const handleValidation = () => {
     let res = yupSchemaValidator(schema, state.values);
-    dispatch({ type: "setTouched", name: e.target.name });
     if (res.type === "error") {
       dispatch({ type: "setErrors", value: res.result });
     } else if (res.type === "failure") {
@@ -150,6 +146,13 @@ const LoginControl = () => {
     } else {
       dispatch({ type: "setErrors", value: null });
     }
+  };
+  const handleChange = (e) => {
+    dispatch({ type: "setValue", name: e.target.name, value: e.target.value });
+  };
+  const handleBlur = (e) => {
+    dispatch({ type: "setTouched", name: e.target.name });
+    handleValidation();
   };
   const handlePasswordVisiblity = () => {
     dispatch({ type: "togglePasswordVisibility" });

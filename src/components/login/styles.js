@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   alert: {
     width: "100%",
     marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   linearProgress: {
     width: "100%",
