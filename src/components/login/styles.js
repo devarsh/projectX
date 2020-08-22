@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   loginBanner: {
-    //backgroundImage: "url(https://source.unsplash.com/user/quentin)",
+    backgroundImage: "url(https://source.unsplash.com/user/quentin)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"

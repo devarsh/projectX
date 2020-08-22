@@ -27,6 +27,7 @@ export const formField = atomFamily({
     error: null,
     validationRunning: false,
     validate: null,
+    arrayFieldName: name ?? "",
   }),
 });
 

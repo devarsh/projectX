@@ -53,7 +53,9 @@ export const useForm = (onSubmit) => {
         } catch (e) {
           result = e.message;
         }
-        hasError = (result ?? "") !== "" ? true : false;
+        if (hasError === false) {
+          hasError = (result ?? "") !== "" ? true : false;
+        }
         const newValue = {
           ...fieldState,
           touched: true,
@@ -63,7 +65,9 @@ export const useForm = (onSubmit) => {
         set(formField(field), newValue);
       } else {
         fieldsAggrigator.push(fieldState);
-        hasError = (fieldState.error ?? "") !== "" ? true : false;
+        if (hasError === false) {
+          hasError = (fieldState.error ?? "") !== "" ? true : false;
+        }
       }
     }
 
