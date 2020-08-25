@@ -1,5 +1,4 @@
 import React from "react";
-const __ContainerKey = Symbol("___ParentKey");
 
 const useFormArray = ({ arrayFieldName, template }) => {
   if ((template ?? null) === null) {
@@ -9,162 +8,154 @@ const useFormArray = ({ arrayFieldName, template }) => {
     throw new Error("Pass ArrayField name");
   }
   const [fieldRows, setFieldRows] = React.useState([]);
-  const keyIndex = React.useRef(0);
+  const fieldRowInsertIndex = React.useRef(0);
   //caching template keys
-  let fieldNamesRef = React.useRef(null);
-  if (fieldNamesRef.current === null) {
-    fieldNamesRef.current = Object.keys(template);
+  let templateFieldNamesRef = React.useRef(null);
+  if (templateFieldNamesRef.current === null) {
+    templateFieldNamesRef.current = Object.keys(template);
   }
-  let fieldNames = fieldNamesRef.current;
-  const push = () => {
-    const newRow = {};
-    const rowIndexPos = keyIndex.current++;
-    for (const fieldName of fieldNames) {
-      const key = `${arrayFieldName}[${rowIndexPos}].${fieldName}`;
-      const name = `${arrayFieldName}[${fieldRows.length}].${fieldName}`;
-      newRow[fieldName] = { key, name };
-    }
-    newRow[__ContainerKey] = `${arrayFieldName}-${rowIndexPos}`;
-    setFieldRows([...fieldRows, newRow]);
-  };
-  const unshift = () => {
-    const newRow = {};
-    const rowIndexPos = keyIndex.current++;
-    for (const fieldName of fieldNames) {
-      const key = `${arrayFieldName}[${rowIndexPos}].${fieldName}`;
-      const name = `${arrayFieldName}[0].${fieldName}`;
-      newRow[fieldName] = { key, name };
-    }
-    newRow[__ContainerKey] = `${arrayFieldName}-${rowIndexPos}`;
-    let currentIndex = 1;
-    const nextFields = fieldRows.slice(0);
-    for (let fieldRow of nextFields) {
-      for (const fieldName of fieldNames) {
-        fieldRow[
-          fieldName
-        ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
-      }
-      currentIndex++;
-    }
-    setFieldRows([newRow, ...nextFields]);
-  };
+  let templateFieldNames = templateFieldNamesRef.current;
+
   const insert = (index) => {
-    if (index < 0 || index > fieldRows.length) {
+    if (!(index >= 0 && index <= fieldRows.length)) {
       return;
     }
-    const newRow = {};
-    const rowIndexPos = keyIndex.current++;
-    for (const fieldName of fieldNames) {
-      const key = `${arrayFieldName}[${rowIndexPos}].${fieldName}`;
+    const insertIndex = fieldRowInsertIndex.current++;
+    let newRow = { values: {}, fieldKey: `${arrayFieldName}-${insertIndex}` };
+    for (const fieldName of templateFieldNames) {
+      const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
       const name = `${arrayFieldName}[${index}].${fieldName}`;
-      newRow[fieldName] = { key, name };
+      newRow.values[fieldName] = { key, name };
     }
-    newRow[__ContainerKey] = `${arrayFieldName}-${rowIndexPos}`;
-    const prevFields = fieldRows.slice(0, index);
-    const nextFields = fieldRows.slice(index);
+
+    const beginningRows = fieldRows.slice(0, index);
+    const endingRows = fieldRows.slice(index);
     let currentIndex = index + 1;
-    for (let fieldRow of nextFields) {
-      for (const fieldName of fieldNames) {
-        fieldRow[
+    for (let oneRow of endingRows) {
+      for (const fieldName of templateFieldNames) {
+        oneRow.values[
           fieldName
         ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
       }
       currentIndex++;
     }
-    setFieldRows([...prevFields, newRow, ...nextFields]);
+    setFieldRows([...beginningRows, newRow, ...endingRows]);
+  };
+
+  const push = () => {
+    insert(fieldRows.length);
+  };
+  const unshift = () => {
+    insert(0);
   };
   const remove = (index) => {
-    if (index > -1 && index > fieldRows.length - 1) {
+    if (!(index >= 0 && index < fieldRows.length)) {
       return;
     }
     let currentIndex = index;
-    const prevFields = fieldRows.slice(0, currentIndex);
-    const nextFields = fieldRows.slice(currentIndex + 1);
-    for (let fieldRow of nextFields) {
-      for (const fieldName of fieldNames) {
-        fieldRow[
+    const beginningRows = fieldRows.slice(0, currentIndex);
+    const endingRows = fieldRows.slice(currentIndex + 1);
+    console.log(beginningRows, endingRows);
+    for (let oneRow of endingRows) {
+      for (const fieldName of templateFieldNames) {
+        oneRow.values[
           fieldName
         ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
       }
       currentIndex++;
     }
-    setFieldRows([...prevFields, ...nextFields]);
+    setFieldRows([...beginningRows, ...endingRows]);
   };
   const pop = () => {
-    const nextFields = fieldRows.slice(0, fieldRows.length - 1);
-    setFieldRows(nextFields);
+    remove(fieldRows.length - 1);
   };
   const swap = (indexA, indexB) => {
     if (
       !(
-        indexA > -1 &&
+        indexA >= 0 &&
         indexA < fieldRows.length &&
-        indexB > -1 &&
-        indexB < fieldRows.length
+        indexB >= 0 &&
+        indexB < fieldRows.length &&
+        indexA !== indexB
       )
     ) {
       return;
     }
-    const newFields = fieldRows.slice(0);
-    const indexAField = newFields[indexA];
-    const indexBField = newFields[indexB];
-    for (const fieldName of fieldNames) {
-      const tempName = indexAField[fieldName].name;
-      indexAField[fieldName].name = indexBField[fieldName].name;
-      indexBField[fieldName].name = tempName;
+    const fieldRowsCopy = fieldRows.slice(0);
+    const rowA = fieldRowsCopy[indexA];
+    const rowB = fieldRowsCopy[indexB];
+    for (const fieldName of templateFieldNames) {
+      const tempName = rowA.values[fieldName].name;
+      rowA.values[fieldName].name = rowB.values[fieldName].name;
+      rowB.values[fieldName].name = tempName;
     }
-    const tempField = newFields[indexB];
-    newFields[indexB] = newFields[indexA];
-    newFields[indexA] = tempField;
-    setFieldRows(newFields);
+    const rowBCopy = fieldRowsCopy[indexB];
+    fieldRowsCopy[indexB] = fieldRowsCopy[indexA];
+    fieldRowsCopy[indexA] = rowBCopy;
+    setFieldRows(fieldRowsCopy);
   };
   const move = (from, to) => {
     if (
       !(
-        from > -1 &&
+        from >= 0 &&
         from < fieldRows.length &&
-        to > -1 &&
-        to < fieldRows.length
+        to >= 0 &&
+        to < fieldRows.length &&
+        from !== to
       )
     ) {
       return;
     }
     const [small, big] = from < to ? [from, to] : [to, from];
-    const prev = fieldRows.slice(0, small);
-    const last = fieldRows.slice(big + 1);
-    const remaning = fieldRows.slice(small, big + 1);
+    const beginningRows = fieldRows.slice(0, small);
+    const endingRows = fieldRows.slice(big + 1);
+    const middleRows = fieldRows.slice(small, big + 1);
     if (from < to) {
-      const first = remaning.slice(0, 1)[0];
-      const others = remaning.slice(1);
+      const movingRow = middleRows.slice(0, 1)[0];
+      const shiftingRows = middleRows.slice(1);
       let currentIndex = from;
-      for (let fieldRow of others) {
-        for (const fieldName of fieldNames) {
-          fieldRow[
+      for (let fieldRow of shiftingRows) {
+        for (const fieldName of templateFieldNames) {
+          fieldRow.values[
             fieldName
           ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
         }
         currentIndex++;
       }
-      for (const fieldName of fieldNames) {
-        first[fieldName].name = `${arrayFieldName}[${to}].${fieldName}`;
+      for (const fieldName of templateFieldNames) {
+        movingRow.values[
+          fieldName
+        ].name = `${arrayFieldName}[${to}].${fieldName}`;
       }
-      setFieldRows([...prev, ...others, first, ...last]);
+      setFieldRows([
+        ...beginningRows,
+        ...shiftingRows,
+        movingRow,
+        ...endingRows,
+      ]);
     } else {
-      const first = remaning.slice(0, remaning.length - 1);
-      const end = remaning.slice(remaning.length - 1)[0];
+      const shiftingRows = middleRows.slice(0, middleRows.length - 1);
+      const movingRow = middleRows.slice(middleRows.length - 1)[0];
       let currentIndex = to + 1;
-      for (let fieldRow of first) {
-        for (const fieldName of fieldNames) {
-          fieldRow[
+      for (let fieldRow of shiftingRows) {
+        for (const fieldName of templateFieldNames) {
+          fieldRow.values[
             fieldName
           ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
         }
         currentIndex++;
       }
-      for (const fieldName of fieldNames) {
-        end[fieldName].name = `${arrayFieldName}[${to}].${fieldName}`;
+      for (const fieldName of templateFieldNames) {
+        movingRow.values[
+          fieldName
+        ].name = `${arrayFieldName}[${to}].${fieldName}`;
       }
-      setFieldRows([...prev, end, ...first, ...last]);
+      setFieldRows([
+        ...beginningRows,
+        movingRow,
+        ...shiftingRows,
+        ...endingRows,
+      ]);
     }
   };
   return { fieldRows, unshift, push, insert, pop, remove, swap, move };
@@ -187,21 +178,21 @@ const FormArray = ({ arrayFieldName, template }) => {
     template,
   });
   const fields = Object.keys(template);
-  const rows = fieldRows.map((field, idx) => {
-    const row = fields.map((col) => {
+  const rows = fieldRows.map((row, idx) => {
+    const keys = fields.map((key) => {
       return (
         <Field
-          name={field[col].name}
-          key={field[col].key}
-          dataKey={field[col].key}
+          name={row.values[key].name}
+          key={row.values[key].key}
+          dataKey={row.values[key].key}
           index={idx}
         />
       );
     });
     return (
-      <div key={field[__ContainerKey]}>
-        {row}
-        <button onClick={() => remove(index)}> Delete</button>
+      <div key={row.fieldKey}>
+        {keys}
+        <button onClick={() => remove(idx)}> Delete</button>
       </div>
     );
   });
