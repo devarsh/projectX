@@ -1,33 +1,66 @@
 import React from "react";
 
-const useFormArray = ({ arrayFieldName, template }) => {
+type RenderFn = (
+  row: TemplateFieldRow,
+  fields: string[],
+  rowIndex: number
+) => any;
+
+interface FieldArrayProps {
+  arrayFieldName: string;
+  template: any;
+}
+
+interface TemplateFieldRow {
+  fieldKey: string;
+  values: {
+    [key: string]: TemplateFieldRowValue;
+  };
+}
+
+interface TemplateFieldRowValue {
+  name: string;
+  key: string;
+}
+
+interface FieldProps extends TemplateFieldRowValue {
+  index: number;
+  dataKey: string;
+}
+
+export const useFieldArray = ({
+  arrayFieldName,
+  template,
+}: FieldArrayProps) => {
   if ((template ?? null) === null) {
     throw new Error("Pass a valid template object");
   }
   if ((arrayFieldName ?? "") === "") {
     throw new Error("Pass ArrayField name");
   }
-  const [fieldRows, setFieldRows] = React.useState([]);
+  const [fieldRows, setFieldRows] = React.useState<TemplateFieldRow[]>([]);
   const fieldRowInsertIndex = React.useRef(0);
   //caching template keys
-  let templateFieldNamesRef = React.useRef(null);
+  let templateFieldNamesRef = React.useRef<string[] | null>(null);
   if (templateFieldNamesRef.current === null) {
     templateFieldNamesRef.current = Object.keys(template);
   }
   let templateFieldNames = templateFieldNamesRef.current;
 
-  const insert = (index) => {
+  const insert = (index: number) => {
     if (!(index >= 0 && index <= fieldRows.length)) {
       return;
     }
     const insertIndex = fieldRowInsertIndex.current++;
-    let newRow = { values: {}, fieldKey: `${arrayFieldName}-${insertIndex}` };
+    let newRow: TemplateFieldRow = {
+      values: {},
+      fieldKey: `${arrayFieldName}-${insertIndex}`,
+    };
     for (const fieldName of templateFieldNames) {
       const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
       const name = `${arrayFieldName}[${index}].${fieldName}`;
       newRow.values[fieldName] = { key, name };
     }
-
     const beginningRows = fieldRows.slice(0, index);
     const endingRows = fieldRows.slice(index);
     let currentIndex = index + 1;
@@ -48,14 +81,13 @@ const useFormArray = ({ arrayFieldName, template }) => {
   const unshift = () => {
     insert(0);
   };
-  const remove = (index) => {
+  const remove = (index: number) => {
     if (!(index >= 0 && index < fieldRows.length)) {
       return;
     }
     let currentIndex = index;
     const beginningRows = fieldRows.slice(0, currentIndex);
     const endingRows = fieldRows.slice(currentIndex + 1);
-    console.log(beginningRows, endingRows);
     for (let oneRow of endingRows) {
       for (const fieldName of templateFieldNames) {
         oneRow.values[
@@ -69,7 +101,7 @@ const useFormArray = ({ arrayFieldName, template }) => {
   const pop = () => {
     remove(fieldRows.length - 1);
   };
-  const swap = (indexA, indexB) => {
+  const swap = (indexA: number, indexB: number) => {
     if (
       !(
         indexA >= 0 &&
@@ -94,7 +126,7 @@ const useFormArray = ({ arrayFieldName, template }) => {
     fieldRowsCopy[indexA] = rowBCopy;
     setFieldRows(fieldRowsCopy);
   };
-  const move = (from, to) => {
+  const move = (from: number, to: number) => {
     if (
       !(
         from >= 0 &&
@@ -111,8 +143,8 @@ const useFormArray = ({ arrayFieldName, template }) => {
     const endingRows = fieldRows.slice(big + 1);
     const middleRows = fieldRows.slice(small, big + 1);
     if (from < to) {
-      const movingRow = middleRows.slice(0, 1)[0];
-      const shiftingRows = middleRows.slice(1);
+      let movingRow = middleRows.slice(0, 1)[0];
+      let shiftingRows = middleRows.slice(1);
       let currentIndex = from;
       for (let fieldRow of shiftingRows) {
         for (const fieldName of templateFieldNames) {
@@ -134,8 +166,8 @@ const useFormArray = ({ arrayFieldName, template }) => {
         ...endingRows,
       ]);
     } else {
-      const shiftingRows = middleRows.slice(0, middleRows.length - 1);
-      const movingRow = middleRows.slice(middleRows.length - 1)[0];
+      let shiftingRows = middleRows.slice(0, middleRows.length - 1);
+      let movingRow = middleRows.slice(middleRows.length - 1)[0];
       let currentIndex = to + 1;
       for (let fieldRow of shiftingRows) {
         for (const fieldName of templateFieldNames) {
@@ -158,14 +190,14 @@ const useFormArray = ({ arrayFieldName, template }) => {
       ]);
     }
   };
-  return { fieldRows, unshift, push, insert, pop, remove, swap, move };
-};
-
-const FormArray = ({ arrayFieldName, template }) => {
-  const [index, setIndex] = React.useState(0);
-  const [index2, setIndex2] = React.useState(1);
-  const {
+  const renderRows = (renderFn: RenderFn) => {
+    return fieldRows.map((row, idx) =>
+      renderFn(row, templateFieldNames.slice(), idx)
+    );
+  };
+  return {
     fieldRows,
+    templateFieldNames,
     unshift,
     push,
     insert,
@@ -173,62 +205,17 @@ const FormArray = ({ arrayFieldName, template }) => {
     remove,
     swap,
     move,
-  } = useFormArray({
-    arrayFieldName,
-    template,
-  });
-  const fields = Object.keys(template);
-  const rows = fieldRows.map((row, idx) => {
-    const keys = fields.map((key) => {
-      return (
-        <Field
-          name={row.values[key].name}
-          key={row.values[key].key}
-          dataKey={row.values[key].key}
-          index={idx}
-        />
-      );
-    });
-    return (
-      <div key={row.fieldKey}>
-        {keys}
-        <button onClick={() => remove(idx)}> Delete</button>
-      </div>
-    );
-  });
-  return (
-    <div>
-      <button onClick={() => push()}>push</button>
-      <button onClick={() => unshift()}>unshift</button>
-      <button onClick={() => insert(index)}>insert</button>
-      <button onClick={() => pop()}>pop</button>
-      <button onClick={() => swap(index, index2)}>swap</button>
-      <button onClick={() => move(index, index2)}>move</button>
-
-      <br />
-      <label>InsertAt/From/IndexA</label>
-      <input
-        type="number"
-        value={index}
-        onChange={(e) => setIndex(Number(e.target.value))}
-      />
-      <br />
-      <label>RemoveAt/To/IndexB</label>
-      <input
-        type="number"
-        value={index2}
-        onChange={(e) => setIndex2(Number(e.target.value))}
-      />
-      <div>{rows}</div>
-    </div>
-  );
+    renderRows,
+  };
 };
 
-const Field = ({ name, dataKey, index }) => {
+const Field: React.FC<FieldProps> = ({ dataKey, name, index }): any => {
+  let renderCount = React.useRef(0);
   React.useEffect(() => {
-    console.log("mounted", dataKey, name, index);
-    return () => console.log("unmounted", dataKey, name, index);
-  }, [dataKey]);
+    console.log("mounted:", dataKey);
+    return () => console.log("unmounted:", dataKey);
+  }, []);
+  console.log("render count---", dataKey, ":", renderCount.current++);
   return (
     <div>
       {dataKey} / {name} / {index}
@@ -236,14 +223,35 @@ const Field = ({ name, dataKey, index }) => {
   );
 };
 
-//----------main---------
-
-const FormMain = () => {
+const FormMain: React.FC = () => {
+  const { renderRows, push, remove } = useFieldArray({
+    arrayFieldName: "demo",
+    template: { name: "", surname: "", age: "" },
+  });
+  const rows = renderRows((row, fields, index) => {
+    let result = fields.map((field) => {
+      return (
+        <Field
+          dataKey={row.values[field].key}
+          key={row.values[field].key}
+          name={row.values[field].name}
+          index={index}
+        />
+      );
+    });
+    return (
+      <div key={row.fieldKey}>
+        {result}
+        <button onClick={() => remove(index)}>Delete</button>
+      </div>
+    );
+  });
   return (
-    <FormArray
-      arrayFieldName="contact"
-      template={{ street1: "", street2: "", city: "" }}
-    />
+    <div>
+      <button onClick={() => push()}>push</button>
+      <br />
+      <div key="content">{rows}</div>
+    </div>
   );
 };
 
