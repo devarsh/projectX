@@ -18,7 +18,7 @@ export interface FormFieldAtom {
   error: string | null;
   validationRunning: boolean;
   validate?: null | ValidateFn | emptyFn;
-  arrayFieldName?: string;
+  arrayFieldName: string;
 }
 
 export interface ValidateFn {

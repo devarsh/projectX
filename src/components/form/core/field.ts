@@ -16,7 +16,7 @@ export const useField = ({
   name,
   validate,
   dependentFields,
-  arrayFieldName,
+  arrayFieldName = "",
 }: FieldProps) => {
   if ((arrayFieldName ?? "") === "") {
     arrayFieldName = name;

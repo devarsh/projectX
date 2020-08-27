@@ -1,4 +1,10 @@
-import { atomFamily, atom, selector, selectorFamily } from "recoil";
+import {
+  atomFamily,
+  atom,
+  selector,
+  selectorFamily,
+  DefaultValue,
+} from "recoil";
 
 import { FormAtomType, FormFeedbackAtom, FormFieldAtom } from "./types";
 
@@ -42,15 +48,16 @@ export const fieldRegistry = atom<string[]>({
 export const fieldRegisteryAdd = selector<string>({
   key: "fieldRegisteryAdd",
   set: ({ set, get }, newValue) => {
-    if (typeof newValue !== "string") return;
-    const fields = get(fieldRegistry);
-    const valueExists = fields.indexOf(newValue) > -1;
-    if (!valueExists) {
-      const newFields = [...fields, newValue];
-      set(fieldRegistry, newFields);
+    if (!(newValue instanceof DefaultValue)) {
+      const fields = get(fieldRegistry);
+      const valueExists = fields.indexOf(newValue) > -1;
+      if (!valueExists) {
+        const newFields = [...fields, newValue];
+        set(fieldRegistry, newFields);
+      }
     }
   },
-  get: ({ get }) => {
+  get: () => {
     return "";
   },
 });
@@ -58,16 +65,20 @@ export const fieldRegisteryAdd = selector<string>({
 export const fieldRegisteryRemove = selector<string>({
   key: "fieldRegisteryRemove",
   set: ({ set, get, reset }, newValue) => {
-    if (typeof newValue !== "string") return;
-    const fields = get(fieldRegistry);
-    const index = fields.indexOf(newValue);
-    if (index > -1) {
-      reset(formField(newValue));
-      const newFields = [...fields.slice(0, index), ...fields.slice(index + 1)];
-      set(fieldRegistry, newFields);
+    if (!(newValue instanceof DefaultValue)) {
+      const fields = get(fieldRegistry);
+      const index = fields.indexOf(newValue);
+      if (index > -1) {
+        reset(formField(newValue));
+        const newFields = [
+          ...fields.slice(0, index),
+          ...fields.slice(index + 1),
+        ];
+        set(fieldRegistry, newFields);
+      }
     }
   },
-  get: ({ get }) => {
+  get: () => {
     return "";
   },
 });

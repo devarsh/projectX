@@ -3,11 +3,14 @@ import { form, formFeedback, formField, fieldRegistry } from "./atoms";
 import { setIn, handleValidation } from "./util";
 import { FieldsErrorObj, SubmitFn, FormFieldAtom } from "./types";
 
-export const useForm = (onSubmit: SubmitFn) => {
+export const useForm = (
+  onSubmit: SubmitFn,
+  onReset: () => void | undefined
+) => {
   const startSubmit = useRecoilCallback(({ snapshot, set }) => () => {
-    const lodableFormState = snapshot.getLoadable(form);
-    if (lodableFormState.state === "hasValue") {
-      const value = lodableFormState.contents;
+    const loadableFormState = snapshot.getLoadable(form);
+    if (loadableFormState.state === "hasValue") {
+      const value = loadableFormState.contents;
       set(form, {
         ...value,
         isSubmitting: true,
@@ -20,9 +23,9 @@ export const useForm = (onSubmit: SubmitFn) => {
       submitSuccessful: boolean = false,
       message: string = ""
     ) => {
-      const lodableFormState = snapshot.getLoadable(form);
-      if (lodableFormState.state === "hasValue") {
-        const value = lodableFormState.contents;
+      const loadableFormState = snapshot.getLoadable(form);
+      if (loadableFormState.state === "hasValue") {
+        const value = loadableFormState.contents;
         set(form, {
           ...value,
           isSubmitting: false,
@@ -35,10 +38,26 @@ export const useForm = (onSubmit: SubmitFn) => {
   const setFieldErrors = useRecoilCallback(
     ({ snapshot, set }) => (fieldsErrorObj: FieldsErrorObj = {}) => {
       for (const field of Object.entries(fieldsErrorObj)) {
-        const lodableFieldState = snapshot.getLoadable(formField(field[0]));
-        if (lodableFieldState.state === "hasValue") {
-          const value = lodableFieldState.contents;
+        const loadableFieldState = snapshot.getLoadable(formField(field[0]));
+        if (loadableFieldState.state === "hasValue") {
+          const value = loadableFieldState.contents;
           set(formField(field[0]), { ...value, error: field[1] });
+          if (typeof onReset === "function") {
+            onReset();
+          }
+        }
+      }
+    }
+  );
+
+  const handleReset = useRecoilCallback(
+    ({ snapshot, reset }) => (e: React.FormEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const loadableFields = snapshot.getLoadable(fieldRegistry);
+      if (loadableFields.state === "hasValue") {
+        const fields = loadableFields.contents;
+        for (const field of fields) {
+          reset(formField(field));
         }
       }
     }
@@ -47,15 +66,15 @@ export const useForm = (onSubmit: SubmitFn) => {
   const handleSubmit = useRecoilCallback(
     ({ snapshot, set }) => async (e: React.FormEvent<HTMLInputElement>) => {
       e.preventDefault();
-      const lodableFields = snapshot.getLoadable(fieldRegistry);
-      if (lodableFields.state === "hasValue") {
-        const fields = lodableFields.contents;
+      const loadableFields = snapshot.getLoadable(fieldRegistry);
+      if (loadableFields.state === "hasValue") {
+        const fields = loadableFields.contents;
         const fieldsAggrigator: FormFieldAtom[] = [];
         let hasError = false;
         for (const field of fields) {
-          const lodableFieldState = snapshot.getLoadable(formField(field));
-          if (lodableFieldState.state === "hasValue") {
-            const _fieldState = lodableFieldState.contents;
+          const loadableFieldState = snapshot.getLoadable(formField(field));
+          if (loadableFieldState.state === "hasValue") {
+            const _fieldState = loadableFieldState.contents;
             const fieldState = { ..._fieldState };
             if (!fieldState.touched) {
               fieldState.validate =
@@ -93,7 +112,7 @@ export const useForm = (onSubmit: SubmitFn) => {
           if (typeof onSubmit === "function") {
             let obj = {};
             for (const field of fieldsAggrigator) {
-              obj = setIn(obj, field.name, field.value);
+              obj = setIn(obj, field.arrayFieldName, field.value);
             }
             onSubmit(obj, startSubmit, endSubmit, setFieldErrors);
           }
@@ -101,7 +120,7 @@ export const useForm = (onSubmit: SubmitFn) => {
       }
     }
   );
-  return { handleSubmit };
+  return { handleSubmit, handleReset };
 };
 
 export const useFormFeedback = () => {
