@@ -1,32 +1,5 @@
 import React from "react";
-
-type RenderFn = (
-  row: TemplateFieldRow,
-  fields: string[],
-  rowIndex: number
-) => any;
-
-interface FieldArrayProps {
-  arrayFieldName: string;
-  template: any;
-}
-
-interface TemplateFieldRow {
-  fieldKey: string;
-  values: {
-    [key: string]: TemplateFieldRowValue;
-  };
-}
-
-interface TemplateFieldRowValue {
-  name: string;
-  key: string;
-}
-
-interface FieldProps extends TemplateFieldRowValue {
-  index: number;
-  dataKey: string;
-}
+import { FieldArrayProps, TemplateFieldRow, RenderFn } from "./types";
 
 export const useFieldArray = ({
   arrayFieldName,
@@ -208,51 +181,3 @@ export const useFieldArray = ({
     renderRows,
   };
 };
-
-const Field: React.FC<FieldProps> = ({ dataKey, name, index }): any => {
-  let renderCount = React.useRef(0);
-  React.useEffect(() => {
-    console.log("mounted:", dataKey);
-    return () => console.log("unmounted:", dataKey);
-  }, []);
-  console.log("render count---", dataKey, ":", renderCount.current++);
-  return (
-    <div>
-      {dataKey} / {name} / {index}
-    </div>
-  );
-};
-
-const FormMain: React.FC = () => {
-  const { renderRows, push, remove } = useFieldArray({
-    arrayFieldName: "demo",
-    template: { name: "", surname: "", age: "" },
-  });
-  const rows = renderRows((row, fields, index) => {
-    let result = fields.map((field) => {
-      return (
-        <Field
-          dataKey={row.values[field].key}
-          key={row.values[field].key}
-          name={row.values[field].name}
-          index={index}
-        />
-      );
-    });
-    return (
-      <div key={row.fieldKey}>
-        {result}
-        <button onClick={() => remove(index)}>Delete</button>
-      </div>
-    );
-  });
-  return (
-    <div>
-      <button onClick={() => push()}>push</button>
-      <br />
-      <div key="content">{rows}</div>
-    </div>
-  );
-};
-
-export default FormMain;

@@ -1,6 +1,8 @@
 import { atomFamily, atom, selector, selectorFamily } from "recoil";
 
-export const form = atom({
+import { FormAtomType, FormFeedbackAtom, FormFieldAtom } from "./types";
+
+export const form = atom<FormAtomType>({
   key: "form",
   default: {
     submitAttempt: 0,
@@ -10,7 +12,7 @@ export const form = atom({
   },
 });
 
-export const formFeedback = atom({
+export const formFeedback = atom<FormFeedbackAtom>({
   key: "formFeedback",
   default: {
     message: "",
@@ -18,7 +20,7 @@ export const formFeedback = atom({
   },
 });
 
-export const formField = atomFamily({
+export const formField = atomFamily<FormFieldAtom, string>({
   key: "formField",
   default: (name) => ({
     name: name ?? "",
@@ -31,14 +33,15 @@ export const formField = atomFamily({
   }),
 });
 
-export const fieldRegistry = atom({
+export const fieldRegistry = atom<string[]>({
   key: "fieldRegistry",
   default: [],
 });
 
-export const fieldRegisteryAdd = selector({
+export const fieldRegisteryAdd = selector<string>({
   key: "fieldRegisteryAdd",
   set: ({ set, get }, newValue) => {
+    if (typeof newValue !== "string") return;
     const fields = get(fieldRegistry);
     const valueExists = fields.indexOf(newValue) > -1;
     if (!valueExists) {
@@ -46,11 +49,15 @@ export const fieldRegisteryAdd = selector({
       set(fieldRegistry, newFields);
     }
   },
+  get: ({ get }) => {
+    return "";
+  },
 });
 
-export const fieldRegisteryRemove = selector({
+export const fieldRegisteryRemove = selector<string>({
   key: "fieldRegisteryRemove",
   set: ({ set, get, reset }, newValue) => {
+    if (typeof newValue !== "string") return;
     const fields = get(fieldRegistry);
     const index = fields.indexOf(newValue);
     if (index > -1) {
@@ -59,9 +66,15 @@ export const fieldRegisteryRemove = selector({
       set(fieldRegistry, newFields);
     }
   },
+  get: ({ get }) => {
+    return "";
+  },
 });
 
-export const subscribeToFormFields = selectorFamily({
+export const subscribeToFormFields = selectorFamily<
+  FormFieldAtom[],
+  string[] | undefined
+>({
   key: "subscribeToFormFields",
   get: (fields = []) => ({ get }) => {
     if (!Array.isArray(fields)) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useField, useFormFeedback } from "./core";
+import { useField, useFormFeedback, useFieldArray } from "./core";
 import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
 
@@ -38,4 +38,20 @@ export const FormFeedback = () => {
     );
   }
   return null;
+};
+
+export const MyArrayField = ({ name, template }) => {
+  const {
+    fieldRows,
+    templateFieldNames,
+    renderRows,
+    push,
+    remove,
+  } = useFieldArray({ name, template });
+  const rows = renderRows((row, fields, rowIndex) => {
+    fields.map(field=> {
+      const { name, key} = row.values[field]
+      return <TextField id={}
+    })
+  });
 };

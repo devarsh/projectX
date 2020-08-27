@@ -1,11 +1,22 @@
 import clone from "lodash/clone";
 import toPath from "lodash/toPath";
 import * as yup from "yup";
+import { FormFieldAtom } from "./types";
 
-export const isObject = (obj) => obj !== null && typeof obj === "object";
-export const isInteger = (obj) => String(Math.floor(Number(obj))) === obj;
+//Copied the following from Formik library
 
-function getIn(obj, key, def, p) {
+export const isObject = (obj: any): obj is Object =>
+  obj !== null && typeof obj === "object";
+
+export const isInteger = (obj: any): boolean =>
+  String(Math.floor(Number(obj))) === obj;
+
+export function getIn(
+  obj: any,
+  key: string | string[],
+  def?: any,
+  p: number = 0
+) {
   const path = toPath(key);
   while (obj && p < path.length) {
     obj = obj[path[p++]];
@@ -13,20 +24,20 @@ function getIn(obj, key, def, p) {
   return obj === undefined ? def : obj;
 }
 
-export function setIn(obj, path, value) {
-  let res = clone(obj); // this keeps inheritance when obj is a class
-  let resVal = res;
+export function setIn(obj: any, path: string, value: any): any {
+  let res: any = clone(obj); // this keeps inheritance when obj is a class
+  let resVal: any = res;
   let i = 0;
   let pathArray = toPath(path);
 
   for (; i < pathArray.length - 1; i++) {
-    const currentPath = pathArray[i];
-    let currentObj = getIn(obj, pathArray.slice(0, i + 1));
+    const currentPath: string = pathArray[i];
+    let currentObj: any = getIn(obj, pathArray.slice(0, i + 1));
 
     if (currentObj && (isObject(currentObj) || Array.isArray(currentObj))) {
       resVal = resVal[currentPath] = clone(currentObj);
     } else {
-      const nextPath = pathArray[i + 1];
+      const nextPath: string = pathArray[i + 1];
       resVal = resVal[currentPath] =
         isInteger(nextPath) && Number(nextPath) >= 0 ? [] : {};
     }
@@ -52,14 +63,21 @@ export function setIn(obj, path, value) {
   return res;
 }
 
-export const handleValidation = (fieldData, setValidationRunning) => {
-  const result = fieldData.validate(fieldData, setValidationRunning);
-  if ((result ?? "") === "") {
-    return null;
-  } else if (typeof result !== "string") {
-    return "Invalid error type: expected string";
+// Other utility functions
+
+export const handleValidation = (
+  fieldData: FormFieldAtom,
+  setValidationRunning: (isRunning: boolean) => void
+) => {
+  if (typeof fieldData.validate === "function") {
+    const result = fieldData.validate(fieldData, setValidationRunning);
+    if ((result ?? "") === "") {
+      return null;
+    } else if (typeof result !== "string") {
+      return "Invalid error type: expected string";
+    }
+    return result;
   }
-  return result;
 };
 
 const validationConfig = {
@@ -67,9 +85,9 @@ const validationConfig = {
   strict: true,
 };
 
-export const yupValidationHelper = (schema) => (
-  { value },
-  setValidationRunning
+export const yupValidationHelper = (schema: any) => (
+  { value }: FormFieldAtom,
+  setValidationRunning: (isRunning: boolean) => void
 ) => {
   try {
     schema.validateSync(value ?? null, validationConfig);

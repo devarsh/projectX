@@ -10,9 +10,21 @@ import {
 
 import { handleValidation } from "./util";
 
-export const useField = ({ name, validate, dependentFields }) => {
+import { FormFieldAtom, FieldProps } from "./types";
+
+export const useField = ({
+  name,
+  validate,
+  dependentFields,
+  arrayFieldName,
+}: FieldProps) => {
+  if (arrayFieldName ?? "" === "") {
+    arrayFieldName = name;
+  }
   const formState = useRecoilValue(form);
-  const [fieldData, setFieldData] = useRecoilState(formField(name));
+  const [fieldData, setFieldData] = useRecoilState<FormFieldAtom>(
+    formField(name)
+  );
   const registerField = useSetRecoilState(fieldRegisteryAdd);
   const unregisterField = useSetRecoilState(fieldRegisteryRemove);
   const isValidationFn = typeof validate === "function" ? true : false;
@@ -23,11 +35,17 @@ export const useField = ({ name, validate, dependentFields }) => {
     }
     return () => unregisterField(name);
   }, []);
+  React.useEffect(() => {
+    setFieldData({
+      ...fieldData,
+      arrayFieldName,
+    });
+  }, [arrayFieldName]);
   const dependentValues = useRecoilValue(
     subscribeToFormFields(dependentFields)
   );
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (isValidationFn && formState.validationRun === "onChange") {
       try {
@@ -43,11 +61,11 @@ export const useField = ({ name, validate, dependentFields }) => {
         setFieldData({ ...fieldData, value, error: e.message });
       }
     } else {
-      setFieldData({ ...fieldData, value: e.target.value });
+      setFieldData({ ...fieldData, value: value });
     }
   };
 
-  const setValidationRunning = (value) => {
+  const setValidationRunning = (value: boolean) => {
     setFieldData({
       ...fieldData,
       validationRunning: value,
