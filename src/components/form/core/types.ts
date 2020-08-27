@@ -3,6 +3,7 @@ export interface FormAtomType {
   isSubmitting: boolean;
   validationRun: string;
   submitSuccessful: boolean;
+  resetFieldOnUnmount: boolean;
 }
 
 export interface FormFeedbackAtom {

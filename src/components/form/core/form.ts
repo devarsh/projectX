@@ -1,7 +1,7 @@
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { form, formFeedback, formField, fieldRegistry } from "./atoms";
 import { setIn, handleValidation } from "./util";
-import { FormAtomType, FieldsErrorObj, SubmitFn } from "./types";
+import { FieldsErrorObj, SubmitFn, FormFieldAtom } from "./types";
 
 export const useForm = (onSubmit: SubmitFn) => {
   const startSubmit = useRecoilCallback(({ snapshot, set }) => () => {
@@ -50,7 +50,7 @@ export const useForm = (onSubmit: SubmitFn) => {
       const lodableFields = snapshot.getLoadable(fieldRegistry);
       if (lodableFields.state === "hasValue") {
         const fields = lodableFields.contents;
-        const fieldsAggrigator = [];
+        const fieldsAggrigator: FormFieldAtom[] = [];
         let hasError = false;
         for (const field of fields) {
           const lodableFieldState = snapshot.getLoadable(formField(field));

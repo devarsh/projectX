@@ -18,7 +18,7 @@ export const useField = ({
   dependentFields,
   arrayFieldName,
 }: FieldProps) => {
-  if (arrayFieldName ?? "" === "") {
+  if ((arrayFieldName ?? "") === "") {
     arrayFieldName = name;
   }
   const formState = useRecoilValue(form);
@@ -33,8 +33,11 @@ export const useField = ({
     if (isValidationFn) {
       setFieldData({ ...fieldData, validate });
     }
-    return () => unregisterField(name);
-  }, []);
+    if (formState.resetFieldOnUnmount === true) {
+      return () => unregisterField(name);
+    }
+  }, [name]);
+  //change everytime arrayField renders this field will be used as new name
   React.useEffect(() => {
     setFieldData({
       ...fieldData,
@@ -52,11 +55,13 @@ export const useField = ({
         const result = await Promise.resolve(
           handleValidation(fieldData, setValidationRunning)
         );
-        setFieldData({
-          ...fieldData,
-          value,
-          error: result,
-        });
+        if (typeof result === "string" || result === null) {
+          setFieldData({
+            ...fieldData,
+            value,
+            error: result,
+          });
+        }
       } catch (e) {
         setFieldData({ ...fieldData, value, error: e.message });
       }
@@ -78,7 +83,9 @@ export const useField = ({
         const result = await Promise.resolve(
           handleValidation(fieldData, setValidationRunning)
         );
-        setFieldData({ ...fieldData, touched: true, error: result });
+        if (typeof result === "string" || result === null) {
+          setFieldData({ ...fieldData, touched: true, error: result });
+        }
       } catch (e) {
         setFieldData({ ...fieldData, touched: true, error: e.message });
       }

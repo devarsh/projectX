@@ -7,8 +7,9 @@ export const form = atom<FormAtomType>({
   default: {
     submitAttempt: 0,
     isSubmitting: false,
-    validationRun: "onBlur",
     submitSuccessful: false,
+    validationRun: "onBlur",
+    resetFieldOnUnmount: true,
   },
 });
 
@@ -80,7 +81,7 @@ export const subscribeToFormFields = selectorFamily<
     if (!Array.isArray(fields)) {
       fields = [fields];
     }
-    let fieldValues = [];
+    let fieldValues: FormFieldAtom[] = [];
     for (let field of fields) {
       if (typeof field === "string" && field !== "") {
         let fieldState = get(formField(field));

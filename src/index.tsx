@@ -2,9 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "typeface-roboto";
-//import App from "./App";
-//import App from "./components/form";
-import App from "./components/form/core/fieldArray";
+import App from "./components/form/examples/index";
 
 ReactDOM.render(
   <React.StrictMode>
