@@ -1,0 +1,2 @@
+# For Director structure
+https://github.com/CharlesStover/optimal-react-file-structure

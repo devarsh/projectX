@@ -11,14 +11,26 @@ export interface FormFeedbackAtom {
   isError: boolean;
 }
 
+export interface FieldProps {
+  fieldKey: string;
+  name: string;
+  validate?: ValidateFn;
+  dependentFields?: string[];
+}
+
 export interface FormFieldAtom {
+  fieldKey: string;
   name: string;
   value: string;
   touched: boolean;
   error: string | null;
   validationRunning: boolean;
   validate?: null | ValidateFn | emptyFn;
+}
+
+export interface FieldArrayProps {
   arrayFieldName: string;
+  template: any;
 }
 
 export interface ValidateFn {
@@ -41,18 +53,6 @@ export interface SubmitFn {
   ): void;
 }
 
-export interface FieldProps {
-  name: string;
-  validate?: ValidateFn;
-  dependentFields?: string[];
-  arrayFieldName?: string;
-}
-
-export interface FieldArrayProps {
-  arrayFieldName: string;
-  template: any;
-}
-
 export type RenderFn = (
   row: TemplateFieldRow,
   fields: string[],
@@ -61,9 +61,11 @@ export type RenderFn = (
 
 export interface TemplateFieldRow {
   fieldKey: string;
-  values: {
-    [key: string]: TemplateFieldRowValue;
-  };
+  values: TemplateFieldRowValues;
+}
+
+export interface TemplateFieldRowValues {
+  [key: string]: TemplateFieldRowValue;
 }
 
 export interface TemplateFieldRowValue {

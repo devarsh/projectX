@@ -13,37 +13,37 @@ import { handleValidation } from "./util";
 import { FormFieldAtom, FieldProps } from "./types";
 
 export const useField = ({
+  fieldKey,
   name,
   validate,
   dependentFields,
-  arrayFieldName = "",
 }: FieldProps) => {
-  if ((arrayFieldName ?? "") === "") {
-    arrayFieldName = name;
+  if ((name ?? "") === "") {
+    name = fieldKey;
   }
   const formState = useRecoilValue(form);
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtom>(
-    formField(name)
+    formField(fieldKey)
   );
   const registerField = useSetRecoilState(fieldRegisteryAdd);
   const unregisterField = useSetRecoilState(fieldRegisteryRemove);
   const isValidationFn = typeof validate === "function" ? true : false;
   React.useEffect(() => {
-    registerField(name);
+    registerField(fieldKey);
     if (isValidationFn) {
       setFieldData({ ...fieldData, validate });
     }
     if (formState.resetFieldOnUnmount === true) {
-      return () => unregisterField(name);
+      return () => unregisterField(fieldKey);
     }
-  }, [name]);
+  }, [fieldKey]);
   //change everytime arrayField renders this field will be used as new name
   React.useEffect(() => {
     setFieldData({
       ...fieldData,
-      arrayFieldName,
+      name,
     });
-  }, [arrayFieldName]);
+  }, [name]);
   const dependentValues = useRecoilValue(
     subscribeToFormFields(dependentFields)
   );

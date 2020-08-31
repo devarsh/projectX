@@ -29,14 +29,14 @@ export const formFeedback = atom<FormFeedbackAtom>({
 
 export const formField = atomFamily<FormFieldAtom, string>({
   key: "formField",
-  default: (name) => ({
-    name: name ?? "",
+  default: (fieldKey) => ({
+    fieldKey: fieldKey ?? "",
+    name: fieldKey ?? "",
     value: "",
     touched: false,
     error: null,
     validationRunning: false,
     validate: null,
-    arrayFieldName: name ?? "",
   }),
 });
 

@@ -168,9 +168,14 @@ export const useFieldArray = ({
       renderFn(row, templateFieldNames.slice(), idx)
     );
   };
+  const resetFieldArray = () => {
+    setFieldRows([]);
+    fieldRowInsertIndex.current = 0;
+  };
   return {
     fieldRows,
     templateFieldNames,
+    resetFieldArray,
     unshift,
     push,
     insert,

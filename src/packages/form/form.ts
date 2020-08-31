@@ -112,7 +112,7 @@ export const useForm = (
           if (typeof onSubmit === "function") {
             let obj = {};
             for (const field of fieldsAggrigator) {
-              obj = setIn(obj, field.arrayFieldName, field.value);
+              obj = setIn(obj, field.name, field.value);
             }
             onSubmit(obj, startSubmit, endSubmit, setFieldErrors);
           }
