@@ -8,7 +8,7 @@ import {
   subscribeToFormFields,
 } from "./atoms";
 
-import { handleValidation } from "./util";
+import { handleValidation, isString } from "./util";
 
 import { FormFieldAtom, FieldProps } from "./types";
 
@@ -18,9 +18,6 @@ export const useField = ({
   validate,
   dependentFields,
 }: FieldProps) => {
-  if ((name ?? "") === "") {
-    name = fieldKey;
-  }
   const formState = useRecoilValue(form);
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtom>(
     formField(fieldKey)
@@ -41,15 +38,23 @@ export const useField = ({
   React.useEffect(() => {
     setFieldData({
       ...fieldData,
-      name,
+      name: name,
     });
   }, [name]);
   const dependentValues = useRecoilValue(
     subscribeToFormFields(dependentFields)
   );
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleChange = async (
+    eventOrTextValue: string | React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let value = eventOrTextValue;
+    if (!isString(eventOrTextValue)) {
+      eventOrTextValue?.persist?.();
+      value = eventOrTextValue.target.value;
+    } else {
+      value = eventOrTextValue;
+    }
     if (isValidationFn && formState.validationRun === "onChange") {
       try {
         const result = await Promise.resolve(

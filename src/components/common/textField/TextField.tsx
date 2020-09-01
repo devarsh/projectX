@@ -3,10 +3,10 @@ import { useField, FieldProps } from "packages/form";
 import TextField, { TextFieldProps } from "@material-ui/core/TextField";
 
 export const MyTextField: React.FC<FieldProps & TextFieldProps> = ({
-  name,
+  name: fieldName,
   validate,
   dependentFields,
-  fieldKey,
+  fieldKey: fieldID,
   ...others
 }) => {
   const {
@@ -16,11 +16,20 @@ export const MyTextField: React.FC<FieldProps & TextFieldProps> = ({
     handleChange,
     handleBlur,
     isSubmitting,
-  } = useField({ name, validate, dependentFields, fieldKey });
+    fieldKey,
+    name,
+  } = useField({
+    name: fieldName,
+    validate,
+    dependentFields,
+    fieldKey: fieldID,
+  });
   const isError = touched && (error ?? "") !== "";
   return (
     <TextField
-      id={name}
+      {...others}
+      key={fieldKey}
+      id={fieldKey}
       name={name}
       value={value}
       error={isError}
@@ -28,7 +37,6 @@ export const MyTextField: React.FC<FieldProps & TextFieldProps> = ({
       onChange={handleChange}
       onBlur={handleBlur}
       disabled={isSubmitting}
-      {...others}
     />
   );
 };
