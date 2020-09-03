@@ -4,11 +4,17 @@ export interface FormAtomType {
   validationRun: string;
   submitSuccessful: boolean;
   resetFieldOnUnmount: boolean;
+  resetFlagForInitValues: number;
+  inititalValues: InititalValues | undefined;
 }
 
 export interface FormFeedbackAtom {
   message: string;
   isError: boolean;
+}
+
+export interface InititalValues {
+  [key: string]: string;
 }
 
 export interface FieldProps {

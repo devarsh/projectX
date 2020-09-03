@@ -7,9 +7,7 @@ import {
   fieldRegisteryRemove,
   subscribeToFormFields,
 } from "./atoms";
-
-import { handleValidation, isString } from "./util";
-
+import { handleValidation, getIn, isString } from "./util";
 import { FormFieldAtom, FieldProps } from "./types";
 
 export const useField = ({
@@ -25,22 +23,37 @@ export const useField = ({
   const registerField = useSetRecoilState(fieldRegisteryAdd);
   const unregisterField = useSetRecoilState(fieldRegisteryRemove);
   const isValidationFn = typeof validate === "function" ? true : false;
+
+  //Initital Value Setter function
+  React.useEffect(() => {
+    const defaultValue: string | undefined = getIn(
+      formState.inititalValues,
+      fieldKey
+    );
+    if (defaultValue !== undefined) {
+      setFieldData((currVal) => ({ ...currVal, value: defaultValue }));
+    }
+  }, [formState.resetFlagForInitValues]);
+
+  //Form field registration
   React.useEffect(() => {
     registerField(fieldKey);
     if (isValidationFn) {
-      setFieldData({ ...fieldData, validate });
+      setFieldData((currVal) => ({ ...currVal, validate }));
     }
     if (formState.resetFieldOnUnmount === true) {
       return () => unregisterField(fieldKey);
     }
   }, [fieldKey]);
-  //change everytime arrayField renders this field will be used as new name
+  //change fieldName everytime arrayField renders with index position changed, since index position is part of name
+  //but the same atom is retained
   React.useEffect(() => {
-    setFieldData({
-      ...fieldData,
+    setFieldData((currVal) => ({
+      ...currVal,
       name: name,
-    });
+    }));
   }, [name]);
+  //Subscribe to dependentValues and get an array of values
   const dependentValues = useRecoilValue(
     subscribeToFormFields(dependentFields)
   );
@@ -60,26 +73,32 @@ export const useField = ({
         const result = await Promise.resolve(
           handleValidation(fieldData, setValidationRunning)
         );
-        if (typeof result === "string" || result === null) {
-          setFieldData({
-            ...fieldData,
-            value,
-            error: result,
-          });
-        }
+        const myResult = result ?? "";
+        const myValue = value;
+        setFieldData((currVal) => ({
+          ...currVal,
+          error: myResult,
+          value: myValue,
+        }));
       } catch (e) {
-        setFieldData({ ...fieldData, value, error: e.message });
+        const myValue = value;
+        setFieldData((currVal) => ({
+          ...currVal,
+          value: myValue,
+          error: e.message,
+        }));
       }
     } else {
-      setFieldData({ ...fieldData, value: value });
+      const myValue = value;
+      setFieldData((currVal) => ({ ...currVal, value: myValue }));
     }
   };
 
   const setValidationRunning = (value: boolean) => {
-    setFieldData({
-      ...fieldData,
+    setFieldData((currVal) => ({
+      ...currVal,
       validationRunning: value,
-    });
+    }));
   };
 
   const handleBlur = async () => {
@@ -88,14 +107,21 @@ export const useField = ({
         const result = await Promise.resolve(
           handleValidation(fieldData, setValidationRunning)
         );
-        if (typeof result === "string" || result === null) {
-          setFieldData({ ...fieldData, touched: true, error: result });
-        }
+        const myResult = result ?? "";
+        setFieldData((currVal) => ({
+          ...currVal,
+          touched: true,
+          error: myResult,
+        }));
       } catch (e) {
-        setFieldData({ ...fieldData, touched: true, error: e.message });
+        setFieldData((currVal) => ({
+          ...currVal,
+          touched: true,
+          error: e.message,
+        }));
       }
     } else {
-      setFieldData({ ...fieldData, touched: true });
+      setFieldData((currVal) => ({ ...currVal, touched: true }));
     }
   };
   return {

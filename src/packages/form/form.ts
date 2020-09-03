@@ -1,56 +1,69 @@
+import React from "react";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { form, formFeedback, formField, fieldRegistry } from "./atoms";
 import { setIn, handleValidation } from "./util";
-import { FieldsErrorObj, SubmitFn, FormFieldAtom } from "./types";
+import {
+  FieldsErrorObj,
+  SubmitFn,
+  FormFieldAtom,
+  InititalValues,
+} from "./types";
 
 export const useForm = (
   onSubmit: SubmitFn,
-  onReset: () => void | undefined
+  inititalValues: InititalValues | undefined
 ) => {
-  const startSubmit = useRecoilCallback(({ snapshot, set }) => () => {
-    const loadableFormState = snapshot.getLoadable(form);
-    if (loadableFormState.state === "hasValue") {
-      const value = loadableFormState.contents;
-      set(form, {
-        ...value,
-        isSubmitting: true,
-        submitAttempt: value.submitAttempt + 1,
-      });
-    }
-  });
-  const endSubmit = useRecoilCallback(
-    ({ snapshot, set }) => (
-      submitSuccessful: boolean = false,
-      message: string = ""
-    ) => {
-      const loadableFormState = snapshot.getLoadable(form);
-      if (loadableFormState.state === "hasValue") {
-        const value = loadableFormState.contents;
-        set(form, {
-          ...value,
-          isSubmitting: false,
-          submitSuccessful,
-        });
-        set(formFeedback, { message, isError: !submitSuccessful });
+  //Init Form with initital values
+  React.useEffect(() => {
+    setInitValues(inititalValues);
+  }, []);
+  const setInitValues = useRecoilCallback(
+    ({ set }) => (initValues: InititalValues | undefined) => {
+      if (initValues !== undefined && typeof initValues === "object") {
+        set(form, (currVal) => ({
+          ...currVal,
+          inititalValues: initValues,
+        }));
       }
+    }
+  );
+  const fireInitValues = useRecoilCallback(
+    ({ set }) => (initValues: InititalValues | undefined) => {
+      if (initValues !== undefined && typeof initValues === "object") {
+        set(form, (currVal) => ({
+          ...currVal,
+          resetFlagForInitValues: currVal.resetFlagForInitValues++,
+        }));
+      }
+    }
+  );
+  const startSubmit = useRecoilCallback(({ set }) => () => {
+    set(form, (currVal) => ({
+      ...currVal,
+      isSubmitting: true,
+      submitAttempt: currVal.submitAttempt + 1,
+    }));
+  });
+
+  const endSubmit = useRecoilCallback(
+    ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {
+      set(form, (currVal) => ({
+        ...currVal,
+        isSubmitting: false,
+        submitSuccessful,
+      }));
+      set(formFeedback, { message, isError: !submitSuccessful });
     }
   );
   const setFieldErrors = useRecoilCallback(
-    ({ snapshot, set }) => (fieldsErrorObj: FieldsErrorObj = {}) => {
+    ({ set }) => (fieldsErrorObj: FieldsErrorObj = {}) => {
       for (const field of Object.entries(fieldsErrorObj)) {
-        const loadableFieldState = snapshot.getLoadable(formField(field[0]));
-        if (loadableFieldState.state === "hasValue") {
-          const value = loadableFieldState.contents;
-          set(formField(field[0]), { ...value, error: field[1] });
-          if (typeof onReset === "function") {
-            onReset();
-          }
-        }
+        const [fieldName, error] = field;
+        set(formField(fieldName), (currVal) => ({ ...currVal, error: error }));
       }
     }
   );
-
-  const handleReset = useRecoilCallback(
+  const handleClear = useRecoilCallback(
     ({ snapshot, reset }) => (e: React.FormEvent<HTMLInputElement>) => {
       e.preventDefault();
       const loadableFields = snapshot.getLoadable(fieldRegistry);
@@ -62,6 +75,11 @@ export const useForm = (
       }
     }
   );
+
+  const handleReset = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    fireInitValues(inititalValues);
+  };
 
   const handleSubmit = useRecoilCallback(
     ({ snapshot, set }) => async (e: React.FormEvent<HTMLInputElement>) => {
@@ -81,7 +99,7 @@ export const useForm = (
                 typeof fieldState.validate === "function"
                   ? fieldState.validate
                   : () => null;
-              let result;
+              let result: any;
               try {
                 result = await Promise.resolve(
                   handleValidation(fieldState, () => {})
@@ -120,7 +138,7 @@ export const useForm = (
       }
     }
   );
-  return { handleSubmit, handleReset };
+  return { handleSubmit, handleReset, handleClear };
 };
 
 export const useFormFeedback = () => {

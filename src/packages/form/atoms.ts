@@ -16,6 +16,8 @@ export const form = atom<FormAtomType>({
     submitSuccessful: false,
     validationRun: "onBlur",
     resetFieldOnUnmount: true,
+    inititalValues: undefined,
+    resetFlagForInitValues: 0,
   },
 });
 
