@@ -1,6 +1,15 @@
-1. Check submit, reset, validation, async validation with loader ,dependent fields, formArray, server error and success, server field level validation
-2. Try to make eventHandler cached so the components in an array stops to rerender
-   if needed find a way to add memo to child components
-3. Reset From & Initialize form with defaults
-4. Auto save form
-5. Form Arrays
+#Features
+
+1. Form with initital Values
+2. Client-Side Validation field wise (inline and async - with loading support)
+3. Sever-Side Validation field wise
+4. Server sent errors
+5. Dependent Fields
+6. FormArray with template support
+7. FromFeedBack handler
+8. Submit and Reset and clear form Handler
+
+#Pending Features
+
+1. Auto Save Form
+2. Cache onChange and OnBlur handler for performance of Array fields

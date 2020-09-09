@@ -3,7 +3,7 @@ import { useFormFeedback } from "packages/form";
 
 import Alert from "@material-ui/lab/Alert";
 
-export const FormFeedback: React.FC = () => {
+const FormFeedBack: React.FC = () => {
   const { isError, message } = useFormFeedback();
   if ((message ?? "") !== "") {
     return (
@@ -14,3 +14,5 @@ export const FormFeedback: React.FC = () => {
   }
   return null;
 };
+
+export default FormFeedBack;

@@ -1,7 +1,4 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { form } from "./atoms";
-import { getIn } from "./util";
 import { FieldArrayProps, TemplateFieldRow, RenderFn } from "./types";
 
 export const useFieldArray = ({
@@ -14,7 +11,7 @@ export const useFieldArray = ({
   if ((arrayFieldName ?? "") === "") {
     throw new Error("Pass ArrayField name");
   }
-  const formState = useRecoilValue(form);
+
   const [fieldRows, setFieldRows] = React.useState<TemplateFieldRow[]>([]);
   const fieldRowInsertIndex = React.useRef(-1);
   //caching template keys
@@ -22,25 +19,6 @@ export const useFieldArray = ({
   if (templateFieldNamesRef.current === null) {
     templateFieldNamesRef.current = Object.keys(template);
   }
-
-  //Initital Value Setter function
-  React.useEffect(() => {
-    const defaultArrayValue: string | undefined = getIn(
-      formState.inititalValues,
-      arrayFieldName
-    );
-    if (defaultArrayValue !== undefined && Array.isArray(defaultArrayValue)) {
-      fieldRowInsertIndex.current = -1;
-      let buffer: TemplateFieldRow[] = [];
-      for (const _ of defaultArrayValue) {
-        const result = _insert(buffer.length, buffer);
-        if (Array.isArray(result)) {
-          buffer = result;
-        }
-      }
-      setFieldRows(buffer);
-    }
-  }, [formState.resetFlagForInitValues]);
 
   //this functions accept index and current fieldRows as arguments to make it independent and to be used
   //where you want to bulk insert without setting setState on every insert - shaving off extra rerenders.
@@ -53,7 +31,7 @@ export const useFieldArray = ({
       values: {},
       fieldKey: `${arrayFieldName}-${insertIndex}`,
     };
-    for (const fieldName of templateFieldNamesRef.current) {
+    for (const fieldName of templateFieldNamesRef.current ?? []) {
       const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
       const name = `${arrayFieldName}[${index}].${fieldName}`;
       newRow.values[fieldName] = { key, name };
@@ -62,7 +40,7 @@ export const useFieldArray = ({
     const endingRows = rowBuf.slice(index);
     let currentIndex = index + 1;
     for (let oneRow of endingRows) {
-      for (const fieldName of templateFieldNamesRef.current) {
+      for (const fieldName of templateFieldNamesRef.current ?? []) {
         oneRow.values[
           fieldName
         ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
@@ -99,7 +77,7 @@ export const useFieldArray = ({
     const beginningRows = fieldRows.slice(0, currentIndex);
     const endingRows = fieldRows.slice(currentIndex + 1);
     for (let oneRow of endingRows) {
-      for (const fieldName of templateFieldNamesRef.current) {
+      for (const fieldName of templateFieldNamesRef.current ?? []) {
         oneRow.values[
           fieldName
         ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
@@ -126,7 +104,7 @@ export const useFieldArray = ({
     const fieldRowsCopy = fieldRows.slice(0);
     const rowA = fieldRowsCopy[indexA];
     const rowB = fieldRowsCopy[indexB];
-    for (const fieldName of templateFieldNamesRef.current) {
+    for (const fieldName of templateFieldNamesRef.current ?? []) {
       const tempName = rowA.values[fieldName].name;
       rowA.values[fieldName].name = rowB.values[fieldName].name;
       rowB.values[fieldName].name = tempName;
@@ -157,14 +135,14 @@ export const useFieldArray = ({
       let shiftingRows = middleRows.slice(1);
       let currentIndex = from;
       for (let fieldRow of shiftingRows) {
-        for (const fieldName of templateFieldNamesRef.current) {
+        for (const fieldName of templateFieldNamesRef.current ?? []) {
           fieldRow.values[
             fieldName
           ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
         }
         currentIndex++;
       }
-      for (const fieldName of templateFieldNamesRef.current) {
+      for (const fieldName of templateFieldNamesRef.current ?? []) {
         movingRow.values[
           fieldName
         ].name = `${arrayFieldName}[${to}].${fieldName}`;
@@ -180,14 +158,14 @@ export const useFieldArray = ({
       let movingRow = middleRows.slice(middleRows.length - 1)[0];
       let currentIndex = to + 1;
       for (let fieldRow of shiftingRows) {
-        for (const fieldName of templateFieldNamesRef.current) {
+        for (const fieldName of templateFieldNamesRef.current ?? []) {
           fieldRow.values[
             fieldName
           ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
         }
         currentIndex++;
       }
-      for (const fieldName of templateFieldNamesRef.current) {
+      for (const fieldName of templateFieldNamesRef.current ?? []) {
         movingRow.values[
           fieldName
         ].name = `${arrayFieldName}[${to}].${fieldName}`;
@@ -202,7 +180,12 @@ export const useFieldArray = ({
   };
   const renderRows = (renderFn: RenderFn) => {
     return fieldRows.map((row, idx) =>
-      renderFn(row, templateFieldNamesRef.current.slice(), idx)
+      renderFn({
+        row,
+        fields: templateFieldNamesRef.current?.slice?.() ?? [],
+        rowIndex: idx,
+        removeFn: remove,
+      })
     );
   };
   const clearFieldArray = () => {
@@ -257,3 +240,22 @@ export const useFieldArray = ({
 //     }
 //   }
 // }
+
+// Initital Value Setter function
+// React.useEffect(() => {
+//   const defaultArrayValue: string | undefined = getIn(
+//     formState.inititalValues,
+//     arrayFieldName
+//   );
+//   if (defaultArrayValue !== undefined && Array.isArray(defaultArrayValue)) {
+//     fieldRowInsertIndex.current = -1;
+//     let buffer: TemplateFieldRow[] = [];
+//     for (const _ of defaultArrayValue) {
+//       const result = _insert(buffer.length, buffer);
+//       if (Array.isArray(result)) {
+//         buffer = result;
+//       }
+//     }
+//     setFieldRows(buffer);
+//   }
+// }, [formState.resetFlagForInitValues]);

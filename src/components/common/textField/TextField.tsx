@@ -2,7 +2,7 @@ import React from "react";
 import { useField, FieldProps } from "packages/form";
 import TextField, { TextFieldProps } from "@material-ui/core/TextField";
 
-export const MyTextField: React.FC<FieldProps & TextFieldProps> = ({
+const MyTextField: React.FC<FieldProps & TextFieldProps> = ({
   name: fieldName,
   validate,
   dependentFields,
@@ -34,9 +34,12 @@ export const MyTextField: React.FC<FieldProps & TextFieldProps> = ({
       value={value}
       error={isError}
       helperText={isError ? error : null}
+      //@ts-ignore
       onChange={handleChange}
       onBlur={handleBlur}
       disabled={isSubmitting}
     />
   );
 };
+
+export default MyTextField;

@@ -1,11 +1,11 @@
 import React from "react";
 import { useField, FieldProps } from "packages/form";
 import {
-  KeyboardDatePicker,
-  KeyboardDatePickerProps,
+  KeyboardTimePicker,
+  KeyboardTimePickerProps,
 } from "@material-ui/pickers";
 
-export const MyDatePicker: React.FC<FieldProps & KeyboardDatePickerProps> = ({
+export const MyTimePicker: React.FC<FieldProps & KeyboardTimePickerProps> = ({
   name: fieldName,
   validate,
   dependentFields,
@@ -29,11 +29,11 @@ export const MyDatePicker: React.FC<FieldProps & KeyboardDatePickerProps> = ({
     fieldKey: fieldID,
   });
   const isError = touched && (error ?? "") !== "";
-  const customDateChangeHandler = (date, dateStr) => {
+  const customDateChangeHandler = (date) => {
     handleChange(date);
   };
   return (
-    <KeyboardDatePicker
+    <KeyboardTimePicker
       {...others}
       key={fieldKey}
       id={fieldKey}
@@ -48,4 +48,4 @@ export const MyDatePicker: React.FC<FieldProps & KeyboardDatePickerProps> = ({
   );
 };
 
-export default MyDatePicker;
+export default MyTimePicker;

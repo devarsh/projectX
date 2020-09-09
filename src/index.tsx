@@ -2,14 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "typeface-roboto";
-import App from "./components/query/index.js";
+import App from "./components/form";
 import * as serviceWorker from "./serviceWorker";
-import { ReactQueryDevtools } from "react-query-devtools";
 
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
-    <ReactQueryDevtools initialIsOpen={false} />
     <App />
   </React.StrictMode>,
   document.getElementById("root")

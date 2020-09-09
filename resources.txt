@@ -1,2 +1,5 @@
 # For Director structure
 https://github.com/CharlesStover/optimal-react-file-structure
+
+#When to use Checkbox vs Radio
+https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8

@@ -1,56 +1,43 @@
 import React from "react";
-import {
-  useField,
-  useFormFeedback,
-  useFieldArray,
-  FieldArrayProps,
-  FieldProps,
-  ValidateFn,
-  TemplateFieldRow,
-} from "packages/form";
+import { useFieldArray, FieldArrayProps, RenderFn } from "packages/form";
 
-export const MyArrayField: React.FC<FieldArrayProps> = ({
+interface RenderParentAttribs {
+  rows: JSX.Element[];
+  key: string;
+  push: () => void;
+}
+
+interface ArrayFieldProps extends FieldArrayProps {
+  renderParentFn: (options: RenderParentAttribs) => JSX.Element;
+  renderRowsFn: RenderFn;
+}
+
+export const ArrayField: React.FC<ArrayFieldProps> = ({
   arrayFieldName,
   template,
+  renderParentFn,
+  renderRowsFn,
 }) => {
-  const { fieldRows, templateFieldNames, push, remove } = useFieldArray({
+  const { renderRows, push } = useFieldArray({
     arrayFieldName,
     template,
   });
-  const rows = fieldRows.map((row, index) => {
-    <TemplateFieldRenderer
-      fieldKey={row.fieldKey}
-      values={row.values}
-      templateRow={templateFieldNames}
-      index={index}
-      remove={remove}
-    />;
-  });
-  return <div>{rows}</div>;
-};
-
-interface TemplateFieldRenderedProps extends TemplateFieldRow {
-  templateRow: string[];
-  index: number;
-  remove: (index: number) => void;
-  renderRow: (name: string, key: string) => JSX.Element;
-}
-
-export const TemplateFieldRenderer: React.FC<TemplateFieldRenderedProps> = ({
-  fieldKey,
-  values,
-  templateRow,
-  index,
-  remove,
-  renderRow,
-}) => {
-  const oneRow = templateRow.map((cell) => {
-    return renderRow(values[cell].name, values[cell].key);
-  });
-  return (
-    <div key={fieldKey}>
-      {oneRow}
-      <button onClick={() => remove(index)}>Delete</button>
-    </div>
-  );
+  if (
+    typeof renderRowsFn === "function" &&
+    typeof renderParentFn === "function"
+  ) {
+    const key = `${arrayFieldName}`;
+    const rows = renderRows(renderRowsFn);
+    return renderParentFn({ rows, key, push });
+  } else {
+    console.log(
+      "Expected renderRowFn type as function but got",
+      typeof renderParentFn
+    );
+    console.log(
+      "Expecte renderParentFn type as function but got",
+      typeof renderRowsFn
+    );
+    return null;
+  }
 };

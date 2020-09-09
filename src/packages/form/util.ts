@@ -1,6 +1,5 @@
 import clone from "lodash/clone";
 import toPath from "lodash/toPath";
-import * as yup from "yup";
 import { FormFieldAtom } from "./types";
 
 //Copied the following from Formik library
@@ -80,25 +79,5 @@ export const handleValidation = (
       return "Invalid error type: expected string";
     }
     return result;
-  }
-};
-
-const validationConfig = {
-  abortEarly: false,
-  strict: true,
-};
-
-export const yupValidationHelper = (schema: any) => (
-  { value }: FormFieldAtom,
-  setValidationRunning: (isRunning: boolean) => void
-) => {
-  try {
-    schema.validateSync(value ?? null, validationConfig);
-    return "";
-  } catch (e) {
-    if (e instanceof yup.ValidationError) {
-      return e.errors[0];
-    }
-    return e.message;
   }
 };

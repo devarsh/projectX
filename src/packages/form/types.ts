@@ -4,8 +4,6 @@ export interface FormAtomType {
   validationRun: string;
   submitSuccessful: boolean;
   resetFieldOnUnmount: boolean;
-  resetFlagForInitValues: number;
-  inititalValues: InititalValues | undefined;
 }
 
 export interface FormFeedbackAtom {
@@ -15,6 +13,11 @@ export interface FormFeedbackAtom {
 
 export interface InititalValues {
   [key: string]: string;
+}
+
+export interface FormProps {
+  onSubmit: SubmitFn;
+  inititalValues?: InititalValues;
 }
 
 export interface FieldProps {
@@ -27,7 +30,7 @@ export interface FieldProps {
 export interface FormFieldAtom {
   fieldKey: string;
   name: string;
-  value: string;
+  value: any;
   touched: boolean;
   error: string | null;
   validationRunning: boolean;
@@ -59,11 +62,14 @@ export interface SubmitFn {
   ): void;
 }
 
-export type RenderFn = (
-  row: TemplateFieldRow,
-  fields: string[],
-  rowIndex: number
-) => any;
+export type RenderFn = (optons: RenderFnArgs) => JSX.Element;
+
+export interface RenderFnArgs {
+  row: TemplateFieldRow;
+  fields: string[];
+  rowIndex: number;
+  removeFn: (index: number) => void;
+}
 
 export interface TemplateFieldRow {
   fieldKey: string;
