@@ -6,7 +6,12 @@ import {
   DefaultValue,
 } from "recoil";
 
-import { FormAtomType, FormFeedbackAtom, FormFieldAtom } from "./types";
+import {
+  FormAtomType,
+  FormFeedbackAtom,
+  FormFieldAtom,
+  InititalValuesVer,
+} from "./types";
 
 export const form = atom<FormAtomType>({
   key: "form",
@@ -16,6 +21,14 @@ export const form = atom<FormAtomType>({
     submitSuccessful: false,
     validationRun: "onBlur",
     resetFieldOnUnmount: true,
+  },
+});
+
+export const initialValuesAtom = atom<InititalValuesVer>({
+  key: "initialValuesAtom",
+  default: {
+    initialValues: {},
+    version: 0,
   },
 });
 

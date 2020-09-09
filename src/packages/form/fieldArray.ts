@@ -1,5 +1,13 @@
 import React from "react";
-import { FieldArrayProps, TemplateFieldRow, RenderFn } from "./types";
+import {
+  FieldArrayProps,
+  TemplateFieldRow,
+  RenderFn,
+  InititalValuesVer,
+} from "./types";
+import { initialValuesAtom, formField } from "./atoms";
+import { useRecoilValue, useRecoilCallback } from "recoil";
+import { getIn } from "./util";
 
 export const useFieldArray = ({
   arrayFieldName,
@@ -11,9 +19,8 @@ export const useFieldArray = ({
   if ((arrayFieldName ?? "") === "") {
     throw new Error("Pass ArrayField name");
   }
-
   const [fieldRows, setFieldRows] = React.useState<TemplateFieldRow[]>([]);
-  const fieldRowInsertIndex = React.useRef(-1);
+  const fieldRowInsertIndex = React.useRef(0);
   //caching template keys
   let templateFieldNamesRef = React.useRef<string[] | null>(null);
   if (templateFieldNamesRef.current === null) {
@@ -22,33 +29,36 @@ export const useFieldArray = ({
 
   //this functions accept index and current fieldRows as arguments to make it independent and to be used
   //where you want to bulk insert without setting setState on every insert - shaving off extra rerenders.
-  const _insert = (index: number, rowBuf: TemplateFieldRow[]) => {
-    if (!(index >= 0 && index <= rowBuf.length)) {
-      return;
-    }
-    const insertIndex = fieldRowInsertIndex.current++;
-    let newRow: TemplateFieldRow = {
-      values: {},
-      fieldKey: `${arrayFieldName}-${insertIndex}`,
-    };
-    for (const fieldName of templateFieldNamesRef.current ?? []) {
-      const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
-      const name = `${arrayFieldName}[${index}].${fieldName}`;
-      newRow.values[fieldName] = { key, name };
-    }
-    const beginningRows = rowBuf.slice(0, index);
-    const endingRows = rowBuf.slice(index);
-    let currentIndex = index + 1;
-    for (let oneRow of endingRows) {
-      for (const fieldName of templateFieldNamesRef.current ?? []) {
-        oneRow.values[
-          fieldName
-        ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
+  const _insert = React.useCallback(
+    (index: number, rowBuf: TemplateFieldRow[]) => {
+      if (!(index >= 0 && index <= rowBuf.length)) {
+        return;
       }
-      currentIndex++;
-    }
-    return [...beginningRows, newRow, ...endingRows];
-  };
+      const insertIndex = fieldRowInsertIndex.current++;
+      let newRow: TemplateFieldRow = {
+        values: {},
+        fieldKey: `${arrayFieldName}-${insertIndex}`,
+      };
+      for (const fieldName of templateFieldNamesRef.current ?? []) {
+        const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
+        const name = `${arrayFieldName}[${index}].${fieldName}`;
+        newRow.values[fieldName] = { key, name };
+      }
+      const beginningRows = rowBuf.slice(0, index);
+      const endingRows = rowBuf.slice(index);
+      let currentIndex = index + 1;
+      for (let oneRow of endingRows) {
+        for (const fieldName of templateFieldNamesRef.current ?? []) {
+          oneRow.values[
+            fieldName
+          ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
+        }
+        currentIndex++;
+      }
+      return [...beginningRows, newRow, ...endingRows];
+    },
+    [arrayFieldName]
+  );
 
   const insert = (index: number) => {
     const result = _insert(index, fieldRows);
@@ -193,6 +203,43 @@ export const useFieldArray = ({
     fieldRowInsertIndex.current = 0;
   };
 
+  const setDefaultValue = React.useCallback(
+    useRecoilCallback(({ set }) => (initValues: InititalValuesVer) => {
+      const defaultArrayValue: string | undefined = getIn(
+        initValues.initialValues,
+        arrayFieldName
+      );
+      if (defaultArrayValue !== undefined && Array.isArray(defaultArrayValue)) {
+        fieldRowInsertIndex.current = 0;
+        let buffer: TemplateFieldRow[] = [];
+        for (let i = 0; i < defaultArrayValue.length; i++) {
+          const result = _insert(buffer.length, buffer);
+          if (Array.isArray(result)) {
+            buffer = result;
+          }
+        }
+        for (const oneBuf of buffer) {
+          for (const value of Object.values(oneBuf.values)) {
+            const initVal: string =
+              getIn(initValues.initialValues, value.key) ?? "";
+            set(formField(value.key), (currVal) => ({
+              ...currVal,
+              value: initVal,
+            }));
+          }
+        }
+        setFieldRows(buffer);
+      }
+    }),
+    [arrayFieldName]
+  );
+
+  const initialValues = useRecoilValue(initialValuesAtom);
+
+  React.useEffect(() => {
+    setDefaultValue(initialValues);
+  }, [initialValues.version, setDefaultValue]);
+
   return {
     fieldRows,
     templateFieldNames: templateFieldNamesRef.current,
@@ -207,55 +254,3 @@ export const useFieldArray = ({
     renderRows,
   };
 };
-
-// {
-//   if (typeof inititalValues === "object") {
-//     //get our array field initial value
-//     const arrayFieldValues: InititalValues[] = getIn(
-//       inititalValues,
-//       fieldName
-//     );
-//     //check if arrayFieldValue is array and is not empty
-//     if (Array.isArray(arrayFieldValues) && arrayFieldValues.length > 0) {
-//       //create a buffer array of arrayfield with keys and names
-//       let buffer: TemplateFieldRow[] = [];
-//       for (const _ of arrayFieldValues) {
-//         const result = _insert(buffer.length, buffer);
-//         if (Array.isArray(result)) {
-//           buffer = result;
-//         }
-//       }
-//       for (let i = 0; i < buffer.length; i++) {
-//         const oneBuf = buffer[i];
-//         for (const [_, value] of Object.entries(oneBuf.values)) {
-//           const initVal: string = getIn(inititalValues, value.name) ?? "";
-//           set(formField(value.key), (currVal) => ({
-//             ...currVal,
-//             value: initVal,
-//             defaultValue: initVal,
-//           }));
-//         }
-//       }
-//       setFieldRows(buffer);
-//     }
-//   }
-// }
-
-// Initital Value Setter function
-// React.useEffect(() => {
-//   const defaultArrayValue: string | undefined = getIn(
-//     formState.inititalValues,
-//     arrayFieldName
-//   );
-//   if (defaultArrayValue !== undefined && Array.isArray(defaultArrayValue)) {
-//     fieldRowInsertIndex.current = -1;
-//     let buffer: TemplateFieldRow[] = [];
-//     for (const _ of defaultArrayValue) {
-//       const result = _insert(buffer.length, buffer);
-//       if (Array.isArray(result)) {
-//         buffer = result;
-//       }
-//     }
-//     setFieldRows(buffer);
-//   }
-// }, [formState.resetFlagForInitValues]);

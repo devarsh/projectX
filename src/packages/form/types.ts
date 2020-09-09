@@ -14,6 +14,10 @@ export interface FormFeedbackAtom {
 export interface InititalValues {
   [key: string]: string;
 }
+export interface InititalValuesVer {
+  initialValues: InititalValues;
+  version: number;
+}
 
 export interface FormProps {
   onSubmit: SubmitFn;

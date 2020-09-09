@@ -1,6 +1,12 @@
 import React from "react";
 import { useRecoilCallback, useRecoilValue } from "recoil";
-import { form, formFeedback, formField, fieldRegistry } from "./atoms";
+import {
+  form,
+  formFeedback,
+  formField,
+  fieldRegistry,
+  initialValuesAtom,
+} from "./atoms";
 import { setIn, getIn, handleValidation } from "./util";
 import {
   FieldsErrorObj,
@@ -11,7 +17,9 @@ import {
 
 export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   //Set Initital Values in Ref for performance
-  const initialValuesRef = React.useRef(inititalValues);
+  const initialValuesRef = React.useRef<InititalValues | undefined>(
+    inititalValues
+  );
   const setInitValues = React.useCallback(
     useRecoilCallback(
       ({ set, snapshot }) => (initValues: InititalValues | undefined) => {
@@ -31,6 +39,10 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
               }));
             }
           }
+          set(initialValuesAtom, (oldValues) => ({
+            initialValues: initValues,
+            version: oldValues.version + 1,
+          }));
         }
       }
     ),
