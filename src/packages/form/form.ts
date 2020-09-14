@@ -20,6 +20,8 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   const initialValuesRef = React.useRef<InititalValues | undefined>(
     inititalValues
   );
+
+  const formState = useRecoilValue(form);
   const setInitValues = React.useCallback(
     useRecoilCallback(
       ({ set, snapshot }) => (initValues: InititalValues | undefined) => {
@@ -115,10 +117,8 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   );
 
   const handleSubmit = React.useCallback(
-    useRecoilCallback(
-      ({ snapshot, set }) => async (e: React.FormEvent<HTMLInputElement>) => {
-        e.preventDefault();
-
+    useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
+      const _handleSubmit = async (e: React.FormEvent<any>) => {
         const loadableFields = snapshot.getLoadable(fieldRegistry);
         if (loadableFields.state === "hasValue") {
           const fields = loadableFields.contents;
@@ -171,15 +171,17 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
             }
           }
         }
-      }
-    ),
+      };
+      e.preventDefault();
+      _handleSubmit(e);
+    }),
     []
   );
   //Init Form with initital values
   React.useEffect(() => {
     setTimeout(() => setInitValues(initialValuesRef.current), 0);
   }, [setInitValues]);
-  return { handleSubmit, handleReset, handleClear };
+  return { handleSubmit, handleReset, handleClear, ...formState };
 };
 
 export const useFormFeedback = () => {

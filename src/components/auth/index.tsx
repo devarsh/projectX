@@ -2,11 +2,11 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { Routes, Route } from "react-router-dom";
-import LoginControl from "./loginControl";
+import LoginControl from "./login";
 import ForgotPassword from "./forgotPassword";
 import useStyles from "./styles";
 
-const SignInPage = () => {
+const Auth = () => {
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.container}>
@@ -21,4 +21,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default Auth;

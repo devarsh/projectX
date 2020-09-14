@@ -1,13 +1,13 @@
 import React from "react";
 import { useFormFeedback } from "packages/form";
 
-import Alert from "@material-ui/lab/Alert";
+import Alert, { AlertProps } from "@material-ui/lab/Alert";
 
-const FormFeedBack: React.FC = () => {
+const FormFeedBack: React.FC<AlertProps> = (props) => {
   const { isError, message } = useFormFeedback();
   if ((message ?? "") !== "") {
     return (
-      <Alert severity={isError ? "error" : "success"} variant="filled">
+      <Alert {...props} severity={isError ? "error" : "success"}>
         {message}
       </Alert>
     );
