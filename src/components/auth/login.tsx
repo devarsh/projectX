@@ -14,11 +14,13 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import * as yup from "yup";
 import useStyles from "./styles";
 import Copyright from "./copyright";
-//import { useNavigate } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 
 const LoginControl = () => {
   const classes = useStyles();
+  let navigate = useNavigate();
   const onSubmitHandler = (values, submitStart, submitEnd, setFieldsError) => {
     submitStart();
     setTimeout(() => {
@@ -26,14 +28,12 @@ const LoginControl = () => {
       submitEnd(false, "Invalid request");
     }, 3000);
   };
-
   const { handleSubmit, isSubmitting } = useForm({
     onSubmit: onSubmitHandler,
-    inititalValues: {
-      firstName: "deva@gmail.com",
-      password: "dsfdssddfgdfs",
-    },
   });
+  const handleForgotPageNavigation = () => {
+    navigate("/forgot");
+  };
 
   return (
     <React.Fragment>
@@ -105,7 +105,7 @@ const LoginControl = () => {
                   classes.link,
                   isSubmitting === true && classes.disableLink
                 )}
-                //onClick={handleForgotPageNavigation}
+                onClick={handleForgotPageNavigation}
               >
                 Forgot password?
               </Link>
@@ -120,4 +120,8 @@ const LoginControl = () => {
   );
 };
 
-export default LoginControl;
+export default () => (
+  <RecoilRoot>
+    <LoginControl />
+  </RecoilRoot>
+);

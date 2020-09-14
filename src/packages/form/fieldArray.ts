@@ -8,6 +8,7 @@ import {
 import { initialValuesAtom, formField } from "./atoms";
 import { useRecoilValue, useRecoilCallback } from "recoil";
 import { getIn } from "./util";
+import { FormNameContext } from "./context";
 
 export const useFieldArray = ({
   arrayFieldName,
@@ -19,6 +20,7 @@ export const useFieldArray = ({
   if ((arrayFieldName ?? "") === "") {
     throw new Error("Pass ArrayField name");
   }
+  const formName = React.useContext(FormNameContext);
   const [fieldRows, setFieldRows] = React.useState<TemplateFieldRow[]>([]);
   const fieldRowInsertIndex = React.useRef(0);
   //caching template keys
@@ -220,9 +222,10 @@ export const useFieldArray = ({
         }
         for (const oneBuf of buffer) {
           for (const value of Object.values(oneBuf.values)) {
+            console.log(value.name, value.key);
             const initVal: string =
-              getIn(initValues.initialValues, value.key) ?? "";
-            set(formField(value.key), (currVal) => ({
+              getIn(initValues.initialValues, value.name) ?? "";
+            set(formField(`${formName}/${value.key}`), (currVal) => ({
               ...currVal,
               value: initVal,
             }));
@@ -234,7 +237,7 @@ export const useFieldArray = ({
     [arrayFieldName]
   );
 
-  const initialValues = useRecoilValue(initialValuesAtom);
+  const initialValues = useRecoilValue(initialValuesAtom(formName));
 
   React.useEffect(() => {
     setDefaultValue(initialValues);

@@ -12,6 +12,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import * as yup from "yup";
 import useStyles from "./styles";
 import Copyright from "./copyright";
+import { RecoilRoot } from "recoil";
 //import { useLocation, useNavigate } from "react-router-dom";
 
 const ForgotPasswordControl = () => {
@@ -108,4 +109,8 @@ const ForgotPasswordControl = () => {
   );
 };
 
-export default ForgotPasswordControl;
+export default () => (
+  <RecoilRoot>
+    <ForgotPasswordControl />
+  </RecoilRoot>
+);

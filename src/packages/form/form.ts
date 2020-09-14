@@ -14,23 +14,33 @@ import {
   InititalValues,
   FormProps,
 } from "./types";
+import { FormNameContext } from "./context";
 
 export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   //Set Initital Values in Ref for performance
   const initialValuesRef = React.useRef<InititalValues | undefined>(
     inititalValues
   );
+  const formName = React.useContext<string>(FormNameContext);
 
-  const formState = useRecoilValue(form);
+  const formState = useRecoilValue(form(formName));
   const setInitValues = React.useCallback(
     useRecoilCallback(
       ({ set, snapshot }) => (initValues: InititalValues | undefined) => {
         if (initValues !== undefined && typeof initValues === "object") {
-          const loadableFields = snapshot.getLoadable(fieldRegistry);
+          const loadableFields = snapshot.getLoadable(fieldRegistry(formName));
           if (loadableFields.state === "hasValue") {
             const fields = loadableFields.contents;
             for (const field of fields) {
-              let defaultValue = getIn(initValues, field, "");
+              const trimFormNameFromFieldName = field.replace(
+                `${formName}/`,
+                ""
+              );
+              let defaultValue = getIn(
+                initValues,
+                trimFormNameFromFieldName,
+                ""
+              );
               defaultValue = defaultValue === initValues ? "" : defaultValue;
               set(formField(field), (currVal) => ({
                 ...currVal,
@@ -41,7 +51,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
               }));
             }
           }
-          set(initialValuesAtom, (oldValues) => ({
+          set(initialValuesAtom(formName), (oldValues) => ({
             initialValues: initValues,
             version: oldValues.version + 1,
           }));
@@ -52,7 +62,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   );
   const startSubmit = React.useCallback(
     useRecoilCallback(({ set }) => () => {
-      set(form, (currVal) => ({
+      set(form(formName), (currVal) => ({
         ...currVal,
         isSubmitting: true,
         submitAttempt: currVal.submitAttempt + 1,
@@ -67,12 +77,12 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
         submitSuccessful: boolean = false,
         message: string = ""
       ) => {
-        set(form, (currVal) => ({
+        set(form(formName), (currVal) => ({
           ...currVal,
           isSubmitting: false,
           submitSuccessful,
         }));
-        set(formFeedback, { message, isError: !submitSuccessful });
+        set(formFeedback(formName), { message, isError: !submitSuccessful });
       }
     ),
     []
@@ -90,7 +100,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
     useRecoilCallback(
       ({ snapshot, set }) => (e: React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const loadableFields = snapshot.getLoadable(fieldRegistry);
+        const loadableFields = snapshot.getLoadable(fieldRegistry(formName));
         if (loadableFields.state === "hasValue") {
           const fields = loadableFields.contents;
           for (const field of fields) {
@@ -119,7 +129,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   const handleSubmit = React.useCallback(
     useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
       const _handleSubmit = async (e: React.FormEvent<any>) => {
-        const loadableFields = snapshot.getLoadable(fieldRegistry);
+        const loadableFields = snapshot.getLoadable(fieldRegistry(formName));
         if (loadableFields.state === "hasValue") {
           const fields = loadableFields.contents;
           const fieldsAggrigator: FormFieldAtom[] = [];
@@ -185,6 +195,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
 };
 
 export const useFormFeedback = () => {
-  const formFeedBackState = useRecoilValue(formFeedback);
+  const formName = React.useContext<string>(FormNameContext);
+  const formFeedBackState = useRecoilValue(formFeedback(formName));
   return formFeedBackState;
 };

@@ -9,6 +9,7 @@ import {
 } from "./atoms";
 import { handleValidation } from "./util";
 import { FormFieldAtom, FieldProps, FormAtomType } from "./types";
+import { FormNameContext } from "./context";
 
 export const useField = ({
   fieldKey,
@@ -16,13 +17,19 @@ export const useField = ({
   validate,
   dependentFields,
 }: FieldProps) => {
+  //We use context to get formName to get formName on initital render
+  const formName = React.useContext(FormNameContext);
+
   //To make sure fieldKey is not empty it is usually the same as field name, but in case of array Fields it will different since
   //field name will be dependent on position of field on the array and fieldKey will be used to keep track of original atom that has the
   //form value
-  const fieldKeyRef = React.useRef((fieldKey ?? "") !== "" ? fieldKey : name);
+  const fieldKeyRef = React.useRef(
+    (fieldKey ?? "") !== "" ? `${formName}/${fieldKey}` : `${formName}/${name}`
+  );
+  console.log(fieldKeyRef);
 
   //Get Form State to get initital values, form options etc
-  const formState = useRecoilValue(form);
+  const formState = useRecoilValue(form(formName));
 
   const isValidationFnRef = React.useRef(
     typeof validate === "function" ? true : false
@@ -39,8 +46,8 @@ export const useField = ({
   formStateRef.current = formState;
 
   //a global register and unregister fns to add and remove fields from store - keeping track of all the fields
-  const registerField = useSetRecoilState(fieldRegisteryAdd);
-  const unregisterField = useSetRecoilState(fieldRegisteryRemove);
+  const registerField = useSetRecoilState(fieldRegisteryAdd(formName));
+  const unregisterField = useSetRecoilState(fieldRegisteryRemove(formName));
 
   //This effect will be executed only once to register the current field to fields queue, and upon unmount it will be removed from the
   //tracking queue, unless the paramter on the form mentions not to unmount the form.

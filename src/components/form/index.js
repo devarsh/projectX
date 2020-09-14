@@ -22,12 +22,15 @@ import * as yup from "yup";
 import { yupValidationHelper } from "components/utils/yupValidator";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { FormNameContext } from "packages/form";
 
 const App = () => {
   return (
     <RecoilRoot>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <MainApp />
+        <FormNameContext.Provider value={"demoForm"}>
+          <MainApp />
+        </FormNameContext.Provider>
       </MuiPickersUtilsProvider>
     </RecoilRoot>
   );

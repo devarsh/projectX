@@ -1,10 +1,4 @@
-import {
-  atomFamily,
-  atom,
-  selector,
-  selectorFamily,
-  DefaultValue,
-} from "recoil";
+import { atomFamily, atom, selectorFamily, DefaultValue } from "recoil";
 
 import {
   FormAtomType,
@@ -13,7 +7,7 @@ import {
   InititalValuesVer,
 } from "./types";
 
-export const form = atom<FormAtomType>({
+export const form = atomFamily<FormAtomType, string>({
   key: "form",
   default: {
     submitAttempt: 0,
@@ -24,7 +18,7 @@ export const form = atom<FormAtomType>({
   },
 });
 
-export const initialValuesAtom = atom<InititalValuesVer>({
+export const initialValuesAtom = atomFamily<InititalValuesVer, string>({
   key: "initialValuesAtom",
   default: {
     initialValues: {},
@@ -32,7 +26,7 @@ export const initialValuesAtom = atom<InititalValuesVer>({
   },
 });
 
-export const formFeedback = atom<FormFeedbackAtom>({
+export const formFeedback = atomFamily<FormFeedbackAtom, string>({
   key: "formFeedback",
   default: {
     message: "",
@@ -53,33 +47,33 @@ export const formField = atomFamily<FormFieldAtom, string>({
   }),
 });
 
-export const fieldRegistry = atom<string[]>({
+export const fieldRegistry = atomFamily<string[], string>({
   key: "fieldRegistry",
   default: [],
 });
 
-export const fieldRegisteryAdd = selector<string>({
+export const fieldRegisteryAdd = selectorFamily<string, string>({
   key: "fieldRegisteryAdd",
-  set: ({ set, get }, newValue) => {
+  set: (formName) => ({ set, get }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
-      const fields = get(fieldRegistry);
+      const fields = get(fieldRegistry(formName));
       const valueExists = fields.indexOf(newValue) > -1;
       if (!valueExists) {
         const newFields = [...fields, newValue];
-        set(fieldRegistry, newFields);
+        set(fieldRegistry(formName), newFields);
       }
     }
   },
-  get: () => {
+  get: (formName) => () => {
     return "";
   },
 });
 
-export const fieldRegisteryRemove = selector<string>({
+export const fieldRegisteryRemove = selectorFamily<string, string>({
   key: "fieldRegisteryRemove",
-  set: ({ set, get, reset }, newValue) => {
+  set: (formName) => ({ set, get, reset }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
-      const fields = get(fieldRegistry);
+      const fields = get(fieldRegistry(formName));
       const index = fields.indexOf(newValue);
       if (index > -1) {
         reset(formField(newValue));
@@ -87,11 +81,11 @@ export const fieldRegisteryRemove = selector<string>({
           ...fields.slice(0, index),
           ...fields.slice(index + 1),
         ];
-        set(fieldRegistry, newFields);
+        set(fieldRegistry(formName), newFields);
       }
     }
   },
-  get: () => {
+  get: (formName) => () => {
     return "";
   },
 });

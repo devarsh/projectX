@@ -22,6 +22,7 @@ export interface InititalValuesVer {
 export interface FormProps {
   onSubmit: SubmitFn;
   inititalValues?: InititalValues;
+  persist?: boolean;
 }
 
 export interface FieldProps {
