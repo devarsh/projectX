@@ -76,6 +76,11 @@ export interface RenderFnArgs {
   removeFn: (index: number) => void;
 }
 
+export interface FormFieldArrayRows {
+  templateFieldRows: TemplateFieldRow[];
+  lastInsertIndex: number;
+}
+
 export interface TemplateFieldRow {
   fieldKey: string;
   values: TemplateFieldRowValues;

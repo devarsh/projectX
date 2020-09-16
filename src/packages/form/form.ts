@@ -7,7 +7,7 @@ import {
   fieldRegistry,
   initialValuesAtom,
 } from "./atoms";
-import { setIn, getIn, handleValidation } from "./util";
+import { setIn, getIn, handleValidationHelper } from "./util";
 import {
   FieldsErrorObj,
   FormFieldAtom,
@@ -147,7 +147,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
                 let result: any;
                 try {
                   result = await Promise.resolve(
-                    handleValidation(fieldState, () => {})
+                    handleValidationHelper(fieldState, () => {})
                   );
                 } catch (e) {
                   result = e.message;

@@ -1,10 +1,11 @@
-import { atomFamily, atom, selectorFamily, DefaultValue } from "recoil";
+import { atomFamily, selectorFamily, DefaultValue } from "recoil";
 
 import {
   FormAtomType,
   FormFeedbackAtom,
   FormFieldAtom,
   InititalValuesVer,
+  FormFieldArrayRows,
 } from "./types";
 
 export const form = atomFamily<FormAtomType, string>({
@@ -13,7 +14,7 @@ export const form = atomFamily<FormAtomType, string>({
     submitAttempt: 0,
     isSubmitting: false,
     submitSuccessful: false,
-    validationRun: "onBlur",
+    validationRun: "onChange",
     resetFieldOnUnmount: true,
   },
 });
@@ -45,6 +46,15 @@ export const formField = atomFamily<FormFieldAtom, string>({
     validationRunning: false,
     validate: null,
   }),
+});
+
+export const formArrayFieldRows = atomFamily<FormFieldArrayRows, string>({
+  key: "formArrayFieldRows",
+  default: {
+    templateFieldRows: [],
+    lastInsertIndex: -1,
+  },
+  dangerouslyAllowMutability: true,
 });
 
 export const fieldRegistry = atomFamily<string[], string>({

@@ -7,7 +7,7 @@ import {
   fieldRegisteryRemove,
   subscribeToFormFields,
 } from "./atoms";
-import { handleValidation } from "./util";
+import { handleValidationHelper } from "./util";
 import { FormFieldAtom, FieldProps, FormAtomType } from "./types";
 import { FormNameContext } from "./context";
 
@@ -26,7 +26,6 @@ export const useField = ({
   const fieldKeyRef = React.useRef(
     (fieldKey ?? "") !== "" ? `${formName}/${fieldKey}` : `${formName}/${name}`
   );
-  console.log(fieldKeyRef);
 
   //Get Form State to get initital values, form options etc
   const formState = useRecoilValue(form(formName));
@@ -60,7 +59,7 @@ export const useField = ({
     if ((formStateRef.current?.resetFieldOnUnmount ?? false) === true) {
       return () => unregisterField(currentfield);
     }
-  }, [fieldKeyRef.current, setFieldData, registerField, unregisterField]);
+  }, [setFieldData, registerField, unregisterField]);
 
   //change fieldName everytime arrayField renders with index position changed, since index position is part of name
   //but the same atom is retained
@@ -84,27 +83,41 @@ export const useField = ({
     },
     [setFieldData]
   );
-
+  const handleValidation = React.useCallback(
+    async (fieldData, validationRunningFn) => {
+      let result;
+      try {
+        result = await Promise.resolve(
+          handleValidationHelper(fieldData, validationRunningFn)
+        );
+      } catch (e) {
+        result = e.message;
+      }
+      setFieldData((currVal) => ({
+        ...currVal,
+        error: result,
+      }));
+    },
+    [setFieldData]
+  );
   const handleChange = React.useCallback(
-    async (
-      eventOrTextValue: React.ChangeEvent<any> | Date | string | number
-    ) => {
-      eventOrTextValue = eventOrTextValue ?? "";
-      let val = eventOrTextValue;
-      if (
-        !(
-          eventOrTextValue instanceof Date ||
-          typeof eventOrTextValue === "string" ||
-          typeof eventOrTextValue === "number"
-        )
-      ) {
+    (eventOrTextValue: React.ChangeEvent<any> | Date | string | number) => {
+      if (fieldDataRef.current !== null && formStateRef.current !== null) {
+        eventOrTextValue = eventOrTextValue ?? "";
+        let val = eventOrTextValue;
         if (
-          (eventOrTextValue as React.ChangeEvent<any>) &&
-          (eventOrTextValue as React.ChangeEvent<any>).persist
+          !(
+            eventOrTextValue instanceof Date ||
+            typeof eventOrTextValue === "string" ||
+            typeof eventOrTextValue === "number"
+          )
         ) {
-          (eventOrTextValue as React.ChangeEvent<any>).persist();
-        }
-        if (fieldDataRef.current !== null && formStateRef.current !== null) {
+          if (
+            (eventOrTextValue as React.ChangeEvent<any>) &&
+            (eventOrTextValue as React.ChangeEvent<any>).persist
+          ) {
+            (eventOrTextValue as React.ChangeEvent<any>).persist();
+          }
           const {
             type,
             value,
@@ -120,58 +133,37 @@ export const useField = ({
             : !!multiple
             ? getSelectedValues(options)
             : value;
+          setFieldData((currVal) => ({ ...currVal, value: val }));
+          if (
+            isValidationFnRef.current &&
+            formStateRef.current.validationRun === "onChange"
+          ) {
+            //update currentFieldData to reflect our most recent setState before passing to validationFn
+            const currentFieldData = { ...fieldDataRef.current, value: val };
+            handleValidation(currentFieldData, setValidationRunning);
+          }
         }
-      }
-      if (
-        isValidationFnRef.current &&
-        formStateRef.current.validationRun === "onChange"
-      ) {
-        let result;
-        try {
-          result =
-            (await Promise.resolve(
-              handleValidation(fieldDataRef.current, setValidationRunning)
-            )) ?? "";
-        } catch (e) {
-          result = e.message;
-        }
-        setFieldData((currVal) => ({
-          ...currVal,
-          value: val,
-          error: result,
-        }));
-      } else {
-        setFieldData((currVal) => ({ ...currVal, value: val }));
       }
     },
-    [setFieldData, setValidationRunning]
+    [setFieldData, setValidationRunning, handleValidation]
   );
 
   const handleBlur = React.useCallback(async () => {
     if (fieldDataRef.current !== null && formStateRef.current !== null) {
+      setFieldData((currVal) => ({
+        ...currVal,
+        touched: true,
+      }));
       if (
         isValidationFnRef.current &&
         formStateRef.current.validationRun === "onBlur"
       ) {
-        let result;
-        try {
-          result =
-            (await Promise.resolve(
-              handleValidation(fieldDataRef.current, setValidationRunning)
-            )) ?? "";
-        } catch (e) {
-          result = e.message;
-        }
-        setFieldData((currVal) => ({
-          ...currVal,
-          touched: true,
-          error: result,
-        }));
-      } else {
-        setFieldData((currVal) => ({ ...currVal, touched: true }));
+        //update currentFieldData to reflect our most recent setState before passing to validationFn
+        const currentFieldData = { ...fieldDataRef.current, touched: true };
+        handleValidation(currentFieldData, setValidationRunning);
       }
     }
-  }, [setFieldData, setValidationRunning]);
+  }, [setFieldData, setValidationRunning, handleValidation]);
   return {
     ...fieldData,
     isSubmitting: formState.isSubmitting,

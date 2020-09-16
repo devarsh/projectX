@@ -67,7 +67,7 @@ export function setIn(obj: any, path: string, value: any): any {
 
 // Other utility functions
 
-export const handleValidation = (
+export const handleValidationHelper = (
   fieldData: FormFieldAtom,
   setValidationRunning: (isRunning: boolean) => void
 ) => {
@@ -76,7 +76,7 @@ export const handleValidation = (
     if ((result ?? "") === "") {
       return null;
     } else if (typeof result !== "string") {
-      return "Invalid error type: expected string";
+      throw new Error("Invalid error type: expected string");
     }
     return result;
   }

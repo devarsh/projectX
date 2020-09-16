@@ -8,8 +8,10 @@
 6. FormArray with template support
 7. FromFeedBack handler
 8. Submit and Reset and clear form Handler
+9. Cache onChange and OnBlur handler for performance of Array fields
+10. Scoping of form fields, single recoil root for multiple forms.
 
 #Pending Features
 
 1. Auto Save Form
-2. Cache onChange and OnBlur handler for performance of Array fields
+2. Refactor async validation API
