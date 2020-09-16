@@ -1,3 +1,26 @@
+export interface InititalValuesType {
+  [key: string]: string;
+}
+
+export interface TemplateFieldRow {
+  fieldKey: string;
+  values: TemplateFieldRowValues;
+}
+
+export interface TemplateFieldRowValues {
+  [key: string]: TemplateFieldRowValue;
+}
+
+export interface TemplateFieldRowValue {
+  name: string;
+  key: string;
+}
+
+export interface InititalValuesAtomType {
+  initialValues: InititalValuesType;
+  version: number;
+}
+
 export interface FormAtomType {
   submitAttempt: number;
   isSubmitting: boolean;
@@ -6,22 +29,29 @@ export interface FormAtomType {
   resetFieldOnUnmount: boolean;
 }
 
-export interface FormFeedbackAtom {
+export interface FormFeedbackAtomType {
   message: string;
   isError: boolean;
 }
 
-export interface InititalValues {
-  [key: string]: string;
+export interface FormFieldAtomType {
+  fieldKey: string;
+  name: string;
+  value: any;
+  touched: boolean;
+  error: string | null;
+  validationRunning: boolean;
+  validate?: null | ValidateFn | emptyFn;
 }
-export interface InititalValuesVer {
-  initialValues: InititalValues;
-  version: number;
+
+export interface FormFieldArrayRowsType {
+  templateFieldRows: TemplateFieldRow[];
+  lastInsertIndex: number;
 }
 
 export interface FormProps {
   onSubmit: SubmitFn;
-  inititalValues?: InititalValues;
+  inititalValues?: InititalValuesType;
   persist?: boolean;
 }
 
@@ -32,16 +62,6 @@ export interface FieldProps {
   dependentFields?: string[];
 }
 
-export interface FormFieldAtom {
-  fieldKey: string;
-  name: string;
-  value: any;
-  touched: boolean;
-  error: string | null;
-  validationRunning: boolean;
-  validate?: null | ValidateFn | emptyFn;
-}
-
 export interface FieldArrayProps {
   arrayFieldName: string;
   template: any;
@@ -49,7 +69,7 @@ export interface FieldArrayProps {
 
 export interface ValidateFn {
   (
-    fieldData: FormFieldAtom,
+    fieldData: FormFieldAtomType,
     setValidationRunning: (isRunning: boolean) => void
   ): string;
 }
@@ -74,25 +94,6 @@ export interface RenderFnArgs {
   fields: string[];
   rowIndex: number;
   removeFn: (index: number) => void;
-}
-
-export interface FormFieldArrayRows {
-  templateFieldRows: TemplateFieldRow[];
-  lastInsertIndex: number;
-}
-
-export interface TemplateFieldRow {
-  fieldKey: string;
-  values: TemplateFieldRowValues;
-}
-
-export interface TemplateFieldRowValues {
-  [key: string]: TemplateFieldRowValue;
-}
-
-export interface TemplateFieldRowValue {
-  name: string;
-  key: string;
 }
 
 export interface FieldsErrorObj {

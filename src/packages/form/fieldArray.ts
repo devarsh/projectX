@@ -3,9 +3,13 @@ import {
   FieldArrayProps,
   TemplateFieldRow,
   RenderFn,
-  InititalValuesVer,
+  InititalValuesAtomType,
 } from "./types";
-import { initialValuesAtom, formField, formArrayFieldRows } from "./atoms";
+import {
+  formInitialValuesAtom,
+  formFieldAtom,
+  formArrayFieldRowsAtom,
+} from "./atoms";
 import { useRecoilValue, useRecoilCallback, useRecoilState } from "recoil";
 import { getIn } from "./util";
 import { FormNameContext } from "./context";
@@ -22,7 +26,7 @@ export const useFieldArray = ({
   }
   const formName = React.useContext(FormNameContext);
   const [fieldRows, setFieldRows] = useRecoilState(
-    formArrayFieldRows(`${formName}/${arrayFieldName}`)
+    formArrayFieldRowsAtom(`${formName}/${arrayFieldName}`)
   );
   //caching template keys
   let templateFieldNamesRef = React.useRef<string[] | null>(null);
@@ -248,7 +252,7 @@ export const useFieldArray = ({
   };
 
   const setDefaultValue = React.useCallback(
-    useRecoilCallback(({ set }) => (initValues: InititalValuesVer) => {
+    useRecoilCallback(({ set }) => (initValues: InititalValuesAtomType) => {
       const defaultArrayValue: string | undefined = getIn(
         initValues.initialValues,
         arrayFieldName
@@ -274,7 +278,7 @@ export const useFieldArray = ({
           for (const value of Object.values(oneBuf.values)) {
             const initVal: string =
               getIn(initValues.initialValues, value.name) ?? "";
-            set(formField(`${formName}/${value.key}`), (currVal) => ({
+            set(formFieldAtom(`${formName}/${value.key}`), (currVal) => ({
               ...currVal,
               value: initVal,
             }));
@@ -289,7 +293,7 @@ export const useFieldArray = ({
     [arrayFieldName]
   );
 
-  const initialValues = useRecoilValue(initialValuesAtom(formName));
+  const initialValues = useRecoilValue(formInitialValuesAtom(formName));
 
   React.useEffect(() => {
     setDefaultValue(initialValues);

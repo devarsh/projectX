@@ -2,14 +2,24 @@ import { atomFamily, selectorFamily, DefaultValue } from "recoil";
 
 import {
   FormAtomType,
-  FormFeedbackAtom,
-  FormFieldAtom,
-  InititalValuesVer,
-  FormFieldArrayRows,
+  FormFeedbackAtomType,
+  FormFieldAtomType,
+  InititalValuesAtomType,
+  FormFieldArrayRowsType,
 } from "./types";
 
-export const form = atomFamily<FormAtomType, string>({
-  key: "form",
+export const formInitialValuesAtom = atomFamily<InititalValuesAtomType, string>(
+  {
+    key: "formInitialValuesAtom",
+    default: {
+      initialValues: {},
+      version: 0,
+    },
+  }
+);
+
+export const formAtom = atomFamily<FormAtomType, string>({
+  key: "formAtom",
   default: {
     submitAttempt: 0,
     isSubmitting: false,
@@ -19,24 +29,16 @@ export const form = atomFamily<FormAtomType, string>({
   },
 });
 
-export const initialValuesAtom = atomFamily<InititalValuesVer, string>({
-  key: "initialValuesAtom",
-  default: {
-    initialValues: {},
-    version: 0,
-  },
-});
-
-export const formFeedback = atomFamily<FormFeedbackAtom, string>({
-  key: "formFeedback",
+export const formFeedbackAtom = atomFamily<FormFeedbackAtomType, string>({
+  key: "formFeedbackAtom",
   default: {
     message: "",
     isError: false,
   },
 });
 
-export const formField = atomFamily<FormFieldAtom, string>({
-  key: "formField",
+export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
+  key: "formFieldAtom",
   default: (fieldKey) => ({
     fieldKey: fieldKey ?? "",
     name: fieldKey ?? "",
@@ -48,8 +50,11 @@ export const formField = atomFamily<FormFieldAtom, string>({
   }),
 });
 
-export const formArrayFieldRows = atomFamily<FormFieldArrayRows, string>({
-  key: "formArrayFieldRows",
+export const formArrayFieldRowsAtom = atomFamily<
+  FormFieldArrayRowsType,
+  string
+>({
+  key: "formArrayFieldRowsAtom",
   default: {
     templateFieldRows: [],
     lastInsertIndex: -1,
@@ -57,20 +62,20 @@ export const formArrayFieldRows = atomFamily<FormFieldArrayRows, string>({
   dangerouslyAllowMutability: true,
 });
 
-export const fieldRegistry = atomFamily<string[], string>({
-  key: "fieldRegistry",
+export const formFieldRegistryAtom = atomFamily<string[], string>({
+  key: "formFieldRegistryAtom",
   default: [],
 });
 
-export const fieldRegisteryAdd = selectorFamily<string, string>({
-  key: "fieldRegisteryAdd",
+export const formFieldRegisterSelector = selectorFamily<string, string>({
+  key: "formFieldRegisterSelector",
   set: (formName) => ({ set, get }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
-      const fields = get(fieldRegistry(formName));
+      const fields = get(formFieldRegistryAtom(formName));
       const valueExists = fields.indexOf(newValue) > -1;
       if (!valueExists) {
         const newFields = [...fields, newValue];
-        set(fieldRegistry(formName), newFields);
+        set(formFieldRegistryAtom(formName), newFields);
       }
     }
   },
@@ -79,19 +84,19 @@ export const fieldRegisteryAdd = selectorFamily<string, string>({
   },
 });
 
-export const fieldRegisteryRemove = selectorFamily<string, string>({
+export const formFieldUnregisterSelector = selectorFamily<string, string>({
   key: "fieldRegisteryRemove",
   set: (formName) => ({ set, get, reset }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
-      const fields = get(fieldRegistry(formName));
+      const fields = get(formFieldRegistryAtom(formName));
       const index = fields.indexOf(newValue);
       if (index > -1) {
-        reset(formField(newValue));
+        reset(formFieldAtom(newValue));
         const newFields = [
           ...fields.slice(0, index),
           ...fields.slice(index + 1),
         ];
-        set(fieldRegistry(formName), newFields);
+        set(formFieldRegistryAtom(formName), newFields);
       }
     }
   },
@@ -100,8 +105,8 @@ export const fieldRegisteryRemove = selectorFamily<string, string>({
   },
 });
 
-export const subscribeToFormFields = selectorFamily<
-  FormFieldAtom[],
+export const subscribeToFormFieldsSelector = selectorFamily<
+  FormFieldAtomType[],
   string[] | undefined
 >({
   key: "subscribeToFormFields",
@@ -109,10 +114,10 @@ export const subscribeToFormFields = selectorFamily<
     if (!Array.isArray(fields)) {
       fields = [fields];
     }
-    let fieldValues: FormFieldAtom[] = [];
+    let fieldValues: FormFieldAtomType[] = [];
     for (let field of fields) {
       if (typeof field === "string" && field !== "") {
-        let fieldState = get(formField(field));
+        let fieldState = get(formFieldAtom(field));
         fieldValues.push(fieldState);
       }
     }

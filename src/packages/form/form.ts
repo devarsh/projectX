@@ -1,34 +1,36 @@
 import React from "react";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import {
-  form,
-  formFeedback,
-  formField,
-  fieldRegistry,
-  initialValuesAtom,
+  formAtom,
+  formFeedbackAtom,
+  formFieldAtom,
+  formFieldRegistryAtom,
+  formInitialValuesAtom,
 } from "./atoms";
 import { setIn, getIn, handleValidationHelper } from "./util";
 import {
   FieldsErrorObj,
-  FormFieldAtom,
-  InititalValues,
+  FormFieldAtomType,
+  InititalValuesType,
   FormProps,
 } from "./types";
 import { FormNameContext } from "./context";
 
 export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   //Set Initital Values in Ref for performance
-  const initialValuesRef = React.useRef<InititalValues | undefined>(
+  const initialValuesRef = React.useRef<InititalValuesType | undefined>(
     inititalValues
   );
   const formName = React.useContext<string>(FormNameContext);
 
-  const formState = useRecoilValue(form(formName));
+  const formState = useRecoilValue(formAtom(formName));
   const setInitValues = React.useCallback(
     useRecoilCallback(
-      ({ set, snapshot }) => (initValues: InititalValues | undefined) => {
+      ({ set, snapshot }) => (initValues: InititalValuesType | undefined) => {
         if (initValues !== undefined && typeof initValues === "object") {
-          const loadableFields = snapshot.getLoadable(fieldRegistry(formName));
+          const loadableFields = snapshot.getLoadable(
+            formFieldRegistryAtom(formName)
+          );
           if (loadableFields.state === "hasValue") {
             const fields = loadableFields.contents;
             for (const field of fields) {
@@ -42,7 +44,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
                 ""
               );
               defaultValue = defaultValue === initValues ? "" : defaultValue;
-              set(formField(field), (currVal) => ({
+              set(formFieldAtom(field), (currVal) => ({
                 ...currVal,
                 touched: false,
                 value: defaultValue,
@@ -51,7 +53,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
               }));
             }
           }
-          set(initialValuesAtom(formName), (oldValues) => ({
+          set(formInitialValuesAtom(formName), (oldValues) => ({
             initialValues: initValues,
             version: oldValues.version + 1,
           }));
@@ -62,7 +64,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   );
   const startSubmit = React.useCallback(
     useRecoilCallback(({ set }) => () => {
-      set(form(formName), (currVal) => ({
+      set(formAtom(formName), (currVal) => ({
         ...currVal,
         isSubmitting: true,
         submitAttempt: currVal.submitAttempt + 1,
@@ -77,12 +79,15 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
         submitSuccessful: boolean = false,
         message: string = ""
       ) => {
-        set(form(formName), (currVal) => ({
+        set(formAtom(formName), (currVal) => ({
           ...currVal,
           isSubmitting: false,
           submitSuccessful,
         }));
-        set(formFeedback(formName), { message, isError: !submitSuccessful });
+        set(formFeedbackAtom(formName), {
+          message,
+          isError: !submitSuccessful,
+        });
       }
     ),
     []
@@ -91,7 +96,10 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
     useRecoilCallback(({ set }) => (fieldsErrorObj: FieldsErrorObj = {}) => {
       for (const field of Object.entries(fieldsErrorObj)) {
         const [fieldName, error] = field;
-        set(formField(fieldName), (currVal) => ({ ...currVal, error: error }));
+        set(formFieldAtom(fieldName), (currVal) => ({
+          ...currVal,
+          error: error,
+        }));
       }
     }),
     []
@@ -100,11 +108,13 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
     useRecoilCallback(
       ({ snapshot, set }) => (e: React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const loadableFields = snapshot.getLoadable(fieldRegistry(formName));
+        const loadableFields = snapshot.getLoadable(
+          formFieldRegistryAtom(formName)
+        );
         if (loadableFields.state === "hasValue") {
           const fields = loadableFields.contents;
           for (const field of fields) {
-            set(formField(field), (currVal) => ({
+            set(formFieldAtom(field), (currVal) => ({
               ...currVal,
               touched: false,
               value: "",
@@ -129,13 +139,17 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
   const handleSubmit = React.useCallback(
     useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
       const _handleSubmit = async (e: React.FormEvent<any>) => {
-        const loadableFields = snapshot.getLoadable(fieldRegistry(formName));
+        const loadableFields = snapshot.getLoadable(
+          formFieldRegistryAtom(formName)
+        );
         if (loadableFields.state === "hasValue") {
           const fields = loadableFields.contents;
-          const fieldsAggrigator: FormFieldAtom[] = [];
+          const fieldsAggrigator: FormFieldAtomType[] = [];
           let hasError = false;
           for (const field of fields) {
-            const loadableFieldState = snapshot.getLoadable(formField(field));
+            const loadableFieldState = snapshot.getLoadable(
+              formFieldAtom(field)
+            );
             if (loadableFieldState.state === "hasValue") {
               const _fieldState = loadableFieldState.contents;
               const fieldState = { ..._fieldState };
@@ -161,7 +175,7 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
                   error: result,
                 };
                 fieldsAggrigator.push(newValue);
-                set(formField(field), newValue);
+                set(formFieldAtom(field), newValue);
               } else {
                 fieldsAggrigator.push(fieldState);
                 if (hasError === false) {
@@ -196,6 +210,6 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
 
 export const useFormFeedback = () => {
   const formName = React.useContext<string>(FormNameContext);
-  const formFeedBackState = useRecoilValue(formFeedback(formName));
+  const formFeedBackState = useRecoilValue(formFeedbackAtom(formName));
   return formFeedBackState;
 };

@@ -1,14 +1,14 @@
 import * as React from "react";
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import {
-  form,
-  formField,
-  fieldRegisteryAdd,
-  fieldRegisteryRemove,
-  subscribeToFormFields,
+  formAtom,
+  formFieldAtom,
+  formFieldRegisterSelector,
+  formFieldUnregisterSelector,
+  subscribeToFormFieldsSelector,
 } from "./atoms";
 import { handleValidationHelper } from "./util";
-import { FormFieldAtom, FieldProps, FormAtomType } from "./types";
+import { FormFieldAtomType, FieldProps, FormAtomType } from "./types";
 import { FormNameContext } from "./context";
 
 export const useField = ({
@@ -28,25 +28,27 @@ export const useField = ({
   );
 
   //Get Form State to get initital values, form options etc
-  const formState = useRecoilValue(form(formName));
+  const formState = useRecoilValue(formAtom(formName));
 
   const isValidationFnRef = React.useRef(
     typeof validate === "function" ? true : false
   );
   //fieldData atom stores all the information of the current field .ie currentValue, error, touched, validationFn, etc
-  const [fieldData, setFieldData] = useRecoilState<FormFieldAtom>(
-    formField(fieldKeyRef.current)
+  const [fieldData, setFieldData] = useRecoilState<FormFieldAtomType>(
+    formFieldAtom(fieldKeyRef.current)
   );
   //The refs to make sure we have the latest value in our onChange and OnBlur callbacks and they are memoized
-  const fieldDataRef = React.useRef<FormFieldAtom>(fieldData);
+  const fieldDataRef = React.useRef<FormFieldAtomType>(fieldData);
   const formStateRef = React.useRef<FormAtomType>(formState);
 
   fieldDataRef.current = fieldData;
   formStateRef.current = formState;
 
   //a global register and unregister fns to add and remove fields from store - keeping track of all the fields
-  const registerField = useSetRecoilState(fieldRegisteryAdd(formName));
-  const unregisterField = useSetRecoilState(fieldRegisteryRemove(formName));
+  const registerField = useSetRecoilState(formFieldRegisterSelector(formName));
+  const unregisterField = useSetRecoilState(
+    formFieldUnregisterSelector(formName)
+  );
 
   //This effect will be executed only once to register the current field to fields queue, and upon unmount it will be removed from the
   //tracking queue, unless the paramter on the form mentions not to unmount the form.
@@ -71,7 +73,7 @@ export const useField = ({
   }, [name, setFieldData]);
   //Subscribe to dependentValues and get an array of values
   const dependentValues = useRecoilValue(
-    subscribeToFormFields(dependentFields)
+    subscribeToFormFieldsSelector(dependentFields)
   );
 
   const setValidationRunning = React.useCallback(
