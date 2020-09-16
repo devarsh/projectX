@@ -12,7 +12,7 @@ import {
 } from "./atoms";
 import { useRecoilValue, useRecoilCallback, useRecoilState } from "recoil";
 import { getIn } from "./util";
-import { FormNameContext } from "./context";
+import { FormContext } from "./context";
 
 export const useFieldArray = ({
   arrayFieldName,
@@ -24,9 +24,9 @@ export const useFieldArray = ({
   if ((arrayFieldName ?? "") === "") {
     throw new Error("Pass ArrayField name");
   }
-  const formName = React.useContext(FormNameContext);
+  const formContext = React.useContext(FormContext);
   const [fieldRows, setFieldRows] = useRecoilState(
-    formArrayFieldRowsAtom(`${formName}/${arrayFieldName}`)
+    formArrayFieldRowsAtom(`${formContext.formName}/${arrayFieldName}`)
   );
   //caching template keys
   let templateFieldNamesRef = React.useRef<string[] | null>(null);
@@ -46,7 +46,7 @@ export const useFieldArray = ({
       const insertIndex = ++lastInsertId;
       let newRow: TemplateFieldRowType = {
         cells: {},
-        fieldKey: `${formName}/${arrayFieldName}/${insertIndex}`,
+        fieldKey: `${formContext.formName}/${arrayFieldName}/${insertIndex}`,
       };
       for (const fieldName of template ?? []) {
         const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
@@ -278,10 +278,13 @@ export const useFieldArray = ({
           for (const value of Object.values(oneBuf.cells)) {
             const initVal: string =
               getIn(initValues.initialValues, value.name) ?? "";
-            set(formFieldAtom(`${formName}/${value.key}`), (currVal) => ({
-              ...currVal,
-              value: initVal,
-            }));
+            set(
+              formFieldAtom(`${formContext.formName}/${value.key}`),
+              (currVal) => ({
+                ...currVal,
+                value: initVal,
+              })
+            );
           }
         }
         setFieldRows({
@@ -293,7 +296,9 @@ export const useFieldArray = ({
     [arrayFieldName]
   );
 
-  const initialValues = useRecoilValue(formInitialValuesAtom(formName));
+  const initialValues = useRecoilValue(
+    formInitialValuesAtom(formContext.formName)
+  );
 
   React.useEffect(() => {
     setDefaultValue(initialValues);

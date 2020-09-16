@@ -12,12 +12,17 @@ export interface TemplateFieldCellType {
   key: string;
 }
 
-export interface InititalValuesType {
+export interface FormContextType {
+  initialValues?: InitialValuesType;
+  formName: string;
+}
+
+export interface InitialValuesType {
   [key: string]: any;
 }
 
 export interface InititalValuesAtomType {
-  initialValues: InititalValuesType;
+  initialValues: InitialValuesType;
   version: number;
 }
 
@@ -51,7 +56,7 @@ export interface FormFieldArrayRowsType {
 
 export interface UseFormHookProps {
   onSubmit: SubmitFnType;
-  inititalValues?: InititalValuesType;
+  inititalValues?: InitialValuesType;
   persist?: boolean;
 }
 

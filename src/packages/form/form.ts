@@ -11,31 +11,31 @@ import { setIn, getIn, handleValidationHelper } from "./util";
 import {
   FieldsErrorObjType,
   FormFieldAtomType,
-  InititalValuesType,
+  InitialValuesType,
   UseFormHookProps,
 } from "./types";
-import { FormNameContext } from "./context";
+import { FormContext } from "./context";
 
 export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
   //Set Initital Values in Ref for performance
-  const initialValuesRef = React.useRef<InititalValuesType | undefined>(
+  const initialValuesRef = React.useRef<InitialValuesType | undefined>(
     inititalValues
   );
-  const formName = React.useContext<string>(FormNameContext);
+  const formContext = React.useContext(FormContext);
 
-  const formState = useRecoilValue(formAtom(formName));
+  const formState = useRecoilValue(formAtom(formContext.formName));
   const setInitValues = React.useCallback(
     useRecoilCallback(
-      ({ set, snapshot }) => (initValues: InititalValuesType | undefined) => {
+      ({ set, snapshot }) => (initValues: InitialValuesType | undefined) => {
         if (initValues !== undefined && typeof initValues === "object") {
           const loadableFields = snapshot.getLoadable(
-            formFieldRegistryAtom(formName)
+            formFieldRegistryAtom(formContext.formName)
           );
           if (loadableFields.state === "hasValue") {
             const fields = loadableFields.contents;
             for (const field of fields) {
               const trimFormNameFromFieldName = field.replace(
-                `${formName}/`,
+                `${formContext.formName}/`,
                 ""
               );
               let defaultValue = getIn(
@@ -53,7 +53,7 @@ export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
               }));
             }
           }
-          set(formInitialValuesAtom(formName), (oldValues) => ({
+          set(formInitialValuesAtom(formContext.formName), (oldValues) => ({
             initialValues: initValues,
             version: oldValues.version + 1,
           }));
@@ -64,7 +64,7 @@ export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
   );
   const startSubmit = React.useCallback(
     useRecoilCallback(({ set }) => () => {
-      set(formAtom(formName), (currVal) => ({
+      set(formAtom(formContext.formName), (currVal) => ({
         ...currVal,
         isSubmitting: true,
         submitAttempt: currVal.submitAttempt + 1,
@@ -79,12 +79,12 @@ export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
         submitSuccessful: boolean = false,
         message: string = ""
       ) => {
-        set(formAtom(formName), (currVal) => ({
+        set(formAtom(formContext.formName), (currVal) => ({
           ...currVal,
           isSubmitting: false,
           submitSuccessful,
         }));
-        set(formFeedbackAtom(formName), {
+        set(formFeedbackAtom(formContext.formName), {
           message,
           isError: !submitSuccessful,
         });
@@ -110,7 +110,7 @@ export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
     useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
       e.preventDefault();
       const loadableFields = snapshot.getLoadable(
-        formFieldRegistryAtom(formName)
+        formFieldRegistryAtom(formContext.formName)
       );
       if (loadableFields.state === "hasValue") {
         const fields = loadableFields.contents;
@@ -140,7 +140,7 @@ export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
     useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
       const _handleSubmit = async (e: React.FormEvent<any>) => {
         const loadableFields = snapshot.getLoadable(
-          formFieldRegistryAtom(formName)
+          formFieldRegistryAtom(formContext.formName)
         );
         if (loadableFields.state === "hasValue") {
           const fields = loadableFields.contents;
@@ -203,13 +203,15 @@ export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
   );
   //Init Form with initital values
   React.useEffect(() => {
-    setTimeout(() => setInitValues(initialValuesRef.current), 0);
+    setTimeout(() => setInitValues(initialValuesRef.current), 300);
   }, [setInitValues]);
   return { handleSubmit, handleReset, handleClear, ...formState };
 };
 
 export const useFormFeedback = () => {
-  const formName = React.useContext<string>(FormNameContext);
-  const formFeedBackState = useRecoilValue(formFeedbackAtom(formName));
+  const formContext = React.useContext(FormContext);
+  const formFeedBackState = useRecoilValue(
+    formFeedbackAtom(formContext.formName)
+  );
   return formFeedBackState;
 };

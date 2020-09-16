@@ -9,7 +9,7 @@ import {
 } from "./atoms";
 import { handleValidationHelper } from "./util";
 import { FormFieldAtomType, UseFieldHookProps, FormAtomType } from "./types";
-import { FormNameContext } from "./context";
+import { FormContext } from "./context";
 
 export const useField = ({
   fieldKey,
@@ -18,17 +18,19 @@ export const useField = ({
   dependentFields,
 }: UseFieldHookProps) => {
   //We use context to get formName to get formName on initital render
-  const formName = React.useContext(FormNameContext);
+  const formContext = React.useContext(FormContext);
 
   //To make sure fieldKey is not empty it is usually the same as field name, but in case of array Fields it will different since
   //field name will be dependent on position of field on the array and fieldKey will be used to keep track of original atom that has the
   //form value
   const fieldKeyRef = React.useRef(
-    (fieldKey ?? "") !== "" ? `${formName}/${fieldKey}` : `${formName}/${name}`
+    (fieldKey ?? "") !== ""
+      ? `${formContext.formName}/${fieldKey}`
+      : `${formContext.formName}/${name}`
   );
 
   //Get Form State to get initital values, form options etc
-  const formState = useRecoilValue(formAtom(formName));
+  const formState = useRecoilValue(formAtom(formContext.formName));
 
   const isValidationFnRef = React.useRef(
     typeof validate === "function" ? true : false
@@ -45,9 +47,11 @@ export const useField = ({
   formStateRef.current = formState;
 
   //a global register and unregister fns to add and remove fields from store - keeping track of all the fields
-  const registerField = useSetRecoilState(formFieldRegisterSelector(formName));
+  const registerField = useSetRecoilState(
+    formFieldRegisterSelector(formContext.formName)
+  );
   const unregisterField = useSetRecoilState(
-    formFieldUnregisterSelector(formName)
+    formFieldUnregisterSelector(formContext.formName)
   );
 
   //This effect will be executed only once to register the current field to fields queue, and upon unmount it will be removed from the

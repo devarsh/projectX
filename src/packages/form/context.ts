@@ -1,4 +1,8 @@
 import React from "react";
+import { FormContextType } from "./types";
 
-export const FormNameContext = React.createContext("FORM_NAME");
-FormNameContext.displayName = "FormNameContext";
+export const FormContext = React.createContext<FormContextType>({
+  formName: "FORM_NAME",
+  initialValues: {},
+});
+FormContext.displayName = "FormContext";

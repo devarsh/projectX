@@ -5,13 +5,15 @@ import "typeface-roboto";
 import App from "./components/form";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(
+//@ts-ignore
+ReactDOM.unstable_createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CssBaseline />
     <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
+
+//ReactDOM.render(document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

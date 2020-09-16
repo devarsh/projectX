@@ -22,16 +22,28 @@ import * as yup from "yup";
 import { yupValidationHelper } from "components/utils/yupValidator";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { FormNameContext } from "packages/form";
+import { FormContext } from "packages/form";
 
 const App = () => {
   return (
     <RecoilRoot>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <FormNameContext.Provider value={"demoForm"}>
+        <FormContext.Provider
+          value={{
+            formName: "abcd",
+            initialValues: {
+              firstName: "deva@gmail.com",
+              password: "dsfdssddfgdfs",
+              contact: [
+                { tel: 34353445, tag: 12 },
+                { tel: 3335, tag: 13 },
+              ],
+            },
+          }}
+        >
           <MainApp />
           <TimeTravelObserver />
-        </FormNameContext.Provider>
+        </FormContext.Provider>
       </MuiPickersUtilsProvider>
     </RecoilRoot>
   );
