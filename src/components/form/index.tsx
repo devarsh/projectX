@@ -64,6 +64,7 @@ const MainApp = () => {
       <FormFeedBack />
       <TextField
         name="firstName"
+        fieldKey="firstName"
         type="email"
         variant="outlined"
         margin="normal"
@@ -80,6 +81,7 @@ const MainApp = () => {
       />
       <TextField
         name="password"
+        fieldKey="password"
         type="password"
         variant="outlined"
         margin="normal"
@@ -91,8 +93,9 @@ const MainApp = () => {
           yup.string().required("password is required")
         )}
       />
-      <Checkbox name="rememberMe" label="rememberMeee" />
+      <Checkbox name="rememberMe" fieldKey="rememberMe" label="rememberMeee" />
       <CheckboxGroup
+        fieldKey="food"
         name="food"
         label="pick flavor"
         options={[
@@ -100,8 +103,13 @@ const MainApp = () => {
           { label: "oreo", value: "o" },
         ]}
       />
-      <Switch name="rememberMeee" label="rememberMeee" />
+      <Switch
+        fieldKey="rememberMeee"
+        name="rememberMeee"
+        label="rememberMeee"
+      />
       <SwitchGroup
+        fieldKey="foodo"
         name="foodo"
         label="pick flavor"
         options={[
@@ -111,6 +119,7 @@ const MainApp = () => {
       />
       <Radio
         name="gender"
+        fieldKey="gender"
         label="Gender"
         options={[
           { label: "Male", value: "m" },
@@ -119,6 +128,7 @@ const MainApp = () => {
       />
       <Select
         name="candy"
+        fieldKey="candy"
         label="Candy"
         autoWidth={true}
         options={[
@@ -128,9 +138,15 @@ const MainApp = () => {
           { label: "Berry", value: "b" },
         ]}
       />
-      <Slider name="ranking" label="My Ranking" />
+      <Slider
+        fieldKey="ranking"
+        name="ranking"
+        key="ranking"
+        label="My Ranking"
+      />
       <Select
         name="candyx"
+        fieldKey="candyx"
         label="Candy-X"
         autoWidth={true}
         options={(dependentFields) => {
@@ -144,17 +160,19 @@ const MainApp = () => {
       />
       <DatePicker
         name="todays"
+        fieldKey="todays"
         label="todaysData"
         placeholder="dd/mm/yyyy"
         format="dd/MM/yyyy"
       />
       <TimePicker
         name="tonight"
+        fieldKey="tonight"
         label="tonight"
         placeholder="HH:MM:SS"
         mask="__:__ _M"
       />
-      <Rating name="grade" label="Grading" />
+      <Rating fieldKey="grade" name="grade" label="Grading" />
       <ArrayField
         arrayFieldName="contact"
         template={{ tel: "", tag: "" }}
@@ -163,9 +181,9 @@ const MainApp = () => {
           const oneRow = fields.map((field) => {
             return (
               <TextField
-                name={row.values[field].name}
-                fieldKey={row.values[field].key}
-                key={row.values[field].key}
+                name={row.cells[field].name}
+                fieldKey={row.cells[field].key}
+                key={row.cells[field].key}
                 type="text"
                 variant="outlined"
                 margin="normal"
@@ -202,7 +220,7 @@ const MainApp = () => {
         Sign In
       </Button>
       <Button
-        type="submit"
+        component="button"
         fullWidth
         variant="contained"
         color="primary"
@@ -211,7 +229,6 @@ const MainApp = () => {
         Reset
       </Button>
       <Button
-        type="submit"
         fullWidth
         variant="contained"
         color="primary"

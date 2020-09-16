@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  FieldArrayProps,
-  TemplateFieldRow,
+  UseFieldArrayHookProps,
+  TemplateFieldRowType,
   RenderFn,
   InititalValuesAtomType,
 } from "./types";
@@ -17,7 +17,7 @@ import { FormNameContext } from "./context";
 export const useFieldArray = ({
   arrayFieldName,
   template,
-}: FieldArrayProps) => {
+}: UseFieldArrayHookProps) => {
   if ((template ?? null) === null) {
     throw new Error("Pass a valid template object");
   }
@@ -38,27 +38,27 @@ export const useFieldArray = ({
   //where you want to bulk insert without setting setState on every insert - shaving off extra rerenders.
   const _insert = (
     index: number,
-    rowBuf: TemplateFieldRow[],
+    rowBuf: TemplateFieldRowType[],
     lastInsertId: number,
     template: string[] | null
   ) => {
     if (index >= 0 && index <= rowBuf.length) {
       const insertIndex = ++lastInsertId;
-      let newRow: TemplateFieldRow = {
-        values: {},
+      let newRow: TemplateFieldRowType = {
+        cells: {},
         fieldKey: `${formName}/${arrayFieldName}/${insertIndex}`,
       };
       for (const fieldName of template ?? []) {
         const key = `${arrayFieldName}[${insertIndex}].${fieldName}`;
         const name = `${arrayFieldName}[${index}].${fieldName}`;
-        newRow.values[fieldName] = { key, name };
+        newRow.cells[fieldName] = { key, name };
       }
       const beginningRows = rowBuf.slice(0, index);
       const endingRows = rowBuf.slice(index);
       let currentIndex = index + 1;
       for (let oneRow of endingRows) {
         for (const fieldName of template ?? []) {
-          oneRow.values[
+          oneRow.cells[
             fieldName
           ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
         }
@@ -127,7 +127,7 @@ export const useFieldArray = ({
       debugger;
       for (let oneRow of endingRows) {
         for (const fieldName of templateFieldNamesRef.current ?? []) {
-          oneRow.values[
+          oneRow.cells[
             fieldName
           ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
         }
@@ -154,9 +154,9 @@ export const useFieldArray = ({
       const rowA = fieldRowsCopy[indexA];
       const rowB = fieldRowsCopy[indexB];
       for (const fieldName of templateFieldNamesRef.current ?? []) {
-        const tempName = rowA.values[fieldName].name;
-        rowA.values[fieldName].name = rowB.values[fieldName].name;
-        rowB.values[fieldName].name = tempName;
+        const tempName = rowA.cells[fieldName].name;
+        rowA.cells[fieldName].name = rowB.cells[fieldName].name;
+        rowB.cells[fieldName].name = tempName;
       }
       const rowBCopy = fieldRowsCopy[indexB];
       fieldRowsCopy[indexB] = fieldRowsCopy[indexA];
@@ -185,14 +185,14 @@ export const useFieldArray = ({
         let currentIndex = from;
         for (let fieldRow of shiftingRows) {
           for (const fieldName of templateFieldNamesRef.current ?? []) {
-            fieldRow.values[
+            fieldRow.cells[
               fieldName
             ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
           }
           currentIndex++;
         }
         for (const fieldName of templateFieldNamesRef.current ?? []) {
-          movingRow.values[
+          movingRow.cells[
             fieldName
           ].name = `${arrayFieldName}[${to}].${fieldName}`;
         }
@@ -211,14 +211,14 @@ export const useFieldArray = ({
         let currentIndex = to + 1;
         for (let fieldRow of shiftingRows) {
           for (const fieldName of templateFieldNamesRef.current ?? []) {
-            fieldRow.values[
+            fieldRow.cells[
               fieldName
             ].name = `${arrayFieldName}[${currentIndex}].${fieldName}`;
           }
           currentIndex++;
         }
         for (const fieldName of templateFieldNamesRef.current ?? []) {
-          movingRow.values[
+          movingRow.cells[
             fieldName
           ].name = `${arrayFieldName}[${to}].${fieldName}`;
         }
@@ -259,7 +259,7 @@ export const useFieldArray = ({
       );
       if (defaultArrayValue !== undefined && Array.isArray(defaultArrayValue)) {
         let insertIndex = -1;
-        let buffer: TemplateFieldRow[] = [];
+        let buffer: TemplateFieldRowType[] = [];
         for (let i = 0; i < defaultArrayValue.length; i++) {
           const result = _insert(
             buffer.length,
@@ -275,7 +275,7 @@ export const useFieldArray = ({
           }
         }
         for (const oneBuf of buffer) {
-          for (const value of Object.values(oneBuf.values)) {
+          for (const value of Object.values(oneBuf.cells)) {
             const initVal: string =
               getIn(initValues.initialValues, value.name) ?? "";
             set(formFieldAtom(`${formName}/${value.key}`), (currVal) => ({

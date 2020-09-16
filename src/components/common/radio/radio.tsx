@@ -1,5 +1,5 @@
 import React from "react";
-import { useField, FieldProps } from "packages/form";
+import { useField, UseFieldHookProps } from "packages/form";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
 import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
 import RadioGroup, { RadioGroupProps } from "@material-ui/core/RadioGroup";
@@ -13,7 +13,7 @@ import FormHelperText, {
 } from "@material-ui/core/FormHelperText";
 import { Merge, OptionsProps } from "../types";
 
-interface extendedFiledProps extends FieldProps {
+interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[];
   label: string;
 }

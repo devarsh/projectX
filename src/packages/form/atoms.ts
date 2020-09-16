@@ -79,7 +79,7 @@ export const formFieldRegisterSelector = selectorFamily<string, string>({
       }
     }
   },
-  get: (formName) => () => {
+  get: (_) => () => {
     return "";
   },
 });
@@ -100,7 +100,7 @@ export const formFieldUnregisterSelector = selectorFamily<string, string>({
       }
     }
   },
-  get: (formName) => () => {
+  get: (_) => () => {
     return "";
   },
 });

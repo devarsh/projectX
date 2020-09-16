@@ -1,6 +1,6 @@
 import clone from "lodash/clone";
 import toPath from "lodash/toPath";
-import { FormFieldAtom } from "./types";
+import { FormFieldAtomType } from "./types";
 
 //Copied the following from Formik library
 
@@ -68,7 +68,7 @@ export function setIn(obj: any, path: string, value: any): any {
 // Other utility functions
 
 export const handleValidationHelper = (
-  fieldData: FormFieldAtom,
+  fieldData: FormFieldAtomType,
   setValidationRunning: (isRunning: boolean) => void
 ) => {
   if (typeof fieldData.validate === "function") {

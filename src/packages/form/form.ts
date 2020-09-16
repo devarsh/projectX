@@ -9,14 +9,14 @@ import {
 } from "./atoms";
 import { setIn, getIn, handleValidationHelper } from "./util";
 import {
-  FieldsErrorObj,
+  FieldsErrorObjType,
   FormFieldAtomType,
   InititalValuesType,
-  FormProps,
+  UseFormHookProps,
 } from "./types";
 import { FormNameContext } from "./context";
 
-export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
+export const useForm = ({ onSubmit, inititalValues }: UseFormHookProps) => {
   //Set Initital Values in Ref for performance
   const initialValuesRef = React.useRef<InititalValuesType | undefined>(
     inititalValues
@@ -93,43 +93,43 @@ export const useForm = ({ onSubmit, inititalValues }: FormProps) => {
     []
   );
   const setFieldErrors = React.useCallback(
-    useRecoilCallback(({ set }) => (fieldsErrorObj: FieldsErrorObj = {}) => {
-      for (const field of Object.entries(fieldsErrorObj)) {
-        const [fieldName, error] = field;
-        set(formFieldAtom(fieldName), (currVal) => ({
-          ...currVal,
-          error: error,
-        }));
-      }
-    }),
-    []
-  );
-  const handleClear = React.useCallback(
     useRecoilCallback(
-      ({ snapshot, set }) => (e: React.FormEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const loadableFields = snapshot.getLoadable(
-          formFieldRegistryAtom(formName)
-        );
-        if (loadableFields.state === "hasValue") {
-          const fields = loadableFields.contents;
-          for (const field of fields) {
-            set(formFieldAtom(field), (currVal) => ({
-              ...currVal,
-              touched: false,
-              value: "",
-              error: "",
-              validationRunning: false,
-            }));
-          }
+      ({ set }) => (fieldsErrorObj: FieldsErrorObjType = {}) => {
+        for (const field of Object.entries(fieldsErrorObj)) {
+          const [fieldName, error] = field;
+          set(formFieldAtom(fieldName), (currVal) => ({
+            ...currVal,
+            error: error,
+          }));
         }
       }
     ),
     []
   );
+  const handleClear = React.useCallback(
+    useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
+      e.preventDefault();
+      const loadableFields = snapshot.getLoadable(
+        formFieldRegistryAtom(formName)
+      );
+      if (loadableFields.state === "hasValue") {
+        const fields = loadableFields.contents;
+        for (const field of fields) {
+          set(formFieldAtom(field), (currVal) => ({
+            ...currVal,
+            touched: false,
+            value: "",
+            error: "",
+            validationRunning: false,
+          }));
+        }
+      }
+    }),
+    []
+  );
 
   const handleReset = React.useCallback(
-    (e: React.FormEvent<HTMLInputElement>) => {
+    (e: React.FormEvent<any>) => {
       e.preventDefault();
       setInitValues(initialValuesRef.current);
     },

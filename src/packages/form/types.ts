@@ -1,19 +1,19 @@
-export interface InititalValuesType {
-  [key: string]: string;
-}
-
-export interface TemplateFieldRow {
+export interface TemplateFieldRowType {
   fieldKey: string;
-  values: TemplateFieldRowValues;
+  cells: TemplateFieldCellsObjectType;
 }
 
-export interface TemplateFieldRowValues {
-  [key: string]: TemplateFieldRowValue;
+export interface TemplateFieldCellsObjectType {
+  [key: string]: TemplateFieldCellType;
 }
 
-export interface TemplateFieldRowValue {
+export interface TemplateFieldCellType {
   name: string;
   key: string;
+}
+
+export interface InititalValuesType {
+  [key: string]: any;
 }
 
 export interface InititalValuesAtomType {
@@ -41,61 +41,61 @@ export interface FormFieldAtomType {
   touched: boolean;
   error: string | null;
   validationRunning: boolean;
-  validate?: null | ValidateFn | emptyFn;
+  validate?: null | ValidateFnType | EmptyFnType;
 }
 
 export interface FormFieldArrayRowsType {
-  templateFieldRows: TemplateFieldRow[];
+  templateFieldRows: TemplateFieldRowType[];
   lastInsertIndex: number;
 }
 
-export interface FormProps {
-  onSubmit: SubmitFn;
+export interface UseFormHookProps {
+  onSubmit: SubmitFnType;
   inititalValues?: InititalValuesType;
   persist?: boolean;
 }
 
-export interface FieldProps {
+export interface UseFieldHookProps {
   fieldKey: string;
   name: string;
-  validate?: ValidateFn;
+  validate?: ValidateFnType;
   dependentFields?: string[];
 }
 
-export interface FieldArrayProps {
+export interface UseFieldArrayHookProps {
   arrayFieldName: string;
   template: any;
 }
 
-export interface ValidateFn {
+export interface ValidateFnType {
   (
     fieldData: FormFieldAtomType,
     setValidationRunning: (isRunning: boolean) => void
   ): string;
 }
 
-export interface emptyFn {
+export interface EmptyFnType {
   (): void;
 }
 
-export interface SubmitFn {
+export interface SubmitFnType {
   (
     obj: Object,
     startSubmit: () => void,
     endSubmit: (submitSuccessful?: boolean, message?: string) => void,
-    setFieldErrors: (fieldsErrorObj: FieldsErrorObj) => void
+    setFieldErrors: (fieldsErrorObj: FieldsErrorObjType) => void
   ): void;
 }
 
-export type RenderFn = (optons: RenderFnArgs) => JSX.Element;
-
-export interface RenderFnArgs {
-  row: TemplateFieldRow;
+export interface RenderFnOptionsType {
+  row: TemplateFieldRowType;
   fields: string[];
   rowIndex: number;
   removeFn: (index: number) => void;
 }
 
-export interface FieldsErrorObj {
+export type RenderFn = (options: RenderFnOptionsType) => JSX.Element;
+
+export interface FieldsErrorObjType {
   [key: string]: string | null;
 }

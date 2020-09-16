@@ -1,5 +1,5 @@
 import React from "react";
-import { useField, FieldProps, FormFieldAtom } from "packages/form";
+import { useField, UseFieldHookProps, FormFieldAtomType } from "packages/form";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
 import Select, { SelectProps } from "@material-ui/core/Select";
@@ -10,10 +10,10 @@ import FormHelperText, {
 import { Merge, OptionsProps } from "../types";
 
 interface dependentOptionsFn {
-  (optionsFn: FormFieldAtom[]): OptionsProps[];
+  (optionsFn: FormFieldAtomType[]): OptionsProps[];
 }
 
-interface extendedFiledProps extends FieldProps {
+interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[] | dependentOptionsFn;
   label: string;
 }
@@ -28,7 +28,7 @@ interface MySelectExtendedProps {
 
 type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
 
-const MyCheckboxGroup: React.FC<MySelectAllProps> = ({
+const MySelect: React.FC<MySelectAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,
@@ -117,4 +117,4 @@ const MyCheckboxGroup: React.FC<MySelectAllProps> = ({
   );
 };
 
-export default MyCheckboxGroup;
+export default MySelect;

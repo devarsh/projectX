@@ -1,9 +1,9 @@
 import React from "react";
-import { useField, FieldProps } from "packages/form";
+import { useField, UseFieldHookProps } from "packages/form";
 import Rating, { RatingProps } from "@material-ui/lab/Rating";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 
-interface ExtendedFieldProps extends FieldProps {
+interface ExtendedFieldProps extends UseFieldHookProps {
   label: string;
   InputLabelProps?: InputLabelProps;
 }
@@ -38,7 +38,6 @@ const MyRating: React.FC<ExtendedFieldProps & RatingProps> = ({
   }, [setFocus]);
   const customChange = React.useCallback(
     (_, value) => {
-      console.log(value);
       handleChange(value);
     },
     [handleChange]
@@ -53,7 +52,7 @@ const MyRating: React.FC<ExtendedFieldProps & RatingProps> = ({
         key={fieldKey}
         id={fieldKey}
         name={name}
-        value={value}
+        value={value === "" ? 0 : value}
         //@ts-ignore
         onFocus={focusHandler}
         onChange={customChange}

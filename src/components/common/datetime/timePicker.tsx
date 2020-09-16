@@ -1,11 +1,19 @@
 import React from "react";
-import { useField, FieldProps } from "packages/form";
+import { useField, UseFieldHookProps } from "packages/form";
 import {
   KeyboardTimePicker,
   KeyboardTimePickerProps,
 } from "@material-ui/pickers";
+import { Omit } from "../types";
 
-export const MyTimePicker: React.FC<FieldProps & KeyboardTimePickerProps> = ({
+type KeyboardTimePickerPropsSubset = Omit<
+  KeyboardTimePickerProps,
+  "onChange" | "value"
+>;
+
+export const MyTimePicker: React.FC<
+  UseFieldHookProps & KeyboardTimePickerPropsSubset
+> = ({
   name: fieldName,
   validate,
   dependentFields,

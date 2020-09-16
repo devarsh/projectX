@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { FormFieldAtom } from "packages/form";
+import { FormFieldAtomType } from "packages/form";
 
 const validationConfig = {
   abortEarly: false,
@@ -8,7 +8,7 @@ const validationConfig = {
 
 export const yupValidationHelper = (schema: any) => ({
   value,
-}: FormFieldAtom) => {
+}: FormFieldAtomType) => {
   try {
     schema.validateSync(value ?? null, validationConfig);
     return "";

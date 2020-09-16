@@ -1,5 +1,5 @@
 import React from "react";
-import { useFieldArray, FieldArrayProps, RenderFn } from "packages/form";
+import { useFieldArray, UseFieldArrayHookProps, RenderFn } from "packages/form";
 
 interface RenderParentAttribs {
   rows: JSX.Element[];
@@ -7,7 +7,7 @@ interface RenderParentAttribs {
   push: () => void;
 }
 
-interface ArrayFieldProps extends FieldArrayProps {
+interface ArrayFieldProps extends UseFieldArrayHookProps {
   renderParentFn: (options: RenderParentAttribs) => JSX.Element;
   renderRowsFn: RenderFn;
 }

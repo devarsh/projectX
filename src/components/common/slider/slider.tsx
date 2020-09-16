@@ -1,9 +1,9 @@
 import React from "react";
-import { useField, FieldProps } from "packages/form";
+import { useField, UseFieldHookProps } from "packages/form";
 import Slider, { SliderProps } from "@material-ui/core/Slider";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 
-interface ExtendedFieldProps extends FieldProps {
+interface ExtendedFieldProps extends UseFieldHookProps {
   label: string;
   InputLabelProps?: InputLabelProps;
 }
@@ -15,7 +15,14 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
   InputLabelProps,
   ...others
 }) => {
-  const { handleChange, handleBlur, isSubmitting, fieldKey, name } = useField({
+  const {
+    handleChange,
+    handleBlur,
+    isSubmitting,
+    fieldKey,
+    name,
+    value,
+  } = useField({
     name: fieldName,
     fieldKey: fieldID,
   });
@@ -24,7 +31,7 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
   const customHandler = React.useCallback(
     (event, sliderValue) => {
       event?.persist?.();
-      if (event && event.target && event.target.value) {
+      if (event && event.target) {
         event.target.value = sliderValue;
         handleChange(event);
       }
@@ -50,10 +57,11 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
         key={fieldKey}
         id={fieldKey}
         name={name}
+        value={value === "" ? 0 : value}
         //@ts-ignore
         disabled={isSubmitting}
         onFocus={focusHandler}
-        onChange={customHandler}
+        onChangeCommitted={customHandler}
         onBlur={customBlur}
       />
     </React.Fragment>

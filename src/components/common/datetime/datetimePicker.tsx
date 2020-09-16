@@ -1,12 +1,18 @@
 import React from "react";
-import { useField, FieldProps } from "packages/form";
+import { useField, UseFieldHookProps } from "packages/form";
 import {
   KeyboardDateTimePicker,
   KeyboardDateTimePickerProps,
 } from "@material-ui/pickers";
+import { Omit } from "../types";
+
+type KeyboardDateTimePickerPropsSubset = Omit<
+  KeyboardDateTimePickerProps,
+  "onChange" | "value"
+>;
 
 export const MyDateTimePicker: React.FC<
-  FieldProps & KeyboardDateTimePickerProps
+  UseFieldHookProps & KeyboardDateTimePickerPropsSubset
 > = ({
   name: fieldName,
   validate,

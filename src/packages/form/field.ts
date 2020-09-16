@@ -8,7 +8,7 @@ import {
   subscribeToFormFieldsSelector,
 } from "./atoms";
 import { handleValidationHelper } from "./util";
-import { FormFieldAtomType, FieldProps, FormAtomType } from "./types";
+import { FormFieldAtomType, UseFieldHookProps, FormAtomType } from "./types";
 import { FormNameContext } from "./context";
 
 export const useField = ({
@@ -16,7 +16,7 @@ export const useField = ({
   name,
   validate,
   dependentFields,
-}: FieldProps) => {
+}: UseFieldHookProps) => {
   //We use context to get formName to get formName on initital render
   const formName = React.useContext(FormNameContext);
 
@@ -135,15 +135,15 @@ export const useField = ({
             : !!multiple
             ? getSelectedValues(options)
             : value;
-          setFieldData((currVal) => ({ ...currVal, value: val }));
-          if (
-            isValidationFnRef.current &&
-            formStateRef.current.validationRun === "onChange"
-          ) {
-            //update currentFieldData to reflect our most recent setState before passing to validationFn
-            const currentFieldData = { ...fieldDataRef.current, value: val };
-            handleValidation(currentFieldData, setValidationRunning);
-          }
+        }
+        setFieldData((currVal) => ({ ...currVal, value: val }));
+        if (
+          isValidationFnRef.current &&
+          formStateRef.current.validationRun === "onChange"
+        ) {
+          //update currentFieldData to reflect our most recent setState before passing to validationFn
+          const currentFieldData = { ...fieldDataRef.current, value: val };
+          handleValidation(currentFieldData, setValidationRunning);
         }
       }
     },
