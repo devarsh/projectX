@@ -61,14 +61,6 @@ const MainApp = () => {
 
   const { handleSubmit, handleReset, handleClear } = useForm({
     onSubmit: onSubmitHandler,
-    inititalValues: {
-      firstName: "deva@gmail.com",
-      password: "dsfdssddfgdfs",
-      contact: [
-        { tel: 34353445, tag: 12 },
-        { tel: 3335, tag: 13 },
-      ],
-    },
   });
 
   return (

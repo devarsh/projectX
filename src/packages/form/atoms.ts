@@ -4,19 +4,9 @@ import {
   FormAtomType,
   FormFeedbackAtomType,
   FormFieldAtomType,
-  InititalValuesAtomType,
   FormFieldArrayRowsType,
+  FormFieldRegisterSelectorAttributes,
 } from "./types";
-
-export const formInitialValuesAtom = atomFamily<InititalValuesAtomType, string>(
-  {
-    key: "formInitialValuesAtom",
-    default: {
-      initialValues: {},
-      version: 0,
-    },
-  }
-);
 
 export const formAtom = atomFamily<FormAtomType, string>({
   key: "formAtom",
@@ -62,25 +52,39 @@ export const formArrayFieldRowsAtom = atomFamily<
   dangerouslyAllowMutability: true,
 });
 
+export const formArrayFieldResetCounterAtom = atomFamily<number, string>({
+  key: "formArrayFieldResetCounter",
+  default: 0,
+});
+
 export const formFieldRegistryAtom = atomFamily<string[], string>({
   key: "formFieldRegistryAtom",
   default: [],
 });
 
-export const formFieldRegisterSelector = selectorFamily<string, string>({
+export const formFieldRegisterSelector = selectorFamily<
+  FormFieldRegisterSelectorAttributes,
+  string
+>({
   key: "formFieldRegisterSelector",
   set: (formName) => ({ set, get }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
       const fields = get(formFieldRegistryAtom(formName));
-      const valueExists = fields.indexOf(newValue) > -1;
+      const valueExists = fields.indexOf(newValue.fieldName) > -1;
       if (!valueExists) {
-        const newFields = [...fields, newValue];
+        const newFields = [...fields, newValue.fieldName];
         set(formFieldRegistryAtom(formName), newFields);
+        if (newValue.defaultValue !== null) {
+          set(formFieldAtom(newValue.fieldName), (prev) => ({
+            ...prev,
+            value: newValue.defaultValue,
+          }));
+        }
       }
     }
   },
   get: (_) => () => {
-    return "";
+    return { defaultValue: "", fieldName: "" };
   },
 });
 

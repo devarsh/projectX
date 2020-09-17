@@ -8,8 +8,14 @@ import {
   subscribeToFormFieldsSelector,
 } from "./atoms";
 import { handleValidationHelper } from "./util";
-import { FormFieldAtomType, UseFieldHookProps, FormAtomType } from "./types";
+import {
+  FormFieldAtomType,
+  UseFieldHookProps,
+  FormAtomType,
+  FormFieldRegisterSelectorAttributes,
+} from "./types";
 import { FormContext } from "./context";
+import { getIn } from "./util";
 
 export const useField = ({
   fieldKey,
@@ -58,14 +64,27 @@ export const useField = ({
   //tracking queue, unless the paramter on the form mentions not to unmount the form.
   React.useEffect(() => {
     const currentfield = fieldKeyRef.current; //to satisfy eslint
-    registerField(currentfield);
+    //Derive default Value
+    const defaultValue =
+      typeof formContext.initialValues === "object"
+        ? getIn(
+            formContext.initialValues,
+            currentfield.replace(`${formContext.formName}/`, ""),
+            null
+          )
+        : null;
+    const registrationValue: FormFieldRegisterSelectorAttributes = {
+      defaultValue: defaultValue,
+      fieldName: currentfield,
+    };
+    registerField(registrationValue);
     if (isValidationFnRef.current === true) {
       setFieldData((currVal) => ({ ...currVal, validate }));
     }
     if ((formStateRef.current?.resetFieldOnUnmount ?? false) === true) {
       return () => unregisterField(currentfield);
     }
-  }, [setFieldData, registerField, unregisterField]);
+  }, [setFieldData, registerField, unregisterField, formContext]);
 
   //change fieldName everytime arrayField renders with index position changed, since index position is part of name
   //but the same atom is retained

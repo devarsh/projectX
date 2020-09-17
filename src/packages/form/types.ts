@@ -17,13 +17,13 @@ export interface FormContextType {
   formName: string;
 }
 
-export interface InitialValuesType {
-  [key: string]: any;
+export interface FormFieldRegisterSelectorAttributes {
+  fieldName: string;
+  defaultValue: any;
 }
 
-export interface InititalValuesAtomType {
-  initialValues: InitialValuesType;
-  version: number;
+export interface InitialValuesType {
+  [key: string]: any;
 }
 
 export interface FormAtomType {
@@ -56,7 +56,6 @@ export interface FormFieldArrayRowsType {
 
 export interface UseFormHookProps {
   onSubmit: SubmitFnType;
-  inititalValues?: InitialValuesType;
   persist?: boolean;
 }
 
