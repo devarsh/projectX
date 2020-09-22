@@ -4,23 +4,34 @@ import {
   FormAtomType,
   FormFeedbackAtomType,
   FormFieldAtomType,
-  FormFieldArrayRowsType,
+  FormArrayFieldRowsAtomType,
   FormFieldRegisterSelectorAttributes,
+  FormFieldRegistryAtomType,
 } from "./types";
 
+export const atomKeys = {
+  formAtom: "formAtom",
+  formFeedbackAtom: "formFeedbackAtom",
+  formFieldAtom: "formFieldAtom",
+  formArrayFieldRowsAtom: "formArrayFieldRowsAtom",
+  formArrayFieldResetCounterAtom: "formArrayFieldResetCounterAtom",
+  formFieldRegistryAtom: "formFieldRegistryAtom",
+  formFieldRegisterSelector: "formFieldRegisterSelector",
+  formFieldUnregisterSelector: "formFieldUnregisterSelector",
+  subscribeToFormFieldsSelector: "subscribeToFormFieldsSelector",
+};
+
 export const formAtom = atomFamily<FormAtomType, string>({
-  key: "formAtom",
+  key: atomKeys.formAtom,
   default: {
     submitAttempt: 0,
     isSubmitting: false,
     submitSuccessful: false,
-    validationRun: "onChange",
-    resetFieldOnUnmount: true,
   },
 });
 
 export const formFeedbackAtom = atomFamily<FormFeedbackAtomType, string>({
-  key: "formFeedbackAtom",
+  key: atomKeys.formFeedbackAtom,
   default: {
     message: "",
     isError: false,
@@ -28,7 +39,7 @@ export const formFeedbackAtom = atomFamily<FormFeedbackAtomType, string>({
 });
 
 export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
-  key: "formFieldAtom",
+  key: atomKeys.formFieldAtom,
   default: (fieldKey) => ({
     fieldKey: fieldKey ?? "",
     name: fieldKey ?? "",
@@ -41,10 +52,10 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
 });
 
 export const formArrayFieldRowsAtom = atomFamily<
-  FormFieldArrayRowsType,
+  FormArrayFieldRowsAtomType,
   string
 >({
-  key: "formArrayFieldRowsAtom",
+  key: atomKeys.formArrayFieldRowsAtom,
   default: {
     templateFieldRows: [],
     lastInsertIndex: -1,
@@ -53,12 +64,15 @@ export const formArrayFieldRowsAtom = atomFamily<
 });
 
 export const formArrayFieldResetCounterAtom = atomFamily<number, string>({
-  key: "formArrayFieldResetCounter",
+  key: atomKeys.formArrayFieldResetCounterAtom,
   default: 0,
 });
 
-export const formFieldRegistryAtom = atomFamily<string[], string>({
-  key: "formFieldRegistryAtom",
+export const formFieldRegistryAtom = atomFamily<
+  FormFieldRegistryAtomType,
+  string
+>({
+  key: atomKeys.formFieldRegistryAtom,
   default: [],
 });
 
@@ -66,7 +80,7 @@ export const formFieldRegisterSelector = selectorFamily<
   FormFieldRegisterSelectorAttributes,
   string
 >({
-  key: "formFieldRegisterSelector",
+  key: atomKeys.formFieldRegisterSelector,
   set: (formName) => ({ set, get }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
       const fields = get(formFieldRegistryAtom(formName));
@@ -89,7 +103,7 @@ export const formFieldRegisterSelector = selectorFamily<
 });
 
 export const formFieldUnregisterSelector = selectorFamily<string, string>({
-  key: "fieldRegisteryRemove",
+  key: atomKeys.formFieldUnregisterSelector,
   set: (formName) => ({ set, get, reset }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
       const fields = get(formFieldRegistryAtom(formName));
@@ -113,7 +127,7 @@ export const subscribeToFormFieldsSelector = selectorFamily<
   FormFieldAtomType[],
   string[] | undefined
 >({
-  key: "subscribeToFormFields",
+  key: atomKeys.subscribeToFormFieldsSelector,
   get: (fields = []) => ({ get }) => {
     if (!Array.isArray(fields)) {
       fields = [fields];

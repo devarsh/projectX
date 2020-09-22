@@ -81,8 +81,10 @@ export const useField = ({
     if (isValidationFnRef.current === true) {
       setFieldData((currVal) => ({ ...currVal, validate }));
     }
-    if ((formStateRef.current?.resetFieldOnUnmount ?? false) === true) {
-      return () => unregisterField(currentfield);
+    if (formContext.resetFieldOnUnmount === true) {
+      return () => {
+        unregisterField(currentfield);
+      };
     }
   }, [setFieldData, registerField, unregisterField, formContext]);
 
@@ -162,7 +164,7 @@ export const useField = ({
         setFieldData((currVal) => ({ ...currVal, value: val }));
         if (
           isValidationFnRef.current &&
-          formStateRef.current.validationRun === "onChange"
+          formContext.validationRun === "onChange"
         ) {
           //update currentFieldData to reflect our most recent setState before passing to validationFn
           const currentFieldData = { ...fieldDataRef.current, value: val };
@@ -170,25 +172,38 @@ export const useField = ({
         }
       }
     },
-    [setFieldData, setValidationRunning, handleValidation]
+    [
+      setFieldData,
+      setValidationRunning,
+      handleValidation,
+      formContext.validationRun,
+    ]
   );
 
   const handleBlur = React.useCallback(async () => {
     if (fieldDataRef.current !== null && formStateRef.current !== null) {
-      setFieldData((currVal) => ({
-        ...currVal,
-        touched: true,
-      }));
-      if (
-        isValidationFnRef.current &&
-        formStateRef.current.validationRun === "onBlur"
-      ) {
+      setFieldData((currVal) => {
+        if (currVal.touched) {
+          return currVal;
+        } else {
+          return {
+            ...currVal,
+            touched: true,
+          };
+        }
+      });
+      if (isValidationFnRef.current && formContext.validationRun === "onBlur") {
         //update currentFieldData to reflect our most recent setState before passing to validationFn
         const currentFieldData = { ...fieldDataRef.current, touched: true };
         handleValidation(currentFieldData, setValidationRunning);
       }
     }
-  }, [setFieldData, setValidationRunning, handleValidation]);
+  }, [
+    setFieldData,
+    setValidationRunning,
+    handleValidation,
+    formContext.validationRun,
+  ]);
   return {
     ...fieldData,
     isSubmitting: formState.isSubmitting,

@@ -15,7 +15,11 @@ export interface TemplateFieldCellType {
 export interface FormContextType {
   initialValues?: InitialValuesType;
   formName: string;
+  validationRun: string;
+  resetFieldOnUnmount: boolean;
 }
+
+export type FormFieldRegistryAtomType = string[];
 
 export interface FormFieldRegisterSelectorAttributes {
   fieldName: string;
@@ -29,9 +33,7 @@ export interface InitialValuesType {
 export interface FormAtomType {
   submitAttempt: number;
   isSubmitting: boolean;
-  validationRun: string;
   submitSuccessful: boolean;
-  resetFieldOnUnmount: boolean;
 }
 
 export interface FormFeedbackAtomType {
@@ -49,7 +51,7 @@ export interface FormFieldAtomType {
   validate?: null | ValidateFnType | EmptyFnType;
 }
 
-export interface FormFieldArrayRowsType {
+export interface FormArrayFieldRowsAtomType {
   templateFieldRows: TemplateFieldRowType[];
   lastInsertIndex: number;
 }

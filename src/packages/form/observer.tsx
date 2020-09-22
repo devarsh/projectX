@@ -12,7 +12,7 @@ export const TimeTravelObserver = () => {
   useRecoilTransactionObserver_UNSTABLE(({ snapshot }) => {
     if (!snapshots.current.has(snapshot.getID())) {
       snapshots.current.set(snapshot.getID(), snapshot);
-      render(1);
+      render((old) => old + 1);
     }
   });
 

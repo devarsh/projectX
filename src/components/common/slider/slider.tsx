@@ -26,15 +26,20 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
     name: fieldName,
     fieldKey: fieldID,
   });
-
+  const [localValue, setLocalValue] = React.useState(Number(value));
+  React.useEffect(() => {
+    setLocalValue(Number(value));
+  }, [value]);
   const [focus, setFocus] = React.useState(false);
-  const customHandler = React.useCallback(
-    (event, sliderValue) => {
-      event?.persist?.();
-      if (event && event.target) {
-        event.target.value = sliderValue;
-        handleChange(event);
-      }
+  const localValueHandler = React.useCallback(
+    (_, sliderValue) => {
+      setLocalValue(sliderValue);
+    },
+    [setLocalValue]
+  );
+  const customHandleChange = React.useCallback(
+    (_, sliderValue) => {
+      handleChange(sliderValue);
     },
     [handleChange]
   );
@@ -57,11 +62,12 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
         key={fieldKey}
         id={fieldKey}
         name={name}
-        value={value === "" ? 0 : value}
+        value={localValue}
         //@ts-ignore
         disabled={isSubmitting}
         onFocus={focusHandler}
-        onChangeCommitted={customHandler}
+        onChange={localValueHandler}
+        onChangeCommitted={customHandleChange}
         onBlur={customBlur}
       />
     </React.Fragment>

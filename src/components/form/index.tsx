@@ -16,7 +16,7 @@ import {
   Rating,
 } from "components/common";
 
-import { useForm, TimeTravelObserver } from "packages/form";
+import { useForm, TimeTravelObserver, AutoSaving } from "packages/form";
 import Button from "@material-ui/core/Button";
 import * as yup from "yup";
 import { yupValidationHelper } from "components/utils/yupValidator";
@@ -30,7 +30,9 @@ const App = () => {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <FormContext.Provider
           value={{
-            formName: "abcd",
+            formName: "depof",
+            resetFieldOnUnmount: true,
+            validationRun: "onChange",
             initialValues: {
               firstName: "deva@gmail.com",
               password: "dsfdssddfgdfs",
@@ -41,8 +43,9 @@ const App = () => {
             },
           }}
         >
-          <MainApp />
           <TimeTravelObserver />
+          <MainApp />
+          <AutoSaving />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
     </RecoilRoot>

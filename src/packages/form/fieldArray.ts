@@ -4,7 +4,7 @@ import {
   TemplateFieldRowType,
   RenderFn,
   InitialValuesType,
-  FormFieldArrayRowsType,
+  FormArrayFieldRowsAtomType,
 } from "./types";
 import {
   formArrayFieldRowsAtom,
@@ -25,7 +25,7 @@ export const useFieldArray = ({
     throw new Error("Pass ArrayField name");
   }
   const formContext = React.useContext(FormContext);
-  const fieldRowsRef = React.useRef<FormFieldArrayRowsType>({
+  const fieldRowsRef = React.useRef<FormArrayFieldRowsAtomType>({
     templateFieldRows: [],
     lastInsertIndex: -1,
   });
