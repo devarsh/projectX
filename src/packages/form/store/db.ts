@@ -3,7 +3,6 @@ import { RecoilFormsDB, FieldType } from "./types";
 import {
   FormArrayFieldRowsAtomType,
   FormFieldRegistryAtomType,
-  FormFeedbackAtomType,
 } from "../types";
 
 export async function inititateDb(formName: string) {
@@ -15,7 +14,6 @@ export async function inititateDb(formName: string) {
           dbInst.createObjectStore("formfields");
           dbInst.createObjectStore("formFieldsRegistry");
           dbInst.createObjectStore("arrayFields");
-          dbInst.createObjectStore("formFeedback");
       }
     },
   });
@@ -41,16 +39,11 @@ export async function inititateDb(formName: string) {
     return (await db).get("formfields", formName);
   };
 
-  const setFormFeedBack = async (formFeedBack: FormFeedbackAtomType) => {
-    return (await db).put("formFeedback", formFeedBack, formName);
-  };
-
-  const getFormFeedBack = async () => {
-    return (await db).get("formFeedback", formName);
-  };
-
   const setFormName = async () => {
     return (await db).put("persistance", true, formName);
+  };
+  const getFormName = async () => {
+    return (await db).get("persistance", formName);
   };
 
   const setFormFieldRegistry = async (
@@ -76,9 +69,8 @@ export async function inititateDb(formName: string) {
 
   return {
     setFormName,
+    getFormName,
     setFormField,
-    setFormFeedBack,
-    getFormFeedBack,
     getFormFields,
     setFormFieldRegistry,
     getFormFieldsRegistry,

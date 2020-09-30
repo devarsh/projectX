@@ -1,12 +1,13 @@
 import {
   FormArrayFieldRowsAtomType,
   FormFieldRegistryAtomType,
-  FormFeedbackAtomType,
 } from "../types";
 import { DBSchema } from "idb";
 
 export interface StoreType {
   setFormField: (formField: FieldType[]) => Promise<void>;
+  getFormName: () => Promise<boolean | undefined>;
+
   setFormName: () => Promise<string>;
   setFormFieldRegistry: (
     formFields: FormFieldRegistryAtomType
@@ -20,9 +21,6 @@ export interface StoreType {
       }
     | undefined
   >;
-  setFormFeedBack: (formFeedBack: FormFeedbackAtomType) => Promise<string>;
-  getFormFeedBack: () => Promise<FormFeedbackAtomType | undefined>;
-
   clearFormStore: () => Promise<void>;
 }
 
@@ -51,10 +49,6 @@ export interface RecoilFormsDB extends DBSchema {
   };
   arrayFields: {
     value: FormArrayFieldRowsAtomType;
-    key: string;
-  };
-  formFeedback: {
-    value: FormFeedbackAtomType;
     key: string;
   };
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "packages/form";
-import { TextField, Checkbox, FormFeedBack } from "components/common";
+import { TextField, Checkbox } from "components/common";
 import { PasswordField } from "components/derived";
 import { yupValidationHelper } from "components/utils";
 import Button from "@material-ui/core/Button";
@@ -46,7 +46,6 @@ const LoginControl = () => {
           Sign In
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <FormFeedBack variant="filled" />
           <TextField
             variant="outlined"
             margin="normal"

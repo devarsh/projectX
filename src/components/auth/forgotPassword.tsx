@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "packages/form";
-import { TextField, FormFeedBack } from "components/common";
+import { TextField } from "components/common";
 import { yupValidationHelper } from "components/utils";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
@@ -44,7 +44,7 @@ const ForgotPasswordControl = () => {
         <Typography component="h1" variant="h5">
           Forgot Password
         </Typography>
-        <FormFeedBack variant="filled" />
+
         <form
           className={classes.form}
           noValidate

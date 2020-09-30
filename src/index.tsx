@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "typeface-roboto";
-import App from "./components/form";
+//import App from "./components/form";
+import App from "./components/form/dummy";
 import * as serviceWorker from "./serviceWorker";
 
 //@ts-ignore

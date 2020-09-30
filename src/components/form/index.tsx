@@ -2,7 +2,6 @@ import * as React from "react";
 import { RecoilRoot } from "recoil";
 import {
   TextField,
-  FormFeedBack,
   ArrayField,
   Checkbox,
   CheckboxGroup,
@@ -23,7 +22,7 @@ import { yupValidationHelper } from "components/utils/yupValidator";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { FormContext } from "packages/form";
-
+import { ReactQueryDevtools } from "react-query-devtools";
 const App = () => {
   return (
     <RecoilRoot>
@@ -43,9 +42,10 @@ const App = () => {
             },
           }}
         >
-          <TimeTravelObserver />
+          {/*<TimeTravelObserver />*/}
           <MainApp />
           <AutoSaving />
+          <ReactQueryDevtools initialIsOpen={false} />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
     </RecoilRoot>
@@ -68,7 +68,6 @@ const MainApp = () => {
 
   return (
     <React.Fragment>
-      <FormFeedBack />
       <TextField
         name="firstName"
         fieldKey="firstName"
@@ -196,13 +195,50 @@ const MainApp = () => {
                 margin="normal"
                 label={field}
                 validate={yupValidationHelper(
-                  yup.number().required("this is required field")
+                  yup.string().required("this is required field")
                 )}
               />
             );
           });
           return (
-            <div key={row.fieldKey}>
+            <div key={row.fieldIndexKey}>
+              {oneRow}
+              <button onClick={() => removeFn(rowIndex)}>Remove Key</button>
+            </div>
+          );
+        }}
+        renderParentFn={({ rows, key, push }) => {
+          return (
+            <div key={key}>
+              <button onClick={() => push()}>Add</button>
+              {rows}
+            </div>
+          );
+        }}
+      />
+      <ArrayField
+        arrayFieldName="address"
+        template={{ street1: "", city: "", state: "" }}
+        renderRowsFn={(props) => {
+          const { row, removeFn, fields, rowIndex } = props;
+          const oneRow = fields.map((field) => {
+            return (
+              <TextField
+                name={row.cells[field].name}
+                fieldKey={row.cells[field].key}
+                key={row.cells[field].key}
+                type="text"
+                variant="outlined"
+                margin="normal"
+                label={field}
+                validate={yupValidationHelper(
+                  yup.string().required("this is required field")
+                )}
+              />
+            );
+          });
+          return (
+            <div key={row.fieldIndexKey}>
               {oneRow}
               <button onClick={() => removeFn(rowIndex)}>Remove Key</button>
             </div>

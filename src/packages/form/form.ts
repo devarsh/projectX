@@ -2,12 +2,12 @@ import React from "react";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import {
   formAtom,
-  formFeedbackAtom,
   formFieldAtom,
   formFieldRegistryAtom,
-  formArrayFieldResetCounterAtom,
+  formArrayFieldRowsAtom,
+  formArrayFieldRegistryAtom,
 } from "./atoms";
-import { setIn, getIn, handleValidationHelper } from "./util";
+import { setIn, getIn } from "./util";
 import {
   FieldsErrorObjType,
   FormFieldAtomType,
@@ -17,10 +17,9 @@ import {
 import { FormContext } from "./context";
 
 export const useForm = ({ onSubmit }: UseFormHookProps) => {
-  //Set Initital Values in Ref for performance
   const formContext = React.useContext(FormContext);
-
   const formState = useRecoilValue(formAtom(formContext.formName));
+
   const setInitValues = React.useCallback(
     useRecoilCallback(
       ({ set, snapshot }) => (initValues: InitialValuesType) => {
@@ -46,10 +45,19 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
               validationRunning: false,
             }));
           }
-          set(
-            formArrayFieldResetCounterAtom(formContext.formName),
-            (prevValue) => prevValue + 1
+          //Inititalize ArrayField
+          const loadableArrayFields = snapshot.getLoadable(
+            formArrayFieldRegistryAtom(formContext.formName)
           );
+          if (loadableArrayFields.state === "hasValue") {
+            const arrayFields = loadableArrayFields.contents;
+            for (const arrayField of arrayFields) {
+              set(formArrayFieldRowsAtom(arrayField), (old) => ({
+                ...old,
+                resetFlag: true,
+              }));
+            }
+          }
         }
       }
     ),
@@ -76,11 +84,8 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
           ...currVal,
           isSubmitting: false,
           submitSuccessful,
+          serverSentError: message,
         }));
-        set(formFeedbackAtom(formContext.formName), {
-          message,
-          isError: !submitSuccessful,
-        });
       }
     ),
     []
@@ -90,10 +95,13 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
       ({ set }) => (fieldsErrorObj: FieldsErrorObjType = {}) => {
         for (const field of Object.entries(fieldsErrorObj)) {
           const [fieldName, error] = field;
-          set(formFieldAtom(fieldName), (currVal) => ({
-            ...currVal,
-            error: error,
-          }));
+          set(
+            formFieldAtom(`${formContext.formName}/${fieldName}`),
+            (currVal) => ({
+              ...currVal,
+              error: error,
+            })
+          );
         }
       }
     ),
@@ -116,6 +124,19 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
               error: "",
               validationRunning: false,
             }));
+          }
+        }
+        const loadableArrayFields = snapshot.getLoadable(
+          formArrayFieldRegistryAtom(formContext.formName)
+        );
+        if (loadableArrayFields.state === "hasValue") {
+          const arrayFields = loadableArrayFields.contents;
+          for (const arrayField of arrayFields) {
+            set(formArrayFieldRowsAtom(arrayField), {
+              resetFlag: false,
+              templateFieldRows: [],
+              lastInsertIndex: -1,
+            });
           }
         }
       }
@@ -162,14 +183,14 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
                     : () => null;
                 let result: any;
                 try {
-                  result = await Promise.resolve(
-                    handleValidationHelper(fieldState, () => {})
-                  );
+                  // result = await Promise.resolve(
+                  //   handleValidationHelper(fieldState, () => {})
+                  // );
                 } catch (e) {
                   result = e.message;
                 }
                 if (hasError === false) {
-                  hasError = (result ?? "") !== "" ? true : false;
+                  hasError = Boolean(result);
                 }
                 const newValue = {
                   ...fieldState,
@@ -181,7 +202,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
               } else {
                 fieldsAggrigator.push(fieldState);
                 if (hasError === false) {
-                  hasError = (fieldState.error ?? "") !== "" ? true : false;
+                  hasError = Boolean(fieldState.error);
                 }
               }
             }
@@ -205,12 +226,4 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
   );
 
   return { handleSubmit, handleReset, handleClear, ...formState };
-};
-
-export const useFormFeedback = () => {
-  const formContext = React.useContext(FormContext);
-  const formFeedBackState = useRecoilValue(
-    formFeedbackAtom(formContext.formName)
-  );
-  return formFeedBackState;
 };

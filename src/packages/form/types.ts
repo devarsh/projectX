@@ -1,5 +1,5 @@
 export interface TemplateFieldRowType {
-  fieldKey: string;
+  fieldIndexKey: string;
   cells: TemplateFieldCellsObjectType;
 }
 
@@ -13,10 +13,11 @@ export interface TemplateFieldCellType {
 }
 
 export interface FormContextType {
-  initialValues?: InitialValuesType;
   formName: string;
   validationRun: string;
   resetFieldOnUnmount: boolean;
+  initialValues?: InitialValuesType;
+  persist?: boolean;
 }
 
 export type FormFieldRegistryAtomType = string[];
@@ -34,11 +35,7 @@ export interface FormAtomType {
   submitAttempt: number;
   isSubmitting: boolean;
   submitSuccessful: boolean;
-}
-
-export interface FormFeedbackAtomType {
-  message: string;
-  isError: boolean;
+  serverSentError: string;
 }
 
 export interface FormFieldAtomType {
@@ -48,12 +45,13 @@ export interface FormFieldAtomType {
   touched: boolean;
   error: string | null;
   validationRunning: boolean;
-  validate?: null | ValidateFnType | EmptyFnType;
+  validate?: null | typeof ValidateFnType | EmptyFnType;
 }
 
 export interface FormArrayFieldRowsAtomType {
   templateFieldRows: TemplateFieldRowType[];
   lastInsertIndex: number;
+  resetFlag: boolean;
 }
 
 export interface UseFormHookProps {
@@ -64,7 +62,7 @@ export interface UseFormHookProps {
 export interface UseFieldHookProps {
   fieldKey: string;
   name: string;
-  validate?: ValidateFnType;
+  validate?: typeof ValidateFnType;
   dependentFields?: string[];
 }
 
@@ -73,12 +71,7 @@ export interface UseFieldArrayHookProps {
   template: any;
 }
 
-export interface ValidateFnType {
-  (
-    fieldData: FormFieldAtomType,
-    setValidationRunning: (isRunning: boolean) => void
-  ): string;
-}
+export declare function ValidateFnType(...args: any[]): Promise<string>;
 
 export interface EmptyFnType {
   (): void;

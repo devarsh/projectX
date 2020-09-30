@@ -4,7 +4,6 @@ import {
   FormFieldAtomType,
   FormFieldRegistryAtomType,
   FormArrayFieldRowsAtomType,
-  FormFeedbackAtomType,
 } from "../types";
 import { FormContext } from "../context";
 import { atomKeys } from "../atoms";
@@ -51,9 +50,6 @@ export const AutoSaving = () => {
             ) {
               const myFormArrayField = node.contents as FormArrayFieldRowsAtomType;
               dbRef.current.setArrayFields(myFormArrayField);
-            } else if (oneNode.key.indexOf(atomKeys.formFeedbackAtom) > -1) {
-              const myFormFeedback = node.contents as FormFeedbackAtomType;
-              dbRef.current.setFormFeedBack(myFormFeedback);
             }
           }
         }

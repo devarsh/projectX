@@ -6,9 +6,10 @@ const validationConfig = {
   strict: true,
 };
 
-export const yupValidationHelper = (schema: any) => ({
-  value,
-}: FormFieldAtomType) => {
+export const yupValidationHelper = (schema: any) => (_: string, field: any) => {
+  //@ts-ignore
+  const { value } = field;
+
   try {
     schema.validateSync(value ?? null, validationConfig);
     return "";

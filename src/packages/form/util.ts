@@ -64,20 +64,3 @@ export function setIn(obj: any, path: string, value: any): any {
 
   return res;
 }
-
-// Other utility functions
-
-export const handleValidationHelper = (
-  fieldData: FormFieldAtomType,
-  setValidationRunning: (isRunning: boolean) => void
-) => {
-  if (typeof fieldData.validate === "function") {
-    const result = fieldData.validate(fieldData, setValidationRunning);
-    if ((result ?? "") === "") {
-      return null;
-    } else if (typeof result !== "string") {
-      throw new Error("Invalid error type: expected string");
-    }
-    return result;
-  }
-};
