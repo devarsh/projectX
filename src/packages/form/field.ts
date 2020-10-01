@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
-import { useQuery } from "react-query";
 import {
   formAtom,
   formFieldAtom,
@@ -106,69 +105,71 @@ export const useField = ({
 
   /**
    * Start of field Validation Logic
-   * It uses react-query which will always run the validation against the latest value
+   * It will always run the validation against the latest value and if promise provides cancelFn
+   * it will call cancel function and cancel the query
    */
-  //A helper to check if field has been passed validation Fn to validate
   const isValidationFnRef = React.useRef(
     typeof validate === "function" ? true : false
   );
-  //runValidation will trigger validation when called from handleChange or handleBlur handler
-  const [runValidation, setRunValidation] = React.useState(false);
-  //runValidationRef will always provide latest value to the memozied handleChange and handleBlur handlers
-  //that will trigger runValiation based on the condition
-  const runValidationRef = React.useRef(runValidation);
-  runValidationRef.current = runValidation;
-  //react query hook needs a function as second parameter
-  //if validation fn is not passed a noop function is provided
-  const alwaysValidate = typeof validate === "function" ? validate : () => "";
-  const { data, status, error, refetch } = useQuery(
-    [
-      fieldData.fieldKey,
-      {
-        name: fieldData.name,
-        value: fieldData.value,
-      },
-    ],
-    alwaysValidate,
-    {
-      enabled: false,
-      refetchOnWindowFocus: false,
-      cacheTime: 0,
-    }
+  const lastValidationPromise = React.useRef<Promise<any> | null>(null);
+  const lastValidationValue = React.useRef<any | null>(null);
+
+  const handleValidation = React.useCallback(
+    (data: FormFieldAtomType) => {
+      if (typeof validate === "function") {
+        if (lastValidationValue.current === data.value) {
+          return;
+        }
+        setFieldData((old) => ({
+          ...old,
+          validationRunning: true,
+        }));
+        const currentPromise = Promise.resolve(validate(data));
+        //@ts-ignore
+        lastValidationPromise.current?.cancel?.();
+        lastValidationValue.current = data.value;
+        lastValidationPromise.current = currentPromise;
+        currentPromise
+          .then((result) => {
+            if (lastValidationPromise.current === currentPromise) {
+              let finalResult;
+              if (typeof result === "string") {
+                finalResult = result;
+              } else {
+                finalResult = "unkown error check console";
+                console.log("unknown error type", result);
+              }
+              setFieldData((old) => {
+                return {
+                  ...old,
+                  validationRunning: false,
+                  error: finalResult,
+                };
+              });
+            }
+          })
+          .catch((err) => {
+            if (lastValidationPromise.current === currentPromise) {
+              let finalResult;
+              if (err instanceof Error) {
+                finalResult = err.message;
+              } else {
+                finalResult = "unkown error type check console";
+                console.log("unknown error type", err);
+              }
+              setFieldData((old) => ({
+                ...old,
+                validationRunning: false,
+                error: finalResult,
+              }));
+            }
+          });
+      }
+    },
+    [setFieldData]
   );
-  //This effect will be responsible for updating fields error state everytime the validation runs
-  React.useEffect(() => {
-    if (status === "error") {
-      if (typeof error === "string") {
-        setFieldData((old) => ({ ...old, error, validationRunning: false }));
-      }
-      if (error instanceof Error) {
-        setFieldData((old) => ({
-          ...old,
-          error: error.message,
-          validationRunning: false,
-        }));
-      }
-    } else if (status === "success") {
-      if (typeof data === "string" || data === null) {
-        setFieldData((old) => ({
-          ...old,
-          error: data,
-          validationRunning: false,
-        }));
-      }
-    } else if (status === "loading") {
-      setFieldData((old) => ({ ...old, validationRunning: true }));
-    }
-  }, [status, setFieldData, data]);
-  //This effect will trigger validation upon onChange or onBlur as per the configuration provided
-  React.useEffect(() => {
-    if (runValidation === true) {
-      refetch();
-    }
-  }, [fieldData.value, runValidation, refetch]);
   /**
-   * End of field validation logic
+   * End of validation Logic
    */
 
   //handleChange will be responsible for setting fieldValue when will be passed as a props to the
@@ -209,18 +210,15 @@ export const useField = ({
             : value;
         }
         setFieldData((currVal) => ({ ...currVal, value: val }));
-        if (runValidationRef.current !== false) {
-          setRunValidation(false);
-        }
         if (
           isValidationFnRef.current &&
           formContext.validationRun === "onChange"
         ) {
-          setRunValidation(true);
+          handleValidation({ ...fieldDataRef.current, value: val });
         }
       }
     },
-    [setFieldData, formContext.validationRun]
+    [setFieldData, handleValidation, formContext.validationRun]
   );
   //handleBlur will set touch property in field state to true for every field touched by user
   //It will run validation if validationRun == 'onBlur'
@@ -236,14 +234,12 @@ export const useField = ({
           };
         }
       });
-      if (runValidationRef.current !== false) {
-        setRunValidation(false);
-      }
+
       if (isValidationFnRef.current && formContext.validationRun === "onBlur") {
-        setRunValidation(true);
+        handleValidation({ ...fieldDataRef.current, touched: true });
       }
     }
-  }, [setFieldData, formContext.validationRun]);
+  }, [setFieldData, handleValidation, formContext.validationRun]);
   return {
     ...fieldData,
     isSubmitting: formState.isSubmitting,

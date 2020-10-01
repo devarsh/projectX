@@ -176,16 +176,14 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             if (loadableFieldState.state === "hasValue") {
               const _fieldState = loadableFieldState.contents;
               const fieldState = { ..._fieldState };
-              if (!fieldState.touched) {
-                fieldState.validate =
+              if (!fieldState.touched || fieldState.validationRunning) {
+                const customValidator =
                   typeof fieldState.validate === "function"
                     ? fieldState.validate
-                    : () => null;
+                    : async (data: FormFieldAtomType) => data.error;
                 let result: any;
                 try {
-                  // result = await Promise.resolve(
-                  //   handleValidationHelper(fieldState, () => {})
-                  // );
+                  result = await Promise.resolve(customValidator(fieldState));
                 } catch (e) {
                   result = e.message;
                 }

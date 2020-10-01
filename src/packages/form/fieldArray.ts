@@ -52,7 +52,13 @@ export const useFieldArray = ({
         unregisterField(`${formContext.formName}/${arrayFieldName}`);
       };
     }
-  }, [registerField, unregisterField, formContext]);
+  }, [
+    registerField,
+    unregisterField,
+    formContext.formName,
+    formContext.resetFieldOnUnmount,
+    arrayFieldName,
+  ]);
 
   //_insert adds a new field to the fieldArray with a new key
   const _insert = React.useCallback(

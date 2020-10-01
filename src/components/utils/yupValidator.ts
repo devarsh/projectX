@@ -6,7 +6,7 @@ const validationConfig = {
   strict: true,
 };
 
-export const yupValidationHelper = (schema: any) => (_: string, field: any) => {
+export const yupValidationHelper = (schema: any) => (field: any) => {
   //@ts-ignore
   const { value } = field;
 

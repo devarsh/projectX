@@ -71,10 +71,12 @@ export interface UseFieldArrayHookProps {
   template: any;
 }
 
-export declare function ValidateFnType(...args: any[]): Promise<string>;
+export declare function ValidateFnType(
+  data: FormFieldAtomType
+): Promise<string>;
 
 export interface EmptyFnType {
-  (): void;
+  (args: FormFieldAtomType): string;
 }
 
 export interface SubmitFnType {
