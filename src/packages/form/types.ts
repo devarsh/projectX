@@ -1,3 +1,4 @@
+import { ObjectSchema } from "yup";
 export interface TemplateFieldRowType {
   fieldIndexKey: string;
   cells: TemplateFieldCellsObjectType;
@@ -17,7 +18,8 @@ export interface FormContextType {
   validationRun: string;
   resetFieldOnUnmount: boolean;
   initialValues?: InitialValuesType;
-  persist?: boolean;
+  autoSave?: boolean;
+  validationSchema?: ObjectSchema;
 }
 
 export type FormFieldRegistryAtomType = string[];

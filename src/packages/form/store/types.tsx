@@ -1,28 +1,10 @@
 import {
   FormArrayFieldRowsAtomType,
   FormFieldRegistryAtomType,
+  FormAtomType,
 } from "../types";
 import { DBSchema } from "idb";
-
-export interface StoreType {
-  setFormField: (formField: FieldType[]) => Promise<void>;
-  getFormName: () => Promise<boolean | undefined>;
-
-  setFormName: () => Promise<string>;
-  setFormFieldRegistry: (
-    formFields: FormFieldRegistryAtomType
-  ) => Promise<string>;
-  setArrayFields: (arrayField: FormArrayFieldRowsAtomType) => Promise<string>;
-  getFormFieldsRegistry: () => Promise<FormFieldRegistryAtomType | undefined>;
-  getArrayFields: () => Promise<FormArrayFieldRowsAtomType | undefined>;
-  getFormFields: () => Promise<
-    | {
-        [key: string]: FieldType;
-      }
-    | undefined
-  >;
-  clearFormStore: () => Promise<void>;
-}
+import { initiateDB } from "./db";
 
 export interface FieldType {
   name: string;
@@ -33,22 +15,33 @@ export interface FieldType {
 }
 
 export interface RecoilFormsDB extends DBSchema {
-  persistance: {
-    value: boolean;
+  formAtom: {
+    value: FormAtomType;
     key: string;
   };
-  formfields: {
+  formFieldAtom: {
     value: {
       [key: string]: FieldType;
     };
     key: string;
   };
-  formFieldsRegistry: {
-    value: FormFieldRegistryAtomType;
-    key: string;
-  };
-  arrayFields: {
+  formArrayFieldRowsAtom: {
     value: FormArrayFieldRowsAtomType;
     key: string;
   };
+  formFieldRegistryAtom: {
+    value: FormFieldRegistryAtomType;
+    key: string;
+  };
+  formArrayFieldRegistryAtom: {
+    value: string[];
+    key: string;
+  };
 }
+
+type Await<T> = T extends {
+  then(onfulfilled?: (value: infer U) => unknown): unknown;
+}
+  ? U
+  : T;
+export type StoreType = Await<ReturnType<typeof initiateDB>>;

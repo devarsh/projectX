@@ -7,14 +7,13 @@ import {
   formFieldUnregisterSelector,
   subscribeToFormFieldsSelector,
 } from "./atoms";
-
 import {
   FormFieldAtomType,
   UseFieldHookProps,
   FormFieldRegisterSelectorAttributes,
 } from "./types";
 import { FormContext } from "./context";
-import { getIn } from "./util";
+import { getIn, wrapValidationMethod } from "./util";
 
 export const useField = ({
   fieldKey,
@@ -67,8 +66,6 @@ export const useField = ({
 
   //This effect will register and unregister fields when they mount and unmount
   //set initial value of the field, if initial value is provided.
-  //Set validation Fn if passed to the field state to call validation on any
-  //untouched fields when form is submitted.
   //If an option is set not resetField on unmount unregister will not be called.
   React.useEffect(() => {
     const currentfield = fieldKeyRef.current;
@@ -87,15 +84,30 @@ export const useField = ({
       fieldName: currentfield,
     };
     registerField(registrationValue);
-    if (isValidationFnRef.current === true) {
-      setFieldData((currVal) => ({ ...currVal, validate }));
-    }
+
     if (formContext.resetFieldOnUnmount === true) {
       return () => {
         unregisterField(currentfield);
       };
     }
   }, [setFieldData, registerField, unregisterField, formContext]);
+
+  //This hook with register validation method on field instance
+
+  const isValidationFnRef = React.useRef(
+    typeof validate === "function" ? true : false
+  );
+  React.useEffect(() => {
+    const wrappedValidation = wrapValidationMethod(
+      formContext.validationSchema,
+      validate,
+      fieldData.name
+    );
+    if (typeof wrappedValidation === "function") {
+      isValidationFnRef.current = true;
+      setFieldData((currVal) => ({ ...currVal, validate: wrappedValidation }));
+    }
+  }, [setFieldData, formContext.validationSchema, fieldData.name]);
 
   //Subscribe to cross fields values, provide an array of dependent field names,
   //this field will be rerendered when any of the provided dependent field's value updates.
@@ -108,63 +120,68 @@ export const useField = ({
    * It will always run the validation against the latest value and if promise provides cancelFn
    * it will call cancel function and cancel the query
    */
-  const isValidationFnRef = React.useRef(
-    typeof validate === "function" ? true : false
-  );
+
   const lastValidationPromise = React.useRef<Promise<any> | null>(null);
   const lastValidationValue = React.useRef<any | null>(null);
 
   const handleValidation = React.useCallback(
     (data: FormFieldAtomType) => {
-      if (typeof validate === "function") {
-        if (lastValidationValue.current === data.value) {
-          return;
-        }
-        setFieldData((old) => ({
-          ...old,
-          validationRunning: true,
-        }));
-        const currentPromise = Promise.resolve(validate(data));
-        //@ts-ignore
-        lastValidationPromise.current?.cancel?.();
-        lastValidationValue.current = data.value;
-        lastValidationPromise.current = currentPromise;
-        currentPromise
-          .then((result) => {
-            if (lastValidationPromise.current === currentPromise) {
-              let finalResult;
-              if (typeof result === "string") {
-                finalResult = result;
-              } else {
-                finalResult = "unkown error check console";
-                console.log("unknown error type", result);
-              }
-              setFieldData((old) => {
-                return {
-                  ...old,
-                  validationRunning: false,
-                  error: finalResult,
-                };
-              });
+      if (typeof fieldDataRef.current.validate !== "function") {
+        return;
+      }
+      if (lastValidationValue.current === data.value) {
+        return;
+      }
+      setFieldData((old) => ({
+        ...old,
+        validationRunning: true,
+      }));
+      const currentPromise = Promise.resolve(
+        fieldDataRef.current.validate(data)
+      );
+      //@ts-ignore
+      lastValidationPromise.current?.cancel?.();
+      lastValidationValue.current = data.value;
+      lastValidationPromise.current = currentPromise;
+      currentPromise
+        .then((result) => {
+          if (lastValidationPromise.current === currentPromise) {
+            let finalResult;
+            if (
+              typeof result === "string" ||
+              result === undefined ||
+              result === null
+            ) {
+              finalResult = result;
+            } else {
+              finalResult = "unkown error check console";
+              console.log("unknown error type", result);
             }
-          })
-          .catch((err) => {
-            if (lastValidationPromise.current === currentPromise) {
-              let finalResult;
-              if (err instanceof Error) {
-                finalResult = err.message;
-              } else {
-                finalResult = "unkown error type check console";
-                console.log("unknown error type", err);
-              }
-              setFieldData((old) => ({
+            setFieldData((old) => {
+              return {
                 ...old,
                 validationRunning: false,
                 error: finalResult,
-              }));
+              };
+            });
+          }
+        })
+        .catch((err) => {
+          if (lastValidationPromise.current === currentPromise) {
+            let finalResult;
+            if (err instanceof Error) {
+              finalResult = err.message;
+            } else {
+              finalResult = "unkown error type check console";
+              console.log("unknown error type", err);
             }
-          });
-      }
+            setFieldData((old) => ({
+              ...old,
+              validationRunning: false,
+              error: finalResult,
+            }));
+          }
+        });
     },
     [setFieldData]
   );

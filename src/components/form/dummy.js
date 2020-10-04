@@ -1,85 +1,28 @@
-import React, { useState } from "react";
+import * as yup from "yup";
+import { yupValidationHelper } from "packages/form";
+import React from "react";
 
-const makeRequest = async (data, controller) => {
-  const req = await fetch(
-    `https://api.giphy.com/v1/gifs/search?api_key=8HblZGNucvRDFBTEzAIn6Da3nBYpc5Eb&q=${data}&limit=4&offset=0&rating=g&lang=en`,
-    {
-      signal: controller.signal,
-    }
-  );
-  let result = await req.json();
-  if (result?.data?.length > 0) {
-    return result?.data?.map((one) => one.images.looping);
-  } else {
-    return [];
-  }
-};
+let schema = yup.object().shape({
+  name: yup.string().required().min(4).max(50),
+  age: yup.number().required().min(18),
+  contact: yup.array().of(
+    yup.object().shape({
+      tel: yup.number().required(),
+      mob: yup.number().required().max(10),
+    })
+  ),
+});
+try {
+  const mob = yup.reach(schema, "contac[100].mob");
 
-const handleRemoteFetch = (data) => {
-  const controller = new AbortController();
-  const result = makeRequest(data, controller);
-  result.cancel = () => {
-    console.log("cancelled", data);
-    controller.abort();
-  };
-  return result;
-};
+  const res = yupValidationHelper(mob)({ value: "343453554" });
+  console.log(res);
+} catch (e) {
+  console.log(e);
+}
 
 const App = () => {
-  return <Input />;
+  return <h1>Check console</h1>;
 };
 
 export default App;
-
-const Input = () => {
-  const [value, setValue] = useState("");
-  const [result, setResult] = useState([]);
-  const lastPromise = React.useRef([]);
-  const lastValue = React.useRef(null);
-
-  const fetchData = (query) => {
-    if (lastValue.current === query) {
-      return;
-    }
-    const promise = handleRemoteFetch(query);
-    const _ = lastPromise.current?.cancel?.();
-    lastPromise.current = promise;
-    lastValue.current = query;
-    promise
-      .then((res) => {
-        if (promise === lastPromise.current) {
-          console.log("setting result for", query);
-          setResult(res);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const output = result.map((one, index) => {
-    return (
-      <video
-        key={index}
-        src={one.mp4}
-        autoPlay={true}
-        height="300"
-        width="300"
-        loop={true}
-      />
-    );
-  });
-
-  const handleChange = async (e) => {
-    setValue(e.target.value);
-    fetchData(e.target.value);
-  };
-
-  return (
-    <React.Fragment>
-      <label>Name:</label>
-      <input type="text" value={value} onChange={handleChange} />
-      <div style={{ display: "flex" }}>{output}</div>
-    </React.Fragment>
-  );
-};

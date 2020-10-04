@@ -1,6 +1,6 @@
 import clone from "lodash/clone";
 import toPath from "lodash/toPath";
-import { FormFieldAtomType } from "./types";
+import * as yup from "yup";
 
 //Copied the following from Formik library
 
@@ -64,3 +64,55 @@ export function setIn(obj: any, path: string, value: any): any {
 
   return res;
 }
+
+const validationConfig = {
+  abortEarly: false,
+  strict: true,
+};
+
+export const yupValidationHelper = (schema: any) => (field: any) => {
+  //@ts-ignore
+  const { value } = field;
+
+  try {
+    console.log(value);
+    schema.validateSync(value ?? null, validationConfig);
+    return "";
+  } catch (e) {
+    if (e instanceof yup.ValidationError) {
+      return e.errors[0];
+    }
+    return e.message;
+  }
+};
+
+export const wrapValidationMethod = (
+  schema: yup.ObjectSchema | undefined,
+  validationFn: any,
+  path: string
+) => {
+  let fieldSchema;
+  if (typeof schema === "object" && schema.validate) {
+    try {
+      fieldSchema = yup.reach(schema, path);
+    } catch (e) {
+      fieldSchema = undefined;
+    }
+  }
+  if (fieldSchema !== undefined) {
+    const wrapperFunction = (field: any) => {
+      let result = yupValidationHelper(fieldSchema)(field);
+      if (typeof validationFn === "function") {
+        if (Boolean(result) === false) {
+          return validationFn(field);
+        } else {
+          return result;
+        }
+      } else {
+        return result;
+      }
+    };
+    return wrapperFunction;
+  }
+  return validationFn;
+};

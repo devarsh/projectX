@@ -44,6 +44,61 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
   }),
 });
 
+export const formFieldRegistryAtom = atomFamily<
+  FormFieldRegistryAtomType,
+  string
+>({
+  key: atomKeys.formFieldRegistryAtom,
+  default: [],
+});
+
+export const formFieldRegisterSelector = selectorFamily<
+  FormFieldRegisterSelectorAttributes,
+  string
+>({
+  key: atomKeys.formFieldRegisterSelector,
+  set: (formName) => ({ set, get }, newValue) => {
+    if (!(newValue instanceof DefaultValue)) {
+      const fields = get(formFieldRegistryAtom(formName));
+      const valueExists = fields.indexOf(newValue.fieldName) > -1;
+      if (!valueExists) {
+        const newFields = [...fields, newValue.fieldName];
+        set(formFieldRegistryAtom(formName), newFields);
+        if (newValue.defaultValue !== null) {
+          set(formFieldAtom(newValue.fieldName), (prev) => ({
+            ...prev,
+            value: newValue.defaultValue,
+          }));
+        }
+      }
+    }
+  },
+  get: (_) => () => {
+    return { defaultValue: "", fieldName: "" };
+  },
+});
+
+export const formFieldUnregisterSelector = selectorFamily<string, string>({
+  key: atomKeys.formFieldUnregisterSelector,
+  set: (formName) => ({ set, get, reset }, newValue) => {
+    if (!(newValue instanceof DefaultValue)) {
+      const fields = get(formFieldRegistryAtom(formName));
+      const index = fields.indexOf(newValue);
+      if (index > -1) {
+        reset(formFieldAtom(newValue));
+        const newFields = [
+          ...fields.slice(0, index),
+          ...fields.slice(index + 1),
+        ];
+        set(formFieldRegistryAtom(formName), newFields);
+      }
+    }
+  },
+  get: (_) => () => {
+    return "";
+  },
+});
+
 export const formArrayFieldRowsAtom = atomFamily<
   FormArrayFieldRowsAtomType,
   string
@@ -92,61 +147,6 @@ export const formArrayFieldUnregisterSelector = selectorFamily<string, string>({
           ...fields.slice(index + 1),
         ];
         set(formArrayFieldRegistryAtom(formName), newFields);
-      }
-    }
-  },
-  get: (_) => () => {
-    return "";
-  },
-});
-
-export const formFieldRegistryAtom = atomFamily<
-  FormFieldRegistryAtomType,
-  string
->({
-  key: atomKeys.formFieldRegistryAtom,
-  default: [],
-});
-
-export const formFieldRegisterSelector = selectorFamily<
-  FormFieldRegisterSelectorAttributes,
-  string
->({
-  key: atomKeys.formFieldRegisterSelector,
-  set: (formName) => ({ set, get }, newValue) => {
-    if (!(newValue instanceof DefaultValue)) {
-      const fields = get(formFieldRegistryAtom(formName));
-      const valueExists = fields.indexOf(newValue.fieldName) > -1;
-      if (!valueExists) {
-        const newFields = [...fields, newValue.fieldName];
-        set(formFieldRegistryAtom(formName), newFields);
-        if (newValue.defaultValue !== null) {
-          set(formFieldAtom(newValue.fieldName), (prev) => ({
-            ...prev,
-            value: newValue.defaultValue,
-          }));
-        }
-      }
-    }
-  },
-  get: (_) => () => {
-    return { defaultValue: "", fieldName: "" };
-  },
-});
-
-export const formFieldUnregisterSelector = selectorFamily<string, string>({
-  key: atomKeys.formFieldUnregisterSelector,
-  set: (formName) => ({ set, get, reset }, newValue) => {
-    if (!(newValue instanceof DefaultValue)) {
-      const fields = get(formFieldRegistryAtom(formName));
-      const index = fields.indexOf(newValue);
-      if (index > -1) {
-        reset(formFieldAtom(newValue));
-        const newFields = [
-          ...fields.slice(0, index),
-          ...fields.slice(index + 1),
-        ];
-        set(formFieldRegistryAtom(formName), newFields);
       }
     }
   },

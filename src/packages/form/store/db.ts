@@ -2,31 +2,40 @@ import { openDB } from "idb";
 import { RecoilFormsDB, FieldType } from "./types";
 import {
   FormArrayFieldRowsAtomType,
+  FormAtomType,
   FormFieldRegistryAtomType,
 } from "../types";
 
-export async function inititateDb(formName: string) {
+export async function initiateDB(formName: string) {
   const db = openDB<RecoilFormsDB>("recoilFormsDB", 1, {
     upgrade(dbInst, _, newVersion) {
       switch (newVersion) {
         case 1:
-          dbInst.createObjectStore("persistance");
-          dbInst.createObjectStore("formfields");
-          dbInst.createObjectStore("formFieldsRegistry");
-          dbInst.createObjectStore("arrayFields");
+          dbInst.createObjectStore("formAtom");
+          dbInst.createObjectStore("formFieldAtom");
+          dbInst.createObjectStore("formFieldRegistryAtom");
+          dbInst.createObjectStore("formArrayFieldRowsAtom");
+          dbInst.createObjectStore("formArrayFieldRegistryAtom");
       }
     },
   });
 
-  const setFormField = async (formFields: FieldType[]) => {
+  const setForm = async (formAtom: FormAtomType) => {
+    return (await db).put("formAtom", formAtom, formName);
+  };
+  const getForm = async () => {
+    return (await db).get("formAtom", formName);
+  };
+
+  const setFormField = async (formFieldsAtom: FieldType[]) => {
     try {
-      let tx = await (await db).transaction("formfields", "readwrite");
-      let store = await tx.objectStore("formfields");
+      let tx = await (await db).transaction("formFieldAtom", "readwrite");
+      let store = await tx.objectStore("formFieldAtom");
       let result = await store.get(formName);
       if (result === undefined) {
         result = {};
       }
-      for (const oneField of formFields) {
+      for (const oneField of formFieldsAtom) {
         result[oneField.fieldKey] = oneField;
       }
       await store.put(result, formName);
@@ -36,46 +45,53 @@ export async function inititateDb(formName: string) {
   };
 
   const getFormFields = async () => {
-    return (await db).get("formfields", formName);
-  };
-
-  const setFormName = async () => {
-    return (await db).put("persistance", true, formName);
-  };
-  const getFormName = async () => {
-    return (await db).get("persistance", formName);
+    return (await db).get("formFieldAtom", formName);
   };
 
   const setFormFieldRegistry = async (
     formFields: FormFieldRegistryAtomType
   ) => {
-    return (await db).put("formFieldsRegistry", formFields, formName);
+    return (await db).put("formFieldRegistryAtom", formFields, formName);
   };
   const getFormFieldsRegistry = async () => {
-    return (await db).get("formFieldsRegistry", formName);
+    return (await db).get("formFieldRegistryAtom", formName);
   };
-  const setArrayFields = async (arrayField: FormArrayFieldRowsAtomType) => {
-    return (await db).put("arrayFields", arrayField, formName);
+  const setFormArrayFields = async (arrayField: FormArrayFieldRowsAtomType) => {
+    return (await db).put("formArrayFieldRowsAtom", arrayField, formName);
   };
-  const getArrayFields = async () => {
-    return (await db).get("arrayFields", formName);
+  const getFormArrayFields = async () => {
+    return (await db).get("formArrayFieldRowsAtom", formName);
+  };
+  const setFormArrayFieldsRegistry = async (formArrayFields: string[]) => {
+    return (await db).put(
+      "formArrayFieldRegistryAtom",
+      formArrayFields,
+      formName
+    );
+  };
+
+  const getFormArrayFieldsRegistry = async () => {
+    return (await db).get("formArrayFieldRegistryAtom", formName);
   };
   const clearFormStore = async () => {
-    await (await db).delete("persistance", formName);
-    await (await db).delete("formfields", formName);
-    await (await db).delete("formFieldsRegistry", formName);
-    await (await db).delete("arrayFields", formName);
+    await (await db).delete("formAtom", formName);
+    await (await db).delete("formFieldAtom", formName);
+    await (await db).delete("formFieldRegistryAtom", formName);
+    await (await db).delete("formArrayFieldRowsAtom", formName);
+    await (await db).delete("formArrayFieldRegistryAtom", formName);
   };
 
   return {
-    setFormName,
-    getFormName,
+    setForm,
+    getForm,
     setFormField,
     getFormFields,
     setFormFieldRegistry,
     getFormFieldsRegistry,
-    setArrayFields,
-    getArrayFields,
+    setFormArrayFields,
+    getFormArrayFields,
+    setFormArrayFieldsRegistry,
+    getFormArrayFieldsRegistry,
     clearFormStore,
   };
 }

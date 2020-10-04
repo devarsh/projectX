@@ -1,24 +1,25 @@
 import React from "react";
 import { useRecoilTransactionObserver_UNSTABLE, RecoilValue } from "recoil";
 import {
+  FormAtomType,
   FormFieldAtomType,
   FormFieldRegistryAtomType,
   FormArrayFieldRowsAtomType,
 } from "../types";
 import { FormContext } from "../context";
 import { atomKeys } from "../atoms";
-import { StoreType, FieldType } from "./types";
-import { inititateDb } from "./db";
+import { FieldType, StoreType } from "./types";
+import { initiateDB } from "./db";
 
 export const AutoSaving = () => {
   const formContext = React.useContext(FormContext);
-  const dbRef = React.useRef<null | StoreType>(null);
+  const dbRef = React.useRef<StoreType | null>(null);
   React.useEffect(() => {
     const initDB = async () => {
-      dbRef.current = await inititateDb(formContext.formName);
+      dbRef.current = await initiateDB(formContext.formName);
     };
     initDB();
-  });
+  }, [formContext.formName]);
 
   useRecoilTransactionObserver_UNSTABLE(async ({ snapshot }) => {
     if (dbRef.current !== null) {
@@ -30,32 +31,46 @@ export const AutoSaving = () => {
       for (const oneNode of nodes) {
         let node = snapshot.getLoadable(oneNode);
         if (node.state === "hasValue") {
-          if (typeof node.contents === "object" && node.contents !== null) {
-            if (oneNode.key.indexOf(atomKeys.formFieldAtom) > -1) {
-              const myFieldAtom = node.contents as FormFieldAtomType;
+          switch (oneNode.key) {
+            case atomKeys.formAtom: {
+              const value = node.contents as FormAtomType;
+              dbRef.current.setForm(value);
+              break;
+            }
+            case atomKeys.formFieldAtom: {
+              const value = node.contents as FormFieldAtomType;
               fieldsToBeUpdated.push({
-                fieldKey: myFieldAtom.fieldKey,
-                name: myFieldAtom.name,
-                error: myFieldAtom.error,
-                value: myFieldAtom.value,
-                touched: myFieldAtom.touched,
+                fieldKey: value.fieldKey,
+                name: value.name,
+                error: value.error,
+                value: value.value,
+                touched: value.touched,
               });
-            } else if (
-              oneNode.key.indexOf(atomKeys.formFieldRegistryAtom) > -1
-            ) {
-              const myFormFieldRegistry = node.contents as FormFieldRegistryAtomType;
-              dbRef.current.setFormFieldRegistry(myFormFieldRegistry);
-            } else if (
-              oneNode.key.indexOf(atomKeys.formArrayFieldRowsAtom) > -1
-            ) {
-              const myFormArrayField = node.contents as FormArrayFieldRowsAtomType;
-              dbRef.current.setArrayFields(myFormArrayField);
+              break;
+            }
+            case atomKeys.formFieldRegistryAtom: {
+              const value = node.contents as FormFieldRegistryAtomType;
+              dbRef.current.setFormFieldRegistry(value);
+              break;
+            }
+            case atomKeys.formArrayFieldRowsAtom: {
+              const value = node.contents as FormArrayFieldRowsAtomType;
+              dbRef.current.setFormArrayFields(value);
+              break;
+            }
+            case atomKeys.formArrayFieldRegistryAtom: {
+              const value = node.contents as string[];
+              dbRef.current.setFormArrayFieldsRegistry(value);
+              break;
+            }
+            default: {
+              break;
             }
           }
         }
       }
       dbRef.current.setFormField(fieldsToBeUpdated);
+      return null;
     }
   });
-  return null;
 };

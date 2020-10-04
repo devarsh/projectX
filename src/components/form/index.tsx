@@ -15,10 +15,14 @@ import {
   Rating,
 } from "components/common";
 
-import { useForm, TimeTravelObserver, AutoSaving } from "packages/form";
+import {
+  useForm,
+  yupValidationHelper,
+  TimeTravelObserver,
+  AutoSaving,
+} from "packages/form";
 import Button from "@material-ui/core/Button";
 import * as yup from "yup";
-import { yupValidationHelper } from "components/utils/yupValidator";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { FormContext } from "packages/form";
@@ -40,11 +44,14 @@ const App = () => {
                 { tel: 3335, tag: 13 },
               ],
             },
+            validationSchema: yup.object().shape({
+              password2: yup.string().max(10).min(4),
+            }),
           }}
         >
           {/*<TimeTravelObserver />*/}
           <MainApp />
-          <AutoSaving />
+          {/*<AutoSaving />*/}
           <ReactQueryDevtools initialIsOpen={false} />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
@@ -98,6 +105,16 @@ const MainApp = () => {
         validate={yupValidationHelper(
           yup.string().required("password is required")
         )}
+      />
+      <TextField
+        name="password2"
+        fieldKey="password2"
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        label="Password2"
+        autoComplete="current-password"
       />
       <Checkbox name="rememberMe" fieldKey="rememberMe" label="rememberMeee" />
       <CheckboxGroup

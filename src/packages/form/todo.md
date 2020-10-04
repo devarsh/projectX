@@ -19,3 +19,4 @@
 4. When Array Field deleted unregister field when unmount on unregister is false.
 5. When Form is clear remove all the rows from the arrayFields, currently only values cleared and not rows deleted
 6. Refactor timeTravel component with slider
+7. Save the last focus and refocus onError

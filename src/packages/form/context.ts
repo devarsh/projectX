@@ -6,6 +6,6 @@ export const FormContext = React.createContext<FormContextType>({
   initialValues: {},
   validationRun: "onBlur",
   resetFieldOnUnmount: true,
-  persist: false,
+  autoSave: false,
 });
 FormContext.displayName = "FormContext";
