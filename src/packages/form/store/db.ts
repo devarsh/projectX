@@ -1,5 +1,6 @@
 import { openDB } from "idb";
-import { RecoilFormsDB, FieldType } from "./types";
+import { RecoilFormsDB } from "./types";
+import { FormFieldAtomSerializableType } from "../types";
 import {
   FormArrayFieldRowsAtomType,
   FormAtomType,
@@ -27,18 +28,24 @@ export async function initiateDB(formName: string) {
     return (await db).get("formAtom", formName);
   };
 
-  const setFormField = async (formFieldsAtom: FieldType[]) => {
+  const setFormField = async (
+    formFieldsAtom: FormFieldAtomSerializableType[],
+    replace: boolean
+  ) => {
     try {
       let tx = await (await db).transaction("formFieldAtom", "readwrite");
       let store = await tx.objectStore("formFieldAtom");
-      let result = await store.get(formName);
-      if (result === undefined) {
-        result = {};
+      let result = {};
+      if (Boolean(replace) === false) {
+        await store.get(formName);
+        if (result === undefined) {
+          result = {};
+        }
       }
       for (const oneField of formFieldsAtom) {
         result[oneField.fieldKey] = oneField;
       }
-      await store.put(result, formName);
+      return await store.put(result, formName);
     } catch (e) {
       console.log(e);
     }
@@ -56,10 +63,32 @@ export async function initiateDB(formName: string) {
   const getFormFieldsRegistry = async () => {
     return (await db).get("formFieldRegistryAtom", formName);
   };
-  const setFormArrayFields = async (arrayField: FormArrayFieldRowsAtomType) => {
-    return (await db).put("formArrayFieldRowsAtom", arrayField, formName);
+  const setFormArrayFieldRows = async (
+    arrayField: FormArrayFieldRowsAtomType[],
+    replace: boolean
+  ) => {
+    try {
+      let tx = await (await db).transaction(
+        "formArrayFieldRowsAtom",
+        "readwrite"
+      );
+      let store = await tx.objectStore("formArrayFieldRowsAtom");
+      let result = {};
+      if (Boolean(replace) === false) {
+        await store.get(formName);
+        if (result === undefined) {
+          result = {};
+        }
+      }
+      for (const oneField of arrayField) {
+        result[oneField.fieldName] = oneField;
+      }
+      return (await db).put("formArrayFieldRowsAtom", result, formName);
+    } catch (e) {
+      console.log(e);
+    }
   };
-  const getFormArrayFields = async () => {
+  const getFormArrayFieldRows = async () => {
     return (await db).get("formArrayFieldRowsAtom", formName);
   };
   const setFormArrayFieldsRegistry = async (formArrayFields: string[]) => {
@@ -80,6 +109,24 @@ export async function initiateDB(formName: string) {
     await (await db).delete("formArrayFieldRowsAtom", formName);
     await (await db).delete("formArrayFieldRegistryAtom", formName);
   };
+  const sanitizeStore = async () => {
+    const fields = await getFormFields();
+    const fieldsRegistry = await getFormFieldsRegistry();
+    if (Array.isArray(fieldsRegistry) && typeof fields === "object") {
+      const newFields = fieldsRegistry.map((one) => {
+        return fields[one];
+      });
+      setFormField(newFields, true);
+    }
+    const arrayFieldsRegistry = await getFormArrayFieldsRegistry();
+    const arrayFields = await getFormArrayFieldRows();
+    if (Array.isArray(arrayFieldsRegistry) && typeof arrayFields === "object") {
+      const newArrayFields = arrayFieldsRegistry.map((one) => {
+        return arrayFields[one];
+      });
+      setFormArrayFieldRows(newArrayFields, true);
+    }
+  };
 
   return {
     setForm,
@@ -88,10 +135,11 @@ export async function initiateDB(formName: string) {
     getFormFields,
     setFormFieldRegistry,
     getFormFieldsRegistry,
-    setFormArrayFields,
-    getFormArrayFields,
+    setFormArrayFieldRows,
+    getFormArrayFieldRows,
     setFormArrayFieldsRegistry,
     getFormArrayFieldsRegistry,
     clearFormStore,
+    sanitizeStore,
   };
 }

@@ -104,11 +104,12 @@ export const formArrayFieldRowsAtom = atomFamily<
   string
 >({
   key: atomKeys.formArrayFieldRowsAtom,
-  default: {
+  default: (fieldName) => ({
+    fieldName: fieldName,
     templateFieldRows: [],
     lastInsertIndex: -1,
-    resetFlag: true, //always make sure its true, its tied to fieldArray inititalization
-  },
+    resetFlag: false,
+  }),
   dangerouslyAllowMutability: true,
 });
 

@@ -2,17 +2,10 @@ import {
   FormArrayFieldRowsAtomType,
   FormFieldRegistryAtomType,
   FormAtomType,
+  FormFieldAtomSerializableType,
 } from "../types";
 import { DBSchema } from "idb";
 import { initiateDB } from "./db";
-
-export interface FieldType {
-  name: string;
-  fieldKey: string;
-  value: any;
-  touched: boolean;
-  error: string | null;
-}
 
 export interface RecoilFormsDB extends DBSchema {
   formAtom: {
@@ -21,12 +14,14 @@ export interface RecoilFormsDB extends DBSchema {
   };
   formFieldAtom: {
     value: {
-      [key: string]: FieldType;
+      [key: string]: FormFieldAtomSerializableType;
     };
     key: string;
   };
   formArrayFieldRowsAtom: {
-    value: FormArrayFieldRowsAtomType;
+    value: {
+      [key: string]: FormArrayFieldRowsAtomType;
+    };
     key: string;
   };
   formFieldRegistryAtom: {

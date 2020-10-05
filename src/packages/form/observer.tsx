@@ -5,6 +5,7 @@ import {
   SnapshotID,
 } from "recoil";
 import React from "react";
+import Slider from "@material-ui/core/Slider";
 
 export const TimeTravelObserver = () => {
   const snapshots = React.useRef(new Map<SnapshotID, Snapshot>());
@@ -20,7 +21,9 @@ export const TimeTravelObserver = () => {
 
   const result: JSX.Element[] = [];
   let index = 0;
+  let keys: number[] = [];
   for (let [key, value] of snapshots.current) {
+    keys[index] = Number(key);
     result.push(
       <li key={index}>
         Snapshot {key}
@@ -30,5 +33,10 @@ export const TimeTravelObserver = () => {
     index++;
   }
 
-  return <ol>{result}</ol>;
+  return (
+    <React.Fragment>
+      <ol>{result}</ol>
+      <Slider value={keys} style={{ minWidth: "100px" }} />
+    </React.Fragment>
+  );
 };

@@ -43,23 +43,6 @@ export const useFieldArray = ({
     formArrayFieldUnregisterSelector(formContext.formName)
   );
 
-  //This effect will register and unregister fields when they mount and unmount
-  //If an option is set not resetField on unmount unregister will not be called.
-  React.useEffect(() => {
-    registerField(`${formContext.formName}/${arrayFieldName}`);
-    if (formContext.resetFieldOnUnmount === true) {
-      return () => {
-        unregisterField(`${formContext.formName}/${arrayFieldName}`);
-      };
-    }
-  }, [
-    registerField,
-    unregisterField,
-    formContext.formName,
-    formContext.resetFieldOnUnmount,
-    arrayFieldName,
-  ]);
-
   //_insert adds a new field to the fieldArray with a new key
   const _insert = React.useCallback(
     (
@@ -152,15 +135,48 @@ export const useFieldArray = ({
             }
           }
         }
-        setFieldRows({
+        setFieldRows((old) => ({
+          ...old,
           resetFlag: false,
           templateFieldRows: buffer,
           lastInsertIndex: insertIndex,
-        });
+        }));
+      } else {
+        setFieldRows((old) => ({
+          ...old,
+          resetFlag: false,
+          templateFieldRows: [],
+          lastInsertIndex: -1,
+        }));
       }
     },
-    [arrayFieldName, setFieldRows, _insert]
+    [arrayFieldName, setFieldRows, _insert, formContext.initialValues]
   );
+  //This effect will register and unregister fields when they mount and unmount
+  //If an option is set not resetField on unmount unregister will not be called.
+
+  React.useEffect(() => {
+    if (Boolean(formContext.initializeFromStore) === false) {
+      registerField(`${formContext.formName}/${arrayFieldName}`);
+      if (
+        typeof formContext.initialValues === "object" &&
+        Object.keys(formContext.initialValues).length > 0
+      ) {
+        setDefaultValue(formContext.initialValues);
+      }
+    }
+    if (formContext.resetFieldOnUnmount === true) {
+      return () => {
+        unregisterField(`${formContext.formName}/${arrayFieldName}`);
+      };
+    }
+  }, [
+    registerField,
+    unregisterField,
+    formContext.formName,
+    formContext.resetFieldOnUnmount,
+    arrayFieldName,
+  ]);
   //triggers fieldArray reset
   React.useEffect(() => {
     if (
@@ -188,11 +204,12 @@ export const useFieldArray = ({
   );
   //clearFieldArray when clearFn is called
   const clearFieldArray = React.useCallback(() => {
-    setFieldRows({
+    setFieldRows((old) => ({
+      ...old,
+      resetFlag: false,
       templateFieldRows: [],
       lastInsertIndex: -1,
-      resetFlag: false,
-    });
+    }));
   }, [setFieldRows]);
 
   const insert = React.useCallback(

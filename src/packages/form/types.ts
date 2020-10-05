@@ -20,6 +20,7 @@ export interface FormContextType {
   initialValues?: InitialValuesType;
   autoSave?: boolean;
   validationSchema?: ObjectSchema;
+  initializeFromStore?: boolean;
 }
 
 export type FormFieldRegistryAtomType = string[];
@@ -50,7 +51,16 @@ export interface FormFieldAtomType {
   validate?: null | typeof ValidateFnType | EmptyFnType;
 }
 
+export interface FormFieldAtomSerializableType {
+  name: string;
+  fieldKey: string;
+  value: any;
+  touched: boolean;
+  error: string | null;
+}
+
 export interface FormArrayFieldRowsAtomType {
+  fieldName: string;
   templateFieldRows: TemplateFieldRowType[];
   lastInsertIndex: number;
   resetFlag: boolean;

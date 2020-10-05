@@ -1,11 +1,16 @@
 import React from "react";
-import { useRecoilCallback, useRecoilValue } from "recoil";
+import {
+  useRecoilCallback,
+  useRecoilValue,
+  useRecoilTransactionObserver_UNSTABLE,
+} from "recoil";
 import {
   formAtom,
   formFieldAtom,
   formFieldRegistryAtom,
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
+  atomKeys,
 } from "./atoms";
 import { setIn, getIn } from "./util";
 import {
@@ -13,12 +18,131 @@ import {
   FormFieldAtomType,
   InitialValuesType,
   UseFormHookProps,
+  FormFieldRegistryAtomType,
+  FormArrayFieldRowsAtomType,
+  FormAtomType,
+  FormFieldAtomSerializableType,
 } from "./types";
 import { FormContext } from "./context";
+import { StoreType, initiateDB } from "./store";
 
 export const useForm = ({ onSubmit }: UseFormHookProps) => {
   const formContext = React.useContext(FormContext);
+  const dbRef = React.useRef<StoreType | null>(null);
   const formState = useRecoilValue(formAtom(formContext.formName));
+
+  React.useEffect(() => {
+    const initDB = async () => {
+      dbRef.current = await initiateDB(formContext.formName);
+      if (Boolean(formContext.initializeFromStore) === true) {
+        initializeFromStore();
+      }
+    };
+    initDB();
+  }, [formContext.formName, formContext.initializeFromStore]);
+
+  const initializeFromStore = useRecoilCallback(
+    ({ snapshot, gotoSnapshot }) => async () => {
+      console.log(dbRef);
+      if (dbRef.current === null) {
+        return;
+      }
+      const dbInst = dbRef.current;
+
+      await dbInst.sanitizeStore();
+
+      const formFieldState = await dbInst.getFormFields();
+      const formFieldRegistry = await dbInst.getFormFieldsRegistry();
+      const formArrayFieldRowsState = await dbInst.getFormArrayFieldRows();
+      const formArrayFieldRegistry = await dbInst.getFormArrayFieldsRegistry();
+      const newSnapshot = snapshot.map((mutableSnapshot) => {
+        if (typeof formFieldState === "object") {
+          for (const one of Object.values(formFieldState)) {
+            mutableSnapshot.set(formFieldAtom(one.fieldKey), (old) => ({
+              ...old,
+              ...one,
+            }));
+          }
+        }
+        if (Array.isArray(formFieldRegistry)) {
+          mutableSnapshot.set(
+            formFieldRegistryAtom(formContext.formName),
+            formFieldRegistry
+          );
+        }
+        if (typeof formArrayFieldRowsState === "object") {
+          for (const one of Object.values(formArrayFieldRowsState)) {
+            mutableSnapshot.set(formArrayFieldRowsAtom(one.fieldName), one);
+          }
+        }
+        if (Array.isArray(formArrayFieldRegistry)) {
+          mutableSnapshot.set(
+            formArrayFieldRegistryAtom(formContext.formName),
+            formArrayFieldRegistry
+          );
+        }
+      });
+      gotoSnapshot(newSnapshot);
+    },
+    []
+  );
+
+  useRecoilTransactionObserver_UNSTABLE(async ({ snapshot }) => {
+    if (Boolean(formContext.autoSave) === false) {
+      return;
+    }
+    if (dbRef.current === null) {
+      return;
+    }
+    //@ts-ignore
+    const nodes: Iterable<RecoilValue<any>> = snapshot.getNodes_UNSTABLE({
+      isModified: true,
+    });
+    const fieldsToBeUpdated: FormFieldAtomSerializableType[] = [];
+    for (const oneNode of nodes) {
+      let node = snapshot.getLoadable(oneNode);
+      if (node.state === "hasValue") {
+        const trimmedKey = oneNode.key.substr(0, oneNode.key.indexOf("__"));
+        switch (trimmedKey) {
+          case atomKeys.formAtom: {
+            const value = node.contents as FormAtomType;
+            dbRef.current.setForm(value);
+            break;
+          }
+          case atomKeys.formFieldAtom: {
+            const value = node.contents as FormFieldAtomType;
+            fieldsToBeUpdated.push({
+              fieldKey: value.fieldKey,
+              name: value.name,
+              error: value.error,
+              value: value.value,
+              touched: value.touched,
+            });
+            break;
+          }
+          case atomKeys.formFieldRegistryAtom: {
+            const value = node.contents as FormFieldRegistryAtomType;
+            dbRef.current.setFormFieldRegistry(value);
+            break;
+          }
+          case atomKeys.formArrayFieldRowsAtom: {
+            const value = node.contents as FormArrayFieldRowsAtomType;
+            dbRef.current.setFormArrayFieldRows([value], false);
+            break;
+          }
+          case atomKeys.formArrayFieldRegistryAtom: {
+            const value = node.contents as string[];
+            dbRef.current.setFormArrayFieldsRegistry(value);
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      }
+    }
+    dbRef.current.setFormField(fieldsToBeUpdated,false);
+  });
 
   const setInitValues = React.useCallback(
     useRecoilCallback(
@@ -63,6 +187,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     ),
     []
   );
+
   const startSubmit = React.useCallback(
     useRecoilCallback(({ set }) => () => {
       set(formAtom(formContext.formName), (currVal) => ({
@@ -132,11 +257,12 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
         if (loadableArrayFields.state === "hasValue") {
           const arrayFields = loadableArrayFields.contents;
           for (const arrayField of arrayFields) {
-            set(formArrayFieldRowsAtom(arrayField), {
+            set(formArrayFieldRowsAtom(arrayField), (old) => ({
+              ...old,
               resetFlag: false,
               templateFieldRows: [],
               lastInsertIndex: -1,
-            });
+            }));
           }
         }
       }

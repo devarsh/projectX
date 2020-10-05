@@ -7,3 +7,6 @@ https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8
 #For handling-api-request-race-conditions-in-react
 https://sebastienlorber.com/handling-api-request-race-conditions-in-react
 
+#Library to review for animation
+https://github.com/aholachek/react-flip-toolkit
+https://www.framer.com/motion/

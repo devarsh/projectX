@@ -19,21 +19,20 @@ import {
   useForm,
   yupValidationHelper,
   TimeTravelObserver,
-  AutoSaving,
 } from "packages/form";
 import Button from "@material-ui/core/Button";
 import * as yup from "yup";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { FormContext } from "packages/form";
-import { ReactQueryDevtools } from "react-query-devtools";
+
 const App = () => {
   return (
     <RecoilRoot>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <FormContext.Provider
           value={{
-            formName: "depof",
+            formName: "form1",
             resetFieldOnUnmount: true,
             validationRun: "onChange",
             initialValues: {
@@ -47,12 +46,12 @@ const App = () => {
             validationSchema: yup.object().shape({
               password2: yup.string().max(10).min(4),
             }),
+            initializeFromStore: true,
+            autoSave: true,
           }}
         >
           {/*<TimeTravelObserver />*/}
           <MainApp />
-          {/*<AutoSaving />*/}
-          <ReactQueryDevtools initialIsOpen={false} />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
     </RecoilRoot>
