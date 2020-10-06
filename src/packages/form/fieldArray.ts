@@ -156,15 +156,14 @@ export const useFieldArray = ({
   //If an option is set not resetField on unmount unregister will not be called.
 
   React.useEffect(() => {
-    if (Boolean(formContext.initializeFromStore) === false) {
-      registerField(`${formContext.formName}/${arrayFieldName}`);
-      if (
-        typeof formContext.initialValues === "object" &&
-        Object.keys(formContext.initialValues).length > 0
-      ) {
-        setDefaultValue(formContext.initialValues);
-      }
+    registerField(`${formContext.formName}/${arrayFieldName}`);
+    if (
+      typeof formContext.initialValues === "object" &&
+      Object.keys(formContext.initialValues).length > 0
+    ) {
+      setDefaultValue(formContext.initialValues);
     }
+
     if (formContext.resetFieldOnUnmount === true) {
       return () => {
         unregisterField(`${formContext.formName}/${arrayFieldName}`);

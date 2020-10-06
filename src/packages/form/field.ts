@@ -71,21 +71,19 @@ export const useField = ({
     const currentfield = fieldKeyRef.current;
     //Since our keys are prepended with formName, remove the formName and get the filedValue from
     //initialValues object
-    if (Boolean(formContext.initializeFromStore) === false) {
-      const defaultValue =
-        typeof formContext.initialValues === "object"
-          ? getIn(
-              formContext.initialValues,
-              currentfield.replace(`${formContext.formName}/`, ""),
-              null
-            )
-          : null;
-      const registrationValue: FormFieldRegisterSelectorAttributes = {
-        defaultValue: defaultValue,
-        fieldName: currentfield,
-      };
-      registerField(registrationValue);
-    }
+    const defaultValue =
+      typeof formContext.initialValues === "object"
+        ? getIn(
+            formContext.initialValues,
+            currentfield.replace(`${formContext.formName}/`, ""),
+            null
+          )
+        : null;
+    const registrationValue: FormFieldRegisterSelectorAttributes = {
+      defaultValue: defaultValue,
+      fieldName: currentfield,
+    };
+    registerField(registrationValue);
 
     if (formContext.resetFieldOnUnmount === true) {
       return () => {
