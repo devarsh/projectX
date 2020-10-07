@@ -18,8 +18,7 @@ const ForgotPasswordControl = () => {
   const classes = useStyles();
   //const location = useLocation();
   //const navigate = useNavigate();
-  const onSubmitHandler = (values, submitStart, submitEnd, setFieldsError) => {
-    submitStart();
+  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
     setTimeout(() => {
       console.log(values);
       submitEnd(false, "Invalid request");

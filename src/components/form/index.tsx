@@ -58,8 +58,7 @@ const App = () => {
 };
 
 const MainApp = () => {
-  const onSubmitHandler = (values, submitStart, submitEnd, setFieldsError) => {
-    submitStart();
+  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
     setTimeout(() => {
       console.log(values);
       submitEnd(false, "Invalid request");

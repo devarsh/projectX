@@ -216,12 +216,15 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
               for (const field of fieldsAggrigator) {
                 obj = setIn(obj, field.name, field.value);
               }
-              onSubmit(obj, startSubmit, endSubmit, setFieldErrors);
+              onSubmit(obj, endSubmit, setFieldErrors);
             }
+          } else {
+            endSubmit(false);
           }
         }
       };
       e.preventDefault();
+      startSubmit();
       _handleSubmit(e);
     }),
     []

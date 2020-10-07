@@ -20,8 +20,7 @@ import clsx from "clsx";
 const LoginControl = () => {
   const classes = useStyles();
   let navigate = useNavigate();
-  const onSubmitHandler = (values, submitStart, submitEnd, setFieldsError) => {
-    submitStart();
+  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
     setTimeout(() => {
       console.log(values);
       submitEnd(false, "Invalid request");

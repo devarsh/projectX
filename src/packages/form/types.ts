@@ -85,7 +85,6 @@ export interface EmptyFnType {
 export interface SubmitFnType {
   (
     obj: Object,
-    startSubmit: () => void,
     endSubmit: (submitSuccessful?: boolean, message?: string) => void,
     setFieldErrors: (fieldsErrorObj: FieldsErrorObjType) => void
   ): void;
