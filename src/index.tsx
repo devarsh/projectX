@@ -7,11 +7,12 @@ import App from "./components/form";
 import * as serviceWorker from "./serviceWorker";
 
 //@ts-ignore
-ReactDOM.unstable_createRoot(document.getElementById("root")).render(
+ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 //ReactDOM.render(document.getElementById("root"));
