@@ -71,7 +71,8 @@ export const useField = ({
     const currentfield = fieldKeyRef.current;
     //Since our keys are prepended with formName, remove the formName and get the filedValue from
     //initialValues object
-    const defaultValue =
+    let defaultValue: any = null;
+    const value =
       typeof formContext.initialValues === "object"
         ? getIn(
             formContext.initialValues,
@@ -79,6 +80,10 @@ export const useField = ({
             null
           )
         : null;
+    if (Boolean(value)) {
+      defaultValue = { value: value };
+    }
+
     const registrationValue: FormFieldRegisterSelectorAttributes = {
       defaultValue: defaultValue,
       fieldName: currentfield,

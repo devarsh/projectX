@@ -46,11 +46,10 @@ const App = () => {
             validationSchema: yup.object().shape({
               password2: yup.string().max(10).min(4),
             }),
-            initializeFromStore: true,
             autoSave: true,
           }}
         >
-          {/*<TimeTravelObserver />*/}
+          <TimeTravelObserver />
           <MainApp />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>

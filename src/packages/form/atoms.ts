@@ -19,6 +19,7 @@ export const atomKeys = {
   formArrayFieldRegisterSelector: "formArrayFieldRegisterSelector",
   formArrayFieldUnregisterSelector: "formArrayFieldUnregisterSelector",
   subscribeToFormFieldsSelector: "subscribeToFormFieldsSelector",
+  isFormArrayFieldRegistered: "isFormArrayFieldRegistered",
 };
 
 export const formAtom = atomFamily<FormAtomType, string>({
@@ -67,7 +68,7 @@ export const formFieldRegisterSelector = selectorFamily<
         if (newValue.defaultValue !== null) {
           set(formFieldAtom(newValue.fieldName), (prev) => ({
             ...prev,
-            value: newValue.defaultValue,
+            ...newValue.defaultValue,
           }));
         }
       }

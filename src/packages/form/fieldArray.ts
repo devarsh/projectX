@@ -9,8 +9,10 @@ import {
   formArrayFieldRowsAtom,
   formArrayFieldRegisterSelector,
   formArrayFieldUnregisterSelector,
+  formFieldUnregisterSelector,
+  formArrayFieldRegistryAtom,
 } from "./atoms";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilCallback } from "recoil";
 import { getIn } from "./util";
 import { FormContext } from "./context";
 
@@ -35,12 +37,33 @@ export const useFieldArray = ({
 
   //registerField function registers the currentField to the fields registry if not registered,
   //and keeping track of all the active array fields in the form
-  const registerField = useSetRecoilState(
+  const registerArrayField = useSetRecoilState(
     formArrayFieldRegisterSelector(formContext.formName)
   );
   //unregisterField function unregistered the current arrayField from the fields registry
-  const unregisterField = useSetRecoilState(
+  const unregisterArrayField = useSetRecoilState(
     formArrayFieldUnregisterSelector(formContext.formName)
+  );
+
+  const unregisterField = useSetRecoilState(
+    formFieldUnregisterSelector(formContext.formName)
+  );
+
+  const isFieldRegistered = useRecoilCallback(
+    ({ snapshot }) => (fieldName: string) => {
+      const loader = snapshot.getLoadable(
+        formArrayFieldRegistryAtom(formContext.formName)
+      );
+      if (loader.state === "hasValue") {
+        const fields = loader.contents;
+        if (fields.indexOf(fieldName) > -1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    [formContext.formName, formArrayFieldRegisterSelector]
   );
 
   //_insert adds a new field to the fieldArray with a new key
@@ -87,6 +110,7 @@ export const useFieldArray = ({
     (index: number) => {
       if (index >= 0 && index < fieldRowsRef.current.templateFieldRows.length) {
         let currentIndex = index;
+        const deleteRow = fieldRowsRef.current.templateFieldRows[index];
         const beginningRows = fieldRowsRef.current.templateFieldRows.slice(
           0,
           currentIndex
@@ -107,9 +131,13 @@ export const useFieldArray = ({
           templateFieldRows: [...beginningRows, ...endingRows],
           lastInsertIndex: oldValues.lastInsertIndex,
         }));
+
+        for (const oneField of Object.values(deleteRow.cells)) {
+          unregisterField(oneField.key);
+        }
       }
     },
-    [setFieldRows, arrayFieldName]
+    [setFieldRows, unregisterField, arrayFieldName]
   );
   //Initialize the form array with default rows
   const setDefaultValue = React.useCallback(
@@ -150,31 +178,32 @@ export const useFieldArray = ({
         }));
       }
     },
-    [arrayFieldName, setFieldRows, _insert, formContext.initialValues]
+    [arrayFieldName, setFieldRows, _insert]
   );
   //This effect will register and unregister fields when they mount and unmount
   //If an option is set not resetField on unmount unregister will not be called.
 
   React.useEffect(() => {
-    registerField(`${formContext.formName}/${arrayFieldName}`);
-    if (
-      typeof formContext.initialValues === "object" &&
-      Object.keys(formContext.initialValues).length > 0
-    ) {
-      setDefaultValue(formContext.initialValues);
+    if (!isFieldRegistered(`${formContext.formName}/${arrayFieldName}`)) {
+      registerArrayField(`${formContext.formName}/${arrayFieldName}`);
+      if (typeof formContext.initialValues === "object") {
+        setDefaultValue(formContext.initialValues);
+      }
     }
-
     if (formContext.resetFieldOnUnmount === true) {
       return () => {
-        unregisterField(`${formContext.formName}/${arrayFieldName}`);
+        unregisterArrayField(`${formContext.formName}/${arrayFieldName}`);
       };
     }
   }, [
-    registerField,
-    unregisterField,
+    registerArrayField,
+    unregisterArrayField,
     formContext.formName,
-    formContext.resetFieldOnUnmount,
     arrayFieldName,
+    formContext.resetFieldOnUnmount,
+    formContext.initialValues,
+    setDefaultValue,
+    isFieldRegistered,
   ]);
   //triggers fieldArray reset
   React.useEffect(() => {
