@@ -15,6 +15,10 @@ This package is helps building performant forms using Recoil JS which solves the
 7. Form level server error and field level server error setting support
 8. Support for string,number,date object storing
 
+## Disclaimer
+
+This is a hooks only API, so you have to create wrapper components that will consume this API. This library is currently not providing wrapper components out of the box.
+
 ## API Reference
 
 The API is hooks based, hooks have provided us a way to cleanly seperate logic from rendering. Giving you a seamless experince while intergrate with any UI library.
@@ -111,24 +115,38 @@ const {
 #### useForm Arguments
 
 - **fieldKey**: Unique key for every field
+
 - **name**: Name of the field
+
 - **validate**: Validation method that should be called to perform validation
+
 - **dependentFields**: Array of field name that needs to be watched
 
 #### Properties
 
 - **fieldKey**: Unique key for every field in the form
+
 - **name**: Name of the field
+
 - **value**: Value of the current field
+
 - **touched**: Touched property is true if the field has received focus atleast once
+
 - **error**: Error property holds the current error message
+
 - **validationRunning**: Returns boolean determining if the validation is running or not
+
 - **validate: Function(fieldObject) => string**: Validate function that recieves current field props and it returns error in string format
+
   - fieldObject has `fieldKey, name, value, touched, error` properties
   - Note: if current field exist in the validationSchema then a wrapper function will wrap validation function and field validation from the validationScheam, and when field schema level validation is successful only then the validation will be called.
+
 - **isSubmitting**: Returns true if the form is submitting
+
 - **handleChange: Function(event| string| number | date)**: onChange handler that will be passed to the underlying fields
+
 - **handleBlur: Function(event)**: onBlur handler that will be passed to the underlying field
+
 - **dependentValues**: provides an array of watch fields with `fieldKey,name,value,touched,error` fields for each watched field
 
 ### useFieldArray
