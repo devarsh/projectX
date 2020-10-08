@@ -17,9 +17,8 @@ export interface FormContextType {
   formName: string;
   validationRun: string;
   resetFieldOnUnmount: boolean;
-  validationSchema?: ObjectSchema;
   initialValues?: InitialValuesType;
-  autoSave?: boolean;
+  validationSchema?: ObjectSchema;
 }
 
 export type FormFieldRegistryAtomType = string[];
@@ -59,7 +58,6 @@ export interface FormArrayFieldRowsAtomType {
 
 export interface UseFormHookProps {
   onSubmit: SubmitFnType;
-  persist?: boolean;
 }
 
 export interface UseFieldHookProps {
@@ -85,7 +83,7 @@ export interface EmptyFnType {
 export interface SubmitFnType {
   (
     obj: Object,
-    endSubmit: (submitSuccessful?: boolean, message?: string) => void,
+    endSubmit: (submitSuccessful: boolean, message?: string) => void,
     setFieldErrors: (fieldsErrorObj: FieldsErrorObjType) => void
   ): void;
 }

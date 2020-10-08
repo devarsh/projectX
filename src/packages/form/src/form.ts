@@ -93,6 +93,8 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     ),
     []
   );
+  //need to change this to pass arrayField errors to respective arrayField
+  //Todo: loop to registered field and grab errors from the object and set the same.
   const setFieldErrors = React.useCallback(
     useRecoilCallback(
       ({ set }) => (fieldsErrorObj: FieldsErrorObjType = {}) => {
