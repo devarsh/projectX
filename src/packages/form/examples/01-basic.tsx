@@ -46,7 +46,6 @@ const App = () => {
             validationSchema: yup.object().shape({
               password2: yup.string().max(10).min(4),
             }),
-            autoSave: true,
           }}
         >
           <TimeTravelObserver />

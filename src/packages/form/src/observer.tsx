@@ -4,11 +4,12 @@ import {
   Snapshot,
   SnapshotID,
 } from "recoil";
-import React from "react";
+
+import { useRef, useState } from "react";
 
 export const TimeTravelObserver = () => {
-  const snapshots = React.useRef(new Map<SnapshotID, Snapshot>());
-  const [, render] = React.useState(0);
+  const snapshots = useRef(new Map<SnapshotID, Snapshot>());
+  const [, render] = useState(0);
   useRecoilTransactionObserver_UNSTABLE(({ snapshot }) => {
     if (!snapshots.current.has(snapshot.getID())) {
       snapshots.current.set(snapshot.getID(), snapshot);
@@ -32,10 +33,10 @@ export const TimeTravelObserver = () => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <div style={{ overflow: "scroll" }}>
         <ul style={{ width: "7000px" }}>{result}</ul>
       </div>
-    </React.Fragment>
+    </>
   );
 };

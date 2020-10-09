@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { useForm, yupValidationHelper } from "packages/form";
 import { TextField, Checkbox } from "components/common";
 import { PasswordField } from "components/derived";
@@ -34,7 +34,7 @@ const LoginControl = () => {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       {isSubmitting ? <LinearProgress color="secondary" /> : null}
       <Box className={classes.loginControllerContainer}>
         <Avatar className={classes.avatar}>
@@ -113,7 +113,7 @@ const LoginControl = () => {
           </Box>
         </form>
       </Box>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

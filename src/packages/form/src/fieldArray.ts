@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext, useRef, useCallback, useEffect } from "react";
 import {
   UseFieldArrayHookProps,
   TemplateFieldRowType,
@@ -21,9 +21,9 @@ export const useFieldArray = ({
   template,
 }: UseFieldArrayHookProps) => {
   //fromContext provides formName for scoping
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   //caching template keys passed as object which are fields per row in the fieldArray
-  let templateFieldNamesRef = React.useRef<string[]>(Object.keys(template));
+  let templateFieldNamesRef = useRef<string[]>(Object.keys(template));
   //fieldRows keeps track of fields in the field array,
   //also will keep track of last inserted field index which forms the
   //basis of fieldKey to uniquely identify field in the formFieldAtom
@@ -32,7 +32,7 @@ export const useFieldArray = ({
     formArrayFieldRowsAtom(`${formContext.formName}/${arrayFieldName}`)
   );
   //fieldRowsRef for memoization purpose
-  const fieldRowsRef = React.useRef(fieldRows);
+  const fieldRowsRef = useRef(fieldRows);
   fieldRowsRef.current = fieldRows;
 
   //registerField function registers the currentField to the fields registry if not registered,
@@ -67,7 +67,7 @@ export const useFieldArray = ({
   );
 
   //_insert adds a new field to the fieldArray with a new key
-  const _insert = React.useCallback(
+  const _insert = useCallback(
     (
       index: number,
       rowBuffer: TemplateFieldRowType[],
@@ -106,7 +106,7 @@ export const useFieldArray = ({
     [arrayFieldName, formContext.formName]
   );
   //remove field from the fieldArray
-  const remove = React.useCallback(
+  const remove = useCallback(
     (index: number) => {
       if (index >= 0 && index < fieldRowsRef.current.templateFieldRows.length) {
         let currentIndex = index;
@@ -140,7 +140,7 @@ export const useFieldArray = ({
     [setFieldRows, unregisterField, arrayFieldName]
   );
   //Initialize the form array with default rows
-  const setDefaultValue = React.useCallback(
+  const setDefaultValue = useCallback(
     (initValues: InitialValuesType) => {
       const defaultArrayValue: string | undefined = getIn(
         initValues,
@@ -183,7 +183,7 @@ export const useFieldArray = ({
   //This effect will register and unregister fields when they mount and unmount
   //If an option is set not resetField on unmount unregister will not be called.
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isFieldRegistered(`${formContext.formName}/${arrayFieldName}`)) {
       registerArrayField(`${formContext.formName}/${arrayFieldName}`);
       if (typeof formContext.initialValues === "object") {
@@ -206,7 +206,7 @@ export const useFieldArray = ({
     isFieldRegistered,
   ]);
   //triggers fieldArray reset
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       fieldRows.resetFlag === true &&
       typeof formContext.initialValues === "object" &&
@@ -217,7 +217,7 @@ export const useFieldArray = ({
   }, [fieldRows.resetFlag, setDefaultValue, formContext.initialValues]);
 
   //utility function to renderRows
-  const renderRows = React.useCallback(
+  const renderRows = useCallback(
     (renderFn: RenderFn) => {
       return fieldRowsRef.current.templateFieldRows.map((row, idx) => {
         return renderFn({
@@ -231,7 +231,7 @@ export const useFieldArray = ({
     [remove]
   );
   //clearFieldArray when clearFn is called
-  const clearFieldArray = React.useCallback(() => {
+  const clearFieldArray = useCallback(() => {
     setFieldRows((old) => ({
       ...old,
       resetFlag: false,
@@ -240,7 +240,7 @@ export const useFieldArray = ({
     }));
   }, [setFieldRows]);
 
-  const insert = React.useCallback(
+  const insert = useCallback(
     (index: number) => {
       const result = _insert(
         index,
@@ -261,7 +261,7 @@ export const useFieldArray = ({
     [setFieldRows, _insert]
   );
 
-  const push = React.useCallback(() => {
+  const push = useCallback(() => {
     const result = _insert(
       fieldRowsRef.current.templateFieldRows.length,
       fieldRowsRef.current.templateFieldRows,
@@ -277,7 +277,7 @@ export const useFieldArray = ({
     }
   }, [setFieldRows, _insert]);
 
-  const unshift = React.useCallback(() => {
+  const unshift = useCallback(() => {
     const result = _insert(
       0,
       fieldRowsRef.current.templateFieldRows,
@@ -295,11 +295,11 @@ export const useFieldArray = ({
     }
   }, [setFieldRows, _insert]);
 
-  const pop = React.useCallback(() => {
+  const pop = useCallback(() => {
     remove(fieldRowsRef.current.templateFieldRows.length - 1);
   }, [remove]);
 
-  const swap = React.useCallback(
+  const swap = useCallback(
     (indexA: number, indexB: number) => {
       if (
         indexA >= 0 &&
@@ -328,7 +328,7 @@ export const useFieldArray = ({
     },
     [setFieldRows]
   );
-  const move = React.useCallback(
+  const move = useCallback(
     (from: number, to: number) => {
       if (
         from >= 0 &&

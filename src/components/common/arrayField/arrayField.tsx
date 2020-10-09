@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useFieldArray, UseFieldArrayHookProps, RenderFn } from "packages/form";
 
 interface RenderParentAttribs {
@@ -12,7 +12,7 @@ interface ArrayFieldProps extends UseFieldArrayHookProps {
   renderRowsFn: RenderFn;
 }
 
-export const ArrayField: React.FC<ArrayFieldProps> = ({
+export const ArrayField: FC<ArrayFieldProps> = ({
   arrayFieldName,
   template,
   renderParentFn,

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useCallback } from "react";
 import { TextField, TextFieldProps } from "components/common/textField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -11,8 +11,8 @@ const PasswordField: React.FC<TextFieldProps> = ({
   fieldKey,
   ...others
 }) => {
-  const [passwordVisibility, setPasswordVisibility] = React.useState(false);
-  const handleVisibility = React.useCallback(() => {
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const handleVisibility = useCallback(() => {
     setPasswordVisibility((old) => !old);
   }, [setPasswordVisibility]);
   return (

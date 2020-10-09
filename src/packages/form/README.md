@@ -214,3 +214,7 @@ ArrayFields hooks provides support for nested arrays and provides methods to add
 - **swap(indexA: number, indexB: number)**: This method swaps two fields in the array.
 
 - **move(fromIndex: number, toIndex: number)**: This method moves the field from `from` index to `to` index and shifts other values to the right or left depending.
+
+### Example
+
+#### Basic Example

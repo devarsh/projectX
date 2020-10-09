@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, useState, useEffect, useCallback, Fragment } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import Slider, { SliderProps } from "@material-ui/core/Slider";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
@@ -8,7 +8,7 @@ interface ExtendedFieldProps extends UseFieldHookProps {
   InputLabelProps?: InputLabelProps;
 }
 
-const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
+const MySlider: FC<ExtendedFieldProps & SliderProps> = ({
   name: fieldName,
   fieldKey: fieldID,
   label,
@@ -26,34 +26,34 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
     name: fieldName,
     fieldKey: fieldID,
   });
-  const [localValue, setLocalValue] = React.useState(Number(value));
-  React.useEffect(() => {
+  const [localValue, setLocalValue] = useState(Number(value));
+  useEffect(() => {
     setLocalValue(Number(value));
   }, [value]);
-  const [focus, setFocus] = React.useState(false);
-  const localValueHandler = React.useCallback(
+  const [focus, setFocus] = useState(false);
+  const localValueHandler = useCallback(
     (_, sliderValue) => {
       setLocalValue(sliderValue);
     },
     [setLocalValue]
   );
-  const customHandleChange = React.useCallback(
+  const customHandleChange = useCallback(
     (_, sliderValue) => {
       handleChange(sliderValue);
     },
     [handleChange]
   );
-  const customBlur = React.useCallback(() => {
+  const customBlur = useCallback(() => {
     handleBlur();
     setFocus(false);
   }, [handleBlur, setFocus]);
-  const focusHandler = React.useCallback(() => {
+  const focusHandler = useCallback(() => {
     setFocus(true);
   }, [setFocus]);
 
   return (
     // @ts-ignore
-    <React.Fragment key={fieldKey}>
+    <Fragment key={fieldKey}>
       <InputLabel {...InputLabelProps} focused={focus} disabled={isSubmitting}>
         {label}
       </InputLabel>
@@ -70,7 +70,7 @@ const MySlider: React.FC<ExtendedFieldProps & SliderProps> = ({
         onChangeCommitted={customHandleChange}
         onBlur={customBlur}
       />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

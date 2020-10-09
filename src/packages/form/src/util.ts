@@ -73,9 +73,7 @@ const validationConfig = {
 export const yupValidationHelper = (schema: any) => (field: any) => {
   //@ts-ignore
   const { value } = field;
-
   try {
-    console.log(value);
     schema.validateSync(value ?? null, validationConfig);
     return "";
   } catch (e) {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext, useRef, useEffect, useCallback } from "react";
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import {
   formAtom,
@@ -22,13 +22,13 @@ export const useField = ({
   dependentFields,
 }: UseFieldHookProps) => {
   //formContext provides formName for scoping of fields, and initialValue for the field
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   //formState provides will be used to determine if form is submitting
   const formState = useRecoilValue(formAtom(formContext.formName));
   //fieldKeyRef used to inititalize fieldKey, if fieldKey is not passed
   //fieldName will be used to determine fieldKey, fieldKey will be used to
   //access atom from recoil storing field state
-  const fieldKeyRef = React.useRef(
+  const fieldKeyRef = useRef(
     Boolean(fieldKey)
       ? `${formContext.formName}/${fieldKey}`
       : `${formContext.formName}/${name}`
@@ -41,7 +41,7 @@ export const useField = ({
   //This effect will update fieldName, in case of arrayField, when fields array index postion
   //updates. ie. arrayFieldName[current-index].fieldName - here currentIndex represents
   //fields current postion in the arrayField
-  React.useEffect(() => {
+  useEffect(() => {
     setFieldData((currVal) => ({
       ...currVal,
       name: name,
@@ -51,7 +51,7 @@ export const useField = ({
   //fieldDataRef will store current reference of fieldState and will provide latest value to
   //onChange and onBlur handlers when the memozied version of handlers are passed as props
   //shaving off rerenders.
-  const fieldDataRef = React.useRef<FormFieldAtomType>(fieldData);
+  const fieldDataRef = useRef<FormFieldAtomType>(fieldData);
   fieldDataRef.current = fieldData;
 
   //registerField function registers the currentField to the fields registry if not registered,
@@ -67,7 +67,7 @@ export const useField = ({
   //This effect will register and unregister fields when they mount and unmount
   //set initial value of the field, if initial value is provided.
   //If an option is set not resetField on unmount unregister will not be called.
-  React.useEffect(() => {
+  useEffect(() => {
     const currentfield = fieldKeyRef.current;
     //Since our keys are prepended with formName, remove the formName and get the filedValue from
     //initialValues object
@@ -99,10 +99,10 @@ export const useField = ({
 
   //This hook with register validation method on field instance
 
-  const isValidationFnRef = React.useRef(
+  const isValidationFnRef = useRef(
     typeof validate === "function" ? true : false
   );
-  React.useEffect(() => {
+  useEffect(() => {
     const wrappedValidation = wrapValidationMethod(
       formContext.validationSchema,
       validate,
@@ -126,10 +126,10 @@ export const useField = ({
    * it will call cancel function and cancel the query
    */
 
-  const lastValidationPromise = React.useRef<Promise<any> | null>(null);
-  const lastValidationValue = React.useRef<any | null>(null);
+  const lastValidationPromise = useRef<Promise<any> | null>(null);
+  const lastValidationValue = useRef<any | null>(null);
 
-  const handleValidation = React.useCallback(
+  const handleValidation = useCallback(
     (data: FormFieldAtomType) => {
       if (typeof fieldDataRef.current.validate !== "function") {
         return;
@@ -197,7 +197,7 @@ export const useField = ({
   //handleChange will be responsible for setting fieldValue when will be passed as a props to the
   //inputs, it can take event, date, number, string
   //It will run validation if validationRun == 'onChange'
-  const handleChange = React.useCallback(
+  const handleChange = useCallback(
     (eventOrTextValue: React.ChangeEvent<any> | Date | string | number) => {
       if (fieldDataRef.current !== null) {
         eventOrTextValue = eventOrTextValue ?? "";
@@ -244,7 +244,7 @@ export const useField = ({
   );
   //handleBlur will set touch property in field state to true for every field touched by user
   //It will run validation if validationRun == 'onBlur'
-  const handleBlur = React.useCallback(async () => {
+  const handleBlur = useCallback(async () => {
     if (fieldDataRef.current !== null) {
       setFieldData((currVal) => {
         if (currVal.touched) {
@@ -270,6 +270,8 @@ export const useField = ({
     dependentValues: dependentFieldsState,
   };
 };
+
+//copied from formik
 
 // Checkbox helper that will provide an array if multiple checkboxes are present under same name
 function getValueForCheckbox(

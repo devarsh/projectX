@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, useEffect, useState } from "react";
 import { useField, UseFieldHookProps, FormFieldAtomType } from "packages/form";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
@@ -28,7 +28,7 @@ interface MySelectExtendedProps {
 
 type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
 
-const MySelect: React.FC<MySelectAllProps> = ({
+const MySelect: FC<MySelectAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,
@@ -57,8 +57,8 @@ const MySelect: React.FC<MySelectAllProps> = ({
     dependentFields,
     fieldKey: fieldID,
   });
-  const [_options, setOptions] = React.useState<OptionsProps[]>([]);
-  React.useEffect(() => {
+  const [_options, setOptions] = useState<OptionsProps[]>([]);
+  useEffect(() => {
     async function runner() {
       if (Array.isArray(options)) {
         setOptions(options);

@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { useForm, yupValidationHelper } from "packages/form";
 import { TextField } from "components/common";
 import Button from "@material-ui/core/Button";
@@ -33,7 +33,7 @@ const ForgotPasswordControl = () => {
     //   navigate("/login");
   };
   return (
-    <React.Fragment>
+    <Fragment>
       {isSubmitting ? <LinearProgress color="secondary" /> : null}
       <Box className={classes.loginControllerContainer}>
         <Avatar className={classes.avatar}>
@@ -103,7 +103,7 @@ const ForgotPasswordControl = () => {
           </Box>
         </form>
       </Box>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

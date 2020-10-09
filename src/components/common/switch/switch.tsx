@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import FormControlLabel, {
   FormControlLabelProps,
@@ -24,7 +24,7 @@ interface MySwitchExtendedProps {
 
 type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
 
-const MySwitch: React.FC<MySwitchAllProps> = ({
+const MySwitch: FC<MySwitchAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

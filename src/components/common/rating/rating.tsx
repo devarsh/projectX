@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, Fragment } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import Rating, { RatingProps } from "@material-ui/lab/Rating";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
@@ -43,7 +43,7 @@ const MyRating: React.FC<ExtendedFieldProps & RatingProps> = ({
     [handleChange]
   );
   return (
-    <React.Fragment key={fieldKey}>
+    <Fragment key={fieldKey}>
       <InputLabel {...InputLabelProps} focused={focus} disabled={isSubmitting}>
         {label}
       </InputLabel>
@@ -59,7 +59,7 @@ const MyRating: React.FC<ExtendedFieldProps & RatingProps> = ({
         onBlur={customBlur}
         disabled={isSubmitting}
       />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

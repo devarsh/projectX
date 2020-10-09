@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
 import FormGroup, { FormGroupProps } from "@material-ui/core/FormGroup";
@@ -33,7 +33,7 @@ const valueExists = (myValue: any[] | any, value: any) => {
   return Array.isArray(myValue) && myValue.indexOf(value) > -1;
 };
 
-const MyCheckboxGroup: React.FC<MySwitchAllProps> = ({
+const MyCheckboxGroup: FC<MySwitchAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

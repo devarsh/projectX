@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext, useCallback } from "react";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import {
   formAtom,
@@ -17,11 +17,11 @@ import {
 import { FormContext } from "./context";
 
 export const useForm = ({ onSubmit }: UseFormHookProps) => {
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
 
   const formState = useRecoilValue(formAtom(formContext.formName));
 
-  const setInitValues = React.useCallback(
+  const setInitValues = useCallback(
     useRecoilCallback(
       ({ set, snapshot }) => (initValues: InitialValuesType) => {
         const loadableFields = snapshot.getLoadable(
@@ -66,7 +66,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     []
   );
 
-  const startSubmit = React.useCallback(
+  const startSubmit = useCallback(
     useRecoilCallback(({ set }) => () => {
       set(formAtom(formContext.formName), (currVal) => ({
         ...currVal,
@@ -77,7 +77,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     []
   );
 
-  const endSubmit = React.useCallback(
+  const endSubmit = useCallback(
     useRecoilCallback(
       ({ set }) => (
         submitSuccessful: boolean = false,
@@ -95,7 +95,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
   );
   //need to change this to pass arrayField errors to respective arrayField
   //Todo: loop to registered field and grab errors from the object and set the same.
-  const setFieldErrors = React.useCallback(
+  const setFieldErrors = useCallback(
     useRecoilCallback(
       ({ set }) => (fieldsErrorObj: FieldsErrorObjType = {}) => {
         for (const field of Object.entries(fieldsErrorObj)) {
@@ -112,7 +112,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     ),
     []
   );
-  const handleClear = React.useCallback(
+  const handleClear = useCallback(
     useRecoilCallback(
       ({ snapshot, set }) => (e: React.FormEvent<any> | any) => {
         e?.preventDefault?.();
@@ -150,7 +150,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     []
   );
 
-  const handleReset = React.useCallback(
+  const handleReset = useCallback(
     (e: React.FormEvent<any>) => {
       e.preventDefault();
       if (
@@ -165,7 +165,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     [setInitValues, handleClear, formContext.initialValues]
   );
 
-  const handleSubmit = React.useCallback(
+  const handleSubmit = useCallback(
     useRecoilCallback(({ snapshot, set }) => (e: React.FormEvent<any>) => {
       const _handleSubmit = async (e: React.FormEvent<any>) => {
         const loadableFields = snapshot.getLoadable(

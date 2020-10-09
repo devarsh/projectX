@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import FormControlLabel, {
   FormControlLabelProps,
@@ -24,7 +24,7 @@ interface MyCheckboxExtendedProps {
 
 type MyChecboxAllProps = Merge<MyCheckboxMixedProps, MyCheckboxExtendedProps>;
 
-const MyCheckbox: React.FC<MyChecboxAllProps> = ({
+const MyCheckbox: FC<MyChecboxAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

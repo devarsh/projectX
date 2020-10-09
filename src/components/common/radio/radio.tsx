@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
 import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
@@ -30,7 +30,7 @@ interface MyCheckboxExtendedProps {
 
 type MyRadioAllProps = Merge<MyRadioMixedProps, MyCheckboxExtendedProps>;
 
-const MyRadio: React.FC<MyRadioAllProps> = ({
+const MyRadio: FC<MyRadioAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

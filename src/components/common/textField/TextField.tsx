@@ -1,10 +1,10 @@
-import React from "react";
+import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import TextField, { TextFieldProps } from "@material-ui/core/TextField";
 
 export type MyTextFieldProps = UseFieldHookProps & TextFieldProps;
 
-const MyTextField: React.FC<MyTextFieldProps> = ({
+const MyTextField: FC<MyTextFieldProps> = ({
   name: fieldName,
   validate,
   dependentFields,
