@@ -15,6 +15,8 @@ import {
   Rating,
 } from "components/common";
 
+import { NumWordsField } from "components/derived";
+
 import {
   useForm,
   yupValidationHelper,
@@ -34,7 +36,7 @@ const App = () => {
           value={{
             formName: "form1",
             resetFieldOnUnmount: true,
-            validationRun: "onChange",
+            validationRun: "onBlur",
             initialValues: {
               firstName: "deva@gmail.com",
               password: "dsfdssddfgdfs",
@@ -44,6 +46,7 @@ const App = () => {
               ],
             },
             validationSchema: yup.object().shape({
+              firstName: yup.string().max(10).min(2).email(),
               password2: yup.string().max(10).min(4),
             }),
           }}
@@ -65,7 +68,12 @@ const MainApp = () => {
     }, 3000);
   };
 
-  const { handleSubmit, handleReset, handleClear } = useForm({
+  const {
+    handleSubmit,
+    handleReset,
+    handleClear,
+    handleSubmitPartial,
+  } = useForm({
     onSubmit: onSubmitHandler,
   });
 
@@ -87,6 +95,30 @@ const MainApp = () => {
             .required("email is required")
             .email("should be valid email")
         )}
+      />
+      <NumWordsField
+        name="amount"
+        fieldKey="amount"
+        type="number"
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        label="Amount"
+      />
+
+      <TextField
+        name="firstName-2"
+        fieldKey="firstName-2"
+        type="email"
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        label="Email Address 2"
+        validate={async (data) => {
+          return data.value === "devarsh@gmail.com" ? "" : "invalid email";
+        }}
       />
       <TextField
         name="password"
@@ -273,7 +305,18 @@ const MainApp = () => {
         color="primary"
         onClick={handleSubmit}
       >
-        Sign In
+        Submit Full
+      </Button>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={() =>
+          handleSubmitPartial(["firstName", "firstName-2", "password"])
+        }
+      >
+        Submit Partial
       </Button>
       <Button
         component="button"

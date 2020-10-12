@@ -30,6 +30,7 @@ const PasswordField: React.FC<TextFieldProps> = ({
               aria-label="toggle password visibility"
               onClick={handleVisibility}
               edge="end"
+              tabIndex={-1}
             >
               {passwordVisibility ? <Visibility /> : <VisibilityOff />}
             </IconButton>

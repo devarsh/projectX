@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, useState, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import Rating, { RatingProps } from "@material-ui/lab/Rating";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
@@ -8,7 +8,7 @@ interface ExtendedFieldProps extends UseFieldHookProps {
   InputLabelProps?: InputLabelProps;
 }
 
-const MyRating: React.FC<ExtendedFieldProps & RatingProps> = ({
+const MyRating: FC<ExtendedFieldProps & RatingProps> = ({
   name: fieldName,
   validate,
   dependentFields,
@@ -28,15 +28,15 @@ const MyRating: React.FC<ExtendedFieldProps & RatingProps> = ({
     name: fieldName,
     fieldKey: fieldID,
   });
-  const [focus, setFocus] = React.useState(false);
-  const customBlur = React.useCallback(() => {
+  const [focus, setFocus] = useState(false);
+  const customBlur = useCallback(() => {
     handleBlur();
     setFocus(false);
   }, [handleBlur, setFocus]);
-  const focusHandler = React.useCallback(() => {
+  const focusHandler = useCallback(() => {
     setFocus(true);
   }, [setFocus]);
-  const customChange = React.useCallback(
+  const customChange = useCallback(
     (_, value) => {
       handleChange(value);
     },

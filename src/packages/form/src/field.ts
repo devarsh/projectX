@@ -90,7 +90,7 @@ export const useField = ({
     };
     registerField(registrationValue);
 
-    if (formContext.resetFieldOnUnmount === true) {
+    if (Boolean(formContext.resetFieldOnUnmount) === true) {
       return () => {
         unregisterField(currentfield);
       };
@@ -233,8 +233,9 @@ export const useField = ({
         }
         setFieldData((currVal) => ({ ...currVal, value: val }));
         if (
-          isValidationFnRef.current &&
-          formContext.validationRun === "onChange"
+          (isValidationFnRef.current &&
+            formContext.validationRun === "onChange") ||
+          formContext.validationRun === "all"
         ) {
           handleValidation({ ...fieldDataRef.current, value: val });
         }
@@ -257,7 +258,11 @@ export const useField = ({
         }
       });
 
-      if (isValidationFnRef.current && formContext.validationRun === "onBlur") {
+      if (
+        (isValidationFnRef.current && formContext.validationRun === "onBlur") ||
+        formContext.validationRun === "all" ||
+        Boolean(formContext.validationRun) === false
+      ) {
         handleValidation({ ...fieldDataRef.current, touched: true });
       }
     }

@@ -15,8 +15,8 @@ export interface TemplateFieldCellType {
 
 export interface FormContextType {
   formName: string;
-  validationRun: string;
-  resetFieldOnUnmount: boolean;
+  validationRun?: string;
+  resetFieldOnUnmount?: boolean;
   initialValues?: InitialValuesType;
   validationSchema?: ObjectSchema;
 }

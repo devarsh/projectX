@@ -1,18 +1,11 @@
-import { StrictMode } from "react";
 import ReactDOM from "react-dom";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import "typeface-roboto";
-import Copyright from "components/auth/copyright";
+//import App from "components/app";
+import App from "packages/form/examples/01-basic";
 import * as serviceWorker from "./serviceWorker";
 
 //@ts-ignore
-ReactDOM.render(
-  <StrictMode>
-    <CssBaseline />
-    <Copyright />
-  </StrictMode>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 //ReactDOM.render(document.getElementById("root"));
 

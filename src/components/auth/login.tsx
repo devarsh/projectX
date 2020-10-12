@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useForm, yupValidationHelper } from "packages/form";
+import { useForm, FormContext } from "packages/form";
 import { TextField, Checkbox } from "components/common";
 import { PasswordField } from "components/derived";
 import Button from "@material-ui/core/Button";
@@ -13,17 +13,34 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import * as yup from "yup";
 import useStyles from "./styles";
 import Copyright from "./copyright";
-import { RecoilRoot } from "recoil";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
+
+const Login = () => {
+  return (
+    <FormContext.Provider
+      value={{
+        formName: "login",
+        validationRun: "onBlur",
+        resetFieldOnUnmount: true,
+        validationSchema: yup.object().shape({
+          username: yup.string().required().email(),
+          password: yup.string().required(),
+        }),
+      }}
+    >
+      <LoginControl />
+    </FormContext.Provider>
+  );
+};
 
 const LoginControl = () => {
   const classes = useStyles();
   let navigate = useNavigate();
-  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
+  const onSubmitHandler = (values, submitEnd) => {
     setTimeout(() => {
       console.log(values);
-      submitEnd(false, "Invalid request");
+      submitEnd(true);
     }, 3000);
   };
   const { handleSubmit, isSubmitting } = useForm({
@@ -56,12 +73,6 @@ const LoginControl = () => {
             autoComplete="username email"
             type="email"
             autoFocus
-            validate={yupValidationHelper(
-              yup
-                .string()
-                .required("email is required")
-                .email("should be valid email")
-            )}
           />
           <PasswordField
             variant="outlined"
@@ -73,9 +84,6 @@ const LoginControl = () => {
             fieldKey="password"
             name="password"
             autoComplete="current-password"
-            validate={yupValidationHelper(
-              yup.string().required("password is required")
-            )}
           />
           <Checkbox
             name="rememberMe"
@@ -117,8 +125,4 @@ const LoginControl = () => {
   );
 };
 
-export default () => (
-  <RecoilRoot>
-    <LoginControl />
-  </RecoilRoot>
-);
+export default Login;

@@ -5,8 +5,8 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="http://www.acuteinformatics.in">
-        Acute Informatics Pvt Ltd
+      <Link color="inherit" href="https://twitter.com/_devarsh">
+        Devarsh Shah
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

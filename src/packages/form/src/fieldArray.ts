@@ -190,7 +190,7 @@ export const useFieldArray = ({
         setDefaultValue(formContext.initialValues);
       }
     }
-    if (formContext.resetFieldOnUnmount === true) {
+    if (Boolean(formContext.resetFieldOnUnmount) === true) {
       return () => {
         unregisterArrayField(`${formContext.formName}/${arrayFieldName}`);
       };
