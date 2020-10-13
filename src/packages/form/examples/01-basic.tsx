@@ -95,6 +95,7 @@ const MainApp = () => {
             .required("email is required")
             .email("should be valid email")
         )}
+        enableGrid={false}
       />
       <NumWordsField
         name="amount"
@@ -119,6 +120,7 @@ const MainApp = () => {
         validate={async (data) => {
           return data.value === "devarsh@gmail.com" ? "" : "invalid email";
         }}
+        enableGrid={false}
       />
       <TextField
         name="password"
@@ -133,6 +135,7 @@ const MainApp = () => {
         validate={yupValidationHelper(
           yup.string().required("password is required")
         )}
+        enableGrid={false}
       />
       <TextField
         name="password2"
@@ -143,8 +146,14 @@ const MainApp = () => {
         fullWidth
         label="Password2"
         autoComplete="current-password"
+        enableGrid={false}
       />
-      <Checkbox name="rememberMe" fieldKey="rememberMe" label="rememberMeee" />
+      <Checkbox
+        name="rememberMe"
+        fieldKey="rememberMe"
+        label="rememberMeee"
+        enableGrid={false}
+      />
       <CheckboxGroup
         fieldKey="food"
         name="food"
@@ -153,11 +162,13 @@ const MainApp = () => {
           { label: "ice-cream", value: "ic" },
           { label: "oreo", value: "o" },
         ]}
+        enableGrid={false}
       />
       <Switch
         fieldKey="rememberMeee"
         name="rememberMeee"
         label="rememberMeee"
+        enableGrid={false}
       />
       <SwitchGroup
         fieldKey="foodo"
@@ -167,6 +178,7 @@ const MainApp = () => {
           { label: "ice-cream", value: "ic" },
           { label: "oreo", value: "o" },
         ]}
+        enableGrid={false}
       />
       <Radio
         name="gender"
@@ -176,6 +188,7 @@ const MainApp = () => {
           { label: "Male", value: "m" },
           { label: "Female", value: "f" },
         ]}
+        enableGrid={false}
       />
       <Select
         name="candy"
@@ -188,12 +201,14 @@ const MainApp = () => {
           { label: "Peach", value: "p" },
           { label: "Berry", value: "b" },
         ]}
+        enableGrid={false}
       />
       <Slider
         fieldKey="ranking"
         name="ranking"
         key="ranking"
         label="My Ranking"
+        enableGrid={false}
       />
       <Select
         name="candyx"
@@ -208,6 +223,7 @@ const MainApp = () => {
             { label: "BerryX", value: "b" },
           ];
         }}
+        enableGrid={false}
       />
       <DatePicker
         name="todays"
@@ -215,6 +231,7 @@ const MainApp = () => {
         label="todaysData"
         placeholder="dd/mm/yyyy"
         format="dd/MM/yyyy"
+        enableGrid={false}
       />
       <TimePicker
         name="tonight"
@@ -222,8 +239,14 @@ const MainApp = () => {
         label="tonight"
         placeholder="HH:MM:SS"
         mask="__:__ _M"
+        enableGrid={false}
       />
-      <Rating fieldKey="grade" name="grade" label="Grading" />
+      <Rating
+        fieldKey="grade"
+        name="grade"
+        label="Grading"
+        enableGrid={false}
+      />
       <ArrayField
         arrayFieldName="contact"
         template={{ tel: "", tag: "" }}
@@ -242,6 +265,7 @@ const MainApp = () => {
                 validate={yupValidationHelper(
                   yup.string().required("this is required field")
                 )}
+                enableGrid={false}
               />
             );
           });
@@ -279,6 +303,7 @@ const MainApp = () => {
                 validate={yupValidationHelper(
                   yup.string().required("this is required field")
                 )}
+                enableGrid={false}
               />
             );
           });

@@ -2,10 +2,13 @@ import { FC, useState, useEffect, useCallback, Fragment } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import Slider, { SliderProps } from "@material-ui/core/Slider";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
+import Grid, { GridProps } from "@material-ui/core/Grid";
 
 interface ExtendedFieldProps extends UseFieldHookProps {
   label: string;
   InputLabelProps?: InputLabelProps;
+  GridProps?: GridProps;
+  enableGrid: boolean;
 }
 
 const MySlider: FC<ExtendedFieldProps & SliderProps> = ({
@@ -13,6 +16,8 @@ const MySlider: FC<ExtendedFieldProps & SliderProps> = ({
   fieldKey: fieldID,
   label,
   InputLabelProps,
+  GridProps,
+  enableGrid,
   ...others
 }) => {
   const {
@@ -51,7 +56,7 @@ const MySlider: FC<ExtendedFieldProps & SliderProps> = ({
     setFocus(true);
   }, [setFocus]);
 
-  return (
+  const result = (
     // @ts-ignore
     <Fragment key={fieldKey}>
       <InputLabel {...InputLabelProps} focused={focus} disabled={isSubmitting}>
@@ -72,6 +77,11 @@ const MySlider: FC<ExtendedFieldProps & SliderProps> = ({
       />
     </Fragment>
   );
+  if (Boolean(enableGrid)) {
+    return <Grid {...GridProps}>{result}</Grid>;
+  } else {
+    return result;
+  }
 };
 
 export default MySlider;

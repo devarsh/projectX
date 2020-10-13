@@ -47,6 +47,7 @@ export interface FormFieldAtomType {
   error: string | null;
   validationRunning: boolean;
   validate?: null | typeof ValidateFnType | EmptyFnType;
+  excluded: boolean;
 }
 
 export interface FormArrayFieldRowsAtomType {

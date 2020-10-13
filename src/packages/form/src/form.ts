@@ -55,7 +55,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
   //clear form Atoms on unmount
   useEffect(() => {
     return () => removeFormInstance();
-  });
+  }, [removeFormInstance]);
 
   const setInitValues = useRecoilCallback(
     ({ set, snapshot }) => (initValues: InitialValuesType) => {
@@ -191,6 +191,58 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     [setInitValues, handleClear, formContext.initialValues]
   );
 
+  const handleClearPartial = useRecoilCallback(
+    ({ snapshot, set }) => (fields: string[]) => {
+      for (const field of fields) {
+        set(formFieldAtom(`${formContext.formName}/${field}`), (currVal) => ({
+          ...currVal,
+          touched: false,
+          value: "",
+          error: "",
+          validationRunning: false,
+        }));
+      }
+      const loadableArrayFields = snapshot.getLoadable(
+        formArrayFieldRegistryAtom(formContext.formName)
+      );
+      if (loadableArrayFields.state === "hasValue") {
+        const arrayFields = loadableArrayFields.contents;
+        for (const arrayField of arrayFields) {
+          set(formArrayFieldRowsAtom(arrayField), (old) => ({
+            ...old,
+            resetFlag: false,
+            templateFieldRows: [],
+            lastInsertIndex: -1,
+          }));
+        }
+      }
+    },
+    [formContext.formName]
+  );
+
+  const handleResetPartial = useCallback(
+    (fields: string[]) => {
+      if (
+        typeof formContext.initialValues === "object" &&
+        Object.keys(formContext.initialValues).length > 0
+      ) {
+        let newInitialValues = {};
+        for (const field of fields) {
+          const result = getIn(formContext.initialValues, field, null);
+          if (Boolean(result)) {
+            newInitialValues = setIn(newInitialValues, field, result);
+          }
+        }
+        if (Object.keys(newInitialValues).length > 0) {
+          setInitValues(newInitialValues);
+        } else {
+          handleClearPartial(fields);
+        }
+      }
+    },
+    [formContext.initialValues, handleClearPartial, setInitValues]
+  );
+
   const runValidation = async (
     field: string,
     snapshot: Snapshot,
@@ -202,6 +254,10 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     const loadableFieldState = snapshot.getLoadable(formFieldAtom(field));
     if (loadableFieldState.state === "hasValue") {
       const readOnlyFieldState = loadableFieldState.contents;
+      //dont validate if file is excluded
+      if (readOnlyFieldState.excluded === true) {
+        return null;
+      }
       const fieldState = { ...readOnlyFieldState };
       let result: any = null;
       if (!fieldState.touched || fieldState.validationRunning) {
@@ -247,7 +303,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
         }
         return hasError;
       };
-      _handleSubmit(fields);
+      return _handleSubmit(fields);
     },
     [formContext.formName]
   );
@@ -297,7 +353,9 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     handleSubmit,
     handleSubmitPartial,
     handleReset,
+    handleResetPartial,
     handleClear,
+    handleClearPartial,
     ...formState,
   };
 };

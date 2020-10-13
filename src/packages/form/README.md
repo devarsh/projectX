@@ -55,6 +55,12 @@ const {
   isSubmitting,
   submitSuccessful,
   serverSentError,
+  handleSubmit,
+  handleSubmitPartial,
+  handleReset,
+  handleResetPartial,
+  handleClear,
+  handleClearPartial,
 } = useForm(submitFn(formValuesObject, endSubmit, setFieldsErrors));
 
 SubmitFn(
@@ -73,6 +79,18 @@ SubmitFn(
 - **submitSuccessful**: Returns the boolean of form submit status - true if form was successfully submitted otherwise false
 
 - **serverSentError**: Returns error or any other status returned from the server.
+
+- **handleSubmit Function(e:FormEvent)**: calls the SubmitFn passed if there is no error in the form and submits the forms
+
+- **handleSubmit Function(fields: string[])**: validates the fields passed as array to the function- useful in stepper or cases where partial form validation is required and returns boolean
+
+- **handleReset Function(e:FormEvent)**: Resets all form fields to initial values passed to the form and if no initial values exists it clears the form
+
+- **handleReset Function(fields: string[])**: Only resets the fields passed as fields array to the function
+
+- **handleClear Function(e:FormEvent)**: Clears all form fields
+
+- **handleClear Function(fields: string[])**: Only clear the fields passed in fileds array
 
 #### Submit Function Args
 
@@ -103,7 +121,8 @@ const {
     isSubmitting: boolean
     handleChange: Function
     handleBlur: Function
-    dependentValues: Array
+    dependentValues: Array,
+    setExclude: Function
 } = useForm({
     fieldKey: string;
     name: string;
@@ -148,6 +167,8 @@ const {
 - **handleBlur: Function(event)**: onBlur handler that will be passed to the underlying field
 
 - **dependentValues**: provides an array of watch fields with `fieldKey,name,value,touched,error` fields for each watched field
+
+- **setExclude: Function(boolean)**: if true is passed the filed will be excluded from being submitted. This is useful in cases where you want to hide certain fields and ignore validation errors on them.
 
 ### useFieldArray
 
@@ -214,7 +235,3 @@ ArrayFields hooks provides support for nested arrays and provides methods to add
 - **swap(indexA: number, indexB: number)**: This method swaps two fields in the array.
 
 - **move(fromIndex: number, toIndex: number)**: This method moves the field from `from` index to `to` index and shifts other values to the right or left depending.
-
-### Example
-
-#### Basic Example

@@ -7,6 +7,7 @@ import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
+import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Merge, OptionsProps } from "../types";
 
 interface dependentOptionsFn {
@@ -24,6 +25,8 @@ interface MySelectExtendedProps {
   FormControlProps?: FormControlProps;
   FormHelperTextProps?: FormHelperTextProps;
   MenuItemProps?: MenuItemProps;
+  GridProps?: GridProps;
+  enableGrid: boolean;
 }
 
 type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
@@ -39,6 +42,8 @@ const MySelect: FC<MySelectAllProps> = ({
   InputLabelProps,
   FormHelperTextProps,
   MenuItemProps,
+  GridProps,
+  enableGrid,
   ...others
 }) => {
   const {
@@ -90,7 +95,7 @@ const MySelect: FC<MySelectAllProps> = ({
       {menuItem.label}
     </MenuItem>
   ));
-  return (
+  const result = (
     // @ts-ignore
     <FormControl
       {...FormControlProps}
@@ -115,6 +120,11 @@ const MySelect: FC<MySelectAllProps> = ({
       ) : null}
     </FormControl>
   );
+  if (Boolean(enableGrid)) {
+    return <Grid {...GridProps}>{result}</Grid>;
+  } else {
+    return result;
+  }
 };
 
 export default MySelect;

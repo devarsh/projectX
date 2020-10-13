@@ -11,6 +11,7 @@ import Radio, { RadioProps } from "@material-ui/core/Radio";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
+import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Merge, OptionsProps } from "../types";
 
 interface extendedFiledProps extends UseFieldHookProps {
@@ -26,6 +27,8 @@ interface MyCheckboxExtendedProps {
   FormControlLabelProps?: FormControlLabelProps;
   FormControlProps?: FormControlProps;
   FormHelperTextProps?: FormHelperTextProps;
+  GridProps?: GridProps;
+  enableGrid: boolean;
 }
 
 type MyRadioAllProps = Merge<MyRadioMixedProps, MyCheckboxExtendedProps>;
@@ -42,6 +45,8 @@ const MyRadio: FC<MyRadioAllProps> = ({
   RadioGroupProps,
   FormHelperTextProps,
   FormControlLabelProps,
+  GridProps,
+  enableGrid,
   ...others
 }) => {
   const {
@@ -69,7 +74,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
       value={radio.value}
     />
   ));
-  return (
+  const result = (
     // @ts-ignore
     <FormControl
       {...FormControlProps}
@@ -95,6 +100,16 @@ const MyRadio: FC<MyRadioAllProps> = ({
       ) : null}
     </FormControl>
   );
+
+  if (Boolean(enableGrid)) {
+    return (
+      <Grid {...GridProps} key={fieldKey}>
+        {result}
+      </Grid>
+    );
+  } else {
+    return result;
+  }
 };
 
 export default MyRadio;

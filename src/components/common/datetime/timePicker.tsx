@@ -4,21 +4,32 @@ import {
   KeyboardTimePicker,
   KeyboardTimePickerProps,
 } from "@material-ui/pickers";
-import { Omit } from "../types";
+import Grid, { GridProps } from "@material-ui/core/Grid";
+import { Omit, Merge } from "../types";
 
 type KeyboardTimePickerPropsSubset = Omit<
   KeyboardTimePickerProps,
   "onChange" | "value"
 >;
 
-export const MyTimePicker: FC<
-  UseFieldHookProps & KeyboardTimePickerPropsSubset
-> = ({
+interface MyGridExtendedProps {
+  GridProps?: GridProps;
+  enableGrid: boolean;
+}
+
+type MyTimeTimePickerAllProps = Merge<
+  KeyboardTimePickerPropsSubset,
+  MyGridExtendedProps
+>;
+
+export const MyTimePicker: FC<UseFieldHookProps & MyTimeTimePickerAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,
   fieldKey: fieldID,
   type,
+  GridProps,
+  enableGrid,
   ...others
 }) => {
   const {
@@ -40,7 +51,7 @@ export const MyTimePicker: FC<
   const customDateChangeHandler = (date) => {
     handleChange(date);
   };
-  return (
+  const result = (
     <KeyboardTimePicker
       {...others}
       key={fieldKey}
@@ -54,6 +65,15 @@ export const MyTimePicker: FC<
       disabled={isSubmitting}
     />
   );
+  if (Boolean(enableGrid)) {
+    return (
+      <Grid {...GridProps} key={fieldKey}>
+        {result}
+      </Grid>
+    );
+  } else {
+    return result;
+  }
 };
 
 export default MyTimePicker;

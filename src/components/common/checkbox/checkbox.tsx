@@ -5,6 +5,7 @@ import FormControlLabel, {
 } from "@material-ui/core/FormControlLabel";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
+import Grid, { GridProps } from "@material-ui/core/Grid";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
@@ -20,6 +21,8 @@ interface MyCheckboxExtendedProps {
   FormControlLabelProps?: FormControlLabelProps;
   FormControlProps?: FormControlProps;
   FormHelperTextProps?: FormHelperTextProps;
+  GridProps?: GridProps;
+  enableGrid: boolean;
 }
 
 type MyChecboxAllProps = Merge<MyCheckboxMixedProps, MyCheckboxExtendedProps>;
@@ -33,6 +36,8 @@ const MyCheckbox: FC<MyChecboxAllProps> = ({
   FormControlProps,
   FormHelperTextProps,
   FormControlLabelProps,
+  GridProps,
+  enableGrid,
   ...others
 }) => {
   const {
@@ -52,7 +57,7 @@ const MyCheckbox: FC<MyChecboxAllProps> = ({
   });
   const isError = touched && (error ?? "") !== "";
 
-  return (
+  const result = (
     // @ts-ignore
     <FormControl
       {...FormControlProps}
@@ -76,6 +81,15 @@ const MyCheckbox: FC<MyChecboxAllProps> = ({
       ) : null}
     </FormControl>
   );
+  if (Boolean(enableGrid)) {
+    return (
+      <Grid {...GridProps} key={fieldKey}>
+        {result}
+      </Grid>
+    );
+  } else {
+    return result;
+  }
 };
 
 export default MyCheckbox;

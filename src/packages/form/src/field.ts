@@ -1,5 +1,10 @@
 import { useContext, useRef, useEffect, useCallback } from "react";
-import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
+import {
+  useRecoilState,
+  useSetRecoilState,
+  useRecoilValue,
+  useRecoilCallback,
+} from "recoil";
 import {
   formAtom,
   formFieldAtom,
@@ -11,6 +16,7 @@ import {
   FormFieldAtomType,
   UseFieldHookProps,
   FormFieldRegisterSelectorAttributes,
+  InitialValuesType,
 } from "./types";
 import { FormContext } from "./context";
 import { getIn, wrapValidationMethod } from "./util";
@@ -33,6 +39,7 @@ export const useField = ({
       ? `${formContext.formName}/${fieldKey}`
       : `${formContext.formName}/${name}`
   );
+
   //fieldData atom stores current field state
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtomType>(
     formFieldAtom(fieldKeyRef.current)
@@ -102,6 +109,10 @@ export const useField = ({
   const isValidationFnRef = useRef(
     typeof validate === "function" ? true : false
   );
+
+  //eslint is disabled since validate frequently changes and is not in our control
+  //always enable and check  if we are not excluding any other field
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const wrappedValidation = wrapValidationMethod(
       formContext.validationSchema,
@@ -267,9 +278,32 @@ export const useField = ({
       }
     }
   }, [setFieldData, handleValidation, formContext.validationRun]);
+
+  const setExcluded = useCallback(
+    (excluded: boolean) => {
+      setFieldData((currVal) => ({ ...currVal, excluded }));
+    },
+    [setFieldData]
+  );
+  //todo: if value is checkbox array multiple values - need to find a better api
+  const setCrossFieldValues = useRecoilCallback(
+    ({ set }) => (fieldsObj: InitialValuesType) => {
+      if (typeof fieldsObj === "object") {
+        for (const field of Object.entries(fieldsObj)) {
+          set(formFieldAtom(`${formContext.formName}/${field[0]}`), (old) => ({
+            ...old,
+            value: field[1],
+          }));
+        }
+      }
+    },
+    [formContext.formName]
+  );
   return {
     ...fieldData,
     isSubmitting: formState.isSubmitting,
+    setExcluded,
+    setCrossFieldValues,
     handleChange,
     handleBlur,
     dependentValues: dependentFieldsState,

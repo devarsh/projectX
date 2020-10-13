@@ -8,6 +8,7 @@ import Switch, { SwitchProps } from "@material-ui/core/Switch";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
+import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Merge } from "../types";
 
 interface extendedFiledProps extends UseFieldHookProps {
@@ -20,6 +21,8 @@ interface MySwitchExtendedProps {
   FormControlLabelProps?: FormControlLabelProps;
   FormControlProps?: FormControlProps;
   FormHelperTextProps?: FormHelperTextProps;
+  GridProps?: GridProps;
+  enableGrid: boolean;
 }
 
 type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
@@ -33,6 +36,8 @@ const MySwitch: FC<MySwitchAllProps> = ({
   FormControlProps,
   FormHelperTextProps,
   FormControlLabelProps,
+  GridProps,
+  enableGrid,
   ...others
 }) => {
   const {
@@ -52,7 +57,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   });
   const isError = touched && (error ?? "") !== "";
 
-  return (
+  const result = (
     // @ts-ignore
     <FormControl
       {...FormControlProps}
@@ -76,6 +81,12 @@ const MySwitch: FC<MySwitchAllProps> = ({
       ) : null}
     </FormControl>
   );
+
+  if (Boolean(enableGrid)) {
+    return <Grid {...GridProps}>{result}</Grid>;
+  } else {
+    return result;
+  }
 };
 
 export default MySwitch;

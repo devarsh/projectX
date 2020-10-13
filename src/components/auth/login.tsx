@@ -73,6 +73,7 @@ const LoginControl = () => {
             autoComplete="username email"
             type="email"
             autoFocus
+            enableGrid={false}
           />
           <PasswordField
             variant="outlined"
@@ -84,11 +85,13 @@ const LoginControl = () => {
             fieldKey="password"
             name="password"
             autoComplete="current-password"
+            enableGrid={false}
           />
           <Checkbox
             name="rememberMe"
             fieldKey="rememberMe"
             label="Remember Me"
+            enableGrid={false}
           />
           <Button
             component="button"
