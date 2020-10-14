@@ -87,6 +87,7 @@ export const yupValidationHelper = (schema: any) => (field: any) => {
 export const wrapValidationMethod = (
   schema: yup.ObjectSchema | undefined,
   validationFn: any,
+  postValidationHook: any,
   path: string
 ) => {
   let fieldSchema;
@@ -102,7 +103,8 @@ export const wrapValidationMethod = (
       let result = yupValidationHelper(fieldSchema)(field);
       if (typeof validationFn === "function") {
         if (Boolean(result) === false) {
-          return validationFn(field);
+          const validationResult = validationFn(field);
+          return validationResult;
         } else {
           return result;
         }

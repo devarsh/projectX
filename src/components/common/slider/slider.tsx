@@ -11,7 +11,9 @@ interface ExtendedFieldProps extends UseFieldHookProps {
   enableGrid: boolean;
 }
 
-const MySlider: FC<ExtendedFieldProps & SliderProps> = ({
+export type AllSliderProps = ExtendedFieldProps & SliderProps;
+
+const MySlider: FC<AllSliderProps> = ({
   name: fieldName,
   fieldKey: fieldID,
   label,

@@ -1,5 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { useField, UseFieldHookProps, FormFieldAtomType } from "packages/form";
+import {
+  useField,
+  UseFieldHookProps,
+  DependentValuesType,
+} from "packages/form";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
 import Select, { SelectProps } from "@material-ui/core/Select";
@@ -11,7 +15,7 @@ import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Merge, OptionsProps } from "../types";
 
 interface dependentOptionsFn {
-  (optionsFn: FormFieldAtomType[]): OptionsProps[];
+  (optionsFn: DependentValuesType): OptionsProps[];
 }
 
 interface extendedFiledProps extends UseFieldHookProps {
@@ -29,7 +33,7 @@ interface MySelectExtendedProps {
   enableGrid: boolean;
 }
 
-type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
+export type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
 
 const MySelect: FC<MySelectAllProps> = ({
   name: fieldName,

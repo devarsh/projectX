@@ -1,7 +1,35 @@
 import { GridSize, GridSpacing, GridDirection } from "@material-ui/core/Grid";
+import {
+  AllTextFieldProps,
+  AllSelectFieldProps,
+  AllCheckboxGroupProps,
+  AllCheckboxProps,
+  AllDatePickerProps,
+  AllDateTimePickerProps,
+  AllTimePickerProps,
+  AllRadioProps,
+  AllRatingProps,
+  AllSliderProps,
+  AllSwitchGroupProps,
+  AllSwitchProps,
+} from "./typesFields";
+import {
+  TextFieldPropsOptional,
+  SelectPropsOptional,
+  CheckboxGroupPropsOptional,
+  CheckboxPropsOptional,
+  DatePickerPropsOptional,
+  DateTimePickerPropsOptional,
+  TimePickerPropsOptional,
+  RadioPropsOptional,
+  RatingPropsOptional,
+  SliderPropsOptional,
+  SwitchPropsOptional,
+  SwitchGroupPropsOptional,
+} from "./typesFields";
 
 export interface FormRenderConfigType {
-  ordering: "auto" | "sequence"; //implimentation pending
+  ordering: "auto" | "sequence";
   renderType: "simple" | "tabs" | "stepper" | "accordian"; //implimentation pending
   gridConfig: {
     item?: {
@@ -17,10 +45,6 @@ export interface FormRenderConfigType {
   };
 }
 
-export interface ComponentTypeProps {
-  [options: string]: any;
-}
-
 export interface FormMetaDataType {
   name: string;
   label: string;
@@ -30,31 +54,44 @@ export interface FormMetaDataType {
   componentProps: ComponentTypeProps;
 }
 
-export interface FieldRenderConfigType {
-  componentType: string;
-  group?: string;
-  sequence?: number;
-}
-
-export interface FieldMetaDataType {
-  name: string;
-  label: string;
-  render: FieldRenderConfigType;
-  type?: string;
-  defaultValue?: any;
-  schemaValidation?: YupSchemaMetaDataType;
-  template?: FieldMetaDataType[];
-  [otherOptions: string]: any;
-}
-
-interface YupSchemaMetaDataType {
-  type: string;
-  rules?: YupRulesType[];
+export interface ComponentTypeProps {
+  textField?: TextFieldPropsOptional;
+  select?: SelectPropsOptional;
+  checkbox?: CheckboxPropsOptional;
+  checkboxGroup?: CheckboxGroupPropsOptional;
+  datetimePicker?: DateTimePickerPropsOptional;
+  datePicker?: DatePickerPropsOptional;
+  timePicker?: TimePickerPropsOptional;
+  radio?: RadioPropsOptional;
+  rating?: RatingPropsOptional;
+  slider?: SliderPropsOptional;
+  switch?: SwitchPropsOptional;
+  switchGroup?: SwitchGroupPropsOptional;
 }
 
 export interface MetaDataType {
   form: FormMetaDataType;
   fields: FieldMetaDataType[];
+}
+
+export type FieldMetaDataType =
+  | AllTextFieldProps
+  | AllSelectFieldProps
+  | AllCheckboxGroupProps
+  | AllCheckboxProps
+  | AllDatePickerProps
+  | AllDateTimePickerProps
+  | AllTimePickerProps
+  | AllRadioProps
+  | AllRatingProps
+  | AllSliderProps
+  | AllSwitchGroupProps
+  | AllSwitchProps;
+
+/* Yup Rules Types*/
+export interface YupSchemaMetaDataType {
+  type: string;
+  rules?: YupRulesType[];
 }
 
 interface YupRulesType {

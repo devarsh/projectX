@@ -6,6 +6,7 @@ import {
   FormArrayFieldRowsAtomType,
   FormFieldRegisterSelectorAttributes,
   FormFieldRegistryAtomType,
+  DependentValuesType,
 } from "./types";
 
 export const atomKeys = {
@@ -159,7 +160,7 @@ export const formArrayFieldUnregisterSelector = selectorFamily<string, string>({
 });
 
 export const subscribeToFormFieldsSelector = selectorFamily<
-  FormFieldAtomType[],
+  DependentValuesType,
   string[] | undefined
 >({
   key: atomKeys.subscribeToFormFieldsSelector,
@@ -167,11 +168,11 @@ export const subscribeToFormFieldsSelector = selectorFamily<
     if (!Array.isArray(fields)) {
       fields = [fields];
     }
-    let fieldValues: FormFieldAtomType[] = [];
+    let fieldValues: DependentValuesType = {};
     for (let field of fields) {
       if (typeof field === "string" && field !== "") {
         let fieldState = get(formFieldAtom(field));
-        fieldValues.push(fieldState);
+        fieldValues[fieldState.name] = fieldState;
       }
     }
     return fieldValues;

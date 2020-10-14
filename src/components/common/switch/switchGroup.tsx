@@ -30,13 +30,16 @@ interface MySwitchExtendedProps {
   enableGrid: boolean;
 }
 
-type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
+export type MySwitchGroupAllProps = Merge<
+  MySwitchMixedProps,
+  MySwitchExtendedProps
+>;
 
 const valueExists = (myValue: any[] | any, value: any) => {
   return Array.isArray(myValue) && myValue.indexOf(value) > -1;
 };
 
-const MyCheckboxGroup: FC<MySwitchAllProps> = ({
+const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

@@ -17,14 +17,12 @@ interface MyGridExtendedProps {
   enableGrid: boolean;
 }
 
-type MyDateTimePickerAllProps = Merge<
-  KeyboardDateTimePickerPropsSubset,
-  MyGridExtendedProps
+export type MyDateTimePickerAllProps = Merge<
+  Merge<KeyboardDateTimePickerPropsSubset, MyGridExtendedProps>,
+  UseFieldHookProps
 >;
 
-export const MyDateTimePicker: FC<
-  UseFieldHookProps & MyDateTimePickerAllProps
-> = ({
+export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

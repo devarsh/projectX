@@ -25,7 +25,7 @@ interface MySwitchExtendedProps {
   enableGrid: boolean;
 }
 
-type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
+export type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
 
 const MySwitch: FC<MySwitchAllProps> = ({
   name: fieldName,

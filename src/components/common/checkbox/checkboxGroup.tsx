@@ -30,13 +30,16 @@ interface MyCheckboxExtendedProps {
   enableGrid: boolean;
 }
 
-type MyChecboxAllProps = Merge<MyCheckboxMixedProps, MyCheckboxExtendedProps>;
+export type MyCheckboxGroupAllProps = Merge<
+  MyCheckboxMixedProps,
+  MyCheckboxExtendedProps
+>;
 
 const valueExists = (myValue: any[] | any, value: any) => {
   return Array.isArray(myValue) && myValue.indexOf(value) > -1;
 };
 
-const MyCheckboxGroup: FC<MyChecboxAllProps> = ({
+const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   name: fieldName,
   validate,
   dependentFields,

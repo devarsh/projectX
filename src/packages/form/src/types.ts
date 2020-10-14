@@ -50,6 +50,10 @@ export interface FormFieldAtomType {
   excluded: boolean;
 }
 
+export interface DependentValuesType {
+  [key: string]: FormFieldAtomType;
+}
+
 export interface FormArrayFieldRowsAtomType {
   fieldName: string;
   templateFieldRows: TemplateFieldRowType[];
@@ -66,6 +70,8 @@ export interface UseFieldHookProps {
   name: string;
   validate?: typeof ValidateFnType;
   dependentFields?: string[];
+  shouldExclude?: typeof shouldExcludeFnType;
+  postValidationSetCrossFieldValues?: typeof postValidationSetCrossFieldValuesFnType;
 }
 
 export interface UseFieldArrayHookProps {
@@ -73,9 +79,18 @@ export interface UseFieldArrayHookProps {
   template: any;
 }
 
+export declare function postValidationSetCrossFieldValuesFnType(
+  fieldData: FormFieldAtomType
+): InitialValuesType | Promise<InitialValuesType>;
+
+export declare function shouldExcludeFnType(
+  fieldData: FormFieldAtomType,
+  dependentFieldsValues: DependentValuesType
+): Promise<boolean> | boolean;
+
 export declare function ValidateFnType(
   data: FormFieldAtomType
-): Promise<string>;
+): Promise<string> | string;
 
 export interface EmptyFnType {
   (args: FormFieldAtomType): string;

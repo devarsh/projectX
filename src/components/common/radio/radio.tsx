@@ -31,7 +31,7 @@ interface MyCheckboxExtendedProps {
   enableGrid: boolean;
 }
 
-type MyRadioAllProps = Merge<MyRadioMixedProps, MyCheckboxExtendedProps>;
+export type MyRadioAllProps = Merge<MyRadioMixedProps, MyCheckboxExtendedProps>;
 
 const MyRadio: FC<MyRadioAllProps> = ({
   name: fieldName,

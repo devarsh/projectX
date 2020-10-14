@@ -1,9 +1,9 @@
 import {
-  FieldMetaDataType,
   MetaDataType,
   FormRenderConfigType,
   GroupWiseRenderedFieldsType,
   ComponentTypeProps,
+  FieldMetaDataType,
 } from "./types";
 import {
   TextField,
@@ -113,7 +113,7 @@ const renderField = (
     case "timePicker":
       Component = TimePicker;
       break;
-    case "dateTimePicker":
+    case "datetimePicker":
       Component = DateTimePicker;
       break;
     default:
@@ -181,6 +181,7 @@ const parseSchema = (schema, fieldObj: FieldMetaDataType) => {
   }
   //if fieldType is array pass template object to makeSchemaFromTemplate and attached it to nested array obj
   if (type === "array") {
+    /* @ts-ignore */
     const { template = [] } = fieldObj;
     const nestedschema = constructYupSchema(template);
     const arrayOFNestedSchema = yup[type]()["of"](nestedschema);

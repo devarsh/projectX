@@ -3,6 +3,7 @@ import { useField, UseFieldHookProps } from "packages/form";
 import Rating, { RatingProps } from "@material-ui/lab/Rating";
 import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import Grid, { GridProps } from "@material-ui/core/Grid";
+import { Merge } from "../types";
 
 interface ExtendedFieldProps extends UseFieldHookProps {
   label: string;
@@ -11,7 +12,9 @@ interface ExtendedFieldProps extends UseFieldHookProps {
   enableGrid: boolean;
 }
 
-const MyRating: FC<ExtendedFieldProps & RatingProps> = ({
+export type AllRatingProps = Merge<RatingProps, ExtendedFieldProps>;
+
+const MyRating: FC<AllRatingProps> = ({
   name: fieldName,
   validate,
   dependentFields,

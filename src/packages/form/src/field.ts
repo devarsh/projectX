@@ -24,8 +24,10 @@ import { getIn, wrapValidationMethod } from "./util";
 export const useField = ({
   fieldKey,
   name,
-  validate,
   dependentFields,
+  validate,
+  postValidationSetCrossFieldValues,
+  shouldExclude,
 }: UseFieldHookProps) => {
   //formContext provides formName for scoping of fields, and initialValue for the field
   const formContext = useContext(FormContext);
@@ -117,6 +119,7 @@ export const useField = ({
     const wrappedValidation = wrapValidationMethod(
       formContext.validationSchema,
       validate,
+      postValidationSetCrossFieldValues,
       fieldData.name
     );
     if (typeof wrappedValidation === "function") {
@@ -129,6 +132,38 @@ export const useField = ({
   //this field will be rerendered when any of the provided dependent field's value updates.
   const dependentFieldsState = useRecoilValue(
     subscribeToFormFieldsSelector(dependentFields)
+  );
+  // this determine if the field should be excluded
+  useEffect(() => {
+    if (typeof shouldExclude === "function") {
+      let result = shouldExclude(fieldData, dependentFieldsState);
+      if (result === true && fieldData.excluded === false) {
+        setFieldData((old) => ({
+          ...old,
+          excluded: true,
+        }));
+      } else if (result === false && fieldData.excluded === true) {
+        setFieldData((old) => ({
+          ...old,
+          excluded: false,
+        }));
+      }
+    }
+  });
+
+  //todo: if value is checkbox array multiple values - need to find a better api
+  const setCrossFieldValues = useRecoilCallback(
+    ({ set }) => (fieldsObj: InitialValuesType) => {
+      if (typeof fieldsObj === "object") {
+        for (const field of Object.entries(fieldsObj)) {
+          set(formFieldAtom(`${formContext.formName}/${field[0]}`), (old) => ({
+            ...old,
+            value: field[1],
+          }));
+        }
+      }
+    },
+    [formContext.formName]
   );
 
   /**
@@ -279,31 +314,9 @@ export const useField = ({
     }
   }, [setFieldData, handleValidation, formContext.validationRun]);
 
-  const setExcluded = useCallback(
-    (excluded: boolean) => {
-      setFieldData((currVal) => ({ ...currVal, excluded }));
-    },
-    [setFieldData]
-  );
-  //todo: if value is checkbox array multiple values - need to find a better api
-  const setCrossFieldValues = useRecoilCallback(
-    ({ set }) => (fieldsObj: InitialValuesType) => {
-      if (typeof fieldsObj === "object") {
-        for (const field of Object.entries(fieldsObj)) {
-          set(formFieldAtom(`${formContext.formName}/${field[0]}`), (old) => ({
-            ...old,
-            value: field[1],
-          }));
-        }
-      }
-    },
-    [formContext.formName]
-  );
   return {
     ...fieldData,
     isSubmitting: formState.isSubmitting,
-    setExcluded,
-    setCrossFieldValues,
     handleChange,
     handleBlur,
     dependentValues: dependentFieldsState,
