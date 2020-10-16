@@ -1,34 +1,30 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef, useCallback } from "react";
 import {
   useField,
   UseFieldHookProps,
   DependentValuesType,
 } from "packages/form";
-import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
-import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
-import Select, { SelectProps } from "@material-ui/core/Select";
+
+import { SelectProps } from "@material-ui/core/Select";
+import { TextFieldProps } from "@material-ui/core/TextField";
+import { TextField } from "components/styledComponent";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
-import FormHelperText, {
-  FormHelperTextProps,
-} from "@material-ui/core/FormHelperText";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import { Merge, OptionsProps } from "../types";
+import { OptionsProps, Merge } from "../types";
 
 interface dependentOptionsFn {
-  (optionsFn: DependentValuesType): OptionsProps[] | Promise<OptionsProps[]>;
+  (optionsFn?: DependentValuesType): OptionsProps[] | Promise<OptionsProps[]>;
 }
 
-interface extendedFiledProps extends UseFieldHookProps {
-  options: OptionsProps[] | dependentOptionsFn;
-  label: string;
+interface extendedFieldProps extends UseFieldHookProps {
+  options?: OptionsProps[] | dependentOptionsFn;
+  multiple?: boolean;
 }
-type MySelectProps = Merge<SelectProps, extendedFiledProps>;
+type MySelectProps = Merge<TextFieldProps, extendedFieldProps>;
 
 interface MySelectExtendedProps {
-  InputLabelProps?: InputLabelProps;
-  FormControlProps?: FormControlProps;
-  FormHelperTextProps?: FormHelperTextProps;
   MenuItemProps?: MenuItemProps;
+  SelectProps?: SelectProps;
   GridProps?: GridProps;
   enableGrid: boolean;
 }
@@ -39,14 +35,12 @@ const MySelect: FC<MySelectAllProps> = ({
   name: fieldName,
   validate,
   shouldExclude,
+  postValidationSetCrossFieldValues,
   dependentFields,
   fieldKey: fieldID,
-  label,
   options,
-  FormControlProps,
-  InputLabelProps,
-  FormHelperTextProps,
   MenuItemProps,
+  SelectProps,
   GridProps,
   enableGrid,
   multiple,
@@ -63,43 +57,68 @@ const MySelect: FC<MySelectAllProps> = ({
     name,
     dependentValues,
     excluded,
+    incomingMessage,
   } = useField({
-    name: fieldName,
+    name: fieldName ?? "",
     validate,
     dependentFields,
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
+    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
   });
   const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const lastValidationPromise = useRef<Promise<any> | null>(null);
-  const lastValidationValue = useRef<any | null>(null);
+  const lastOptionsPromise = useRef<Promise<any> | null>(null);
 
-  useEffect(() => {
-    async function runner() {
+  const syncAsyncSetOptions = useCallback(
+    (options, dependentValues) => {
       if (Array.isArray(options)) {
         setOptions(options);
       } else if (typeof options === "function") {
-        let result;
         try {
-          setOptions([{ label: "loading....", value: undefined }]);
-          result = await Promise.resolve(options(dependentValues));
-          if (Array.isArray(result)) {
-            setOptions(result);
-          } else {
-            console.log(
-              `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-            );
-            result = [];
-          }
+          setOptions([{ label: "loading...", value: null }]);
+          let currentPromise = Promise.resolve(options(dependentValues));
+          lastOptionsPromise.current = currentPromise;
+          currentPromise
+            .then((result) => {
+              if (lastOptionsPromise.current === currentPromise) {
+                if (Array.isArray(result)) {
+                  setOptions(result);
+                } else {
+                  setOptions([{ label: "Couldn't fetch", value: null }]);
+                  console.log(
+                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
+                  );
+                }
+              }
+            })
+            .catch((e) => {
+              setOptions([{ label: "Couldn't fetch", value: null }]);
+              console.log(`error occured while fetching options`, e?.message);
+            });
         } catch (e) {
-          console.log(e);
-          result = [];
+          setOptions([{ label: "Couldn't fetch", value: null }]);
+          console.log(`error occured while fetching options`, e?.message);
         }
-        setOptions(result);
+      }
+    },
+    [setOptions]
+  );
+
+  useEffect(() => {
+    syncAsyncSetOptions(options, dependentValues);
+  }, [options, dependentValues, syncAsyncSetOptions]);
+
+  useEffect(() => {
+    if (incomingMessage !== null && typeof incomingMessage === "object") {
+      const { value, options } = incomingMessage;
+      if (Boolean(value)) {
+        handleChange(value);
+      }
+      if (Array.isArray(options)) {
+        setOptions(options);
       }
     }
-    runner();
-  }, [options, dependentValues]);
+  }, [incomingMessage, setOptions, handleChange]);
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
@@ -117,30 +136,28 @@ const MySelect: FC<MySelectAllProps> = ({
     </MenuItem>
   ));
   const result = (
-    // @ts-ignore
-    <FormControl
-      {...FormControlProps}
+    <TextField
+      {...others}
+      select={true}
       key={fieldKey}
-      component="fieldset"
-      disabled={isSubmitting}
+      id={fieldKey}
+      name={name}
+      value={multiple && !Array.isArray(value) ? [value] : value}
       error={isError}
+      helperText={isError ? error : null}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      disabled={isSubmitting}
+      SelectProps={{
+        ...SelectProps,
+        multiple: multiple,
+      }}
+      InputLabelProps={{
+        shrink: true,
+      }}
     >
-      <InputLabel id={`${name}-label`}>{label}</InputLabel>
-      <Select
-        labelId={`${name}-label`}
-        {...others}
-        name={name}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        value={multiple && !Array.isArray(value) ? [value] : value}
-        multiple={multiple}
-      >
-        {menuItems}
-      </Select>
-      {isError ? (
-        <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
-      ) : null}
-    </FormControl>
+      {menuItems}
+    </TextField>
   );
   if (Boolean(enableGrid)) {
     return <Grid {...GridProps}>{result}</Grid>;

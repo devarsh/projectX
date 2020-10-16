@@ -404,10 +404,9 @@ function wrapValidationMethod(
   ) {
     return undefined;
   }
-
   const wrapperFunction = async (field: any) => {
     let errorMsg: any = null;
-    let crossFieldMessages: InitialValuesType | undefined;
+    let crossFieldMessages: InitialValuesType | null | undefined;
     if (typeof schemaValidation === "function") {
       errorMsg = await schemaValidation(field);
     }
@@ -422,6 +421,13 @@ function wrapValidationMethod(
     }
     if (typeof postValidationSetCrossFieldValuesFn === "function") {
       crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
+      if (
+        crossFieldMessages === null ||
+        crossFieldMessages === undefined ||
+        typeof crossFieldMessages !== "object"
+      ) {
+        crossFieldMessages = {};
+      }
     }
     return { error: errorMsg, crossFieldMessages };
   };

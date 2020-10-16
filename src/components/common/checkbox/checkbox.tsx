@@ -34,6 +34,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
   name: fieldName,
   validate,
   shouldExclude,
+  postValidationSetCrossFieldValues,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -60,6 +61,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
     dependentFields,
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
+    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
   });
   if (excluded) {
     return null;

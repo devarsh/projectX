@@ -28,7 +28,6 @@ const metaData: MetaDataType = {
       },
       select: {
         variant: "outlined",
-        autoWidth: true,
       },
       datePicker: {
         inputVariant: "outlined",
@@ -46,7 +45,7 @@ const metaData: MetaDataType = {
       name: "country",
       label: "Country",
       required: true,
-      options: (dependentValues) => {
+      options: () => {
         return new Promise((res, rej) => {
           setTimeout(() => {
             res([
@@ -58,6 +57,7 @@ const metaData: MetaDataType = {
         });
       },
     },
+
     {
       render: {
         componentType: "select",
@@ -69,7 +69,6 @@ const metaData: MetaDataType = {
       required: true,
       dependentFields: ["country"],
       options: (dependentValues) => {
-        console.log(dependentValues);
         return new Promise((res) => {
           setTimeout(() => {
             let value = dependentValues?.country?.value;
@@ -120,6 +119,17 @@ const metaData: MetaDataType = {
         ],
       },
     },
+
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+        sequence: 1,
+      },
+      name: "phonenumber",
+      label: "Phonenumber",
+      type: "text",
+    },
   ],
 };
 
@@ -155,5 +165,3 @@ export default metaData;
       ],
     },
     */
-
-//icicic bank technical person 9892351566

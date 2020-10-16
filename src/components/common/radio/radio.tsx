@@ -37,6 +37,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
   name: fieldName,
   validate,
   shouldExclude,
+  postValidationSetCrossFieldValues,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -65,7 +66,8 @@ const MyRadio: FC<MyRadioAllProps> = ({
     validate,
     dependentFields,
     fieldKey: fieldID,
-    shouldExclude,
+    shouldExclude: shouldExclude,
+    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
   });
   if (excluded) {
     return null;

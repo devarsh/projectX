@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
-import TextField, { TextFieldProps } from "@material-ui/core/TextField";
+import { TextFieldProps } from "@material-ui/core/TextField";
+import { TextField } from "components/styledComponent";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -20,6 +21,7 @@ export type MyTextFieldProps = UseFieldHookProps & MyTextFieldAllProps;
 const MyTextField: FC<MyTextFieldProps> = ({
   name: fieldName,
   validate,
+  postValidationSetCrossFieldValues,
   shouldExclude,
   dependentFields,
   fieldKey: fieldID,
@@ -39,13 +41,24 @@ const MyTextField: FC<MyTextFieldProps> = ({
     fieldKey,
     name,
     excluded,
+    incomingMessage,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
+    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
   });
+  useEffect(() => {
+    if (incomingMessage !== null && typeof incomingMessage === "object") {
+      const { value } = incomingMessage;
+      if (Boolean(value)) {
+        handleChange(value);
+      }
+    }
+  }, [incomingMessage, handleChange]);
+
   if (excluded) {
     return null;
   }
@@ -82,6 +95,9 @@ const MyTextField: FC<MyTextFieldProps> = ({
             <CircularProgress color="primary" variant="indeterminate" />
           </InputAdornment>
         ) : null,
+      }}
+      InputLabelProps={{
+        shrink: true,
       }}
       onChange={handleChange}
       onBlur={handleBlur}

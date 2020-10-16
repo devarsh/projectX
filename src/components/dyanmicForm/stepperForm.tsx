@@ -26,13 +26,13 @@ export const Form: FC<FormProps> = ({
     }, 3000);
   };
   const fieldGroups = Object.keys(fields);
-  const { handleSubmit, handleSubmitPartial } = useForm({
+
+  const { handleSubmit } = useForm({
     onSubmit: onSubmitHandler,
   });
   const [activeStep, setActiveStep] = useState(0);
-  const current = fields[fieldGroups[activeStep]];
   const handleNext = () => {
-    if (activeStep < fieldGroups.length) {
+    if (activeStep < fieldGroups.length - 1) {
       setActiveStep((last) => last + 1);
     }
   };
@@ -41,6 +41,19 @@ export const Form: FC<FormProps> = ({
       setActiveStep((last) => last - 1);
     }
   };
+  let toRender = Object.values(fields);
+  const allSteps = toRender.map((one, index) => {
+    console.log(index, activeStep);
+    return (
+      <Grid
+        container={true}
+        spacing={formRenderConfig?.gridConfig?.container.spacing ?? 0}
+        style={{ display: index === activeStep ? "block" : "none" }}
+      >
+        {one.fields}
+      </Grid>
+    );
+  });
 
   return (
     <Fragment>
@@ -54,12 +67,7 @@ export const Form: FC<FormProps> = ({
           );
         })}
       </Stepper>
-      <Grid
-        container={true}
-        spacing={formRenderConfig?.gridConfig?.container.spacing ?? 0}
-      >
-        {current.fields}
-      </Grid>
+      {allSteps}
       <br />
       <br />
 
@@ -89,15 +97,6 @@ export const Form: FC<FormProps> = ({
         onClick={handleSubmit}
       >
         Submit Full
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={() => handleSubmitPartial(current.fieldNames)}
-      >
-        Submit Partial
       </Button>
     </Fragment>
   );

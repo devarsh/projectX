@@ -95,7 +95,11 @@ export declare function ValidateFnType(
 
 export declare function PostValidationSetCrossFieldValuesFnType(
   fieldData: FormFieldAtomType
-): Promise<InitialValuesType | undefined> | InitialValuesType | undefined;
+):
+  | Promise<InitialValuesType | undefined | null>
+  | InitialValuesType
+  | undefined
+  | null;
 
 export interface EmptyFnType {
   (args: FormFieldAtomType): string;

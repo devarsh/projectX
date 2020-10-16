@@ -17,6 +17,7 @@ const MySlider: FC<AllSliderProps> = ({
   name: fieldName,
   fieldKey: fieldID,
   shouldExclude,
+  postValidationSetCrossFieldValues,
   label,
   InputLabelProps,
   GridProps,
@@ -35,6 +36,7 @@ const MySlider: FC<AllSliderProps> = ({
     name: fieldName,
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
+    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
   });
   const [localValue, setLocalValue] = useState(Number(value));
   useEffect(() => {

@@ -16,8 +16,41 @@ import * as yup from "yup";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { FormContext } from "packages/form";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
+//@ts-ignore
+const useStyles = makeStyles<any>((theme) => ({
+  title: {
+    color: "#26A456",
+    letterSpacing: "2px",
+    fontSize: "1.75rem",
+    fontWeight: "700",
+    alignSelf: "flex-start",
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    boxShadow: "0 0 20px rgba(0,0,0,0.06)",
+    padding: "1rem 2rem",
+    borderRadius: 4,
+  },
+  form: {
+    width: "100%",
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 const App = () => {
+  const classes = useStyles();
+  console.log(classes);
   return (
     <RecoilRoot>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -42,7 +75,16 @@ const App = () => {
             }),
           }}
         >
-          <MainApp />
+          <Container component="main">
+            <div className={classes?.paper}>
+              <Typography component="h3" className={classes?.title}>
+                form1
+              </Typography>
+              <form className={classes?.form}>
+                <MainApp />
+              </form>
+            </div>
+          </Container>
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
     </RecoilRoot>
@@ -61,7 +103,12 @@ const MainApp = () => {
   const { handleSubmit, handleReset, handleClear } = useForm({
     onSubmit: onSubmitHandler,
   });
-  const girdConfig: { xs: any; md: any; sm: any } = { xs: 12, md: 3, sm: 3 };
+  const girdConfig: { item: boolean; xs: any; md: any; sm: any } = {
+    xs: 12,
+    md: 3,
+    sm: 3,
+    item: true,
+  };
 
   return (
     <Fragment>
@@ -73,6 +120,7 @@ const MainApp = () => {
           variant="outlined"
           margin="normal"
           required
+          fullWidth
           label="Email Address"
           autoComplete="username email"
           validate={async (data) => {
@@ -89,6 +137,7 @@ const MainApp = () => {
           margin="normal"
           required
           label="Amount"
+          fullWidth
           enableNumWords={true}
           enableGrid={true}
           GridProps={girdConfig}
@@ -154,6 +203,7 @@ const MainApp = () => {
           fieldKey="country"
           name="country"
           label="country"
+          fullWidth
           options={() => {
             return new Promise((res, rej) => {
               setTimeout(() => {
@@ -172,7 +222,7 @@ const MainApp = () => {
           name="state"
           fieldKey="state"
           label="State"
-          autoWidth={true}
+          fullWidth
           enableGrid={true}
           GridProps={girdConfig}
           dependentFields={["country"]}
@@ -205,6 +255,89 @@ const MainApp = () => {
               }, 3000);
             });
           }}
+        />
+        <TextField
+          name="pincode"
+          fieldKey="pincode"
+          type="text"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Pincode"
+          postValidationSetCrossFieldValues={(fieldData) => {
+            if (fieldData.value === "380015") {
+              return {
+                area: {
+                  options: [
+                    {
+                      label: "shyamal",
+                      value: 1,
+                    },
+                    {
+                      label: "prahladnagar",
+                      value: 2,
+                    },
+                  ],
+                  value: 1,
+                },
+              };
+            } else if (fieldData.value === "380006") {
+              return {
+                area: {
+                  options: [
+                    {
+                      label: "gulbai tekra",
+                      value: 1,
+                    },
+                    {
+                      label: "c.g road",
+                      value: 2,
+                    },
+                  ],
+                  value: 2,
+                },
+              };
+            } else {
+              return {
+                area: {
+                  options: [
+                    {
+                      label: "Not found",
+                      value: null,
+                    },
+                  ],
+                  value: null,
+                },
+              };
+            }
+          }}
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <Select
+          fieldKey="area"
+          name="area"
+          label="Area"
+          fullWidth
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+
+        <Select
+          fieldKey="city"
+          name="city"
+          label="City"
+          fullWidth
+          enableGrid={true}
+          GridProps={girdConfig}
+          options={[
+            { label: "Ahmedabad", value: 1 },
+            { label: "Baroda", value: 2 },
+            { label: "Rajkot", value: 3 },
+            { label: "Surat", value: 4 },
+            { label: "Nadiad", value: 5 },
+          ]}
         />
       </Grid>
       <br />

@@ -31,6 +31,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   name: fieldName,
   validate,
   shouldExclude,
+  postValidationSetCrossFieldValues,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -39,7 +40,6 @@ const MySwitch: FC<MySwitchAllProps> = ({
   FormControlLabelProps,
   GridProps,
   enableGrid,
-
   ...others
 }) => {
   const {
@@ -58,6 +58,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
     dependentFields,
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
+    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
   });
   if (excluded) {
     return null;
