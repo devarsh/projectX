@@ -25,6 +25,7 @@ export type MyTimeTimePickerAllProps = Merge<
 export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   type,
@@ -41,12 +42,17 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = (date) => {
     handleChange(date);

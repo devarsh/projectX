@@ -42,6 +42,7 @@ const valueExists = (myValue: any[] | any, value: any) => {
 const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -64,12 +65,17 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
   const switches = options.map((oneSwitch) => (
     <FormControlLabel

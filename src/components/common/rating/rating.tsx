@@ -17,6 +17,7 @@ export type AllRatingProps = Merge<RatingProps, ExtendedFieldProps>;
 const MyRating: FC<AllRatingProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -32,9 +33,11 @@ const MyRating: FC<AllRatingProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
   const [focus, setFocus] = useState(false);
   const customBlur = useCallback(() => {
@@ -50,6 +53,9 @@ const MyRating: FC<AllRatingProps> = ({
     },
     [handleChange]
   );
+  if (excluded) {
+    return null;
+  }
   const result = (
     <Fragment key={fieldKey}>
       <InputLabel {...InputLabelProps} focused={focus} disabled={isSubmitting}>

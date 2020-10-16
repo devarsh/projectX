@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import {
   useField,
   UseFieldHookProps,
@@ -15,7 +15,7 @@ import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Merge, OptionsProps } from "../types";
 
 interface dependentOptionsFn {
-  (optionsFn: DependentValuesType): OptionsProps[];
+  (optionsFn: DependentValuesType): OptionsProps[] | Promise<OptionsProps[]>;
 }
 
 interface extendedFiledProps extends UseFieldHookProps {
@@ -38,6 +38,7 @@ export type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
 const MySelect: FC<MySelectAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -48,6 +49,7 @@ const MySelect: FC<MySelectAllProps> = ({
   MenuItemProps,
   GridProps,
   enableGrid,
+  multiple,
   ...others
 }) => {
   const {
@@ -60,13 +62,18 @@ const MySelect: FC<MySelectAllProps> = ({
     fieldKey,
     name,
     dependentValues,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
   const [_options, setOptions] = useState<OptionsProps[]>([]);
+  const lastValidationPromise = useRef<Promise<any> | null>(null);
+  const lastValidationValue = useRef<any | null>(null);
+
   useEffect(() => {
     async function runner() {
       if (Array.isArray(options)) {
@@ -74,6 +81,7 @@ const MySelect: FC<MySelectAllProps> = ({
       } else if (typeof options === "function") {
         let result;
         try {
+          setOptions([{ label: "loading....", value: undefined }]);
           result = await Promise.resolve(options(dependentValues));
           if (Array.isArray(result)) {
             setOptions(result);
@@ -92,10 +100,19 @@ const MySelect: FC<MySelectAllProps> = ({
     }
     runner();
   }, [options, dependentValues]);
+  //dont move it to top it can mess up with hooks calling mechanism, if there is another
+  //hook added move this below all hook calls
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
-  const menuItems = _options.map((menuItem) => (
+  const menuItems = _options.map((menuItem, index) => (
     // @ts-ignore
-    <MenuItem {...MenuItemProps} key={menuItem.value} value={menuItem.value}>
+    <MenuItem
+      {...MenuItemProps}
+      key={menuItem.value ?? index}
+      value={menuItem.value}
+    >
       {menuItem.label}
     </MenuItem>
   ));
@@ -115,7 +132,8 @@ const MySelect: FC<MySelectAllProps> = ({
         name={name}
         onBlur={handleBlur}
         onChange={handleChange}
-        value={value}
+        value={multiple && !Array.isArray(value) ? [value] : value}
+        multiple={multiple}
       >
         {menuItems}
       </Select>

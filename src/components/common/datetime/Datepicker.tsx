@@ -25,6 +25,7 @@ export type MyDataPickerAllProps = Merge<
 export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   type,
@@ -41,12 +42,17 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = (date, dateStr) => {
     handleChange(date);

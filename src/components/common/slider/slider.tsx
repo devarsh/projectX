@@ -16,6 +16,7 @@ export type AllSliderProps = ExtendedFieldProps & SliderProps;
 const MySlider: FC<AllSliderProps> = ({
   name: fieldName,
   fieldKey: fieldID,
+  shouldExclude,
   label,
   InputLabelProps,
   GridProps,
@@ -29,9 +30,11 @@ const MySlider: FC<AllSliderProps> = ({
     fieldKey,
     name,
     value,
+    excluded,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
   const [localValue, setLocalValue] = useState(Number(value));
   useEffect(() => {
@@ -58,6 +61,9 @@ const MySlider: FC<AllSliderProps> = ({
     setFocus(true);
   }, [setFocus]);
 
+  if (excluded) {
+    return null;
+  }
   const result = (
     // @ts-ignore
     <Fragment key={fieldKey}>

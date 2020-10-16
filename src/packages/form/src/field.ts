@@ -8,18 +8,22 @@ import {
 import {
   formAtom,
   formFieldAtom,
+  formFieldRegistryAtom,
   formFieldRegisterSelector,
   formFieldUnregisterSelector,
   subscribeToFormFieldsSelector,
 } from "./atoms";
 import {
   FormFieldAtomType,
+  FormFieldRegistryAtomType,
   UseFieldHookProps,
   FormFieldRegisterSelectorAttributes,
   InitialValuesType,
+  PostValidationSetCrossFieldValuesFnType,
+  ValidateFnType,
 } from "./types";
 import { FormContext } from "./context";
-import { getIn, wrapValidationMethod } from "./util";
+import { getIn, yupReachAndValidate } from "./util";
 
 export const useField = ({
   fieldKey,
@@ -117,10 +121,9 @@ export const useField = ({
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const wrappedValidation = wrapValidationMethod(
-      formContext.validationSchema,
+      yupReachAndValidate(formContext.validationSchema, fieldData.name),
       validate,
-      postValidationSetCrossFieldValues,
-      fieldData.name
+      postValidationSetCrossFieldValues
     );
     if (typeof wrappedValidation === "function") {
       isValidationFnRef.current = true;
@@ -130,8 +133,12 @@ export const useField = ({
 
   //Subscribe to cross fields values, provide an array of dependent field names,
   //this field will be rerendered when any of the provided dependent field's value updates.
+
   const dependentFieldsState = useRecoilValue(
-    subscribeToFormFieldsSelector(dependentFields)
+    subscribeToFormFieldsSelector({
+      formName: formContext.formName,
+      fields: dependentFields,
+    })
   );
   // this determine if the field should be excluded
   useEffect(() => {
@@ -151,14 +158,20 @@ export const useField = ({
     }
   });
 
-  //todo: if value is checkbox array multiple values - need to find a better api
-  const setCrossFieldValues = useRecoilCallback(
-    ({ set }) => (fieldsObj: InitialValuesType) => {
-      if (typeof fieldsObj === "object") {
-        for (const field of Object.entries(fieldsObj)) {
+  const passCrossFieldMessage = useRecoilCallback(
+    ({ snapshot, set }) => (fieldsObj: InitialValuesType) => {
+      const fieldsLoadable = snapshot.getLoadable(
+        formFieldRegistryAtom(formContext.formName)
+      );
+      let fields: FormFieldRegistryAtomType = [];
+      if (fieldsLoadable.state === "hasValue") {
+        fields = fieldsLoadable.contents;
+      }
+      for (const field of Object.entries(fieldsObj)) {
+        if (fields.indexOf(`${formContext.formName}/${field[0]}`) >= 0) {
           set(formFieldAtom(`${formContext.formName}/${field[0]}`), (old) => ({
             ...old,
-            value: field[1],
+            incomingMessage: field[1],
           }));
         }
       }
@@ -191,22 +204,22 @@ export const useField = ({
         fieldDataRef.current.validate(data)
       );
       //@ts-ignore
-      lastValidationPromise.current?.cancel?.();
       lastValidationValue.current = data.value;
       lastValidationPromise.current = currentPromise;
       currentPromise
         .then((result) => {
+          const { error, crossFieldMessages } = result;
           if (lastValidationPromise.current === currentPromise) {
             let finalResult;
             if (
-              typeof result === "string" ||
-              result === undefined ||
-              result === null
+              typeof error === "string" ||
+              error === undefined ||
+              error === null
             ) {
-              finalResult = result;
+              finalResult = error;
             } else {
               finalResult = "unkown error check console";
-              console.log("unknown error type", result);
+              console.log("unknown error type", error);
             }
             setFieldData((old) => {
               return {
@@ -215,6 +228,9 @@ export const useField = ({
                 error: finalResult,
               };
             });
+            if (typeof crossFieldMessages === "object") {
+              passCrossFieldMessage(crossFieldMessages);
+            }
           }
         })
         .catch((err) => {
@@ -234,7 +250,7 @@ export const useField = ({
           }
         });
     },
-    [setFieldData]
+    [setFieldData, passCrossFieldMessage]
   );
   /**
    * End of validation Logic
@@ -255,12 +271,13 @@ export const useField = ({
             typeof eventOrTextValue === "number"
           )
         ) {
-          if (
-            (eventOrTextValue as React.ChangeEvent<any>) &&
-            (eventOrTextValue as React.ChangeEvent<any>).persist
-          ) {
-            (eventOrTextValue as React.ChangeEvent<any>).persist();
-          }
+          //Since React 17 we dont need this but commeting it incase any issues are faced
+          // if (
+          //   (eventOrTextValue as React.ChangeEvent<any>) &&
+          //   (eventOrTextValue as React.ChangeEvent<any>).persist
+          // ) {
+          //   (eventOrTextValue as React.ChangeEvent<any>).persist();
+          // }
           const {
             type,
             value,
@@ -373,4 +390,40 @@ function getSelectedValues(options: any[]) {
   return Array.from(options)
     .filter((el) => el.selected)
     .map((el) => el.value);
+}
+
+function wrapValidationMethod(
+  schemaValidation?: typeof ValidateFnType,
+  validationFn?: typeof ValidateFnType,
+  postValidationSetCrossFieldValuesFn?: typeof PostValidationSetCrossFieldValuesFnType
+) {
+  if (
+    typeof schemaValidation !== "function" &&
+    typeof validationFn !== "function" &&
+    typeof postValidationSetCrossFieldValuesFn !== "function"
+  ) {
+    return undefined;
+  }
+
+  const wrapperFunction = async (field: any) => {
+    let errorMsg: any = null;
+    let crossFieldMessages: InitialValuesType | undefined;
+    if (typeof schemaValidation === "function") {
+      errorMsg = await schemaValidation(field);
+    }
+    if (Boolean(errorMsg)) {
+      return { error: errorMsg };
+    }
+    if (typeof validationFn === "function") {
+      errorMsg = await validationFn(field);
+    }
+    if (Boolean(errorMsg)) {
+      return { error: errorMsg };
+    }
+    if (typeof postValidationSetCrossFieldValuesFn === "function") {
+      crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
+    }
+    return { error: errorMsg, crossFieldMessages };
+  };
+  return wrapperFunction;
 }

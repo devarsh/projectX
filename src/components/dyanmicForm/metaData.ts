@@ -43,19 +43,65 @@ const metaData: MetaDataType = {
         group: "Personal Details",
         sequence: 0,
       },
-      name: "salutation",
-      label: "Salutation",
-      defaultValue: "",
+      name: "country",
+      label: "Country",
       required: true,
-      options: [
-        { value: 1, label: "Mr" },
-        { value: 2, label: "Mrs" },
-        { value: 3, label: "Miss" },
-      ],
-      dependentFields: ["email"],
-      enableGrid: true,
-      fieldKey: "salutation",
+      options: (dependentValues) => {
+        return new Promise((res, rej) => {
+          setTimeout(() => {
+            res([
+              { label: "India", value: 1 },
+              { label: "Usa", value: 2 },
+              { label: "Canada", value: 3 },
+            ]);
+          }, 5000);
+        });
+      },
     },
+    {
+      render: {
+        componentType: "select",
+        group: "Personal Details",
+        sequence: 0,
+      },
+      name: "state",
+      label: "State",
+      required: true,
+      dependentFields: ["country"],
+      options: (dependentValues) => {
+        console.log(dependentValues);
+        return new Promise((res) => {
+          setTimeout(() => {
+            let value = dependentValues?.country?.value;
+            value = Boolean(value) ? value : undefined;
+            if (value == 1) {
+              res([
+                { label: "Gujarat", value: 1 },
+                { label: "Maharashtra", value: 2 },
+                { label: "Rajasthan", value: 3 },
+              ]);
+            } else if (value == 2) {
+              res([
+                { label: "California", value: 1 },
+                { label: "Texas", value: 2 },
+                { label: "Florida", value: 3 },
+              ]);
+            } else if (value == 3) {
+              res([
+                { label: "Ontario", value: 1 },
+                { label: "Alberta", value: 2 },
+                { label: "Ottawa", value: 3 },
+              ]);
+            } else {
+              res([{ label: "unknown", value: undefined }]);
+            }
+
+            res([{ label: "unknown", value: undefined }]);
+          }, 3000);
+        });
+      },
+    },
+
     {
       render: {
         componentType: "textField",
@@ -73,8 +119,6 @@ const metaData: MetaDataType = {
           { name: "email", params: ["Not a valid email"] },
         ],
       },
-      enableGrid: true,
-      fieldKey: "firstName",
     },
   ],
 };
@@ -111,3 +155,5 @@ export default metaData;
       ],
     },
     */
+
+//icicic bank technical person 9892351566

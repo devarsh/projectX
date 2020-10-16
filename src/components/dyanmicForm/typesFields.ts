@@ -23,43 +23,60 @@ export interface FieldMetaData<T> {
   };
 }
 
-export type AllCheckboxProps = Merge<FieldMetaData<"checkbox">, CheckboxProps>;
+export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
+
+export type AllCheckboxProps = Merge<
+  FieldMetaData<"checkbox">,
+  Omitted<CheckboxProps>
+>;
 export type AllCheckboxGroupProps = Merge<
   FieldMetaData<"checkboxGroup">,
-  CheckboxGroupProps
+  Omitted<CheckboxGroupProps>
 >;
 export type CheckboxPropsOptional = Optional<CheckboxProps>;
 export type CheckboxGroupPropsOptional = Optional<CheckboxGroupProps>;
 
 export type AllDatePickerProps = Merge<
   FieldMetaData<"datePicker">,
-  DatePickerProps
+  Omitted<DatePickerProps>
 >;
 export type AllDateTimePickerProps = Merge<
   FieldMetaData<"datetimePicker">,
-  DateTimePickerProps
+  Omitted<DateTimePickerProps>
 >;
 export type AllTimePickerProps = Merge<
   FieldMetaData<"timePicker">,
-  TimePickerProps
+  Omitted<TimePickerProps>
 >;
 export type DatePickerPropsOptional = Optional<DatePickerProps>;
 export type DateTimePickerPropsOptional = Optional<DateTimePickerProps>;
 export type TimePickerPropsOptional = Optional<TimePickerProps>;
 
-export type AllRadioProps = Merge<FieldMetaData<"radio">, RadioProps>;
+export type AllRadioProps = Merge<FieldMetaData<"radio">, Omitted<RadioProps>>;
 export type RadioPropsOptional = Optional<RadioProps>;
 
-export type AllRatingProps = Merge<FieldMetaData<"rating">, RatingProps>;
+export type AllRatingProps = Merge<
+  FieldMetaData<"rating">,
+  Omitted<RatingProps>
+>;
 export type RatingPropsOptional = Optional<RatingProps>;
 
-export type AllSelectFieldProps = Merge<FieldMetaData<"select">, SelectProps>;
+export type AllSelectFieldProps = Merge<
+  FieldMetaData<"select">,
+  Omitted<SelectProps>
+>;
 export type SelectPropsOptional = Optional<SelectProps>;
 
-export type AllSliderProps = Merge<FieldMetaData<"slider">, SliderProps>;
+export type AllSliderProps = Merge<
+  FieldMetaData<"slider">,
+  Omitted<SliderProps>
+>;
 export type SliderPropsOptional = Optional<SliderProps>;
 
-export type AllSwitchProps = Merge<FieldMetaData<"switch">, SwitchProps>;
+export type AllSwitchProps = Merge<
+  FieldMetaData<"switch">,
+  Omitted<SwitchProps>
+>;
 export type AllSwitchGroupProps = Merge<
   FieldMetaData<"switchGroup">,
   SwitchGroupProps
@@ -69,6 +86,6 @@ export type SwitchGroupPropsOptional = Optional<SwitchGroupProps>;
 
 export type AllTextFieldProps = Merge<
   FieldMetaData<"textField">,
-  TextFieldProps
+  Omitted<TextFieldProps>
 >;
 export type TextFieldPropsOptional = Optional<TextFieldProps>;

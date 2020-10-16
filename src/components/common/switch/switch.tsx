@@ -30,6 +30,7 @@ export type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
 const MySwitch: FC<MySwitchAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -38,6 +39,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   FormControlLabelProps,
   GridProps,
   enableGrid,
+
   ...others
 }) => {
   const {
@@ -49,12 +51,17 @@ const MySwitch: FC<MySwitchAllProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
 
   const result = (

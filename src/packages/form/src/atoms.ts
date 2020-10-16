@@ -7,6 +7,7 @@ import {
   FormFieldRegisterSelectorAttributes,
   FormFieldRegistryAtomType,
   DependentValuesType,
+  SubscritionFieldsType,
 } from "./types";
 
 export const atomKeys = {
@@ -44,6 +45,7 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
     validationRunning: false,
     validate: null,
     excluded: false,
+    incomingMessage: null,
   }),
 });
 
@@ -161,18 +163,27 @@ export const formArrayFieldUnregisterSelector = selectorFamily<string, string>({
 
 export const subscribeToFormFieldsSelector = selectorFamily<
   DependentValuesType,
-  string[] | undefined
+  SubscritionFieldsType
 >({
   key: atomKeys.subscribeToFormFieldsSelector,
-  get: (fields = []) => ({ get }) => {
-    if (!Array.isArray(fields)) {
+  get: (subscriptionFields) => ({ get }) => {
+    if (typeof subscriptionFields !== "object") {
+      return {};
+    }
+    let fields = subscriptionFields.fields;
+    if (fields === undefined) {
+      fields = [];
+    }
+    if (typeof fields === "string") {
       fields = [fields];
     }
     let fieldValues: DependentValuesType = {};
     for (let field of fields) {
-      if (typeof field === "string" && field !== "") {
-        let fieldState = get(formFieldAtom(field));
-        fieldValues[fieldState.name] = fieldState;
+      if (typeof field === "string" && Boolean(field)) {
+        let fieldState = get(
+          formFieldAtom(`${subscriptionFields.formName}/${field}`)
+        );
+        fieldValues[field] = fieldState;
       }
     }
     return fieldValues;

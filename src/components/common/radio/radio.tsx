@@ -36,6 +36,7 @@ export type MyRadioAllProps = Merge<MyRadioMixedProps, MyCheckboxExtendedProps>;
 const MyRadio: FC<MyRadioAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -58,12 +59,17 @@ const MyRadio: FC<MyRadioAllProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude,
   });
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
   const radios = options.map((radio) => (
     <FormControlLabel

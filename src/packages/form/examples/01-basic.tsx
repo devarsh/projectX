@@ -1,28 +1,17 @@
-import * as React from "react";
+import { Fragment } from "react";
 import { RecoilRoot } from "recoil";
 import {
   TextField,
-  ArrayField,
   Checkbox,
   CheckboxGroup,
   Radio,
-  Switch,
-  SwitchGroup,
-  Slider,
   Select,
   DatePicker,
-  TimePicker,
-  Rating,
 } from "components/common";
 
-import { NumWordsField } from "components/derived";
-
-import {
-  useForm,
-  yupValidationHelper,
-  TimeTravelObserver,
-} from "packages/form";
+import { useForm } from "packages/form";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import * as yup from "yup";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -46,12 +35,13 @@ const App = () => {
               ],
             },
             validationSchema: yup.object().shape({
-              firstName: yup.string().max(10).min(2).email(),
-              password2: yup.string().max(10).min(4),
+              email: yup
+                .string()
+                .required("required field")
+                .email("should be valid email"),
             }),
           }}
         >
-          <TimeTravelObserver />
           <MainApp />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
@@ -68,186 +58,183 @@ const MainApp = () => {
     }, 3000);
   };
 
-  const {
-    handleSubmit,
-    handleReset,
-    handleClear,
-    handleSubmitPartial,
-  } = useForm({
+  const { handleSubmit, handleReset, handleClear } = useForm({
     onSubmit: onSubmitHandler,
   });
+  const girdConfig: { xs: any; md: any; sm: any } = { xs: 12, md: 3, sm: 3 };
 
   return (
-    <React.Fragment>
-      <TextField
-        name="firstName"
-        fieldKey="firstName"
-        type="email"
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        label="Email Address"
-        autoComplete="username email"
-        validate={yupValidationHelper(
-          yup
-            .string()
-            .required("email is required")
-            .email("should be valid email")
-        )}
-        enableGrid={false}
-      />
-      <NumWordsField
-        name="amount"
-        fieldKey="amount"
-        type="number"
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        label="Amount"
-      />
+    <Fragment>
+      <Grid container={true} spacing={3}>
+        <TextField
+          name="email"
+          fieldKey="email"
+          type="email"
+          variant="outlined"
+          margin="normal"
+          required
+          label="Email Address"
+          autoComplete="username email"
+          validate={async (data) => {
+            return data.value === "devarsh@gmail.com" ? "" : "invalid email";
+          }}
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <TextField
+          name="amount"
+          fieldKey="amount"
+          type="number"
+          variant="outlined"
+          margin="normal"
+          required
+          label="Amount"
+          enableNumWords={true}
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <Checkbox
+          name="rememberMe"
+          fieldKey="rememberMe"
+          label="I have read all the terms and conditions"
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <CheckboxGroup
+          fieldKey="food"
+          name="food"
+          label="pick everything you want"
+          options={[
+            { label: "ice-cream", value: "ic" },
+            { label: "oreo", value: "o" },
+            { label: "laze", value: "l" },
+          ]}
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <Radio
+          name="marriageStatus"
+          fieldKey="marriageStatus"
+          label="Marriage Status"
+          options={[
+            { label: "Married", value: "m" },
+            { label: "UnMarried", value: "u" },
+          ]}
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <Radio
+          name="kidsStatus"
+          fieldKey="kidsStatus"
+          label="Kids Status"
+          options={[
+            { label: "have kids", value: "h" },
+            { label: "no kids", value: "n" },
+          ]}
+          enableGrid={true}
+          GridProps={girdConfig}
+          dependentFields={["marriageStatus"]}
+          shouldExclude={(_, dependentValues) => {
+            if (dependentValues?.marriageStatus?.value === "m") {
+              return false;
+            }
+            return true;
+          }}
+        />
+        <DatePicker
+          name="dob"
+          fieldKey="dob"
+          label="Date Of Birth"
+          placeholder="dd/mm/yyyy"
+          format="dd/MM/yyyy"
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <Select
+          fieldKey="country"
+          name="country"
+          label="country"
+          options={() => {
+            return new Promise((res, rej) => {
+              setTimeout(() => {
+                res([
+                  { label: "India", value: 1 },
+                  { label: "Usa", value: 2 },
+                  { label: "Canada", value: 3 },
+                ]);
+              }, 5000);
+            });
+          }}
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        <Select
+          name="state"
+          fieldKey="state"
+          label="State"
+          autoWidth={true}
+          enableGrid={true}
+          GridProps={girdConfig}
+          dependentFields={["country"]}
+          options={(dependentValues) => {
+            return new Promise((res) => {
+              setTimeout(() => {
+                let value = dependentValues?.country?.value;
+                value = Boolean(value) ? value : undefined;
+                if (value === 1) {
+                  res([
+                    { label: "Gujarat", value: 1 },
+                    { label: "Maharashtra", value: 2 },
+                    { label: "Rajasthan", value: 3 },
+                  ]);
+                } else if (value === 2) {
+                  res([
+                    { label: "California", value: 1 },
+                    { label: "Texas", value: 2 },
+                    { label: "Florida", value: 3 },
+                  ]);
+                } else if (value === 3) {
+                  res([
+                    { label: "Ontario", value: 1 },
+                    { label: "Alberta", value: 2 },
+                    { label: "Ottawa", value: 3 },
+                  ]);
+                } else {
+                  res([{ label: "unknown", value: undefined }]);
+                }
+              }, 3000);
+            });
+          }}
+        />
+      </Grid>
+      <br />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+      >
+        Submit Full
+      </Button>
+      <Button
+        component="button"
+        variant="contained"
+        color="primary"
+        onClick={handleReset}
+      >
+        Reset
+      </Button>
+      <Button variant="contained" color="primary" onClick={handleClear}>
+        Clear
+      </Button>
+    </Fragment>
+  );
+};
 
-      <TextField
-        name="firstName-2"
-        fieldKey="firstName-2"
-        type="email"
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        label="Email Address 2"
-        validate={async (data) => {
-          return data.value === "devarsh@gmail.com" ? "" : "invalid email";
-        }}
-        enableGrid={false}
-      />
-      <TextField
-        name="password"
-        fieldKey="password"
-        type="password"
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        label="Password"
-        autoComplete="current-password"
-        validate={yupValidationHelper(
-          yup.string().required("password is required")
-        )}
-        enableGrid={false}
-      />
-      <TextField
-        name="password2"
-        fieldKey="password2"
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        label="Password2"
-        autoComplete="current-password"
-        enableGrid={false}
-      />
-      <Checkbox
-        name="rememberMe"
-        fieldKey="rememberMe"
-        label="rememberMeee"
-        enableGrid={false}
-      />
-      <CheckboxGroup
-        fieldKey="food"
-        name="food"
-        label="pick flavor"
-        options={[
-          { label: "ice-cream", value: "ic" },
-          { label: "oreo", value: "o" },
-        ]}
-        enableGrid={false}
-      />
-      <Switch
-        fieldKey="rememberMeee"
-        name="rememberMeee"
-        label="rememberMeee"
-        enableGrid={false}
-      />
-      <SwitchGroup
-        fieldKey="foodo"
-        name="foodo"
-        label="pick flavor"
-        options={[
-          { label: "ice-cream", value: "ic" },
-          { label: "oreo", value: "o" },
-        ]}
-        enableGrid={false}
-      />
-      <Radio
-        name="gender"
-        fieldKey="gender"
-        label="Gender"
-        options={[
-          { label: "Male", value: "m" },
-          { label: "Female", value: "f" },
-        ]}
-        enableGrid={false}
-      />
-      <Select
-        name="candy"
-        fieldKey="candy"
-        label="Candy"
-        autoWidth={true}
-        options={[
-          { label: "Orange", value: "o" },
-          { label: "Mango", value: "m" },
-          { label: "Peach", value: "p" },
-          { label: "Berry", value: "b" },
-        ]}
-        enableGrid={false}
-      />
-      <Slider
-        fieldKey="ranking"
-        name="ranking"
-        key="ranking"
-        label="My Ranking"
-        enableGrid={false}
-      />
-      <Select
-        name="candyx"
-        fieldKey="candyx"
-        label="Candy-X"
-        autoWidth={true}
-        options={(dependentFields) => {
-          return [
-            { label: "OrangeX", value: "o" },
-            { label: "MangoX", value: "m" },
-            { label: "PeachX", value: "p" },
-            { label: "BerryX", value: "b" },
-          ];
-        }}
-        enableGrid={false}
-      />
-      <DatePicker
-        name="todays"
-        fieldKey="todays"
-        label="todaysData"
-        placeholder="dd/mm/yyyy"
-        format="dd/MM/yyyy"
-        enableGrid={false}
-      />
-      <TimePicker
-        name="tonight"
-        fieldKey="tonight"
-        label="tonight"
-        placeholder="HH:MM:SS"
-        mask="__:__ _M"
-        enableGrid={false}
-      />
-      <Rating
-        fieldKey="grade"
-        name="grade"
-        label="Grading"
-        enableGrid={false}
-      />
-      <ArrayField
+export default App;
+
+/*
+<ArrayField
         arrayFieldName="contact"
         template={{ tel: "", tag: "" }}
         renderRowsFn={(props) => {
@@ -285,7 +272,7 @@ const MainApp = () => {
           );
         }}
       />
-      <ArrayField
+<ArrayField
         arrayFieldName="address"
         template={{ street1: "", city: "", state: "" }}
         renderRowsFn={(props) => {
@@ -323,45 +310,4 @@ const MainApp = () => {
           );
         }}
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-      >
-        Submit Full
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={() =>
-          handleSubmitPartial(["firstName", "firstName-2", "password"])
-        }
-      >
-        Submit Partial
-      </Button>
-      <Button
-        component="button"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleReset}
-      >
-        Reset
-      </Button>
-      <Button
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleClear}
-      >
-        Clear
-      </Button>
-    </React.Fragment>
-  );
-};
-
-export default App;
+*/

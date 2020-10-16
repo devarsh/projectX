@@ -25,11 +25,15 @@ interface MyCheckboxExtendedProps {
   enableGrid: boolean;
 }
 
-type MyChecboxAllProps = Merge<MyCheckboxMixedProps, MyCheckboxExtendedProps>;
+export type MyCheckboxAllProps = Merge<
+  MyCheckboxMixedProps,
+  MyCheckboxExtendedProps
+>;
 
-const MyCheckbox: FC<MyChecboxAllProps> = ({
+const MyCheckbox: FC<MyCheckboxAllProps> = ({
   name: fieldName,
   validate,
+  shouldExclude,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -49,12 +53,17 @@ const MyCheckbox: FC<MyChecboxAllProps> = ({
     isSubmitting,
     fieldKey,
     name,
+    excluded,
   } = useField({
     name: fieldName,
     validate,
     dependentFields,
     fieldKey: fieldID,
+    shouldExclude: shouldExclude,
   });
+  if (excluded) {
+    return null;
+  }
   const isError = touched && (error ?? "") !== "";
 
   const result = (

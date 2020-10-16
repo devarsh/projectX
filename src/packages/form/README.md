@@ -122,11 +122,14 @@ const {
     handleChange: Function
     handleBlur: Function
     dependentValues: Array,
-    setExclude: Function
+    excluded: boolean,
 } = useForm({
     fieldKey: string;
     name: string;
     validate?: typeof ValidateFnType;
+    shouldExclude?: (
+      fieldData: FormFieldAtomType,
+      dependentFieldsValues: DependentValuesType) => boolean | Promise<boolean>
     dependentFields?: string[];
 })
 ```
@@ -140,6 +143,8 @@ const {
 - **validate**: Validation method that should be called to perform validation
 
 - **dependentFields**: Array of field name that needs to be watched
+
+- **shouldExclude**: will pass currentField Data and dependentFieldsValues and function should return true to exlude the field otherwise false, if field is excluded it will excluded from form errors and handleSubmit.
 
 #### Properties
 
@@ -168,7 +173,7 @@ const {
 
 - **dependentValues**: provides an array of watch fields with `fieldKey,name,value,touched,error` fields for each watched field
 
-- **setExclude: Function(boolean)**: if true is passed the filed will be excluded from being submitted. This is useful in cases where you want to hide certain fields and ignore validation errors on them.
+- **setExcluded:** : Returns true if field is excluded. This is useful in cases where you want to hide certain fields.
 
 ### useFieldArray
 

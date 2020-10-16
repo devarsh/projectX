@@ -264,17 +264,19 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
         const customValidator =
           typeof fieldState.validate === "function"
             ? fieldState.validate
-            : (data: FormFieldAtomType) => data.error;
+            : (data: FormFieldAtomType) => ({
+                error: data.error,
+              });
         try {
           result = await Promise.resolve(customValidator(fieldState));
         } catch (e) {
-          result = e.message;
+          result = { error: e.message };
         }
         const newFieldState = {
           ...fieldState,
           validationRunning: false,
           touched: true,
-          error: result,
+          error: result.error,
         };
         set(formFieldAtom(field), newFieldState);
         return newFieldState;

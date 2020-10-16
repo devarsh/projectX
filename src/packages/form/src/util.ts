@@ -1,6 +1,7 @@
 import clone from "lodash/clone";
 import toPath from "lodash/toPath";
 import * as yup from "yup";
+import { FormFieldAtomType } from "./types";
 
 //Copied the following from Formik library
 
@@ -70,12 +71,17 @@ const validationConfig = {
   strict: true,
 };
 
-export const yupValidationHelper = (schema: any) => (field: any) => {
+export const yupValidationHelper = (
+  schema:
+    | yup.Schema<object | undefined>
+    | yup.StringSchema<any>
+    | yup.NumberSchema<any>
+) => async (field: FormFieldAtomType) => {
   //@ts-ignore
   const { value } = field;
   try {
-    schema.validateSync(value ?? null, validationConfig);
-    return "";
+    await schema.validate(value, validationConfig);
+    return null;
   } catch (e) {
     if (e instanceof yup.ValidationError) {
       return e.errors[0];
@@ -84,35 +90,20 @@ export const yupValidationHelper = (schema: any) => (field: any) => {
   }
 };
 
-export const wrapValidationMethod = (
+export const yupReachAndValidate = (
   schema: yup.ObjectSchema | undefined,
-  validationFn: any,
-  postValidationHook: any,
   path: string
 ) => {
-  let fieldSchema;
-  if (typeof schema === "object" && schema.validate) {
+  if (typeof schema === "object") {
     try {
-      fieldSchema = yup.reach(schema, path);
+      let fieldSchema = yup.reach(schema, path);
+      return async (field: FormFieldAtomType) => {
+        return await yupValidationHelper(fieldSchema)(field);
+      };
     } catch (e) {
-      fieldSchema = undefined;
+      return undefined;
     }
+  } else {
+    return undefined;
   }
-  if (fieldSchema !== undefined) {
-    const wrapperFunction = (field: any) => {
-      let result = yupValidationHelper(fieldSchema)(field);
-      if (typeof validationFn === "function") {
-        if (Boolean(result) === false) {
-          const validationResult = validationFn(field);
-          return validationResult;
-        } else {
-          return result;
-        }
-      } else {
-        return result;
-      }
-    };
-    return wrapperFunction;
-  }
-  return validationFn;
 };
