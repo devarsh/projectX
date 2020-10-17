@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from "react";
+import { FC, useState, useRef, Suspense } from "react";
 import { useForm, SubmitFnType } from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -83,7 +83,7 @@ export const Form: FC<FormProps> = ({
         <Typography component="h4" className={classes.subTitle}>
           {fieldGroups.current[activeStep]}
         </Typography>
-        {steps}
+        <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
 
         <br />
         {activeStep === 0 ? null : (

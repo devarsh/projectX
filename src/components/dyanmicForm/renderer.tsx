@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import {
   MetaDataType,
   FormRenderConfigType,
@@ -13,7 +14,6 @@ import {
   Switch,
   SwitchGroup,
   Slider,
-  Select,
   DatePicker,
   TimePicker,
   Rating,
@@ -23,6 +23,7 @@ import { PasswordField, NumberFormat } from "components/derived";
 import { setIn } from "packages/form";
 import * as yup from "yup";
 import { FC } from "react";
+const Select = lazy(() => import("components/common/select"));
 
 export const renderFieldsByGroup = (metaData: MetaDataType) => {
   const { fields, form } = metaData;

@@ -7,12 +7,12 @@ interface RenderParentAttribs {
   push: () => void;
 }
 
-interface ArrayFieldProps extends UseFieldArrayHookProps {
+export interface ArrayFieldProps extends UseFieldArrayHookProps {
   renderParentFn: (options: RenderParentAttribs) => JSX.Element;
   renderRowsFn: RenderFn;
 }
 
-export const ArrayField: FC<ArrayFieldProps> = ({
+const ArrayField: FC<ArrayFieldProps> = ({
   arrayFieldName,
   template,
   renderParentFn,
@@ -41,3 +41,5 @@ export const ArrayField: FC<ArrayFieldProps> = ({
     return null;
   }
 };
+
+export default ArrayField;
