@@ -23,6 +23,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   validate,
   validationRun,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   shouldExclude,
   dependentFields,
   fieldKey: fieldID,
@@ -52,6 +53,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     validationRun: validationRun,
+    runPostValidationHookAlways: runPostValidationHookAlways,
   });
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {

@@ -33,6 +33,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -60,6 +61,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    runPostValidationHookAlways: runPostValidationHookAlways,
     validationRun: validationRun,
   });
   if (excluded) {

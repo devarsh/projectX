@@ -28,6 +28,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
   type,
@@ -52,6 +53,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    runPostValidationHookAlways: runPostValidationHookAlways,
     validationRun: validationRun,
   });
   if (excluded) {

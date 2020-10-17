@@ -28,6 +28,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
   type,
@@ -53,6 +54,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     validationRun: validationRun,
+    runPostValidationHookAlways: runPostValidationHookAlways,
   });
   if (excluded) {
     return null;

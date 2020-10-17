@@ -45,6 +45,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -75,6 +76,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    runPostValidationHookAlways: runPostValidationHookAlways,
     validationRun: validationRun,
   });
   if (excluded) {

@@ -20,6 +20,7 @@ const MyRating: FC<AllRatingProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
   label,
@@ -42,6 +43,7 @@ const MyRating: FC<AllRatingProps> = ({
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     validationRun: validationRun,
+    runPostValidationHookAlways: runPostValidationHookAlways,
   });
   const [focus, setFocus] = useState(false);
   const customBlur = useCallback(() => {

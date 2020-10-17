@@ -58,6 +58,7 @@ const metaData: MetaDataType = {
           }, 1000);
         });
       },
+      runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
           return "Salutation is Required";

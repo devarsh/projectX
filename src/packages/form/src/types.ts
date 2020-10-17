@@ -75,6 +75,7 @@ export interface UseFieldHookProps {
   dependentFields?: string[] | string;
   shouldExclude?: typeof shouldExcludeFnType;
   postValidationSetCrossFieldValues?: typeof PostValidationSetCrossFieldValuesFnType;
+  runPostValidationHookAlways?: boolean;
 }
 
 export interface UseFieldArrayHookProps {

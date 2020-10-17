@@ -26,6 +26,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
   type,
@@ -51,6 +52,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     validationRun: validationRun,
+    runPostValidationHookAlways: runPostValidationHookAlways,
   });
   if (excluded) {
     return null;

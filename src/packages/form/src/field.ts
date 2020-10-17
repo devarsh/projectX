@@ -31,8 +31,9 @@ export const useField = ({
   dependentFields,
   validate,
   validationRun,
-  postValidationSetCrossFieldValues,
   shouldExclude,
+  postValidationSetCrossFieldValues,
+  runPostValidationHookAlways,
 }: UseFieldHookProps) => {
   //formContext provides formName for scoping of fields, and initialValue for the field
   const formContext = useContext(FormContext);
@@ -124,7 +125,8 @@ export const useField = ({
     const wrappedValidation = wrapValidationMethod(
       yupReachAndValidate(formContext.validationSchema, fieldData.name),
       validate,
-      postValidationSetCrossFieldValues
+      postValidationSetCrossFieldValues,
+      runPostValidationHookAlways
     );
     if (typeof wrappedValidation === "function") {
       isValidationFnRef.current = true;
@@ -401,10 +403,12 @@ function getSelectedValues(options: any[]) {
     .map((el) => el.value);
 }
 
+//Need to rethink this API - its too messy
 function wrapValidationMethod(
   schemaValidation?: typeof ValidateFnType,
   validationFn?: typeof ValidateFnType,
-  postValidationSetCrossFieldValuesFn?: typeof PostValidationSetCrossFieldValuesFnType
+  postValidationSetCrossFieldValuesFn?: typeof PostValidationSetCrossFieldValuesFnType,
+  runPostValidationHookAlways?: boolean
 ) {
   if (
     typeof schemaValidation !== "function" &&
@@ -413,32 +417,61 @@ function wrapValidationMethod(
   ) {
     return undefined;
   }
-  const wrapperFunction = async (field: any) => {
-    let errorMsg: any = null;
-    let crossFieldMessages: InitialValuesType | null | undefined;
-    if (typeof schemaValidation === "function") {
-      errorMsg = await schemaValidation(field);
-    }
-    if (Boolean(errorMsg)) {
-      return { error: errorMsg };
-    }
-    if (typeof validationFn === "function") {
-      errorMsg = await validationFn(field);
-    }
-    if (Boolean(errorMsg)) {
-      return { error: errorMsg };
-    }
-    if (typeof postValidationSetCrossFieldValuesFn === "function") {
-      crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
-      if (
-        crossFieldMessages === null ||
-        crossFieldMessages === undefined ||
-        typeof crossFieldMessages !== "object"
-      ) {
-        crossFieldMessages = {};
+  const shouldRunAlways = Boolean(runPostValidationHookAlways);
+  if (!shouldRunAlways) {
+    const wrapperFunction = async (field: any) => {
+      let errorMsg: any = null;
+      let crossFieldMessages: InitialValuesType | null | undefined;
+      if (typeof schemaValidation === "function") {
+        errorMsg = await schemaValidation(field);
       }
-    }
-    return { error: errorMsg, crossFieldMessages };
-  };
-  return wrapperFunction;
+      if (Boolean(errorMsg)) {
+        return { error: errorMsg };
+      }
+      if (typeof validationFn === "function") {
+        errorMsg = await validationFn(field);
+      }
+      if (Boolean(errorMsg)) {
+        return { error: errorMsg };
+      }
+      if (typeof postValidationSetCrossFieldValuesFn === "function") {
+        crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
+        if (
+          crossFieldMessages === null ||
+          crossFieldMessages === undefined ||
+          typeof crossFieldMessages !== "object"
+        ) {
+          crossFieldMessages = {};
+        }
+      }
+      return { error: errorMsg, crossFieldMessages };
+    };
+    return wrapperFunction;
+  } else {
+    const wrapperFunctionAlways = async (field: any) => {
+      let errorMsg: any = null;
+      let crossFieldMessages: InitialValuesType | null | undefined;
+      if (typeof postValidationSetCrossFieldValuesFn === "function") {
+        crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
+        if (
+          crossFieldMessages === null ||
+          crossFieldMessages === undefined ||
+          typeof crossFieldMessages !== "object"
+        ) {
+          crossFieldMessages = {};
+        }
+      }
+      if (typeof schemaValidation === "function") {
+        errorMsg = await schemaValidation(field);
+      }
+      if (Boolean(errorMsg)) {
+        return { error: errorMsg, crossFieldMessages };
+      }
+      if (typeof validationFn === "function") {
+        errorMsg = await validationFn(field);
+      }
+      return { error: errorMsg, crossFieldMessages };
+    };
+    return wrapperFunctionAlways;
+  }
 }
