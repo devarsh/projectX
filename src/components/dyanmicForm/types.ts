@@ -12,6 +12,8 @@ import {
   AllSliderProps,
   AllSwitchGroupProps,
   AllSwitchProps,
+  AllNumberFormatProps,
+  AllPasswordFieldProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -26,6 +28,8 @@ import {
   SliderPropsOptional,
   SwitchPropsOptional,
   SwitchGroupPropsOptional,
+  NumberFormatPropsOptional,
+  PasswordFieldPropsOptional,
 } from "./typesFields";
 
 export interface FormRenderConfigType {
@@ -67,6 +71,8 @@ export interface ComponentTypeProps {
   slider?: SliderPropsOptional;
   switch?: SwitchPropsOptional;
   switchGroup?: SwitchGroupPropsOptional;
+  numberFormat?: NumberFormatPropsOptional;
+  passwordField?: PasswordFieldPropsOptional;
 }
 
 export interface MetaDataType {
@@ -86,7 +92,9 @@ export type FieldMetaDataType =
   | AllRatingProps
   | AllSliderProps
   | AllSwitchGroupProps
-  | AllSwitchProps;
+  | AllSwitchProps
+  | AllNumberFormatProps
+  | AllPasswordFieldProps;
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {

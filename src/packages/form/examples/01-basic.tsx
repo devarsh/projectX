@@ -50,7 +50,7 @@ const useStyles = makeStyles<any>((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  console.log(classes);
+
   return (
     <RecoilRoot>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>

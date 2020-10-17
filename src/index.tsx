@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
 import "typeface-roboto";
 //import App from "components/app";
-//import App from "components/dyanmicForm";
-import App from "packages/form/examples/01-basic";
+import App from "components/dyanmicForm";
+//import App from "packages/form/examples/01-basic";
 import * as serviceWorker from "./serviceWorker";
 
 //@ts-ignore

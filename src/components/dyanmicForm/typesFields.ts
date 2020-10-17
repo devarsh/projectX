@@ -12,6 +12,8 @@ import { RadioProps } from "components/common/radio";
 import { RatingProps } from "components/common/rating";
 import { SliderProps } from "components/common/slider";
 import { SwitchGroupProps, SwitchProps } from "components/common/switch";
+import { NumberFormatProps } from "components/derived/numberFormat";
+import { PasswordFieldProps } from "components/derived/passwordField";
 
 export interface FieldMetaData<T> {
   defaultValue?: any;
@@ -24,6 +26,20 @@ export interface FieldMetaData<T> {
 }
 
 export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
+
+export type AllNumberFormatProps = Merge<
+  FieldMetaData<"numberFormat">,
+  Omitted<NumberFormatProps>
+>;
+
+export type NumberFormatPropsOptional = Optional<NumberFormatProps>;
+
+export type AllPasswordFieldProps = Merge<
+  FieldMetaData<"passwordField">,
+  Omitted<PasswordFieldProps>
+>;
+
+export type PasswordFieldPropsOptional = Optional<PasswordFieldProps>;
 
 export type AllCheckboxProps = Merge<
   FieldMetaData<"checkbox">,

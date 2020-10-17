@@ -7,7 +7,7 @@ const metaData: MetaDataType = {
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
-      ordering: "sequence",
+      ordering: "auto",
       renderType: "stepper",
       gridConfig: {
         item: {
@@ -24,13 +24,14 @@ const metaData: MetaDataType = {
     componentProps: {
       textField: {
         fullWidth: true,
-        variant: "outlined",
       },
       select: {
-        variant: "outlined",
+        fullWidth: true,
       },
       datePicker: {
-        inputVariant: "outlined",
+        fullWidth: true,
+      },
+      numberFormat: {
         fullWidth: true,
       },
     },
@@ -40,95 +41,190 @@ const metaData: MetaDataType = {
       render: {
         componentType: "select",
         group: "Personal Details",
-        sequence: 0,
       },
-      name: "country",
-      label: "Country",
+      name: "salutation",
+      label: "Salutation",
       required: true,
+      defaultValue: "0",
       options: () => {
-        return new Promise((res, rej) => {
+        return new Promise((res) => {
           setTimeout(() => {
             res([
-              { label: "India", value: 1 },
-              { label: "Usa", value: 2 },
-              { label: "Canada", value: 3 },
+              { label: "Select Salutation", value: "0" },
+              { label: "Mr", value: "1" },
+              { label: "Mrs", value: "2" },
+              { label: "Miss", value: "3" },
             ]);
-          }, 5000);
+          }, 1000);
+        });
+      },
+      validate: (fieldData) => {
+        if (fieldData.value === "0") {
+          return "Salutation is Required";
+        }
+      },
+      postValidationSetCrossFieldValues: (field) => {
+        return new Promise((res) => {
+          if (field.value === "1") {
+            res({
+              gender: {
+                value: "1",
+              },
+            });
+          } else if (field.value === "2" || field.value === "3") {
+            res({
+              gender: {
+                value: "2",
+              },
+            });
+          } else {
+            res({
+              gender: {
+                value: "0",
+              },
+            });
+          }
         });
       },
     },
-
+    {
+      render: {
+        componentType: "textField",
+        group: "Personal Details",
+      },
+      name: "firstName",
+      type: "text",
+      label: "First Name[As Per PAN Card]",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["First Name is required"] }],
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Personal Details",
+      },
+      name: "middleName",
+      label: "Middle Name",
+      type: "text",
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Personal Details",
+      },
+      name: "lastName",
+      label: "Last Name",
+      required: true,
+      type: "text",
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Last Name is required"] }],
+      },
+    },
     {
       render: {
         componentType: "select",
         group: "Personal Details",
-        sequence: 0,
       },
-      name: "state",
-      label: "State",
+      name: "gender",
+      label: "Gender",
       required: true,
-      dependentFields: ["country"],
-      options: (dependentValues) => {
+      type: "text",
+      defaultValue: "0",
+      GridProps: {
+        xs: 12,
+        md: 4,
+        sm: 4,
+      },
+      options: () => {
         return new Promise((res) => {
           setTimeout(() => {
-            let value = dependentValues?.country?.value;
-            value = Boolean(value) ? value : undefined;
-            if (value == 1) {
-              res([
-                { label: "Gujarat", value: 1 },
-                { label: "Maharashtra", value: 2 },
-                { label: "Rajasthan", value: 3 },
-              ]);
-            } else if (value == 2) {
-              res([
-                { label: "California", value: 1 },
-                { label: "Texas", value: 2 },
-                { label: "Florida", value: 3 },
-              ]);
-            } else if (value == 3) {
-              res([
-                { label: "Ontario", value: 1 },
-                { label: "Alberta", value: 2 },
-                { label: "Ottawa", value: 3 },
-              ]);
-            } else {
-              res([{ label: "unknown", value: undefined }]);
-            }
-
-            res([{ label: "unknown", value: undefined }]);
-          }, 3000);
+            res([
+              { label: "Select Gender", value: "0" },
+              { label: "Male", value: "1" },
+              { label: "Female", value: "2" },
+            ]);
+          }, 1000);
         });
       },
+      validate: (fieldData) => {
+        if (fieldData.value === "0") {
+          return "Gender is Required";
+        }
+      },
     },
-
     {
       render: {
-        componentType: "textField",
+        componentType: "datePicker",
         group: "Personal Details",
-        sequence: 1,
       },
-      name: "firstName",
-      label: "First Name",
-      type: "email",
-      defaultValue: "",
+      name: "dob",
+      label: "Date Of Birth",
+      required: true,
+      placeholder: "dd/mm/yyyy",
+      format: "dd/MM/yyyy",
+      GridProps: {
+        xs: 12,
+        md: 4,
+        sm: 4,
+      },
       schemaValidation: {
-        type: "string",
+        type: "date",
         rules: [
-          { name: "required", params: ["First Name is required"] },
-          { name: "email", params: ["Not a valid email"] },
+          { name: "typeError", params: ["Date of Birth is required"] },
+          { name: "required", params: ["Date of Birth is required"] },
         ],
       },
     },
-
+    {
+      render: {
+        componentType: "numberFormat",
+        group: "Personal Details",
+      },
+      name: "loanAmount",
+      type: "text",
+      label: "Your Desired Loan Amount",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 4,
+        sm: 4,
+      },
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["Loan Amount is required"] },
+          { name: "required", params: ["Loan Amount is required"] },
+        ],
+      },
+      enableNumWords: true,
+      FormatProps: {
+        thousandSeparator: true,
+        prefix: "₹",
+        thousandsGroupStyle: "lakh",
+        allowNegative: false,
+        allowLeadingZeros: false,
+      },
+    },
     {
       render: {
         componentType: "textField",
         group: "Contact Details",
-        sequence: 1,
       },
-      name: "phonenumber",
-      label: "Phonenumber",
+      name: "mobileNo",
       type: "text",
+      label: "Mobile No",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["Mobile No is required"] },
+          { name: "required", params: ["Mobile No is required"] },
+        ],
+      },
     },
   ],
 };

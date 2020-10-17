@@ -19,6 +19,7 @@ import {
   Rating,
   DateTimePicker,
 } from "components/common";
+import { PasswordField, NumberFormat } from "components/derived";
 import { setIn } from "packages/form";
 import * as yup from "yup";
 import { FC } from "react";
@@ -116,6 +117,12 @@ const renderField = (
     case "datetimePicker":
       Component = DateTimePicker;
       break;
+    case "passwordField":
+      Component = PasswordField;
+      break;
+    case "numberFormat":
+      Component = NumberFormat;
+      break;
     default:
       Component = EmptyComponent;
       break;
@@ -123,9 +130,12 @@ const renderField = (
   if (Component === EmptyComponent) {
     return <Component componentType={render.componentType} />;
   } else {
-    const currentComponentTypeProps =
-      componentProps[render.componentType] ?? {};
+    const currentComponentTypeProps = componentProps[render.componentType];
     const allProps = { ...currentComponentTypeProps, ...others };
+    const gridConfigOverrides = {
+      ...formRenderConfig?.gridConfig?.item,
+      ...others.GridProps,
+    };
     return (
       <Component
         {...allProps}
@@ -134,9 +144,9 @@ const renderField = (
         enableGrid={true}
         GridProps={{
           item: true,
-          xs: formRenderConfig?.gridConfig?.item?.xs ?? "auto",
-          md: formRenderConfig?.gridConfig?.item?.sm ?? "auto",
-          xl: formRenderConfig?.gridConfig?.item?.xs ?? "auto",
+          xs: gridConfigOverrides?.xs ?? "auto",
+          md: gridConfigOverrides?.sm ?? "auto",
+          xl: gridConfigOverrides?.xs ?? "auto",
         }}
       />
     );

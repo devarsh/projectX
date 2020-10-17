@@ -28,6 +28,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   GridProps,
   enableGrid,
   enableNumWords,
+  InputProps,
   ...others
 }) => {
   const {
@@ -95,6 +96,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
             <CircularProgress color="primary" variant="indeterminate" />
           </InputAdornment>
         ) : null,
+        ...InputProps,
       }}
       InputLabelProps={{
         shrink: true,

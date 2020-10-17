@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
-import {
-  KeyboardDatePicker,
-  KeyboardDatePickerProps,
-} from "@material-ui/pickers";
+import { KeyboardDatePickerProps } from "@material-ui/pickers";
+import { KeyboardDatePicker } from "components/styledComponent/datetime";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Omit, Merge } from "../types";
 
@@ -71,6 +69,9 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
       onChange={customDateChangeHandler}
       onBlur={handleBlur}
       disabled={isSubmitting}
+      InputLabelProps={{
+        shrink: true,
+      }}
     />
   );
   if (Boolean(enableGrid)) {

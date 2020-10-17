@@ -77,7 +77,6 @@ export const yupValidationHelper = (
     | yup.StringSchema<any>
     | yup.NumberSchema<any>
 ) => async (field: FormFieldAtomType) => {
-  //@ts-ignore
   const { value } = field;
   try {
     await schema.validate(value, validationConfig);

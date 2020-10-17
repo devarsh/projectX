@@ -1,39 +1,46 @@
-import { FC, Fragment, useState } from "react";
-
-import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
-
-import { useForm } from "packages/form";
+import { FC, useState, useRef } from "react";
+import { useForm, SubmitFnType } from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import { makeStyles } from "@material-ui/core/styles";
+import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
+import { formStyle, FormStyleProps, FormStyleNamesProps } from "./style";
+import { Theme } from "@material-ui/core/styles";
+
+const useStyles = makeStyles<Theme, FormStyleProps>(formStyle);
 
 interface FormProps {
   fields: GroupWiseRenderedFieldsType;
   formRenderConfig: FormRenderConfigType;
   formDisplayName: string;
+  submitFn: SubmitFnType;
 }
+
 export const Form: FC<FormProps> = ({
   fields,
   formRenderConfig,
   formDisplayName,
+  submitFn,
 }) => {
-  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
-    setTimeout(() => {
-      console.log(values);
-    }, 3000);
-  };
-  const fieldGroups = Object.keys(fields);
-
-  const { handleSubmit } = useForm({
-    onSubmit: onSubmitHandler,
-  });
+  const classes: FormStyleNamesProps = useStyles({} as FormStyleProps);
   const [activeStep, setActiveStep] = useState(0);
-  const handleNext = () => {
-    if (activeStep < fieldGroups.length - 1) {
-      setActiveStep((last) => last + 1);
+  const { handleSubmit, handleSubmitPartial } = useForm({
+    onSubmit: submitFn,
+  });
+  const fieldGroups = useRef<string[]>(Object.keys(fields));
+
+  const handleNext = async () => {
+    if (activeStep < fieldGroups.current.length - 1) {
+      const currentStep = fieldGroups.current[activeStep];
+      const currentFieldsToValidate = fields[currentStep].fieldNames;
+      let isError = await handleSubmitPartial(currentFieldsToValidate);
+      if (!isError) {
+        setActiveStep((last) => last + 1);
+      }
     }
   };
   const handlePrev = () => {
@@ -41,64 +48,78 @@ export const Form: FC<FormProps> = ({
       setActiveStep((last) => last - 1);
     }
   };
-  let toRender = Object.values(fields);
-  const allSteps = toRender.map((one, index) => {
-    console.log(index, activeStep);
+
+  const steps = fieldGroups.current.map((one, index) => {
+    const current = fields[one];
+    const hideMe = index !== activeStep ? { display: "none" } : {};
     return (
       <Grid
+        key={one}
         container={true}
-        spacing={formRenderConfig?.gridConfig?.container.spacing ?? 0}
-        style={{ display: index === activeStep ? "block" : "none" }}
+        spacing={formRenderConfig?.gridConfig?.container?.spacing ?? 2}
+        direction={formRenderConfig?.gridConfig?.container?.direction ?? "row"}
+        style={hideMe}
       >
-        {one.fields}
+        {current.fields}
       </Grid>
     );
   });
 
   return (
-    <Fragment>
-      <Typography>{formDisplayName}</Typography>
-      <Stepper activeStep={activeStep}>
-        {fieldGroups.map((label) => {
-          return (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {allSteps}
-      <br />
-      <br />
+    <div className={classes.paper}>
+      <Typography component="h3" className={classes.title}>
+        {formDisplayName}
+      </Typography>
+      <div className={classes.form}>
+        <Stepper activeStep={activeStep}>
+          {fieldGroups.current.map((label) => {
+            return (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+        <Typography component="h4" className={classes.subTitle}>
+          {fieldGroups.current[activeStep]}
+        </Typography>
+        {steps}
 
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleNext}
-      >
-        Next
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handlePrev}
-      >
-        Prev
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-      >
-        Submit Full
-      </Button>
-    </Fragment>
+        <br />
+        {activeStep === 0 ? null : (
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handlePrev}
+          >
+            Back
+          </Button>
+        )}
+        {activeStep < fieldGroups.current.length - 1 ? (
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handleNext}
+          >
+            Next
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Finish
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 

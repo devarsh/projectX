@@ -9,6 +9,7 @@ import { MetaDataType } from "./types";
 import { Form } from "./stepperForm";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import Container from "@material-ui/core/Container";
 
 interface FormWrapperProps {
   metaData: MetaDataType;
@@ -18,6 +19,13 @@ export const FormWrapper: FC<FormWrapperProps> = ({ metaData }) => {
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initialValues = constructInitialValue(metaData.fields);
   const yupValidationSchema = constructYupSchema(metaData.fields);
+
+  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
+    setTimeout(() => {
+      console.log(values);
+      submitEnd(true);
+    }, 3000);
+  };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -30,11 +38,14 @@ export const FormWrapper: FC<FormWrapperProps> = ({ metaData }) => {
           validationSchema: yupValidationSchema,
         }}
       >
-        <Form
-          fields={groupWiseFields}
-          formRenderConfig={metaData.form.render}
-          formDisplayName={metaData.form.label}
-        />
+        <Container component="main">
+          <Form
+            fields={groupWiseFields}
+            formRenderConfig={metaData.form.render}
+            formDisplayName={metaData.form.label}
+            submitFn={onSubmitHandler}
+          />
+        </Container>
       </FormContext.Provider>
     </MuiPickersUtilsProvider>
   );
