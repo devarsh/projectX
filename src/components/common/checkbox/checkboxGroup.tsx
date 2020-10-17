@@ -42,6 +42,7 @@ const valueExists = (myValue: any[] | any, value: any) => {
 const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -74,6 +75,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;

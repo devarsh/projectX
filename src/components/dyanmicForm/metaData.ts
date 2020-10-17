@@ -208,6 +208,7 @@ const metaData: MetaDataType = {
         allowNegative: false,
         allowLeadingZeros: false,
       },
+      validationRun: "onChange",
     },
     {
       render: {

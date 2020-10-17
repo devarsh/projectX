@@ -30,6 +30,7 @@ export const useField = ({
   name,
   dependentFields,
   validate,
+  validationRun,
   postValidationSetCrossFieldValues,
   shouldExclude,
 }: UseFieldHookProps) => {
@@ -256,6 +257,14 @@ export const useField = ({
    * End of validation Logic
    */
 
+  const whenToRunValidation = useRef(
+    Boolean(validationRun)
+      ? validationRun
+      : Boolean(formContext.validationRun)
+      ? formContext.validationRun
+      : "all"
+  );
+
   //handleChange will be responsible for setting fieldValue when will be passed as a props to the
   //inputs, it can take event, date, number, string
   //It will run validation if validationRun == 'onChange'
@@ -296,9 +305,9 @@ export const useField = ({
         }
         setFieldData((currVal) => ({ ...currVal, value: val }));
         if (
-          (isValidationFnRef.current &&
-            formContext.validationRun === "onChange") ||
-          formContext.validationRun === "all"
+          isValidationFnRef.current &&
+          (whenToRunValidation.current === "onChange" ||
+            whenToRunValidation.current === "all")
         ) {
           handleValidation({ ...fieldDataRef.current, value: val });
         }
@@ -322,9 +331,9 @@ export const useField = ({
       });
 
       if (
-        (isValidationFnRef.current && formContext.validationRun === "onBlur") ||
-        formContext.validationRun === "all" ||
-        Boolean(formContext.validationRun) === false
+        isValidationFnRef.current &&
+        (whenToRunValidation.current === "onBlur" ||
+          whenToRunValidation.current === "all")
       ) {
         handleValidation({ ...fieldDataRef.current, touched: true });
       }

@@ -25,6 +25,7 @@ export type MyTimeTimePickerAllProps = Merge<
 export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -51,6 +52,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;

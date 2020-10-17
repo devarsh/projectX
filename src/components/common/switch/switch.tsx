@@ -30,6 +30,7 @@ export type MySwitchAllProps = Merge<MySwitchMixedProps, MySwitchExtendedProps>;
 const MySwitch: FC<MySwitchAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -59,6 +60,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;

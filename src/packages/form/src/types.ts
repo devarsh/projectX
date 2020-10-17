@@ -12,10 +12,11 @@ export interface TemplateFieldCellType {
   name: string;
   key: string;
 }
+type ValidationRunType = "onChange" | "onBlur" | "all";
 
 export interface FormContextType {
   formName: string;
-  validationRun?: string;
+  validationRun?: ValidationRunType;
   resetFieldOnUnmount?: boolean;
   initialValues?: InitialValuesType;
   validationSchema?: ObjectSchema;
@@ -70,6 +71,7 @@ export interface UseFieldHookProps {
   fieldKey: string;
   name: string;
   validate?: typeof ValidateFnType;
+  validationRun?: ValidationRunType;
   dependentFields?: string[] | string;
   shouldExclude?: typeof shouldExcludeFnType;
   postValidationSetCrossFieldValues?: typeof PostValidationSetCrossFieldValuesFnType;

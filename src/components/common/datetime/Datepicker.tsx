@@ -23,6 +23,7 @@ export type MyDataPickerAllProps = Merge<
 export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -49,6 +50,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;

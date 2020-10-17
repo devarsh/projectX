@@ -33,6 +33,7 @@ export type MyCheckboxAllProps = Merge<
 const MyCheckbox: FC<MyCheckboxAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -62,6 +63,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;

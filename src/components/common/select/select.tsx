@@ -34,6 +34,7 @@ export type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
 const MySelect: FC<MySelectAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -65,6 +66,7 @@ const MySelect: FC<MySelectAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const lastOptionsPromise = useRef<Promise<any> | null>(null);

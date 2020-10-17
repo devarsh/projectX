@@ -17,6 +17,7 @@ export type AllRatingProps = Merge<RatingProps, ExtendedFieldProps>;
 const MyRating: FC<AllRatingProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -40,6 +41,7 @@ const MyRating: FC<AllRatingProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   const [focus, setFocus] = useState(false);
   const customBlur = useCallback(() => {

@@ -21,6 +21,7 @@ export type MyTextFieldProps = UseFieldHookProps & MyTextFieldAllProps;
 const MyTextField: FC<MyTextFieldProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   postValidationSetCrossFieldValues,
   shouldExclude,
   dependentFields,
@@ -50,6 +51,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {

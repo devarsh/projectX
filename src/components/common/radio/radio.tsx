@@ -36,6 +36,7 @@ export type MyRadioAllProps = Merge<MyRadioMixedProps, MyCheckboxExtendedProps>;
 const MyRadio: FC<MyRadioAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -68,6 +69,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;

@@ -25,6 +25,7 @@ export type MyDateTimePickerAllProps = Merge<
 export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
   name: fieldName,
   validate,
+  validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
   dependentFields,
@@ -51,6 +52,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
+    validationRun: validationRun,
   });
   if (excluded) {
     return null;
