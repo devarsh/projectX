@@ -10,3 +10,8 @@ https://sebastienlorber.com/handling-api-request-race-conditions-in-react
 #Library to review for animation
 https://github.com/aholachek/react-flip-toolkit
 https://www.framer.com/motion/
+
+#Drag and Drop Accesibility
+https://prototypr.io/post/building-drag-drop-ui/
+https://medium.com/salesforce-ux/4-major-patterns-for-accessible-drag-and-drop-1d43f64ebf09
+https://marvelapp.com/blog/drag-drop-design-systems/

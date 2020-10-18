@@ -187,16 +187,27 @@ export const useField = ({
    * It will always run the validation against the latest value and if promise provides cancelFn
    * it will call cancel function and cancel the query
    */
+  const whenToRunValidation = useRef(
+    Boolean(validationRun)
+      ? validationRun
+      : Boolean(formContext.validationRun)
+      ? formContext.validationRun
+      : "all"
+  );
 
   const lastValidationPromise = useRef<Promise<any> | null>(null);
   const lastValidationValue = useRef<any | null>(null);
 
   const handleValidation = useCallback(
-    (data: FormFieldAtomType) => {
+    (
+      data: FormFieldAtomType,
+      alwaysRun?: boolean,
+      touchAndValidate?: boolean
+    ) => {
       if (typeof fieldDataRef.current.validate !== "function") {
         return;
       }
-      if (lastValidationValue.current === data.value) {
+      if (lastValidationValue.current === data.value && !!alwaysRun === false) {
         return;
       }
       setFieldData((old) => ({
@@ -224,13 +235,24 @@ export const useField = ({
               finalResult = "unkown error check console";
               console.log("unknown error type", error);
             }
-            setFieldData((old) => {
-              return {
-                ...old,
-                validationRunning: false,
-                error: finalResult,
-              };
-            });
+            if (!Boolean(touchAndValidate)) {
+              setFieldData((old) => {
+                return {
+                  ...old,
+                  validationRunning: false,
+                  error: finalResult,
+                };
+              });
+            } else {
+              setFieldData((old) => {
+                return {
+                  ...old,
+                  validationRunning: false,
+                  touched: true,
+                  error: finalResult,
+                };
+              });
+            }
             if (typeof crossFieldMessages === "object") {
               passCrossFieldMessage(crossFieldMessages);
             }
@@ -245,11 +267,24 @@ export const useField = ({
               finalResult = "unkown error type check console";
               console.log("unknown error type", err);
             }
-            setFieldData((old) => ({
-              ...old,
-              validationRunning: false,
-              error: finalResult,
-            }));
+            if (!Boolean(touchAndValidate)) {
+              setFieldData((old) => {
+                return {
+                  ...old,
+                  validationRunning: false,
+                  error: finalResult,
+                };
+              });
+            } else {
+              setFieldData((old) => {
+                return {
+                  ...old,
+                  validationRunning: false,
+                  touched: true,
+                  error: finalResult,
+                };
+              });
+            }
           }
         });
     },
@@ -259,12 +294,55 @@ export const useField = ({
    * End of validation Logic
    */
 
-  const whenToRunValidation = useRef(
-    Boolean(validationRun)
-      ? validationRun
-      : Boolean(formContext.validationRun)
-      ? formContext.validationRun
-      : "all"
+  const setTouched = useCallback(() => {
+    setFieldData((currVal) => {
+      if (currVal.touched) {
+        return currVal;
+      } else {
+        return {
+          ...currVal,
+          touched: true,
+        };
+      }
+    });
+  }, [setFieldData]);
+  const setValue = useCallback(
+    (val: any, alwaysRun?: boolean) => {
+      if (!!alwaysRun === false) {
+        setFieldData((currVal) => {
+          if (currVal.value === val) {
+            return currVal;
+          } else {
+            return {
+              ...currVal,
+              value: val,
+            };
+          }
+        });
+      } else {
+        setFieldData((currVal) => {
+          return {
+            ...currVal,
+            value: val,
+          };
+        });
+      }
+    },
+    [setFieldData]
+  );
+  const runValidation = useCallback(
+    (mergeObj: any, alwaysRun?: boolean, touchAndValidate?: boolean) => {
+      if (mergeObj) {
+        handleValidation(
+          { ...fieldDataRef.current, ...mergeObj },
+          alwaysRun,
+          touchAndValidate
+        );
+      } else {
+        handleValidation(fieldDataRef.current, alwaysRun, touchAndValidate);
+      }
+    },
+    []
   );
 
   //handleChange will be responsible for setting fieldValue when will be passed as a props to the
@@ -305,48 +383,43 @@ export const useField = ({
             ? getSelectedValues(options)
             : value;
         }
-        setFieldData((currVal) => ({ ...currVal, value: val }));
+        setValue(val);
         if (
           isValidationFnRef.current &&
           (whenToRunValidation.current === "onChange" ||
             whenToRunValidation.current === "all")
         ) {
-          handleValidation({ ...fieldDataRef.current, value: val });
+          runValidation({ value: val });
         }
       }
     },
-    [setFieldData, handleValidation, formContext.validationRun]
+    [setValue, runValidation, formContext.validationRun]
   );
+
   //handleBlur will set touch property in field state to true for every field touched by user
   //It will run validation if validationRun == 'onBlur'
   const handleBlur = useCallback(async () => {
     if (fieldDataRef.current !== null) {
-      setFieldData((currVal) => {
-        if (currVal.touched) {
-          return currVal;
-        } else {
-          return {
-            ...currVal,
-            touched: true,
-          };
-        }
-      });
-
+      setTouched();
       if (
         isValidationFnRef.current &&
         (whenToRunValidation.current === "onBlur" ||
           whenToRunValidation.current === "all")
       ) {
-        handleValidation({ ...fieldDataRef.current, touched: true });
+        runValidation({ touched: true });
       }
     }
-  }, [setFieldData, handleValidation, formContext.validationRun]);
+  }, [setTouched, runValidation, formContext.validationRun]);
 
   return {
     ...fieldData,
+    whenToRunValidation: whenToRunValidation.current,
     isSubmitting: formState.isSubmitting,
     handleChange,
     handleBlur,
+    setTouched,
+    setValue,
+    runValidation,
     dependentValues: dependentFieldsState,
   };
 };

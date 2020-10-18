@@ -54,12 +54,14 @@ const MySelect: FC<MySelectAllProps> = ({
     touched,
     handleChange,
     handleBlur,
+    runValidation,
     isSubmitting,
     fieldKey,
     name,
     dependentValues,
     excluded,
     incomingMessage,
+    whenToRunValidation,
   } = useField({
     name: fieldName ?? "",
     validate,
@@ -115,14 +117,24 @@ const MySelect: FC<MySelectAllProps> = ({
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value, options } = incomingMessage;
+      console.log(value, options);
       if (Boolean(value)) {
         handleChange(value);
+        if (whenToRunValidation === "onBlur") {
+          runValidation({ value: value }, true, true);
+        }
       }
       if (Array.isArray(options)) {
         setOptions(options);
       }
     }
-  }, [incomingMessage, setOptions, handleChange]);
+  }, [
+    incomingMessage,
+    setOptions,
+    handleChange,
+    runValidation,
+    whenToRunValidation,
+  ]);
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
