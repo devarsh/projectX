@@ -7,16 +7,12 @@ import {
   FieldMetaDataType,
 } from "./types";
 import {
-  TextField,
   Checkbox,
   CheckboxGroup,
-  Radio,
   Switch,
   SwitchGroup,
-  Slider,
   DatePicker,
   TimePicker,
-  Rating,
   DateTimePicker,
 } from "components/common";
 import { PasswordField, NumberFormat } from "components/derived";
@@ -24,6 +20,10 @@ import { setIn } from "packages/form";
 import * as yup from "yup";
 import { FC } from "react";
 const Select = lazy(() => import("components/common/select"));
+const TextField = lazy(() => import("components/common/textField"));
+const Radio = lazy(() => import("components/common/radio"));
+const Slider = lazy(() => import("components/common/slider"));
+const Rating = lazy(() => import("components/common/rating"));
 
 export const renderFieldsByGroup = (metaData: MetaDataType) => {
   const { fields, form } = metaData;
