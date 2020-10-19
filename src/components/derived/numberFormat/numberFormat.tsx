@@ -1,3 +1,6 @@
+//remove this to support
+//number.toLocaleString('en-IN', { maximumFracationDigits:2, style:'currency', currency:'INR' })
+
 import NumberFormat, { NumberFormatProps } from "react-number-format";
 import { TextField, TextFieldProps } from "components/common/textField";
 import { Merge } from "components/common/types";

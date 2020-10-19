@@ -71,6 +71,9 @@ const metaData: MetaDataType = {
               gender: {
                 value: "1",
               },
+              firstName: {
+                value: "",
+              },
             });
           } else if (field.value === "2" || field.value === "3") {
             res({
@@ -227,6 +230,7 @@ const metaData: MetaDataType = {
           { name: "required", params: ["Mobile No is required"] },
         ],
       },
+      StartAdornment: "+91",
     },
   ],
 };

@@ -11,6 +11,8 @@ import numWords from "num-words";
 interface MyGridExtendedProps {
   enableNumWords?: boolean;
   GridProps?: GridProps;
+  StartAdornment?: string;
+  EndAdornment?: string;
   enableGrid: boolean;
 }
 
@@ -31,6 +33,8 @@ const MyTextField: FC<MyTextFieldProps> = ({
   enableGrid,
   enableNumWords,
   InputProps,
+  StartAdornment,
+  EndAdornment,
   ...others
 }) => {
   const {
@@ -58,9 +62,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
-      if (Boolean(value)) {
-        handleChange(value);
-      }
+      handleChange(value);
     }
   }, [incomingMessage, handleChange]);
 
@@ -99,6 +101,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
           <InputAdornment position="end">
             <CircularProgress color="primary" variant="indeterminate" />
           </InputAdornment>
+        ) : Boolean(EndAdornment) ? (
+          EndAdornment
+        ) : null,
+        startAdornment: Boolean(StartAdornment) ? (
+          <InputAdornment position="start">{StartAdornment}</InputAdornment>
         ) : null,
         ...InputProps,
       }}
