@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
@@ -34,8 +34,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
   enableGrid,
   enableNumWords,
   InputProps,
+  inputProps,
   StartAdornment,
   EndAdornment,
+  //@ts-ignore
+  isFieldFocused,
   ...others
 }) => {
   const {
@@ -49,6 +52,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
     incomingMessage,
   } = useField({
     name: fieldName,
@@ -61,6 +65,18 @@ const MyTextField: FC<MyTextFieldProps> = ({
     runPostValidationHookAlways: runPostValidationHookAlways,
     isReadyOnly: isReadyOnly,
   });
+
+  const focusRef = useRef();
+  useEffect(() => {
+    if (isFieldFocused) {
+      //@ts-ignore
+      setTimeout(() => {
+        //@ts-ignore
+        focusRef?.current?.focus?.();
+      }, 1);
+    }
+  }, [isFieldFocused]);
+
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
@@ -87,6 +103,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     myTouch = true;
   }
   const isError = myTouch && Boolean(myError);
+
   const result = (
     <TextField
       {...others}
@@ -114,7 +131,13 @@ const MyTextField: FC<MyTextFieldProps> = ({
       InputLabelProps={{
         shrink: true,
       }}
+      inputRef={focusRef}
       onChange={handleChange}
+      inputProps={{
+        readOnly: readOnly,
+        tabIndex: readOnly ? -1 : undefined,
+        ...inputProps,
+      }}
       onBlur={handleBlur}
       disabled={isSubmitting}
     />

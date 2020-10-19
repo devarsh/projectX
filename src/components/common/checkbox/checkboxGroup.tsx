@@ -70,6 +70,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     validate,
@@ -88,7 +89,13 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   const checkboxes = options.map((checkbox) => (
     <FormControlLabel
       {...FormControlLabelProps}
-      control={<Checkbox {...others} />}
+      control={
+        <Checkbox
+          {...others}
+          readOnly={readOnly}
+          tabIndex={readOnly ? -1 : undefined}
+        />
+      }
       key={checkbox.value}
       name={name}
       onChange={handleChange}

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import {
   KeyboardDateTimePicker,
@@ -35,6 +35,8 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
   type,
   GridProps,
   enableGrid,
+  InputProps,
+  inputProps,
   ...others
 }) => {
   const {
@@ -47,6 +49,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     validate,
@@ -58,13 +61,16 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
     runPostValidationHookAlways: runPostValidationHookAlways,
     isReadyOnly: isReadyOnly,
   });
+  const isError = touched && (error ?? "") !== "";
+  const customDateChangeHandler = useCallback(
+    (date) => {
+      handleChange(date);
+    },
+    [handleChange]
+  );
   if (excluded) {
     return null;
   }
-  const isError = touched && (error ?? "") !== "";
-  const customDateChangeHandler = (date, dateStr) => {
-    handleChange(date);
-  };
   const result = (
     <KeyboardDateTimePicker
       {...others}
@@ -77,6 +83,14 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
       onChange={customDateChangeHandler}
       onBlur={handleBlur}
       disabled={isSubmitting}
+      InputProps={{
+        readOnly: readOnly,
+        ...InputProps,
+      }}
+      inputProps={{
+        tabIndex: readOnly ? -1 : undefined,
+        ...inputProps,
+      }}
     />
   );
   if (Boolean(enableGrid)) {

@@ -58,6 +58,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     validate,
@@ -87,7 +88,13 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
       <FormControlLabel
         {...FormControlLabelProps}
         name={name}
-        control={<Checkbox {...others} />}
+        control={
+          <Checkbox
+            {...others}
+            readOnly={readOnly}
+            tabIndex={readOnly ? -1 : undefined}
+          />
+        }
         onChange={handleChange}
         label={label}
         checked={Boolean(value)}

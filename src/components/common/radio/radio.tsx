@@ -64,6 +64,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     validate,
@@ -82,7 +83,13 @@ const MyRadio: FC<MyRadioAllProps> = ({
   const radios = options.map((radio) => (
     <FormControlLabel
       {...FormControlLabelProps}
-      control={<Radio {...others} />}
+      control={
+        <Radio
+          {...others}
+          readOnly={readOnly}
+          tabIndex={readOnly ? -1 : undefined}
+        />
+      }
       key={radio.value}
       label={radio.label}
       value={radio.value}

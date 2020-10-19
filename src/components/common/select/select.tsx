@@ -47,6 +47,10 @@ const MySelect: FC<MySelectAllProps> = ({
   GridProps,
   enableGrid,
   multiple,
+  //@ts-ignore
+  isFieldFocused,
+  InputProps,
+  inputProps,
   ...others
 }) => {
   const {
@@ -63,6 +67,7 @@ const MySelect: FC<MySelectAllProps> = ({
     excluded,
     incomingMessage,
     whenToRunValidation,
+    readOnly,
   } = useField({
     name: fieldName ?? "",
     validate,
@@ -74,6 +79,16 @@ const MySelect: FC<MySelectAllProps> = ({
     runPostValidationHookAlways: runPostValidationHookAlways,
     isReadyOnly: isReadyOnly,
   });
+
+  const focusRef = useRef();
+  useEffect(() => {
+    if (isFieldFocused) {
+      setTimeout(() => {
+        //@ts-ignore
+        focusRef?.current?.focus?.();
+      }, 1);
+    }
+  }, [isFieldFocused]);
 
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
@@ -120,7 +135,6 @@ const MySelect: FC<MySelectAllProps> = ({
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value, options } = incomingMessage;
-      console.log(value, options);
       if (Boolean(value)) {
         handleChange(value);
         if (whenToRunValidation === "onBlur") {
@@ -173,6 +187,15 @@ const MySelect: FC<MySelectAllProps> = ({
       }}
       InputLabelProps={{
         shrink: true,
+      }}
+      inputRef={focusRef}
+      InputProps={{
+        readOnly: readOnly,
+        ...InputProps,
+      }}
+      inputProps={{
+        tabIndex: readOnly ? -1 : undefined,
+        ...inputProps,
       }}
     >
       {menuItems}

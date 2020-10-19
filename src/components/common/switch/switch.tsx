@@ -55,6 +55,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     validate,
@@ -80,11 +81,18 @@ const MySwitch: FC<MySwitchAllProps> = ({
       disabled={isSubmitting}
       error={isError}
       onBlur={handleBlur}
+      tabIndex={readOnly ? -1 : undefined}
     >
       <FormControlLabel
         {...FormControlLabelProps}
         name={name}
-        control={<Switch {...others} />}
+        control={
+          <Switch
+            {...others}
+            readOnly={readOnly}
+            tabIndex={readOnly ? -1 : undefined}
+          />
+        }
         onChange={handleChange}
         label={label}
         checked={Boolean(value)}

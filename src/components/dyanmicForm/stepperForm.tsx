@@ -1,4 +1,4 @@
-import { FC, useState, useRef, Suspense } from "react";
+import { FC, useState, useRef, Suspense, cloneElement } from "react";
 import { useForm, SubmitFnType } from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -51,6 +51,9 @@ export const Form: FC<FormProps> = ({
 
   const steps = fieldGroups.current.map((one, index) => {
     const current = fields[one];
+    current.fields[0] = cloneElement(current.fields[0], {
+      isFieldFocused: index === activeStep ? true : false,
+    });
     const hideMe = index !== activeStep ? { display: "none" } : {};
     return (
       <Grid
@@ -88,7 +91,7 @@ export const Form: FC<FormProps> = ({
         <br />
         {activeStep === 0 ? null : (
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
@@ -99,7 +102,7 @@ export const Form: FC<FormProps> = ({
         )}
         {activeStep < fieldGroups.current.length - 1 ? (
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
@@ -109,7 +112,7 @@ export const Form: FC<FormProps> = ({
           </Button>
         ) : (
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"

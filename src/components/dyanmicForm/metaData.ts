@@ -158,6 +158,7 @@ const metaData: MetaDataType = {
       required: true,
       type: "text",
       defaultValue: "0",
+      isReadyOnly: () => true,
       options: () => {
         return new Promise((res) => {
           setTimeout(() => {

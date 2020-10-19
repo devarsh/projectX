@@ -38,6 +38,7 @@ const MyRating: FC<AllRatingProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -80,6 +81,8 @@ const MyRating: FC<AllRatingProps> = ({
         onChange={customChange}
         onBlur={customBlur}
         disabled={isSubmitting}
+        readOnly={readOnly}
+        tabIndex={readOnly ? -1 : undefined}
       />
     </Fragment>
   );

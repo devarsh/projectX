@@ -45,7 +45,6 @@ export interface FormFieldAtomType {
   name: string;
   value: any;
   touched: boolean;
-  focused: boolean;
   error: string | null;
   validationRunning: boolean;
   excluded: boolean;

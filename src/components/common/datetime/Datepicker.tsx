@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useRef, useEffect, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { KeyboardDatePickerProps } from "@material-ui/pickers";
 import { KeyboardDatePicker } from "components/styledComponent/datetime";
@@ -33,6 +33,10 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   type,
   GridProps,
   enableGrid,
+  //@ts-ignore
+  isFieldFocused,
+  InputProps,
+  inputProps,
   ...others
 }) => {
   const {
@@ -45,6 +49,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     fieldKey,
     name,
     excluded,
+    readOnly,
   } = useField({
     name: fieldName,
     validate,
@@ -56,13 +61,27 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     runPostValidationHookAlways: runPostValidationHookAlways,
     isReadyOnly: isReadyOnly,
   });
+
+  const focusRef = useRef();
+  useEffect(() => {
+    if (isFieldFocused) {
+      //@ts-ignore
+      setTimeout(() => {
+        //@ts-ignore
+        focusRef?.current?.focus?.();
+      }, 1);
+    }
+  }, [isFieldFocused]);
+  const isError = touched && (error ?? "") !== "";
+  const customDateChangeHandler = useCallback(
+    (date) => {
+      handleChange(date);
+    },
+    [handleChange]
+  );
   if (excluded) {
     return null;
   }
-  const isError = touched && (error ?? "") !== "";
-  const customDateChangeHandler = (date, dateStr) => {
-    handleChange(date);
-  };
   const result = (
     <KeyboardDatePicker
       {...others}
@@ -73,10 +92,20 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
       error={isError}
       helperText={isError ? error : null}
       onChange={customDateChangeHandler}
+      tabIndex={readOnly ? -1 : undefined}
       onBlur={handleBlur}
       disabled={isSubmitting}
       InputLabelProps={{
         shrink: true,
+      }}
+      inputRef={focusRef}
+      InputProps={{
+        readOnly: readOnly,
+        ...InputProps,
+      }}
+      inputProps={{
+        tabIndex: readOnly ? -1 : undefined,
+        ...inputProps,
       }}
     />
   );
