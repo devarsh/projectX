@@ -2,8 +2,8 @@ import { MetaDataType } from "./types";
 
 const metaData: MetaDataType = {
   form: {
-    name: "dynamic",
-    label: "Dynamic Form",
+    name: "rhl-1",
+    label: "Retail Home Loan",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -12,8 +12,8 @@ const metaData: MetaDataType = {
       gridConfig: {
         item: {
           xs: 12,
-          sm: 3,
-          md: 3,
+          sm: 4,
+          md: 4,
         },
         container: {
           direction: "row",
@@ -46,6 +46,11 @@ const metaData: MetaDataType = {
       label: "Salutation",
       required: true,
       defaultValue: "0",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
       options: () => {
         return new Promise((res) => {
           setTimeout(() => {
@@ -104,6 +109,11 @@ const metaData: MetaDataType = {
         type: "string",
         rules: [{ name: "required", params: ["First Name is required"] }],
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
@@ -113,6 +123,11 @@ const metaData: MetaDataType = {
       name: "middleName",
       label: "Middle Name",
       type: "text",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
@@ -127,6 +142,11 @@ const metaData: MetaDataType = {
         type: "string",
         rules: [{ name: "required", params: ["Last Name is required"] }],
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
@@ -138,11 +158,6 @@ const metaData: MetaDataType = {
       required: true,
       type: "text",
       defaultValue: "0",
-      GridProps: {
-        xs: 12,
-        md: 4,
-        sm: 4,
-      },
       options: () => {
         return new Promise((res) => {
           setTimeout(() => {
@@ -170,11 +185,7 @@ const metaData: MetaDataType = {
       required: true,
       placeholder: "dd/mm/yyyy",
       format: "dd/MM/yyyy",
-      GridProps: {
-        xs: 12,
-        md: 4,
-        sm: 4,
-      },
+
       schemaValidation: {
         type: "date",
         rules: [
@@ -192,11 +203,7 @@ const metaData: MetaDataType = {
       type: "text",
       label: "Your Desired Loan Amount",
       required: true,
-      GridProps: {
-        xs: 12,
-        md: 4,
-        sm: 4,
-      },
+
       schemaValidation: {
         type: "string",
         rules: [
@@ -231,6 +238,159 @@ const metaData: MetaDataType = {
         ],
       },
       StartAdornment: "+91",
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+      },
+      name: "email",
+      type: "text",
+      label: "Email",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["Email is required"] },
+          { name: "required", params: ["Email is required"] },
+        ],
+      },
+    },
+    {
+      render: {
+        componentType: "select",
+        group: "Contact Details",
+      },
+      name: "employementStatus",
+      label: "How Are You Currently Employed",
+      required: true,
+      defaultValue: "0",
+      options: () => {
+        return new Promise((res) => {
+          setTimeout(() => {
+            res([
+              { label: "Select Employement", value: "0" },
+              { label: "Self Employed Business", value: "1" },
+              { label: "Salaried", value: "2" },
+              { label: "Self Employed Professional", value: "3" },
+              { label: "Self Employed Developer", value: "4" },
+            ]);
+          }, 1000);
+        });
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+      },
+      name: "pincode",
+      label: "Residence Pincode",
+      required: true,
+      defaultValue: "",
+      postValidationSetCrossFieldValues: (field) => {
+        let myOptions: any = [];
+        return new Promise((res) => {
+          const myObj = {
+            city: {
+              value: "Ahmedabad",
+            },
+            state: {
+              value: "Gujarat",
+            },
+            district: {
+              value: "Ahmedabad",
+            },
+            country: {
+              value: "India",
+            },
+            location: {
+              value: "1",
+              options: [{ value: "0", label: "Select Area" }],
+            },
+          };
+          if (field.value === "380015") {
+            myOptions = [
+              { value: "1", label: "Shyamal" },
+              {
+                value: "2",
+                label: "Manekbaug",
+              },
+              { value: "3", label: "Vejalpur" },
+            ];
+          } else if (field.value === "380006") {
+            myOptions = [
+              { value: "1", label: "Gulbai Tekra" },
+              {
+                value: "2",
+                label: "C.G Road",
+              },
+              { value: "3", label: "Vejalpur" },
+            ];
+          }
+          const locationObj = myObj["location"];
+          locationObj.options = [...locationObj.options, ...myOptions];
+          res({
+            ...myObj,
+            locationObj,
+          });
+        });
+      },
+    },
+    {
+      render: {
+        componentType: "select",
+        group: "Contact Details",
+      },
+      name: "location",
+      label: "Location",
+      required: true,
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+      },
+      name: "city",
+      label: "City",
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+      },
+      name: "district",
+      label: "District",
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+      },
+      name: "state",
+      label: "State",
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: "Contact Details",
+      },
+      name: "country",
+      label: "Country",
+    },
+    {
+      render: {
+        componentType: "checkbox",
+        group: "Contact Details",
+      },
+      name: "agreed",
+      label:
+        "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
     },
   ],
 };

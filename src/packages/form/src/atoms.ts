@@ -45,6 +45,7 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
     validationRunning: false,
     validate: null,
     excluded: false,
+    readOnly: false,
     incomingMessage: null,
   }),
 });

@@ -32,6 +32,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
+  isReadyOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -63,6 +64,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     runPostValidationHookAlways: runPostValidationHookAlways,
     validationRun: validationRun,
+    isReadyOnly: isReadyOnly,
   });
   if (excluded) {
     return null;

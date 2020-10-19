@@ -36,6 +36,7 @@ const MySelect: FC<MySelectAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
+  isReadyOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -71,7 +72,9 @@ const MySelect: FC<MySelectAllProps> = ({
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     validationRun: validationRun,
     runPostValidationHookAlways: runPostValidationHookAlways,
+    isReadyOnly: isReadyOnly,
   });
+
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
 

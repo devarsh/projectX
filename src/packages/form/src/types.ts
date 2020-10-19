@@ -45,10 +45,12 @@ export interface FormFieldAtomType {
   name: string;
   value: any;
   touched: boolean;
+  focused: boolean;
   error: string | null;
   validationRunning: boolean;
-  validate?: null | typeof ValidateFnType | EmptyFnType;
   excluded: boolean;
+  readOnly: boolean;
+  validate?: null | typeof ValidateFnType | EmptyFnType;
   incomingMessage?: any;
 }
 
@@ -74,6 +76,7 @@ export interface UseFieldHookProps {
   validationRun?: ValidationRunType;
   dependentFields?: string[] | string;
   shouldExclude?: typeof shouldExcludeFnType;
+  isReadyOnly?: typeof shouldExcludeFnType;
   postValidationSetCrossFieldValues?: typeof PostValidationSetCrossFieldValuesFnType;
   runPostValidationHookAlways?: boolean;
 }

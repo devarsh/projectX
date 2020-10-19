@@ -32,6 +32,7 @@ export const useField = ({
   validate,
   validationRun,
   shouldExclude,
+  isReadyOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
 }: UseFieldHookProps) => {
@@ -52,6 +53,9 @@ export const useField = ({
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtomType>(
     formFieldAtom(fieldKeyRef.current)
   );
+  //setup delayed clear focus so we can get true atleast once
+
+  const readOnlyFlagRef = useRef(fieldData.readOnly);
 
   //This effect will update fieldName, in case of arrayField, when fields array index postion
   //updates. ie. arrayFieldName[current-index].fieldName - here currentIndex represents
@@ -157,6 +161,22 @@ export const useField = ({
           ...old,
           excluded: false,
         }));
+      }
+    }
+    if (typeof isReadyOnly === "function") {
+      let result = isReadyOnly(fieldData, dependentFieldsState);
+      if (result === true && fieldData.readOnly === false) {
+        setFieldData((old) => ({
+          ...old,
+          readOnly: true,
+        }));
+        readOnlyFlagRef.current = true;
+      } else if (result === false && fieldData.readOnly === true) {
+        setFieldData((old) => ({
+          ...old,
+          readOnly: true,
+        }));
+        readOnlyFlagRef.current = false;
       }
     }
   });
@@ -294,6 +314,8 @@ export const useField = ({
    * End of validation Logic
    */
 
+  const NoOp = useCallback((...any: any[]): any => {}, []);
+
   const setTouched = useCallback(() => {
     setFieldData((currVal) => {
       if (currVal.touched) {
@@ -415,11 +437,11 @@ export const useField = ({
     ...fieldData,
     whenToRunValidation: whenToRunValidation.current,
     isSubmitting: formState.isSubmitting,
-    handleChange,
-    handleBlur,
-    setTouched,
-    setValue,
-    runValidation,
+    handleChange: readOnlyFlagRef.current ? NoOp : handleChange,
+    handleBlur: readOnlyFlagRef.current ? NoOp : handleBlur,
+    setTouched: readOnlyFlagRef.current ? NoOp : setTouched,
+    setValue: readOnlyFlagRef.current ? NoOp : setValue,
+    runValidation: readOnlyFlagRef.current ? NoOp : runValidation,
     dependentValues: dependentFieldsState,
   };
 };

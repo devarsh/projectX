@@ -35,6 +35,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
+  isReadyOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -66,6 +67,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
     runPostValidationHookAlways: runPostValidationHookAlways,
     validationRun: validationRun,
+    isReadyOnly: isReadyOnly,
   });
   if (excluded) {
     return null;
