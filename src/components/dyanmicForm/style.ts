@@ -2,6 +2,7 @@ import { Theme } from "@material-ui/core/styles";
 import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 
 export interface FormStyleProps {
+  wrapper: BaseCSSProperties;
   title: BaseCSSProperties;
   subTitle: BaseCSSProperties;
   paper: BaseCSSProperties;
@@ -16,7 +17,6 @@ export const formStyle = (theme: Theme): any => ({
     color: "#26A456",
     letterSpacing: "2px",
     fontSize: "1.75rem",
-    //@ts-ignore
     fontWeight: "700",
     alignSelf: "flex-start",
   },
@@ -37,6 +37,13 @@ export const formStyle = (theme: Theme): any => ({
     boxShadow: "0 0 20px rgba(0,0,0,0.06)",
     padding: "1rem 2rem",
     borderRadius: 4,
+  },
+  label: {
+    color: "#736f6f",
+    fontWeight: "600",
+    textTransform: "capitalize",
+    fontSize: "1rem",
+    marginBottom: "0.5 rem",
   },
   form: {
     width: "100%",

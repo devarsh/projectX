@@ -9,7 +9,9 @@ const StyledTextField = withStyles({
       fontWeight: "600",
       textTransform: "capitalize",
       fontSize: "1rem",
+      marginBottom: "0.5 rem",
     },
+
     "& label.Mui-focused": {
       color: "#26A456",
     },
@@ -18,7 +20,7 @@ const StyledTextField = withStyles({
       marginTop: "26px",
       borderRadius: 5,
       backgroundColor: "#fff",
-      padding: "0 1rem",
+      padding: "0 0 0 1rem",
 
       "& input": {
         padding: "6px 0 7px ",
@@ -33,6 +35,18 @@ const StyledTextField = withStyles({
     },
     "&:hover .MuiInput-underline:before": {
       borderBottom: "0",
+    },
+    "& .MuiInputLabel-shrink": {
+      transform: "translate(0, 1.5px) scale(1)",
+    },
+
+    "& .MuiToggleButton": {
+      borderColor: "#8C8C8C",
+      transition: "border 0.3s ease-in",
+      borderRadius: "8px",
+      color: "red",
+      backgroundColor: "red",
+      height: "400px !imortant",
     },
   },
 })(TextField);

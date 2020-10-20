@@ -6,7 +6,8 @@ import FormControlLabel, {
   FormControlLabelProps,
 } from "@material-ui/core/FormControlLabel";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
-import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
+import { CheckboxProps } from "@material-ui/core/Checkbox";
+import { Checkbox } from "components/styledComponent/checkbox";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import FormHelperText, {
   FormHelperTextProps,
