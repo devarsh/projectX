@@ -61,8 +61,8 @@ const MyTextField: FC<MyTextFieldProps> = ({
     fieldKey: fieldID,
     shouldExclude: shouldExclude,
     postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    validationRun: validationRun,
     runPostValidationHookAlways: runPostValidationHookAlways,
+    validationRun: validationRun,
     isReadyOnly: isReadyOnly,
   });
 
