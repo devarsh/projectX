@@ -38,6 +38,7 @@ import {
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";
   renderType: "simple" | "tabs" | "stepper" | "accordian"; //implimentation pending
+  groups?: string[];
   gridConfig: {
     item?: {
       xs?: GridSize;
@@ -113,7 +114,7 @@ interface YupRulesType {
   params: any[];
 }
 
-interface RenderedFieldsType {
+export interface RenderedFieldsType {
   fields: JSX.Element[];
   sequence: number[];
   fieldNames: string[];

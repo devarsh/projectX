@@ -9,6 +9,7 @@ const metaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
+      groups: ["Personal Details", "Contact Details"],
       gridConfig: {
         item: {
           xs: 12,
@@ -40,7 +41,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "toggleButtonGroup",
-        group: "Personal Details",
+        group: 0,
       },
       name: "productType",
       label: "Product Type",
@@ -59,7 +60,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "spacer",
-        group: "Personal Details",
+        group: 0,
       },
       name: "spacer",
       GridProps: {
@@ -74,7 +75,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: "Personal Details",
+        group: 0,
       },
       name: "salutation",
       label: "Salutation",
@@ -133,7 +134,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Personal Details",
+        group: 0,
       },
       name: "firstName",
       type: "text",
@@ -152,7 +153,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Personal Details",
+        group: 0,
       },
       name: "middleName",
       label: "Middle Name",
@@ -166,7 +167,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Personal Details",
+        group: 0,
       },
       name: "lastName",
       label: "Last Name",
@@ -185,7 +186,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: "Personal Details",
+        group: 0,
       },
       name: "gender",
       label: "Gender",
@@ -213,7 +214,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "datePicker",
-        group: "Personal Details",
+        group: 0,
       },
       name: "dob",
       label: "Date Of Birth",
@@ -232,7 +233,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        group: "Personal Details",
+        group: 0,
       },
       name: "loanAmount",
       type: "text",
@@ -259,7 +260,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "mobileNo",
       type: "text",
@@ -277,7 +278,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "email",
       type: "text",
@@ -294,7 +295,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: "Contact Details",
+        group: 1,
       },
       name: "employementStatus",
       label: "How Are You Currently Employed",
@@ -317,7 +318,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "pincode",
       label: "Residence Pincode",
@@ -375,7 +376,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: "Contact Details",
+        group: 1,
       },
       name: "location",
       label: "Location",
@@ -384,7 +385,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "city",
       label: "City",
@@ -392,7 +393,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "district",
       label: "District",
@@ -400,7 +401,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "state",
       label: "State",
@@ -408,7 +409,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: "Contact Details",
+        group: 1,
       },
       name: "country",
       label: "Country",
@@ -416,7 +417,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "checkbox",
-        group: "Contact Details",
+        group: 1,
       },
       name: "agreed",
       label:

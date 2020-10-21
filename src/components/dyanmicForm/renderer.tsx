@@ -5,6 +5,7 @@ import {
   GroupWiseRenderedFieldsType,
   ComponentTypeProps,
   FieldMetaDataType,
+  RenderedFieldsType,
 } from "./types";
 import {
   Checkbox,
@@ -34,15 +35,21 @@ export const renderFieldsByGroup = (metaData: MetaDataType) => {
   const defaultGroup = "defaultGroup";
   let groupWiseRenderer: GroupWiseRenderedFieldsType = {};
   for (const oneField of fields) {
+    let currentGroupName = "defaultGroup";
+    if (Array.isArray(form.render.groups)) {
+      currentGroupName =
+        form.render.groups[oneField.render?.group ?? -1] ?? defaultGroup;
+    }
     const element = renderField(oneField, form?.render, form?.componentProps);
-    let currentGroup = groupWiseRenderer[oneField.render.group ?? defaultGroup];
+    let currentGroup: RenderedFieldsType;
+    currentGroup = groupWiseRenderer[currentGroupName];
     if (currentGroup === undefined) {
       currentGroup = {
         fields: [],
         sequence: [],
         fieldNames: [],
       };
-      groupWiseRenderer[oneField.render.group ?? defaultGroup] = currentGroup;
+      groupWiseRenderer[currentGroupName] = currentGroup;
     }
     currentGroup.fields.push(element);
     currentGroup.sequence.push(oneField?.render?.sequence ?? 0);

@@ -19,7 +19,7 @@ import { ToggleButtonGroupProps } from "components/common/toggleButtonGroup";
 
 export interface FieldRenderProps<T> {
   componentType: T;
-  group?: string;
+  group?: number;
   sequence?: number;
 }
 export interface FieldMetaData<T> {
