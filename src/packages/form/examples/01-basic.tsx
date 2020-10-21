@@ -7,6 +7,7 @@ import {
   Radio,
   Select,
   DatePicker,
+  ToggleButtonGroup,
 } from "components/common";
 
 import { useForm } from "packages/form";
@@ -18,6 +19,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { FormContext } from "packages/form";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 //@ts-ignore
@@ -113,6 +115,18 @@ const MainApp = () => {
   return (
     <Fragment>
       <Grid container={true} spacing={3}>
+        <ToggleButtonGroup
+          name="formType"
+          fieldKey="formType"
+          label="Form Type"
+          options={[
+            { label: "Personal", value: "1", iconName: "person" },
+            { label: "Corporate", value: "2", iconName: "business" },
+          ]}
+          enableGrid={true}
+          exclusive={true}
+          GridProps={girdConfig}
+        />
         <TextField
           name="email"
           fieldKey="email"

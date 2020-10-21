@@ -7,3 +7,5 @@ export * from "./slider";
 export * from "./select";
 export * from "./datetime";
 export * from "./rating";
+export * from "./toggleButtonGroup";
+export * from "./spacer";

@@ -10,10 +10,9 @@ import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
 import { Merge } from "../types";
 import PersonIcon from "@material-ui/icons/Person";
 import BusinessIcon from "@material-ui/icons/Business";
-import ErrorIcon from "@material-ui/icons/Error";
 
 interface CustomProps {
-  iconName: "business" | "person";
+  iconName?: "business" | "person";
   label: string;
   value: any;
 }
@@ -53,6 +52,8 @@ const MyToggleButtonGroupProps: FC<MyAllToggleButtonGroupProps> = ({
   GridProps,
   enableGrid,
   label,
+  //@ts-ignore
+  isFieldFocused,
   ...others
 }) => {
   const {
@@ -88,19 +89,21 @@ const MyToggleButtonGroupProps: FC<MyAllToggleButtonGroupProps> = ({
         <BusinessIcon />
       ) : one.iconName === "person" ? (
         <PersonIcon />
-      ) : (
-        <ErrorIcon />
-      )}
+      ) : null}
+      {/*need to change this from span to typography */}
       <span>{one.label}</span>
     </ToggleButton>
   ));
+  console.log(value);
   const result = (
     <FormControl disabled={isSubmitting}>
       <FormLabel>{label}</FormLabel>
       <ToggleButtonGroup
         {...others}
         value={value}
-        onChange={handleChange}
+        onChange={(e, newValue) => {
+          handleChange(newValue);
+        }}
         onBlur={handleBlur}
       >
         {toggleButtons}

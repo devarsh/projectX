@@ -24,6 +24,10 @@ const TextField = lazy(() => import("components/common/textField"));
 const Radio = lazy(() => import("components/common/radio"));
 const Slider = lazy(() => import("components/common/slider"));
 const Rating = lazy(() => import("components/common/rating"));
+const Spacer = lazy(() => import("components/common/spacer"));
+const ToggleButtonGroup = lazy(
+  () => import("components/common/toggleButtonGroup")
+);
 
 export const renderFieldsByGroup = (metaData: MetaDataType) => {
   const { fields, form } = metaData;
@@ -124,18 +128,26 @@ const renderField = (
     case "numberFormat":
       Component = NumberFormat;
       break;
+    case "toggleButtonGroup":
+      Component = ToggleButtonGroup;
+      break;
+    case "spacer":
+      Component = Spacer;
+      break;
     default:
       Component = EmptyComponent;
       break;
   }
   if (Component === EmptyComponent) {
     return <Component componentType={render.componentType} />;
+  } else if (Component === Spacer) {
+    return <Component key={others.name} {...others} />;
   } else {
     const currentComponentTypeProps = componentProps[render.componentType];
     const allProps = { ...currentComponentTypeProps, ...others };
     const gridConfigOverrides = {
       ...formRenderConfig?.gridConfig?.item,
-      ...others.GridProps,
+      ...others?.GridProps,
     };
     return (
       <Component

@@ -14,18 +14,29 @@ import { SliderProps } from "components/common/slider";
 import { SwitchGroupProps, SwitchProps } from "components/common/switch";
 import { NumberFormatProps } from "components/derived/numberFormat";
 import { PasswordFieldProps } from "components/derived/passwordField";
+import { SpacerProps } from "components/common/spacer";
+import { ToggleButtonGroupProps } from "components/common/toggleButtonGroup";
 
+export interface FieldRenderProps<T> {
+  componentType: T;
+  group?: string;
+  sequence?: number;
+}
 export interface FieldMetaData<T> {
   defaultValue?: any;
   schemaValidation?: YupSchemaMetaDataType;
-  render: {
-    componentType: T;
-    group?: string;
-    sequence?: number;
-  };
+  render: FieldRenderProps<T>;
 }
 
 export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
+
+export type AllSpacerProps = Merge<FieldMetaData<"spacer">, SpacerProps>;
+
+export type AllToggleButtonGroupProps = Merge<
+  FieldMetaData<"toggleButtonGroup">,
+  Omitted<ToggleButtonGroupProps>
+>;
+export type ToggleButtonGroupPropsOptional = Optional<ToggleButtonGroupProps>;
 
 export type AllNumberFormatProps = Merge<
   FieldMetaData<"numberFormat">,

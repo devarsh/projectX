@@ -364,7 +364,9 @@ export const useField = ({
   //inputs, it can take event, date, number, string
   //It will run validation if validationRun == 'onChange'
   const handleChange = useCallback(
-    (eventOrTextValue: React.ChangeEvent<any> | Date | string | number) => {
+    (
+      eventOrTextValue: React.ChangeEvent<any> | Date | string | number | any[]
+    ) => {
       if (fieldDataRef.current !== null) {
         eventOrTextValue = eventOrTextValue ?? "";
         let val = eventOrTextValue;
@@ -372,7 +374,8 @@ export const useField = ({
           !(
             eventOrTextValue instanceof Date ||
             typeof eventOrTextValue === "string" ||
-            typeof eventOrTextValue === "number"
+            typeof eventOrTextValue === "number" ||
+            Array.isArray(eventOrTextValue)
           )
         ) {
           //Since React 17 we dont need this but commeting it incase any issues are faced

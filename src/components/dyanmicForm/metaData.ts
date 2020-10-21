@@ -39,6 +39,40 @@ const metaData: MetaDataType = {
   fields: [
     {
       render: {
+        componentType: "toggleButtonGroup",
+        group: "Personal Details",
+      },
+      name: "productType",
+      label: "Product Type",
+      defaultValue: "p",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      options: [
+        { label: "Home Loan", value: "p", iconName: "person" },
+        { label: "Personal Loan", value: "b", iconName: "business" },
+      ],
+      exclusive: true,
+    },
+    {
+      render: {
+        componentType: "spacer",
+        group: "Personal Details",
+      },
+      name: "spacer",
+      GridProps: {
+        xs: 12,
+        md: 9,
+        sm: 9,
+      },
+      HiddenProps: {
+        smDown: true,
+      },
+    },
+    {
+      render: {
         componentType: "select",
         group: "Personal Details",
       },

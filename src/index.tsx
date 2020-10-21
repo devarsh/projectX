@@ -2,6 +2,7 @@ import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app";
+//import App from "packages/form/examples/01-basic";
 //@ts-ignore
 ReactDOM.render(<App />, document.getElementById("root"));
 

@@ -14,6 +14,8 @@ import {
   AllSwitchProps,
   AllNumberFormatProps,
   AllPasswordFieldProps,
+  AllSpacerProps,
+  AllToggleButtonGroupProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -30,6 +32,7 @@ import {
   SwitchGroupPropsOptional,
   NumberFormatPropsOptional,
   PasswordFieldPropsOptional,
+  ToggleButtonGroupPropsOptional,
 } from "./typesFields";
 
 export interface FormRenderConfigType {
@@ -73,6 +76,7 @@ export interface ComponentTypeProps {
   switchGroup?: SwitchGroupPropsOptional;
   numberFormat?: NumberFormatPropsOptional;
   passwordField?: PasswordFieldPropsOptional;
+  toggleButtonGroup?: ToggleButtonGroupPropsOptional;
 }
 
 export interface MetaDataType {
@@ -94,7 +98,9 @@ export type FieldMetaDataType =
   | AllSwitchGroupProps
   | AllSwitchProps
   | AllNumberFormatProps
-  | AllPasswordFieldProps;
+  | AllPasswordFieldProps
+  | AllToggleButtonGroupProps
+  | AllSpacerProps;
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {
