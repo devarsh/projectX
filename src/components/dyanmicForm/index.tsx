@@ -5,7 +5,12 @@ import { RecoilRoot } from "recoil";
 const App = () => {
   return (
     <RecoilRoot>
-      <FormWrapper metaData={MetaData} />
+      <FormWrapper
+        metaData={MetaData}
+        inititalValues={{
+          firstName: "devarsh",
+        }}
+      />
     </RecoilRoot>
   );
 };

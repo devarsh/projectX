@@ -17,7 +17,7 @@ import {
   DateTimePicker,
 } from "components/common";
 import { PasswordField, NumberFormat } from "components/derived";
-import { setIn } from "packages/form";
+import { getIn, setIn, InitialValuesType } from "packages/form";
 import * as yup from "yup";
 import { FC } from "react";
 const Select = lazy(() => import("components/common/select"));
@@ -174,7 +174,10 @@ const renderField = (
 };
 
 // construct Initital Values from metaData
-export const constructInitialValue = (fields: FieldMetaDataType[]) => {
+export const constructInitialValue = (
+  fields: FieldMetaDataType[],
+  initialValues?: InitialValuesType
+) => {
   if (!Array.isArray(fields)) {
     return {};
   }
@@ -183,6 +186,11 @@ export const constructInitialValue = (fields: FieldMetaDataType[]) => {
     const { defaultValue, name } = field;
     if (Boolean(defaultValue)) {
       initialValuesObj = setIn(initialValuesObj, name, defaultValue);
+    } else {
+      const value = getIn(initialValues, name, undefined);
+      if (Boolean(value)) {
+        initialValuesObj = setIn(initialValuesObj, name, value);
+      }
     }
   }
   return initialValuesObj;

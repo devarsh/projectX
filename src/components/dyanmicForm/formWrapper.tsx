@@ -10,14 +10,19 @@ import { Form } from "./stepperForm";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Container from "@material-ui/core/Container";
+import { InitialValuesType } from "packages/form";
 
 interface FormWrapperProps {
   metaData: MetaDataType;
+  inititalValues?: InitialValuesType;
 }
 
-export const FormWrapper: FC<FormWrapperProps> = ({ metaData }) => {
+export const FormWrapper: FC<FormWrapperProps> = ({
+  metaData,
+  inititalValues,
+}) => {
   const groupWiseFields = renderFieldsByGroup(metaData);
-  const initialValues = constructInitialValue(metaData.fields);
+  const initValues = constructInitialValue(metaData.fields, inititalValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
 
   const onSubmitHandler = (values, submitEnd, setFieldsError) => {
@@ -34,7 +39,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({ metaData }) => {
           formName: metaData.form.name ?? "NO_NAME",
           resetFieldOnUnmount: Boolean(metaData.form.resetFieldOnUmnount),
           validationRun: metaData.form.validationRun,
-          initialValues: initialValues,
+          initialValues: initValues,
           validationSchema: yupValidationSchema,
         }}
       >
