@@ -12,6 +12,8 @@ import {
   formFieldRegisterSelector,
   formFieldUnregisterSelector,
   subscribeToFormFieldsSelector,
+  formFieldExcludeAddSelector,
+  formFieldExcludeRemoveSelector,
 } from "./atoms";
 import {
   FormFieldAtomType,
@@ -24,6 +26,7 @@ import {
 } from "./types";
 import { FormContext } from "./context";
 import { getIn, yupReachAndValidate } from "./util";
+import { indexOf } from "lodash";
 
 export const useField = ({
   fieldKey,
@@ -58,10 +61,12 @@ export const useField = ({
   //updates. ie. arrayFieldName[current-index].fieldName - here currentIndex represents
   //fields current postion in the arrayField
   useEffect(() => {
-    setFieldData((currVal) => ({
-      ...currVal,
-      name: name,
-    }));
+    if (name.indexOf(`${formContext.formName}/`) === 0) {
+      setFieldData((currVal) => ({
+        ...currVal,
+        name: name,
+      }));
+    }
   }, [name, setFieldData]);
 
   //fieldDataRef will store current reference of fieldState and will provide latest value to
@@ -138,6 +143,17 @@ export const useField = ({
   //Subscribe to cross fields values, provide an array of dependent field names,
   //this field will be rerendered when any of the provided dependent field's value updates.
 
+  const addRemoveExcludedFields = useRecoilCallback(
+    ({ set }) => ({ fieldName, flag }) => {
+      if (flag === "add") {
+        set(formFieldExcludeAddSelector(formContext.formName), fieldName);
+      } else if (flag === "remove") {
+        set(formFieldExcludeRemoveSelector(formContext.formName), fieldName);
+      }
+    },
+    [formContext.formName]
+  );
+
   const dependentFieldsState = useRecoilValue(
     subscribeToFormFieldsSelector({
       formName: formContext.formName,
@@ -153,11 +169,13 @@ export const useField = ({
           ...old,
           excluded: true,
         }));
+        addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
       } else if (result === false && fieldData.excluded === true) {
         setFieldData((old) => ({
           ...old,
           excluded: false,
         }));
+        addRemoveExcludedFields({ fieldName: fieldData.name, flag: "remove" });
       }
     }
     if (typeof isReadyOnly === "function") {

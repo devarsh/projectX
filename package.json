@@ -20,7 +20,7 @@
     "history": "^5.0.0",
     "lodash": "^4.17.20",
     "num-words": "^1.2.0",
-    "react": "^17.0.0-rc.3",
+    "react": "^17.0.0",
     "react-device-detect": "^1.14.0",
     "react-dom": "^17.0.0-rc.3",
     "react-number-format": "^4.4.1",

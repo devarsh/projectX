@@ -1,9 +1,9 @@
 import { v4 } from "uuid";
 import { osName, osVersion } from "react-device-detect";
-import path from "path";
 
 const RaatnaFinAPI = (APIURL: string) => {
   let sessionObj: any = {
+    baseUrl: new URL(APIURL),
     loginStatus: false,
   };
   const createSession = async (username: string, password: string) => {
@@ -14,37 +14,31 @@ const RaatnaFinAPI = (APIURL: string) => {
     myHeaders.append("os_name", osName);
     myHeaders.append(
       "Authorization",
-      `Basic ${btoa(`${username}:${password}`)}`
+      `Basic ${btoa(`ratnaafin-acute-client:ratnaafin-acute-client-secret`)}`
     );
-
     var formdata = new FormData();
     formdata.append("grant_type", "password");
-    formdata.append("username", username);
-    formdata.append("password", password);
-
+    formdata.append("username", "UUID");
+    formdata.append("password", "Windows 8.1");
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: formdata,
-      mode: "cors",
+      redirect: "follow",
     };
-
-    return new Promise((res, rej) => {
-      fetch(
-        "https://ratnaafin.aiplservices.com/ratnaafin/oauth/token",
-        //@ts-ignore
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          verifyRequest(result);
-          res(true);
-        })
-        .catch((error) => {
-          verifyRequest(error);
-          res(true);
-        });
-    });
+    const url = new URL("./oauth/token", sessionObj.baseUrl);
+    return fetch(
+      url.href,
+      //@ts-ignore
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        verifyRequest(result);
+      })
+      .catch((error) => {
+        verifyRequest(error);
+      });
   };
   const verifyRequest = (data) => {
     if (data["access_token"] && data["refresh_token"]) {
@@ -54,22 +48,28 @@ const RaatnaFinAPI = (APIURL: string) => {
       sessionObj.loginStatus = false;
     }
   };
-  const printSession = () => {
-    console.log(sessionObj);
-  };
   const loginStatus = () => {
-    console.log(sessionObj.loginStatus);
+    return sessionObj.loginStatus;
   };
+  // const commonFetch = async(url:URL,payload:any) => {
+  //   try {
+  //     const result = fetch(url.href)
+  //   }
+  // }
+  // const getMiscValue = () => {
+  //   if (loginStatus()) {
+
+  //   }
+  // };
 
   return {
     createSession,
-    printSession,
     loginStatus,
   };
 };
 
 (async function Self() {
-  const API = RaatnaFinAPI("");
-  await API.createSession("UUID", "Windows 8.1");
-  console.log(API.printSession());
+  const API = RaatnaFinAPI("https://digix.aiplsolution.in/ratnaafin/");
+  await API.createSession("", "");
+  console.log(API.loginStatus());
 })();

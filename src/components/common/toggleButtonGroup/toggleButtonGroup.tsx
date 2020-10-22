@@ -94,7 +94,6 @@ const MyToggleButtonGroupProps: FC<MyAllToggleButtonGroupProps> = ({
       <span>{one.label}</span>
     </ToggleButton>
   ));
-  console.log(value);
   const result = (
     <FormControl disabled={isSubmitting}>
       <FormLabel>{label}</FormLabel>

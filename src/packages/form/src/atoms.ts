@@ -22,6 +22,9 @@ export const atomKeys = {
   formArrayFieldUnregisterSelector: "formArrayFieldUnregisterSelector",
   subscribeToFormFieldsSelector: "subscribeToFormFieldsSelector",
   isFormArrayFieldRegistered: "isFormArrayFieldRegistered",
+  formFieldsExcludedAtom: "formFieldsExcludedAtom",
+  formFieldExcludeAddSelector: "formFieldExcludeAddSelector",
+  formFieldExcludeRemoveSelector: "formFieldExcludeRemoveSelector",
 };
 
 export const formAtom = atomFamily<FormAtomType, string>({
@@ -48,6 +51,47 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
     readOnly: false,
     incomingMessage: null,
   }),
+});
+
+export const formFieldsExcludedAtom = atomFamily<string[], string>({
+  key: atomKeys.formFieldsExcludedAtom,
+  default: [],
+});
+
+export const formFieldExcludeAddSelector = selectorFamily<string, string>({
+  key: atomKeys.formFieldExcludeAddSelector,
+  set: (formName) => ({ set, get }, fieldName) => {
+    if (!(fieldName instanceof DefaultValue)) {
+      const fields = get(formFieldsExcludedAtom(formName));
+      const valueExists = fields.indexOf(fieldName) > -1;
+      if (!valueExists) {
+        const newFields = [...fields, fieldName];
+        set(formFieldsExcludedAtom(formName), newFields);
+      }
+    }
+  },
+  get: (_) => () => {
+    return "";
+  },
+});
+export const formFieldExcludeRemoveSelector = selectorFamily<string, string>({
+  key: atomKeys.formFieldExcludeAddSelector,
+  set: (formName) => ({ set, get }, fieldName) => {
+    if (!(fieldName instanceof DefaultValue)) {
+      const fields = get(formFieldsExcludedAtom(formName));
+      const index = fields.indexOf(fieldName);
+      if (index > -1) {
+        const newFields = [
+          ...fields.slice(0, index),
+          ...fields.slice(index + 1),
+        ];
+        set(formFieldsExcludedAtom(formName), newFields);
+      }
+    }
+  },
+  get: (_) => () => {
+    return "";
+  },
 });
 
 export const formFieldRegistryAtom = atomFamily<

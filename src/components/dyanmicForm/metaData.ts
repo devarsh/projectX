@@ -9,7 +9,7 @@ const metaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
-      groups: ["Personal Details", "Contact Details"],
+      groups: ["Personal Details", "Contact Details", "Conditional"],
       gridConfig: {
         item: {
           xs: 12,
@@ -337,6 +337,23 @@ const metaData: MetaDataType = {
             ]);
           }, 1000);
         });
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "label1",
+      type: "text",
+      label: "Label 1",
+      dependentFields: ["employementStatus"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.employementStatus?.value == "0") {
+          return true;
+        } else {
+          return false;
+        }
       },
     },
     {

@@ -11,6 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
 import { formStyle, FormStyleProps, FormStyleNamesProps } from "./style";
 import { Theme } from "@material-ui/core/styles";
+import { useRecoilValue } from "recoil";
+import { formFieldsExcludedAtom } from "packages/form";
 
 const useStyles = makeStyles<Theme, FormStyleProps>(formStyle);
 
@@ -18,6 +20,7 @@ interface FormProps {
   fields: GroupWiseRenderedFieldsType;
   formRenderConfig: FormRenderConfigType;
   formDisplayName: string;
+  formName: string;
   submitFn: SubmitFnType;
 }
 
@@ -25,28 +28,40 @@ export const Form: FC<FormProps> = ({
   fields,
   formRenderConfig,
   formDisplayName,
+  formName,
   submitFn,
 }) => {
+  const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
   const classes: FormStyleNamesProps = useStyles({} as FormStyleProps);
   const [activeStep, setActiveStep] = useState(0);
   const { handleSubmit, handleSubmitPartial } = useForm({
     onSubmit: submitFn,
   });
   const fieldGroups = useRef<string[]>(Object.keys(fields));
+  const fieldGroupsActiveStatus = fieldGroups.current.map((one) => {
+    return {
+      name: one,
+      status: isGroupExcluded(formName, fields[one].fieldNames, excludedFields),
+    };
+  });
 
   const handleNext = async () => {
-    if (activeStep < fieldGroups.current.length - 1) {
-      const currentStep = fieldGroups.current[activeStep];
-      const currentFieldsToValidate = fields[currentStep].fieldNames;
+    if (!isLastActiveStep(activeStep, fieldGroupsActiveStatus)) {
+      const currentStep = fieldGroupsActiveStatus[activeStep];
+      const currentFieldsToValidate = fields[currentStep.name].fieldNames;
       let isError = await handleSubmitPartial(currentFieldsToValidate);
+      isError = false;
       if (!isError) {
-        setActiveStep((last) => last + 1);
+        const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);
+        console.log("setting next step", nextStep);
+        setActiveStep(nextStep);
       }
     }
   };
   const handlePrev = () => {
     if (activeStep > 0) {
-      setActiveStep((last) => last - 1);
+      let step = getPrevActiveStep(activeStep, fieldGroupsActiveStatus);
+      setActiveStep(step);
     }
   };
 
@@ -68,7 +83,9 @@ export const Form: FC<FormProps> = ({
       </Grid>
     );
   });
-
+  const filteredFieldGroups = fieldGroupsActiveStatus.filter(
+    (one) => one.status
+  );
   return (
     <div className={classes.paper}>
       <Typography component="h3" className={classes.title}>
@@ -76,10 +93,10 @@ export const Form: FC<FormProps> = ({
       </Typography>
       <div className={classes.form}>
         <Stepper activeStep={activeStep}>
-          {fieldGroups.current.map((label) => {
+          {filteredFieldGroups.map((field) => {
             return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+              <Step key={field.name}>
+                <StepLabel>{field.name}</StepLabel>
               </Step>
             );
           })}
@@ -97,7 +114,7 @@ export const Form: FC<FormProps> = ({
               Back
             </Button>
           )}
-          {activeStep < fieldGroups.current.length - 1 ? (
+          {!isLastActiveStep(activeStep, fieldGroupsActiveStatus) ? (
             <Button
               type="button"
               className={classes.submit}
@@ -118,4 +135,73 @@ export const Form: FC<FormProps> = ({
       </div>
     </div>
   );
+};
+
+const isGroupExcluded = (
+  formName: string,
+  currentGroupFields: string[],
+  excludedFields: string[]
+) => {
+  const remaningFields = currentGroupFields.filter((fieldName) => {
+    const fullFieldName = `${formName}/${fieldName}`;
+    return excludedFields.indexOf(fullFieldName) >= 0 ? true : false;
+  });
+  if (remaningFields.length > 0) {
+    return false;
+  }
+  return true;
+};
+
+const getNextActiveStep = (
+  currentStep: number,
+  fieldGroupsActiveStatus: {
+    name: string;
+    status: boolean;
+  }[]
+) => {
+  console.log(
+    fieldGroupsActiveStatus,
+    currentStep + 1,
+    fieldGroupsActiveStatus.length - 1
+  );
+  for (let i = currentStep + 1; i < fieldGroupsActiveStatus.length; i++) {
+    if (fieldGroupsActiveStatus[i].status === true) {
+      return i;
+    }
+  }
+
+  return currentStep;
+};
+
+const getPrevActiveStep = (
+  currentStep: number,
+  fieldGroupsActiveStatus: {
+    name: string;
+    status: boolean;
+  }[]
+) => {
+  for (let i = currentStep - 1; i >= 0; i--) {
+    if (fieldGroupsActiveStatus[i].status === true) {
+      return i;
+    }
+  }
+  return currentStep;
+};
+
+const isLastActiveStep = (
+  currentStep: number,
+  fieldGroupsActiveStatus: {
+    name: string;
+    status: boolean;
+  }[]
+) => {
+  let finalStep = currentStep;
+  for (let i = currentStep + 1; i < fieldGroupsActiveStatus.length; i++) {
+    if (fieldGroupsActiveStatus[i].status === true) {
+      finalStep = i;
+      break;
+    }
+  }
+
+  return finalStep === currentStep;
 };

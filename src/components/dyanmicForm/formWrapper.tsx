@@ -48,6 +48,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
             fields={groupWiseFields}
             formRenderConfig={metaData.form.render}
             formDisplayName={metaData.form.label}
+            formName={metaData.form.name}
             submitFn={onSubmitHandler}
           />
         </Container>
