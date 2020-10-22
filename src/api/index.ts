@@ -6,6 +6,7 @@ const RaatnaFinAPI = (APIURL: string) => {
     baseUrl: new URL(APIURL),
     loginStatus: false,
   };
+
   const createSession = async (username: string, password: string) => {
     var myHeaders = new Headers();
     myHeaders.append("mac_id", "null");
@@ -51,16 +52,6 @@ const RaatnaFinAPI = (APIURL: string) => {
   const loginStatus = () => {
     return sessionObj.loginStatus;
   };
-  // const commonFetch = async(url:URL,payload:any) => {
-  //   try {
-  //     const result = fetch(url.href)
-  //   }
-  // }
-  // const getMiscValue = () => {
-  //   if (loginStatus()) {
-
-  //   }
-  // };
 
   return {
     createSession,

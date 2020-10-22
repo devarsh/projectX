@@ -53,7 +53,6 @@ export const Form: FC<FormProps> = ({
       isError = false;
       if (!isError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);
-        console.log("setting next step", nextStep);
         setActiveStep(nextStep);
       }
     }
@@ -159,11 +158,6 @@ const getNextActiveStep = (
     status: boolean;
   }[]
 ) => {
-  console.log(
-    fieldGroupsActiveStatus,
-    currentStep + 1,
-    fieldGroupsActiveStatus.length - 1
-  );
   for (let i = currentStep + 1; i < fieldGroupsActiveStatus.length; i++) {
     if (fieldGroupsActiveStatus[i].status === true) {
       return i;
