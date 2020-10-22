@@ -251,9 +251,33 @@ const metaData: MetaDataType = {
       FormatProps: {
         thousandSeparator: true,
         prefix: "₹",
+        suffix: "/-",
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        fixedDecimalScale: true,
+      },
+      validationRun: "onChange",
+    },
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 0,
+      },
+      name: "aadhar",
+      type: "text",
+      label: "AadharNumber",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["Loan Amount is required"] },
+          { name: "required", params: ["Loan Amount is required"] },
+        ],
+      },
+      FormatProps: {
+        format: "####-####-####-####",
       },
       validationRun: "onChange",
     },
