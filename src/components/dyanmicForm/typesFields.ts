@@ -12,10 +12,11 @@ import { RadioProps } from "components/common/radio";
 import { RatingProps } from "components/common/rating";
 import { SliderProps } from "components/common/slider";
 import { SwitchGroupProps, SwitchProps } from "components/common/switch";
-import { NumberFormatProps } from "components/derived/numberFormat";
-import { PasswordFieldProps } from "components/derived/passwordField";
 import { SpacerProps } from "components/common/spacer";
 import { ToggleButtonGroupProps } from "components/common/toggleButtonGroup";
+import { NumberFormatProps } from "components/derived/numberFormat";
+import { PasswordFieldProps } from "components/derived/passwordField";
+import { InputMaskProps } from "components/derived/inputMask";
 
 export interface FieldRenderProps<T> {
   componentType: T;
@@ -31,6 +32,12 @@ export interface FieldMetaData<T> {
 export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
 
 export type AllSpacerProps = Merge<FieldMetaData<"spacer">, SpacerProps>;
+
+export type AllInputMaskProps = Merge<
+  FieldMetaData<"inputMask">,
+  Omitted<InputMaskProps>
+>;
+export type InputMaskPropsOptional = Optional<AllInputMaskProps>;
 
 export type AllToggleButtonGroupProps = Merge<
   FieldMetaData<"toggleButtonGroup">,

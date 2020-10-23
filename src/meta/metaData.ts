@@ -1,4 +1,4 @@
-import { MetaDataType } from "./types";
+import { MetaDataType } from "components/dyanmicForm/types";
 
 const metaData: MetaDataType = {
   form: {
@@ -9,6 +9,11 @@ const metaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
+      labels: {
+        next: "Next",
+        complete: "Complete",
+        prev: "Back",
+      },
       groups: ["Personal Details", "Contact Details", "Conditional"],
       gridConfig: {
         item: {
@@ -33,6 +38,9 @@ const metaData: MetaDataType = {
         fullWidth: true,
       },
       numberFormat: {
+        fullWidth: true,
+      },
+      inputMask: {
         fullWidth: true,
       },
     },
@@ -70,6 +78,26 @@ const metaData: MetaDataType = {
       },
       HiddenProps: {
         smDown: true,
+      },
+    },
+    {
+      render: {
+        componentType: "inputMask",
+        group: 0,
+      },
+      name: "lala",
+      type: "text",
+      label: "Format lalalal",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      MaskProps: {
+        mask: "0000` aaaa` 0a00`",
+        lazy: false,
+        prepare: (value) => value.toUpperCase(),
       },
     },
     {

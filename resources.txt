@@ -16,5 +16,5 @@ https://prototypr.io/post/building-drag-drop-ui/
 https://medium.com/salesforce-ux/4-major-patterns-for-accessible-drag-and-drop-1d43f64ebf09
 https://marvelapp.com/blog/drag-drop-design-systems/
 
-#CROS ISSUEs
+#CORS ISSUES
 https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9

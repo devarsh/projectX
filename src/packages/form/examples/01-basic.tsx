@@ -9,6 +9,7 @@ import {
   DatePicker,
   ToggleButtonGroup,
 } from "components/common";
+import { InputMask } from "components/derived";
 
 import { useForm } from "packages/form";
 import Button from "@material-ui/core/Button";
@@ -126,6 +127,24 @@ const MainApp = () => {
           enableGrid={true}
           exclusive={true}
           GridProps={girdConfig}
+        />
+        <InputMask
+          name="formatText"
+          fieldKey="formatText"
+          type="text"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Format Text"
+          enableGrid={true}
+          GridProps={girdConfig}
+          MaskProps={{
+            mask: "0000 `00000 `0000",
+            lazy: false,
+            unmask: true,
+            prepare: (str) => str.toUpperCase(),
+          }}
         />
         <TextField
           name="email"

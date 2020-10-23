@@ -26,7 +26,6 @@ import {
 } from "./types";
 import { FormContext } from "./context";
 import { getIn, yupReachAndValidate } from "./util";
-import { indexOf } from "lodash";
 
 export const useField = ({
   fieldKey,
@@ -67,7 +66,7 @@ export const useField = ({
         name: name,
       }));
     }
-  }, [name, setFieldData]);
+  }, [name, setFieldData, formContext.formName]);
 
   //fieldDataRef will store current reference of fieldState and will provide latest value to
   //onChange and onBlur handlers when the memozied version of handlers are passed as props

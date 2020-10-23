@@ -16,6 +16,7 @@ import {
   AllPasswordFieldProps,
   AllSpacerProps,
   AllToggleButtonGroupProps,
+  AllInputMaskProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -33,11 +34,17 @@ import {
   NumberFormatPropsOptional,
   PasswordFieldPropsOptional,
   ToggleButtonGroupPropsOptional,
+  InputMaskPropsOptional,
 } from "./typesFields";
 
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";
   renderType: "simple" | "tabs" | "stepper" | "accordian"; //implimentation pending
+  labels?: {
+    next?: string;
+    prev?: string;
+    complete?: string;
+  };
   groups?: string[];
   gridConfig: {
     item?: {
@@ -78,6 +85,7 @@ export interface ComponentTypeProps {
   numberFormat?: NumberFormatPropsOptional;
   passwordField?: PasswordFieldPropsOptional;
   toggleButtonGroup?: ToggleButtonGroupPropsOptional;
+  inputMask?: InputMaskPropsOptional;
 }
 
 export interface MetaDataType {
@@ -101,7 +109,8 @@ export type FieldMetaDataType =
   | AllNumberFormatProps
   | AllPasswordFieldProps
   | AllToggleButtonGroupProps
-  | AllSpacerProps;
+  | AllSpacerProps
+  | AllInputMaskProps;
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {

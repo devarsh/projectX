@@ -1,10 +1,10 @@
-import { v4 } from "uuid";
-import { osName, osVersion } from "react-device-detect";
+import { osName } from "react-device-detect";
 
 const RaatnaFinAPI = (APIURL: string) => {
   let sessionObj: any = {
     baseUrl: new URL(APIURL),
     loginStatus: false,
+    tokens: "",
   };
 
   const createSession = async (username: string, password: string) => {
@@ -44,7 +44,7 @@ const RaatnaFinAPI = (APIURL: string) => {
   const verifyRequest = (data) => {
     if (data["access_token"] && data["refresh_token"]) {
       sessionObj.loginStatus = true;
-      sessionObj.session = data;
+      sessionObj.token = data;
     } else {
       sessionObj.loginStatus = false;
     }

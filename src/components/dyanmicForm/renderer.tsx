@@ -1,4 +1,6 @@
-import { lazy } from "react";
+import { lazy, FC } from "react";
+import * as yup from "yup";
+import { getIn, setIn, InitialValuesType } from "packages/form";
 import {
   MetaDataType,
   FormRenderConfigType,
@@ -16,12 +18,10 @@ import {
   TimePicker,
   DateTimePicker,
 } from "components/common";
-import { PasswordField, NumberFormat } from "components/derived";
-import { getIn, setIn, InitialValuesType } from "packages/form";
-import * as yup from "yup";
-import { FC } from "react";
-const Select = lazy(() => import("components/common/select"));
 const TextField = lazy(() => import("components/common/textField"));
+const NumberFormat = lazy(() => import("components/derived/numberFormat"));
+const PasswordField = lazy(() => import("components/derived/passwordField"));
+const Select = lazy(() => import("components/common/select"));
 const Radio = lazy(() => import("components/common/radio"));
 const Slider = lazy(() => import("components/common/slider"));
 const Rating = lazy(() => import("components/common/rating"));
@@ -29,6 +29,7 @@ const Spacer = lazy(() => import("components/common/spacer"));
 const ToggleButtonGroup = lazy(
   () => import("components/common/toggleButtonGroup")
 );
+const InputMask = lazy(() => import("components/derived/inputMask"));
 
 export const renderFieldsByGroup = (metaData: MetaDataType) => {
   const { fields, form } = metaData;
@@ -138,6 +139,9 @@ const renderField = (
     case "toggleButtonGroup":
       Component = ToggleButtonGroup;
       break;
+    case "inputMask":
+      Component = InputMask;
+      break;
     case "spacer":
       Component = Spacer;
       break;
@@ -184,13 +188,11 @@ export const constructInitialValue = (
   let initialValuesObj = {};
   for (const field of fields) {
     const { defaultValue, name } = field;
-    if (Boolean(defaultValue)) {
+    const value = getIn(initialValues, name, undefined);
+    if (Boolean(value)) {
+      initialValuesObj = setIn(initialValuesObj, name, value);
+    } else if (Boolean(defaultValue)) {
       initialValuesObj = setIn(initialValuesObj, name, defaultValue);
-    } else {
-      const value = getIn(initialValues, name, undefined);
-      if (Boolean(value)) {
-        initialValuesObj = setIn(initialValuesObj, name, value);
-      }
     }
   }
   return initialValuesObj;
