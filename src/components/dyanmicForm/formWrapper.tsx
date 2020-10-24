@@ -10,12 +10,36 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Container from "@material-ui/core/Container";
 import { InitialValuesType } from "packages/form";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
+import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 
 interface FormWrapperProps {
   metaData: MetaDataType;
   inititalValues?: InitialValuesType;
+}
+
+interface FormWrapperAttachMethodsProps extends FormWrapperProps {
   attachMethods: boolean;
 }
+
+export const FormWrapperAttachMethods: FC<FormWrapperAttachMethodsProps> = ({
+  metaData,
+  inititalValues,
+  attachMethods,
+}) => {
+  let newMetaData = metaData;
+  if (attachMethods === true) {
+    newMetaData = attachMethodsToMetaData(
+      newMetaData,
+      singletonFunctionRegisrationFactory
+    );
+  }
+  return (
+    <FormWrapper
+      metaData={newMetaData}
+      inititalValues={inititalValues}
+    ></FormWrapper>
+  );
+};
 
 export const FormWrapper: FC<FormWrapperProps> = ({
   metaData,

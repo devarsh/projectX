@@ -181,7 +181,7 @@ const metaData: MetaDataType = {
       required: true,
       type: "text",
       defaultValue: "0",
-      isReadyOnly: "functionFour",
+      isReadOnly: "functionFour",
       options: "functionFive",
       validate: "functionSix",
     },

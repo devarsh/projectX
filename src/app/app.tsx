@@ -10,7 +10,8 @@ import {
   wrapperStyles,
 } from "./styles";
 import DynamicForm from "components/dyanmicForm";
-import metaData from "meta/metaData";
+import metaData from "meta/metaData2";
+import "meta/fnsRegistry";
 
 const themeObj = createMuiTheme(theme);
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
