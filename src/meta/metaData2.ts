@@ -114,50 +114,10 @@ const metaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      options: () => {
-        return new Promise((res) => {
-          setTimeout(() => {
-            res([
-              { label: "Select Salutation", value: "0" },
-              { label: "Mr", value: "1" },
-              { label: "Mrs", value: "2" },
-              { label: "Miss", value: "3" },
-            ]);
-          }, 1000);
-        });
-      },
+      options: "functionOne",
       runPostValidationHookAlways: true,
-      validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Salutation is Required";
-        }
-      },
-      postValidationSetCrossFieldValues: (field) => {
-        return new Promise((res) => {
-          if (field.value === "1") {
-            res({
-              gender: {
-                value: "1",
-              },
-              firstName: {
-                value: "",
-              },
-            });
-          } else if (field.value === "2" || field.value === "3") {
-            res({
-              gender: {
-                value: "2",
-              },
-            });
-          } else {
-            res({
-              gender: {
-                value: "0",
-              },
-            });
-          }
-        });
-      },
+      validate: "functionTwo",
+      postValidationSetCrossFieldValues: "functionThree",
     },
     {
       render: {
@@ -221,23 +181,9 @@ const metaData: MetaDataType = {
       required: true,
       type: "text",
       defaultValue: "0",
-      isReadOnly: () => true,
-      options: () => {
-        return new Promise((res) => {
-          setTimeout(() => {
-            res([
-              { label: "Select Gender", value: "0" },
-              { label: "Male", value: "1" },
-              { label: "Female", value: "2" },
-            ]);
-          }, 1000);
-        });
-      },
-      validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Gender is Required";
-        }
-      },
+      isReadyOnly: "functionFour",
+      options: "functionFive",
+      validate: "functionSix",
     },
     {
       render: {
@@ -353,19 +299,7 @@ const metaData: MetaDataType = {
       label: "How Are You Currently Employed",
       required: true,
       defaultValue: "0",
-      options: () => {
-        return new Promise((res) => {
-          setTimeout(() => {
-            res([
-              { label: "Select Employement", value: "0" },
-              { label: "Self Employed Business", value: "1" },
-              { label: "Salaried", value: "2" },
-              { label: "Self Employed Professional", value: "3" },
-              { label: "Self Employed Developer", value: "4" },
-            ]);
-          }, 1000);
-        });
-      },
+      options: "functionSeven",
     },
     {
       render: {
@@ -376,13 +310,7 @@ const metaData: MetaDataType = {
       type: "text",
       label: "Label 1",
       dependentFields: ["employementStatus"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.employementStatus?.value == "0") {
-          return true;
-        } else {
-          return false;
-        }
-      },
+      shouldExclude: "functionEight",
     },
     {
       render: {
@@ -393,54 +321,7 @@ const metaData: MetaDataType = {
       label: "Residence Pincode",
       required: true,
       defaultValue: "",
-      postValidationSetCrossFieldValues: (field) => {
-        let myOptions: any = [];
-        return new Promise((res) => {
-          const myObj = {
-            city: {
-              value: "Ahmedabad",
-            },
-            state: {
-              value: "Gujarat",
-            },
-            district: {
-              value: "Ahmedabad",
-            },
-            country: {
-              value: "India",
-            },
-            location: {
-              value: "1",
-              options: [{ value: "0", label: "Select Area" }],
-            },
-          };
-          if (field.value === "380015") {
-            myOptions = [
-              { value: "1", label: "Shyamal" },
-              {
-                value: "2",
-                label: "Manekbaug",
-              },
-              { value: "3", label: "Vejalpur" },
-            ];
-          } else if (field.value === "380006") {
-            myOptions = [
-              { value: "1", label: "Gulbai Tekra" },
-              {
-                value: "2",
-                label: "C.G Road",
-              },
-              { value: "3", label: "Vejalpur" },
-            ];
-          }
-          const locationObj = myObj["location"];
-          locationObj.options = [...locationObj.options, ...myOptions];
-          res({
-            ...myObj,
-            locationObj,
-          });
-        });
-      },
+      postValidationSetCrossFieldValues: "functionNine",
     },
     {
       render: {
@@ -501,34 +382,3 @@ const metaData: MetaDataType = {
 };
 
 export default metaData;
-
-/*
-{
-      render: {
-        group: "groupB",
-        componentType: "array",
-        sequence: 0,
-      },
-      name: "contact",
-      label: "Contact",
-      schemaValidation: {
-        type: "array",
-      },
-      template: [
-        {
-          render: {
-            componentType: "text",
-          },
-          name: "contactNo",
-          label: "Contact No",
-        },
-        {
-          render: {
-            componentType: "text",
-          },
-          name: "contactPerson",
-          label: "Contact Person",
-        },
-      ],
-    },
-    */

@@ -110,7 +110,7 @@ export const Form: FC<FormProps> = ({
         <Box width={1} display="flex" justifyContent="flex-end">
           {activeStep === 0 ? null : (
             <Button type="button" onClick={handlePrev}>
-              Back
+              {formRenderConfig?.labels?.prev ?? "Back"}
             </Button>
           )}
           {!isLastActiveStep(activeStep, fieldGroupsActiveStatus) ? (
@@ -119,7 +119,7 @@ export const Form: FC<FormProps> = ({
               className={classes.submit}
               onClick={handleNext}
             >
-              Next
+              {formRenderConfig?.labels?.next ?? "Next"}
             </Button>
           ) : (
             <Button
@@ -127,7 +127,7 @@ export const Form: FC<FormProps> = ({
               className={classes.submit}
               onClick={handleSubmit}
             >
-              Complete
+              {formRenderConfig?.labels?.complete ?? "Complete"}
             </Button>
           )}
         </Box>

@@ -36,7 +36,7 @@ const MySelect: FC<MySelectAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -69,15 +69,15 @@ const MySelect: FC<MySelectAllProps> = ({
     whenToRunValidation,
     readOnly,
   } = useField({
-    name: fieldName ?? "",
-    validate,
-    dependentFields,
+    name: fieldName,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    validationRun: validationRun,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
 
   const focusRef = useRef();

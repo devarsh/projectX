@@ -17,9 +17,10 @@ const MySlider: FC<AllSliderProps> = ({
   name: fieldName,
   fieldKey: fieldID,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
+  dependentFields,
   validate,
   validationRun,
   label,
@@ -39,12 +40,13 @@ const MySlider: FC<AllSliderProps> = ({
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    validationRun: validationRun,
-    validate: validate,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
   const [localValue, setLocalValue] = useState(Number(value));
   useEffect(() => {

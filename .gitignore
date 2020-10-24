@@ -12,6 +12,9 @@
 # production
 /build
 
+#Line Count
+/out
+
 # misc
 .DS_Store
 .env.local

@@ -34,7 +34,7 @@ export const useField = ({
   validate,
   validationRun,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
 }: UseFieldHookProps) => {
@@ -177,8 +177,8 @@ export const useField = ({
         addRemoveExcludedFields({ fieldName: fieldData.name, flag: "remove" });
       }
     }
-    if (typeof isReadyOnly === "function") {
-      let result = isReadyOnly(fieldData, dependentFieldsState);
+    if (typeof isReadOnly === "function") {
+      let result = isReadOnly(fieldData, dependentFieldsState);
       if (result === true && fieldData.readOnly === false) {
         setFieldData((old) => ({
           ...old,

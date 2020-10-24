@@ -20,7 +20,7 @@ const MyRating: FC<AllRatingProps> = ({
   validationRun,
   shouldExclude,
   postValidationSetCrossFieldValues,
-  isReadyOnly,
+  isReadOnly,
   runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
@@ -42,11 +42,13 @@ const MyRating: FC<AllRatingProps> = ({
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    validationRun: validationRun,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
   const [focus, setFocus] = useState(false);
   const customBlur = useCallback(() => {

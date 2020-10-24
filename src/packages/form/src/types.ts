@@ -75,7 +75,7 @@ export interface UseFieldHookProps {
   validationRun?: ValidationRunType;
   dependentFields?: string[] | string;
   shouldExclude?: typeof shouldExcludeFnType;
-  isReadyOnly?: typeof shouldExcludeFnType;
+  isReadOnly?: typeof shouldExcludeFnType;
   postValidationSetCrossFieldValues?: typeof PostValidationSetCrossFieldValuesFnType;
   runPostValidationHookAlways?: boolean;
 }

@@ -42,7 +42,7 @@ const MyToggleButtonGroupProps: FC<MyAllToggleButtonGroupProps> = ({
   validate,
   validationRun,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -65,14 +65,14 @@ const MyToggleButtonGroupProps: FC<MyAllToggleButtonGroupProps> = ({
     excluded,
   } = useField({
     name: fieldName,
-    validate,
-    dependentFields,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    validationRun: validationRun,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
   if (excluded) {
     return null;

@@ -18,3 +18,6 @@ https://marvelapp.com/blog/drag-drop-design-systems/
 
 #CORS ISSUES
 https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+
+#Building and watching directory 
+https://gist.github.com/int128/e0cdec598c5b3db728ff35758abdbafd

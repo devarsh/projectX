@@ -27,7 +27,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   dependentFields,
   fieldKey: fieldID,
   GridProps,
@@ -56,14 +56,14 @@ const MyTextField: FC<MyTextFieldProps> = ({
     incomingMessage,
   } = useField({
     name: fieldName,
-    validate,
-    dependentFields,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    validationRun: validationRun,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
 
   const focusRef = useRef();

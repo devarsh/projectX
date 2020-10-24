@@ -20,7 +20,7 @@ const App = () => {
     <ThemeProvider theme={themeObj}>
       <RecoilRoot>
         <Box width={1} display="flex" className={classes.wrapper}>
-          <DynamicForm metaData={metaData} />
+          <DynamicForm metaData={metaData} attachMethods={true} />
         </Box>
       </RecoilRoot>
     </ThemeProvider>

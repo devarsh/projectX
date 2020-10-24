@@ -1,20 +1,20 @@
 import { FC } from "react";
 import { FormContext } from "packages/form";
-import {
-  renderFieldsByGroup,
-  constructInitialValue,
-  constructYupSchema,
-} from "./renderer";
+import { renderFieldsByGroup } from "./utils/groupWiserenderer";
+import { constructInitialValue } from "./utils/constructINITValues";
+import { constructYupSchema } from "./utils/constructYupSchema";
 import { MetaDataType } from "./types";
 import { Form } from "./stepperForm";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Container from "@material-ui/core/Container";
 import { InitialValuesType } from "packages/form";
+import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 
 interface FormWrapperProps {
   metaData: MetaDataType;
   inititalValues?: InitialValuesType;
+  attachMethods: boolean;
 }
 
 export const FormWrapper: FC<FormWrapperProps> = ({
@@ -24,7 +24,6 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, inititalValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-
   const onSubmitHandler = (values, submitEnd, setFieldsError) => {
     setTimeout(() => {
       console.log(values);

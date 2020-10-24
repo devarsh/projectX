@@ -32,7 +32,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -58,14 +58,14 @@ const MySwitch: FC<MySwitchAllProps> = ({
     readOnly,
   } = useField({
     name: fieldName,
-    validate,
-    dependentFields,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    validationRun: validationRun,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
   if (excluded) {
     return null;

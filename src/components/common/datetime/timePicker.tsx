@@ -27,7 +27,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -52,14 +52,14 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     readOnly,
   } = useField({
     name: fieldName,
-    validate,
-    dependentFields,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    validationRun: validationRun,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = useCallback(

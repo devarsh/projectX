@@ -25,7 +25,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   validate,
   validationRun,
   shouldExclude,
-  isReadyOnly,
+  isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
   dependentFields,
@@ -52,14 +52,14 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     readOnly,
   } = useField({
     name: fieldName,
-    validate,
-    dependentFields,
     fieldKey: fieldID,
-    shouldExclude: shouldExclude,
-    postValidationSetCrossFieldValues: postValidationSetCrossFieldValues,
-    validationRun: validationRun,
-    runPostValidationHookAlways: runPostValidationHookAlways,
-    isReadyOnly: isReadyOnly,
+    dependentFields,
+    validate,
+    validationRun,
+    runPostValidationHookAlways,
+    postValidationSetCrossFieldValues,
+    isReadOnly,
+    shouldExclude,
   });
 
   const focusRef = useRef();
