@@ -1,58 +1,43 @@
-import { FC } from "react";
+import { FC, useState, memo, Fragment } from "react";
 import { FormContext } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
 import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { MetaDataType } from "./types";
-import { Form } from "./stepperForm";
+import { StepperForm } from "./stepperForm";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Container from "@material-ui/core/Container";
 import { InitialValuesType } from "packages/form";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
-
+import { FormVerificationDialog } from "components/dyanmicForm/formVerificationDialog";
 interface FormWrapperProps {
   metaData: MetaDataType;
   inititalValues?: InitialValuesType;
+  setShowDialog: Function;
+  setSubmitProps: Function;
 }
 
-interface FormWrapperAttachMethodsProps extends FormWrapperProps {
-  attachMethods: boolean;
-}
-
-export const FormWrapperAttachMethods: FC<FormWrapperAttachMethodsProps> = ({
+const FormWrapper: FC<FormWrapperProps> = ({
   metaData,
   inititalValues,
-  attachMethods,
+  setShowDialog,
+  setSubmitProps,
 }) => {
-  let newMetaData = metaData;
-  if (attachMethods === true) {
-    newMetaData = attachMethodsToMetaData(
-      newMetaData,
-      singletonFunctionRegisrationFactory
-    );
-  }
-  return (
-    <FormWrapper
-      metaData={newMetaData}
-      inititalValues={inititalValues}
-    ></FormWrapper>
+  metaData = attachMethodsToMetaData(
+    metaData,
+    singletonFunctionRegisrationFactory
   );
-};
-
-export const FormWrapper: FC<FormWrapperProps> = ({
-  metaData,
-  inititalValues,
-}) => {
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, inititalValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
-    setTimeout(() => {
-      console.log(values);
-      submitEnd(true);
-    }, 3000);
+  const onSubmitHandler = (values, submitEnd) => {
+    setSubmitProps(() => ({
+      values: values,
+      submitEnd: submitEnd,
+    }));
+    setShowDialog(true);
   };
 
   return (
@@ -67,7 +52,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
         }}
       >
         <Container component="main">
-          <Form
+          <StepperForm
             fields={groupWiseFields}
             formRenderConfig={metaData.form.render}
             formDisplayName={metaData.form.label}
@@ -77,5 +62,38 @@ export const FormWrapper: FC<FormWrapperProps> = ({
         </Container>
       </FormContext.Provider>
     </MuiPickersUtilsProvider>
+  );
+};
+
+const MemoizedFormWrapper = memo(FormWrapper);
+
+interface ParentFormWrapperProps {
+  metaData: MetaDataType;
+  inititalValues?: InitialValuesType;
+}
+
+export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
+  metaData,
+  inititalValues,
+}) => {
+  const [showDialog, setShowDialog] = useState(false);
+  const [submitProps, setSubmitProps] = useState({});
+  return (
+    <Fragment>
+      <MemoizedFormWrapper
+        metaData={metaData}
+        inititalValues={inititalValues}
+        setShowDialog={setShowDialog}
+        setSubmitProps={setSubmitProps}
+      />
+      {showDialog ? (
+        <FormVerificationDialog
+          isOpen={showDialog}
+          setShowDialog={setShowDialog}
+          submitProps={submitProps}
+          nextPagePath={metaData?.form?.navigation?.nextPage}
+        />
+      ) : null}
+    </Fragment>
   );
 };

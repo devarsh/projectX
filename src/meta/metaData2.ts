@@ -57,8 +57,8 @@ const metaData: MetaDataType = {
       defaultValue: "p",
       GridProps: {
         xs: 12,
-        md: 3,
-        sm: 3,
+        md: 6,
+        sm: 6,
       },
       options: [
         { label: "Home Loan", value: "p", iconName: "person" },
@@ -74,8 +74,8 @@ const metaData: MetaDataType = {
       name: "spacer",
       GridProps: {
         xs: 12,
-        md: 9,
-        sm: 9,
+        md: 6,
+        sm: 6,
       },
       HiddenProps: {
         smDown: true,
@@ -98,6 +98,10 @@ const metaData: MetaDataType = {
       MaskProps: {
         mask: "0000` aaaa` aaaa",
         lazy: true,
+      },
+      dependentFields: ["productType"],
+      shouldExclude: (_, dData) => {
+        return dData?.productType?.value === "p";
       },
     },
     {

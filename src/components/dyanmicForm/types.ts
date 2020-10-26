@@ -36,6 +36,7 @@ import {
   ToggleButtonGroupPropsOptional,
   InputMaskPropsOptional,
 } from "./typesFields";
+import { To } from "history";
 
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";
@@ -67,6 +68,9 @@ export interface FormMetaDataType {
   validationRun: "onBlur" | "onChange" | "all";
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
+  navigation: {
+    nextPage: To;
+  };
 }
 
 export interface ComponentTypeProps {

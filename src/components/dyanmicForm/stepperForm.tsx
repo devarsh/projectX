@@ -24,7 +24,7 @@ interface FormProps {
   submitFn: SubmitFnType;
 }
 
-export const Form: FC<FormProps> = ({
+export const StepperForm: FC<FormProps> = ({
   fields,
   formRenderConfig,
   formDisplayName,
@@ -50,6 +50,7 @@ export const Form: FC<FormProps> = ({
       const currentStep = fieldGroupsActiveStatus[activeStep];
       const currentFieldsToValidate = fields[currentStep.name].fieldNames;
       let isError = await handleSubmitPartial(currentFieldsToValidate);
+
       isError = false;
       if (!isError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);

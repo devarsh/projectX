@@ -5,7 +5,7 @@ import NumberFormat, { NumberFormatProps } from "react-number-format";
 import { TextField, TextFieldProps } from "components/common/textField";
 import { Merge } from "components/common/types";
 
-function NumberFormatCustom(props) {
+export function NumberFormatCustom(props) {
   const { inputRef, onChange, FormatProps, ...other } = props;
   return (
     <NumberFormat

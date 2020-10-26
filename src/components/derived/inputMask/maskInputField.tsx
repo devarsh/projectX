@@ -4,7 +4,7 @@ import { IMaskInputProps } from "./types";
 import { TextField, TextFieldProps } from "components/common/textField";
 import { Merge } from "components/common/types";
 
-function InputMaskCustom(props) {
+export function InputMaskCustom(props) {
   const { inputRef, onChange, MaskProps, ...other } = props;
   return (
     <IMask
@@ -14,7 +14,7 @@ function InputMaskCustom(props) {
         onChange({
           target: {
             name: props.name,
-            value: value,
+            value: mask.unmaskedValue,
           },
         });
       }}

@@ -91,7 +91,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   let numWordsVar: any = null;
   let myTouch = touched;
   try {
-    if (enableNumWords) {
+    if (enableNumWords && Boolean(value)) {
       let amountArray = String(value).split(".");
       numWordsVar = `${numWords(amountArray[0])} Rupees`;
       if (amountArray.length === 2 && Boolean(amountArray[1])) {
