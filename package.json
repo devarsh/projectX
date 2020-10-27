@@ -30,6 +30,7 @@
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "^4.0.0-next.98",
     "react-window": "^1.8.5",
+    "reactstrap": "^8.6.0",
     "recoil": "0.0.11",
     "source-map-explorer": "^2.5.0",
     "styled-components": "^5.2.0",

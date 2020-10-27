@@ -6,7 +6,7 @@ import "meta/fnsRegistry";
 import myMetaData from "meta/metaData3";
 
 import { Routes, Route } from "react-router-dom";
-import { ThankYouPage } from "./thankyou";
+import ThankYouPage from "./thankyou";
 import DynamicForm from "components/dyanmicForm";
 
 const Index = () => {

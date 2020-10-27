@@ -9,11 +9,11 @@ import {
   WrapperStyleNamesProps,
   wrapperStyles,
 } from "./styles";
-import IndexPage from "components/pages";
+import IndexPage from "pages";
 
 const themeObj = createMuiTheme(theme);
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
-const App = () => {
+export const App = () => {
   const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
 
   return (
@@ -28,5 +28,3 @@ const App = () => {
     </BrowserRouter>
   );
 };
-
-export default App;

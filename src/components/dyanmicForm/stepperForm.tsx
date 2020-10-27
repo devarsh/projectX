@@ -7,10 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
 import { formStyle, FormStyleProps, FormStyleNamesProps } from "./style";
-import { Theme } from "@material-ui/core/styles";
 import { useRecoilValue } from "recoil";
 import { formFieldsExcludedAtom } from "packages/form";
 
