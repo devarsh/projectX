@@ -22,6 +22,24 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 
 import "assets/css/bootstrap.min.css";
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#0063A3",
+    },
+    secondary: {
+      main: "#736f6f",
+    },
+  },
+
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
+      },
+    },
+  },
+});
 const useStyles = makeStyles((theme) => ({
   navBarCSS: {
     padding: "4px 1rem !important",
