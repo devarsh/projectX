@@ -1,5 +1,5 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+//import Box from "@material-ui/core/Box";
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { RecoilRoot } from "recoil";
 import { BrowserRouter } from "react-router-dom";
@@ -20,9 +20,9 @@ export const App = () => {
     <BrowserRouter>
       <ThemeProvider theme={themeObj}>
         <RecoilRoot>
-          <Box width={1} display="flex" className={classes.wrapper}>
+          {/* <Box width={1} display="flex" className={classes.wrapper}> */}
             <IndexPage />
-          </Box>
+          {/* </Box> */}
         </RecoilRoot>
       </ThemeProvider>
     </BrowserRouter>

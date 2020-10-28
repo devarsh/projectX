@@ -3,6 +3,7 @@ import { Fragment } from "react";
 //always import this first before importing dynamic form
 //to ensure all our functions are registered
 import "meta/fnsRegistry";
+import "index.css";
 //remove these after metaData comes from api
 import myMetaData from "meta/metaData3";
 
