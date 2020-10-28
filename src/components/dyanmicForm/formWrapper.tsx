@@ -12,6 +12,7 @@ import { InitialValuesType } from "packages/form";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 import { FormVerificationDialog } from "components/dyanmicForm/formVerificationDialog";
+import Box from "@material-ui/core/Box";
 interface FormWrapperProps {
   metaData: MetaDataType;
   inititalValues?: InitialValuesType;
@@ -79,7 +80,9 @@ export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
   const [showDialog, setShowDialog] = useState(false);
   const [submitProps, setSubmitProps] = useState({});
   return (
-    <Fragment>
+    <Box width={1} display="flex" 
+    // className={classes.wrapper}
+    >
       <MemoizedFormWrapper
         metaData={metaData}
         inititalValues={inititalValues}
@@ -94,6 +97,6 @@ export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
           nextPagePath={metaData?.form?.navigation?.nextPage}
         />
       ) : null}
-    </Fragment>
+    </Box>
   );
 };

@@ -111,7 +111,7 @@ export const NestedNavItem: FC<NestedNavItemProps> = ({
             } else {
               return (
                 <DropdownItem
-                  tag="div"
+                  tag="a"
                   key={one.label}
                   onClick={(e) => {
                     handleHide(e);

@@ -34,8 +34,9 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     padding: ".5rem .75rem",
     textTransform: "capitalize",
     textAlign: "center",
-    backgroundColor: "#fff",
-    // border: '1px solid #42C2AB',
+    background: "#fff",
+     //@ts-ignore
+    border: '1px solid #42C2AB',
     borderRadius: "24px",
     minWidth: "145px",
     cursor: "pointer",
@@ -43,8 +44,8 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     boxShadow: "none",
     "&:hover": {
       color: "#0b6fb8",
-      // border: '1px solid #0b6fb8',
-      backgroundColor: "#fff",
+      border: '1px solid #0b6fb8',
+      background: "#fff",
     },
   },
 });
