@@ -91,7 +91,7 @@ export const StepperForm: FC<FormProps> = ({
         {formDisplayName}
       </Typography>
       <div className={classes.form}>
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={activeStep} alternativeLabel>
           {filteredFieldGroups.map((field) => {
             return (
               <Step key={field.name}>
@@ -109,7 +109,7 @@ export const StepperForm: FC<FormProps> = ({
 
         <Box width={1} display="flex" justifyContent="flex-end">
           {activeStep === 0 ? null : (
-            <Button type="button" onClick={handlePrev}>
+            <Button type="button" onClick={handlePrev} className={classes.backBtn} >
               {formRenderConfig?.labels?.prev ?? "Back"}
             </Button>
           )}
@@ -127,7 +127,7 @@ export const StepperForm: FC<FormProps> = ({
               className={classes.submit}
               onClick={handleSubmit}
             >
-              {formRenderConfig?.labels?.complete ?? "Complete"}
+              {formRenderConfig?.labels?.complete ?? "Submit"}
             </Button>
           )}
         </Box>

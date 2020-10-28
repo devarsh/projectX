@@ -2,9 +2,10 @@ import { FC } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import ToggleButton, { ToggleButtonProps } from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup, {
+import  {
   ToggleButtonGroupProps,
 } from "@material-ui/lab/ToggleButtonGroup";
+import {ToggleButtonGroup} from 'components/styledComponent/toggleButtonGroup'
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
 import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
 import { Merge } from "../types";

@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import "meta/fnsRegistry";
 import "index.css";
 //remove these after metaData comes from api
-import myMetaData from "meta/metaData3";
+import myMetaData from "meta/metaData";
 
 import ThankYouPage from "./thankyou";
 import Header from "./header";

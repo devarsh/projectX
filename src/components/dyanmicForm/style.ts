@@ -8,6 +8,7 @@ export interface FormStyleProps {
   paper: BaseCSSProperties;
   form: BaseCSSProperties;
   submit: BaseCSSProperties;
+  backBtn: BaseCSSProperties;
 }
 
 export type FormStyleNamesProps = Record<keyof FormStyleProps, string>;
@@ -27,9 +28,10 @@ export const formStyle = (theme: Theme): any => ({
     //@ts-ignore
     fontWeight: "700",
     alignSelf: "flex-start",
+    marginBottom: theme.spacing(2)
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -47,9 +49,21 @@ export const formStyle = (theme: Theme): any => ({
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    fontSize: "1.2rem",
+  },
+  backBtn: {
+    boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+    background: "#e0e0e0",
+    marginRight: theme.spacing(2),
+    color: "#0b6fb8 !important",
+    margin: theme.spacing(3, 0, 2),
+    fontSize: "1.2rem",
+    "&:hover": {
+      color: "#0b6fb8 !important",
+      background: "#e0e0e0",
+    }
   },
 });
