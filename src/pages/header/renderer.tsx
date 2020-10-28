@@ -13,7 +13,7 @@
  *                                               DropdownItem
  */
 
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import {
   NavItem,
   NavLink,
@@ -21,7 +21,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Dropdown,
-  UncontrolledDropdown,
 } from "reactstrap";
 import { NavItemType, NavBarType } from "./types";
 import { HeaderNameProps } from "./style";
@@ -80,10 +79,6 @@ export const NestedNavItem: FC<NestedNavItemProps> = ({
   const toggle = () => {
     setOpen((prev) => !prev);
   };
-  useEffect(() => {
-    console.log("i am mounted", item.label);
-    return () => console.log("i am unmounted", item.label);
-  }, []);
   let result;
   if (Array.isArray(item.children)) {
     result = (
