@@ -27,7 +27,6 @@ function CoreProducts() {
   const classes: CoreProductsNameProps = useStyles(
     {} as CoreProductsStyleProps
   );
-  console.log(classes);
   return (
     <Container className={classes.wrapper + " CoreProducts"} fluid={true}>
       <Row>

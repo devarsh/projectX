@@ -27,7 +27,6 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     lineHeight: "1.6",
   },
   applyButton: {
-    border: "0",
     color: "#42C2AB",
     fontWeight: "700",
     fontSize: "1.125rem",
@@ -35,8 +34,8 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     textTransform: "capitalize",
     textAlign: "center",
     background: "#fff",
-     //@ts-ignore
-    border: '1px solid #42C2AB',
+    //@ts-ignore
+    border: "1px solid #42C2AB",
     borderRadius: "24px",
     minWidth: "145px",
     cursor: "pointer",
@@ -44,7 +43,7 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     boxShadow: "none",
     "&:hover": {
       color: "#0b6fb8",
-      border: '1px solid #0b6fb8',
+      border: "1px solid #0b6fb8",
       background: "#fff",
     },
   },
