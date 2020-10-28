@@ -97,7 +97,7 @@ export const NestedNavItem: FC<NestedNavItemProps> = ({
             {item.label}
           </NavLink>
         </DropdownToggle>
-        <DropdownMenu className={classes.headerDropdown + " onestep"}>
+        <DropdownMenu tag="ul" className={classes.headerDropdown + " onestep"}>
           {item.children.map((one) => {
             if (Array.isArray(one.children)) {
               return (

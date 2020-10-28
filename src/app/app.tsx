@@ -1,28 +1,19 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 //import Box from "@material-ui/core/Box";
-import { Theme, makeStyles } from "@material-ui/core/styles";
+
 import { RecoilRoot } from "recoil";
 import { BrowserRouter } from "react-router-dom";
 import { theme } from "./theme";
-import {
-  WrapperStyleProps,
-  WrapperStyleNamesProps,
-  wrapperStyles,
-} from "./styles";
 import IndexPage from "pages";
 
 const themeObj = createMuiTheme(theme);
-const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
-export const App = () => {
-  const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
 
+export const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={themeObj}>
         <RecoilRoot>
-          {/* <Box width={1} display="flex" className={classes.wrapper}> */}
-            <IndexPage />
-          {/* </Box> */}
+          <IndexPage />
         </RecoilRoot>
       </ThemeProvider>
     </BrowserRouter>
