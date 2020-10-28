@@ -27,7 +27,7 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     lineHeight: "1.6",
   },
   applyButton: {
-    color: "#42C2AB !important",
+    color: "#42C2AB",
     fontWeight: "700",
     fontSize: "1.125rem",
     padding: ".5rem .75rem",
@@ -42,7 +42,7 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     outline: "none",
     boxShadow: "none",
     "&:hover": {
-      color: "#0b6fb8 !important",
+      color: "#0b6fb8",
       border: "1px solid #0b6fb8",
       background: "#fff",
     },
