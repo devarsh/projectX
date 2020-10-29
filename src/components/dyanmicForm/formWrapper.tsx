@@ -1,31 +1,24 @@
 import { FC, useState, memo } from "react";
-import { FormContext } from "packages/form";
+import DateFnsUtils from "@date-io/date-fns";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import { Theme, makeStyles } from "@material-ui/core/styles";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { FormContext, InitialValuesType } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
 import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
-import { MetaDataType } from "./types";
-import { StepperForm } from "./stepperForm";
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import Container from "@material-ui/core/Container";
-import { InitialValuesType } from "packages/form";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
-import { FormVerificationDialog } from "components/dyanmicForm/formVerificationDialog";
-import Box from "@material-ui/core/Box";
+import { MetaDataType } from "./types";
+import { StepperForm } from "./stepperForm";
+import { FormVerificationDialog } from "./formVerificationDialog";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-//import Box from "@material-ui/core/Box";
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { RecoilRoot } from "recoil";
-import { BrowserRouter } from "react-router-dom";
-import { theme } from "app/theme";
 import {
   WrapperStyleProps,
   WrapperStyleNamesProps,
   wrapperStyles,
 } from "app/styles";
-import IndexPage from "pages";
 
 interface FormWrapperProps {
   metaData: MetaDataType;
@@ -87,7 +80,6 @@ interface ParentFormWrapperProps {
   inititalValues?: InitialValuesType;
 }
 
-const themeObj = createMuiTheme(theme);
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
 export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
@@ -98,7 +90,7 @@ export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
   const [submitProps, setSubmitProps] = useState({});
   const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
   return (
-    <Box width={1} display="flex" className={classes.wrapper} >
+    <Box width={1} display="flex" className={classes.wrapper}>
       <MemoizedFormWrapper
         metaData={metaData}
         inititalValues={inititalValues}

@@ -8,6 +8,7 @@ import "index.css";
 import myMetaData from "meta/metaData";
 
 import ThankYouPage from "./thankyou";
+import NotFoundPage from "./notFound";
 import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
@@ -19,8 +20,12 @@ const Index = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="forms" element={<DynamicForm metaData={myMetaData} />} />
         <Route path="thankyou" element={<ThankYouPage />} />
+        <Route
+          path="forms/:formName"
+          element={<DynamicForm metaData={myMetaData} />}
+        />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </Fragment>
