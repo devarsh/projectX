@@ -54,10 +54,9 @@ const overrideMetaData = (metaData: NavBarType) => {
 export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
   const navigate = useNavigate();
   const newMetaData = overrideMetaData(metaData);
-  console.log(newMetaData);
   let result;
-  if (Array.isArray(metaData.navItems)) {
-    result = metaData.navItems.map((item) => {
+  if (Array.isArray(newMetaData) && newMetaData.length > 0) {
+    result = newMetaData.map((item) => {
       if (Array.isArray(item.children)) {
         return <NestedNavItem key={item.label} item={item} classes={classes} />;
       } else {

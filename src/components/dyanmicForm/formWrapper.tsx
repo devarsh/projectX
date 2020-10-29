@@ -13,6 +13,7 @@ import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
 import { FormVerificationDialog } from "./formVerificationDialog";
+import { useLocation, useParams } from "react-router-dom";
 
 import {
   WrapperStyleProps,
@@ -86,6 +87,11 @@ export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
   metaData,
   inititalValues,
 }) => {
+  const location = useLocation();
+  const params = useParams();
+  //api call
+  //metaData
+  console.log(location, params);
   const [showDialog, setShowDialog] = useState(false);
   const [submitProps, setSubmitProps] = useState({});
   const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
