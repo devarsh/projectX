@@ -15,7 +15,12 @@ export const renderFieldsByGroup = (metaData: MetaDataType) => {
       currentGroupName =
         form.render.groups[oneField.render?.group ?? -1] ?? defaultGroup;
     }
-    const element = renderField(oneField, form?.render, form?.componentProps);
+    const element = renderField(
+      oneField,
+      form?.render,
+      form?.name,
+      form?.componentProps
+    );
     let currentGroup: RenderedFieldsType;
     currentGroup = groupWiseRenderer[currentGroupName];
     if (currentGroup === undefined) {

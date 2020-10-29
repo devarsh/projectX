@@ -1,11 +1,56 @@
-import { PrintOutlined } from "@material-ui/icons";
+import { OptionsProps } from "components/common/types";
 import { osName } from "react-device-detect";
+
+interface CommonFetcherResponse {
+  data: any;
+  status: "success" | "failure";
+}
 
 const RaatnaFinAPI = (APIURL: string) => {
   let sessionObj: any = {
     baseUrl: new URL(APIURL),
     loginStatus: false,
     tokens: "",
+  };
+
+  const commonFetcher = async (
+    url: string,
+    payload: any,
+    thirdParty?: boolean
+  ): Promise<CommonFetcherResponse> => {
+    try {
+      let response;
+      if (thirdParty) {
+        response = await fetch(url, payload);
+      } else {
+        response = await fetch(new URL(url, sessionObj.baseUrl).href, payload);
+      }
+      if (response.status == 200) {
+        let data = await response.json();
+        if (Array.isArray(data)) {
+          data = data[0];
+        }
+        return {
+          status:
+            data.status == "0"
+              ? "success"
+              : data.Status == "Success"
+              ? "success"
+              : "failure",
+          data: data,
+        };
+      } else {
+        return {
+          status: "failure",
+          data: "",
+        };
+      }
+    } catch (e) {
+      return {
+        status: "failure",
+        data: e,
+      };
+    }
   };
 
   const createSession = async (username: string, password: string) => {

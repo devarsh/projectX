@@ -65,6 +65,7 @@ const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
 export const renderField = (
   fieldObj: FieldMetaDataType,
   formRenderConfig: FormRenderConfigType,
+  formName: string,
   componentProps: ComponentTypeProps
 ) => {
   const { render, schemaValidation, defaultValue, ...others } = fieldObj;
@@ -128,7 +129,7 @@ export const renderField = (
   if (Component === EmptyComponent) {
     return <Component componentType={render.componentType} />;
   } else if (Component === Spacer) {
-    return <Component key={others.name} {...others} />;
+    return <Component key={`${formName}/${others.name}`} {...others} />;
   } else {
     const currentComponentTypeProps = componentProps[render.componentType];
     const allProps = { ...currentComponentTypeProps, ...others };
@@ -140,7 +141,7 @@ export const renderField = (
       <Component
         {...allProps}
         fieldKey={others.name}
-        key={others.name}
+        key={`${formName}/${others.name}`}
         enableGrid={true}
         GridProps={{
           item: true,

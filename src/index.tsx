@@ -1,14 +1,14 @@
 import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
-import "api";
+
 //import "api";
-//import App from "./app";
+import App from "./app";
 //import App from "pages/header/header";
 
 //import App from "packages/form/examples/01-basic";
 
-//ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 
 //import "components/dyanmicForm/utils";
 
