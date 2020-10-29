@@ -1,3 +1,4 @@
+import { PrintOutlined } from "@material-ui/icons";
 import { osName } from "react-device-detect";
 
 const RaatnaFinAPI = (APIURL: string) => {
@@ -52,15 +53,20 @@ const RaatnaFinAPI = (APIURL: string) => {
   const loginStatus = () => {
     return sessionObj.loginStatus;
   };
+  const printLoginStatus = () => {
+    console.log(sessionObj);
+  };
 
   return {
     createSession,
     loginStatus,
+    printLoginStatus,
   };
 };
 
 (async function Self() {
-  const API = RaatnaFinAPI("https://digix.aiplsolution.in/ratnaafin/");
+  const API = RaatnaFinAPI("http://10.0.0.9:8081/");
   await API.createSession("", "");
   console.log(API.loginStatus());
+  console.log(API.printLoginStatus());
 })();

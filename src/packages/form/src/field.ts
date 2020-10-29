@@ -127,8 +127,12 @@ export const useField = ({
   //always enable and check  if we are not excluding any other field
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
+    const extractedFieldName = fieldData.name.replace(
+      `${formContext.formName}/`,
+      ""
+    );
     const wrappedValidation = wrapValidationMethod(
-      yupReachAndValidate(formContext.validationSchema, fieldData.name),
+      yupReachAndValidate(formContext.validationSchema, extractedFieldName),
       validate,
       postValidationSetCrossFieldValues,
       runPostValidationHookAlways
@@ -137,7 +141,12 @@ export const useField = ({
       isValidationFnRef.current = true;
       setFieldData((currVal) => ({ ...currVal, validate: wrappedValidation }));
     }
-  }, [setFieldData, formContext.validationSchema, fieldData.name]);
+  }, [
+    setFieldData,
+    formContext.formName,
+    formContext.validationSchema,
+    fieldData.name,
+  ]);
 
   //Subscribe to cross fields values, provide an array of dependent field names,
   //this field will be rerendered when any of the provided dependent field's value updates.

@@ -49,8 +49,8 @@ export const StepperForm: FC<FormProps> = ({
       const currentStep = fieldGroupsActiveStatus[activeStep];
       const currentFieldsToValidate = fields[currentStep.name].fieldNames;
       let isError = await handleSubmitPartial(currentFieldsToValidate);
-
-      isError = false;
+      //Do not uncomment else you will skip validation and move to next step
+      //isError = false;
       if (!isError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);
         setActiveStep(nextStep);
@@ -109,7 +109,11 @@ export const StepperForm: FC<FormProps> = ({
 
         <Box width={1} display="flex" justifyContent="flex-end">
           {activeStep === 0 ? null : (
-            <Button type="button" onClick={handlePrev} className={classes.backBtn} >
+            <Button
+              type="button"
+              onClick={handlePrev}
+              className={classes.backBtn}
+            >
               {formRenderConfig?.labels?.prev ?? "Back"}
             </Button>
           )}

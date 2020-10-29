@@ -296,7 +296,6 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             snapshot,
             set
           );
-          console.log(field, result);
           if (result === null) {
             continue;
           }

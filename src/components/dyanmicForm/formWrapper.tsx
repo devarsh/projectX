@@ -111,9 +111,6 @@ export const ParentFormWrapper = () => {
   } else {
     return <div>Page not found</div>;
   }
-  console.log(metaData);
-  console.log(location, params);
-
   return (
     <Box width={1} display="flex" className={classes.wrapper}>
       <MemoizedFormWrapper

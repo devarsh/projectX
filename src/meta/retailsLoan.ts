@@ -287,13 +287,7 @@ const metaData: MetaDataType = {
         type: "string",
         rules: [
           { name: "required", params: ["Email is required"] },
-          {
-            name: "matches",
-            params: [
-              /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              "Please enter Email ID.",
-            ],
-          },
+          { name: "email", params: ["Please enter Email ID."] },
         ],
       },
     },
