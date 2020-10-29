@@ -21,16 +21,20 @@ import {
   wrapperStyles,
 } from "app/styles";
 
+/* Meta Data  -Remove this code when we move to server*/
+import RetailLoanMetaData from "meta/retailsLoan";
+/*end of Meta Data import*/
+
 interface FormWrapperProps {
   metaData: MetaDataType;
-  inititalValues?: InitialValuesType;
+  initialValues?: InitialValuesType;
   setShowDialog: Function;
   setSubmitProps: Function;
 }
 
 const FormWrapper: FC<FormWrapperProps> = ({
   metaData,
-  inititalValues,
+  initialValues,
   setShowDialog,
   setSubmitProps,
 }) => {
@@ -39,7 +43,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
     singletonFunctionRegisrationFactory
   );
   const groupWiseFields = renderFieldsByGroup(metaData);
-  const initValues = constructInitialValue(metaData.fields, inititalValues);
+  const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
   const onSubmitHandler = (values, submitEnd) => {
     setSubmitProps(() => ({
@@ -76,30 +80,45 @@ const FormWrapper: FC<FormWrapperProps> = ({
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
-interface ParentFormWrapperProps {
-  metaData: MetaDataType;
-  inititalValues?: InitialValuesType;
-}
+// interface ParentFormWrapperProps {
+//   metaData: MetaDataType;
+//   inititalValues?: InitialValuesType;
+// }
 
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
-export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
-  metaData,
-  inititalValues,
-}) => {
+export const ParentFormWrapper = () => {
   const location = useLocation();
   const params = useParams();
-  //api call
-  //metaData
-  console.log(location, params);
   const [showDialog, setShowDialog] = useState(false);
   const [submitProps, setSubmitProps] = useState({});
   const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
+
+  let metaData = RetailLoanMetaData;
+  let initialValues = {};
+  //@ts-ignore
+  const formCode = location?.state?.formCode ?? "123000000";
+  const mapper = {
+    "12300001": "Retail home Loan",
+    "12300002": "Retail LAP",
+    "12300003": "Retail LRD",
+    "12300004": "Retail APF",
+  };
+
+  if (["12300001", "12300002", "12300003", "12300004"].indexOf(formCode) > -1) {
+    metaData.form.name = formCode;
+    metaData.form.label = mapper[formCode];
+  } else {
+    return <div>Page not found</div>;
+  }
+  console.log(metaData);
+  console.log(location, params);
+
   return (
     <Box width={1} display="flex" className={classes.wrapper}>
       <MemoizedFormWrapper
         metaData={metaData}
-        inititalValues={inititalValues}
+        initialValues={initialValues}
         setShowDialog={setShowDialog}
         setSubmitProps={setSubmitProps}
       />

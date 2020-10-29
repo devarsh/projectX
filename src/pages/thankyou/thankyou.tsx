@@ -8,6 +8,7 @@ import {
   ThankyouPageStyleProps,
   ThankyouPageNameProps,
 } from "./style";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles<Theme, ThankyouPageStyleProps>(thankyouPageStyle);
 
@@ -15,12 +16,8 @@ export const ThankYou = () => {
   const classes: ThankyouPageNameProps = useStyles(
     {} as ThankyouPageStyleProps
   );
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // console.log(location);
-  // const handleClick = () => {
-  //   navigate("/forms");
-  // };
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Box
@@ -44,8 +41,24 @@ export const ThankYou = () => {
         flexDirection="row"
         mb={3}
       >
-        <Button className={classes.prevBtn}>Back to Home</Button>
-        <Button className={classes.continueBtn}>Continue</Button>
+        <Button
+          className={classes.prevBtn}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+        >
+          Back to Home
+        </Button>
+        <Button
+          className={classes.continueBtn}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/form/rhl");
+          }}
+        >
+          Continue
+        </Button>
       </Box>
     </Box>
   );

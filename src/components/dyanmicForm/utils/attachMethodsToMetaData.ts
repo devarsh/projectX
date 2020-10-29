@@ -40,7 +40,7 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
     /^fields.*.postValidationSetCrossFieldValues$/,
     postValidationSetCrossFieldValuesMethodNotFound,
   ],
-  [/^fields.*.isReadyOnly$/, isReadOnlyMethodNotFound],
+  [/^fields.*.isReadOnly$/, isReadOnlyMethodNotFound],
   [/^fields.*.shouldExclude$/, shouldExcludeNotFound],
   [/^fields.*.MaskProps.prepare$/, inputMaskPrepareNotFound],
 ];

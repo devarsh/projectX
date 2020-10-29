@@ -13,7 +13,9 @@ import Grid, { GridProps } from "@material-ui/core/Grid";
 import { OptionsProps, Merge } from "../types";
 
 interface dependentOptionsFn {
-  (optionsFn?: DependentValuesType): OptionsProps[] | Promise<OptionsProps[]>;
+  (optionsFn?: DependentValuesType, formName?: string):
+    | OptionsProps[]
+    | Promise<OptionsProps[]>;
 }
 
 interface extendedFieldProps extends UseFieldHookProps {
@@ -54,6 +56,7 @@ const MySelect: FC<MySelectAllProps> = ({
   ...others
 }) => {
   const {
+    formName,
     value,
     error,
     touched,
@@ -100,7 +103,9 @@ const MySelect: FC<MySelectAllProps> = ({
       } else if (typeof options === "function") {
         try {
           setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(options(dependentValues));
+          let currentPromise = Promise.resolve(
+            options(dependentValues, formName)
+          );
           lastOptionsPromise.current = currentPromise;
           currentPromise
             .then((result) => {
@@ -125,7 +130,7 @@ const MySelect: FC<MySelectAllProps> = ({
         }
       }
     },
-    [setOptions]
+    [setOptions, formName]
   );
 
   useEffect(() => {

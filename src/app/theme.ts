@@ -66,94 +66,89 @@ export const theme: Theme = {
           borderBottom: "2px solid #3f51b5",
           transition: "transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
         },
-        "&:hover": {
-          "&:before": {
-            borderBottom: "0 !important",
-          },
+      },
+    },
+    //@ts-ignore
+    "&:hover": {
+      underline: {
+        "&:before": {
+          borderBottom: "0",
         },
       },
+    },
+  },
+
+  MuiSelect: {
+    selectMenu: {
+      height: "22px",
+    },
+  },
+
+  MuiInputLabel: {
+    formControl: {
+      color: "#736f6f",
       //@ts-ignore
+      fontWeight: "600",
+      textTransform: "capitalize",
+      fontSize: "1rem",
+      fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
+    },
+    shrink: {
+      transform: "translate(0, 1.5px) scale(1)",
+    },
+  },
+
+  MuiInputAdornment: {
+    positionStart: {
+      borderRight: "1px solid #BABABA !important",
+      height: "32px",
+      padding: "0 1rem",
+    },
+  },
+
+  MuiPickersToolbarButton: {
+    toolbarBtn: {
+      background: "none",
       "&:hover": {
-        underline: {
-          "&:before": {
-            borderBottom: "0",
-          },
-        },
-      },
-    },
-
-    MuiSelect: {
-      selectMenu: {
-        height: "22px",
-      },
-    },
-
-    MuiInputLabel: {
-      formControl: {
-        color: "#736f6f",
-        //@ts-ignore
-        fontWeight: "600",
-        textTransform: "capitalize",
-        fontSize: "1rem",
-        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
-      },
-      shrink: {
-        transform: "translate(0, 1.5px) scale(1)",
-      },
-    },
-
-    MuiInputAdornment: {
-      positionStart: {
-        borderRight: "1px solid #BABABA !important",
-        height: "32px",
-        padding: "0 1rem",
-      },
-    },
-
-    MuiPickersToolbarButton: {
-      toolbarBtn: {
         background: "none",
-        "&:hover": {
-          background: "none",
+      },
+    },
+  },
+
+  MuiDialogActions: {
+    //@ts-ignore
+    MuiButton: {
+      text: {
+        backgroundColor: "red !important",
+        background: "red !important",
+      },
+    },
+  },
+
+  PickerWithState: {
+    root: {
+      MuiInputBase: {
+        root: {
+          paddingRight: "0px !important",
         },
       },
     },
+  },
 
-    MuiDialogActions: {
+  MuiCssBaseline: {
+    "@global": {
       //@ts-ignore
-      MuiButton: {
-        text: {
-          backgroundColor: "red !important",
-          background: "red !important",
-        },
-      },
+      fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
     },
-
-    PickerWithState: {
-      root: {
-        MuiInputBase: {
-          root: {
-            paddingRight: "0px !important",
-          },
-        },
-      },
+  },
+  MuiStepper: {
+    root: {
+      padding: "0",
     },
-
-    MuiCssBaseline: {
-      "@global": {
-        //@ts-ignore
-        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
-      },
-    },
-    MuiStepper: {
-      root: {
-        padding: "0",
-      },
-    },
-    MuiStepIcon: {
-      active: {
-        color: "#26A456 !important",
-      },
+  },
+  MuiStepIcon: {
+    active: {
+      color: "#26A456 !important",
     },
   },
 };
