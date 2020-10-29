@@ -70,7 +70,7 @@ function CoreProducts() {
       <Row>
         {productTiles.map((one) => {
           return (
-            <Col className={classes.customCol}>
+            <Col key={one.productName} className={classes.customCol}>
               <div className={classes.productWrapper + " product-wrap"}>
                 <div className="product-icon">{one.productIcon}</div>
                 <div className={classes.productName + " product-name"}>
