@@ -35,8 +35,13 @@ const overrideMetaData = (metaData: NavBarType) => {
   if (Array.isArray(metaData.navItems)) {
     return metaData.navItems.map((one) => {
       let result = one;
-      if (one.isRouterLink !== true) {
+      if (one.isRouterLink !== true && Boolean(one.href)) {
         result = { ...metaData.config, ...one };
+        if (!Boolean(one.href)) {
+          result.href = "#";
+        }
+      } else if (!Boolean(one.href) && !Array.isArray(one.children)) {
+        result.href = "/notFound";
       }
       if (result.children !== undefined && Array.isArray(result.children)) {
         result.children = overrideMetaData({
@@ -53,7 +58,10 @@ const overrideMetaData = (metaData: NavBarType) => {
 
 export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
   const navigate = useNavigate();
-  const newMetaData = overrideMetaData(metaData);
+  console.log("meta", metaData);
+  const newMetaData = overrideMetaData({ ...metaData });
+  //const newMetaData = metaData;
+  console.log("newmeta", newMetaData);
   let result;
   if (Array.isArray(newMetaData) && newMetaData.length > 0) {
     result = newMetaData.map((item) => {
@@ -62,13 +70,15 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
       } else {
         return (
           <NavItem key={item.label}>
-            {Boolean(item.isRouterLink) === true || !Boolean(item.href) ? (
+            {Boolean(item.isRouterLink) === true ? (
               <NavLink
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate(item.href ?? "/noFound", {
-                    state: { formCode: item.formCode },
-                  });
+                  if (item.href !== undefined) {
+                    navigate(item.href, {
+                      state: { formCode: item.formCode },
+                    });
+                  }
                 }}
               >
                 {item.label}
@@ -134,9 +144,11 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
             <NavLink
               onClick={(e) => {
                 e.preventDefault();
-                navigate(item.href ?? "/noFound", {
-                  state: { formCode: item.formCode },
-                });
+                if (item.href !== undefined) {
+                  navigate(item.href, {
+                    state: { formCode: item.formCode },
+                  });
+                }
               }}
             >
               {item.label}
@@ -167,9 +179,11 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                   key={one.label}
                   onClick={(e) => {
                     e.preventDefault();
-                    navigate(one.href ?? "/noFound", {
-                      state: { formCode: one.formCode },
-                    });
+                    if (one.href !== undefined) {
+                      navigate(one.href, {
+                        state: { formCode: one.formCode },
+                      });
+                    }
                     handleHide(e);
                     //this is a stupid hack, but works for now, need to find a proper workaround
                     document.getElementById("root")?.click();
