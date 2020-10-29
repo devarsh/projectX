@@ -4,7 +4,6 @@ export const siteNav: NavBarType = {
   config: {
     rel: "noopener noreferrer",
     target: "_blank",
-    open: "onClick",
   },
   navItems: [
     {
@@ -110,7 +109,6 @@ export const formsNav: NavBarType = {
   config: {
     rel: "noopener noreferrer",
     target: "_blank",
-    open: "onClick",
   },
   navItems: [
     {
@@ -121,15 +119,23 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "Retail Home Loan",
+              href: "/form/rhl",
+              isRouterLink: true,
             },
             {
               label: "Retail LAP (Loan Against Property)",
+              href: "/form/lap",
+              isRouterLink: true,
             },
             {
               label: "Retail LDR (Lease Rental Discount)",
+              href: "/form/ldr",
+              isRouterLink: true,
             },
             {
               label: "Retail APF",
+              href: "/form/apf",
+              isRouterLink: true,
             },
           ],
         },
@@ -138,12 +144,17 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "SME CC/OD",
+              href: "/",
+              isRouterLink: true,
             },
             {
               label: "SME Term Loan",
+              href: "/thankyou",
+              isRouterLink: true,
             },
             {
               label: "SME Term Loan + CC/OD",
+              href: "/",
             },
             {
               label: "SME NFB (Non Fund Base)",

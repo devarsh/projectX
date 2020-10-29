@@ -22,7 +22,7 @@ const Index = () => {
         <Route path="/" element={<Home />} />
         <Route path="thankyou" element={<ThankYouPage />} />
         <Route
-          path="forms/:formName"
+          path="form/:formName"
           element={<DynamicForm metaData={myMetaData} />}
         />
         <Route path="*" element={<NotFoundPage />} />

@@ -2,6 +2,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import SuccessImg from "assets/images/success.svg";
+import { useNavigate } from "react-router-dom";
 
 import {
   notFoundPageStyle,
@@ -15,13 +16,8 @@ export const NotFoundPage = () => {
   const classes: NotFoundPageNameProps = useStyles(
     {} as NotFoundPageStyleProps
   );
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // console.log(location);
-  // const handleClick = () => {
-  //   navigate("/forms");
-  // };
 
+  const navigate = useNavigate();
   return (
     <Box
       className={classes.wrapper}
@@ -29,13 +25,11 @@ export const NotFoundPage = () => {
       justifyContent="center"
       flexDirection="column"
     >
-      <img alt="" src={SuccessImg} className={classes.successImg} />
+      <img alt="" src={SuccessImg} className={classes.failureImg} />
       <Box className={classes.center} mt={3} mb={3}>
         <h3 className="theme-color2">
-          <b>Thank you for contacting us!</b>
+          <b>Sorry we couldnt find the page you were looking for.</b>
         </h3>
-        We have received your request.<br></br>
-        We will contact you soon!
       </Box>
       <Box
         className="links"
@@ -44,7 +38,15 @@ export const NotFoundPage = () => {
         flexDirection="row"
         mb={3}
       >
-        <Button className={classes.continueBtn}>Return to Home Page</Button>
+        <Button
+          className={classes.continueBtn}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+        >
+          Return to Home Page
+        </Button>
       </Box>
     </Box>
   );

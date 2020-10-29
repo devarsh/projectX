@@ -3,7 +3,7 @@ import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 
 export interface NotFoundPageStyleProps {
   wrapper: BaseCSSProperties;
-  successImg: BaseCSSProperties;
+  failureImg: BaseCSSProperties;
   continueBtn: BaseCSSProperties;
   center: BaseCSSProperties;
 }
@@ -19,7 +19,7 @@ export const notFoundPageStyle = (theme: Theme): any => ({
     minHeight: "calc(100vh - 165px)",
     boxShadow: "0 3px 6px rgba(0,0,0,0.03)",
   },
-  successImg: {
+  failureImg: {
     maxHeight: "calc(100vh - 400px)",
   },
   continueBtn: {
