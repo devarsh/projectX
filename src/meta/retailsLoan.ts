@@ -442,7 +442,6 @@ const metaData: MetaDataType = {
         }
       },
       validate: (fieldData) => {
-        console.log(fieldData);
         if (fieldData.value === "") {
           return "Location is Required";
         }
