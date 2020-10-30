@@ -2,7 +2,7 @@ import { trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
 
-const salariedPersonMetadata: MetaDataType = {
+export const salariedPersonMetadata: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -716,5 +716,3 @@ const salariedPersonMetadata: MetaDataType = {
     },
   ],
 };
-
-export default salariedPersonMetadata;

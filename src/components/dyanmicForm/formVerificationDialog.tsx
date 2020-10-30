@@ -8,23 +8,19 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { InputMaskCustom } from "components/derived/inputMask";
-import { To } from "history";
 
 export interface FormDialogProps {
   isOpen: boolean;
   setShowDialog: Function;
   submitProps: any;
-  nextPagePath?: To;
 }
 
 export const FormVerificationDialog: FC<FormDialogProps> = ({
   isOpen,
   setShowDialog,
   submitProps,
-  nextPagePath,
 }) => {
   const navigate = useNavigate();
-
   const [otpText, setOtpText] = useState("");
   const [otpError, setOtpError] = useState("");
   const { values, submitEnd } = submitProps;
@@ -36,28 +32,30 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
       if (otpText === "000000") {
         console.log(values);
         submitEnd(true);
-        if (nextPagePath !== undefined) {
-          navigate("/thankyou", { state: { nextPagePath: nextPagePath } });
-        } else {
-          navigate("/thankyou");
-        }
+        setShowDialog(false);
+        navigate("/thankyou", {
+          state: {
+            formCode: values?.product_type ?? "",
+            productCode: values?.employementStatus ?? "",
+          },
+        });
       } else {
         submitEnd(false, "Error submitting form - server error");
         setOtpError("Invalid Otp");
       }
     }
   };
-  const handleReturnBackToForm = () => {
-    submitEnd(false, "");
-    setShowDialog(false);
-  };
+  // const handleReturnBackToForm = () => {
+  //   submitEnd(false, "");
+  //   setShowDialog(false);
+  // };
 
   return (
-    <Dialog open={isOpen} aria-labelledby="form-otp-dialog">
+    <Dialog id="otp-dialog" open={isOpen} aria-labelledby="form-otp-dialog">
       <DialogTitle id="form-dialog-title">Verify Otp</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Enter Otp sent to your mobile No :
+          {`Enter Otp sent to your mobile No :${values?.mobileNo ?? ""}`}
         </DialogContentText>
         <TextField
           autoFocus
@@ -86,9 +84,6 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
       <DialogActions>
         <Button onClick={verifyOtp} color="primary">
           Validate
-        </Button>
-        <Button onClick={handleReturnBackToForm} color="secondary">
-          Return Back to Form
         </Button>
       </DialogActions>
     </Dialog>

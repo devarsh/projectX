@@ -14,16 +14,13 @@ import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
 import { FormVerificationDialog } from "./formVerificationDialog";
 import { useLocation, useParams } from "react-router-dom";
+import { chooseNaviagtionPath } from "./utils/navigationLogic";
 
 import {
   WrapperStyleProps,
   WrapperStyleNamesProps,
   wrapperStyles,
 } from "app/styles";
-
-/* Meta Data  -Remove this code when we move to server*/
-import RetailLoanMetaData from "meta/retailsLoan";
-/*end of Meta Data import*/
 
 interface FormWrapperProps {
   metaData: MetaDataType;
@@ -81,41 +78,30 @@ const FormWrapper: FC<FormWrapperProps> = ({
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
-// interface ParentFormWrapperProps {
-//   metaData: MetaDataType;
-//   inititalValues?: InitialValuesType;
-// }
-
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
 export const ParentFormWrapper = () => {
   const location = useLocation();
-  const params = useParams();
   const [showDialog, setShowDialog] = useState(false);
   const [submitProps, setSubmitProps] = useState({});
   const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
-
-  let metaData = RetailLoanMetaData;
   let initialValues = {};
-  //@ts-ignore
-  const formCode = location?.state?.formCode ?? "123000000";
-  const mapper = {
-    "12300001": "Retail home Loan",
-    "12300002": "Retail LAP",
-    "12300003": "Retail LRD",
-    "12300004": "Retail APF",
-  };
 
-  if (["12300001", "12300002", "12300003", "12300004"].indexOf(formCode) > -1) {
-    metaData.form.name = formCode;
-    metaData.form.label = mapper[formCode];
-  } else {
-    return <div>Page not found</div>;
+  const { state } = location;
+
+  const result = chooseNaviagtionPath(
+    //@ts-ignore
+    state?.formCode ?? "",
+    //@ts-ignore
+    state?.productCode ?? ""
+  );
+  if (result.metaData === null) {
+    return <div>Opps cannot load this form</div>;
   }
   return (
     <Box width={1} display="flex" className={classes.wrapper}>
       <MemoizedFormWrapper
-        metaData={metaData}
+        metaData={result.metaData}
         initialValues={initialValues}
         setShowDialog={setShowDialog}
         setSubmitProps={setSubmitProps}
@@ -125,7 +111,6 @@ export const ParentFormWrapper = () => {
           isOpen={showDialog}
           setShowDialog={setShowDialog}
           submitProps={submitProps}
-          nextPagePath={metaData?.form?.navigation?.nextPage}
         />
       ) : null}
     </Box>

@@ -2,7 +2,7 @@ import { trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
 
-const SelfEmpProfQuesMetaData: MetaDataType = {
+export const SelfEmpProfQuesMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -989,5 +989,3 @@ const SelfEmpProfQuesMetaData: MetaDataType = {
     },
   ],
 };
-
-export default SelfEmpProfQuesMetaData;

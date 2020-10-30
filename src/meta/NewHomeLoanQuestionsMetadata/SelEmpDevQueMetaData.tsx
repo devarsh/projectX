@@ -1,7 +1,7 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getMiscVal } from "meta/fns";
 
-const SelEmpDevQueMetaData: MetaDataType = {
+export const SelEmpDevQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -154,5 +154,3 @@ const SelEmpDevQueMetaData: MetaDataType = {
     },
   ],
 };
-
-export default SelEmpDevQueMetaData;
