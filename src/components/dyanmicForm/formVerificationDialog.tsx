@@ -52,10 +52,10 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
 
   return (
     <Dialog id="otp-dialog" open={isOpen} aria-labelledby="form-otp-dialog">
-      <DialogTitle id="form-dialog-title">Verify Otp</DialogTitle>
+      <DialogTitle id="form-dialog-title">Verify OTP</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {`Enter Otp sent to your mobile No :${values?.mobileNo ?? ""}`}
+          {`Enter OTP sent to your mobile No :${values?.mobileNo ?? ""}`}
         </DialogContentText>
         <TextField
           autoFocus
@@ -83,7 +83,7 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={verifyOtp} color="primary">
-          Validate
+          Verify
         </Button>
       </DialogActions>
     </Dialog>

@@ -40,6 +40,9 @@ const metaData: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
+      inputMask: {
+        fullWidth: true,
+      }
     },
   },
   fields: [

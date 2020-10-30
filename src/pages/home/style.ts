@@ -75,7 +75,7 @@ export const coreProductsStyle = (theme: Theme): any => ({
   },
   productName: {
     color: "#555",
-    fontSize: "1.25rem",
+    fontSize: "1.15rem",
     fontWeight: "700",
     marginTop: "20px",
     minHeight: "40px",

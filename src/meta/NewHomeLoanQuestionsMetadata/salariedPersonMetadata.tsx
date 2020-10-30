@@ -40,6 +40,9 @@ export const salariedPersonMetadata: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
+      inputMask: {
+        fullWidth: true,
+      }
     },
   },
 
@@ -52,6 +55,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number",
+      placeholder: "Pan Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -87,6 +91,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -115,6 +120,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -137,6 +143,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -160,6 +167,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market value of Property",
+      placeholder: "Market value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -214,6 +222,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "monthlyEmiPay",
       type: "text",
       label: "Total Monthly Emi Pay",
+      placeholder: "Total Monthly Emi Pay",
       required: true,
       GridProps: {
         xs: 12,
@@ -246,6 +255,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "monthlysalary",
       type: "text",
       label: "Net Monthly Salary",
+      placeholder: "Net Monthly Salary",
       required: true,
       GridProps: {
         xs: 12,
@@ -298,6 +308,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
+      placeholder: "Present Residential Status",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -319,6 +330,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
+      placeholder: "Availed Moratorium offered by RBI",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -385,6 +397,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "coApplicantfirstName",
       type: "text",
       label: "First Name",
+      placeholder: "First Name",
       required: true,
       schemaValidation: {
         type: "string",
@@ -410,6 +423,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "coApplicantmiddleName",
       label: "Middle Name",
+      placeholder: "Middle Name",
       type: "text",
       GridProps: {
         xs: 12,
@@ -424,6 +438,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "coApplicantlastName",
       label: "Last Name",
+      placeholder: "Last Name",
       required: true,
       type: "text",
       schemaValidation: {
@@ -465,6 +480,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "coApplicantmobileNo",
       type: "text",
       label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
       GridProps: {
         xs: 12,
@@ -494,6 +510,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "coApplicantemail",
       type: "text",
       label: "Email",
+      placeholder: "Email",
       required: true,
       GridProps: {
         xs: 12,
@@ -518,6 +535,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "coApplicantpincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       GridProps: {
@@ -579,6 +597,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "location",
       label: "Location",
+      placeholder: "Location",
       required: true,
       runPostValidationHookAlways: true,
       GridProps: {
@@ -635,6 +654,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
@@ -649,6 +669,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
@@ -664,6 +685,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
@@ -679,6 +701,7 @@ export const salariedPersonMetadata: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
     },
 
@@ -695,6 +718,7 @@ export const salariedPersonMetadata: MetaDataType = {
       name: "coApplicantnetIncome",
       type: "text",
       label: "Net Income",
+      placeholder: "Net Income",
       required: true,
 
       schemaValidation: {

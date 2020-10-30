@@ -56,6 +56,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number",
+      placeholder: "Pan Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -91,6 +92,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -123,6 +125,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -146,6 +149,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "0",
       GridProps: {

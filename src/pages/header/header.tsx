@@ -19,7 +19,7 @@ export const Navigation = () => {
   return (
     <header>
       <Container>
-        <Navbar color="light" light expand="sm" fixed="top" className={classes.navBarCSS} >
+        <Navbar color="light" light expand="md" fixed="top" className={classes.navBarCSS} >
           <NavbarToggler />
           <Collapse navbar>
             <Container className="header-navbar-container" fluid={true}>
