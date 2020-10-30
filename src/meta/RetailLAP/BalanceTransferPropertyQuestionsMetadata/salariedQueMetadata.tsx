@@ -4,7 +4,7 @@ import { getPropertyCity, getMiscVal, getBankList } from "meta/fns";
 export const salariedQueMetadata: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -54,6 +54,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number",
+      placeholder: "Pan Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -90,6 +91,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -122,6 +124,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -137,6 +140,7 @@ export const salariedQueMetadata: MetaDataType = {
         }
       },
     },
+
     {
       render: {
         componentType: "select",
@@ -144,6 +148,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -168,6 +173,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market Value of Property",
+      placeholder: "Market Value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -199,6 +205,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "totalWorkExperiance",
       label: "Your Total Work Experiance",
+      placeholder: "Your Total Work Experiance",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -223,6 +230,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "monthlyEmiPay",
       type: "text",
       label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
@@ -261,6 +269,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "monthlysalary",
       type: "text",
       label: "Net Monthly Salary",
+      placeholder: "Net Monthly Salary",
       required: true,
       GridProps: {
         xs: 12,
@@ -292,6 +301,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "otherSourceOfIncome",
       label: "Any Other Source of Income",
+      placeholder: "Any Other Source of Income",
       defaultValue: "X",
       GridProps: {
         xs: 12,
@@ -309,6 +319,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
+      placeholder: "Present Residential Status",
       defaultValue: "X",
       GridProps: {
         xs: 12,
@@ -326,6 +337,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "existingLoanFrom",
       label: "Existing Loan From",
+      placeholder: "Existing Loan From",
       defaultValue: "X",
       required: true,
       GridProps: {
@@ -350,6 +362,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "LoanOutstandingAmount",
       type: "text",
       label: "Current Loan Outstanding",
+      placeholder: "Current Loan Outstanding",
       required: true,
       schemaValidation: {
         type: "string",
@@ -390,6 +403,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "intRate",
       type: "text",
       label: "Rate of Interest on existing Loan",
+      placeholder: "Rate of Interest on existing Loan",
       required: true,
       schemaValidation: {
         type: "string",
@@ -428,6 +442,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "emiofexistingloan",
       type: "text",
       label: "EMI of Existing Loan",
+      placeholder: "EMI of Existing Loan",
       required: true,
       schemaValidation: {
         type: "string",
@@ -467,6 +482,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
+      placeholder: "Availed Moratorium offered by RBI",
       defaultValue: "X",
       GridProps: {
         xs: 12,

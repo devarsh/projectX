@@ -50,6 +50,7 @@ const metaData: MetaDataType = {
       },
       name: "product_type",
       label: "Product Type",
+      placeholder: "Product Type",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -90,6 +91,7 @@ const metaData: MetaDataType = {
       },
       name: "salutation",
       label: "Salutation",
+      placeholder: "Salutation",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -141,6 +143,7 @@ const metaData: MetaDataType = {
       type: "text",
       label: "First Name[As Per PAN Card]",
       required: true,
+      placeholder: "First Name[As Per PAN Card]",
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["First Name is required"] }],
@@ -159,6 +162,7 @@ const metaData: MetaDataType = {
       },
       name: "middleName",
       label: "Middle Name",
+      placeholder: "Middle Name",
       type: "text",
       GridProps: {
         xs: 12,
@@ -173,6 +177,7 @@ const metaData: MetaDataType = {
       },
       name: "lastName",
       label: "Last Name",
+      placeholder: "Last Name",
       required: true,
       type: "text",
       schemaValidation: {
@@ -193,6 +198,7 @@ const metaData: MetaDataType = {
       },
       name: "gender",
       label: "Gender",
+      placeholder: "Gender",
       required: true,
       type: "text",
       defaultValue: "X",
@@ -202,6 +208,11 @@ const metaData: MetaDataType = {
         if (fieldData.value === "X") {
           return "Gender is Required";
         }
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
     },
 
@@ -217,8 +228,17 @@ const metaData: MetaDataType = {
       format: "dd/MM/yyyy",
       schemaValidation: {
         type: "date",
-        rules: [{ name: "required", params: ["Date of Birth is required"] }],
+        rules: [
+          { name: "required", params: ["Date of Birth is required"] },
+          { name: "typeError", params: ["Date of Birth is required"] },
+        ],
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      validationRun: "onChange",
     },
 
     {
@@ -229,6 +249,7 @@ const metaData: MetaDataType = {
       name: "loanAmount",
       type: "text",
       label: "Your Desired Loan Amount",
+      placeholder: "Your Desired Loan Amount",
       required: true,
       schemaValidation: {
         type: "string",
@@ -245,6 +266,11 @@ const metaData: MetaDataType = {
         maxLength: 13,
       },
       validationRun: "onChange",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -255,6 +281,7 @@ const metaData: MetaDataType = {
       name: "mobileNo",
       type: "text",
       label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
       schemaValidation: {
         type: "string",
@@ -272,6 +299,11 @@ const metaData: MetaDataType = {
         format: "##########",
       },
       StartAdornment: "+91",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -282,6 +314,7 @@ const metaData: MetaDataType = {
       name: "email",
       type: "text",
       label: "Email",
+      placeholder: "Email",
       required: true,
       schemaValidation: {
         type: "string",
@@ -289,6 +322,11 @@ const metaData: MetaDataType = {
           { name: "required", params: ["Email is required"] },
           { name: "email", params: ["Please enter Email ID."] },
         ],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
     },
 
@@ -299,6 +337,7 @@ const metaData: MetaDataType = {
       },
       name: "employementStatus",
       label: "How Are You Currently Employed",
+      placeholder: "How Are You Currently Employed",
       required: true,
       defaultValue: "X",
       options: getMiscVal("RETAIL_EMPL"),
@@ -306,6 +345,11 @@ const metaData: MetaDataType = {
         if (fieldData.value === "X") {
           return "How Are You Currently Employed is Required";
         }
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
     },
 
@@ -317,10 +361,16 @@ const metaData: MetaDataType = {
       name: "landmark",
       type: "text",
       label: "Landmark",
+      placeholder: "Landmark",
       required: true,
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["Landmark is required"] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
     },
 
@@ -331,6 +381,7 @@ const metaData: MetaDataType = {
       },
       name: "pincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       schemaValidation: {
@@ -395,6 +446,11 @@ const metaData: MetaDataType = {
           }
         }
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -404,6 +460,7 @@ const metaData: MetaDataType = {
       },
       name: "location",
       label: "Location",
+      placeholder: "Location",
       required: true,
       runPostValidationHookAlways: true,
       postValidationSetCrossFieldValues: async (fieldData) => {
@@ -446,6 +503,11 @@ const metaData: MetaDataType = {
           return "Location is Required";
         }
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -455,6 +517,12 @@ const metaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -464,7 +532,13 @@ const metaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -474,7 +548,13 @@ const metaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
@@ -484,7 +564,13 @@ const metaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     /*
@@ -511,6 +597,7 @@ const metaData: MetaDataType = {
         group: 1,
       },
       name: "agreed",
+      required: true,
       label:
         "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
       GridProps: {
@@ -518,6 +605,12 @@ const metaData: MetaDataType = {
         md: 12,
         sm: 12,
       },
+      validate: (fieldData) => {
+        if (fieldData.value === false || fieldData.value === "") {
+          return "Please agreed with Terms and Conditions.";
+        }
+      },
+      validationRun: "onChange",
     },
   ],
 };

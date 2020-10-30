@@ -1,4 +1,4 @@
-export * from "./SelfEmpBusQueMetaData";
-export * from "./salariedQueMetadata";
-export * from "./SelfEmpDevQueMetaData";
-export * from "./SelfEmpProfQueMetaData";
+export { selfEmpBusQueMetaData as commercialPurSelfEmpBusQueMetaData } from "./SelfEmpBusQueMetaData";
+export { salariedQueMetadata as commercialPurSalariedQueMetadata } from "./salariedQueMetadata";
+export { selfEmpDevQueMetaData as commercialPurSelfEmpDevQueMetaData } from "./SelfEmpDevQueMetaData";
+export { selfEmpProfQueMetaData as commercialPurSelfEmpProfQueMetaData } from "./SelfEmpProfQueMetaData";
