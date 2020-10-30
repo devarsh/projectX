@@ -66,6 +66,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
       >
         <Container component="main">
           <StepperForm
+            key={metaData.form.name}
             fields={groupWiseFields}
             formRenderConfig={metaData.form.render}
             formDisplayName={metaData.form.label}

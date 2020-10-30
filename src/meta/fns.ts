@@ -1,6 +1,6 @@
 import { OptionsProps } from "components/common/types";
 
-let token = "Bearer 95f9969a-bedb-44f3-92f5-c95be52c6be5";
+let token = "Bearer eaf78a37-d2f1-45cc-90a9-0fad6159af95";
 let baseURL = new URL("http://10.0.0.9:8081/users/");
 
 interface CommonFetcherResponse {

@@ -18,7 +18,6 @@ export const ThankYou = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
-
   return (
     <Box
       className={classes.wrapper}

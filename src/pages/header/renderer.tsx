@@ -58,10 +58,7 @@ const overrideMetaData = (metaData: NavBarType) => {
 
 export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
   const navigate = useNavigate();
-  console.log("meta", metaData);
   const newMetaData = overrideMetaData({ ...metaData });
-  //const newMetaData = metaData;
-  console.log("newmeta", newMetaData);
   let result;
   if (Array.isArray(newMetaData) && newMetaData.length > 0) {
     result = newMetaData.map((item) => {

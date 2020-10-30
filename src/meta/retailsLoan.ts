@@ -373,7 +373,24 @@ const metaData: MetaDataType = {
           if (trim(fieldData.value).length === 6) {
             let codes = await getPincode(fieldData.value);
             return {
-              location: { options: codes.options, others: codes.others },
+              location: {
+                options: codes.options,
+                others: codes.others,
+                value: "",
+              },
+
+              city: {
+                value: "",
+              },
+              state: {
+                value: "",
+              },
+              district: {
+                value: "",
+              },
+              country: {
+                value: "",
+              },
             };
           }
         }
@@ -422,6 +439,12 @@ const metaData: MetaDataType = {
               value: fieldValues.country,
             },
           };
+        }
+      },
+      validate: (fieldData) => {
+        console.log(fieldData);
+        if (fieldData.value === "") {
+          return "Location is Required";
         }
       },
     },
