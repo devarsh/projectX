@@ -13,7 +13,7 @@ import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
 import { FormVerificationDialog } from "./formVerificationDialog";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { chooseNaviagtionPath } from "./utils/navigationLogic";
 
 import {
@@ -35,6 +35,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
   setShowDialog,
   setSubmitProps,
 }) => {
+  const navigate = useNavigate();
   metaData = attachMethodsToMetaData(
     metaData,
     singletonFunctionRegisrationFactory
@@ -43,11 +44,17 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
   const onSubmitHandler = (values, submitEnd) => {
-    setSubmitProps(() => ({
-      values: values,
-      submitEnd: submitEnd,
-    }));
-    setShowDialog(true);
+    if (Boolean(values?.product_type) && Boolean(values?.employementStatus)) {
+      setSubmitProps(() => ({
+        values: values,
+        submitEnd: submitEnd,
+      }));
+      setShowDialog(true);
+    } else {
+      console.log(values);
+      submitEnd(true);
+      navigate("/thankyou");
+    }
   };
 
   return (

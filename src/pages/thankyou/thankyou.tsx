@@ -1,6 +1,8 @@
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { makeStyles, Theme } from "@material-ui/core/styles";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import SuccessImg from "assets/images/success.svg";
 
 import {
@@ -8,7 +10,6 @@ import {
   ThankyouPageStyleProps,
   ThankyouPageNameProps,
 } from "./style";
-import { useNavigate, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles<Theme, ThankyouPageStyleProps>(thankyouPageStyle);
 
@@ -19,7 +20,6 @@ export const ThankYou = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  console.log(state);
   return (
     <Box
       className={classes.wrapper}
@@ -51,22 +51,28 @@ export const ThankYou = () => {
         >
           Back to Home
         </Button>
-        <Button
-          className={classes.continueBtn}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(
-              //@ts-ignore
-              `/form/questions-${state.formCode ?? ""}-${
+        {typeof state === "object" &&
+        //@ts-ignore
+        Boolean(state?.formCode ?? null) &&
+        //@ts-ignore
+        Boolean(state?.productCode ?? null) ? (
+          <Button
+            className={classes.continueBtn}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(
                 //@ts-ignore
-                state.productCode ?? ""
-              }`,
-              { state }
-            );
-          }}
-        >
-          Continue
-        </Button>
+                `/form/questions-${state.formCode ?? ""}-${
+                  //@ts-ignore
+                  state.productCode ?? ""
+                }`,
+                { state }
+              );
+            }}
+          >
+            Continue
+          </Button>
+        ) : null}
       </Box>
     </Box>
   );
