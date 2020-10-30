@@ -91,8 +91,15 @@ export const theme: Theme = {
     MuiInputAdornment: {
       positionStart: {
         borderRight: '1px solid #BABABA !important',
-        height: '32px',
+        height: '36px',
+        maxHeight: '36px',
         padding: '0 1rem',
+      },
+    },
+
+    MuiSelect: {
+      selectMenu: {
+        minHeight: '22px',
       },
     },
   
@@ -129,6 +136,20 @@ export const theme: Theme = {
     MuiStepIcon: {
       'active': {
         color: '#26A456 !important',
+      }
+    },
+
+    MuiFormHelperText: {
+      root: {
+        color: "#26A456",
+        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
+      }
+    },
+    MuiFormLabel:{
+      root: {
+        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
+         //@ts-ignore
+        fontWeight: "600",
       }
     }
 
