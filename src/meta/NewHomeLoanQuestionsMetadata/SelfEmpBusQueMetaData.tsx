@@ -40,6 +40,9 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
+      inputMask: {
+        fullWidth: true,
+      }
     },
   },
 
@@ -53,6 +56,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number",
+      placeholder: "Pan Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -88,6 +92,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -116,6 +121,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -138,6 +144,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -161,6 +168,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market value of Property",
+      placeholder: "Market value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -192,6 +200,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "yearsOfExperience",
       label: "No. of Years of Experience",
+      placeholder: "No. of Years of Experience",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -260,6 +269,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "monthlyEmiPay",
       type: "text",
       label: "Total Monthly Emi Pay",
+      placeholder: "Total Monthly Emi Pay",
       required: true,
       GridProps: {
         xs: 12,
@@ -292,6 +302,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "annualSalary",
       type: "text",
       label: "Annual Salary",
+      placeholder: "Annual Salary",
       required: true,
       GridProps: {
         xs: 12,
@@ -443,6 +454,11 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
             params: [/^\d{6}/, "Please enter valid Pincode."],
           },
         ],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
       FormatProps: {
         format: "######",
@@ -980,6 +996,11 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
           { name: "typeError", params: ["Enter your income"] },
           { name: "required", params: ["Enter your income"] },
         ],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
       enableNumWords: true,
       FormatProps: {

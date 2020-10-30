@@ -27,7 +27,7 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     lineHeight: "1.6",
   },
   applyButton: {
-    color: "#42C2AB",
+    color: "#42C2AB !important",
     fontWeight: "700",
     fontSize: "1.125rem",
     padding: ".5rem .75rem",
@@ -42,7 +42,7 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     outline: "none",
     boxShadow: "none",
     "&:hover": {
-      color: "#0b6fb8",
+      color: "#0b6fb8 !important",
       border: "1px solid #0b6fb8",
       background: "#fff",
     },
@@ -63,6 +63,7 @@ export type CoreProductsNameProps = Record<
 >;
 
 export const coreProductsStyle = (theme: Theme): any => ({
+  
   wrapper: {
     marginTop: "120px",
     maxWidth: "1260px",
@@ -74,7 +75,7 @@ export const coreProductsStyle = (theme: Theme): any => ({
   },
   productName: {
     color: "#555",
-    fontSize: "1.25rem",
+    fontSize: "1.15rem",
     fontWeight: "700",
     marginTop: "20px",
     minHeight: "40px",

@@ -166,6 +166,9 @@ header li > div.dropdown-toggle  {
   color: var(--theme-color1);
 }
 
+.HomeWrap {
+  min-height: calc(100vh - 147px);
+}
 
 .CoreProducts .product-wrap:hover .product-name {
   color:var(--theme-color2);

@@ -40,6 +40,9 @@ const salariedPersonQueMetaData: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
+      inputMask: {
+        fullWidth: true,
+      }
     },
   },
 
@@ -52,6 +55,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number",
+      placeholder: "Pan Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -87,6 +91,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -115,6 +120,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -137,6 +143,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -161,6 +168,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market value of Property",
+      placeholder: "Market value of Property",
       required: true,
       GridProps: {
         xs: 12,

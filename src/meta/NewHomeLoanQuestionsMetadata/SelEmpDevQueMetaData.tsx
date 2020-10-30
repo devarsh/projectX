@@ -39,6 +39,9 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
+      inputMask: {
+        fullWidth: true,
+      }
     },
   },
 
@@ -52,6 +55,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number",
+      placeholder: "Pan Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -87,6 +91,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -115,6 +120,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -137,6 +143,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "0",
       GridProps: {

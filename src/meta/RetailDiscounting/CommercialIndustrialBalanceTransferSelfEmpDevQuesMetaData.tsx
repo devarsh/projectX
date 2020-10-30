@@ -42,6 +42,9 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       numberFormat: {
         fullWidth: true,
       },
+      inputMask: {
+        fullWidth: true,
+      }
       //   checkboxGroup: {
       //     fullWidth: true,
       //   },
@@ -92,6 +95,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       name: "aadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      placeholder: "Aadhar Card Number",
       required: true,
       schemaValidation: {
         type: "string",
@@ -120,6 +124,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       },
       name: "proprtyCity",
       label: "Property City",
+      placeholder: "Property City",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -142,6 +147,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       },
       name: "proprtyType",
       label: "Type of Property",
+      placeholder: "Type of Property",
       required: true,
       defaultValue: "0",
       GridProps: {
