@@ -2,7 +2,7 @@ import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
 import { trim } from "lodash";
 
-const QuestionsMetaData: MetaDataType = {
+export const selfEmpBusQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -666,5 +666,3 @@ const QuestionsMetaData: MetaDataType = {
     },
   ],
 };
-
-export default QuestionsMetaData;

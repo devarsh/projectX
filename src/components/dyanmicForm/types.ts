@@ -136,3 +136,8 @@ export interface RenderedFieldsType {
 export interface GroupWiseRenderedFieldsType {
   [key: string]: RenderedFieldsType;
 }
+
+export interface RouterState {
+  formCode?: string;
+  productCode?: string;
+}
