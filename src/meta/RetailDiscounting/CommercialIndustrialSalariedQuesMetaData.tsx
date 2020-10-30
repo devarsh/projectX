@@ -1,7 +1,7 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getMiscVal } from "meta/fns";
 
-const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
+export const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -258,5 +258,3 @@ const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
     },
   ],
 };
-
-export default CommercialIndustrialSalariedQuesMetaData;

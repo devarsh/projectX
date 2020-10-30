@@ -4,7 +4,7 @@ import { matches, trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getMiscVal, getPincode } from "meta/fns";
 
-const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
+export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -958,5 +958,3 @@ const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     },
   ],
 };
-
-export default BalanceTransferSelEmpBusQueMetaData;

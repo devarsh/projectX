@@ -1,7 +1,7 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getMiscVal } from "meta/fns";
 
-const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
+export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Step 1",
@@ -272,7 +272,5 @@ const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
     },
   ],
 };
-
-export default ResidentialCommercialIndustrialProfBusQues;
 
 // developer file will remain same as New Home Loan
