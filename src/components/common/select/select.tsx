@@ -140,11 +140,9 @@ const MySelect: FC<MySelectAllProps> = ({
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value, options } = incomingMessage;
-      if (Boolean(value)) {
-        handleChange(value);
-        if (whenToRunValidation === "onBlur") {
-          runValidation({ value: value }, true, true);
-        }
+      handleChange(value);
+      if (whenToRunValidation === "onBlur") {
+        runValidation({ value: value }, true);
       }
       if (Array.isArray(options)) {
         setOptions(options);

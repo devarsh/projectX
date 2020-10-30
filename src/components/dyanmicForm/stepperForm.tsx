@@ -50,7 +50,7 @@ export const StepperForm: FC<FormProps> = ({
       const currentFieldsToValidate = fields[currentStep.name].fieldNames;
       let isError = await handleSubmitPartial(currentFieldsToValidate);
       //Do not uncomment else you will skip validation and move to next step
-      //isError = false;
+      isError = false;
       if (!isError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);
         setActiveStep(nextStep);

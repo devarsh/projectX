@@ -335,7 +335,11 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             if (typeof onSubmit === "function") {
               let obj = {};
               for (const field of fieldsAggrigator) {
-                obj = setIn(obj, field.name, field.value);
+                obj = setIn(
+                  obj,
+                  field.name.replace(`${formContext.formName}/`, ""),
+                  field.value
+                );
               }
               onSubmit(obj, endSubmit, setFieldErrors);
             }

@@ -54,6 +54,8 @@ const MyTextField: FC<MyTextFieldProps> = ({
     excluded,
     readOnly,
     incomingMessage,
+    whenToRunValidation,
+    runValidation,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -81,8 +83,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
       handleChange(value);
+      if (whenToRunValidation === "onBlur") {
+        runValidation({ value: value }, true);
+      }
     }
-  }, [incomingMessage, handleChange]);
+  }, [incomingMessage, handleChange, runValidation, whenToRunValidation]);
 
   if (excluded) {
     return null;

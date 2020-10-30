@@ -18,6 +18,8 @@ export const ThankYou = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
+  const { state } = location;
+  console.log(state);
   return (
     <Box
       className={classes.wrapper}
@@ -53,7 +55,14 @@ export const ThankYou = () => {
           className={classes.continueBtn}
           onClick={(e) => {
             e.preventDefault();
-            navigate("/form/rhl");
+            navigate(
+              //@ts-ignore
+              `/form/questions-${state.formCode ?? ""}-${
+                //@ts-ignore
+                state.productCode ?? ""
+              }`,
+              { state }
+            );
           }}
         >
           Continue
