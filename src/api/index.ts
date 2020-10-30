@@ -1,10 +1,4 @@
 import { OptionsProps } from "components/common/types";
-import {
-  getBankList,
-  getPincode,
-  getProductType,
-  getPropertyCity,
-} from "meta/fns";
 import { osName } from "react-device-detect";
 
 interface CommonFetcherResponse {
@@ -13,7 +7,7 @@ interface CommonFetcherResponse {
 }
 type ExternalResponse = any;
 
-const RaatnaFinAPI = (APIURL: string) => {
+export const RaatnaFinAPI = (APIURL: string) => {
   let sessionObj: any = {
     baseUrl: new URL(APIURL),
     loginStatus: false,
@@ -261,9 +255,16 @@ const RaatnaFinAPI = (APIURL: string) => {
       },
     ];
   };
+  const getAccessToken = () => {
+    if (sessionObj?.token["access_token"]) {
+      return `Bearer ${sessionObj?.token["access_token"]}`;
+    }
+    return "Bearer not_valid_token";
+  };
 
   return {
     createSession,
+    getAccessToken,
     loginStatus,
     printLoginStatus,
     getPincode,
@@ -273,26 +274,3 @@ const RaatnaFinAPI = (APIURL: string) => {
     getMiscVal,
   };
 };
-
-(async function Self() {
-  const API = RaatnaFinAPI("http://10.0.0.9:8081/");
-  await API.createSession();
-  console.log(API.loginStatus());
-  console.log(API.printLoginStatus());
-
-  // let result = await API.getPincode("380015");
-  // console.log(result);
-
-  //@ts-ignore
-  let productType = await API.getProductType("", "12300001");
-  console.log(productType);
-
-  let propertyCity = await API.getPropertyCity();
-  console.log(propertyCity);
-
-  let bankList = await API.getBankList();
-  console.log(bankList);
-
-  let miscValue = await API.getMiscVal("PROPERTY_TYPE")();
-  console.log(miscValue);
-})();

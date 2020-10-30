@@ -1,6 +1,10 @@
 import { OptionsProps } from "components/common/types";
+import { RaatnaFinAPI } from "api";
 
-let token = "Bearer eaf78a37-d2f1-45cc-90a9-0fad6159af95";
+const api = RaatnaFinAPI("http://10.0.0.9:8081/");
+api.createSession();
+
+//let token = "Bearer eaf78a37-d2f1-45cc-90a9-0fad6159af95";
 let baseURL = new URL("http://10.0.0.9:8081/users/");
 
 interface CommonFetcherResponse {
@@ -110,7 +114,7 @@ export const getProductType = async (
   const { status, data } = await commonFetcher(false, "./get_sub_product", {
     method: "POST",
     headers: new Headers({
-      Authorization: token,
+      Authorization: api.getAccessToken(),
     }),
     body: JSON.stringify({
       action: "get_sub_product",
@@ -149,7 +153,7 @@ export async function getPropertyCity(): Promise<OptionsProps[]> {
   const { status, data } = await commonFetcher(false, "./get_property_city", {
     method: "POST",
     headers: new Headers({
-      Authorization: token,
+      Authorization: api.getAccessToken(),
     }),
     body: JSON.stringify({
       action: "get_property_city",
@@ -188,7 +192,7 @@ export async function getBankList(): Promise<OptionsProps[]> {
   const { status, data } = await commonFetcher(false, "./getBankList", {
     method: "POST",
     headers: new Headers({
-      Authorization: token,
+      Authorization: api.getAccessToken(),
     }),
     body: JSON.stringify({
       action: "get_bank_list",
@@ -229,7 +233,7 @@ export const getMiscVal = (categCode: string) => async (): Promise<
   const { status, data } = await commonFetcher(false, "./getmiscval", {
     method: "POST",
     headers: new Headers({
-      Authorization: token,
+      Authorization: api.getAccessToken(),
     }),
     body: JSON.stringify({
       action: "get_misc_val",
