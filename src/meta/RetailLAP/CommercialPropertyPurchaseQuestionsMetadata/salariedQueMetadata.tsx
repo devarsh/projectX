@@ -4,7 +4,7 @@ import { getPropertyCity, getMiscVal } from "meta/fns";
 export const salariedQueMetadata: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -172,6 +172,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market Value of Property",
+      placeholder: "Market Value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -203,6 +204,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "totalWorkExperiance",
       label: "Your Total Work Experiance",
+      placeholder: "Your Total Work Experiance",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -227,6 +229,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "monthlyEmiPay",
       type: "text",
       label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
@@ -265,6 +268,7 @@ export const salariedQueMetadata: MetaDataType = {
       name: "monthlysalary",
       type: "text",
       label: "Net Monthly Salary",
+      placeholder: "Net Monthly Salary",
       required: true,
       GridProps: {
         xs: 12,
@@ -296,6 +300,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "otherSourceOfIncome",
       label: "Any Other Source of Income",
+      placeholder: "Any Other Source of Income",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -313,6 +318,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
+      placeholder: "Present Residential Status",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -330,6 +336,7 @@ export const salariedQueMetadata: MetaDataType = {
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
+      placeholder: "Availed Moratorium offered by RBI",
       defaultValue: "X",
       GridProps: {
         xs: 12,

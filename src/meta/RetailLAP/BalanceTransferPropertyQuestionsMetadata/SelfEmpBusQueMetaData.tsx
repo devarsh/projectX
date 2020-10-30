@@ -5,7 +5,7 @@ import { trim } from "lodash";
 export const selfEmpBusQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -174,6 +174,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market value of Property",
+      placeholder: "Market value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -213,6 +214,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "yearsOfExperience",
       label: "No. of Years of Experience",
+      placeholder: "No. of Years of Experience",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -236,6 +238,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "businessNature",
       label: "Nature of Business",
+      placeholder: "Nature of Business",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -259,6 +262,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "industryType",
       label: "Type of Industry",
+      placeholder: "Type of Industry",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -283,6 +287,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "monthlyEmiPay",
       type: "text",
       label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
@@ -323,6 +328,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "annualSalary",
       type: "text",
       label: "Your Annual Net Income",
+      placeholder: "Your Annual Net Income",
       required: true,
       GridProps: {
         xs: 12,
@@ -357,6 +363,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "Depreciation",
       type: "text",
       label: "Any Add Back Like Depreciation",
+      placeholder: "Any Add Back Like Depreciation",
       GridProps: {
         xs: 12,
         md: 3,
@@ -382,6 +389,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "otherSourceOfIncome",
       label: "Any Other Source of Income",
+      placeholder: "Any Other Source of Income",
       defaultValue: "X",
       GridProps: {
         xs: 12,
@@ -405,6 +413,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "firmType",
       label: "Type of Firm",
+      placeholder: "Type of Firm",
       defaultValue: "X",
       GridProps: {
         xs: 12,
@@ -428,6 +437,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "businessAddress",
       type: "text",
       label: "Address of Business",
+      placeholder: "Address of Business",
       required: true,
       schemaValidation: {
         type: "string",
@@ -450,6 +460,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "Proflandmark",
       type: "text",
       label: "Landmark",
+      placeholder: "Landmark",
       required: true,
       schemaValidation: {
         type: "string",
@@ -469,6 +480,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "pincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       schemaValidation: {
@@ -535,6 +547,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "location",
       label: "Location",
+      placeholder: "Location",
       required: true,
       runPostValidationHookAlways: true,
       postValidationSetCrossFieldValues: async (fieldData) => {
@@ -586,6 +599,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
@@ -600,6 +614,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
@@ -615,6 +630,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
@@ -630,6 +646,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
     },
 
@@ -640,6 +657,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
+      placeholder: "Present Residential Status",
       defaultValue: "X",
       GridProps: {
         xs: 12,
@@ -657,6 +675,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "existingLoanFrom",
       label: "Existing Loan From",
+      placeholder: "Existing Loan From",
       defaultValue: "X",
       required: true,
       GridProps: {
@@ -681,6 +700,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "LoanOutstandingAmount",
       type: "text",
       label: "Current Loan Outstanding",
+      placeholder: "Current Loan Outstanding",
       required: true,
       schemaValidation: {
         type: "string",
@@ -721,6 +741,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "intRate",
       type: "text",
       label: "Rate of Interest on existing Loan",
+      placeholder: "Rate of Interest on existing Loan",
       required: true,
       schemaValidation: {
         type: "string",
@@ -759,6 +780,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       name: "emiofexistingloan",
       type: "text",
       label: "EMI of Existing Loan",
+      placeholder: "EMI of Existing Loan",
       required: true,
       schemaValidation: {
         type: "string",
@@ -798,6 +820,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
+      placeholder: "Availed Moratorium offered by RBI",
       required: true,
       defaultValue: "X",
       GridProps: {

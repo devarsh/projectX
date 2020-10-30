@@ -5,7 +5,7 @@ import { trim } from "lodash";
 export const selfEmpProfQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -172,6 +172,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market value of Property",
+      placeholder: "Market value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -211,6 +212,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "CurrentProfession",
       label: "Your Current Profession",
+      placeholder: "Your Current Profession",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -233,6 +235,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "currentProfessionWorkExperiance",
       label: "Years in Current Profession",
+      placeholder: "Years in Current Profession",
       required: true,
       defaultValue: "X",
       GridProps: {
@@ -257,6 +260,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "monthlyEmiPay",
       type: "text",
       label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
@@ -297,6 +301,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "annualIncome",
       type: "text",
       label: "Your Annual Net Income",
+      placeholder: "Your Annual Net Income",
       required: true,
       GridProps: {
         xs: 12,
@@ -331,6 +336,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "Depreciation",
       type: "text",
       label: "Any Add Back Like Depreciation",
+      placeholder: "Any Add Back Like Depreciation",
       GridProps: {
         xs: 12,
         md: 3,
@@ -369,6 +375,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "otherSourceOfIncome",
       label: "Any Other Source of Income",
+      placeholder: "Any Other Source of Income",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -411,6 +418,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "businessAddress",
       type: "text",
       label: "Address of Business",
+      placeholder: "Address of Business",
       required: true,
       schemaValidation: {
         type: "string",
@@ -433,6 +441,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "Proflandmark",
       type: "text",
       label: "Landmark",
+      placeholder: "Landmark",
       required: true,
       schemaValidation: {
         type: "string",
@@ -452,6 +461,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "pincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       GridProps: {
@@ -513,6 +523,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "location",
       label: "Location",
+      placeholder: "Location",
       required: true,
       GridProps: {
         xs: 12,
@@ -569,6 +580,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
@@ -583,6 +595,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
@@ -598,6 +611,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
@@ -613,6 +627,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
     },
 
@@ -623,6 +638,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
+      placeholder: "Present Residential Status",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -640,6 +656,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "existingLoanFrom",
       label: "Existing Loan From",
+      placeholder: "Existing Loan From",
       defaultValue: "X",
       required: true,
       GridProps: {
@@ -664,6 +681,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "LoanOutstandingAmount",
       type: "text",
       label: "Current Loan Outstanding",
+      placeholder: "Current Loan Outstanding",
       required: true,
       schemaValidation: {
         type: "string",
@@ -704,6 +722,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "intRate",
       type: "text",
       label: "Rate of Interest on existing Loan",
+      placeholder: "Current Loan Outstanding",
       required: true,
       schemaValidation: {
         type: "string",
@@ -742,6 +761,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       name: "emiofexistingloan",
       type: "text",
       label: "EMI of Existing Loan",
+      placeholder: "Current Loan Outstanding",
       required: true,
       schemaValidation: {
         type: "string",
@@ -781,6 +801,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
+      placeholder: "Current Loan Outstanding",
       required: true,
       defaultValue: "X",
       GridProps: {

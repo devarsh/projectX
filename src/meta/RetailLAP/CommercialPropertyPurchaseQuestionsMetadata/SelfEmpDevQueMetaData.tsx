@@ -4,7 +4,7 @@ import { getPropertyCity, getMiscVal } from "meta/fns";
 export const selfEmpDevQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
