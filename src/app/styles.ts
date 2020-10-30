@@ -15,4 +15,7 @@ export const wrapperStyles = (theme: Theme): any => ({
     marginTop: "102px",
     paddingBottom: theme.spacing(3)
   },
+  HomeWrap: {
+    minHeight: "calc(100vh - 147px)",
+  },
 });
