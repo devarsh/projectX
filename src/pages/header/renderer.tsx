@@ -24,24 +24,67 @@ import {
 } from "reactstrap";
 import { NavItemType, NavBarType } from "./types";
 import { HeaderNameProps } from "./style";
+import { useNavigate } from "react-router-dom";
 
 export interface NavRendererType {
   metaData: NavBarType;
   classes: HeaderNameProps;
 }
 
-export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
-  let result;
+const overrideMetaData = (metaData: NavBarType) => {
   if (Array.isArray(metaData.navItems)) {
-    result = metaData.navItems.map((item) => {
+    return metaData.navItems.map((one) => {
+      let result = one;
+      if (one.isRouterLink !== true && Boolean(one.href)) {
+        result = { ...metaData.config, ...one };
+        if (!Boolean(one.href)) {
+          result.href = "#";
+        }
+      } else if (!Boolean(one.href) && !Array.isArray(one.children)) {
+        result.href = "/notFound";
+      }
+      if (result.children !== undefined && Array.isArray(result.children)) {
+        result.children = overrideMetaData({
+          navItems: result.children,
+          config: metaData.config,
+        });
+      }
+      return result;
+    });
+  } else {
+    return [];
+  }
+};
+
+export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
+  const navigate = useNavigate();
+  const newMetaData = overrideMetaData({ ...metaData });
+  let result;
+  if (Array.isArray(newMetaData) && newMetaData.length > 0) {
+    result = newMetaData.map((item) => {
       if (Array.isArray(item.children)) {
         return <NestedNavItem key={item.label} item={item} classes={classes} />;
       } else {
         return (
           <NavItem key={item.label}>
-            <NavLink href={item.href} target={item.target} rel={item.rel}>
-              {item.label}
-            </NavLink>
+            {Boolean(item.isRouterLink) === true ? (
+              <NavLink
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (item.href !== undefined) {
+                    navigate(item.href, {
+                      state: { formCode: item.formCode },
+                    });
+                  }
+                }}
+              >
+                {item.label}
+              </NavLink>
+            ) : (
+              <NavLink href={item.href} target={item.target} rel={item.rel}>
+                {item.label}
+              </NavLink>
+            )}
           </NavItem>
         );
       }
@@ -58,11 +101,12 @@ export interface NestedNavItemProps {
   direction?: string;
 }
 
-export const NestedNavItem: FC<NestedNavItemProps> = ({
+const NestedNavItem: FC<NestedNavItemProps> = ({
   item,
   classes,
   direction,
 }) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleShow = (e) => {
     e?.stopPropogation?.();
@@ -93,9 +137,24 @@ export const NestedNavItem: FC<NestedNavItemProps> = ({
         toggle={toggle}
       >
         <DropdownToggle tag="div" className="nav-link pointer" caret={true}>
-          <NavLink href={item.href} target={item.target} rel={item.rel}>
-            {item.label}
-          </NavLink>
+          {Boolean(item.isRouterLink) === true || !Boolean(item.href) ? (
+            <NavLink
+              onClick={(e) => {
+                e.preventDefault();
+                if (item.href !== undefined) {
+                  navigate(item.href, {
+                    state: { formCode: item.formCode },
+                  });
+                }
+              }}
+            >
+              {item.label}
+            </NavLink>
+          ) : (
+            <NavLink href={item.href} target={item.target} rel={item.rel}>
+              {item.label}
+            </NavLink>
+          )}
         </DropdownToggle>
         <DropdownMenu tag="ul" className={classes.headerDropdown + " onestep"}>
           {item.children.map((one) => {
@@ -109,10 +168,33 @@ export const NestedNavItem: FC<NestedNavItemProps> = ({
                 />
               );
             } else {
-              return (
+              return Boolean(
+                one.isRouterLink === true || !Boolean(one.href)
+              ) ? (
                 <DropdownItem
                   tag="a"
                   key={one.label}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (one.href !== undefined) {
+                      navigate(one.href, {
+                        state: { formCode: one.formCode },
+                      });
+                    }
+                    handleHide(e);
+                    //this is a stupid hack, but works for now, need to find a proper workaround
+                    document.getElementById("root")?.click();
+                  }}
+                >
+                  {one.label}
+                </DropdownItem>
+              ) : (
+                <DropdownItem
+                  tag="a"
+                  key={one.label}
+                  href={one.href}
+                  rel={one.rel}
+                  target={one.target}
                   onClick={(e) => {
                     handleHide(e);
                     //this is a stupid hack, but works for now, need to find a proper workaround

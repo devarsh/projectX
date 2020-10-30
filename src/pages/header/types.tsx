@@ -7,13 +7,13 @@ export interface NavItemType {
   rel?: string;
   target?: hrefTarget;
   children?: NavItemType[];
+  formCode?: string;
 }
 
 export interface NavBarType {
   config: {
     rel: string;
     target: hrefTarget;
-    open: "onMouseEnter" | "onClick";
   };
   navItems: NavItemType[];
 }
