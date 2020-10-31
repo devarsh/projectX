@@ -42,7 +42,7 @@ const metaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
   fields: [
@@ -102,6 +102,8 @@ const metaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      multiple: true,
+      showCheckbox: true,
       options: getMiscVal("SALUTATION_TYPE"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
