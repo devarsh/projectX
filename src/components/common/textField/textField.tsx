@@ -4,7 +4,9 @@ import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress, {
+  CircularProgressProps,
+} from "@material-ui/core/CircularProgress";
 import { Merge } from "../types";
 import numWords from "num-words";
 
@@ -13,6 +15,7 @@ interface MyGridExtendedProps {
   GridProps?: GridProps;
   StartAdornment?: string;
   EndAdornment?: string;
+  CircularProgressProps?: CircularProgressProps;
   enableGrid: boolean;
 }
 
@@ -31,6 +34,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   dependentFields,
   fieldKey: fieldID,
   GridProps,
+  CircularProgressProps,
   enableGrid,
   enableNumWords,
   InputProps,
@@ -123,7 +127,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
       InputProps={{
         endAdornment: validationRunning ? (
           <InputAdornment position="end">
-            <CircularProgress color="primary" variant="indeterminate" />
+            <CircularProgress
+              color="primary"
+              variant="indeterminate"
+              {...CircularProgressProps}
+            />
           </InputAdornment>
         ) : Boolean(EndAdornment) ? (
           EndAdornment

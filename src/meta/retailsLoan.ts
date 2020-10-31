@@ -30,6 +30,9 @@ const metaData: MetaDataType = {
     componentProps: {
       textField: {
         fullWidth: true,
+        CircularProgressProps: {
+          size: 20,
+        },
       },
       select: {
         fullWidth: true,
