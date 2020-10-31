@@ -1,43 +1,18 @@
-import { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import DatePicker from "@material-ui/pickers/DatePicker";
+export const fields: any = [
+  {
+    componentType: "select",
+    group: 0,
+    name: "rera_no",
+    label: "Product Type",
+    placeholder: "Product Type",
+    required: true,
+    defaultValue: "X",
 
-export const A = "123";
-// interface ControlStateType {
-//   controlType: "textField" | "select" | "datePicker";
-//   controlState: {
-//     name: string;
-//     label: string;
-//   };
-// }
-
-// export const DNDGrid = () => {
-//   const [gridState, setGridState] = useState<ControlStateType[]>([]);
-
-//   return gridState.map((one) => {});
-// };
-
-// const GridRenderer = (row: ControlStateType, defaultGridSize) => {
-//   switch (row.controlType) {
-//     case "textField":
-//       return (
-//         <Grid item>
-//           <TextField />
-//         </Grid>
-//       );
-//     case "select":
-//       return (
-//         <Grid>
-//           <Select />
-//         </Grid>
-//       );
-//     case "datePicker":
-//       return (
-//         <Grid>
-//           <DatePicker />
-//         </Grid>
-//       );
-//   }
-// };
+    //@ts-ignore
+    options: "functionName",
+    dependentFields: ["age", "rera_regi"],
+    validate: 'fieldData.value === "X" ',
+    isExcluded: 'dependentFields.rera_regi.value === "Y" ? true : false',
+    isReadOnly: `true`,
+  },
+];

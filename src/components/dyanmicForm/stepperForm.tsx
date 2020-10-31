@@ -147,12 +147,12 @@ const isGroupExcluded = (
 ) => {
   const remaningFields = currentGroupFields.filter((fieldName) => {
     const fullFieldName = `${formName}/${fieldName}`;
-    return excludedFields.indexOf(fullFieldName) >= 0 ? false : true;
+    return excludedFields.indexOf(fullFieldName) >= 0 ? true : false;
   });
   if (remaningFields.length > 0) {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 };
 
 const getNextActiveStep = (
