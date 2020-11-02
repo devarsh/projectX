@@ -17,6 +17,6 @@ export const wrapperStyles = (theme: Theme): any => ({
     alignItems:"center",
   },
   HomeWrap: {
-    minHeight: "calc(100vh - 147px)",
+    minHeight: "calc(100vh - 165px)",
   },
 });
