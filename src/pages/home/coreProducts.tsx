@@ -34,8 +34,18 @@ const productTiles: ProductTilesType[] = [
   { productIcon: SMELoanIcon, productName: "SME Loan" },
   { productIcon: ConstructionFinanceIcon, productName: "Construction Finance" },
   { productIcon: BusinessLoanIcon, productName: "Business Loan" },
-  { productIcon: RetailHomeLoanIcon, productName: "Retail Home Loan" },
-  { productIcon: RetailLAPIcon, productName: "Retail LAP" },
+  {
+    productIcon: RetailHomeLoanIcon,
+    productName: "Retail Home Loan",
+    href: "/form/rhl",
+    formCode: "12300001",
+  },
+  {
+    productIcon: RetailLAPIcon,
+    productName: "Retail LAP",
+    href: "/form/rhl",
+    formCode: "12300002",
+  },
   { productIcon: GovtSubsidaryIcon, productName: "Government Subsidy" },
   { productIcon: FireInsuranceIcon, productName: "Fire Insurance" },
   {
@@ -61,7 +71,6 @@ const productTiles: ProductTilesType[] = [
     productName: "Motor Insurance",
   },
 ];
-
 const useStyles = makeStyles<Theme, CoreProductsStyleProps>(coreProductsStyle);
 
 function CoreProducts() {
