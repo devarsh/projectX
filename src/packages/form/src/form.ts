@@ -11,6 +11,7 @@ import {
   formFieldRegistryAtom,
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
+  formFieldsExcludedAtom,
 } from "./atoms";
 import { setIn, getIn } from "./util";
 import {
@@ -48,6 +49,8 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
       }
       reset(formFieldRegistryAtom(formContext.formName));
       reset(formArrayFieldRowsAtom(formContext.formName));
+      reset(formFieldsExcludedAtom(formContext.formName));
+      reset(formAtom(formContext.formName));
     },
     [formContext.formName]
   );
