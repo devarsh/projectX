@@ -136,7 +136,7 @@ export const salariedQueMetadata: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Property City is Required";
+          return "Property City is required";
         }
       },
     },
@@ -216,7 +216,7 @@ export const salariedQueMetadata: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Your Total Work Experiance is Required";
+          return "Your Total Work Experiance is required";
         }
       },
     },

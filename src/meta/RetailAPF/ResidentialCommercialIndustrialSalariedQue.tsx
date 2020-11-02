@@ -4,7 +4,7 @@ import { getPropertyCity, getMiscVal } from "meta/fns";
 export const ResidentialCommercialIndustrialSalariedQue: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire", 
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -131,7 +131,7 @@ export const ResidentialCommercialIndustrialSalariedQue: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },

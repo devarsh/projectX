@@ -137,7 +137,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Property City is Required";
+          return "Property City is required";
         }
       },
     },
@@ -224,7 +224,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "No. of Years of Experience is Required";
+          return "No. of Years of Experience is required";
         }
       },
     },
@@ -248,7 +248,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Nature of Business is Required";
+          return "Nature of Business is required";
         }
       },
     },
@@ -272,7 +272,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Type of Industry is Required";
+          return "Type of Industry is required";
         }
       },
     },

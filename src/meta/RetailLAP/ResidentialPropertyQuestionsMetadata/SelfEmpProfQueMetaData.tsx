@@ -135,7 +135,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Property City is Required";
+          return "Property City is required";
         }
       },
     },
@@ -222,7 +222,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Your Current Profession is Required";
+          return "Your Current Profession is required";
         }
       },
     },
@@ -244,7 +244,7 @@ export const selfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Years in Current Profession is Required";
+          return "Years in Current Profession is required";
         }
       },
     },

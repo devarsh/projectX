@@ -1,13 +1,10 @@
-import { Message, ViewArray } from "@material-ui/icons";
-import { validate } from "@material-ui/pickers";
-import { matches, trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
-import { getPropertyCity, getMiscVal } from "meta/fns";
+import { getPropertyCity, getMiscVal ,getBankList} from "meta/fns";
 
 export const BalanceTransferSalariedQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -16,7 +13,7 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
-      groups: ["Step 1", "Step 2", "Step 3"],
+      groups: ["Step 1"],
       gridConfig: {
         item: {
           xs: 12,
@@ -42,8 +39,8 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
-      inputMask: {
-        fullWidth: true,
+      inputMask:{
+        fullWidth:true,
       }
     },
   },
@@ -157,7 +154,7 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Select Valid Option";
+          return "Select Valid Property Type";
         }
       },
     },
@@ -168,7 +165,8 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       },
       name: "monthlyEmiPay",
       type: "text",
-      label: "Total Monthly Emi Pay",
+      label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
@@ -179,8 +177,8 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          { name: "typeError", params: ["Please enter monthly paying emi"] },
+          { name: "required", params: ["Please enter monthly paying emi"] },
         ],
       },
       enableNumWords: true,
@@ -200,6 +198,7 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       },
       name: "otherSourceOfIncome",
       label: "Any Other Source of Income",
+      placeholder: "Any Other Source of Income",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -221,6 +220,7 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
+      placeholder: "Present Residential Status",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -235,34 +235,32 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
       //   }
       // },
     },
-
-    //Step 2
-
     {
       render: {
-        componentType: "textField",
-        group: 1,
+        componentType: "select",
+        group: 0,
       },
-      name: "existLoan",
+      name: "existingLoanFrom",
       label: "Existing Loan From",
+      defaultValue: "X",
       required: true,
-      type: "text",
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "required", params: ["Existing Loan From is required"] },
-        ],
-      },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+      options: getBankList,
+      runPostValidationHookAlways: true,
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Existing Loan From field is required.";
+        }
+      },
     },
     {
       render: {
         componentType: "numberFormat",
-        group: 1,
+        group: 0,
       },
       name: "OutAmount",
       type: "text",
@@ -300,45 +298,39 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        group: 1,
+        group: 0,
       },
-      name: "intRate",
+      name: "existingLoanInterest",
       type: "text",
       label: "Rate of Interest on existing Loan",
       required: true,
-
-      schemaValidation: {
-        type: "string",
-        rules: [
-          {
-            name: "typeError",
-            params: ["Rate of Interest on existing Loan is required"],
-          },
-          {
-            name: "required",
-            params: ["Rate of Interest on existing Loan is required"],
-          },
-        ],
-      },
-      enableNumWords: true,
-      FormatProps: {
-        thousandSeparator: true,
-        prefix: "₹",
-        thousandsGroupStyle: "lakh",
-        allowNegative: false,
-        allowLeadingZeros: false,
-      },
-      validationRun: "onChange",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["Please enter existing loan interest"] },
+          { name: "required", params: ["Please enter existing loan interest"] },
+        ],
+      },
+      enableNumWords: true,
+      FormatProps: {
+        suffix: "%",
+        decimalScale: 2,
+        format: "##.##%",
+        fixedDecimalScale: true,
+        allowNegative: false,
+        allowLeadingZeros: false,
+      },
+      validationRun: "onChange",
     },
     {
       render: {
         componentType: "numberFormat",
-        group: 1,
+        group: 0,
       },
       name: "emiamt1",
       type: "text",
@@ -370,10 +362,11 @@ export const BalanceTransferSalariedQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 1,
+        group: 0,
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
+      placeholder: "Availed Moratorium offered by RBI",
       defaultValue: "0",
       GridProps: {
         xs: 12,

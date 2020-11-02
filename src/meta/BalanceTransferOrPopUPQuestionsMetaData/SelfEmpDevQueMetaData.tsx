@@ -1,7 +1,8 @@
+import { trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
-import { getPropertyCity, getMiscVal } from "meta/fns";
+import { getPropertyCity, getPincode, getMiscVal, getBankList } from "meta/fns";
 
-export const SelEmpDevQueMetaData: MetaDataType = {
+export const SelfEmpDevQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Questionnaire",
@@ -46,7 +47,6 @@ export const SelEmpDevQueMetaData: MetaDataType = {
   },
 
   fields: [
-    //Step 1
     {
       render: {
         componentType: "inputMask",
@@ -120,9 +120,8 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
-      placeholder: "Property City",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -131,8 +130,8 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       options: getPropertyCity,
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Propert City is required";
+        if (fieldData.value === "X") {
+          return "Propert City is Required";
         }
       },
     },
@@ -143,9 +142,8 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
-      placeholder: "Type of Property",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -154,8 +152,8 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       options: getMiscVal("PROPERTY_TYPE"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Select Valid Option";
+        if (fieldData.value === "X") {
+          return "Type of Property is Required.";
         }
       },
     },

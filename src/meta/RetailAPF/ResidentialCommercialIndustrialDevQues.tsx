@@ -4,7 +4,7 @@ import { getPropertyCity, getMiscVal } from "meta/fns";
 export const ResidentialCommercialIndustrialDevQues: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -131,7 +131,7 @@ export const ResidentialCommercialIndustrialDevQues: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -227,7 +227,7 @@ export const ResidentialCommercialIndustrialDevQues: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -249,13 +249,13 @@ export const ResidentialCommercialIndustrialDevQues: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      dependentFields: ["registerWithRera"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.registerWithRera?.value === "Y") {
-          return false;
-        }
-        return true;
-      },
+      // dependentFields: ["registerWithRera"],
+      // shouldExclude: (_, dependentValues) => {
+      //   if (dependentValues?.registerWithRera?.value === "Y") {
+      //     return false;
+      //   }
+      //   return true;
+      // },
     },
   ],
 };

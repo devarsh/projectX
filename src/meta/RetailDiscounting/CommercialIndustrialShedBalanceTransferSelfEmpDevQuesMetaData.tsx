@@ -1,7 +1,10 @@
+import { Message, ViewArray } from "@material-ui/icons";
+import { validate } from "@material-ui/pickers";
+import { matches, trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getMiscVal } from "meta/fns";
 
-export const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
+export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Questionnaire",
@@ -39,9 +42,12 @@ export const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
       numberFormat: {
         fullWidth: true,
       },
-      inputMask:{
-        fullWidth:true,
-      }
+      inputMask: {
+        fullWidth: true,
+      },
+      //   checkboxGroup: {
+      //     fullWidth: true,
+      //   },
     },
   },
 
@@ -53,8 +59,7 @@ export const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
       },
       name: "panNumber",
       type: "text",
-      label: "Pan Card Number",
-      placeholder: "Pan Card Number",
+      label: "Pan Card Number ",
       required: true,
       schemaValidation: {
         type: "string",
@@ -160,89 +165,52 @@ export const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "numberFormat",
+        componentType: "select",
         group: 0,
       },
-      name: "monthlyEmiPay",
-      type: "text",
-      label: "Total EMI you pay Currently Monthly",
-      placeholder: "Total EMI you pay Currently Monthly",
+      name: "typeProject",
+      label: "Type of Project",
       required: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-
       schemaValidation: {
         type: "string",
-        rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
-        ],
+        rules: [{ name: "required", params: ["Type of Project is required"] }],
       },
-      enableNumWords: true,
-      FormatProps: {
-        thousandSeparator: true,
-        prefix: "₹",
-        thousandsGroupStyle: "lakh",
-        allowNegative: false,
-        allowLeadingZeros: false,
-      },
-      validationRun: "onChange",
-    },
-    {
-      render: {
-        componentType: "select",
-        group: 0,
-      },
-      name: "otherSourceOfIncome",
-      label: "Any Other Source of Income",
-      placeholder: "Any Other Source of Income",
-      defaultValue: "0",
+      defaultValue: "xx",
+      options: getMiscVal("PROJECT_TYPE"),
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      options: getMiscVal("INCOME_SOURCE"),
-      runPostValidationHookAlways: true,
-      // validate: (fieldData) => {
-      //   if (fieldData.value === "0") {
-      //     return "Select Valid Option";
-      //   }
-      // },
     },
+
     {
       render: {
-        componentType: "select",
+        componentType: "textField",
         group: 0,
       },
-      name: "presentResidentialStatus",
-      label: "Present Residential Status",
-      placeholder: "Present Residential Status",
-      defaultValue: "0",
+      name: "schemeName",
+      type: "text",
+      label: "Name of scheme",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      options: getMiscVal("RESI_STATUS"),
-      runPostValidationHookAlways: true,
-      // validate: (fieldData) => {
-      //   if (fieldData.value === "0") {
-      //     return "Select Valid Option";
-      //   }
-      // },
     },
+
     {
       render: {
         componentType: "select",
         group: 0,
       },
-      name: "offeredByRBI",
-      label: "Availed Moratorium offered by RBI",
-      placeholder: "Availed Moratorium offered by RBI",
+      name: "registerWithRera",
+      label: "Register with RERA",
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -260,11 +228,37 @@ export const CommercialIndustrialSalariedQuesMetaData: MetaDataType = {
           }, 1000);
         });
       },
-      // runPostValidationHookAlways: true,
-      // validate: (fieldData) => {
-      //   if (fieldData.value === "0") {
-      //     return "Propert City is Required";
+      runPostValidationHookAlways: true,
+      validate: (fieldData) => {
+        if (fieldData.value === "0") {
+          return "Propert City is Required";
+        }
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: 0,
+      },
+      name: "reraNo",
+      type: "text",
+      label: "RERA Number",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      // dependentFields: ["registerWithRera"],
+      // shouldExclude: (_, dependentValues) => {
+      //   if (dependentValues?.registerWithRera?.value === "Y") {
+      //     return false;
       //   }
+      //   return true;
       // },
     },
   ],

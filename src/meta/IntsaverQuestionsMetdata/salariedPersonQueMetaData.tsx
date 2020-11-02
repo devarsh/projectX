@@ -1,11 +1,11 @@
 import { trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
-import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
+import { getPropertyCity, getPincode, getMiscVal, getBankList } from "meta/fns";
 
-const salariedPersonQueMetaData: MetaDataType = {
+export const salariedPersonQueMetaData: MetaDataType = {
   form: {
     name: "questions- Int Saver Salaried",
-    label: "Step 1",
+    label: "Questionnaire ",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -42,7 +42,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
 
@@ -60,12 +60,12 @@ const salariedPersonQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Pan Number is required"] },
+          { name: "required", params: ["Pan Card Number is required."] },
           {
             name: "matches",
             params: [
               /([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$/,
-              "Please enter valid Pan Card Number",
+              "Please enter valid Pan Card Number.",
             ],
           },
         ],
@@ -83,6 +83,7 @@ const salariedPersonQueMetaData: MetaDataType = {
         lazy: true,
       },
     },
+
     {
       render: {
         componentType: "inputMask",
@@ -96,10 +97,13 @@ const salariedPersonQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Aadhar Number is required"] },
+          { name: "required", params: ["Aadhar Card Number is required."] },
           {
             name: "matches",
-            params: [/^\d{4}\d{4}\d{4}$/, "Please enter valid Aadhar Number"],
+            params: [
+              /^\d{4}\d{4}\d{4}$/,
+              "Please enter valid Aadhar Card Number.",
+            ],
           },
         ],
       },
@@ -113,6 +117,7 @@ const salariedPersonQueMetaData: MetaDataType = {
         lazy: true,
       },
     },
+
     {
       render: {
         componentType: "select",
@@ -122,7 +127,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       label: "Property City",
       placeholder: "Property City",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -131,11 +136,12 @@ const salariedPersonQueMetaData: MetaDataType = {
       options: getPropertyCity,
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Propert City is Required";
+        if (fieldData.value === "X") {
+          return "Propert City is required.";
         }
       },
     },
+
     {
       render: {
         componentType: "select",
@@ -145,7 +151,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       label: "Type of Property",
       placeholder: "Type of Property",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -154,8 +160,8 @@ const salariedPersonQueMetaData: MetaDataType = {
       options: getMiscVal("PROPERTY_TYPE"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Select Valid Option";
+        if (fieldData.value === "X") {
+          return "Type of Property is required.";
         }
       },
     },
@@ -166,19 +172,21 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "marketValueofProperty",
       type: "text",
-      label: "Market value of Property",
+      label: "Market value of Property.",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Market value is required"] },
-          { name: "required", params: ["Market value is required"] },
+          {
+            name: "typeError",
+            params: ["Market value of Property is required."],
+          },
+          { name: "required", params: ["Market value of Property required."] },
         ],
       },
       enableNumWords: true,
@@ -188,9 +196,12 @@ const salariedPersonQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "select",
@@ -198,8 +209,9 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "totalWorkExperiance",
       label: "Your Total Work Experiance",
+      placeholder: "Your Total Work Experiance",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -208,11 +220,12 @@ const salariedPersonQueMetaData: MetaDataType = {
       options: getMiscVal("EXPERI_YEARS"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Total Work Experiance is Required";
+        if (fieldData.value === "X") {
+          return "Total Work Experiance is required.";
         }
       },
     },
+
     {
       render: {
         componentType: "numberFormat",
@@ -220,19 +233,25 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "monthlyEmiPay",
       type: "text",
-      label: "Total Monthly Emi Pay",
+      label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Monthly Emi Amount is required"] },
-          { name: "required", params: ["Monthly Emi Amount is required"] },
+          {
+            name: "typeError",
+            params: ["Total EMI you pay Currently Monthly is required."],
+          },
+          {
+            name: "required",
+            params: ["Total EMI you pay Currently Monthly is required."],
+          },
         ],
       },
       enableNumWords: true,
@@ -242,9 +261,12 @@ const salariedPersonQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "numberFormat",
@@ -253,18 +275,18 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "monthlysalary",
       type: "text",
       label: "Net Monthly Salary",
+      placeholder: "Net Monthly Salary",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Monthly salary is required"] },
-          { name: "required", params: ["Monthly salary is required"] },
+          { name: "typeError", params: ["Net Monthly Salary is required."] },
+          { name: "required", params: ["Net Monthly Salary is required."] },
         ],
       },
       enableNumWords: true,
@@ -274,17 +296,21 @@ const salariedPersonQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "select",
         group: 0,
       },
       name: "otherSourceOfIncome",
-      label: "Any Other Source of Income",
-      defaultValue: "0",
+      label: "Any Other Source of Income.",
+      placeholder: "Any Other Source of Income.",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -292,11 +318,11 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       options: getMiscVal("INCOME_SOURCE"),
       runPostValidationHookAlways: true,
-      // validate: (fieldData) => {
-      //   if (fieldData.value === "0") {
-      //     return "Select Valid Option";
-      //   }
-      // },
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Select Any Other Source of Income.";
+        }
+      },
     },
 
     //Step 2
@@ -308,34 +334,23 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "existingLoanFrom",
       label: "Existing Loan From",
-      defaultValue: "0",
+      placeholder: "Existing Loan From",
+      defaultValue: "X",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      options: () => {
-        return new Promise((res) => {
-          setTimeout(() => {
-            res([
-              { label: "Select option", value: "0" },
-              { label: "ICICI Bank", value: "ICICI" },
-              { label: "Axis Bank", value: "Axis" },
-              { label: "HDFC Bank", value: "Hdfc" },
-              { label: "SBI Bank", value: "SBI" },
-              { label: "BOI Bank", value: "BOI" },
-            ]);
-          }, 1000);
-        });
-      },
+      options: getBankList,
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Field is Required";
+        if (fieldData.value === "X") {
+          return "Existing Loan From is required.";
         }
       },
     },
+
     {
       render: {
         componentType: "numberFormat",
@@ -344,18 +359,24 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "CurrentLoanOutstanding",
       type: "text",
       label: "Current Loan Outstanding",
+      placeholder: "Current Loan Outstanding",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          {
+            name: "typeError",
+            params: ["Current Loan Outstanding is required."],
+          },
+          {
+            name: "required",
+            params: ["Current Loan Outstanding is required."],
+          },
         ],
       },
       enableNumWords: true,
@@ -365,9 +386,12 @@ const salariedPersonQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "numberFormat",
@@ -376,28 +400,38 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "existingLoanInterest",
       type: "text",
       label: "Rate of Interest on existing Loan",
+      placeholder: "Rate of Interest on existing Loan",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          {
+            name: "typeError",
+            params: ["Rate of Interest on existing Loan is required."],
+          },
+          {
+            name: "required",
+            params: ["Rate of Interest on existing Loan is required."],
+          },
         ],
       },
       enableNumWords: true,
       FormatProps: {
-        prefix: "%",
+        suffix: "%",
+        decimalScale: 2,
+        format: "##.##%",
+        fixedDecimalScale: true,
         allowNegative: false,
         allowLeadingZeros: false,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "numberFormat",
@@ -406,18 +440,18 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "existingLoanEmi",
       type: "text",
       label: "EMI of Existing Loan",
+      placeholder: "EMI of Existing Loan",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          { name: "typeError", params: ["EMI of Existing Loan is required."] },
+          { name: "required", params: ["EMI of Existing Loan is required."] },
         ],
       },
       enableNumWords: true,
@@ -427,9 +461,12 @@ const salariedPersonQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "select",
@@ -437,7 +474,8 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
-      defaultValue: "0",
+      placeholder: "Availed Moratorium offered by RBI",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -447,20 +485,23 @@ const salariedPersonQueMetaData: MetaDataType = {
         return new Promise((res) => {
           setTimeout(() => {
             res([
-              { label: "Select option", value: "0" },
+              {
+                label: "Select Availed Moratorium offered by RBI.",
+                value: "x",
+              },
               { label: "Yes", value: "Y" },
               { label: "No", value: "N" },
             ]);
           }, 1000);
         });
       },
-      // runPostValidationHookAlways: true,
-      // validate: (fieldData) => {
-      //   if (fieldData.value === "0") {
-      //     return "Propert City is Required";
-      //   }
-      // },
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Select Availed Moratorium offered by RBI.";
+        }
+      },
     },
+
     {
       render: {
         componentType: "select",
@@ -468,8 +509,9 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "coApplicant",
       label: "Do you want to add co-applicant",
+      placeholder: "Do you want to add co-applicant",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -479,7 +521,7 @@ const salariedPersonQueMetaData: MetaDataType = {
         return new Promise((res) => {
           setTimeout(() => {
             res([
-              { label: "Select option", value: "0" },
+              { label: "Select Do you want to add co-applicant", value: "X" },
               { label: "Yes", value: "Y" },
               { label: "No", value: "N" },
             ]);
@@ -488,8 +530,8 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "This field is Required";
+        if (fieldData.value === "X") {
+          return "Do you want to add co-applicant is required.";
         }
       },
     },
@@ -503,24 +545,26 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "coApplicantfirstName",
       type: "text",
       label: "First Name",
+      placeholder: "First Name",
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["First Name is required"] }],
+        rules: [{ name: "required", params: ["First Name is required."] }],
       },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      // dependentFields:["coApplicant"],
-      // shouldExclude:(_, dependentValues) => {
-      //   if (dependentValues?.coApplicant?.value === "Y") {
-      //     return false;
-      //   }
-      //   return true;
-      // },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -528,13 +572,22 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "coApplicantmiddleName",
       label: "Middle Name",
+      placeholder: "Middle Name",
       type: "text",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -542,18 +595,27 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "coApplicantlastName",
       label: "Last Name",
+      placeholder: "Last Name",
       required: true,
       type: "text",
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["Last Name is required"] }],
+        rules: [{ name: "required", params: ["Last Name is required."] }],
       },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
+
     {
       render: {
         componentType: "select",
@@ -561,7 +623,8 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "coApplicantgender",
       label: "Gender",
-      defaultValue: "0",
+      placeholder: "Gender",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -570,19 +633,59 @@ const salariedPersonQueMetaData: MetaDataType = {
       options: getMiscVal("GENDER"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Select Valid Option";
+        if (fieldData.value === "X") {
+          return "Select Gender.";
         }
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
+
     {
       render: {
-        componentType: "textField",
+        componentType: "select",
+        group: 2,
+      },
+      name: "coApplicantRelationship",
+      label: "Relationship",
+      placeholder: "Relationship",
+      defaultValue: "X",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      options: getMiscVal("RELATIONSHIP"),
+      runPostValidationHookAlways: true,
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Relationship is required.";
+        }
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
+    },
+
+    {
+      render: {
+        componentType: "numberFormat",
         group: 2,
       },
       name: "coApplicantmobileNo",
       type: "text",
       label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
       GridProps: {
         xs: 12,
@@ -592,7 +695,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Mobile is required"] },
+          { name: "required", params: ["Mobile is required."] },
           {
             name: "matches",
             params: [
@@ -603,7 +706,18 @@ const salariedPersonQueMetaData: MetaDataType = {
         ],
       },
       StartAdornment: "+91",
+      FormatProps: {
+        format: "##########",
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -612,6 +726,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "coApplicantemail",
       type: "text",
       label: "Email",
+      placeholder: "Email",
       required: true,
       GridProps: {
         xs: 12,
@@ -621,14 +736,22 @@ const salariedPersonQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Email is required"] },
+          { name: "required", params: ["Email is required."] },
           {
             name: "matches",
-            params: [/^[^@]+@[^@]+\.[^@]+$/, "Please enter valid Email"],
+            params: [/^[^@]+@[^@]+\.[^@]+$/, "Please enter valid Email."],
           },
         ],
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
+
     {
       render: {
         componentType: "numberFormat",
@@ -636,6 +759,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "coApplicantpincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       GridProps: {
@@ -646,7 +770,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Residence Pincode is required"] },
+          { name: "required", params: ["Residence Pincode is required."] },
           { name: "min", params: [6, "Residence Pincode should be 6 digit."] },
           { name: "max", params: [6, "Residence Pincode should be 6 digit."] },
           {
@@ -688,6 +812,13 @@ const salariedPersonQueMetaData: MetaDataType = {
           }
         }
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
 
     {
@@ -697,6 +828,7 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "location",
       label: "Location",
+      placeholder: "Location",
       required: true,
       runPostValidationHookAlways: true,
       GridProps: {
@@ -739,6 +871,13 @@ const salariedPersonQueMetaData: MetaDataType = {
           };
         }
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
 
     {
@@ -753,6 +892,14 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
 
     {
@@ -767,7 +914,15 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
 
     {
@@ -782,7 +937,15 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
 
     {
@@ -797,7 +960,15 @@ const salariedPersonQueMetaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
 
     {
@@ -813,13 +984,13 @@ const salariedPersonQueMetaData: MetaDataType = {
       name: "coApplicantnetIncome",
       type: "text",
       label: "Net Income",
+      placeholder: "Net Income",
       required: true,
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Enter your income"] },
-          { name: "required", params: ["Enter your income"] },
+          { name: "typeError", params: ["Net Income is required."] },
+          { name: "required", params: ["Net Income is required."] },
         ],
       },
       enableNumWords: true,
@@ -829,10 +1000,22 @@ const salariedPersonQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
+      validate: (fieldData) => {
+        if (fieldData.value <= 0) {
+          return "Please enter valid value.";
+        }
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
   ],
 };
-
-export default salariedPersonQueMetaData;

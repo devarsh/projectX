@@ -1,3 +1,3 @@
-export { ResidentialCommercialIndustrialDevQues } from "./ResidentialCommercialIndustrialDevQues";
-export { ResidentialCommercialIndustrialProfBusQues } from "./ResidentialCommercialIndustrialProfBusQues";
-export { ResidentialCommercialIndustrialSalariedQue } from "./ResidentialCommercialIndustrialSalariedQue";
+export { ResidentialCommercialIndustrialDevQues as residentialCommercialIndustrialDevQues } from "./ResidentialCommercialIndustrialDevQues";
+export { ResidentialCommercialIndustrialProfBusQues as residentialCommercialIndustrialProfBusQues } from "./ResidentialCommercialIndustrialProfBusQues";
+export { ResidentialCommercialIndustrialSalariedQue as residentialCommercialIndustrialSalariedQue } from "./ResidentialCommercialIndustrialSalariedQue";

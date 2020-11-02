@@ -5,7 +5,7 @@ import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
 export const SelfEmpBusQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -42,7 +42,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
 
@@ -133,7 +133,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -212,7 +212,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "No. of Years of Experience is Required";
+          return "No. of Years of Experience is required";
         }
       },
     },
@@ -234,7 +234,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Nature of Business is Required";
+          return "Nature of Business is required";
         }
       },
     },
@@ -256,7 +256,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Type of Industry is Required";
+          return "Type of Industry is required";
         }
       },
     },
@@ -268,8 +268,8 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "monthlyEmiPay",
       type: "text",
-      label: "Total Monthly Emi Pay",
-      placeholder: "Total Monthly Emi Pay",
+      label: "Total Monthly EMI Pay",
+      placeholder: "Total Monthly EMI Pay",
       required: true,
       GridProps: {
         xs: 12,
@@ -335,6 +335,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "Depreciation",
       type: "text",
       label: "Any Add Back Like Depreciation",
+      placeholder: "Any Add Back Like Depreciation",
       required: true,
       GridProps: {
         xs: 12,
@@ -404,6 +405,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "businessAddress",
       type: "text",
       label: "Address of Business",
+      placeholder: "Address of Business",
       required: true,
       schemaValidation: {
         type: "string",
@@ -423,6 +425,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "Proflandmark",
       type: "text",
       label: "Landmark",
+      placeholder: "Landmark",
       required: true,
       schemaValidation: {
         type: "string",
@@ -441,6 +444,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "pincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       schemaValidation: {
@@ -558,6 +562,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
@@ -572,6 +577,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
@@ -587,6 +593,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
@@ -683,6 +690,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       name: "coApplicantfirstName",
       type: "text",
       label: "First Name",
+      placeholder: "First Name",
       required: true,
       schemaValidation: {
         type: "string",
@@ -693,13 +701,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      // dependentFields:["coApplicant"],
-      // shouldExclude:(_, dependentValues) => {
-      //   if (dependentValues?.coApplicant?.value === "Y") {
-      //     return false;
-      //   }
-      //   return true;
-      // },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
     {
       render: {
@@ -714,6 +722,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
     {
       render: {
@@ -722,6 +737,7 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
       },
       name: "coApplicantlastName",
       label: "Last Name",
+      placeholder: "Last Name",
       required: true,
       type: "text",
       schemaValidation: {
@@ -732,6 +748,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
     },
     {
@@ -747,6 +770,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       options: getMiscVal("GENDER"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
@@ -757,28 +787,66 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "textField",
+        componentType: "select",
+        group: 2,
+      },
+      name: "coApplicantRelationship",
+      label: "Relationship",
+      defaultValue: "0",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
+      options: getMiscVal("RELATIONSHIP"),
+      runPostValidationHookAlways: true,
+      validate: (fieldData) => {
+        if (fieldData.value === "0") {
+          return "Relationship is required.";
+        }
+      },
+    },
+    {
+      render: {
+        componentType: "numberFormat",
         group: 2,
       },
       name: "coApplicantmobileNo",
       type: "text",
       label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
+      FormatProps: {
+        format: "##########",
+      },
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Mobile is required"] },
+          { name: "required", params: ["Mobile No is required."] },
+          { name: "min", params: [10, "Mobile No should be 10 digit."] },
+          { name: "max", params: [10, "Mobile No should be 10 digit."] },
           {
             name: "matches",
-            params: [
-              /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/,
-              "Please enter valid Mobile Number",
-            ],
+            params: [/^\d{10}/, "Please enter valid Mobile No."],
           },
         ],
       },
@@ -793,6 +861,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       name: "coApplicantemail",
       type: "text",
@@ -822,6 +897,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       schemaValidation: {
         type: "string",
@@ -884,6 +966,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       postValidationSetCrossFieldValues: async (fieldData) => {
         if (trim(fieldData.value) === "") {
           return {
@@ -931,6 +1020,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       name: "city1",
       label: "City",
     },
@@ -938,12 +1034,19 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
+        group: 2,
       },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       name: "district1",
       label: "District",
@@ -960,6 +1063,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       name: "state1",
       label: "State",
       isReadOnly: () => true,
@@ -974,6 +1084,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       name: "country1",
       label: "Country",
@@ -1001,6 +1118,13 @@ export const SelfEmpBusQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       enableNumWords: true,
       FormatProps: {

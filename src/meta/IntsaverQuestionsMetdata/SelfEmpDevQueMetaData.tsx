@@ -1,7 +1,7 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getMiscVal } from "meta/fns";
 
-export const SelEmpDevQueMetaData: MetaDataType = {
+export const SelfEmpDevQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
     label: "Questionnaire",
@@ -46,7 +46,6 @@ export const SelEmpDevQueMetaData: MetaDataType = {
   },
 
   fields: [
-    //Step 1
     {
       render: {
         componentType: "inputMask",
@@ -60,7 +59,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Pan Number is required"] },
+          { name: "required", params: ["Pan Card Number is required."] },
           {
             name: "matches",
             params: [
@@ -83,6 +82,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
         lazy: true,
       },
     },
+
     {
       render: {
         componentType: "inputMask",
@@ -96,10 +96,13 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Aadhar Number is required"] },
+          { name: "required", params: ["Aadhar Card Number is required."] },
           {
             name: "matches",
-            params: [/^\d{4}\d{4}\d{4}$/, "Please enter valid Aadhar Number"],
+            params: [
+              /^\d{4}\d{4}\d{4}$/,
+              "Please enter valid Aadhar Card Number",
+            ],
           },
         ],
       },
@@ -122,7 +125,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       label: "Property City",
       placeholder: "Property City",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -131,11 +134,12 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       options: getPropertyCity,
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Propert City is required";
+        if (fieldData.value === "X") {
+          return "Propert City is required.";
         }
       },
     },
+
     {
       render: {
         componentType: "select",
@@ -145,7 +149,7 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       label: "Type of Property",
       placeholder: "Type of Property",
       required: true,
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
@@ -154,8 +158,8 @@ export const SelEmpDevQueMetaData: MetaDataType = {
       options: getMiscVal("PROPERTY_TYPE"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "Select Valid Option";
+        if (fieldData.value === "X") {
+          return "Type of Property is required.";
         }
       },
     },

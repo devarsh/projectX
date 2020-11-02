@@ -2,12 +2,12 @@ import { Message, ViewArray } from "@material-ui/icons";
 import { validate } from "@material-ui/pickers";
 import { matches, trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
-import { getPropertyCity, getMiscVal, getPincode } from "meta/fns";
+import { getPropertyCity, getMiscVal, getPincode, getBankList } from "meta/fns";
 
 export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
   form: {
-    name: "questions1-1",
-    label: "Step 1",
+    name: "questionsbalancetransfersel",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -44,7 +44,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
       //   checkboxGroup: {
       //     fullWidth: true,
       //   },
@@ -60,6 +60,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       name: "panNumber",
       type: "text",
       label: "Pan Card Number ",
+      placeholder: "Pan Card Number ",
       required: true,
       schemaValidation: {
         type: "string",
@@ -140,6 +141,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         }
       },
     },
+
     {
       render: {
         componentType: "select",
@@ -159,7 +161,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Select Valid Option";
+          return "Property type is required";
         }
       },
     },
@@ -172,20 +174,20 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       name: "monthlyRentalIncome",
       type: "text",
       label: "Monthly Rental Income",
-      required: true,
+      placeholder: "Monthly Rental Income",
+      // required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
-        ],
-      },
+      // schemaValidation: {
+      //   type: "string",
+      //   rules: [
+      //     { name: "typeError", params: ["Enter your monthly income"] },
+      //     { name: "required", params: ["Enter your monthly income"] },
+      //   ],
+      // },
       enableNumWords: true,
       FormatProps: {
         thousandSeparator: true,
@@ -193,6 +195,8 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
@@ -205,17 +209,19 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       name: "yearsofleasedeed",
       type: "text",
       label: "No. of years of lease deed",
-      required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["This Field is required"] }],
-      },
+      placeholder: "No. of years of lease deed",
+      // required: true,
+      // schemaValidation: {
+      //   type: "string",
+      //   rules: [{ name: "required", params: ["Enter years of lease deeed"] }],
+      // },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
     },
+
     {
       render: {
         componentType: "textField",
@@ -224,25 +230,27 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       name: "pendingLeasePeriod",
       type: "text",
       label: "Pending Lease Period",
-      required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["This Field is required"] }],
-      },
+      // required: true,
+      // schemaValidation: {
+      //   type: "string",
+      //   rules: [{ name: "required", params: ["Enter pending lease period"] }],
+      // },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
     },
+
     {
       render: {
-        componentType: "checkboxGroup",
+        componentType: "select",
         group: 0,
       },
       name: "loanTypeAvail",
-      label: "Please select type of loan you would like to avail",
-      fullWidth: true,
+      label: "Type of loan you would like to avail",
+      placeholder: "Type of loan you would like to avail",
+      multiple: true,
       //   schemaValidation: {
       //     type: "string",
       //     rules: [{ name: "required", params: ["This Field is required"] }],
@@ -267,7 +275,6 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "yearsOfExperience",
       label: "No. of Years of Experience",
-      required: true,
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -276,11 +283,11 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       options: getMiscVal("PROF_YEARS"),
       runPostValidationHookAlways: true,
-      validate: (fieldData) => {
-        if (fieldData.value === "0") {
-          return "No. of Years of Experience is Required";
-        }
-      },
+      // validate: (fieldData) => {
+      //   if (fieldData.value === "0") {
+      //     return "No. of Years of Experience is Required";
+      //   }
+      // },
     },
     {
       render: {
@@ -304,10 +311,11 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         }
       },
     },
+    //step 2
     {
       render: {
         componentType: "select",
-        group: 0,
+        group: 1,
       },
       name: "industryType",
       label: "Type of Industry",
@@ -326,26 +334,32 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         }
       },
     },
+
     {
       render: {
         componentType: "numberFormat",
-        group: 0,
+        group: 1,
       },
       name: "monthlyEmiPay",
       type: "text",
-      label: "Total Monthly Emi Pay",
+      label: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          {
+            name: "typeError",
+            params: ["Enter your monthly emi paying amount"],
+          },
+          {
+            name: "required",
+            params: ["Enter your monthly emi paying amount"],
+          },
         ],
       },
       enableNumWords: true,
@@ -355,29 +369,31 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
+
     {
       render: {
         componentType: "numberFormat",
-        group: 0,
+        group: 1,
       },
       name: "annualSalary",
       type: "text",
-      label: "Annual Salary",
+      label: "Your Annual Net Income",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          { name: "typeError", params: ["Enter annual net Income"] },
+          { name: "required", params: ["Enter annual net Income"] },
         ],
       },
       enableNumWords: true,
@@ -393,12 +409,13 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        group: 0,
+        group: 1,
       },
       name: "Depreciation",
       type: "text",
       label: "Any Add Back Like Depreciation",
-      required: true,
+      placeholder: "Any Add Back Like Depreciation",
+      // required: true,
       GridProps: {
         xs: 12,
         md: 3,
@@ -419,6 +436,8 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
+        decimalScale: 0,
+        maxLength: 13,
       },
       validationRun: "onChange",
     },
@@ -426,7 +445,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 0,
+        group: 1,
       },
       name: "otherSourceOfIncome",
       label: "Any Other Source of Income",
@@ -445,194 +464,35 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       // },
     },
 
-    //Step 2
-    {
-      render: {
-        componentType: "textField",
-        group: 1,
-      },
-      name: "existLoan",
-      label: "Existing Loan From",
-      required: true,
-      type: "text",
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "required", params: ["Existing Loan From is required"] },
-        ],
-      },
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "numberFormat",
-        group: 1,
-      },
-      name: "OutAmount",
-      type: "text",
-      label: "Current Loan Outstanding",
-      required: true,
-
-      schemaValidation: {
-        type: "string",
-        rules: [
-          {
-            name: "typeError",
-            params: ["Current Loan Outstanding is required"],
-          },
-          {
-            name: "required",
-            params: ["Current Loan Outstanding is required"],
-          },
-        ],
-      },
-      enableNumWords: true,
-      FormatProps: {
-        thousandSeparator: true,
-        prefix: "₹",
-        thousandsGroupStyle: "lakh",
-        allowNegative: false,
-        allowLeadingZeros: false,
-      },
-      validationRun: "onChange",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "numberFormat",
-        group: 1,
-      },
-      name: "intRate",
-      type: "text",
-      label: "Rate of Interest on existing Loan",
-      required: true,
-
-      schemaValidation: {
-        type: "string",
-        rules: [
-          {
-            name: "typeError",
-            params: ["Rate of Interest on existing Loan is required"],
-          },
-          {
-            name: "required",
-            params: ["Rate of Interest on existing Loan is required"],
-          },
-        ],
-      },
-      enableNumWords: true,
-      FormatProps: {
-        thousandSeparator: true,
-        prefix: "₹",
-        thousandsGroupStyle: "lakh",
-        allowNegative: false,
-        allowLeadingZeros: false,
-      },
-      validationRun: "onChange",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "numberFormat",
-        group: 1,
-      },
-      name: "emiamt1",
-      type: "text",
-      label: "EMI of existing Loan",
-      required: true,
-
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "typeError", params: ["EMI of existing Loan is required"] },
-          { name: "required", params: ["EMI of existing Loan is required"] },
-        ],
-      },
-      enableNumWords: true,
-      FormatProps: {
-        thousandSeparator: true,
-        prefix: "₹",
-        thousandsGroupStyle: "lakh",
-        allowNegative: false,
-        allowLeadingZeros: false,
-      },
-      validationRun: "onChange",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
     {
       render: {
         componentType: "select",
         group: 1,
       },
-      name: "offeredByRBI",
-      label: "Availed Moratorium offered by RBI",
-      defaultValue: "0",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-      options: () => {
-        return new Promise((res) => {
-          setTimeout(() => {
-            res([
-              { label: "Select option", value: "0" },
-              { label: "Yes", value: "Y" },
-              { label: "No", value: "N" },
-            ]);
-          }, 1000);
-        });
-      },
-      // runPostValidationHookAlways: true,
-      // validate: (fieldData) => {
-      //   if (fieldData.value === "0") {
-      //     return "Propert City is Required";
-      //   }
-      // },
-    },
-
-    //Step 3
-    {
-      render: {
-        componentType: "select",
-        group: 2,
-      },
-      name: "firmType",
+      name: "typeFirm",
       label: "Type of Firm",
-      defaultValue: "0",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Type of Firm is required"] }],
+      },
+      defaultValue: "xx",
+      options: getMiscVal("FIRM_TYPE"),
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      options: getMiscVal("FIRM_TYPE"),
-      runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Select Valid Option";
+          return "Select type of firm";
         }
       },
     },
     {
       render: {
         componentType: "textField",
-        group: 2,
+        group: 1,
       },
       name: "businessAddress",
       type: "text",
@@ -640,7 +500,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
+        rules: [{ name: "required", params: ["Enter address of business"] }],
       },
       GridProps: {
         xs: 12,
@@ -652,7 +512,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 2,
+        group: 1,
       },
       name: "Proflandmark",
       type: "text",
@@ -660,7 +520,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
+        rules: [{ name: "required", params: ["Landmark is required"] }],
       },
       GridProps: {
         xs: 12,
@@ -671,7 +531,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        group: 2,
+        group: 1,
       },
       name: "pincode",
       label: "Residence Pincode",
@@ -732,7 +592,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 2,
+        group: 1,
       },
       name: "location",
       label: "Location",
@@ -783,7 +643,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 2,
+        group: 1,
       },
       GridProps: {
         xs: 12,
@@ -792,12 +652,13 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
       render: {
         componentType: "textField",
-        group: 2,
+        group: 1,
       },
       GridProps: {
         xs: 12,
@@ -806,13 +667,14 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
     {
       render: {
         componentType: "textField",
-        group: 2,
+        group: 1,
       },
       GridProps: {
         xs: 12,
@@ -821,13 +683,14 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
     {
       render: {
         componentType: "textField",
-        group: 2,
+        group: 1,
       },
       GridProps: {
         xs: 12,
@@ -836,8 +699,11 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
     },
+
+    //step 3
     {
       render: {
         componentType: "select",
@@ -845,28 +711,138 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "presentResidentialStatus",
       label: "Present Residential Status",
-      defaultValue: "0",
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
       options: getMiscVal("RESI_STATUS"),
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Select Present Residential Status.";
+        }
+      },
+    },
+
+    {
+      render: {
+        componentType: "select",
+        group: 2,
+      },
+      name: "existingLoanFrom",
+      label: "Existing Loan From",
+      defaultValue: "X",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      options: getBankList,
       runPostValidationHookAlways: true,
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Existing Loan From field is required.";
+        }
+      },
     },
     {
       render: {
-        componentType: "textField",
+        componentType: "numberFormat",
         group: 2,
       },
-      name: "schemeName",
+      name: "OutAmount",
       type: "text",
-      label: "Name of scheme",
+      label: "Current Loan Outstanding",
       required: true,
+
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
+        rules: [
+          {
+            name: "typeError",
+            params: ["Current Loan Outstanding is required"],
+          },
+          {
+            name: "required",
+            params: ["Current Loan Outstanding is required"],
+          },
+        ],
       },
+      enableNumWords: true,
+      FormatProps: {
+        thousandSeparator: true,
+        prefix: "₹",
+        thousandsGroupStyle: "lakh",
+        allowNegative: false,
+        allowLeadingZeros: false,
+      },
+      validationRun: "onChange",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 2,
+      },
+      name: "existingLoanInterest",
+      type: "text",
+      label: "Rate of Interest on existing Loan",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["Enter your existing loan interest"] },
+          { name: "required", params: ["Enter your existing loan interest"] },
+        ],
+      },
+      enableNumWords: true,
+      FormatProps: {
+        suffix: "%",
+        decimalScale: 2,
+        format: "##.##%",
+        fixedDecimalScale: true,
+        allowNegative: false,
+        allowLeadingZeros: false,
+      },
+      validationRun: "onChange",
+    },
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 2,
+      },
+      name: "emiamt1",
+      type: "text",
+      label: "EMI of existing Loan",
+      required: true,
+
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["EMI of existing Loan is required"] },
+          { name: "required", params: ["EMI of existing Loan is required"] },
+        ],
+      },
+      enableNumWords: true,
+      FormatProps: {
+        thousandSeparator: true,
+        prefix: "₹",
+        thousandsGroupStyle: "lakh",
+        allowNegative: false,
+        allowLeadingZeros: false,
+      },
+      validationRun: "onChange",
       GridProps: {
         xs: 12,
         md: 3,
@@ -905,6 +881,28 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       //   }
       // },
     },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "schemeName",
+      type: "text",
+      label: "Name of scheme",
+      placeholder: "Name of scheme",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Name of scheme is required"] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
     {
       render: {
         componentType: "select",
@@ -912,6 +910,7 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       },
       name: "registerWithRera",
       label: "Register with RERA",
+      required: true,
       defaultValue: "0",
       GridProps: {
         xs: 12,
@@ -932,10 +931,11 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Register with rera is required";
         }
       },
     },
+
     {
       render: {
         componentType: "textField",
@@ -947,20 +947,20 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
+        rules: [{ name: "required", params: ["Rera number is required"] }],
       },
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      dependentFields: ["registerWithRera"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.registerWithRera?.value === "Y") {
-          return false;
-        }
-        return true;
-      },
+      // dependentFields: ["registerWithRera"],
+      // shouldExclude: (_, dependentValues) => {
+      //   if (dependentValues?.registerWithRera?.value === "Y") {
+      //     return false;
+      //   }
+      //   return true;
+      // },
     },
   ],
 };

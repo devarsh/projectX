@@ -4,7 +4,7 @@ import { getPropertyCity, getMiscVal } from "meta/fns";
 export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -13,7 +13,7 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
-      groups: ["Step 1", "Step 2"],
+      groups: ["Step 1"],
       gridConfig: {
         item: {
           xs: 12,
@@ -41,12 +41,13 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
 
   fields: [
     {
+      //1.PAN_NUMBER [step:1]
       render: {
         componentType: "inputMask",
         group: 0,
@@ -82,7 +83,9 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
         lazy: true,
       },
     },
+
     {
+      //2.AADHAR_NUMBER [step:1]
       render: {
         componentType: "inputMask",
         group: 0,
@@ -113,6 +116,7 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
       },
     },
     {
+      //3.PROPERTY_CITY [step:1]
       render: {
         componentType: "select",
         group: 0,
@@ -131,11 +135,12 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
     {
+      //4.TYPE_OF_PROPERTY [step:1]
       render: {
         componentType: "select",
         group: 0,
@@ -158,27 +163,7 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
         }
       },
     },
-
-    {
-      render: {
-        componentType: "textField",
-        group: 1,
-      },
-      name: "businessAddress",
-      type: "text",
-      label: "Address of Business",
-      required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
-      },
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
+    //5.PRESENT_RESIDENTIAL_STATUS [step:1]
     {
       render: {
         componentType: "select",
@@ -201,6 +186,7 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
       // },
     },
 
+    //6 Name of scheme [step:1]
     {
       render: {
         componentType: "textField",
@@ -209,6 +195,7 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
       name: "schemeName",
       type: "text",
       label: "Name of scheme",
+      placeholder: "Name of scheme",
       required: true,
       schemaValidation: {
         type: "string",
@@ -220,6 +207,8 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
         sm: 3,
       },
     },
+
+    //7.Register with RERA [step:1]
     {
       render: {
         componentType: "select",
@@ -247,10 +236,12 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
+
+    //8.RERA Number [step:1]
     {
       render: {
         componentType: "textField",
@@ -269,14 +260,58 @@ export const ResidentialCommercialIndustrialProfBusQues: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      dependentFields: ["registerWithRera"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.registerWithRera?.value === "Y") {
-          return false;
-        }
-        return true;
+      // dependentFields: ["registerWithRera"],
+      // shouldExclude: (_, dependentValues) => {
+      //   if (dependentValues?.registerWithRera?.value === "Y") {
+      //     return false;
+      //   }
+      //   return true;
+      // },
+    },
+
+    //9. BUSSINESS_ADDRESS [screen:1]
+    {
+      render: {
+        componentType: "textField",
+        group: 0,
+      },
+      name: "businessAddress",
+      type: "text",
+      label: "Address of Business",
+      placeholder: "Address of Business",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
     },
+
+    // //10.type of project [screen:1]
+    // {
+    //   render: {
+    //     componentType: "select",
+    //     group: 0,
+    //   },
+    //   name: "typeProject",
+    //   label: "Type of Project",
+    //   required: true,
+    //   schemaValidation: {
+    //     type: "string",
+    //     rules: [{ name: "required", params: ["Type of Project is required"] }],
+    //   },
+    //   defaultValue: "xx",
+    //   options: getMiscVal("PROJECT_TYPE"),
+    //   GridProps: {
+    //     xs: 12,
+    //     md: 3,
+    //     sm: 3,
+    //   },
+    // },
   ],
 };
 
