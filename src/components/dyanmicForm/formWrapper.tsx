@@ -14,7 +14,7 @@ import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
 import { FormVerificationDialog } from "./formVerificationDialog";
 import { useLocation, useNavigate } from "react-router-dom";
-import { chooseNaviagtionPath } from "./utils/navigationLogic";
+import { chooseNaviagtionPath } from "meta/navigationLogic";
 
 import {
   WrapperStyleProps,
