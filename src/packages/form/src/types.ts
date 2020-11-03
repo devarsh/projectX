@@ -51,6 +51,7 @@ export interface FormFieldAtomType {
   readOnly: boolean;
   validate?: null | typeof ValidateFnType | EmptyFnType;
   incomingMessage?: any;
+  dependentFields?: string[] | string;
 }
 
 export interface DependentValuesType {
@@ -94,8 +95,13 @@ export declare function shouldExcludeFnType(
   dependentFieldsValues: DependentValuesType
 ): Promise<boolean> | boolean;
 
+export declare function SchemaValidateFnType(
+  fieldData: FormFieldAtomType
+): Promise<any> | any;
+
 export declare function ValidateFnType(
-  data: FormFieldAtomType
+  fieldData: FormFieldAtomType,
+  dependentFieldsValues: DependentValuesType
 ): Promise<any> | any;
 
 export declare function PostValidationSetCrossFieldValuesFnType(

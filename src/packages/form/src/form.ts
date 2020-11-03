@@ -12,6 +12,7 @@ import {
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
   formFieldsExcludedAtom,
+  subscribeToFormFieldsSelector,
 } from "./atoms";
 import { setIn, getIn } from "./util";
 import {
@@ -271,7 +272,15 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
                 error: data.error,
               });
         try {
-          result = await Promise.resolve(customValidator(fieldState));
+          const dependentFieldsState = useRecoilValue(
+            subscribeToFormFieldsSelector({
+              formName: formContext.formName,
+              fields: fieldState.dependentFields,
+            })
+          );
+          result = await Promise.resolve(
+            customValidator(fieldState, dependentFieldsState)
+          );
         } catch (e) {
           result = { error: e.message };
         }

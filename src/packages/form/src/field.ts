@@ -23,6 +23,8 @@ import {
   InitialValuesType,
   PostValidationSetCrossFieldValuesFnType,
   ValidateFnType,
+  SchemaValidateFnType,
+  DependentValuesType,
 } from "./types";
 import { FormContext } from "./context";
 import { getIn, yupReachAndValidate } from "./util";
@@ -139,7 +141,16 @@ export const useField = ({
     );
     if (typeof wrappedValidation === "function") {
       isValidationFnRef.current = true;
-      setFieldData((currVal) => ({ ...currVal, validate: wrappedValidation }));
+      setFieldData((currVal) => ({
+        ...currVal,
+        validate: wrappedValidation,
+        dependentFields: dependentFields,
+      }));
+    } else {
+      setFieldData((currVal) => ({
+        ...currVal,
+        dependentFields: dependentFields,
+      }));
     }
   }, [
     setFieldData,
@@ -256,7 +267,7 @@ export const useField = ({
         validationRunning: true,
       }));
       const currentPromise = Promise.resolve(
-        fieldDataRef.current.validate(data)
+        fieldDataRef.current.validate(data, dependentFieldsState)
       );
       //@ts-ignore
       lastValidationValue.current = data.value;
@@ -523,7 +534,7 @@ function getSelectedValues(options: any[]) {
 
 //Need to rethink this API - its too messy
 function wrapValidationMethod(
-  schemaValidation?: typeof ValidateFnType,
+  schemaValidation?: typeof SchemaValidateFnType,
   validationFn?: typeof ValidateFnType,
   postValidationSetCrossFieldValuesFn?: typeof PostValidationSetCrossFieldValuesFnType,
   runPostValidationHookAlways?: boolean
@@ -537,7 +548,10 @@ function wrapValidationMethod(
   }
   const shouldRunAlways = Boolean(runPostValidationHookAlways);
   if (!shouldRunAlways) {
-    const wrapperFunction = async (field: any) => {
+    const wrapperFunction = async (
+      field: any,
+      dependentFieldsState: DependentValuesType
+    ) => {
       let errorMsg: any = null;
       let crossFieldMessages: InitialValuesType | null | undefined;
       if (typeof schemaValidation === "function") {
@@ -547,7 +561,7 @@ function wrapValidationMethod(
         return { error: errorMsg };
       }
       if (typeof validationFn === "function") {
-        errorMsg = await validationFn(field);
+        errorMsg = await validationFn(field, dependentFieldsState);
       }
       if (Boolean(errorMsg)) {
         return { error: errorMsg };
@@ -566,7 +580,10 @@ function wrapValidationMethod(
     };
     return wrapperFunction;
   } else {
-    const wrapperFunctionAlways = async (field: any) => {
+    const wrapperFunctionAlways = async (
+      field: any,
+      dependentFieldsState: DependentValuesType
+    ) => {
       let errorMsg: any = null;
       let crossFieldMessages: InitialValuesType | null | undefined;
       if (typeof postValidationSetCrossFieldValuesFn === "function") {
@@ -586,7 +603,7 @@ function wrapValidationMethod(
         return { error: errorMsg, crossFieldMessages };
       }
       if (typeof validationFn === "function") {
-        errorMsg = await validationFn(field);
+        errorMsg = await validationFn(field, dependentFieldsState);
       }
       return { error: errorMsg, crossFieldMessages };
     };
