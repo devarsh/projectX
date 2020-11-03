@@ -20,6 +20,7 @@
     "firebase": "^7.17.1",
     "history": "^5.0.0",
     "husky": "^4.3.0",
+    "json-rules-engine": "^5.0.4",
     "lint-staged": "^10.5.1",
     "lodash": "^4.17.20",
     "match-sorter": "^5.0.0",
@@ -63,17 +64,7 @@
     "rules": {
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.ts?(x)"
-        ],
-        "rules": {
-          "additional-typescript-only-rule": "warn"
-        }
-      }
-    ]
+    }
   },
   "browserslist": {
     "production": [

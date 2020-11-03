@@ -224,6 +224,23 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     [formContext.formName]
   );
 
+  const getDependentValues = useRecoilCallback(
+    ({ snapshot }) => (fields?: string[] | string) => {
+      const loadable = snapshot.getLoadable(
+        subscribeToFormFieldsSelector({
+          formName: formContext.formName,
+          fields: fields,
+        })
+      );
+      switch (loadable.state) {
+        case "hasValue": {
+          return loadable.contents;
+        }
+      }
+      return {};
+    }
+  );
+
   const handleResetPartial = useCallback(
     (fields: string[]) => {
       if (
@@ -272,11 +289,8 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
                 error: data.error,
               });
         try {
-          const dependentFieldsState = useRecoilValue(
-            subscribeToFormFieldsSelector({
-              formName: formContext.formName,
-              fields: fieldState.dependentFields,
-            })
+          const dependentFieldsState = getDependentValues(
+            fieldState.dependentFields
           );
           result = await Promise.resolve(
             customValidator(fieldState, dependentFieldsState)

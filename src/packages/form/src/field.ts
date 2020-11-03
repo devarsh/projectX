@@ -181,36 +181,46 @@ export const useField = ({
   );
   // this determine if the field should be excluded
   useEffect(() => {
-    if (typeof shouldExclude === "function") {
-      let result = shouldExclude(fieldData, dependentFieldsState);
-      if (result === true && fieldData.excluded === false) {
-        setFieldData((old) => ({
-          ...old,
-          excluded: true,
-        }));
-        addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
-      } else if (result === false && fieldData.excluded === true) {
-        setFieldData((old) => ({
-          ...old,
-          excluded: false,
-        }));
-        addRemoveExcludedFields({ fieldName: fieldData.name, flag: "remove" });
+    const runner = async () => {
+      if (typeof shouldExclude === "function") {
+        let result = await Promise.resolve(
+          shouldExclude(fieldData, dependentFieldsState)
+        );
+        if (result === true && fieldData.excluded === false) {
+          setFieldData((old) => ({
+            ...old,
+            excluded: true,
+          }));
+          addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
+        } else if (result === false && fieldData.excluded === true) {
+          setFieldData((old) => ({
+            ...old,
+            excluded: false,
+          }));
+          addRemoveExcludedFields({
+            fieldName: fieldData.name,
+            flag: "remove",
+          });
+        }
       }
-    }
-    if (typeof isReadOnly === "function") {
-      let result = isReadOnly(fieldData, dependentFieldsState);
-      if (result === true && fieldData.readOnly === false) {
-        setFieldData((old) => ({
-          ...old,
-          readOnly: true,
-        }));
-      } else if (result === false && fieldData.readOnly === true) {
-        setFieldData((old) => ({
-          ...old,
-          readOnly: true,
-        }));
+      if (typeof isReadOnly === "function") {
+        let result = await Promise.resolve(
+          isReadOnly(fieldData, dependentFieldsState)
+        );
+        if (result === true && fieldData.readOnly === false) {
+          setFieldData((old) => ({
+            ...old,
+            readOnly: true,
+          }));
+        } else if (result === false && fieldData.readOnly === true) {
+          setFieldData((old) => ({
+            ...old,
+            readOnly: true,
+          }));
+        }
       }
-    }
+    };
+    runner();
   });
 
   const passCrossFieldMessage = useRecoilCallback(
