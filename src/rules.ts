@@ -1,37 +1,46 @@
-import { Engine, Rule } from "json-rules-engine";
+import { Engine } from "json-rules-engine";
 
-const engine = new Engine();
+localStorage.debug = "json-rules-engine";
 
-const rule = new Rule({
+const ruleEngine = (rule) => async (data) => {
+  const { success, failure, conditions } = rule;
+  let engine = new Engine();
+  const extendRule = {
+    conditions: conditions,
+    event: {
+      type: "success",
+      params: {
+        message: null,
+      },
+    },
+  };
+  console.log(extendRule);
+  engine.addRule(extendRule);
+  const result = await engine.run(data);
+  if (result.events.length > 0) {
+    return success;
+  } else {
+    return failure;
+  }
+};
+
+const x = {
   conditions: {
     all: [
       {
-        fact: "dependentValues",
-        path: ".age.value",
+        fact: "dependentFields",
+        path: "$.age.value",
         operator: "equal",
-        value: {
-          fact: "dependentValues",
-          path: ".maxAge.value",
-        },
+        value: 17,
       },
     ],
   },
-  event: {
-    type: "message",
-    params: {
-      value: true,
-    },
-  },
-});
-
-engine.addRule(rule);
-
-const facts = {
-  dependentValues: { age: { value: 25 }, maxAge: { value: 30 } },
+  success: "YESSSS",
+  failure: "fucked",
 };
 
-engine
-  .run(facts)
-  //@ts-ignore
-  .then((event) => console.log(event?.params))
-  .catch((e) => console.log(e));
+const y = ruleEngine(x);
+
+y({ dependentFields: { age: { value: 17 } } }).then((result) =>
+  console.log(result)
+);
