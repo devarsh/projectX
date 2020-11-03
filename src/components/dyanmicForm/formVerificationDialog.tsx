@@ -55,13 +55,14 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
       <DialogTitle id="form-dialog-title">Verify OTP</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {`Enter OTP sent to your mobile No :${values?.mobileNo ?? ""}`}
+          OTP has been sent to your registered mobile number:{" "}
+          <b>{`${values?.mobileNo ?? ""}`}</b>
         </DialogContentText>
         <TextField
           autoFocus
           margin="dense"
           id="name"
-          label="Otp"
+          label="OTP"
           type="email"
           fullWidth
           value={otpText}

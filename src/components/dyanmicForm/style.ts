@@ -20,6 +20,7 @@ export const formStyle = (theme: Theme): any => ({
     fontSize: "1.75rem",
     fontWeight: "700",
     alignSelf: "flex-start",
+    marginBottom: "10px",
   },
   subTitle: {
     color: "#26A456",
@@ -28,7 +29,7 @@ export const formStyle = (theme: Theme): any => ({
     //@ts-ignore
     fontWeight: "700",
     alignSelf: "flex-start",
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   paper: {
     marginTop: theme.spacing(3),
@@ -55,7 +56,8 @@ export const formStyle = (theme: Theme): any => ({
     fontSize: "1.2rem",
   },
   backBtn: {
-    boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+    boxShadow:
+      "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
     background: "#e0e0e0",
     marginRight: theme.spacing(2),
     color: "#0b6fb8 !important",
@@ -64,6 +66,8 @@ export const formStyle = (theme: Theme): any => ({
     "&:hover": {
       color: "#0b6fb8 !important",
       background: "#e0e0e0",
-    }
+      boxShadow:
+        "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+    },
   },
 });

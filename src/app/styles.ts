@@ -14,9 +14,13 @@ export const wrapperStyles = (theme: Theme): any => ({
     minHeight: "calc(100vh - 147px)",
     marginTop: "102px",
     paddingBottom: theme.spacing(3),
-    alignItems:"center",
+    alignItems: "center",
   },
   HomeWrap: {
-    minHeight: "calc(100vh - 165px)",
+    minHeight: "calc(100vh - 45px)",
+    alignItems: "center !important",
+    display: "flex !important",
+    flexDirection: "column !important",
+    justifyContent: "center !important",
   },
 });
