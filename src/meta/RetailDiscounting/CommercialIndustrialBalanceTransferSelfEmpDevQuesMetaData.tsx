@@ -7,7 +7,7 @@ import { getPropertyCity, getMiscVal } from "meta/fns";
 export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -44,7 +44,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
       //   checkboxGroup: {
       //     fullWidth: true,
       //   },
@@ -136,7 +136,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -166,7 +166,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
     {
       render: {
         componentType: "select",
-        group: 2,
+        group: 0,
       },
       name: "typeProject",
       label: "Type of Project",
@@ -231,7 +231,7 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -253,13 +253,13 @@ export const CommercialIndustrialBalanceTransferSelfEmpDevQuesMetaData: MetaData
         md: 3,
         sm: 3,
       },
-      dependentFields: ["registerWithRera"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.registerWithRera?.value === "Y") {
-          return false;
-        }
-        return true;
-      },
+      // dependentFields: ["registerWithRera"],
+      // shouldExclude: (_, dependentValues) => {
+      //   if (dependentValues?.registerWithRera?.value === "Y") {
+      //     return false;
+      //   }
+      //   return true;
+      // },
     },
   ],
 };

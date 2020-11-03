@@ -5,7 +5,7 @@ import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
 export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -42,7 +42,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
       //   checkboxGroup: {
       //     fullWidth: true,
       //   },
@@ -235,12 +235,12 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "checkboxGroup",
+        componentType: "select",
         group: 0,
       },
       name: "loanTypeAvail",
       label: "Please select type of loan you would like to avail",
-      fullWidth: true,
+      multiple: true,
       //   schemaValidation: {
       //     type: "string",
       //     rules: [{ name: "required", params: ["This Field is required"] }],
@@ -308,7 +308,8 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       name: "monthlyEmiPay",
       type: "text",
-      label: "Total Monthly Emi Pay",
+      label: "Total EMI you pay Currently Monthly",
+      placeholder: "Total EMI you pay Currently Monthly",
       required: true,
       GridProps: {
         xs: 12,
@@ -340,7 +341,8 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       name: "annualSalary",
       type: "text",
-      label: "Annual Salary",
+      label: "Your Annual Net Income",
+      placeholder: "Your Annual Net Income",
       required: true,
       GridProps: {
         xs: 12,
@@ -351,7 +353,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
+          { name: "typeError", params: ["Enter your anual income"] },
           { name: "required", params: ["This field is required"] },
         ],
       },
@@ -429,6 +431,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       name: "firmType",
       label: "Type of Firm",
       defaultValue: "0",
+      required: true,
       GridProps: {
         xs: 12,
         md: 3,
@@ -453,7 +456,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
+        rules: [{ name: "required", params: ["Enter your office address"] }],
       },
       GridProps: {
         xs: 12,
@@ -605,6 +608,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
@@ -619,6 +623,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
@@ -634,6 +639,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
@@ -649,6 +655,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
     },
     {
@@ -669,28 +676,8 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "textField",
-        group: 0,
-      },
-      name: "schemeName",
-      type: "text",
-      label: "Name of scheme",
-      required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["This field is required"] }],
-      },
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
         componentType: "select",
-        group: 0,
+        group: 1,
       },
       name: "offeredByRBI",
       label: "Availed Moratorium offered by RBI",
@@ -720,8 +707,28 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
     },
     {
       render: {
+        componentType: "textField",
+        group: 1,
+      },
+      name: "schemeName",
+      type: "text",
+      label: "Name of scheme",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
         componentType: "select",
-        group: 0,
+        group: 1,
       },
       name: "registerWithRera",
       label: "Register with RERA",
@@ -752,7 +759,7 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
+        group: 1,
       },
       name: "reraNo",
       type: "text",
@@ -767,13 +774,13 @@ export const CommercialIndustrialSelfEmpProfQuesMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      dependentFields: ["registerWithRera"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.registerWithRera?.value === "Y") {
-          return false;
-        }
-        return true;
-      },
+      // dependentFields: ["registerWithRera"],
+      // shouldExclude: (_, dependentValues) => {
+      //   if (dependentValues?.registerWithRera?.value === "Y") {
+      //     return false;
+      //   }
+      //   return true;
+      // },
     },
   ],
 };

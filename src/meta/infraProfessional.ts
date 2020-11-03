@@ -42,7 +42,7 @@ const metaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
   fields: [
@@ -782,6 +782,7 @@ const metaData: MetaDataType = {
       name: "OutAmount",
       type: "text",
       label: "Current Loan Outstanding",
+      placeholder: "Current Loan Outstanding",
       required: true,
 
       schemaValidation: {
@@ -923,7 +924,7 @@ const metaData: MetaDataType = {
         group: 2,
       },
       name: "typeofloan",
-      label: "Please select type of loan you would like to Avail",
+      label: "Type of loan to avail",
       required: false,
       schemaValidation: {
         type: "string",
@@ -1009,7 +1010,7 @@ const metaData: MetaDataType = {
       },
       name: "totemi1",
       type: "text",
-      label: "Total EMI you Pay Monthly",
+      label: "Total EMI you pay Currently Monthly",
       required: true,
 
       schemaValidation: {
@@ -1017,11 +1018,11 @@ const metaData: MetaDataType = {
         rules: [
           {
             name: "typeError",
-            params: ["Total EMI you Pay Monthly is required"],
+            params: ["Total EMI you pay Currently Monthly is required"],
           },
           {
             name: "required",
-            params: ["Total EMI you Pay Monthly is required"],
+            params: ["Total EMI you pay Currently Monthly is required"],
           },
         ],
       },

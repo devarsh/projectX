@@ -371,40 +371,50 @@ export const formsNav: NavBarType = {
     },
     {
       label: "Investment Banking",
+      href: "https://ratnaafin.com/investment-banking/",
       children: [
         {
           label: "Fund Raise",
+          href: "https://ratnaafin.com/professional-events/",
           children: [
             {
               label: "Loans",
+              href: "https://ratnaafin.com/loans/",
             },
             {
               label: "Equity",
+              href: "https://ratnaafin.com/equity/",
             },
           ],
         },
         {
           label: "Merger & Acquisitions",
+          href: "https://ratnaafin.com/merger-acquisitions/",
         },
         {
           label: "Financial Compliances",
+          href: "https://ratnaafin.com/financial-compliances/",
         },
         {
           label: "Transaction Advisory",
+          href: "https://ratnaafin.com/transaction-advisory/",
         },
       ],
     },
     {
       label: "Lending",
+      href: "https://ratnaafin.com/lending-2/",
     },
     {
       label: "Global Solutions",
       children: [
         {
           label: "Offshore Services",
+          href: "https://ratnaafin.com/offshore-services/",
         },
         {
           label: "KPO",
+          href: "https://ratnaafin.com/kpo/",
         },
       ],
     },

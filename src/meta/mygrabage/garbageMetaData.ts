@@ -129,7 +129,7 @@ const metaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Salutation is Required";
+          return "Salutation is required";
         }
       },
       postValidationSetCrossFieldValues: (field) => {
@@ -184,7 +184,8 @@ const metaData: MetaDataType = {
         group: 0,
       },
       name: "middleName",
-      label: "Middle Name",
+       label: "Middle Name",
+      placeholder: "Middle Name",
       type: "text",
       GridProps: {
         xs: 12,
@@ -199,6 +200,7 @@ const metaData: MetaDataType = {
       },
       name: "lastName",
       label: "Last Name",
+      placeholder: "Last Name",
       required: true,
       type: "text",
       schemaValidation: {
@@ -235,7 +237,7 @@ const metaData: MetaDataType = {
       },
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Gender is Required";
+          return "Gender is required";
         }
       },
     },
@@ -317,6 +319,7 @@ const metaData: MetaDataType = {
       name: "mobileNo",
       type: "text",
       label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
       schemaValidation: {
         type: "string",
@@ -335,6 +338,7 @@ const metaData: MetaDataType = {
       name: "email",
       type: "text",
       label: "Email",
+      placeholder: "Email",
       required: true,
       schemaValidation: {
         type: "string",
@@ -458,6 +462,7 @@ const metaData: MetaDataType = {
       },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
     {
       render: {
@@ -466,6 +471,7 @@ const metaData: MetaDataType = {
       },
       name: "district",
       label: "District",
+      placeholder: "District",
     },
     {
       render: {
@@ -474,6 +480,7 @@ const metaData: MetaDataType = {
       },
       name: "state",
       label: "State",
+      placeholder: "State",
     },
     {
       render: {
@@ -482,6 +489,7 @@ const metaData: MetaDataType = {
       },
       name: "country",
       label: "Country",
+      placeholder: "Country",
     },
     {
       render: {

@@ -2,10 +2,10 @@ import { trim } from "lodash";
 import { MetaDataType } from "components/dyanmicForm/types";
 import { getPropertyCity, getPincode, getMiscVal } from "meta/fns";
 
-const SelfEmpProfQueMetaData: MetaDataType = {
+export const SelfEmpProfQueMetaData: MetaDataType = {
   form: {
     name: "questions1-1",
-    label: "Step 1",
+    label: "Questionnaire",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     navigation: {
@@ -14,7 +14,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
-      groups: ["Step 1", "Step 2"],
+      groups: ["Step 1", "Step 2", "Step 3"],
       gridConfig: {
         item: {
           xs: 12,
@@ -42,7 +42,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
 
@@ -120,7 +120,6 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "proprtyCity",
       label: "Property City",
-      placeholder: "Property City",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -132,7 +131,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -143,7 +142,6 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "proprtyType",
       label: "Type of Property",
-      placeholder: "Type of Property",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -167,6 +165,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "marketValueofProperty",
       type: "text",
       label: "Market value of Property",
+      placeholder: "Market value of Property",
       required: true,
       GridProps: {
         xs: 12,
@@ -208,7 +207,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Your Current Profession is Required";
+          return "Your Current Profession is required";
         }
       },
     },
@@ -219,6 +218,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "currentProfessionWorkExperiance",
       label: "Years in Current Profession",
+      placeholder: "Years in Current Profession",
       required: true,
       defaultValue: "0",
       GridProps: {
@@ -230,7 +230,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Years in Current Profession is Required";
+          return "Years in Current Profession is required";
         }
       },
     },
@@ -242,7 +242,8 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "monthlyEmiPay",
       type: "text",
-      label: "Total Monthly Emi Pay",
+      label: "Total Monthly EMI Pay",
+      placeholder: "Total Monthly EMI Pay",
       required: true,
       GridProps: {
         xs: 12,
@@ -276,6 +277,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "annualSalary",
       type: "text",
       label: "Your Annual Net Income",
+      placeholder: "Your Annual Net Income",
       required: true,
       GridProps: {
         xs: 12,
@@ -309,6 +311,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "Depreciation",
       type: "text",
       label: "Any Add Back Like Depreciation",
+      placeholder: "Any Add Back Like Depreciation",
       // required: true,
       GridProps: {
         xs: 12,
@@ -383,6 +386,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "businessAddress",
       type: "text",
       label: "Address of Business",
+      placeholder: "Address of Business",
       required: true,
       schemaValidation: {
         type: "string",
@@ -448,7 +452,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "Field is Required";
+          return "Field is required";
         }
       },
     },
@@ -460,6 +464,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "CurrentLoanOutstanding",
       type: "text",
       label: "Current Loan Outstanding",
+      placeholder: "Current Loan Outstanding",
       required: true,
       GridProps: {
         xs: 12,
@@ -492,6 +497,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "existingLoanInterest",
       type: "text",
       label: "Rate of Interest on existing Loan",
+      placeholder: "Rate of Interest on existing Loan",
       required: true,
       GridProps: {
         xs: 12,
@@ -502,13 +508,16 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["This field is required"] },
-          { name: "required", params: ["This field is required"] },
+          { name: "typeError", params: ["Rate of Interest is required"] },
+          { name: "required", params: ["Rate of Interest is required"] },
         ],
       },
       enableNumWords: true,
       FormatProps: {
-        prefix: "%",
+        suffix: "%",
+        decimalScale: 2,
+        format: "##.##%",
+        fixedDecimalScale: true,
         allowNegative: false,
         allowLeadingZeros: false,
       },
@@ -522,6 +531,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "existingLoanEmi",
       type: "text",
       label: "EMI of Existing Loan",
+      placeholder: "EMI of Existing Loan",
       required: true,
       GridProps: {
         xs: 12,
@@ -573,7 +583,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       // runPostValidationHookAlways: true,
       // validate: (fieldData) => {
       //   if (fieldData.value === "0") {
-      //     return "Propert City is Required";
+      //     return "Propert City is required";
       //   }
       // },
     },
@@ -605,7 +615,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "0") {
-          return "This field is Required";
+          return "This field is required";
         }
       },
     },
@@ -619,6 +629,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "coApplicantfirstName",
       type: "text",
       label: "First Name",
+      placeholder: "First Name",
       required: true,
       schemaValidation: {
         type: "string",
@@ -629,13 +640,13 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      // dependentFields:["coApplicant"],
-      // shouldExclude:(_, dependentValues) => {
-      //   if (dependentValues?.coApplicant?.value === "Y") {
-      //     return false;
-      //   }
-      //   return true;
-      // },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
     },
     {
       render: {
@@ -644,11 +655,19 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "coApplicantmiddleName",
       label: "Middle Name",
+      placeholder: "Middle Name",
       type: "text",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
     },
     {
@@ -658,6 +677,7 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "coApplicantlastName",
       label: "Last Name",
+      placeholder: "Last Name",
       required: true,
       type: "text",
       schemaValidation: {
@@ -668,6 +688,13 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
     },
     {
@@ -683,6 +710,13 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       options: getMiscVal("GENDER"),
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
@@ -693,28 +727,68 @@ const SelfEmpProfQueMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "textField",
+        componentType: "select",
+        group: 2,
+      },
+      name: "coApplicantRelatioship",
+      label: "Relationship",
+      placeholder: "Relationship",
+      required: true,
+      defaultValue: "X",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
+      options: getMiscVal("RELATIONSHIP"),
+      runPostValidationHookAlways: true,
+      validate: (fieldData) => {
+        if (fieldData.value === "X") {
+          return "Relationship is required";
+        }
+      },
+    },
+    {
+      render: {
+        componentType: "numberFormat",
         group: 2,
       },
       name: "coApplicantmobileNo",
       type: "text",
       label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
+      FormatProps: {
+        format: "##########",
+      },
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Mobile is required"] },
+          { name: "required", params: ["Mobile No is required."] },
+          { name: "min", params: [10, "Mobile No should be 10 digit."] },
+          { name: "max", params: [10, "Mobile No should be 10 digit."] },
           {
             name: "matches",
-            params: [
-              /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/,
-              "Please enter valid Mobile Number",
-            ],
+            params: [/^\d{10}/, "Please enter valid Mobile No."],
           },
         ],
       },
@@ -728,11 +802,19 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       name: "coApplicantemail",
       type: "text",
       label: "Email",
+      placeholder: "Email",
       required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       schemaValidation: {
         type: "string",
@@ -752,12 +834,20 @@ const SelfEmpProfQueMetaData: MetaDataType = {
       },
       name: "coApplicantpincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       schemaValidation: {
         type: "string",
@@ -820,6 +910,13 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       postValidationSetCrossFieldValues: async (fieldData) => {
         if (trim(fieldData.value) === "") {
           return {
@@ -867,8 +964,16 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       name: "city",
       label: "City",
+      placeholder: "City",
     },
 
     {
@@ -880,9 +985,17 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       name: "district",
       label: "District",
+      placeholder: "District",
       isReadOnly: () => true,
     },
 
@@ -895,9 +1008,17 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
       },
       name: "state",
       label: "State",
+      placeholder: "State",
       isReadOnly: () => true,
     },
 
@@ -911,8 +1032,16 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       name: "country",
       label: "Country",
+      placeholder: "Country",
       isReadOnly: () => true,
     },
 
@@ -926,9 +1055,17 @@ const SelfEmpProfQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      dependentFields: ["coApplicant"],
+      shouldExclude: (_, dependentValues) => {
+        if (dependentValues?.coApplicant?.value === "Y") {
+          return false;
+        }
+        return true;
+      },
       name: "coApplicantnetIncome",
       type: "text",
       label: "Net Income",
+      placeholder: "Net Income",
       required: true,
 
       schemaValidation: {
@@ -950,7 +1087,4 @@ const SelfEmpProfQueMetaData: MetaDataType = {
     },
   ],
 };
-
-export default SelfEmpProfQueMetaData;
-
 // developer file will remain same as New Home Loan

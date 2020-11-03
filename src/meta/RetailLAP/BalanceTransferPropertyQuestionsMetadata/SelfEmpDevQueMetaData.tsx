@@ -141,7 +141,7 @@ export const selfEmpDevQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Propert City is Required";
+          return "Propert City is required";
         }
       },
     },
@@ -165,7 +165,7 @@ export const selfEmpDevQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Type of Property is Required";
+          return "Type of Property is required";
         }
       },
     },

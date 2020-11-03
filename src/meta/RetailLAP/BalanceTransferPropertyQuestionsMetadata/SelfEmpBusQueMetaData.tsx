@@ -137,7 +137,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Property City is Required";
+          return "Property City is required";
         }
       },
     },
@@ -161,7 +161,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Type of Property is Required";
+          return "Type of Property is required";
         }
       },
     },
@@ -226,7 +226,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "No. of Years of Experience is Required";
+          return "No. of Years of Experience is required";
         }
       },
     },
@@ -250,7 +250,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Nature of Business is Required";
+          return "Nature of Business is required";
         }
       },
     },
@@ -274,7 +274,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Type of Industry is Required";
+          return "Type of Industry is required";
         }
       },
     },
@@ -400,7 +400,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Any Other Source of Income is Required.";
+          return "Any Other Source of Income is required.";
         }
       },
     },
@@ -424,7 +424,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Type of Firm is Required.";
+          return "Type of Firm is required.";
         }
       },
     },
@@ -687,7 +687,7 @@ export const selfEmpBusQueMetaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Existing Loan From is Required";
+          return "Existing Loan From is required";
         }
       },
     },

@@ -12,6 +12,8 @@ import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import { OptionsProps, Merge } from "../types";
 
+import { Checkbox } from "components/styledComponent/checkbox";
+
 interface dependentOptionsFn {
   (optionsFn?: DependentValuesType, formName?: string):
     | OptionsProps[]
@@ -21,6 +23,7 @@ interface dependentOptionsFn {
 interface extendedFieldProps extends UseFieldHookProps {
   options?: OptionsProps[] | dependentOptionsFn;
   multiple?: boolean;
+  showCheckbox?: boolean;
 }
 type MySelectProps = Merge<TextFieldProps, extendedFieldProps>;
 
@@ -49,6 +52,7 @@ const MySelect: FC<MySelectAllProps> = ({
   GridProps,
   enableGrid,
   multiple,
+  showCheckbox,
   //@ts-ignore
   isFieldFocused,
   InputProps,
@@ -161,16 +165,27 @@ const MySelect: FC<MySelectAllProps> = ({
     return null;
   }
   const isError = touched && (error ?? "") !== "";
-  const menuItems = _options.map((menuItem, index) => (
-    // @ts-ignore
-    <MenuItem
-      {...MenuItemProps}
-      key={menuItem.value ?? index}
-      value={menuItem.value}
-    >
-      {menuItem.label}
-    </MenuItem>
-  ));
+  const menuItems = _options.map((menuItem, index) => {
+    return (
+      <MenuItem
+        {...MenuItemProps}
+        button={undefined}
+        key={menuItem.value ?? index}
+        value={menuItem.value}
+      >
+        {showCheckbox ? (
+          <Checkbox
+            checked={
+              Boolean(multiple)
+                ? Array.isArray(value) && value.indexOf(menuItem.value) >= 0
+                : value === menuItem.value
+            }
+          />
+        ) : null}
+        {menuItem.label}
+      </MenuItem>
+    );
+  });
   const result = (
     <TextField
       {...others}
@@ -186,7 +201,29 @@ const MySelect: FC<MySelectAllProps> = ({
       disabled={isSubmitting}
       SelectProps={{
         ...SelectProps,
+        native: false,
         multiple: multiple,
+        renderValue: multiple
+          ? (values: any[] | any) => {
+              if (!Array.isArray(values)) {
+                values = [values];
+              }
+              if (Array.isArray(_options)) {
+                return _options.reduce((acc, current) => {
+                  if (values.indexOf(current.value) >= 0) {
+                    if (acc === "") {
+                      return current.label;
+                    } else {
+                      return `${acc},${current.label}`;
+                    }
+                  }
+                  return acc;
+                }, "");
+              }
+              return "";
+            }
+          : undefined,
+        //@ts-ignore
       }}
       InputLabelProps={{
         shrink: true,

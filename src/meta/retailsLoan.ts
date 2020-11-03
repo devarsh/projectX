@@ -42,7 +42,7 @@ const metaData: MetaDataType = {
       },
       inputMask: {
         fullWidth: true,
-      }
+      },
     },
   },
   fields: [
@@ -66,7 +66,7 @@ const metaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Product Type is Required";
+          return "Product Type is required.";
         }
       },
     },
@@ -106,7 +106,7 @@ const metaData: MetaDataType = {
       runPostValidationHookAlways: true,
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Salutation is Required";
+          return "Salutation is required.";
         }
       },
       postValidationSetCrossFieldValues: (field) => {
@@ -185,7 +185,7 @@ const metaData: MetaDataType = {
       type: "text",
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["Last Name is required"] }],
+        rules: [{ name: "required", params: ["Last Name is required."] }],
       },
       GridProps: {
         xs: 12,
@@ -209,7 +209,7 @@ const metaData: MetaDataType = {
       options: getMiscVal("GENDER"),
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "Gender is Required";
+          return "Gender is required.";
         }
       },
       GridProps: {
@@ -232,8 +232,8 @@ const metaData: MetaDataType = {
       schemaValidation: {
         type: "date",
         rules: [
-          { name: "required", params: ["Date of Birth is required"] },
-          { name: "typeError", params: ["Date of Birth is required"] },
+          { name: "required", params: ["Date of Birth is required."] },
+          { name: "typeError", params: ["Please enter valid Date of Birth."] },
         ],
       },
       GridProps: {
@@ -243,7 +243,6 @@ const metaData: MetaDataType = {
       },
       validationRun: "onChange",
     },
-
     {
       render: {
         componentType: "numberFormat",
@@ -256,7 +255,12 @@ const metaData: MetaDataType = {
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["Loan Amount is required"] }],
+        rules: [
+          {
+            name: "required",
+            params: ["Your Desired Loan Amount is required."],
+          },
+        ],
       },
       enableNumWords: true,
       FormatProps: {
@@ -274,6 +278,11 @@ const metaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      validate: (fieldData) => {
+        if (fieldData.value <= 0) {
+          return "Please enter valid value.";
+        }
+      },
     },
 
     {
@@ -289,7 +298,7 @@ const metaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Mobile No is required"] },
+          { name: "required", params: ["Mobile No is required."] },
           { name: "min", params: [10, "Mobile No should be 10 digit."] },
           { name: "max", params: [10, "Mobile No should be 10 digit."] },
           {
@@ -322,7 +331,7 @@ const metaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Email is required"] },
+          { name: "required", params: ["Email is required."] },
           { name: "email", params: ["Please enter Email ID."] },
         ],
       },
@@ -346,7 +355,7 @@ const metaData: MetaDataType = {
       options: getMiscVal("RETAIL_EMPL"),
       validate: (fieldData) => {
         if (fieldData.value === "X") {
-          return "How Are You Currently Employed is Required";
+          return "How Are You Currently Employed is required.";
         }
       },
       GridProps: {
@@ -368,7 +377,7 @@ const metaData: MetaDataType = {
       required: true,
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["Landmark is required"] }],
+        rules: [{ name: "required", params: ["Landmark is required."] }],
       },
       GridProps: {
         xs: 12,
@@ -390,7 +399,7 @@ const metaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "required", params: ["Residence Pincode is required"] },
+          { name: "required", params: ["Residence Pincode is required."] },
           { name: "min", params: [6, "Residence Pincode should be 6 digit."] },
           { name: "max", params: [6, "Residence Pincode should be 6 digit."] },
           {
@@ -503,7 +512,7 @@ const metaData: MetaDataType = {
       },
       validate: (fieldData) => {
         if (fieldData.value === "") {
-          return "Location is Required";
+          return "Location is required.";
         }
       },
       GridProps: {
@@ -521,10 +530,16 @@ const metaData: MetaDataType = {
       name: "city",
       label: "City",
       placeholder: "City",
+      required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      validate: (fieldData) => {
+        if (fieldData.value === "") {
+          return "City is required.";
+        }
       },
     },
 
@@ -610,7 +625,7 @@ const metaData: MetaDataType = {
       },
       validate: (fieldData) => {
         if (fieldData.value === false || fieldData.value === "") {
-          return "Please agreed with Terms and Conditions.";
+          return "Please agree with Terms and Conditions.";
         }
       },
       validationRun: "onChange",
