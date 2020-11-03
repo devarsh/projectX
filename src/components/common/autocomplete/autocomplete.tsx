@@ -1,37 +1,47 @@
-import { FC, useEffect, useState, useRef, useCallback } from "react";
-import { useField, UseFieldHookProps } from "packages/form";
-
-import { SelectProps } from "@material-ui/core/Select";
+import { FC, useEffect, useRef, useState, useCallback, Fragment } from "react";
 import { TextFieldProps } from "@material-ui/core/TextField";
-import { TextField } from "components/styledComponent";
-import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import { OptionsProps, Merge } from "../types";
 import CircularProgress, {
   CircularProgressProps,
 } from "@material-ui/core/CircularProgress";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Autocomplete, {
+  AutocompleteProps,
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
+import { CreateFilterOptionsConfig } from "@material-ui/lab/useAutocomplete";
 import { Checkbox } from "components/styledComponent/checkbox";
-import { dependentOptionsFn } from "../types";
+import { TextField } from "styled-components";
+import { useField, UseFieldHookProps } from "packages/form";
+import { Merge, OptionsProps, dependentOptionsFn } from "../types";
+import Chip, { ChipProps } from "@material-ui/core/Chip";
+import match from "autosuggest-highlight/match";
+import parse from "autosuggest-highlight/parse";
+//will use it if there is a neeed for advance sorter
+//import matchSorter from "match-sorter";
 
-interface extendedFieldProps extends UseFieldHookProps {
-  options?: OptionsProps[] | dependentOptionsFn;
-  multiple?: boolean;
-  showCheckbox?: boolean;
-}
-type MySelectProps = Merge<TextFieldProps, extendedFieldProps>;
-
-interface MySelectExtendedProps {
-  MenuItemProps?: MenuItemProps;
-  SelectProps?: SelectProps;
-  CircularProgressProps?: CircularProgressProps;
-  GridProps?: GridProps;
+interface AutoCompleteExtendedProps {
   enableGrid: boolean;
+  showCheckbox: boolean;
+  GridProps?: GridProps;
+  CircularProgressProps?: CircularProgressProps;
+  TextFieldProps?: TextFieldProps;
+  ChipProps?: ChipProps;
+  CreateFilterOptionsConfig?: CreateFilterOptionsConfig<OptionsProps>;
+  options?: OptionsProps[] | dependentOptionsFn;
 }
 
-export type MySelectAllProps = Merge<MySelectProps, MySelectExtendedProps>;
+type MyAutocompleteProps = Merge<
+  AutocompleteProps<OptionsProps, true, true, true>,
+  AutoCompleteExtendedProps
+>;
 
-const MySelect: FC<MySelectAllProps> = ({
+export type MyAllAutocompleteProps = Merge<
+  MyAutocompleteProps,
+  UseFieldHookProps
+>;
+
+const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   name: fieldName,
   validate,
   validationRun,
@@ -42,29 +52,29 @@ const MySelect: FC<MySelectAllProps> = ({
   dependentFields,
   fieldKey: fieldID,
   options,
-  MenuItemProps,
-  SelectProps,
   GridProps,
   enableGrid,
   multiple,
-  showCheckbox,
+  disableClearable,
+  freeSolo,
+  TextFieldProps,
+  CircularProgressProps,
+  ChipProps,
   //@ts-ignore
   isFieldFocused,
-  InputProps,
-  inputProps,
-  CircularProgressProps,
+  showCheckbox,
+  CreateFilterOptionsConfig,
   ...others
 }) => {
   const {
     formName,
-    value,
     error,
     touched,
     handleChange,
     handleBlur,
     runValidation,
-    validationRunning,
     isSubmitting,
+    validationRunning,
     fieldKey,
     name,
     dependentValues,
@@ -97,6 +107,7 @@ const MySelect: FC<MySelectAllProps> = ({
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
   const [loadingOptions, setLoadingOptions] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const syncAsyncSetOptions = useCallback(
     (options, dependentValues) => {
@@ -138,7 +149,6 @@ const MySelect: FC<MySelectAllProps> = ({
     },
     [setOptions, formName]
   );
-
   useEffect(() => {
     syncAsyncSetOptions(options, dependentValues);
   }, [options, dependentValues, syncAsyncSetOptions]);
@@ -167,92 +177,86 @@ const MySelect: FC<MySelectAllProps> = ({
     return null;
   }
   const isError = touched && (error ?? "") !== "";
-  const menuItems = _options.map((menuItem, index) => {
-    return (
-      <MenuItem
-        {...MenuItemProps}
-        button={undefined}
-        key={menuItem.value ?? index}
-        value={menuItem.value}
-      >
-        {showCheckbox ? (
-          <Checkbox
-            checked={
-              Boolean(multiple)
-                ? Array.isArray(value) && value.indexOf(menuItem.value) >= 0
-                : value === menuItem.value
-            }
-          />
-        ) : null}
-        {menuItem.label}
-      </MenuItem>
-    );
-  });
   const result = (
-    <TextField
-      {...others}
-      select={true}
+    <Autocomplete
       key={fieldKey}
       id={fieldKey}
-      name={name}
-      value={multiple && !Array.isArray(value) ? [value] : value}
-      error={isError}
-      helperText={isError ? error : null}
-      onChange={handleChange}
+      multiple={multiple}
+      disableClearable={disableClearable}
+      freeSolo={freeSolo}
+      options={_options}
+      onChange={(_, value, __) => {
+        handleChange(value);
+      }}
       onBlur={handleBlur}
       disabled={isSubmitting}
-      SelectProps={{
-        ...SelectProps,
-        native: false,
-        multiple: multiple,
-        renderValue: multiple
-          ? (values: any[] | any) => {
-              if (!Array.isArray(values)) {
-                values = [values];
-              }
-              if (Array.isArray(_options)) {
-                return _options.reduce((acc, current) => {
-                  if (values.indexOf(current.value) >= 0) {
-                    if (acc === "") {
-                      return current.label;
-                    } else {
-                      return `${acc},${current.label}`;
-                    }
-                  }
-                  return acc;
-                }, "");
-              }
-              return "";
-            }
-          : undefined,
-        //@ts-ignore
+      getOptionLabel={getOptionLabel}
+      renderInput={(params) => (
+        <TextField
+          {...TextFieldProps}
+          {...params}
+          name={name}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          type="text"
+          error={isError}
+          helperText={isError ? error : null}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment:
+              validationRunning || loadingOptions ? (
+                <InputAdornment position="end">
+                  <CircularProgress
+                    color="primary"
+                    variant="indeterminate"
+                    {...CircularProgressProps}
+                  />
+                </InputAdornment>
+              ) : null,
+          }}
+          inputProps={{
+            readOnly: readOnly,
+            tabIndex: readOnly ? -1 : undefined,
+            ...TextFieldProps?.inputProps,
+          }}
+        />
+      )}
+      renderOption={(option, { selected }) => {
+        let label = getOptionLabel(option);
+        const matches = match(label, inputValue);
+        const parts = parse(label, matches);
+        const labelJSX = parts.map((part, index) => (
+          <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+            {part.text}
+          </span>
+        ));
+        return (
+          <Fragment>
+            {showCheckbox ? <Checkbox checked={selected} /> : null}
+            {labelJSX}
+          </Fragment>
+        );
       }}
-      InputLabelProps={{
-        shrink: true,
+      filterOptions={
+        Boolean(CreateFilterOptionsConfig) &&
+        typeof CreateFilterOptionsConfig === "object"
+          ? createFilterOptions(CreateFilterOptionsConfig)
+          : undefined
+      }
+      renderTags={(value, getTagProps) => {
+        return value.map((option, index) => (
+          <Chip
+            key={`${option.label}-${index}`}
+            variant="outlined"
+            {...ChipProps}
+            label={option.label}
+            {...getTagProps({ index })}
+          />
+        ));
       }}
-      inputRef={focusRef}
-      InputProps={{
-        endAdornment:
-          validationRunning || loadingOptions ? (
-            <InputAdornment position="end">
-              <CircularProgress
-                color="primary"
-                variant="indeterminate"
-                {...CircularProgressProps}
-              />
-            </InputAdornment>
-          ) : null,
-        ...InputProps,
-      }}
-      inputProps={{
-        readOnly: readOnly,
-        tabIndex: readOnly ? -1 : undefined,
-        ...inputProps,
-      }}
-    >
-      {menuItems}
-    </TextField>
+    />
   );
+
   if (Boolean(enableGrid)) {
     return <Grid {...GridProps}>{result}</Grid>;
   } else {
@@ -260,4 +264,6 @@ const MySelect: FC<MySelectAllProps> = ({
   }
 };
 
-export default MySelect;
+const getOptionLabel = (option: OptionsProps) => option.label;
+
+export default MyAutocomplete;

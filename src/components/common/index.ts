@@ -9,3 +9,4 @@ export * from "./datetime";
 export * from "./rating";
 export * from "./toggleButtonGroup";
 export * from "./spacer";
+export * from "./autocomplete";

@@ -17,6 +17,7 @@ import {
   AllSpacerProps,
   AllToggleButtonGroupProps,
   AllInputMaskProps,
+  AllAutocompleteProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -35,6 +36,7 @@ import {
   PasswordFieldPropsOptional,
   ToggleButtonGroupPropsOptional,
   InputMaskPropsOptional,
+  AutocompletePropsOptional,
 } from "./typesFields";
 import { To } from "history";
 
@@ -90,6 +92,7 @@ export interface ComponentTypeProps {
   passwordField?: PasswordFieldPropsOptional;
   toggleButtonGroup?: ToggleButtonGroupPropsOptional;
   inputMask?: InputMaskPropsOptional;
+  autocomplete?: AutocompletePropsOptional;
 }
 
 export interface MetaDataType {
@@ -114,7 +117,8 @@ export type FieldMetaDataType =
   | AllPasswordFieldProps
   | AllToggleButtonGroupProps
   | AllSpacerProps
-  | AllInputMaskProps;
+  | AllInputMaskProps
+  | AllAutocompleteProps;
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {

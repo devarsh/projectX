@@ -14,6 +14,7 @@ import { SliderProps } from "components/common/slider";
 import { SwitchGroupProps, SwitchProps } from "components/common/switch";
 import { SpacerProps } from "components/common/spacer";
 import { ToggleButtonGroupProps } from "components/common/toggleButtonGroup";
+import { AutocompleteProps } from "components/common/autocomplete";
 import { NumberFormatProps } from "components/derived/numberFormat";
 import { PasswordFieldProps } from "components/derived/passwordField";
 import { InputMaskProps } from "components/derived/inputMask";
@@ -30,6 +31,13 @@ export interface FieldMetaData<T> {
 }
 
 export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
+
+export type AllAutocompleteProps = Merge<
+  FieldMetaData<"autocomplete">,
+  AutocompleteProps
+>;
+
+export type AutocompletePropsOptional = Optional<AllAutocompleteProps>;
 
 export type AllSpacerProps = Merge<FieldMetaData<"spacer">, SpacerProps>;
 
