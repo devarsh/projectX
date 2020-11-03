@@ -19,8 +19,7 @@ export const theme: Theme = {
           "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
         border: 0,
         color: "#fff !important",
-        height: 40,
-        padding: ".5rem .75rem",
+        padding: "4px .75rem",
         //@ts-ignore
         fontWeight: "700",
         minWidth: "120px",
@@ -99,6 +98,7 @@ export const theme: Theme = {
     MuiSelect: {
       selectMenu: {
         minHeight: "22px",
+        lineHeight: "22px",
       },
     },
 
@@ -149,6 +149,13 @@ export const theme: Theme = {
         fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
         //@ts-ignore
         fontWeight: "600",
+      },
+    },
+
+    MuiPopover: {
+      paper: {
+        boxShadow: "0 3px 6px rgba(0,0,0,0.5)",
+        border: "1px solid rgba(0,0,0,0.3)",
       },
     },
   },

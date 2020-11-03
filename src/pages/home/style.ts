@@ -63,7 +63,6 @@ export type CoreProductsNameProps = Record<
 >;
 
 export const coreProductsStyle = (theme: Theme): any => ({
-  
   wrapper: {
     marginTop: "120px",
     maxWidth: "1260px",
