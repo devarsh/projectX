@@ -1,6 +1,7 @@
 import { setIn } from "packages/form";
 import { MetaDataType } from "../types";
 import { singletonFunctionRegisrationFactoryType } from "./functionRegistry";
+import { ruleEngine } from "./jsonRuleEngine";
 
 export type AttachMethodArrayType = [RegExp, Function?];
 
@@ -33,6 +34,8 @@ const inputMaskPrepareNotFound = (fieldKey) => (value) => {
   return value;
 };
 
+const defaultBooleanFunction = (value) => () => value;
+
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.options$/, optionsMethodNotFound],
   [/^fields.*.validate$/, validateMethodNotFound],
@@ -60,39 +63,63 @@ const JSONWalker = (
   currentObj: any,
   interestedValues: AttachMethodArrayType[],
   accumulator: AccumulatorType[],
-  callback: any = undefined,
   currentPath: string = "",
   lastKey: string | number = ""
 ) => {
   if (typeof currentObj === "object") {
     for (const [key, val] of Object.entries(currentObj)) {
       const path = Boolean(currentPath) ? `${currentPath}.${key}` : `${key}`;
-      JSONWalker(val, interestedValues, accumulator, callback, path, key);
+      JSONWalker(val, interestedValues, accumulator, path, key);
     }
   } else if (Array.isArray(currentObj)) {
     currentObj.forEach((value, index) => {
       const path = Boolean(currentPath)
         ? `${currentPath}.${index}`
         : `${index}`;
-      JSONWalker(value, interestedValues, accumulator, callback, path, index);
+      JSONWalker(value, interestedValues, accumulator, path, index);
     });
   } else {
     let result = patternMatch(interestedValues, currentPath);
     if (result.found) {
-      if (typeof currentObj === "string") {
-        if (callback !== undefined && typeof callback === "function") {
-          callback(currentPath, currentObj, lastKey);
-        }
-        if (typeof result.defaultFn === "function") {
-          let retVal = result.defaultFn(currentPath);
-          if (typeof retVal === "function") {
-            accumulator.push([currentPath, currentObj, lastKey, retVal]);
-          } else {
-            accumulator.push([currentPath, currentObj, lastKey, undefined]);
-          }
+      //attach a function that returns boolean
+      if (currentObj === "true")
+        accumulator.push([
+          currentPath,
+          "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
+          lastKey,
+          defaultBooleanFunction(true),
+        ]);
+    } else if (currentObj === "false") {
+      accumulator.push([
+        currentPath,
+        "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
+        lastKey,
+        defaultBooleanFunction(false),
+      ]);
+    } else if (typeof currentObj === "boolean") {
+      accumulator.push([
+        currentPath,
+        "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
+        lastKey,
+        defaultBooleanFunction(currentObj),
+      ]);
+    } else if (typeof currentObj === "object") {
+      accumulator.push([
+        currentPath,
+        "RULES_ENGINE_FUNCTION_TO_ATTACH_AS_DEFAULT_FN",
+        lastKey,
+        ruleEngine(currentObj),
+      ]);
+    } else if (typeof currentObj === "string") {
+      if (typeof result.defaultFn === "function") {
+        let retVal = result.defaultFn(currentPath);
+        if (typeof retVal === "function") {
+          accumulator.push([currentPath, currentObj, lastKey, retVal]);
         } else {
           accumulator.push([currentPath, currentObj, lastKey, undefined]);
         }
+      } else {
+        accumulator.push([currentPath, currentObj, lastKey, undefined]);
       }
     }
   }
@@ -111,7 +138,7 @@ export const attachMethodsToMetaData = (
 ) => {
   const data: AccumulatorType[] = [];
   JSONWalker(metaData, interestedFields, data);
-  let newMetaData = metaData;
+  let newMetaData = { ...metaData };
   for (const one of data) {
     const retVal = registrationFnInstance.getFn(one[1], one[3]);
     newMetaData = setIn(newMetaData, one[0], retVal);
