@@ -36,9 +36,13 @@ export interface FieldMetaData<T> {
   defaultValue?: any;
   schemaValidation?: YupSchemaMetaDataType;
   render: FieldRenderProps<T>;
-  validate?: typeof ValidateFnType | CustomRuleType;
-  shouldExclude?: typeof shouldExcludeFnType | CustomRuleType | Boolean;
-  isReadOnly?: typeof shouldExcludeFnType | CustomRuleType | Boolean;
+  validate?: typeof ValidateFnType | CustomRuleType | string;
+  shouldExclude?:
+    | typeof shouldExcludeFnType
+    | CustomRuleType
+    | Boolean
+    | string;
+  isReadOnly?: typeof shouldExcludeFnType | CustomRuleType | Boolean | string;
 }
 
 export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
