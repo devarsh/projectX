@@ -70,7 +70,7 @@ export interface FormMetaDataType {
   validationRun: "onBlur" | "onChange" | "all";
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
-  navigation: {
+  navigation?: {
     nextPage: To;
   };
 }

@@ -180,49 +180,57 @@ export const useField = ({
     })
   );
   // this determine if the field should be excluded
+  const lastShouldExcludePromise = useRef<Promise<any> | null>(null);
+  const lastIsReadOnlyPromise = useRef<Promise<any> | null>(null);
   useEffect(() => {
-    const runner = async () => {
-      if (typeof shouldExclude === "function") {
-        let result = await Promise.resolve(
-          shouldExclude(fieldData, dependentFieldsState)
-        );
-        if (result === true && fieldData.excluded === false) {
-          setFieldData((old) => ({
-            ...old,
-            excluded: true,
-          }));
-          addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
-        } else if (result === false && fieldData.excluded === true) {
-          setFieldData((old) => ({
-            ...old,
-            excluded: false,
-          }));
-          addRemoveExcludedFields({
-            fieldName: fieldData.name,
-            flag: "remove",
-          });
+    if (typeof shouldExclude === "function") {
+      const currentShouldExcludePromise = Promise.resolve(
+        shouldExclude(fieldData, dependentFieldsState)
+      );
+      lastShouldExcludePromise.current = currentShouldExcludePromise;
+      currentShouldExcludePromise.then((result) => {
+        if (currentShouldExcludePromise === lastShouldExcludePromise.current) {
+          if (result === true && fieldData.excluded === false) {
+            setFieldData((old) => ({
+              ...old,
+              excluded: true,
+            }));
+            addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
+          } else if (result === false && fieldData.excluded === true) {
+            setFieldData((old) => ({
+              ...old,
+              excluded: false,
+            }));
+            addRemoveExcludedFields({
+              fieldName: fieldData.name,
+              flag: "remove",
+            });
+          }
         }
-      }
-      if (typeof isReadOnly === "function") {
-        let result = await Promise.resolve(
-          isReadOnly(fieldData, dependentFieldsState)
-        );
-        if (result === true && fieldData.readOnly === false) {
-          setFieldData((old) => ({
-            ...old,
-            readOnly: true,
-          }));
-        } else if (result === false && fieldData.readOnly === true) {
-          setFieldData((old) => ({
-            ...old,
-            readOnly: true,
-          }));
+      });
+    }
+    if (typeof isReadOnly === "function") {
+      const currentIsReadOnlyPromise = Promise.resolve(
+        isReadOnly(fieldData, dependentFieldsState)
+      );
+      lastIsReadOnlyPromise.current = currentIsReadOnlyPromise;
+      currentIsReadOnlyPromise.then((result) => {
+        if (currentIsReadOnlyPromise === lastIsReadOnlyPromise.current) {
+          if (result === true && fieldData.readOnly === false) {
+            setFieldData((old) => ({
+              ...old,
+              readOnly: true,
+            }));
+          } else if (result === false && fieldData.readOnly === true) {
+            setFieldData((old) => ({
+              ...old,
+              readOnly: true,
+            }));
+          }
         }
-      }
-    };
-    runner();
+      });
+    }
   });
-
   const passCrossFieldMessage = useRecoilCallback(
     ({ snapshot, set }) => (fieldsObj: InitialValuesType) => {
       const fieldsLoadable = snapshot.getLoadable(
@@ -284,8 +292,8 @@ export const useField = ({
       lastValidationPromise.current = currentPromise;
       currentPromise
         .then((result) => {
-          const { error, crossFieldMessages } = result;
           if (lastValidationPromise.current === currentPromise) {
+            const { error, crossFieldMessages } = result;
             let finalResult;
             if (
               typeof error === "string" ||

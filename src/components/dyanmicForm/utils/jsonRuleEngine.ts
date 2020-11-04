@@ -1,9 +1,9 @@
 import { Engine } from "json-rules-engine";
 import { FormFieldAtomType, DependentValuesType } from "packages/form";
-
+import { CustomRuleType } from "../typesFields";
 //localStorage.debug = "json-rules-engine";
 
-export const ruleEngine = (rule) => async (
+export const ruleEngine = (rule: CustomRuleType) => async (
   fieldData: FormFieldAtomType,
   dependentFields: DependentValuesType
 ) => {

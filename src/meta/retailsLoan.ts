@@ -64,10 +64,19 @@ const metaData: MetaDataType = {
       //@ts-ignore
       options: getProductType,
       runPostValidationHookAlways: true,
-      validate: (fieldData) => {
-        if (fieldData.value === "X") {
-          return "Product Type is required.";
-        }
+      validate: {
+        conditions: {
+          all: [
+            {
+              fact: "currentField",
+              path: "$.value",
+              operator: "equal",
+              value: "X",
+            },
+          ],
+        },
+        success: "is required",
+        failure: null,
       },
     },
 

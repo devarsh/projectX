@@ -48,6 +48,8 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.MaskProps.prepare$/, inputMaskPrepareNotFound],
 ];
 
+const SkipWalkingForKeys = ["validate", "isReadOnly", "shouldExclude"];
+
 const patternMatch = (patters: AttachMethodArrayType[], value: string) => {
   for (const currentPattern of patters) {
     if (currentPattern[0] instanceof RegExp) {
@@ -59,37 +61,25 @@ const patternMatch = (patters: AttachMethodArrayType[], value: string) => {
   return { found: false, defaultFn: undefined };
 };
 
-const JSONWalker = (
+const JSONWalkerFinalPath = (
   currentObj: any,
   interestedValues: AttachMethodArrayType[],
   accumulator: AccumulatorType[],
   currentPath: string = "",
   lastKey: string | number = ""
 ) => {
-  if (typeof currentObj === "object") {
-    for (const [key, val] of Object.entries(currentObj)) {
-      const path = Boolean(currentPath) ? `${currentPath}.${key}` : `${key}`;
-      JSONWalker(val, interestedValues, accumulator, path, key);
-    }
-  } else if (Array.isArray(currentObj)) {
-    currentObj.forEach((value, index) => {
-      const path = Boolean(currentPath)
-        ? `${currentPath}.${index}`
-        : `${index}`;
-      JSONWalker(value, interestedValues, accumulator, path, index);
-    });
-  } else {
-    let result = patternMatch(interestedValues, currentPath);
-    if (result.found) {
-      //attach a function that returns boolean
-      if (currentObj === "true")
-        accumulator.push([
-          currentPath,
-          "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
-          lastKey,
-          defaultBooleanFunction(true),
-        ]);
-    } else if (currentObj === "false") {
+  console.log(currentPath);
+  let result = patternMatch(interestedValues, currentPath);
+  if (result.found) {
+    //attach a function that returns boolean
+    if (currentObj === "true")
+      accumulator.push([
+        currentPath,
+        "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
+        lastKey,
+        defaultBooleanFunction(true),
+      ]);
+    else if (currentObj === "false") {
       accumulator.push([
         currentPath,
         "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
@@ -125,6 +115,46 @@ const JSONWalker = (
   }
 };
 
+const JSONWalker = (
+  currentObj: any,
+  interestedValues: AttachMethodArrayType[],
+  accumulator: AccumulatorType[],
+  currentPath: string = "",
+  lastKey: string | number = ""
+) => {
+  if (typeof currentObj === "object") {
+    if (SkipWalkingForKeys.indexOf(lastKey as string) > -1) {
+      JSONWalkerFinalPath(
+        currentObj,
+        interestedValues,
+        accumulator,
+        currentPath,
+        lastKey
+      );
+    } else {
+      for (const [key, val] of Object.entries(currentObj)) {
+        const path = Boolean(currentPath) ? `${currentPath}.${key}` : `${key}`;
+        JSONWalker(val, interestedValues, accumulator, path, key);
+      }
+    }
+  } else if (Array.isArray(currentObj)) {
+    currentObj.forEach((value, index) => {
+      const path = Boolean(currentPath)
+        ? `${currentPath}.${index}`
+        : `${index}`;
+      JSONWalker(value, interestedValues, accumulator, path, index);
+    });
+  } else {
+    JSONWalkerFinalPath(
+      currentObj,
+      interestedValues,
+      accumulator,
+      currentPath,
+      lastKey
+    );
+  }
+};
+
 //we will attach default function for each field Key type if we cannot the required function
 //array index
 //0-the path to set function at
@@ -136,10 +166,10 @@ export const attachMethodsToMetaData = (
   registrationFnInstance: singletonFunctionRegisrationFactoryType,
   interestedFields: AttachMethodArrayType[] = defaultFieldsToAttachMethods
 ) => {
-  const data: AccumulatorType[] = [];
-  JSONWalker(metaData, interestedFields, data);
+  const accumKeys: AccumulatorType[] = [];
+  JSONWalker(metaData, interestedFields, accumKeys);
   let newMetaData = { ...metaData };
-  for (const one of data) {
+  for (const one of accumKeys) {
     const retVal = registrationFnInstance.getFn(one[1], one[3]);
     newMetaData = setIn(newMetaData, one[0], retVal);
   }

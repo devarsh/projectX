@@ -18,77 +18,88 @@ import { AutocompleteProps } from "components/common/autocomplete";
 import { NumberFormatProps } from "components/derived/numberFormat";
 import { PasswordFieldProps } from "components/derived/passwordField";
 import { InputMaskProps } from "components/derived/inputMask";
-
+import { ValidateFnType, shouldExcludeFnType } from "packages/form";
+import { TopLevelCondition } from "json-rules-engine";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
   sequence?: number;
 }
+
+export interface CustomRuleType {
+  conditions: TopLevelCondition;
+  success: any;
+  failure: any;
+}
+
 export interface FieldMetaData<T> {
   defaultValue?: any;
   schemaValidation?: YupSchemaMetaDataType;
   render: FieldRenderProps<T>;
+  validate?: typeof ValidateFnType | CustomRuleType;
+  shouldExclude?: typeof shouldExcludeFnType | CustomRuleType | Boolean;
+  isReadOnly?: typeof shouldExcludeFnType | CustomRuleType | Boolean;
 }
 
 export type Omitted<T> = Omit<T, "fieldKey" | "enableGrid">;
 
 export type AllAutocompleteProps = Merge<
-  FieldMetaData<"autocomplete">,
-  AutocompleteProps
+  Omitted<AutocompleteProps>,
+  FieldMetaData<"autocomplete">
 >;
 
 export type AutocompletePropsOptional = Optional<AllAutocompleteProps>;
 
-export type AllSpacerProps = Merge<FieldMetaData<"spacer">, SpacerProps>;
+export type AllSpacerProps = Merge<SpacerProps, FieldMetaData<"spacer">>;
 
 export type AllInputMaskProps = Merge<
-  FieldMetaData<"inputMask">,
-  Omitted<InputMaskProps>
+  Omitted<InputMaskProps>,
+  FieldMetaData<"inputMask">
 >;
 export type InputMaskPropsOptional = Optional<AllInputMaskProps>;
 
 export type AllToggleButtonGroupProps = Merge<
-  FieldMetaData<"toggleButtonGroup">,
-  Omitted<ToggleButtonGroupProps>
+  Omitted<ToggleButtonGroupProps>,
+  FieldMetaData<"toggleButtonGroup">
 >;
 export type ToggleButtonGroupPropsOptional = Optional<ToggleButtonGroupProps>;
 
 export type AllNumberFormatProps = Merge<
-  FieldMetaData<"numberFormat">,
-  Omitted<NumberFormatProps>
+  Omitted<NumberFormatProps>,
+  FieldMetaData<"numberFormat">
 >;
 
 export type NumberFormatPropsOptional = Optional<NumberFormatProps>;
 
 export type AllPasswordFieldProps = Merge<
-  FieldMetaData<"passwordField">,
-  Omitted<PasswordFieldProps>
+  Omitted<PasswordFieldProps>,
+  FieldMetaData<"passwordField">
 >;
 
 export type PasswordFieldPropsOptional = Optional<PasswordFieldProps>;
 
 export type AllCheckboxProps = Merge<
-  FieldMetaData<"checkbox">,
-  Omitted<CheckboxProps>
+  Omitted<CheckboxProps>,
+  FieldMetaData<"checkbox">
 >;
 export type AllCheckboxGroupProps = Merge<
-  FieldMetaData<"checkboxGroup">,
-  Omitted<CheckboxGroupProps>
+  Omitted<CheckboxGroupProps>,
+  FieldMetaData<"checkboxGroup">
 >;
 export type CheckboxPropsOptional = Optional<CheckboxProps>;
 export type CheckboxGroupPropsOptional = Optional<CheckboxGroupProps>;
 
 export type AllDatePickerProps = Merge<
-  FieldMetaData<"datePicker">,
-  Omitted<DatePickerProps>
+  Omitted<DatePickerProps>,
+  FieldMetaData<"datePicker">
 >;
 export type AllDateTimePickerProps = Merge<
-  FieldMetaData<"datetimePicker">,
-  Omitted<DateTimePickerProps>
+  Omitted<DateTimePickerProps>,
+  FieldMetaData<"datetimePicker">
 >;
 export type AllTimePickerProps = Merge<
-  FieldMetaData<"timePicker">,
-  Omitted<TimePickerProps>
+  Omitted<TimePickerProps>,
+  FieldMetaData<"timePicker">
 >;
 export type DatePickerPropsOptional = Optional<DatePickerProps>;
 export type DateTimePickerPropsOptional = Optional<DateTimePickerProps>;
@@ -98,36 +109,36 @@ export type AllRadioProps = Merge<FieldMetaData<"radio">, Omitted<RadioProps>>;
 export type RadioPropsOptional = Optional<RadioProps>;
 
 export type AllRatingProps = Merge<
-  FieldMetaData<"rating">,
-  Omitted<RatingProps>
+  Omitted<RatingProps>,
+  FieldMetaData<"rating">
 >;
 export type RatingPropsOptional = Optional<RatingProps>;
 
 export type AllSelectFieldProps = Merge<
-  FieldMetaData<"select">,
-  Omitted<SelectProps>
+  Omitted<SelectProps>,
+  FieldMetaData<"select">
 >;
 export type SelectPropsOptional = Optional<SelectProps>;
 
 export type AllSliderProps = Merge<
-  FieldMetaData<"slider">,
-  Omitted<SliderProps>
+  Omitted<SliderProps>,
+  FieldMetaData<"slider">
 >;
 export type SliderPropsOptional = Optional<SliderProps>;
 
 export type AllSwitchProps = Merge<
-  FieldMetaData<"switch">,
-  Omitted<SwitchProps>
+  Omitted<SwitchProps>,
+  FieldMetaData<"switch">
 >;
 export type AllSwitchGroupProps = Merge<
-  FieldMetaData<"switchGroup">,
-  SwitchGroupProps
+  SwitchGroupProps,
+  FieldMetaData<"switchGroup">
 >;
 export type SwitchPropsOptional = Optional<SwitchProps>;
 export type SwitchGroupPropsOptional = Optional<SwitchGroupProps>;
 
 export type AllTextFieldProps = Merge<
-  FieldMetaData<"textField">,
-  Omitted<TextFieldProps>
+  Omitted<TextFieldProps>,
+  FieldMetaData<"textField">
 >;
 export type TextFieldPropsOptional = Optional<TextFieldProps>;

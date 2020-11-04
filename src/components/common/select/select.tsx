@@ -171,7 +171,8 @@ const MySelect: FC<MySelectAllProps> = ({
     return (
       <MenuItem
         {...MenuItemProps}
-        button={undefined}
+        //keep button value to true else keyboard navigation for select will stop working
+        button={true}
         key={menuItem.value ?? index}
         value={menuItem.value}
       >
