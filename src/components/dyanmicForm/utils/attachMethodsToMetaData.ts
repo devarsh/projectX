@@ -68,7 +68,6 @@ const JSONWalkerFinalPath = (
   currentPath: string = "",
   lastKey: string | number = ""
 ) => {
-  console.log(currentPath);
   let result = patternMatch(interestedValues, currentPath);
   if (result.found) {
     //attach a function that returns boolean

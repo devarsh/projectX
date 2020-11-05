@@ -7,11 +7,64 @@ interface CommonFetcherResponse {
 }
 type ExternalResponse = any;
 
-export const RaatnaFinAPI = (APIURL: string) => {
-  let sessionObj: any = {
-    baseUrl: new URL(APIURL),
+interface sessionObjType {
+  baseURL?: URL;
+  loginStatus: boolean;
+  token?: any;
+}
+
+const RaatnaFinAPI = () => {
+  let sessionObj: sessionObjType = {
     loginStatus: false,
-    tokens: "",
+    token: {},
+  };
+  let sessionToken;
+  const createSession = async (APIURL: string) => {
+    sessionObj.baseURL = new URL(APIURL);
+    var myHeaders = new Headers();
+    myHeaders.append("mac_id", "null");
+    myHeaders.append("client_id", "null");
+    myHeaders.append("host_name", "null");
+    myHeaders.append("os_name", osName);
+    myHeaders.append(
+      "Authorization",
+      `Basic ${btoa(`ratnaafin-acute-client:ratnaafin-acute-client-secret`)}`
+    );
+    var formdata = new FormData();
+    formdata.append("grant_type", "password");
+    formdata.append("username", "UUID");
+    formdata.append("password", "Windows 8.1");
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    const url = new URL("./oauth/token", sessionObj.baseURL);
+    sessionToken = fetch(
+      url.href,
+      //@ts-ignore
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        verifyRequest(result);
+      })
+      .catch((error) => {
+        verifyRequest(error);
+      });
+  };
+  const verifyRequest = (data) => {
+    if (data["access_token"] && data["refresh_token"]) {
+      sessionObj.loginStatus = true;
+      sessionObj.token = data;
+    } else {
+      sessionObj.loginStatus = false;
+    }
+  };
+  const loginStatus = () => {
+    return sessionObj.loginStatus;
   };
 
   const externalFetcher = async (
@@ -63,67 +116,19 @@ export const RaatnaFinAPI = (APIURL: string) => {
     };
   };
 
-  const createSession = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append("mac_id", "null");
-    myHeaders.append("client_id", "null");
-    myHeaders.append("host_name", "null");
-    myHeaders.append("os_name", osName);
-    myHeaders.append(
-      "Authorization",
-      `Basic ${btoa(`ratnaafin-acute-client:ratnaafin-acute-client-secret`)}`
-    );
-    var formdata = new FormData();
-    formdata.append("grant_type", "password");
-    formdata.append("username", "UUID");
-    formdata.append("password", "Windows 8.1");
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-    const url = new URL("./oauth/token", sessionObj.baseUrl);
-    return fetch(
-      url.href,
-      //@ts-ignore
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        verifyRequest(result);
-      })
-      .catch((error) => {
-        verifyRequest(error);
-      });
-  };
-
-  const verifyRequest = (data) => {
-    if (data["access_token"] && data["refresh_token"]) {
-      sessionObj.loginStatus = true;
-      sessionObj.token = data;
-    } else {
-      sessionObj.loginStatus = false;
-    }
-  };
-  const loginStatus = () => {
-    return sessionObj.loginStatus;
-  };
-  const printLoginStatus = () => {
-    console.log(sessionObj);
-  };
   const internalFetcher = async (
     url: string,
     payload: any
   ): Promise<CommonFetcherResponse> => {
     try {
+      await sessionToken;
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",
           data: new Error("session expired"),
         };
       }
-      let response = await fetch(new URL(url, sessionObj.baseUrl).href, {
+      let response = await fetch(new URL(url, sessionObj.baseURL).href, {
         method: "POST",
         ...payload,
         headers: new Headers({
@@ -255,22 +260,24 @@ export const RaatnaFinAPI = (APIURL: string) => {
       },
     ];
   };
-  const getAccessToken = () => {
+  //remove this function after migration
+  const getAccessToken = async () => {
+    await sessionToken;
     if (sessionObj?.token["access_token"]) {
       return `Bearer ${sessionObj?.token["access_token"]}`;
     }
     return "Bearer not_valid_token";
   };
-
   return {
     createSession,
-    getAccessToken,
     loginStatus,
-    printLoginStatus,
     getPincode,
     getProductType,
     getPropertyCity,
     getBankList,
     getMiscVal,
+    getAccessToken,
   };
 };
+
+export const APISDK = RaatnaFinAPI();
