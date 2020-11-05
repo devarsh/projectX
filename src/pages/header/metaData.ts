@@ -1,4 +1,5 @@
 import { NavBarType } from "./types";
+import PersonIcon from "@material-ui/icons/Person";
 
 export const siteNav: NavBarType = {
   config: {
@@ -90,6 +91,8 @@ export const siteNav: NavBarType = {
     },
     {
       label: "Login",
+      icon: PersonIcon,
+      iconPosition: "after",
       children: [
         {
           label: "Customer",
@@ -130,7 +133,7 @@ export const formsNav: NavBarType = {
               formCode: "12300002",
             },
             {
-              label: "Retail LDR (Lease Rental Discount)",
+              label: "Retail LRD (Lease Rental Discount)",
               href: "/form/ldr",
               isRouterLink: true,
               formCode: "12300003",

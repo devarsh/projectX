@@ -954,13 +954,21 @@ export const BalanceTransferSelEmpBusQueMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      // dependentFields: ["registerWithRera"],
-      // shouldExclude: (_, dependentValues) => {
-      //   if (dependentValues?.registerWithRera?.value === "Y") {
-      //     return false;
-      //   }
-      //   return true;
-      // },
+      dependentFields: ["registerWithRera"],
+      shouldExclude: {
+        conditions: {
+          all: [
+            {
+              fact: "dependentFields",
+              path: "$.registerWithRera.value",
+              operator: "equal",
+              value: "Y",
+            },
+          ],
+        },
+        success: false,
+        failure: true,
+      },
     },
   ],
 };

@@ -10,15 +10,18 @@ import {
   NavLink,
 } from "reactstrap";
 import Logo from "assets/images/logo.svg";
-import { formsNav, siteNav } from "./metaData";
-import { NavRenderer } from "./renderer";
-import { useStyles, HeaderNameProps, HeaderStyleProps } from "./style";
 import { useNavigate } from "react-router-dom";
 import CallIcon from "@material-ui/icons/Call";
+import { formsNav, siteNav } from "./metaData";
+import { NavRenderer } from "./renderer";
+import { useState } from "react";
+import { useStyles, HeaderNameProps, HeaderStyleProps } from "./style";
 
 export const Navigation = () => {
   const classes: HeaderNameProps = useStyles({} as HeaderStyleProps);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const toggle = () => setOpen((open) => !open);
   return (
     <header>
       <Container>
@@ -29,8 +32,8 @@ export const Navigation = () => {
           fixed="top"
           className={classes.navBarCSS}
         >
-          <NavbarToggler />
-          <Collapse navbar>
+          <NavbarToggler onClick={toggle} />
+          <Collapse navbar isOpen={open}>
             <Container className="header-navbar-container" fluid={true}>
               <div className="py-1">
                 <NavbarBrand

@@ -29,3 +29,23 @@ https://codesandbox.io/s/material-ui-nested-menu-item-simpler-version-ginu9
 
 #Application sandboxing
 https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
+
+#IFRAME
+http://www.awongcm.io/blog/2018/11/25/using-iframes-api-to-toggle-client-side-routing-of-react-router-for-legacy-web-apps/
+https://christoshrousis.com/05-how-to-communicate-with-an-iframe-using-react-hooks/
+
+
+http://10.0.0.9:8081/users/getMetaData
+
+Bearer 8278143e-e815-42a5-bfc1-69207abc8e57
+
+{
+    "action": "rander_form",
+    "request_data": {
+        "main_prod_cd": "",
+        "sub_prod_cd1": "12300001",
+        "sub_prod_cd2": "12300001",
+        "sub_prod_cd3": "",
+        "empl_cd": "01"
+    }
+}

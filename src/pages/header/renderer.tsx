@@ -25,6 +25,7 @@ import {
 import { NavItemType, NavBarType } from "./types";
 import { HeaderNameProps } from "./style";
 import { useNavigate } from "react-router-dom";
+import { isValidElementType } from "react-is";
 
 export interface NavRendererType {
   metaData: NavBarType;
@@ -78,11 +79,27 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
                   }
                 }}
               >
+                {item.iconPosition === "before" &&
+                isValidElementType(item.icon) ? (
+                  <item.icon />
+                ) : null}
                 {item.label}
+                {item.iconPosition === "after" &&
+                isValidElementType(item.icon) ? (
+                  <item.icon />
+                ) : null}
               </NavLink>
             ) : (
               <NavLink href={item.href} target={item.target} rel={item.rel}>
+                {item.iconPosition === "before" &&
+                isValidElementType(item.icon) ? (
+                  <item.icon />
+                ) : null}
                 {item.label}
+                {item.iconPosition === "after" &&
+                isValidElementType(item.icon) ? (
+                  <item.icon />
+                ) : null}
               </NavLink>
             )}
           </NavItem>
@@ -148,11 +165,27 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                 }
               }}
             >
+              {item.iconPosition === "before" &&
+              isValidElementType(item.icon) ? (
+                <item.icon />
+              ) : null}
               {item.label}
+              {item.iconPosition === "after" &&
+              isValidElementType(item.icon) ? (
+                <item.icon />
+              ) : null}
             </NavLink>
           ) : (
             <NavLink href={item.href} target={item.target} rel={item.rel}>
+              {item.iconPosition === "before" &&
+              isValidElementType(item.icon) ? (
+                <item.icon />
+              ) : null}
               {item.label}
+              {item.iconPosition === "after" &&
+              isValidElementType(item.icon) ? (
+                <item.icon />
+              ) : null}
             </NavLink>
           )}
         </DropdownToggle>
@@ -186,7 +219,15 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                     document.getElementById("root")?.click();
                   }}
                 >
+                  {one.iconPosition === "before" &&
+                  isValidElementType(one.icon) ? (
+                    <one.icon />
+                  ) : null}
                   {one.label}
+                  {one.iconPosition === "after" &&
+                  isValidElementType(one.icon) ? (
+                    <one.icon />
+                  ) : null}
                 </DropdownItem>
               ) : (
                 <DropdownItem
@@ -201,7 +242,15 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                     document.getElementById("root")?.click();
                   }}
                 >
+                  {one.iconPosition === "before" &&
+                  isValidElementType(one.icon) ? (
+                    <one.icon />
+                  ) : null}
                   {one.label}
+                  {one.iconPosition === "after" &&
+                  isValidElementType(one.icon) ? (
+                    <one.icon />
+                  ) : null}
                 </DropdownItem>
               );
             }

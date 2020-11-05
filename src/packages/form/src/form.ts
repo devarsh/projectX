@@ -357,6 +357,7 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             fieldsAggrigator.push(result);
           }
           //if form has no errors would procced with submitting the form
+          //hasError = false;
           if (!hasError) {
             if (typeof onSubmit === "function") {
               let obj = {};
