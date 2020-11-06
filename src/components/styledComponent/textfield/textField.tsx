@@ -11,7 +11,6 @@ const StyledTextField = withStyles({
   //     fontSize: "1rem",
   //     marginBottom: "0.5 rem",
   //   },
-
   //   "& label.Mui-focused": {
   //     color: "#26A456",
   //   },
@@ -21,7 +20,6 @@ const StyledTextField = withStyles({
   //     borderRadius: 5,
   //     backgroundColor: "#fff",
   //     padding: "0 0 0 1rem",
-
   //     "& input": {
   //       padding: "6px 0 7px ",
   //     },
@@ -39,7 +37,6 @@ const StyledTextField = withStyles({
   //   "& .MuiInputLabel-shrink": {
   //     transform: "translate(0, 1.5px) scale(1)",
   //   },
-
   //   "& .MuiToggleButton": {
   //     borderColor: "#8C8C8C",
   //     transition: "border 0.3s ease-in",

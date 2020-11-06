@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 import App from "app";
-
+import "registry/fns";
 import { APISDK } from "registry/fns/sdk";
 APISDK.createSession("http://10.0.0.9:8081/");
 

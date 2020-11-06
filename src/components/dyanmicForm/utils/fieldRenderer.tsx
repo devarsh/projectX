@@ -66,7 +66,7 @@ export const renderField = (
   fieldObj: FieldMetaDataType,
   formRenderConfig: FormRenderConfigType,
   formName: string,
-  componentProps: ComponentTypeProps
+  componentProps: ComponentTypeProps = {}
 ) => {
   const { render, schemaValidation, defaultValue, ...others } = fieldObj;
   let Component: any = null;

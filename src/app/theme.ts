@@ -27,7 +27,6 @@ export const theme: Theme = {
         boxShadow: "none",
         textTransform: "capitalize",
         //@ts-ignore
-        borderRadius: "24px",
         alignSelf: "flex-end",
         "&:hover": {
           background:

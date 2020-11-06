@@ -39,9 +39,6 @@ export const getYesOrNoOptions = () => {
 };
 
 export const getPincodeDtl = (getPincode) => async (fieldData) => {
-  if (typeof fieldData === "string") {
-    fieldData = fieldData.trim();
-  }
   if (fieldData.value.length === 6) {
     let codes = await getPincode(fieldData.value);
     return {
@@ -50,7 +47,6 @@ export const getPincodeDtl = (getPincode) => async (fieldData) => {
         others: codes.others,
         value: "",
       },
-
       city: {
         value: "",
       },
@@ -87,9 +83,6 @@ export const getPincodeDtl = (getPincode) => async (fieldData) => {
 };
 
 export const getLocationDtl = async (fieldData) => {
-  if (typeof fieldData === "string") {
-    fieldData = fieldData.trim();
-  }
   if (fieldData.value === "") {
     return {
       city: {

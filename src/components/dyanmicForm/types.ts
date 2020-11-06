@@ -145,3 +145,28 @@ export interface RouterState {
   formCode?: string;
   productCode?: string;
 }
+
+//This is to create custom types to extend base types
+
+export type FieldMetaDataTypeOptional =
+  | TextFieldPropsOptional
+  | SelectPropsOptional
+  | CheckboxPropsOptional
+  | CheckboxGroupPropsOptional
+  | DateTimePickerPropsOptional
+  | DatePickerPropsOptional
+  | TimePickerPropsOptional
+  | RadioPropsOptional
+  | RatingPropsOptional
+  | SliderPropsOptional
+  | SwitchPropsOptional
+  | SwitchGroupPropsOptional
+  | NumberFormatPropsOptional
+  | PasswordFieldPropsOptional
+  | ToggleButtonGroupPropsOptional
+  | InputMaskPropsOptional
+  | AutocompletePropsOptional;
+
+export type ExtendedFieldMetaDataTypeOptional = {
+  [key: string]: FieldMetaDataTypeOptional;
+};

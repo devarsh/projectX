@@ -48,7 +48,6 @@ const RaatnaFinAPI = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         verifyRequest(result);
       })
       .catch((error) => {
@@ -89,9 +88,10 @@ const RaatnaFinAPI = () => {
         redirect: "follow",
       }
     );
+    console.log(data);
     if (Array.isArray(data) && data.length === 1) {
       let result = data[0];
-      if (String(result.status).toLowerCase() === "success") {
+      if (String(result.Status).toLowerCase() === "success") {
         const areaArray = result.PostOffice.map((dtl) => ({
           value: dtl?.Name,
           label: dtl?.Name,
@@ -135,10 +135,10 @@ const RaatnaFinAPI = () => {
           Authorization: `Bearer ${sessionObj.token.access_token}`,
         }),
       });
-      if (response.status == 200) {
+      if (String(response.status) === "200") {
         let data = await response.json();
         return {
-          status: data.status == "0" ? "success" : "failure",
+          status: String(data.status) === "0" ? "success" : "failure",
           data: data,
         };
       } else {
@@ -260,6 +260,37 @@ const RaatnaFinAPI = () => {
       },
     ];
   };
+  const getMetaData = async (productCode: string, empCode: string) => {
+    const { data, status } = await internalFetcher("/users/getMetaData", {
+      body: JSON.stringify({
+        action: "render_form",
+        request_data: {
+          main_prod_cd: `${productCode}`,
+          empl_cd: `${empCode}`,
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data ?? {};
+    } else {
+      return {};
+    }
+  };
+  const pushFormData = async (action: string, formData: Object) => {
+    const { data, status } = await internalFetcher("/users/inquiry", {
+      body: JSON.stringify({
+        action: action,
+        request_data: formData,
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return true;
+    } else {
+      console.log(data);
+      return false;
+    }
+  };
   //remove this function after migration
   const getAccessToken = async () => {
     await sessionToken;
@@ -277,6 +308,8 @@ const RaatnaFinAPI = () => {
     getBankList,
     getMiscVal,
     getAccessToken,
+    getMetaData,
+    pushFormData,
   };
 };
 

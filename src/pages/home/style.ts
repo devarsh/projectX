@@ -1,6 +1,21 @@
 import { Theme } from "@material-ui/core/styles";
 import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 
+export interface IndexPageStyleProps {
+  wrapper: BaseCSSProperties;
+}
+export type IndexPageNameProps = Record<keyof IndexPageStyleProps, string>;
+
+export const indexPageStyle = (theme: Theme): any => ({
+  wrapper: {
+    minHeight: "calc(100vh - 45px)",
+    alignItems: "center !important",
+    display: "flex !important",
+    flexDirection: "column !important",
+    justifyContent: "center !important",
+  },
+});
+
 export interface BecomePartnerStyleProps {
   wrapper: BaseCSSProperties;
   content: BaseCSSProperties;
