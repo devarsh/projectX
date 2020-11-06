@@ -285,10 +285,9 @@ const RaatnaFinAPI = () => {
       }),
     });
     if (status === "success") {
-      return true;
+      return { status, data };
     } else {
-      console.log(data);
-      return false;
+      return { status, data };
     }
   };
   //remove this function after migration

@@ -48,11 +48,12 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (values, submitEnd) => {
-    if (Boolean(values?.product_type) && Boolean(values?.employementStatus)) {
+  const onSubmitHandler = (submitCode: string) => (values, submitEnd) => {
+    if (Boolean(values?.productType) && Boolean(values?.employementStatus)) {
       setSubmitProps(() => ({
         values: values,
         submitEnd: submitEnd,
+        submitCode: submitCode,
       }));
       setShowDialog(true);
     } else {
@@ -79,7 +80,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
             formRenderConfig={metaData.form.render}
             formDisplayName={metaData.form.label}
             formName={metaData.form.name}
-            submitFn={onSubmitHandler}
+            submitFn={onSubmitHandler(metaData.form.navigation as string)}
           />
         </Container>
       </FormContext.Provider>

@@ -1,5 +1,6 @@
 import { useState, FC } from "react";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { TextField } from "components/styledComponent/textfield";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -8,6 +9,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { InputMaskCustom } from "components/derived/inputMask";
+import { APISDK } from "registry/fns/sdk";
 
 export interface FormDialogProps {
   isOpen: boolean;
@@ -23,23 +25,34 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
   const navigate = useNavigate();
   const [otpText, setOtpText] = useState("");
   const [otpError, setOtpError] = useState("");
-  const { values, submitEnd } = submitProps;
+  const [loading, setLoading] = useState(false);
+  const { values, submitEnd, submitCode } = submitProps;
   if (typeof submitEnd !== "function" && typeof values !== "object") {
     return null;
   }
-  const verifyOtp = () => {
+  const verifyOtp = async () => {
+    setLoading(true);
     if (Boolean(otpText)) {
       if (otpText === "000000") {
-        console.log(values);
-        submitEnd(true);
-        setShowDialog(false);
-        navigate("/thankyou", {
-          state: {
-            formCode: values?.product_type ?? "",
-            productCode: values?.employementStatus ?? "",
-          },
-        });
+        try {
+          const data = await APISDK.pushFormData(submitCode, values);
+
+          setLoading(false);
+          submitEnd(true);
+          setShowDialog(false);
+          console.log(data);
+          console.log(values, submitCode);
+          navigate("/thankyou", {
+            state: {
+              formCode: values?.productType ?? "",
+              productCode: values?.employementStatus ?? "",
+            },
+          });
+        } catch (e) {
+          setLoading(false);
+        }
       } else {
+        setLoading(false);
         submitEnd(false, "Error submitting form - server error");
         setOtpError("Invalid Otp");
       }
@@ -83,7 +96,12 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={verifyOtp} color="primary">
+        <Button
+          onClick={verifyOtp}
+          color="primary"
+          disabled={loading}
+          endIcon={loading ? <CircularProgress /> : null}
+        >
           Verify
         </Button>
       </DialogActions>
