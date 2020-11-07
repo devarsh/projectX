@@ -11,6 +11,7 @@ import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
+import { validateMetaData } from "./utils/validateMetaData";
 import { extendFieldTypes } from "./utils/extendedFieldTypes";
 import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
@@ -111,7 +112,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
-const checkValidMetaData = (metaData) => {
+const isMetaDataValid = (metaData) => {
   if (Boolean(metaData) && typeof metaData === "object") {
     const { form, fields } = metaData;
     if (
@@ -119,7 +120,7 @@ const checkValidMetaData = (metaData) => {
       fields.length > 0 &&
       typeof form === "object"
     ) {
-      return true;
+      return validateMetaData(metaData);
     }
   }
   return false;
@@ -157,7 +158,7 @@ export const ParentFormWrapper = () => {
   }, [state?.formCode, state?.empCode]);
   const result = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />
-  ) : !checkValidMetaData(metaData.current) ? (
+  ) : !isMetaDataValid(metaData.current as MetaDataType) ? (
     <span>"Error loading form"</span>
   ) : (
     <Fragment>
