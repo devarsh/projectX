@@ -40,11 +40,8 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       rules: [
         { name: "required", params: ["Pan Number is required"] },
         {
-          name: "matches",
-          params: [
-            /^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$/,
-            "Please enter valid Pan Card Number",
-          ],
+          name: "pancard",
+          params: ["Please enter valid Pan Card Number"],
         },
       ],
     },
@@ -62,8 +59,8 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       rules: [
         { name: "required", params: ["Aadhar Number is required"] },
         {
-          name: "matches",
-          params: [/^\d{4}\d{4}\d{4}$/, "Please enter valid Aadhar Number"],
+          name: "aadhar",
+          params: ["Please enter valid Aadhar Number"],
         },
       ],
     },

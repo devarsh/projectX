@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Fragment } from "react";
 import Box from "@material-ui/core/Box";
-import { Theme, makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { Theme, makeStyles } from "@material-ui/core/styles";
 import "index.css";
 import ThankYouPage from "./thankyou";
 import NotFoundPage from "./notFound";

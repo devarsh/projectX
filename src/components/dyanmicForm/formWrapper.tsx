@@ -143,7 +143,7 @@ export const ParentFormWrapper = () => {
     //@ts-ignore
   }, [state?.formCode, state?.empCode]);
   const result = loading ? (
-    <img src={loaderGif} className={classes.loader} />
+    <img src={loaderGif} className={classes.loader} alt="loader" />
   ) : !checkValidMetaData(metaData.current) ? (
     <span>"Error loading form"</span>
   ) : (

@@ -98,7 +98,7 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
         <Button
           onClick={verifyOtp}
           color="primary"
-          disabled={loading}
+          disabled={loading || otpText.length !== 6 ? true : false}
           endIcon={loading ? <CircularProgress /> : null}
         >
           Verify

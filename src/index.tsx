@@ -3,8 +3,9 @@ import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 import App from "app";
 import "registry/fns";
+import "registry/yup";
 import { APISDK } from "registry/fns/sdk";
-APISDK.createSession("http://10.0.0.9:8081/");
+APISDK.createSession("http://10.55.6.72:8081/");
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
