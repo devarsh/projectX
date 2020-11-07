@@ -23,6 +23,7 @@ registerFn("getGenderList", api.getMiscVal("GENDER"));
 registerFn("getRelationship", api.getMiscVal("RELATIONSHIP"));
 registerFn("getRetailEmployee", api.getMiscVal("RETAIL_EMPL"));
 registerFn("getTypeOfLoan", api.getMiscVal("TYPE_OF_LOAN"));
+registerFn("getResidentialType", api.getMiscVal("RESIDENCE_TYPE"));
 registerFn("getProductType", api.getProductType);
 registerFn("getPropertyCity", api.getPropertyCity);
 registerFn("getBankList", api.getBankList);

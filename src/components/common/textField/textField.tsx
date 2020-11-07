@@ -12,6 +12,7 @@ import numWords from "num-words";
 
 interface MyGridExtendedProps {
   enableNumWords?: boolean;
+  maxLength?: number;
   GridProps?: GridProps;
   StartAdornment?: string;
   EndAdornment?: string;
@@ -43,6 +44,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   EndAdornment,
   //@ts-ignore
   isFieldFocused,
+  maxLength = -1,
   ...others
 }) => {
   const {
@@ -145,7 +147,13 @@ const MyTextField: FC<MyTextFieldProps> = ({
         shrink: true,
       }}
       inputRef={focusRef}
-      onChange={handleChange}
+      onChange={(e) => {
+        if (maxLength === -1) {
+          handleChange(e);
+        } else if (e.target.value.length <= maxLength) {
+          handleChange(e);
+        }
+      }}
       inputProps={{
         readOnly: readOnly,
         tabIndex: readOnly ? -1 : undefined,

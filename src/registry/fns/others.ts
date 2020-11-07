@@ -31,7 +31,7 @@ export const AutoFillGender = (field) => {
 export const getYesOrNoOptions = () => {
   return new Promise((res) => {
     res([
-      { label: "Select option", value: "X" },
+      { label: "Select option", value: "0" },
       { label: "Yes", value: "Y" },
       { label: "No", value: "N" },
     ]);
@@ -123,7 +123,8 @@ export const getValidateValue = async (fieldData) => {
     fieldData.value === "" ||
     fieldData.value === "0" ||
     fieldData.value === false ||
-    fieldData.value === ""
+    fieldData.value === "" ||
+    fieldData.value === "00"
   ) {
     return "This field is required";
   } else {
@@ -135,19 +136,19 @@ export const getGenderValue = (field) => {
     field = field.trim();
   }
   return new Promise((res) => {
-    if (field.value === "00") {
+    if (field.value === "01") {
       res({
         gender: {
-          value: "00",
+          value: "01",
         },
         firstName: {
           value: "",
         },
       });
-    } else if (field.value === "01" || field.value === "02") {
+    } else if (field.value === "02" || field.value === "03") {
       res({
         gender: {
-          value: "01",
+          value: "02",
         },
       });
     } else {
