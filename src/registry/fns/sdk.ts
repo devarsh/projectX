@@ -276,21 +276,22 @@ const RaatnaFinAPI = () => {
     }
   };
   const pushFormData = async (
-    action: string,
-    tranCode: string,
-    formData: Object
+    submitAction?: string,
+    formData?: Object,
+    formCode?: string,
+    tranCode?: string
   ) => {
     const { data, status } = await internalFetcher("/users/inquiry", {
       body: JSON.stringify({
-        action: action,
-        request_data: { ...formData, tranID: tranCode },
+        action: submitAction,
+        request_data: { ...formData, tranCode, formCode },
         channel: "W",
       }),
     });
     if (status === "success") {
-      return { status, data };
+      return { status, data: data?.response_data };
     } else {
-      return { status, data };
+      return { status, data: data?.response_data };
     }
   };
   //remove this function after migration

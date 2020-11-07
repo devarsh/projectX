@@ -12,6 +12,7 @@ export type Optional<T> = { [P in keyof T]?: T[P] };
 export interface OptionsProps {
   label: string;
   value: any;
+  disabled?: boolean;
 }
 
 export interface dependentOptionsFn {

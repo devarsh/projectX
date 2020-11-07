@@ -175,6 +175,7 @@ const MySelect: FC<MySelectAllProps> = ({
         button={true}
         key={menuItem.value ?? index}
         value={menuItem.value}
+        disabled={menuItem.disabled}
       >
         {showCheckbox ? (
           <Checkbox

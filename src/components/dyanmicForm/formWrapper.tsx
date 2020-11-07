@@ -30,7 +30,9 @@ interface FormWrapperProps {
   initialValues?: InitialValuesType;
   setShowDialog: Function;
   setSubmitProps: Function;
-  tranID?: string;
+  tranCode?: string; //Ref code for inquiry form
+  formCode?: string;
+  empCode?: string;
 }
 
 const FormWrapper: FC<FormWrapperProps> = ({
@@ -38,7 +40,9 @@ const FormWrapper: FC<FormWrapperProps> = ({
   initialValues,
   setShowDialog,
   setSubmitProps,
-  tranID,
+  tranCode,
+  formCode,
+  empCode,
 }) => {
   const navigate = useNavigate();
   metaData = extendFieldTypes(metaData, extendedMetaData);
@@ -49,19 +53,27 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (submitCode: string, tranCode?: string) => (
-    values,
-    submitEnd
-  ) => {
-    if (Boolean(values?.productType) && Boolean(values?.employementStatus)) {
+  const onSubmitHandler = (
+    submitAction: string,
+    tranCode?: string,
+    formCode?: string
+  ) => (values, submitEnd) => {
+    if (`${empCode}` === "98") {
       setSubmitProps(() => ({
         values: values,
         submitEnd: submitEnd,
-        submitCode: submitCode,
+        submitAction: submitAction,
+        formCode: formCode,
+        tranCode: tranCode,
       }));
       setShowDialog(true);
     } else {
-      const data = APISDK.pushFormData(submitCode, tranCode ?? "", values);
+      const data = APISDK.pushFormData(
+        submitAction,
+        values,
+        formCode,
+        tranCode ?? ""
+      );
       console.log(data);
       submitEnd(true);
       navigate("/thankyou");
@@ -86,8 +98,9 @@ const FormWrapper: FC<FormWrapperProps> = ({
             formDisplayName={metaData.form.label}
             formName={metaData.form.name}
             submitFn={onSubmitHandler(
-              metaData.form.navigation as string,
-              tranID
+              metaData.form.submitAction as string,
+              tranCode,
+              formCode
             )}
           />
         </Container>
@@ -153,8 +166,12 @@ export const ParentFormWrapper = () => {
         initialValues={initialValues}
         setShowDialog={setShowDialog}
         setSubmitProps={setSubmitProps}
-        //@ts-ignore
-        tranID={state?.tranID ?? ""}
+        //@ts-ignore - this for ref to previous inquiry form
+        tranCode={state?.tranCode ?? ""}
+        //@ts-ignore - form code for this form i.e formName
+        formCode={state?.formCode ?? ""}
+        //@ts-ignore - for otp page when
+        empCode={state?.empCode ?? ""}
       />
       {showDialog ? (
         <FormVerificationDialog

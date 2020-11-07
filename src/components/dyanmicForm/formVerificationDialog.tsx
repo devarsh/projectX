@@ -26,7 +26,7 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
   const [otpText, setOtpText] = useState("");
   const [otpError, setOtpError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { values, submitEnd, submitCode } = submitProps;
+  const { values, submitEnd, submitAction, formCode, tranCode } = submitProps;
   if (typeof submitEnd !== "function" && typeof values !== "object") {
     return null;
   }
@@ -35,18 +35,32 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
     if (Boolean(otpText)) {
       if (otpText === "000000") {
         try {
-          const data = await APISDK.pushFormData(submitCode, "", values);
-          console.log(values, submitCode);
-          console.log(data);
-          setLoading(false);
-          submitEnd(true);
-          setShowDialog(false);
-          navigate("/thankyou", {
-            state: {
-              formCode: values?.productType ?? "",
-              productCode: values?.employementStatus ?? "",
-            },
-          });
+          const result = await APISDK.pushFormData(
+            submitAction,
+            values,
+            formCode,
+            tranCode
+          );
+          if (result.status === "success") {
+            setLoading(false);
+            submitEnd(true);
+            setShowDialog(false);
+            navigate("/thankyou", {
+              state: {
+                //@ts-ignore
+                formCode: result?.data?.productType ?? null,
+                //@ts-ignore
+                empCode: result?.data?.employementStatus ?? null,
+                //@ts-ignore
+                tranCode: result?.data?.refID ?? null,
+              },
+            });
+          } else {
+            setLoading(false);
+            submitEnd(false);
+          }
+          console.log(values, submitAction);
+          console.log(result);
         } catch (e) {
           setLoading(false);
         }
@@ -61,7 +75,6 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
   //   submitEnd(false, "");
   //   setShowDialog(false);
   // };
-
   return (
     <Dialog id="otp-dialog" open={isOpen} aria-labelledby="form-otp-dialog">
       <DialogTitle id="form-dialog-title">Verify OTP</DialogTitle>
@@ -99,7 +112,7 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
           onClick={verifyOtp}
           color="primary"
           disabled={loading || otpText.length !== 6 ? true : false}
-          endIcon={loading ? <CircularProgress /> : null}
+          endIcon={loading ? <CircularProgress size={20} /> : null}
         >
           Verify
         </Button>
