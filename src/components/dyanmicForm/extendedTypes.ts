@@ -1,4 +1,5 @@
 import { ExtendedFieldMetaDataTypeOptional } from "./types";
+import sub from "date-fns/sub";
 
 export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
   currency: {
@@ -13,8 +14,32 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       allowLeadingZeros: false,
       decimalScale: 0,
       maxLength: 13,
+      isAllowed: (values) => {
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
     },
     enableNumWords: true,
+  },
+  dob: {
+    render: {
+      componentType: "datePicker",
+    },
+    schemaValidation: {
+      type: "date",
+      rules: [
+        { name: "typeError", params: ["Must be a valid date"] },
+        {
+          name: "max",
+          params: [
+            sub(new Date(), { years: 18 }),
+            "minimum age must be 18 years",
+          ],
+        },
+      ],
+    },
   },
   phoneNumber: {
     render: {
@@ -22,6 +47,12 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     },
     FormatProps: {
       format: "##########",
+      isAllowed: (values) => {
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
     },
   },
   panCard: {
