@@ -24,4 +24,68 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       format: "##########",
     },
   },
+  panCard: {
+    render: {
+      componentType: "inputMask",
+    },
+    MaskProps: {
+      mask: "aaaaa0000a",
+      prepare: function (str) {
+        return str.toUpperCase();
+      },
+      lazy: true,
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "required", params: ["Pan Number is required"] },
+        {
+          name: "matches",
+          params: [
+            /^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$/,
+            "Please enter valid Pan Card Number",
+          ],
+        },
+      ],
+    },
+  },
+  aadharCard: {
+    render: {
+      componentType: "inputMask",
+    },
+    MaskProps: {
+      mask: "0000` 0000` 0000",
+      lazy: true,
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "required", params: ["Aadhar Number is required"] },
+        {
+          name: "matches",
+          params: [/^\d{4}\d{4}\d{4}$/, "Please enter valid Aadhar Number"],
+        },
+      ],
+    },
+  },
+  rateOfInt: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      suffix: "%",
+      decimalScale: 2,
+      format: "##.##%",
+      fixedDecimalScale: true,
+      allowNegative: false,
+      allowLeadingZeros: false,
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "typeError", params: ["Please enter existing loan interest"] },
+        { name: "required", params: ["Please enter existing loan interest"] },
+      ],
+    },
+  },
 };

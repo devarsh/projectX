@@ -13,7 +13,6 @@ export const extendFieldTypes = (
     if (typeof extendedType === "object") {
       const {
         defaultValue,
-        schemaValidation,
         render,
         validate,
         shouldExclude,

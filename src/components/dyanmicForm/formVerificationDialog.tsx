@@ -35,13 +35,12 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
     if (Boolean(otpText)) {
       if (otpText === "000000") {
         try {
-          const data = await APISDK.pushFormData(submitCode, values);
-
+          const data = await APISDK.pushFormData(submitCode, "", values);
+          console.log(values, submitCode);
+          console.log(data);
           setLoading(false);
           submitEnd(true);
           setShowDialog(false);
-          console.log(data);
-          console.log(values, submitCode);
           navigate("/thankyou", {
             state: {
               formCode: values?.productType ?? "",

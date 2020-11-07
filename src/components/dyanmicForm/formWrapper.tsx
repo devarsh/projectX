@@ -21,7 +21,6 @@ import {
   FormWrapperStyleNamesProps,
 } from "./style";
 import { extendedMetaData } from "./extendedTypes";
-
 import loaderGif from "assets/images/loader.gif";
 
 const useStyles = makeStyles<Theme, FormWrapperStyleProps>(formWrapperStyle);
@@ -31,6 +30,7 @@ interface FormWrapperProps {
   initialValues?: InitialValuesType;
   setShowDialog: Function;
   setSubmitProps: Function;
+  tranID?: string;
 }
 
 const FormWrapper: FC<FormWrapperProps> = ({
@@ -38,6 +38,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
   initialValues,
   setShowDialog,
   setSubmitProps,
+  tranID,
 }) => {
   const navigate = useNavigate();
   metaData = extendFieldTypes(metaData, extendedMetaData);
@@ -48,7 +49,10 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (submitCode: string) => (values, submitEnd) => {
+  const onSubmitHandler = (submitCode: string, tranCode?: string) => (
+    values,
+    submitEnd
+  ) => {
     if (Boolean(values?.productType) && Boolean(values?.employementStatus)) {
       setSubmitProps(() => ({
         values: values,
@@ -57,7 +61,8 @@ const FormWrapper: FC<FormWrapperProps> = ({
       }));
       setShowDialog(true);
     } else {
-      console.log(values);
+      const data = APISDK.pushFormData(submitCode, tranCode ?? "", values);
+      console.log(data);
       submitEnd(true);
       navigate("/thankyou");
     }
@@ -80,7 +85,10 @@ const FormWrapper: FC<FormWrapperProps> = ({
             formRenderConfig={metaData.form.render}
             formDisplayName={metaData.form.label}
             formName={metaData.form.name}
-            submitFn={onSubmitHandler(metaData.form.navigation as string)}
+            submitFn={onSubmitHandler(
+              metaData.form.navigation as string,
+              tranID
+            )}
           />
         </Container>
       </FormContext.Provider>
@@ -145,6 +153,8 @@ export const ParentFormWrapper = () => {
         initialValues={initialValues}
         setShowDialog={setShowDialog}
         setSubmitProps={setSubmitProps}
+        //@ts-ignore
+        tranID={state?.tranID ?? ""}
       />
       {showDialog ? (
         <FormVerificationDialog

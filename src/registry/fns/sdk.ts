@@ -88,7 +88,6 @@ const RaatnaFinAPI = () => {
         redirect: "follow",
       }
     );
-    console.log(data);
     if (Array.isArray(data) && data.length === 1) {
       let result = data[0];
       if (String(result.Status).toLowerCase() === "success") {
@@ -276,11 +275,15 @@ const RaatnaFinAPI = () => {
       return {};
     }
   };
-  const pushFormData = async (action: string, formData: Object) => {
+  const pushFormData = async (
+    action: string,
+    tranCode: string,
+    formData: Object
+  ) => {
     const { data, status } = await internalFetcher("/users/inquiry", {
       body: JSON.stringify({
         action: action,
-        request_data: formData,
+        request_data: { ...formData, tranID: tranCode },
         channel: "W",
       }),
     });
