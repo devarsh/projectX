@@ -144,16 +144,29 @@ export const ParentFormWrapper = () => {
   useEffect(() => {
     setLoading(true);
     metaData.current = null;
-    //@ts-ignore need to find how to set router loaction state type (react-router-dom)
-    APISDK.getMetaData(state?.formCode, state?.empCode)
-      .then((result) => {
-        metaData.current = result;
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
+    if (process.env.REACT_APP_STATIC_META_DATA === "true") {
+      import("meta/navigationLogic").then((data) => {
+        const result = data.chooseNaviagtionPath(
+          //@ts-ignore
+          state?.formCode,
+          //@ts-ignore
+          state?.empCode
+        );
+        metaData.current = result.metaData;
         setLoading(false);
       });
+    } else {
+      //@ts-ignore need to find how to set router loaction state type (react-router-dom)
+      APISDK.getMetaData(state?.formCode, state?.empCode)
+        .then((result) => {
+          metaData.current = result;
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoading(false);
+        });
+    }
     //@ts-ignore
   }, [state?.formCode, state?.empCode]);
   const result = loading ? (
