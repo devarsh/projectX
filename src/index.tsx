@@ -5,8 +5,9 @@ import App from "app";
 import "registry/fns";
 import "registry/yup";
 import { APISDK } from "registry/fns/sdk";
+require("dotenv").config();
 
-APISDK.createSession("http://10.55.6.72:8081/");
+APISDK.createSession(process.env.REACT_APP_API_URL ?? "");
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
