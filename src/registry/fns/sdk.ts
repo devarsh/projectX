@@ -260,14 +260,16 @@ const RaatnaFinAPI = () => {
     ];
   };
 
-  const sendOTP = async (mobileNumber: string) => {
+  const sendOTP = async (phoneNumber: string) => {
     debugger;
-    const { status, data } = await internalFetcher("./users/customer_login", {
+    const { data, status } = await internalFetcher("/users/customer_login", {
       body: JSON.stringify({
-        action: "get_sub_product",
+        action: "customer_login",
         request_data: {
-          code: mobileNumber,
+          mobile: phoneNumber,
+          password: "",
         },
+        channel: "W",
       }),
     });
     if (status === "success") {
@@ -276,6 +278,49 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.response_data };
     }
   };
+
+  const handleverifyOtp = async (otp: string, datetime: string, id: string) => {
+    debugger;
+    const { data, status } = await internalFetcher("/users/otpVerify", {
+      body: JSON.stringify({
+        action: "otp_verify",
+        request_data: {
+          id: id,
+          eotp: otp,
+          sdatetime: datetime,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
+  };
+
+  const handleverifyPwd = async (
+    loginPassword: string,
+    phoneNumber: string
+  ) => {
+    debugger;
+    const { data, status } = await internalFetcher("/users/customer_login", {
+      body: JSON.stringify({
+        action: "customer_login",
+        request_data: {
+          mobile: phoneNumber,
+          password: loginPassword,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
+  };
+
   const getMetaData = async (productCode: string, empCode: string) => {
     const { data, status } = await internalFetcher("/users/getMetaData", {
       body: JSON.stringify({
@@ -305,6 +350,11 @@ const RaatnaFinAPI = () => {
         channel: "W",
       }),
     });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
   };
   //remove this function after migration
   const getAccessToken = async () => {
@@ -326,6 +376,8 @@ const RaatnaFinAPI = () => {
     sendOTP,
     getMetaData,
     pushFormData,
+    handleverifyOtp,
+    handleverifyPwd,
   };
 };
 
