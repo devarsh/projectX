@@ -31,6 +31,7 @@ export const thankyouPageStyle = (theme: Theme): any => ({
     fontSize: "1.2rem !important",
     color: "var(--theme-color1) !important",
     border: "1px solid var(--theme-color1) !important",
+    borderRadius: "24px",
     "&:hover": {
       color: "var(--theme-color2) !important",
       border: "1px solid  var(--theme-color2) !important",
@@ -43,6 +44,7 @@ export const thankyouPageStyle = (theme: Theme): any => ({
     minWidth: "160px !important",
     color: "var(--theme-color2) !important",
     border: "1px solid  var(--theme-color2) !important",
+    borderRadius: "24px",
     "&:hover": {
       color: "var(--theme-color1) !important",
       border: "1px solid var(--theme-color1) !important",

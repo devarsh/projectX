@@ -13,6 +13,7 @@ import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 import { validateMetaData } from "./utils/validateMetaData";
 import { extendFieldTypes } from "./utils/extendedFieldTypes";
+import { MoveSequenceToRender } from "./utils/fixSequenceInMetaData";
 import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
 import { FormVerificationDialog } from "./formVerificationDialog";
@@ -51,6 +52,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
     metaData,
     singletonFunctionRegisrationFactory
   );
+  metaData = MoveSequenceToRender(metaData);
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);

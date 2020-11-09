@@ -80,10 +80,19 @@ function CoreProducts() {
   const navigate = useNavigate();
   return (
     <Container className={classes.wrapper + " CoreProducts"} fluid={true}>
-      <Row>
+      <Row
+        className={classes.productRow + " product-row"}
+        xs="1"
+        sm="3"
+        md="4"
+        lg="6"
+      >
         {productTiles.map((one) => {
           return (
-            <Col key={one.productName} className={classes.customCol}>
+            <Col
+              key={one.productName}
+              className={classes.customCol + " product-col"}
+            >
               <div
                 className={classes.productWrapper + " product-wrap"}
                 onClick={(e) => {

@@ -93,6 +93,9 @@ h2 {
   font-weight: 700 !important;
   font-size: 2rem;
 }
+.text {
+  line-height: 1.4;
+}
 
 .follow-link svg:hover path {
   fill: var(--theme-color1);
@@ -100,6 +103,9 @@ h2 {
 header .navbar-nav {
   justify-content: flex-end;
   margin-bottom: 4px;
+}
+header nav {
+  justify-content: flex-end !important;
 }
 
 header .navbar-nav li {
@@ -208,6 +214,73 @@ header li > div.dropdown-toggle {
   .MuiContainer-maxWidthLg {
     max-width: 1440px !important;
   }
+}
+
+@media screen and (max-width: 1279px) {
+  header .navbar-brand img {
+    max-width: 100px;
+  }
+  header .navbar-nav {
+    margin-bottom: 0;
+  }
+  h2 {
+    font-size: 1.35rem;
+  }
+  .text {
+    font-size: 1rem;
+  }
+  .BecomePartnerImgWrap {
+    align-self: center;
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1139px) {
+  .product-row {
+    max-width: 1000px;
+    margin: auto !important;
+  }
+  .product-col {
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+  }
+}
+@media screen and (max-width: 1199px) {
+  header .navbar-nav .nav-link {
+    padding-right: 0.25rem !important;
+    padding-left: 0.25rem !important;
+  }
+  header .nav-two a,
+  header .nav-three a {
+    font-size: 13px !important;
+  }
+}
+@media screen and (max-width: 1140px) {
+  header nav {
+    padding: 4px 4px !important;
+  }
+  header .navbar-brand img {
+    max-width: 60px;
+  }
+}
+@media screen and (max-width: 1040px) {
+  html {
+    font-size: 14px;
+  }
+  .navigation-links {
+    width: 100%;
+    margin-top: -54px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navigation-links {
+    width: 100%;
+    margin-top: 0;
+  }
+  .BrandLogo {
+    margin-top: -40px;
+  }
+}
+@media screen and (max-width: 320px) {
 }
 
 @media (max-height: 700px) {

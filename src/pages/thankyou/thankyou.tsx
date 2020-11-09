@@ -20,7 +20,6 @@ export const ThankYou = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  console.log("from thankyou", state);
   return (
     <Box
       className={classes.wrapper}
@@ -58,7 +57,7 @@ export const ThankYou = () => {
         //@ts-ignore
         Boolean(state?.empCode ?? null) ? (
           <Button
-            className={classes.continueBtn}
+            className={classes.prevBtn}
             onClick={(e) => {
               e.preventDefault();
               navigate(
