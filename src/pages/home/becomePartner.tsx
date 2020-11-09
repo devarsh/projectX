@@ -24,9 +24,13 @@ export const BecomePartner = () => {
         component={"div"}
         className={classes.wrapper + " BecomePartner"}
       >
-        <Box display="flex" width={1} className="BecomePartner-cover">
+        <Box display="flex" width={1} className={classes.BecomePartnerCover}>
           <div className="BecomePartnerImgWrap">
-            <img alt="" src={BecomePartnerImg} className="BecomePartnerImg" />
+            <img
+              alt=""
+              src={BecomePartnerImg}
+              className={classes.BecomePartnerImg}
+            />
           </div>
           <div className={classes.content}>
             <h2>Become A Channel Partner</h2>
