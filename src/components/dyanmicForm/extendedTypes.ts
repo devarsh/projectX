@@ -77,6 +77,27 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       ],
     },
   },
+  panCardOptional: {
+    render: {
+      componentType: "inputMask",
+    },
+    MaskProps: {
+      mask: "aaaaa0000a",
+      prepare: function (str) {
+        return str.toUpperCase();
+      },
+      lazy: true,
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        {
+          name: "pancard",
+          params: ["Please enter valid Pan Card Number"],
+        },
+      ],
+    },
+  },
   aadharCard: {
     render: {
       componentType: "inputMask",
@@ -103,10 +124,16 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     FormatProps: {
       suffix: "%",
       decimalScale: 2,
-      format: "##.##%",
       fixedDecimalScale: true,
       allowNegative: false,
       allowLeadingZeros: false,
+      isAllowed: (values) => {
+        //@ts-ignore
+        if (values.floatValue <= 99.99) {
+          return true;
+        }
+        return false;
+      },
     },
     schemaValidation: {
       type: "string",
