@@ -13,13 +13,16 @@ export const indexPageStyle = (theme: Theme): any => ({
     display: "flex !important",
     flexDirection: "column !important",
     justifyContent: "center !important",
+    padding: "0 15px",
   },
 });
 
 export interface BecomePartnerStyleProps {
   wrapper: BaseCSSProperties;
+  BecomePartnerCover: BaseCSSProperties;
   content: BaseCSSProperties;
   applyButton: BaseCSSProperties;
+  BecomePartnerImg: BaseCSSProperties;
 }
 
 export type BecomePartnerNameProps = Record<
@@ -36,10 +39,29 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     marginTop: "10px",
     padding: "10px 20px",
     marginBottom: "30px",
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center",
+    },
+  },
+  BecomePartnerCover: {
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
   },
   content: {
     padding: "0 2rem 0 4rem",
     lineHeight: "1.6",
+    [theme.breakpoints.down("md")]: {
+      padding: "0 2rem 0 2rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 0 2rem 0",
+    },
+  },
+  BecomePartnerImg: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   applyButton: {
     color: "#42C2AB !important",
@@ -66,6 +88,7 @@ export const becomePartnerStyle = (theme: Theme): any => ({
 
 export interface CoreProductsStyleProps {
   wrapper: BaseCSSProperties;
+  productRow: BaseCSSProperties;
   customCol: BaseCSSProperties;
   productName: BaseCSSProperties;
   productWrapper: BaseCSSProperties;
@@ -81,9 +104,12 @@ export const coreProductsStyle = (theme: Theme): any => ({
   wrapper: {
     marginTop: "120px",
     maxWidth: "1260px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "80px",
+    },
   },
+  productRow: {},
   customCol: {
-    minWidth: "16.66%",
     paddingRight: "10px",
     paddingLeft: "10px",
   },
@@ -94,6 +120,9 @@ export const coreProductsStyle = (theme: Theme): any => ({
     marginTop: "20px",
     minHeight: "40px",
     marginBottom: "4px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1rem",
+    },
   },
   productWrapper: {
     maxWidth: "218px",
@@ -114,6 +143,10 @@ export const coreProductsStyle = (theme: Theme): any => ({
     position: "relative",
     "&:hover": {
       boxShadow: "0 5px 10px rgba(38,164,86,0.9)",
+    },
+    [theme.breakpoints.down("md")]: {
+      padding: "4px 4px",
+      minHeight: "166px",
     },
   },
   productTag: {

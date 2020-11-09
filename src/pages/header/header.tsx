@@ -24,18 +24,18 @@ export const Navigation = () => {
   const toggle = () => setOpen((open) => !open);
   return (
     <header>
-      <Container>
+      <Container fluid={true}>
         <Navbar
           color="light"
           light
-          expand="md"
+          expand="lg"
           fixed="top"
           className={classes.navBarCSS}
         >
           <NavbarToggler onClick={toggle} />
           <Collapse navbar isOpen={open}>
             <Container className="header-navbar-container" fluid={true}>
-              <div className="py-1">
+              <div className="py-1 BrandLogo">
                 <NavbarBrand
                   className="mr-auto"
                   onClick={(e) => {
@@ -46,7 +46,7 @@ export const Navigation = () => {
                   <img src={Logo} alt="Ratnaafin" />
                 </NavbarBrand>
               </div>
-              <div>
+              <div className="navigation-links">
                 <Nav className="mr-0 nav-one" navbar>
                   <NavItem>
                     <NavLink

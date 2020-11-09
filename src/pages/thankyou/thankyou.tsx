@@ -57,7 +57,7 @@ export const ThankYou = () => {
         //@ts-ignore
         Boolean(state?.empCode ?? null) ? (
           <Button
-            className={classes.continueBtn}
+            className={classes.prevBtn}
             onClick={(e) => {
               e.preventDefault();
               navigate(

@@ -14,7 +14,7 @@ export type HeaderNameProps = Record<keyof HeaderStyleProps, string>;
 
 export const headerStyle = (theme: Theme): any => ({
   navBarCSS: {
-    padding: "4px 1rem !important",
+    padding: "4px 1rem ",
     backgroundColor: "#fff !important",
     minHeight: "64px",
     boxShadow: "0 3px 6px rgba(0,0,0,0.03)",

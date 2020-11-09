@@ -1,5 +1,5 @@
 import { NavBarType } from "./types";
-import PersonIcon from "@material-ui/icons/Person";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 export const siteNav: NavBarType = {
   config: {
@@ -90,9 +90,9 @@ export const siteNav: NavBarType = {
       href: "https://ratnaafin.com/contact-us/",
     },
     {
-      label: "Login",
-      icon: PersonIcon,
-      iconPosition: "after",
+      label: " Login",
+      icon: AccountCircle,
+      iconPosition: "before",
       children: [
         {
           label: "Customer",

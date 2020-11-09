@@ -70,18 +70,22 @@ export const formStyle = (theme: Theme): any => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
     fontSize: "1.2rem",
+    borderRadius: "24px",
   },
   backBtn: {
     boxShadow:
       "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-    background: "#e0e0e0",
+    background:
+      "linear-gradient(-90deg, rgba(150, 143, 143,1) 0%, rgba(224, 224, 224,1) 35%, rgba(209, 197, 197,1) 100%)",
     marginRight: theme.spacing(2),
     color: "#0b6fb8 !important",
     margin: theme.spacing(3, 0, 2),
     fontSize: "1.2rem",
+    borderRadius: "24px",
     "&:hover": {
       color: "#0b6fb8 !important",
-      background: "#e0e0e0",
+      background:
+        "linear-gradient(-90deg, rgba(209, 197, 197,1) 0%, rgba(224, 224, 224,1) 35%, rgba(150, 143, 143,1) 100%)",
       boxShadow:
         "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
     },
