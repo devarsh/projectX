@@ -1,32 +1,39 @@
-import { FC, useState, memo } from "react";
+import { FC, useState, useEffect, useRef, memo, Fragment } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import { Theme, makeStyles } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext, InitialValuesType } from "packages/form";
+import { APISDK } from "registry/fns/sdk";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
 import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
+import { validateMetaData } from "./utils/validateMetaData";
+import { extendFieldTypes } from "./utils/extendedFieldTypes";
 import { MetaDataType } from "./types";
 import { StepperForm } from "./stepperForm";
 import { FormVerificationDialog } from "./formVerificationDialog";
-import { useLocation, useNavigate } from "react-router-dom";
-import { chooseNaviagtionPath } from "meta/navigationLogic";
-
 import {
-  WrapperStyleProps,
-  WrapperStyleNamesProps,
-  wrapperStyles,
-} from "app/styles";
+  formWrapperStyle,
+  FormWrapperStyleProps,
+  FormWrapperStyleNamesProps,
+} from "./style";
+import { extendedMetaData } from "./extendedTypes";
+import loaderGif from "assets/images/loader.gif";
+
+const useStyles = makeStyles<Theme, FormWrapperStyleProps>(formWrapperStyle);
 
 interface FormWrapperProps {
   metaData: MetaDataType;
   initialValues?: InitialValuesType;
   setShowDialog: Function;
   setSubmitProps: Function;
+  tranCode?: string; //Ref code for inquiry form
+  formCode?: string;
+  empCode?: string;
 }
 
 const FormWrapper: FC<FormWrapperProps> = ({
@@ -34,8 +41,12 @@ const FormWrapper: FC<FormWrapperProps> = ({
   initialValues,
   setShowDialog,
   setSubmitProps,
+  tranCode,
+  formCode,
+  empCode,
 }) => {
   const navigate = useNavigate();
+  metaData = extendFieldTypes(metaData, extendedMetaData);
   metaData = attachMethodsToMetaData(
     metaData,
     singletonFunctionRegisrationFactory
@@ -43,20 +54,32 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (values, submitEnd) => {
-    if (Boolean(values?.product_type) && Boolean(values?.employementStatus)) {
+  const onSubmitHandler = (
+    submitAction: string,
+    tranCode?: string,
+    formCode?: string
+  ) => (values, submitEnd) => {
+    if (`${empCode}` === "98") {
       setSubmitProps(() => ({
         values: values,
         submitEnd: submitEnd,
+        submitAction: submitAction,
+        formCode: formCode,
+        tranCode: tranCode,
       }));
       setShowDialog(true);
     } else {
-      console.log(values);
+      const data = APISDK.pushFormData(
+        submitAction,
+        values,
+        formCode,
+        tranCode ?? ""
+      );
+      console.log(data);
       submitEnd(true);
       navigate("/thankyou");
     }
   };
-
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <FormContext.Provider
@@ -75,7 +98,11 @@ const FormWrapper: FC<FormWrapperProps> = ({
             formRenderConfig={metaData.form.render}
             formDisplayName={metaData.form.label}
             formName={metaData.form.name}
-            submitFn={onSubmitHandler}
+            submitFn={onSubmitHandler(
+              metaData.form.submitAction as string,
+              tranCode,
+              formCode
+            )}
           />
         </Container>
       </FormContext.Provider>
@@ -85,33 +112,80 @@ const FormWrapper: FC<FormWrapperProps> = ({
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
-const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
+const isMetaDataValid = (metaData) => {
+  if (Boolean(metaData) && typeof metaData === "object") {
+    const { form, fields } = metaData;
+    if (
+      Array.isArray(fields) &&
+      fields.length > 0 &&
+      typeof form === "object"
+    ) {
+      return validateMetaData(metaData);
+    }
+  }
+  return false;
+};
 
 export const ParentFormWrapper = () => {
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
+  let metaData = useRef<MetaDataType | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const [submitProps, setSubmitProps] = useState({});
-  const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
-  let initialValues = {};
-
   const { state } = location;
-
-  const result = chooseNaviagtionPath(
-    //@ts-ignore
-    state?.formCode ?? "",
-    //@ts-ignore
-    state?.productCode ?? ""
+  const classes: FormWrapperStyleNamesProps = useStyles(
+    {} as FormWrapperStyleProps
   );
-  if (result.metaData === null) {
-    return <div>Opps cannot load this form</div>;
-  }
-  return (
-    <Box width={1} display="flex" className={classes.wrapper}>
+
+  //passed as NOOP attach it if api returns the same
+  let initialValues = {};
+  //@ts-ignore
+
+  useEffect(() => {
+    setLoading(true);
+    metaData.current = null;
+    if (process.env.REACT_APP_STATIC_META_DATA === "true") {
+      import("meta/navigationLogic").then((data) => {
+        const result = data.chooseNaviagtionPath(
+          //@ts-ignore
+          state?.formCode,
+          //@ts-ignore
+          state?.empCode
+        );
+        metaData.current = result.metaData;
+        setLoading(false);
+      });
+    } else {
+      //@ts-ignore need to find how to set router loaction state type (react-router-dom)
+      APISDK.getMetaData(state?.formCode, state?.empCode)
+        .then((result) => {
+          metaData.current = result;
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoading(false);
+        });
+    }
+    //@ts-ignore
+  }, [state?.formCode, state?.empCode]);
+  const result = loading ? (
+    <img src={loaderGif} className={classes.loader} alt="loader" />
+  ) : !isMetaDataValid(metaData.current as MetaDataType) ? (
+    <span>"Error loading form"</span>
+  ) : (
+    <Fragment>
       <MemoizedFormWrapper
-        metaData={result.metaData}
+        metaData={metaData.current as MetaDataType}
         initialValues={initialValues}
         setShowDialog={setShowDialog}
         setSubmitProps={setSubmitProps}
+        //@ts-ignore - this for ref to previous inquiry form
+        tranCode={state?.tranCode ?? ""}
+        //@ts-ignore - form code for this form i.e formName
+        formCode={state?.formCode ?? ""}
+        //@ts-ignore - for otp page when
+        empCode={state?.empCode ?? ""}
       />
       {showDialog ? (
         <FormVerificationDialog
@@ -120,6 +194,7 @@ export const ParentFormWrapper = () => {
           submitProps={submitProps}
         />
       ) : null}
-    </Box>
+    </Fragment>
   );
+  return <div className={classes.paper}>{result}</div>;
 };

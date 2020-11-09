@@ -34,18 +34,50 @@ https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evalu
 http://www.awongcm.io/blog/2018/11/25/using-iframes-api-to-toggle-client-side-routing-of-react-router-for-legacy-web-apps/
 https://christoshrousis.com/05-how-to-communicate-with-an-iframe-using-react-hooks/
 
+#CRA env variables
+https://medium.com/@adostes/using-environment-variables-in-a-react-application-ac3b6c307373
 
-http://10.0.0.9:8081/users/getMetaData
 
-Bearer 8278143e-e815-42a5-bfc1-69207abc8e57
 
+
+URL: http://10.0.0.9:8081/users/inquiry
+
+==request==
 {
-    "action": "rander_form",
+    "action": "inquiry",
     "request_data": {
-        "main_prod_cd": "",
-        "sub_prod_cd1": "12300001",
-        "sub_prod_cd2": "12300001",
-        "sub_prod_cd3": "",
-        "empl_cd": "01"
+        "salutation": "Sr.",
+        "customerType": "I",
+        "firstName": "sanjay",
+        "middleName": "santosh bhai",
+        "lastName": "sen",
+        "gender": "m",
+        "birthdate": "29/07/1999",
+        "phone": "7600812222",
+        "email": "sa@123",
+        "area_name": "ranip",
+        "city": "ahme",
+        "state": "guj",
+        "pincode": "00",
+        "country": "in",
+        "loanAmount": 1500000,
+        "lead_priority": "02",
+        "lead_source": "02",
+        "product": "001",
+        "subProduct": "001",
+        "next_action_dt": "29/07/2020",
+        "employeed_types": "01",
+        "dev_or_cont": "01",
+        "unique_id": "iamUNIQUE"
+    },
+    "channel": "W"
+}
+
+==response==
+{
+    "status": "0",
+    "response_data": {
+        "msg": "Thanks for Inquiry,We Will Reach You Soon",
+        "inquiry_code": 640
     }
 }

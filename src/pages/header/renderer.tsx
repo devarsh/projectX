@@ -13,7 +13,7 @@
  *                                               DropdownItem
  */
 
-import { FC, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import {
   NavItem,
   NavLink,
@@ -57,6 +57,20 @@ const overrideMetaData = (metaData: NavBarType) => {
   }
 };
 
+const RenderLabel: FC<{ one: NavItemType }> = ({ one }) => {
+  return (
+    <Fragment>
+      {one.iconPosition === "before" && isValidElementType(one.icon) ? (
+        <one.icon />
+      ) : null}
+      {one.label}
+      {one.iconPosition === "after" && isValidElementType(one.icon) ? (
+        <one.icon />
+      ) : null}
+    </Fragment>
+  );
+};
+
 export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
   const navigate = useNavigate();
   const newMetaData = overrideMetaData({ ...metaData });
@@ -74,32 +88,16 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
                   e.preventDefault();
                   if (item.href !== undefined) {
                     navigate(item.href, {
-                      state: { formCode: item.formCode },
+                      state: { formCode: item.formCode, empcode: item.empCode },
                     });
                   }
                 }}
               >
-                {item.iconPosition === "before" &&
-                isValidElementType(item.icon) ? (
-                  <item.icon />
-                ) : null}
-                {item.label}
-                {item.iconPosition === "after" &&
-                isValidElementType(item.icon) ? (
-                  <item.icon />
-                ) : null}
+                <RenderLabel one={item} />
               </NavLink>
             ) : (
               <NavLink href={item.href} target={item.target} rel={item.rel}>
-                {item.iconPosition === "before" &&
-                isValidElementType(item.icon) ? (
-                  <item.icon />
-                ) : null}
-                {item.label}
-                {item.iconPosition === "after" &&
-                isValidElementType(item.icon) ? (
-                  <item.icon />
-                ) : null}
+                <RenderLabel one={item} />
               </NavLink>
             )}
           </NavItem>
@@ -160,32 +158,16 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                 e.preventDefault();
                 if (item.href !== undefined) {
                   navigate(item.href, {
-                    state: { formCode: item.formCode },
+                    state: { formCode: item.formCode, empcode: item.empCode },
                   });
                 }
               }}
             >
-              {item.iconPosition === "before" &&
-              isValidElementType(item.icon) ? (
-                <item.icon />
-              ) : null}
-              {item.label}
-              {item.iconPosition === "after" &&
-              isValidElementType(item.icon) ? (
-                <item.icon />
-              ) : null}
+              <RenderLabel one={item} />
             </NavLink>
           ) : (
             <NavLink href={item.href} target={item.target} rel={item.rel}>
-              {item.iconPosition === "before" &&
-              isValidElementType(item.icon) ? (
-                <item.icon />
-              ) : null}
-              {item.label}
-              {item.iconPosition === "after" &&
-              isValidElementType(item.icon) ? (
-                <item.icon />
-              ) : null}
+              <RenderLabel one={item} />
             </NavLink>
           )}
         </DropdownToggle>
@@ -211,7 +193,10 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                     e.preventDefault();
                     if (one.href !== undefined) {
                       navigate(one.href, {
-                        state: { formCode: one.formCode },
+                        state: {
+                          formCode: one.formCode,
+                          empCode: one.empCode,
+                        },
                       });
                     }
                     handleHide(e);
@@ -219,15 +204,7 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                     document.getElementById("root")?.click();
                   }}
                 >
-                  {one.iconPosition === "before" &&
-                  isValidElementType(one.icon) ? (
-                    <one.icon />
-                  ) : null}
-                  {one.label}
-                  {one.iconPosition === "after" &&
-                  isValidElementType(one.icon) ? (
-                    <one.icon />
-                  ) : null}
+                  <RenderLabel one={one} />
                 </DropdownItem>
               ) : (
                 <DropdownItem
@@ -242,15 +219,7 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                     document.getElementById("root")?.click();
                   }}
                 >
-                  {one.iconPosition === "before" &&
-                  isValidElementType(one.icon) ? (
-                    <one.icon />
-                  ) : null}
-                  {one.label}
-                  {one.iconPosition === "after" &&
-                  isValidElementType(one.icon) ? (
-                    <one.icon />
-                  ) : null}
+                  <RenderLabel one={one} />
                 </DropdownItem>
               );
             }

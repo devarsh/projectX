@@ -2,9 +2,12 @@ import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 import App from "app";
-
+import "registry/fns";
+import "registry/yup";
 import { APISDK } from "registry/fns/sdk";
-APISDK.createSession("http://10.0.0.9:8081/");
+require("dotenv").config();
+
+APISDK.createSession(process.env.REACT_APP_API_URL ?? "");
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

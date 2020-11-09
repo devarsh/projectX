@@ -36,6 +36,8 @@ export interface FieldMetaData<T> {
   defaultValue?: any;
   schemaValidation?: YupSchemaMetaDataType;
   render: FieldRenderProps<T>;
+  //added these to support multiple types in metaData - extending original type.
+  //BaseType is always function
   validate?: typeof ValidateFnType | CustomRuleType | string;
   shouldExclude?:
     | typeof shouldExcludeFnType
@@ -66,21 +68,23 @@ export type AllToggleButtonGroupProps = Merge<
   Omitted<ToggleButtonGroupProps>,
   FieldMetaData<"toggleButtonGroup">
 >;
-export type ToggleButtonGroupPropsOptional = Optional<ToggleButtonGroupProps>;
+export type ToggleButtonGroupPropsOptional = Optional<
+  AllToggleButtonGroupProps
+>;
 
 export type AllNumberFormatProps = Merge<
   Omitted<NumberFormatProps>,
   FieldMetaData<"numberFormat">
 >;
 
-export type NumberFormatPropsOptional = Optional<NumberFormatProps>;
+export type NumberFormatPropsOptional = Optional<AllNumberFormatProps>;
 
 export type AllPasswordFieldProps = Merge<
   Omitted<PasswordFieldProps>,
   FieldMetaData<"passwordField">
 >;
 
-export type PasswordFieldPropsOptional = Optional<PasswordFieldProps>;
+export type PasswordFieldPropsOptional = Optional<AllPasswordFieldProps>;
 
 export type AllCheckboxProps = Merge<
   Omitted<CheckboxProps>,
@@ -90,8 +94,8 @@ export type AllCheckboxGroupProps = Merge<
   Omitted<CheckboxGroupProps>,
   FieldMetaData<"checkboxGroup">
 >;
-export type CheckboxPropsOptional = Optional<CheckboxProps>;
-export type CheckboxGroupPropsOptional = Optional<CheckboxGroupProps>;
+export type CheckboxPropsOptional = Optional<AllCheckboxProps>;
+export type CheckboxGroupPropsOptional = Optional<AllCheckboxGroupProps>;
 
 export type AllDatePickerProps = Merge<
   Omitted<DatePickerProps>,
@@ -105,30 +109,30 @@ export type AllTimePickerProps = Merge<
   Omitted<TimePickerProps>,
   FieldMetaData<"timePicker">
 >;
-export type DatePickerPropsOptional = Optional<DatePickerProps>;
-export type DateTimePickerPropsOptional = Optional<DateTimePickerProps>;
-export type TimePickerPropsOptional = Optional<TimePickerProps>;
+export type DatePickerPropsOptional = Optional<AllDatePickerProps>;
+export type DateTimePickerPropsOptional = Optional<AllDateTimePickerProps>;
+export type TimePickerPropsOptional = Optional<AllTimePickerProps>;
 
 export type AllRadioProps = Merge<FieldMetaData<"radio">, Omitted<RadioProps>>;
-export type RadioPropsOptional = Optional<RadioProps>;
+export type RadioPropsOptional = Optional<AllRadioProps>;
 
 export type AllRatingProps = Merge<
   Omitted<RatingProps>,
   FieldMetaData<"rating">
 >;
-export type RatingPropsOptional = Optional<RatingProps>;
+export type RatingPropsOptional = Optional<AllRatingProps>;
 
 export type AllSelectFieldProps = Merge<
   Omitted<SelectProps>,
   FieldMetaData<"select">
 >;
-export type SelectPropsOptional = Optional<SelectProps>;
+export type SelectPropsOptional = Optional<AllSelectFieldProps>;
 
 export type AllSliderProps = Merge<
   Omitted<SliderProps>,
   FieldMetaData<"slider">
 >;
-export type SliderPropsOptional = Optional<SliderProps>;
+export type SliderPropsOptional = Optional<AllSliderProps>;
 
 export type AllSwitchProps = Merge<
   Omitted<SwitchProps>,
@@ -138,11 +142,11 @@ export type AllSwitchGroupProps = Merge<
   SwitchGroupProps,
   FieldMetaData<"switchGroup">
 >;
-export type SwitchPropsOptional = Optional<SwitchProps>;
-export type SwitchGroupPropsOptional = Optional<SwitchGroupProps>;
+export type SwitchPropsOptional = Optional<AllSwitchProps>;
+export type SwitchGroupPropsOptional = Optional<AllSwitchGroupProps>;
 
 export type AllTextFieldProps = Merge<
   Omitted<TextFieldProps>,
   FieldMetaData<"textField">
 >;
-export type TextFieldPropsOptional = Optional<TextFieldProps>;
+export type TextFieldPropsOptional = Optional<AllTextFieldProps>;

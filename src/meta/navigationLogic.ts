@@ -40,14 +40,14 @@ import {
   balanceTransorpopSelfEmpBusQueMetaData,
   balanceTransorpopSelfEmpProfQueMetaData,
   balanceTransorpopsalariedPersonQueMetaData,
-  balanceTransorpopSelfEmpDevQueMetaData
+  balanceTransorpopSelfEmpDevQueMetaData,
 } from "meta/BalanceTransferOrPopUPQuestionsMetaData";
 
 import {
   intsaverSelfEmpBusQueMetaData,
   intsaverSelfEmpProfQueMetaData,
   intsaversalariedPersonQueMetaData,
-  intsaverSelfEmpDevQueMetaData
+  intsaverSelfEmpDevQueMetaData,
 } from "meta/IntsaverQuestionsMetdata";
 
 import {
@@ -73,22 +73,22 @@ export const chooseNaviagtionPath = (
   let metaData;
 
   switch (`${productType}/${profession ?? ""}`) {
-    case "12300001/":
+    case "12300001/98":
       RetailLoanMetaData.form.label = "Retail Home Loan";
       RetailLoanMetaData.form.name = productType;
       metaData = { ...RetailLoanMetaData };
       break;
-    case "12300002/":
+    case "12300002/98":
       RetailLoanMetaData.form.label = "Retail LAP (Loan Against Property)";
       RetailLoanMetaData.form.name = productType;
       metaData = { ...RetailLoanMetaData };
       break;
-    case "12300003/":
+    case "12300003/98":
       RetailLoanMetaData.form.label = "Retail LRD (Lease Rental Discount)";
       RetailLoanMetaData.form.name = productType;
       metaData = { ...RetailLoanMetaData };
       break;
-    case "12300004/":
+    case "12300004/98":
       RetailLoanMetaData.form.label = "Retail APF";
       RetailLoanMetaData.form.name = productType;
       metaData = { ...RetailLoanMetaData };
@@ -354,7 +354,7 @@ export const chooseNaviagtionPath = (
     case "123400012/04":
       return {
         formCode: `${productType}/${profession}`,
-        metaData: retailDiscountingCommercialIndustrialShedBalanceTransferSelfEmpDevQuesMetaData
+        metaData: retailDiscountingCommercialIndustrialShedBalanceTransferSelfEmpDevQuesMetaData,
       };
     //LRD End
 

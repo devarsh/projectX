@@ -356,8 +356,10 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             }
             fieldsAggrigator.push(result);
           }
-          //if form has no errors would procced with submitting the form
-          //hasError = false;
+          //In debug mode allow to move to next step without validating
+          if (process.env.REACT_APP_DEBUG_MODE === "true") {
+            hasError = false;
+          }
           if (!hasError) {
             if (typeof onSubmit === "function") {
               let obj = {};

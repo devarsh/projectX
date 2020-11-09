@@ -1,11 +1,37 @@
 import { Theme } from "@material-ui/core/styles";
 import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 
+export interface FormWrapperStyleProps {
+  paper: BaseCSSProperties;
+  loader: BaseCSSProperties;
+}
+export type FormWrapperStyleNamesProps = Record<
+  keyof FormWrapperStyleProps,
+  string
+>;
+
+export const formWrapperStyle = (theme: Theme): any => ({
+  paper: {
+    margin: theme.spacing(3, 3, 0, 3),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    boxShadow: "0 0 20px rgba(0,0,0,0.06)",
+    padding: "1rem 2rem",
+    borderRadius: 8,
+    width: "100%",
+    minHeight: "30vh",
+  },
+  loader: {
+    justifyContent: "center",
+    margin: "auto",
+  },
+});
+
 export interface FormStyleProps {
-  wrapper: BaseCSSProperties;
   title: BaseCSSProperties;
   subTitle: BaseCSSProperties;
-  paper: BaseCSSProperties;
   form: BaseCSSProperties;
   submit: BaseCSSProperties;
   backBtn: BaseCSSProperties;
@@ -30,16 +56,6 @@ export const formStyle = (theme: Theme): any => ({
     fontWeight: "700",
     alignSelf: "flex-start",
     marginBottom: theme.spacing(2),
-  },
-  paper: {
-    marginTop: theme.spacing(3),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    boxShadow: "0 0 20px rgba(0,0,0,0.06)",
-    padding: "1rem 2rem",
-    borderRadius: 4,
   },
   label: {
     color: "#736f6f",

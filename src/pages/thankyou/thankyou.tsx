@@ -20,6 +20,7 @@ export const ThankYou = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
+  console.log("from thankyou", state);
   return (
     <Box
       className={classes.wrapper}
@@ -55,7 +56,7 @@ export const ThankYou = () => {
         //@ts-ignore
         Boolean(state?.formCode ?? null) &&
         //@ts-ignore
-        Boolean(state?.productCode ?? null) ? (
+        Boolean(state?.empCode ?? null) ? (
           <Button
             className={classes.continueBtn}
             onClick={(e) => {
@@ -64,7 +65,7 @@ export const ThankYou = () => {
                 //@ts-ignore
                 `/form/questions-${state.formCode ?? ""}-${
                   //@ts-ignore
-                  state.productCode ?? ""
+                  state.empCode ?? ""
                 }`,
                 { state }
               );

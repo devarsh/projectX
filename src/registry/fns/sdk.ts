@@ -48,7 +48,6 @@ const RaatnaFinAPI = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         verifyRequest(result);
       })
       .catch((error) => {
@@ -91,7 +90,7 @@ const RaatnaFinAPI = () => {
     );
     if (Array.isArray(data) && data.length === 1) {
       let result = data[0];
-      if (String(result.status).toLowerCase() === "success") {
+      if (String(result.Status).toLowerCase() === "success") {
         const areaArray = result.PostOffice.map((dtl) => ({
           value: dtl?.Name,
           label: dtl?.Name,
@@ -135,10 +134,10 @@ const RaatnaFinAPI = () => {
           Authorization: `Bearer ${sessionObj.token.access_token}`,
         }),
       });
-      if (response.status == 200) {
+      if (String(response.status) === "200") {
         let data = await response.json();
         return {
-          status: data.status == "0" ? "success" : "failure",
+          status: String(data.status) === "0" ? "success" : "failure",
           data: data,
         };
       } else {
@@ -269,7 +268,6 @@ const RaatnaFinAPI = () => {
         request_data: {
           code: mobileNumber,
         },
-        channel: "W",
       }),
     });
     if (status === "success") {
@@ -277,6 +275,36 @@ const RaatnaFinAPI = () => {
     } else {
       return { status, data: data?.response_data };
     }
+  };
+  const getMetaData = async (productCode: string, empCode: string) => {
+    const { data, status } = await internalFetcher("/users/getMetaData", {
+      body: JSON.stringify({
+        action: "render_form",
+        request_data: {
+          main_prod_cd: `${productCode}`,
+          empl_cd: `${empCode}`,
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data ?? {};
+    } else {
+      return {};
+    }
+  };
+  const pushFormData = async (
+    submitAction?: string,
+    formData?: Object,
+    formCode?: string,
+    tranCode?: string
+  ) => {
+    const { data, status } = await internalFetcher("/users/inquiry", {
+      body: JSON.stringify({
+        action: submitAction,
+        request_data: { ...formData, tranCode, formCode },
+        channel: "W",
+      }),
+    });
   };
   //remove this function after migration
   const getAccessToken = async () => {
@@ -296,6 +324,8 @@ const RaatnaFinAPI = () => {
     getMiscVal,
     getAccessToken,
     sendOTP,
+    getMetaData,
+    pushFormData,
   };
 };
 

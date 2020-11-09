@@ -1,4 +1,4 @@
-import { FC, useState, useRef, Suspense, cloneElement } from "react";
+import { FC, useState, useRef, Suspense, cloneElement, Fragment } from "react";
 import { useForm, SubmitFnType } from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -48,10 +48,12 @@ export const StepperForm: FC<FormProps> = ({
     if (!isLastActiveStep(activeStep, fieldGroupsActiveStatus)) {
       const currentStep = fieldGroupsActiveStatus[activeStep];
       const currentFieldsToValidate = fields[currentStep.name].fieldNames;
-      let isError = await handleSubmitPartial(currentFieldsToValidate);
-      //Do not uncomment else you will skip validation and move to next step
-      //isError = false;
-      if (!isError) {
+      let hasError = await handleSubmitPartial(currentFieldsToValidate);
+      //In debug mode allow to move to next step without validating
+      if (process.env.REACT_APP_DEBUG_MODE === "true") {
+        hasError = false;
+      }
+      if (!hasError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);
         setActiveStep(nextStep);
       }
@@ -86,7 +88,7 @@ export const StepperForm: FC<FormProps> = ({
     (one) => one.status
   );
   return (
-    <div className={classes.paper}>
+    <Fragment>
       <Typography component="h3" className={classes.title}>
         {formDisplayName}
       </Typography>
@@ -136,7 +138,7 @@ export const StepperForm: FC<FormProps> = ({
           )}
         </Box>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

@@ -76,7 +76,7 @@ export const salariedPersonQueMetaData: MetaDataType = {
         sm: 3,
       },
       MaskProps: {
-        mask: /^\w+$/,
+        mask: "aaaaa0000a",
         prepare: function (str) {
           return str.toUpperCase();
         },
