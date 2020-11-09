@@ -305,6 +305,11 @@ const RaatnaFinAPI = () => {
         channel: "W",
       }),
     });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
   };
   //remove this function after migration
   const getAccessToken = async () => {
