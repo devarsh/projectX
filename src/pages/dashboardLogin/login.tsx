@@ -4,25 +4,102 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
 import Button from "@material-ui/core/Button";
 import { APISDK } from "registry/fns/sdk";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { useNavigate } from "react-router-dom";
+import { string } from "yup";
 
 export interface FormDialogProps {
   submitProps: any;
 }
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [phoneNumber, setphoneNumber] = useState("");
   const [otp, setotp] = useState("");
   const [password, setpassword] = useState("");
   const [divShowing, setdivShowing] = useState(false);
-  const [btnShowing, setbtnShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const [id, setid] = useState("");
+  const [datetime, setdatetime] = useState("");
+
+  const sendOtp = async () => {
+    debugger;
+    if (phoneNumber !== "" || phoneNumber.length == 10) {
+      try {
+        setLoading(true);
+        const result = await APISDK.sendOTP(phoneNumber);
+        // console.log("result", result);
+        if (result.status === "success") {
+          setid(result?.data?.id);
+          setdatetime(result?.data?.sdatetime);
+          setdivShowing(true);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      } catch (e) {
+        setLoading(false);
+        console.log("in catch");
+      }
+    } else {
+      console.log("mobile should be 10 digits");
+    }
+  };
+
+  const verifyOtp = async () => {
+    try {
+      setLoading(true);
+      const result = await APISDK.handleverifyOtp(otp, datetime, id);
+      // console.log("resultdfgdfg", result);
+      if (result.status === "success") {
+        setLoading(false);
+        navigate("/thankyou");
+      } else {
+        setLoading(false);
+      }
+    } catch (e) {
+      setLoading(false);
+      console.log("in catch");
+    }
+  };
+
+  const loginPassword = "superacute@1234";
+  const verifyPwd = async () => {
+    debugger;
+    if (password.length !== 0 || password !== "") {
+      try {
+        setLoading(true);
+        const result = await APISDK.handleverifyPwd(loginPassword, phoneNumber);
+        console.log("result for password", result);
+        if (result.status === "success") {
+          setLoading(false);
+          navigate("/thankyou");
+        } else {
+          setLoading(false);
+        }
+      } catch (e) {
+        setLoading(false);
+        console.log("in catch");
+      }
+    } else {
+      console.log("Password should not be empty");
+    }
+  };
+
+  const showPassDiv = () => {
+    setshowPwddiv(true);
+  };
 
   return (
     <Box
       display="flex"
       width={1}
       className="login-form-cover"
-      style={{ marginTop: "100px" }}
+      style={{ marginTop: "150px" }}
     >
       <Box
         display="flex"
@@ -35,6 +112,7 @@ export const LoginForm = () => {
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem
           accusantium doloremque laudantium.
         </div>
+
         {showPwddiv === true ? (
           <div className="form-cover">
             <form method="post">
@@ -43,17 +121,20 @@ export const LoginForm = () => {
                 label="Password"
                 placeholder="Password for verification"
                 autoComplete="off"
+                type="password"
                 name="password"
                 value={password}
-                onChange={(e) =>
-                  console.log("sgfgd", setpassword(e.target.value))
-                }
+                onChange={(e) => setpassword(e.target.value)}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 fullWidth
               />
-              <Button className="btn1" type="submit">
+              <Button
+                onClick={verifyPwd}
+                disabled={password !== "" ? false : true}
+                endIcon={loading ? <CircularProgress size={20} /> : null}
+              >
                 VERIFY & LOGIN
               </Button>
             </form>
@@ -71,11 +152,16 @@ export const LoginForm = () => {
                   fullWidth
                   type="number"
                   name="otp"
+                  value={otp}
+                  onChange={(e) => setotp(e.target.value)}
                   autoComplete="off"
                   inputProps={{ maxLength: 6 }}
                 />
               </div>
-              <Button className="btn1" type="submit">
+              <Button
+                disabled={otp.length !== 6 ? true : false}
+                onClick={verifyOtp}
+              >
                 VERIFY & LOGIN
               </Button>
             </form>
@@ -105,18 +191,17 @@ export const LoginForm = () => {
                 />
               </div>
               <Button
-                className="btn1 option-link"
-                type="submit"
-                onClick={() => APISDK.sendOTP(phoneNumber)}
+                onClick={sendOtp}
+                endIcon={loading ? <CircularProgress size={20} /> : null}
               >
                 Login With OTP
               </Button>
 
-              <Box display="flex" width={1} className="OrLoginWith">
+              <Box display="flex" width={1}>
                 <div className="text">Or</div>
               </Box>
 
-              <Button className="btn3 option-link">Login With Password</Button>
+              <Button onClick={showPassDiv}>Login With Password</Button>
             </form>
           </div>
         )}
