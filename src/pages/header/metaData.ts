@@ -102,6 +102,8 @@ export const siteNav: NavBarType = {
         },
         {
           label: "Employee",
+          href: "/login",
+          isRouterLink: true,
         },
       ],
     },

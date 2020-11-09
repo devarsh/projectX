@@ -31,5 +31,10 @@ registerFn("getYesOrNoOptions", others.getYesOrNoOptions);
 registerFn("AutoFillGender", others.AutoFillGender);
 registerFn("getPincodeDtl", others.getPincodeDtl(api.getPincode));
 registerFn("getLocationDtl", others.getLocationDtl);
+registerFn(
+  "getcoApplicantPincodeDtl",
+  others.getcoApplicantPincodeDtl(api.getPincode)
+);
+registerFn("getcoApplicantLocationDtl", others.getcoApplicantLocationDtl);
 registerFn("getValidateValue", others.getValidateValue);
 registerFn("getGenderValue", others.getGenderValue);

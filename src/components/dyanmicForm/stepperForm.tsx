@@ -50,8 +50,8 @@ export const StepperForm: FC<FormProps> = ({
       const currentFieldsToValidate = fields[currentStep.name].fieldNames;
       let hasError = await handleSubmitPartial(currentFieldsToValidate);
       //In debug mode allow to move to next step without validating
-      if(process.env.REACT_APP_DEBUG_MODE === 'true') {
-        hasError = false
+      if (process.env.REACT_APP_DEBUG_MODE === "true") {
+        hasError = false;
       }
       if (!hasError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);

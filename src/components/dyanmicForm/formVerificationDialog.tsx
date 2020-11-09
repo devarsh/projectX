@@ -59,8 +59,6 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
             setLoading(false);
             submitEnd(false);
           }
-          console.log(values, submitAction);
-          console.log(result);
         } catch (e) {
           setLoading(false);
         }

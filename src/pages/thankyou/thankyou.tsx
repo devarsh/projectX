@@ -20,7 +20,6 @@ export const ThankYou = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  console.log("from thankyou", state);
   return (
     <Box
       className={classes.wrapper}

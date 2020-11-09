@@ -117,6 +117,85 @@ export const getLocationDtl = async (fieldData) => {
   }
 };
 
+export const getcoApplicantPincodeDtl = (getPincode) => async (fieldData) => {
+  if (fieldData.value.length === 6) {
+    let codes = await getPincode(fieldData.value);
+    return {
+      coApplicantLocation: {
+        options: codes.options,
+        others: codes.others,
+        value: "",
+      },
+      coApplicantCity: {
+        value: "",
+      },
+      coApplicantState: {
+        value: "",
+      },
+      coApplicantDistrict: {
+        value: "",
+      },
+      coApplicantCountry: {
+        value: "",
+      },
+    };
+  } else if (fieldData.value === "") {
+    return {
+      coApplicantLocation: {
+        options: [],
+        value: "",
+      },
+      coApplicantCity: {
+        value: "",
+      },
+      coApplicantState: {
+        value: "",
+      },
+      coApplicantDistrict: {
+        value: "",
+      },
+      coApplicantCountry: {
+        value: "",
+      },
+    };
+  }
+};
+
+export const getcoApplicantLocationDtl = async (fieldData) => {
+  if (fieldData.value === "") {
+    return {
+      coApplicantCity: {
+        value: "",
+      },
+      coApplicantState: {
+        value: "",
+      },
+      coApplicantDistrict: {
+        value: "",
+      },
+      coApplicantCountry: {
+        value: "",
+      },
+    };
+  } else {
+    const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+    return {
+      coApplicantCity: {
+        value: fieldValues.city,
+      },
+      coApplicantState: {
+        value: fieldValues.state,
+      },
+      coApplicantDistrict: {
+        value: fieldValues.district,
+      },
+      coApplicantCountry: {
+        value: fieldValues.country,
+      },
+    };
+  }
+};
+
 export const getValidateValue = async (fieldData) => {
   if (
     fieldData.value === "X" ||

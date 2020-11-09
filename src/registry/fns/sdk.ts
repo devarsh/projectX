@@ -259,6 +259,23 @@ const RaatnaFinAPI = () => {
       },
     ];
   };
+
+  const sendOTP = async (mobileNumber: string) => {
+    debugger;
+    const { status, data } = await internalFetcher("./users/customer_login", {
+      body: JSON.stringify({
+        action: "get_sub_product",
+        request_data: {
+          code: mobileNumber,
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
+  };
   const getMetaData = async (productCode: string, empCode: string) => {
     const { data, status } = await internalFetcher("/users/getMetaData", {
       body: JSON.stringify({
@@ -311,6 +328,7 @@ const RaatnaFinAPI = () => {
     getBankList,
     getMiscVal,
     getAccessToken,
+    sendOTP,
     getMetaData,
     pushFormData,
   };
