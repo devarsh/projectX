@@ -260,6 +260,24 @@ const RaatnaFinAPI = () => {
       },
     ];
   };
+
+  const sendOTP = async (mobileNumber: string) => {
+    debugger;
+    const { status, data } = await internalFetcher("./users/customer_login", {
+      body: JSON.stringify({
+        action: "get_sub_product",
+        request_data: {
+          code: mobileNumber,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
+  };
   //remove this function after migration
   const getAccessToken = async () => {
     await sessionToken;
@@ -277,6 +295,7 @@ const RaatnaFinAPI = () => {
     getBankList,
     getMiscVal,
     getAccessToken,
+    sendOTP,
   };
 };
 
