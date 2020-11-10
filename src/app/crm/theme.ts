@@ -42,10 +42,20 @@ export const theme: Theme = {
         marginTop: "26px",
         borderRadius: 5,
         backgroundColor: "#fff",
+        "@media (max-width: 1200px)": {
+          fontSize: "0.875rem",
+        },
       },
       input: {
         padding: "6px  7px",
         height: "22px",
+        "&::placeholder": {
+          color: "#000",
+          fontSize: "0.875rem",
+        },
+        "@media (max-width: 1200px)": {
+          height: "18px",
+        },
       },
       inputMultiline: {
         padding: "6px  7px",
@@ -55,6 +65,9 @@ export const theme: Theme = {
     MuiInput: {
       formControl: {
         marginTop: "26px !important",
+        "@media (max-width: 1200px)": {
+          marginTop: "18px !important",
+        },
       },
       underline: {
         "&:before": {
@@ -79,6 +92,12 @@ export const theme: Theme = {
         fontWeight: "600",
         textTransform: "capitalize",
         fontSize: "1rem",
+        "@media (max-width: 1200px)": {
+          fontSize: "0.75rem",
+        },
+        "@media (max-width: 1440px)": {
+          fontSize: "0.875rem",
+        },
       },
       shrink: {
         transform: "translate(0, 1.5px) scale(1)",
@@ -98,6 +117,10 @@ export const theme: Theme = {
       selectMenu: {
         minHeight: "22px",
         lineHeight: "22px",
+        "@media (max-width: 1200px)": {
+          minHeight: "18px",
+          lineHeight: "18px",
+        },
       },
     },
 

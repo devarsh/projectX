@@ -34,7 +34,7 @@ export const BecomePartner = () => {
           </div>
           <div className={classes.content}>
             <h2>Become A Channel Partner</h2>
-            <div className="text">
+            <div className={classes.infoText + " text"}>
               Committed to the development of our client’s future with
               industrial expert growth partners who have helped us in growing
               operative resources, our network and have helped us in creating a

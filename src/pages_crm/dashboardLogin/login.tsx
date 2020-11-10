@@ -6,8 +6,24 @@ import Button from "@material-ui/core/Button";
 import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import { string } from "yup";
+import loginImg from "assets/images/login.svg";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 
-export const LoginForm = () => {
+import {
+  loginPageStyle,
+  LoginPageStyleProps,
+  LoginPageNameProps,
+} from "./style";
+
+export interface FormDialogProps {
+  submitProps: any;
+}
+
+const useStyles = makeStyles<Theme, LoginPageStyleProps>(loginPageStyle);
+
+export const Login = () => {
+  const classes: LoginPageNameProps = useStyles({} as LoginPageStyleProps);
   const navigate = useNavigate();
 
   const [phoneNumber, setphoneNumber] = useState("");
@@ -98,29 +114,31 @@ export const LoginForm = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      width={1}
-      className="login-form-cover"
-      style={{ marginTop: "150px" }}
-    >
+    <Box display="flex" width={1} className={classes.wrapper}>
       <Box
         display="flex"
         flexDirection="column"
         width={1 / 2}
-        className="LoginForm-right"
+        className={classes.loginLeft}
       >
-        <h2>Customer Login</h2>
+        <img alt="" src={loginImg} className={classes.loginImg} />
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        width={1 / 2}
+        className={classes.loginRight}
+      >
+        <h2>Employee Login</h2>
         <div className="text">
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium.
+          Login with your registered mobile number to access your Ratnaafin
+          account.
         </div>
 
         {showPwddiv === true ? (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form method="post">
               <TextField
-                className="passwordwithview"
                 label="Password"
                 placeholder="Password for verification"
                 autoComplete="off"
@@ -141,68 +159,67 @@ export const LoginForm = () => {
                 onClick={verifyPwd}
                 disabled={password !== "" ? false : true}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
+                className={classes.loginBtn}
               >
                 VERIFY & LOGIN
               </Button>
             </form>
           </div>
         ) : otpVerifydivShowing === true ? (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form>
-              <div className="otp-input">
-                <TextField
-                  label="OTP"
-                  placeholder="OTP for verification"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  type="number"
-                  name="otp"
-                  value={otp}
-                  onChange={(e) => setotp(e.target.value)}
-                  autoComplete="off"
-                  inputProps={{ maxLength: 6 }}
-                  helperText={error ? error : ""}
-                  error={error ? true : false}
-                  onBlur={() => setError("")}
-                />
-              </div>
+              <TextField
+                label="OTP"
+                placeholder="OTP for verification"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                type="number"
+                name="otp"
+                value={otp}
+                onChange={(e) => setotp(e.target.value)}
+                autoComplete="off"
+                inputProps={{ maxLength: 6 }}
+                helperText={error ? error : ""}
+                error={error ? true : false}
+                onBlur={() => setError("")}
+              />
               <Button
                 disabled={otp.length !== 6 ? true : false}
                 onClick={verifyOtp}
+                className={classes.loginBtn}
               >
                 VERIFY & LOGIN
               </Button>
             </form>
           </div>
         ) : (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form method="post">
-              <div className="loginMNinput">
-                <TextField
-                  label="Mobile Number"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">+91</InputAdornment>
-                    ),
-                  }}
-                  placeholder="Enter mobile number to get OTP"
-                  fullWidth
-                  className="mobileNumber"
-                  type="number"
-                  name="phoneNumber"
-                  autoComplete="off"
-                  value={phoneNumber}
-                  onChange={(e) => setphoneNumber(e.target.value)}
-                  helperText={error ? error : ""}
-                  error={error ? true : false}
-                  onBlur={() => setError("")}
-                />
-              </div>
+              <TextField
+                label="Mobile Number"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">+91</InputAdornment>
+                  ),
+                }}
+                placeholder="Enter mobile number to get OTP"
+                fullWidth
+                className="mobileNumber"
+                type="number"
+                name="phoneNumber"
+                autoComplete="off"
+                value={phoneNumber}
+                onChange={(e) => setphoneNumber(e.target.value)}
+                helperText={error ? error : ""}
+                error={error ? true : false}
+                onBlur={() => setError("")}
+              />
               <Button
                 onClick={requestOtp}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
+                className={classes.loginBtn}
               >
                 Login With OTP
               </Button>
@@ -211,7 +228,9 @@ export const LoginForm = () => {
                 <div className="text">Or</div>
               </Box>
 
-              <Button onClick={showPassDiv}>Login With Password</Button>
+              <Button onClick={showPassDiv} className={classes.loginBtn}>
+                Login With Password
+              </Button>
             </form>
           </div>
         )}

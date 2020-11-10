@@ -11,10 +11,13 @@ export const wrapperStyles = (theme: Theme): any => ({
   wrapper: {
     background:
       "linear-gradient(0deg, rgba(94,231,131,1) 0%, rgba(70,199,165,1) 44%, rgba(33,150,218,1) 100%)",
-    minHeight: "calc(100vh - 147px)",
+    minHeight: "calc(100vh - 155px)",
     marginTop: "102px",
     paddingBottom: theme.spacing(3),
     alignItems: "center",
     color: theme.palette.primary.main,
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "calc(100vh - 200px)",
+    },
   },
 });
