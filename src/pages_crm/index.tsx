@@ -9,7 +9,7 @@ import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
 import DynamicForm from "components/dyanmicForm";
-import { LoginForm } from "pages/dashboardLogin/login";
+import { LoginForm } from "./dashboardLogin/login";
 
 import {
   WrapperStyleProps,

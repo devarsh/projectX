@@ -6,11 +6,11 @@ require("dotenv").config();
 const BUILD_TARGETS: { name: string; path: string }[] = [
   {
     name: "crm",
-    path: "app/crm",
+    path: "./app/crm",
   },
   {
     name: "los",
-    path: "app/los",
+    path: "./app/los",
   },
 ];
 

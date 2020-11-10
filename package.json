@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "1.x",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.12",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -25,6 +28,7 @@
     "lint-staged": "^10.5.1",
     "lodash": "^4.17.20",
     "match-sorter": "^5.0.0",
+    "mui-datatables": "^3.7.1",
     "num-words": "^1.2.0",
     "prettier": "^2.1.2",
     "react": "^17.0.0",
