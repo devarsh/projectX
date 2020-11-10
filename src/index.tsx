@@ -1,10 +1,27 @@
 import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
-import App from "app/crm";
 require("dotenv").config();
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const BUILD_TARGETS: { name: string; path: string }[] = [
+  {
+    name: "crm",
+    path: "app/crm",
+  },
+  {
+    name: "los",
+    path: "app/los",
+  },
+];
+
+//@ts-ignore
+const { path } = BUILD_TARGETS.find(
+  ({ name }) => process.env.REACT_APP_ENTRY_POINT === name
+);
+
+import(`${path}`).then(({ default: BuildTarget }) => {
+  ReactDOM.render(<BuildTarget />, document.getElementById("root"));
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

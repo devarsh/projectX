@@ -11,7 +11,7 @@ import Autocomplete, {
 } from "@material-ui/lab/Autocomplete";
 import { CreateFilterOptionsConfig } from "@material-ui/lab/useAutocomplete";
 import { Checkbox } from "components/styledComponent/checkbox";
-import { TextField } from "styled-components";
+import { TextField } from "components/styledComponent/textfield";
 import { useField, UseFieldHookProps } from "packages/form";
 import { Merge, OptionsProps, dependentOptionsFn } from "../types";
 import Chip, { ChipProps } from "@material-ui/core/Chip";
