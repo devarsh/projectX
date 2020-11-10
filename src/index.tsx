@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
-
 require("dotenv").config();
 
 const BUILD_TARGETS: { name: string; path: string }[] = [
