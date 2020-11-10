@@ -128,10 +128,9 @@ export const Login = () => {
         </div>
 
         {showPwddiv === true ? (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form method="post">
               <TextField
-                className="passwordwithview"
                 label="Password"
                 placeholder="Password for verification"
                 autoComplete="off"
@@ -155,24 +154,22 @@ export const Login = () => {
             </form>
           </div>
         ) : divShowing === true ? (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form>
-              <div className="otp-input">
-                <TextField
-                  label="OTP"
-                  placeholder="OTP for verification"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  type="number"
-                  name="otp"
-                  value={otp}
-                  onChange={(e) => setotp(e.target.value)}
-                  autoComplete="off"
-                  inputProps={{ maxLength: 6 }}
-                />
-              </div>
+              <TextField
+                label="OTP"
+                placeholder="OTP for verification"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                type="number"
+                name="otp"
+                value={otp}
+                onChange={(e) => setotp(e.target.value)}
+                autoComplete="off"
+                inputProps={{ maxLength: 6 }}
+              />
               <Button
                 disabled={otp.length !== 6 ? true : false}
                 onClick={verifyOtp}
@@ -185,26 +182,24 @@ export const Login = () => {
         ) : (
           <div className={classes.formWrap}>
             <form method="post">
-              <div className="loginMNinput">
-                <TextField
-                  label="Mobile Number"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">+91</InputAdornment>
-                    ),
-                  }}
-                  inputProps={{
-                    maxLength: 10,
-                  }}
-                  placeholder="Enter mobile number to get OTP"
-                  fullWidth
-                  type="number"
-                  name="phoneNumber"
-                  autoComplete="off"
-                  value={phoneNumber}
-                  onChange={(e) => setphoneNumber(e.target.value)}
-                />
-              </div>
+              <TextField
+                label="Mobile Number"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">+91</InputAdornment>
+                  ),
+                }}
+                inputProps={{
+                  maxLength: 10,
+                }}
+                placeholder="Enter mobile number to get OTP"
+                fullWidth
+                type="number"
+                name="phoneNumber"
+                autoComplete="off"
+                value={phoneNumber}
+                onChange={(e) => setphoneNumber(e.target.value)}
+              />
               <Button
                 onClick={sendOtp}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
