@@ -27,6 +27,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     render: {
       componentType: "datePicker",
     },
+    //@ts-ignore
     schemaValidation: {
       type: "date",
       rules: [
@@ -36,6 +37,13 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
           params: [
             sub(new Date(), { years: 18 }),
             "minimum age must be 18 years",
+          ],
+        },
+        {
+          name: "min",
+          params: [
+            sub(new Date(), { years: 100 }),
+            "maximum age must be 100 years",
           ],
         },
       ],

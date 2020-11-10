@@ -4,7 +4,7 @@ import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 export interface ThankyouPageStyleProps {
   wrapper: BaseCSSProperties;
   successImg: BaseCSSProperties;
-  prevBtn: BaseCSSProperties;
+  prevNextBtn: BaseCSSProperties;
   continueBtn: BaseCSSProperties;
   center: BaseCSSProperties;
 }
@@ -23,7 +23,7 @@ export const thankyouPageStyle = (theme: Theme): any => ({
   successImg: {
     maxHeight: "calc(100vh - 400px)",
   },
-  prevBtn: {
+  prevNextBtn: {
     marginRight: "16px",
     background: "#fff !important",
     height: "48px",

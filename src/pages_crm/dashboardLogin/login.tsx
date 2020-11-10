@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
@@ -7,38 +7,52 @@ import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import { string } from "yup";
+import loginImg from "assets/images/login.svg";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+
+import {
+  loginPageStyle,
+  LoginPageStyleProps,
+  LoginPageNameProps,
+} from "./style";
 
 export interface FormDialogProps {
   submitProps: any;
 }
 
-export const LoginForm = () => {
+const useStyles = makeStyles<Theme, LoginPageStyleProps>(loginPageStyle);
+
+export const Login = () => {
+  const classes: LoginPageNameProps = useStyles({} as LoginPageStyleProps);
   const navigate = useNavigate();
 
   const [phoneNumber, setphoneNumber] = useState("");
   const [otp, setotp] = useState("");
   const [password, setpassword] = useState("");
-  const [divShowing, setdivShowing] = useState(false);
+  const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
-  const [id, setid] = useState("");
-  const [datetime, setdatetime] = useState("");
+  const [error, setError] = useState("");
 
-  const sendOtp = async () => {
+  const [id, setid] = useState("");
+  const [expiryOtpTime, setexpiryOtpTime] = useState("");
+
+  const requestOtp = async () => {
     debugger;
-    if (phoneNumber !== "" || phoneNumber.length == 10) {
+    if (phoneNumber !== "" && phoneNumber.length === 10) {
       try {
         setLoading(true);
-        const result = await APISDK.sendOTP(phoneNumber);
+        const result = await APISDK.requestForOTP(phoneNumber);
         // console.log("result", result);
         if (result.status === "success") {
           setid(result?.data?.id);
-          setdatetime(result?.data?.sdatetime);
-          setdivShowing(true);
+          setexpiryOtpTime(result?.data?.sdatetime);
+          setotpVerifydivShowing(true);
           setLoading(false);
         } else {
+          setError(result?.data?.error_msg);
           setLoading(false);
         }
       } catch (e) {
@@ -46,19 +60,19 @@ export const LoginForm = () => {
         console.log("in catch");
       }
     } else {
-      console.log("mobile should be 10 digits");
+      setError("mobile number should be 10 digits");
     }
   };
 
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      const result = await APISDK.handleverifyOtp(otp, datetime, id);
-      // console.log("resultdfgdfg", result);
+      const result = await APISDK.handleverifyOtp(otp, expiryOtpTime, id);
       if (result.status === "success") {
         setLoading(false);
         navigate("/thankyou");
       } else {
+        setError(result?.data?.error_msg);
         setLoading(false);
       }
     } catch (e) {
@@ -67,18 +81,20 @@ export const LoginForm = () => {
     }
   };
 
-  const loginPassword = "superacute@1234";
+  // password= "superacute@1234";
   const verifyPwd = async () => {
     debugger;
     if (password.length !== 0 || password !== "") {
       try {
         setLoading(true);
-        const result = await APISDK.handleverifyPwd(loginPassword, phoneNumber);
-        console.log("result for password", result);
+        const result = await APISDK.handleverifyPwd(password, phoneNumber);
+        // console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);
           navigate("/thankyou");
         } else {
+          // console.log("in else", result?.data?.error_msg);
+          setError(result?.data?.error_msg);
           setLoading(false);
         }
       } catch (e) {
@@ -86,38 +102,43 @@ export const LoginForm = () => {
         console.log("in catch");
       }
     } else {
+      setLoading(false);
       console.log("Password should not be empty");
     }
   };
 
   const showPassDiv = () => {
-    setshowPwddiv(true);
+    if (error === "") {
+      setshowPwddiv(true);
+    }
   };
 
   return (
-    <Box
-      display="flex"
-      width={1}
-      className="login-form-cover"
-      style={{ marginTop: "150px" }}
-    >
+    <Box display="flex" width={1} className={classes.wrapper}>
       <Box
         display="flex"
         flexDirection="column"
         width={1 / 2}
-        className="LoginForm-right"
+        className={classes.loginLeft}
       >
-        <h2>Customer Login</h2>
+        <img alt="" src={loginImg} className={classes.loginImg} />
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        width={1 / 2}
+        className={classes.loginRight}
+      >
+        <h2>Employee Login</h2>
         <div className="text">
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium.
+          Login with your registered mobile number to access your Ratnaafin
+          account.
         </div>
 
         {showPwddiv === true ? (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form method="post">
               <TextField
-                className="passwordwithview"
                 label="Password"
                 placeholder="Password for verification"
                 autoComplete="off"
@@ -129,70 +150,76 @@ export const LoginForm = () => {
                   shrink: true,
                 }}
                 fullWidth
+                helperText={error ? error : ""}
+                error={error ? true : false}
+                onBlur={() => setError("")}
               />
+
               <Button
                 onClick={verifyPwd}
                 disabled={password !== "" ? false : true}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
+                className={classes.loginBtn}
               >
                 VERIFY & LOGIN
               </Button>
             </form>
           </div>
-        ) : divShowing === true ? (
-          <div className="form-cover">
+        ) : otpVerifydivShowing === true ? (
+          <div className={classes.formWrap}>
             <form>
-              <div className="otp-input">
-                <TextField
-                  label="OTP"
-                  placeholder="OTP for verification"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  type="number"
-                  name="otp"
-                  value={otp}
-                  onChange={(e) => setotp(e.target.value)}
-                  autoComplete="off"
-                  inputProps={{ maxLength: 6 }}
-                />
-              </div>
+              <TextField
+                label="OTP"
+                placeholder="OTP for verification"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                type="number"
+                name="otp"
+                value={otp}
+                onChange={(e) => setotp(e.target.value)}
+                autoComplete="off"
+                inputProps={{ maxLength: 6 }}
+                helperText={error ? error : ""}
+                error={error ? true : false}
+                onBlur={() => setError("")}
+              />
               <Button
                 disabled={otp.length !== 6 ? true : false}
                 onClick={verifyOtp}
+                className={classes.loginBtn}
               >
                 VERIFY & LOGIN
               </Button>
             </form>
           </div>
         ) : (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form method="post">
-              <div className="loginMNinput">
-                <TextField
-                  label="Mobile Number"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">+91</InputAdornment>
-                    ),
-                  }}
-                  inputProps={{
-                    maxLength: 10,
-                  }}
-                  placeholder="Enter mobile number to get OTP"
-                  fullWidth
-                  className="mobileNumber"
-                  type="number"
-                  name="phoneNumber"
-                  autoComplete="off"
-                  value={phoneNumber}
-                  onChange={(e) => setphoneNumber(e.target.value)}
-                />
-              </div>
+              <TextField
+                label="Mobile Number"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">+91</InputAdornment>
+                  ),
+                }}
+                placeholder="Enter mobile number to get OTP"
+                fullWidth
+                className="mobileNumber"
+                type="number"
+                name="phoneNumber"
+                autoComplete="off"
+                value={phoneNumber}
+                onChange={(e) => setphoneNumber(e.target.value)}
+                helperText={error ? error : ""}
+                error={error ? true : false}
+                onBlur={() => setError("")}
+              />
               <Button
-                onClick={sendOtp}
+                onClick={requestOtp}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
+                className={classes.loginBtn}
               >
                 Login With OTP
               </Button>
@@ -201,7 +228,9 @@ export const LoginForm = () => {
                 <div className="text">Or</div>
               </Box>
 
-              <Button onClick={showPassDiv}>Login With Password</Button>
+              <Button onClick={showPassDiv} className={classes.loginBtn}>
+                Login With Password
+              </Button>
             </form>
           </div>
         )}
