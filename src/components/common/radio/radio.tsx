@@ -52,6 +52,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
   FormControlLabelProps,
   GridProps,
   enableGrid,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -75,6 +76,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
   if (excluded) {
     return null;

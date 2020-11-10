@@ -27,6 +27,7 @@ const MySlider: FC<AllSliderProps> = ({
   InputLabelProps,
   GridProps,
   enableGrid,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -47,6 +48,7 @@ const MySlider: FC<AllSliderProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
   const [localValue, setLocalValue] = useState(Number(value));
   useEffect(() => {

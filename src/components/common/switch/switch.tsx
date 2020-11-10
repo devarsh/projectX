@@ -43,6 +43,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
   FormControlLabelProps,
   GridProps,
   enableGrid,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -64,6 +65,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
     validationRun,
     runPostValidationHookAlways,
     postValidationSetCrossFieldValues,
+    runValidationOnDependentFieldsChange,
     isReadOnly,
     shouldExclude,
   });

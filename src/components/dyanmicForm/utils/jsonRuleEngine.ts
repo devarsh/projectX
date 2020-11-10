@@ -1,7 +1,12 @@
 import { Engine } from "json-rules-engine";
 import { FormFieldAtomType, DependentValuesType } from "packages/form";
 import { CustomRuleType } from "../typesFields";
-import { greaterThanString } from "registry/rulesEngine";
+import {
+  greaterThanString,
+  greaterThanInclusiveString,
+  lessThanInclusiveString,
+  lessThanString,
+} from "registry/rulesEngine";
 //localStorage.debug = "json-rules-engine";
 
 export const ruleEngine = (rule: CustomRuleType) => async (
@@ -12,6 +17,9 @@ export const ruleEngine = (rule: CustomRuleType) => async (
   const { success, failure, conditions } = rule;
   let engine = new Engine();
   engine.addOperator("greaterThanString", greaterThanString);
+  engine.addOperator("greaterThanInclusiveString", greaterThanInclusiveString);
+  engine.addOperator("lessThanInclusiveString", lessThanInclusiveString);
+  engine.addOperator("lessThanString", lessThanString);
   const extendRule = {
     conditions: conditions,
     event: {

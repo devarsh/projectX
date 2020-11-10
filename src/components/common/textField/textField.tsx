@@ -29,6 +29,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   validate,
   validationRun,
   postValidationSetCrossFieldValues,
+  runValidationOnDependentFieldsChange,
   runPostValidationHookAlways,
   shouldExclude,
   isReadOnly,
@@ -72,6 +73,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
 
   const focusRef = useRef();

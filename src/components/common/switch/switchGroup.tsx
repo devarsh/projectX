@@ -46,6 +46,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
   shouldExclude,
   isReadOnly,
   postValidationSetCrossFieldValues,
+  runValidationOnDependentFieldsChange,
   runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
@@ -81,6 +82,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
   if (excluded) {
     return null;

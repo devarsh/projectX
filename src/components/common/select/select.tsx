@@ -53,6 +53,7 @@ const MySelect: FC<MySelectAllProps> = ({
   InputProps,
   inputProps,
   CircularProgressProps,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -82,6 +83,7 @@ const MySelect: FC<MySelectAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
 
   const focusRef = useRef();

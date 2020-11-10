@@ -28,6 +28,7 @@ const MyRating: FC<AllRatingProps> = ({
   InputLabelProps,
   GridProps,
   enableGrid,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -49,6 +50,7 @@ const MyRating: FC<AllRatingProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
   const [focus, setFocus] = useState(false);
   const customBlur = useCallback(() => {

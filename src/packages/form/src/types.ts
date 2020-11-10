@@ -79,6 +79,7 @@ export interface UseFieldHookProps {
   isReadOnly?: typeof shouldExcludeFnType;
   postValidationSetCrossFieldValues?: typeof PostValidationSetCrossFieldValuesFnType;
   runPostValidationHookAlways?: boolean;
+  runValidationOnDependentFieldsChange?: boolean;
 }
 
 export interface UseFieldArrayHookProps {

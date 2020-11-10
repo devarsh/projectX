@@ -59,6 +59,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   FormControlLabelProps,
   GridProps,
   enableGrid,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -82,6 +83,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
   if (excluded) {
     return null;

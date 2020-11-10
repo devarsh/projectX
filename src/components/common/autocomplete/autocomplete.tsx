@@ -64,6 +64,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   isFieldFocused,
   showCheckbox,
   CreateFilterOptionsConfig,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -92,6 +93,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
 
   const focusRef = useRef();

@@ -39,6 +39,7 @@ export const useField = ({
   isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
+  runValidationOnDependentFieldsChange,
 }: UseFieldHookProps) => {
   //formContext provides formName for scoping of fields, and initialValue for the field
   const formContext = useContext(FormContext);
@@ -181,6 +182,12 @@ export const useField = ({
   );
   const dependentFieldsStateRef = useRef(dependentFieldsState);
   dependentFieldsStateRef.current = dependentFieldsState;
+  useEffect(() => {
+    if (runValidationOnDependentFieldsChange === true) {
+      handleValidation(fieldData, dependentFieldsState, true);
+    }
+  }, [dependentFieldsState]);
+
   // this determine if the field should be excluded
   const lastShouldExcludePromise = useRef<Promise<any> | null>(null);
   const lastIsReadOnlyPromise = useRef<Promise<any> | null>(null);
