@@ -172,24 +172,28 @@ export const formsNav: NavBarType = {
             {
               label: "SME Term Loan + CC/OD",
               href: "/form/sme",
+              isRouterLink: true,
               formCode: "12300007",
               empCode: "98",
             },
             {
               label: "SME NFB (Non Fund Base)",
               href: "/form/sme",
+              isRouterLink: true,
               formCode: "12300008",
               empCode: "98",
             },
             {
               label: "SME LAP (Loan Against Property)",
               href: "/form/sme",
+              isRouterLink: true,
               formCode: "12300009",
               empCode: "98",
             },
             {
               label: "SME CGTMSE",
               href: "/form/sme",
+              isRouterLink: true,
               formCode: "12300002",
               empCode: "98",
             },
