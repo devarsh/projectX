@@ -1,4 +1,3 @@
-import { Label } from "@material-ui/icons";
 import { OptionsProps } from "components/common/types";
 import { osName } from "react-device-detect";
 

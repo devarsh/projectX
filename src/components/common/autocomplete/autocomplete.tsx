@@ -89,7 +89,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     excluded,
     incomingMessage,
     whenToRunValidation,
-    readOnly,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
