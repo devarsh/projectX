@@ -18,10 +18,13 @@ export const formWrapperStyle = (theme: Theme): any => ({
     alignItems: "center",
     backgroundColor: "#fff",
     boxShadow: "0 0 20px rgba(0,0,0,0.06)",
-    padding: "1rem 2rem",
+    padding: "1rem 0rem",
     borderRadius: 8,
     width: "100%",
     minHeight: "30vh",
+    [theme.breakpoints.down("md")]: {
+      margin: theme.spacing(3, 2, 0, 2),
+    },
   },
   loader: {
     justifyContent: "center",

@@ -19,6 +19,10 @@ export const footerStyle = (theme: Theme): any => ({
     [theme.breakpoints.down("xs")]: {
       textAlign: "center",
     },
+    display: "flex",
+    width: "100%",
+    justifyContent: "center",
+    padding: "8px 0",
   },
   footerContent: {
     height: "54px",

@@ -23,6 +23,7 @@ export interface BecomePartnerStyleProps {
   content: BaseCSSProperties;
   applyButton: BaseCSSProperties;
   BecomePartnerImg: BaseCSSProperties;
+  infoText: BaseCSSProperties;
 }
 
 export type BecomePartnerNameProps = Record<
@@ -62,6 +63,9 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
+  },
+  infoText: {
+    fontSize: "1.25rem",
   },
   applyButton: {
     color: "#42C2AB !important",

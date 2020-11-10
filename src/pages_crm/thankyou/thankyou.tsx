@@ -43,7 +43,7 @@ export const ThankYou = () => {
         mb={3}
       >
         <Button
-          className={classes.prevBtn}
+          className={classes.prevNextBtn}
           onClick={(e) => {
             e.preventDefault();
             navigate("/");
@@ -57,7 +57,7 @@ export const ThankYou = () => {
         //@ts-ignore
         Boolean(state?.empCode ?? null) ? (
           <Button
-            className={classes.prevBtn}
+            className={classes.prevNextBtn}
             onClick={(e) => {
               e.preventDefault();
               navigate(

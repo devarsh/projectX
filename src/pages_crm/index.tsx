@@ -9,7 +9,7 @@ import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
 import DynamicForm from "components/dyanmicForm";
-import { LoginForm } from "./dashboardLogin/login";
+import Login from "./dashboardLogin";
 
 import {
   WrapperStyleProps,
@@ -36,7 +36,7 @@ const Index = () => {
           }
         />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
     </Fragment>
