@@ -179,6 +179,8 @@ export const useField = ({
       fields: dependentFields,
     })
   );
+  const dependentFieldsStateRef = useRef(dependentFieldsState);
+  dependentFieldsStateRef.current = dependentFieldsState;
   // this determine if the field should be excluded
   const lastShouldExcludePromise = useRef<Promise<any> | null>(null);
   const lastIsReadOnlyPromise = useRef<Promise<any> | null>(null);
@@ -271,6 +273,7 @@ export const useField = ({
   const handleValidation = useCallback(
     (
       data: FormFieldAtomType,
+      dependentFieldsState: DependentValuesType,
       alwaysRun?: boolean,
       touchAndValidate?: boolean
     ) => {
@@ -363,6 +366,10 @@ export const useField = ({
   /**
    * End of validation Logic
    */
+  // //Run validation when dependent field changes
+  // useEffect(()=> {
+
+  // },[dependentFieldsState])
 
   const setTouched = useCallback(() => {
     setFieldData((currVal) => {
@@ -405,11 +412,17 @@ export const useField = ({
       if (mergeObj) {
         handleValidation(
           { ...fieldDataRef.current, ...mergeObj },
+          dependentFieldsStateRef.current,
           alwaysRun,
           touchAndValidate
         );
       } else {
-        handleValidation(fieldDataRef.current, alwaysRun, touchAndValidate);
+        handleValidation(
+          fieldDataRef.current,
+          dependentFieldsStateRef.current,
+          alwaysRun,
+          touchAndValidate
+        );
       }
     },
     []
