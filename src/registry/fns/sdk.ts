@@ -91,10 +91,11 @@ const RaatnaFinAPI = () => {
     if (Array.isArray(data) && data.length === 1) {
       let result = data[0];
       if (String(result.Status).toLowerCase() === "success") {
-        const areaArray = result.PostOffice.map((dtl) => ({
+        let areaArray = result.PostOffice.map((dtl) => ({
           value: dtl?.Name,
           label: dtl?.Name,
         }));
+        areaArray = [{ label: "Select Option", value: "00" }, ...areaArray];
         const otherValues = result.PostOffice.reduce((accumlator, current) => {
           const val = {
             city: current.Block,
