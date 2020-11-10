@@ -161,6 +161,7 @@ export const ParentFormWrapper = () => {
       //@ts-ignore need to find how to set router loaction state type (react-router-dom)
       APISDK.getMetaData(state?.formCode, state?.empCode)
         .then((result) => {
+          console.log("meta data", result);
           metaData.current = result;
           setLoading(false);
         })

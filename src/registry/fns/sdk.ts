@@ -1,3 +1,4 @@
+import { Label } from "@material-ui/icons";
 import { OptionsProps } from "components/common/types";
 import { osName } from "react-device-detect";
 
@@ -91,10 +92,11 @@ const RaatnaFinAPI = () => {
     if (Array.isArray(data) && data.length === 1) {
       let result = data[0];
       if (String(result.Status).toLowerCase() === "success") {
-        const areaArray = result.PostOffice.map((dtl) => ({
+        let areaArray = result.PostOffice.map((dtl) => ({
           value: dtl?.Name,
           label: dtl?.Name,
         }));
+        areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
         const otherValues = result.PostOffice.reduce((accumlator, current) => {
           const val = {
             city: current.Block,
@@ -260,7 +262,7 @@ const RaatnaFinAPI = () => {
     ];
   };
 
-  const sendOTP = async (phoneNumber: string) => {
+  const requestForOTP = async (phoneNumber: string) => {
     debugger;
     const { data, status } = await internalFetcher("/users/customer_login", {
       body: JSON.stringify({
@@ -275,11 +277,15 @@ const RaatnaFinAPI = () => {
     if (status === "success") {
       return { status, data: data?.response_data };
     } else {
-      return { status, data: data?.response_data };
+      return { status, data: data?.error_data };
     }
   };
 
-  const handleverifyOtp = async (otp: string, datetime: string, id: string) => {
+  const handleverifyOtp = async (
+    otp: string,
+    expiryOtpTime: string,
+    id: string
+  ) => {
     debugger;
     const { data, status } = await internalFetcher("/users/otpVerify", {
       body: JSON.stringify({
@@ -287,7 +293,7 @@ const RaatnaFinAPI = () => {
         request_data: {
           id: id,
           eotp: otp,
-          sdatetime: datetime,
+          sdatetime: expiryOtpTime,
         },
         channel: "W",
       }),
@@ -295,21 +301,18 @@ const RaatnaFinAPI = () => {
     if (status === "success") {
       return { status, data: data?.response_data };
     } else {
-      return { status, data: data?.response_data };
+      return { status, data: data?.error_data };
     }
   };
 
-  const handleverifyPwd = async (
-    loginPassword: string,
-    phoneNumber: string
-  ) => {
+  const handleverifyPwd = async (password: string, phoneNumber: string) => {
     debugger;
     const { data, status } = await internalFetcher("/users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
           mobile: phoneNumber,
-          password: loginPassword,
+          password: password,
         },
         channel: "W",
       }),
@@ -317,7 +320,7 @@ const RaatnaFinAPI = () => {
     if (status === "success") {
       return { status, data: data?.response_data };
     } else {
-      return { status, data: data?.response_data };
+      return { status, data: data?.error_data };
     }
   };
 
@@ -373,7 +376,7 @@ const RaatnaFinAPI = () => {
     getBankList,
     getMiscVal,
     getAccessToken,
-    sendOTP,
+    requestForOTP,
     getMetaData,
     pushFormData,
     handleverifyOtp,

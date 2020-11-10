@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
@@ -6,11 +6,6 @@ import Button from "@material-ui/core/Button";
 import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
-import { string } from "yup";
-
-export interface FormDialogProps {
-  submitProps: any;
-}
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -18,27 +13,30 @@ export const LoginForm = () => {
   const [phoneNumber, setphoneNumber] = useState("");
   const [otp, setotp] = useState("");
   const [password, setpassword] = useState("");
-  const [divShowing, setdivShowing] = useState(false);
+  const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
-  const [id, setid] = useState("");
-  const [datetime, setdatetime] = useState("");
+  const [error, setError] = useState("");
 
-  const sendOtp = async () => {
+  const [id, setid] = useState("");
+  const [expiryOtpTime, setexpiryOtpTime] = useState("");
+
+  const requestOtp = async () => {
     debugger;
-    if (phoneNumber !== "" || phoneNumber.length == 10) {
+    if (phoneNumber !== "" && phoneNumber.length === 10) {
       try {
         setLoading(true);
-        const result = await APISDK.sendOTP(phoneNumber);
+        const result = await APISDK.requestForOTP(phoneNumber);
         // console.log("result", result);
         if (result.status === "success") {
           setid(result?.data?.id);
-          setdatetime(result?.data?.sdatetime);
-          setdivShowing(true);
+          setexpiryOtpTime(result?.data?.sdatetime);
+          setotpVerifydivShowing(true);
           setLoading(false);
         } else {
+          setError(result?.data?.error_msg);
           setLoading(false);
         }
       } catch (e) {
@@ -46,19 +44,19 @@ export const LoginForm = () => {
         console.log("in catch");
       }
     } else {
-      console.log("mobile should be 10 digits");
+      setError("mobile number should be 10 digits");
     }
   };
 
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      const result = await APISDK.handleverifyOtp(otp, datetime, id);
-      // console.log("resultdfgdfg", result);
+      const result = await APISDK.handleverifyOtp(otp, expiryOtpTime, id);
       if (result.status === "success") {
         setLoading(false);
         navigate("/thankyou");
       } else {
+        setError(result?.data?.error_msg);
         setLoading(false);
       }
     } catch (e) {
@@ -67,18 +65,20 @@ export const LoginForm = () => {
     }
   };
 
-  const loginPassword = "superacute@1234";
+  // password= "superacute@1234";
   const verifyPwd = async () => {
     debugger;
     if (password.length !== 0 || password !== "") {
       try {
         setLoading(true);
-        const result = await APISDK.handleverifyPwd(loginPassword, phoneNumber);
-        console.log("result for password", result);
+        const result = await APISDK.handleverifyPwd(password, phoneNumber);
+        // console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);
           navigate("/thankyou");
         } else {
+          // console.log("in else", result?.data?.error_msg);
+          setError(result?.data?.error_msg);
           setLoading(false);
         }
       } catch (e) {
@@ -86,12 +86,15 @@ export const LoginForm = () => {
         console.log("in catch");
       }
     } else {
+      setLoading(false);
       console.log("Password should not be empty");
     }
   };
 
   const showPassDiv = () => {
-    setshowPwddiv(true);
+    if (error === "") {
+      setshowPwddiv(true);
+    }
   };
 
   return (
@@ -129,7 +132,11 @@ export const LoginForm = () => {
                   shrink: true,
                 }}
                 fullWidth
+                helperText={error ? error : ""}
+                error={error ? true : false}
+                onBlur={() => setError("")}
               />
+
               <Button
                 onClick={verifyPwd}
                 disabled={password !== "" ? false : true}
@@ -139,7 +146,7 @@ export const LoginForm = () => {
               </Button>
             </form>
           </div>
-        ) : divShowing === true ? (
+        ) : otpVerifydivShowing === true ? (
           <div className="form-cover">
             <form>
               <div className="otp-input">
@@ -156,6 +163,9 @@ export const LoginForm = () => {
                   onChange={(e) => setotp(e.target.value)}
                   autoComplete="off"
                   inputProps={{ maxLength: 6 }}
+                  helperText={error ? error : ""}
+                  error={error ? true : false}
+                  onBlur={() => setError("")}
                 />
               </div>
               <Button
@@ -177,9 +187,6 @@ export const LoginForm = () => {
                       <InputAdornment position="start">+91</InputAdornment>
                     ),
                   }}
-                  inputProps={{
-                    maxLength: 10,
-                  }}
                   placeholder="Enter mobile number to get OTP"
                   fullWidth
                   className="mobileNumber"
@@ -188,10 +195,13 @@ export const LoginForm = () => {
                   autoComplete="off"
                   value={phoneNumber}
                   onChange={(e) => setphoneNumber(e.target.value)}
+                  helperText={error ? error : ""}
+                  error={error ? true : false}
+                  onBlur={() => setError("")}
                 />
               </div>
               <Button
-                onClick={sendOtp}
+                onClick={requestOtp}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
               >
                 Login With OTP
