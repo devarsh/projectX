@@ -57,6 +57,7 @@ const ToggleButtonGroup = lazy(
 const NumberFormat = lazy(() => import("components/derived/numberFormat"));
 const PasswordField = lazy(() => import("components/derived/passwordField"));
 const InputMask = lazy(() => import("components/derived/inputMask"));
+const AutoComplete = lazy(() => import("components/common/autocomplete"));
 
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
@@ -118,6 +119,9 @@ export const renderField = (
       break;
     case "inputMask":
       Component = InputMask;
+      break;
+    case "autocomplete":
+      Component = AutoComplete;
       break;
     case "spacer":
       Component = Spacer;
