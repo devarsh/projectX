@@ -11,3 +11,9 @@ function isValidAadharCard(this: StringSchema, message: string) {
 }
 
 addMethod(string, "aadhar", isValidAadharCard);
+
+// function isValidAge(this: StringSchema, message: string) {
+//   console.log("valid date");
+//   // return sub(new Date(), { years: 18 });
+// }
+// addMethod(string, "isValidAge", isValidAge);

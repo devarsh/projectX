@@ -9,6 +9,7 @@ import Footer from "./footer";
 import Home from "./home";
 import DynamicForm from "components/dyanmicForm";
 import { LoginForm } from "./dashboardLogin/login";
+import BecomeGrowthPartner from "meta/becomepartnerMetaData";
 
 import {
   WrapperStyleProps,
