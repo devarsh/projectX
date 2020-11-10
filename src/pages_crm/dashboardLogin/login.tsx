@@ -7,12 +7,23 @@ import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import { string } from "yup";
+import loginImg from "assets/images/login.svg";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+
+import {
+  loginPageStyle,
+  LoginPageStyleProps,
+  LoginPageNameProps,
+} from "./style";
 
 export interface FormDialogProps {
   submitProps: any;
 }
 
-export const LoginForm = () => {
+const useStyles = makeStyles<Theme, LoginPageStyleProps>(loginPageStyle);
+
+export const Login = () => {
+  const classes: LoginPageNameProps = useStyles({} as LoginPageStyleProps);
   const navigate = useNavigate();
 
   const [phoneNumber, setphoneNumber] = useState("");
@@ -95,22 +106,25 @@ export const LoginForm = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      width={1}
-      className="login-form-cover"
-      style={{ marginTop: "150px" }}
-    >
+    <Box display="flex" width={1} className={classes.wrapper}>
       <Box
         display="flex"
         flexDirection="column"
         width={1 / 2}
-        className="LoginForm-right"
+        className={classes.loginLeft}
       >
-        <h2>Customer Login</h2>
+        <img alt="" src={loginImg} className={classes.loginImg} />
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        width={1 / 2}
+        className={classes.loginRight}
+      >
+        <h2>Employee Login</h2>
         <div className="text">
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium.
+          Login with your registered mobile number to access your Ratnaafin
+          account.
         </div>
 
         {showPwddiv === true ? (
@@ -134,6 +148,7 @@ export const LoginForm = () => {
                 onClick={verifyPwd}
                 disabled={password !== "" ? false : true}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
+                className={classes.loginBtn}
               >
                 VERIFY & LOGIN
               </Button>
@@ -161,13 +176,14 @@ export const LoginForm = () => {
               <Button
                 disabled={otp.length !== 6 ? true : false}
                 onClick={verifyOtp}
+                className={classes.loginBtn}
               >
                 VERIFY & LOGIN
               </Button>
             </form>
           </div>
         ) : (
-          <div className="form-cover">
+          <div className={classes.formWrap}>
             <form method="post">
               <div className="loginMNinput">
                 <TextField
@@ -182,7 +198,6 @@ export const LoginForm = () => {
                   }}
                   placeholder="Enter mobile number to get OTP"
                   fullWidth
-                  className="mobileNumber"
                   type="number"
                   name="phoneNumber"
                   autoComplete="off"
@@ -193,6 +208,7 @@ export const LoginForm = () => {
               <Button
                 onClick={sendOtp}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
+                className={classes.loginBtn}
               >
                 Login With OTP
               </Button>
@@ -201,7 +217,9 @@ export const LoginForm = () => {
                 <div className="text">Or</div>
               </Box>
 
-              <Button onClick={showPassDiv}>Login With Password</Button>
+              <Button onClick={showPassDiv} className={classes.loginBtn}>
+                Login With Password
+              </Button>
             </form>
           </div>
         )}
