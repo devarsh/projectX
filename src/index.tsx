@@ -2,6 +2,7 @@ import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 import App from "app/crm";
+//import App from "app/los";
 require("dotenv").config();
 
 // const BUILD_TARGETS: { name: string; path: string }[] = [
