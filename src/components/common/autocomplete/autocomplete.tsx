@@ -44,7 +44,7 @@ export type MyAllAutocompleteProps = Merge<
   UseFieldHookProps
 >;
 
-const getOptionLabel = (option: OptionsProps) => option.label;
+const getOptionLabel = (option: OptionsProps) => option?.label ?? "";
 
 const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   name: fieldName,
