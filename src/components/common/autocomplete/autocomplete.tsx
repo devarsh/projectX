@@ -29,6 +29,8 @@ interface AutoCompleteExtendedProps {
   ChipProps?: ChipProps;
   CreateFilterOptionsConfig?: CreateFilterOptionsConfig<OptionsProps>;
   options?: OptionsProps[] | dependentOptionsFn;
+  label?: string;
+  placeholder?: string;
 }
 
 type MyAutocompleteProps = Merge<
@@ -40,6 +42,8 @@ export type MyAllAutocompleteProps = Merge<
   MyAutocompleteProps,
   UseFieldHookProps
 >;
+
+const getOptionLabel = (option: OptionsProps) => option.label;
 
 const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   name: fieldName,
@@ -65,6 +69,9 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   showCheckbox,
   CreateFilterOptionsConfig,
   runValidationOnDependentFieldsChange,
+  label,
+  placeholder,
+  limitTags,
   ...others
 }) => {
   const {
@@ -82,7 +89,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     excluded,
     incomingMessage,
     whenToRunValidation,
-    readOnly,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -173,6 +179,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     runValidation,
     whenToRunValidation,
   ]);
+
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
@@ -181,23 +188,66 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   const isError = touched && (error ?? "") !== "";
   const result = (
     <Autocomplete
+      {...others}
+      limitTags={limitTags ?? 2}
       key={fieldKey}
       id={fieldKey}
-      multiple={multiple}
+      multiple={true}
       disableClearable={disableClearable}
-      freeSolo={freeSolo}
+      freeSolo={true}
       options={_options}
-      onChange={(_, value, __) => {
+      getOptionLabel={getOptionLabel}
+      onChange={(_, value) => {
+        if (!Array.isArray(value)) {
+          value = [value];
+        }
+        value = value.map((one) => {
+          if (typeof one === "object") {
+            return getOptionLabel(one);
+          }
+          return one;
+        });
         handleChange(value);
       }}
       onBlur={handleBlur}
       disabled={isSubmitting}
-      getOptionLabel={getOptionLabel}
+      filterOptions={
+        Boolean(CreateFilterOptionsConfig) &&
+        typeof CreateFilterOptionsConfig === "object"
+          ? createFilterOptions(CreateFilterOptionsConfig)
+          : undefined
+      }
+      renderTags={(value, getTagProps) => {
+        return value.map((option, index) => {
+          if (typeof option === "string") {
+            return (
+              <Chip
+                key={option}
+                variant="outlined"
+                {...ChipProps}
+                label={option}
+                {...getTagProps({ index })}
+              />
+            );
+          }
+          return (
+            <Chip
+              key={`${option.label}-${index}`}
+              variant="outlined"
+              {...ChipProps}
+              label={option.label}
+              {...getTagProps({ index })}
+            />
+          );
+        });
+      }}
       renderInput={(params) => (
         <TextField
           {...TextFieldProps}
           {...params}
           name={name}
+          label={label}
+          placeholder={placeholder}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           type="text"
@@ -216,10 +266,8 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
                 </InputAdornment>
               ) : null,
           }}
-          inputProps={{
-            readOnly: readOnly,
-            tabIndex: readOnly ? -1 : undefined,
-            ...TextFieldProps?.inputProps,
+          InputLabelProps={{
+            shrink: true,
           }}
         />
       )}
@@ -239,33 +287,13 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
           </Fragment>
         );
       }}
-      filterOptions={
-        Boolean(CreateFilterOptionsConfig) &&
-        typeof CreateFilterOptionsConfig === "object"
-          ? createFilterOptions(CreateFilterOptionsConfig)
-          : undefined
-      }
-      renderTags={(value, getTagProps) => {
-        return value.map((option, index) => (
-          <Chip
-            key={`${option.label}-${index}`}
-            variant="outlined"
-            {...ChipProps}
-            label={option.label}
-            {...getTagProps({ index })}
-          />
-        ));
-      }}
     />
   );
-
   if (Boolean(enableGrid)) {
     return <Grid {...GridProps}>{result}</Grid>;
   } else {
     return result;
   }
 };
-
-const getOptionLabel = (option: OptionsProps) => option.label;
 
 export default MyAutocomplete;
