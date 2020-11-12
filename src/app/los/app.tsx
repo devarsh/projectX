@@ -8,7 +8,7 @@ import "./index.css";
 
 const themeObj = createMuiTheme(theme);
 
-export const App = () => {
+export const AppLos = () => {
   return (
     <Fragment>
       <CssBaseline />
