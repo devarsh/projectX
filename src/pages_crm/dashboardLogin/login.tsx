@@ -224,8 +224,8 @@ export const Login = () => {
                 Login With OTP
               </Button>
 
-              <Box display="flex" width={1}>
-                <div className="text">Or</div>
+              <Box display="flex" justifyContent="center" width={1}>
+                <div className="text text-center">Or</div>
               </Box>
 
               <Button onClick={showPassDiv} className={classes.loginBtn}>
