@@ -275,9 +275,26 @@ export default function EmployeeHeader() {
             variant="h6"
             color="inherit"
             noWrap
+            gutterBottom
             className={classes.title}
           >
             Dashboard
+          </Typography>
+          <Typography
+            variant="caption"
+            display="block"
+            color="secondary"
+            gutterTop
+          >
+            Branch: Rajkot
+          </Typography>
+          <Typography
+            variant="caption"
+            display="block"
+            color="secondary"
+            gutterBottom
+          >
+            Last Login: 21/05/2020 05:00 PM
           </Typography>
 
           <div className={classes.search}>
@@ -331,12 +348,6 @@ export default function EmployeeHeader() {
                 <a href="/EmployeeProfile">
                   <AccountCircleIcon color="primary" />
                   <span className={classes.vTop}>Profile</span>
-                </a>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <a href="/EmployeeProfile">
-                  <AccountCircleIcon color="primary" />
-                  <span className={classes.vTop}>Report</span>
                 </a>
               </MenuItem>
               <MenuItem onClick={handleClose}>
