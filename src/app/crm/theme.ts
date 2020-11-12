@@ -180,5 +180,11 @@ export const theme: Theme = {
         border: "1px solid rgba(0,0,0,0.3)",
       },
     },
+
+    MuiAutocomplete: {
+      input: {
+        paddingLeft: "7px !important",
+      },
+    },
   },
 };
