@@ -56,6 +56,7 @@ const RaatnaFinAPI = () => {
       });
   };
   const verifyRequest = (data) => {
+    // console.log("data", data);
     if (data["access_token"] && data["refresh_token"]) {
       sessionObj.loginStatus = true;
       sessionObj.token = data;
