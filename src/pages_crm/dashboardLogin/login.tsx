@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
@@ -26,31 +26,58 @@ export const Login = () => {
   const classes: LoginPageNameProps = useStyles({} as LoginPageStyleProps);
   const navigate = useNavigate();
 
-  const [phoneNumber, setphoneNumber] = useState("");
-  const [otp, setotp] = useState("");
-  const [password, setpassword] = useState("");
+  const [fields, setFields] = useState({
+    phoneNumber: "",
+    otp: "",
+    password: "",
+    otpVerifydivShowing: false,
+    showPwddiv: false,
+    loading: false,
+    error: "",
+    id: "",
+    expiryOtpTime: "",
+    time: 0,
+  });
   const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
-
   const [id, setid] = useState("");
   const [expiryOtpTime, setexpiryOtpTime] = useState("");
+  const [time, setTime] = useState(0);
+
+  let expiryTime = 10;
+
+  const handleChange = (input) => ({ target: { value } }) => {
+    debugger;
+    setFields({ ...fields, [input]: value });
+
+    switch (input) {
+      case "phoneNumber":
+        return { value };
+      case "otp":
+        return { value };
+      case "password":
+        return { value };
+      default:
+        break;
+    }
+  };
+  // console.log("phone number", fields.phoneNumber);
 
   const requestOtp = async () => {
     debugger;
-    if (phoneNumber !== "" && phoneNumber.length === 10) {
+    if (fields.phoneNumber !== "" && fields.phoneNumber.length === 10) {
       try {
         setLoading(true);
-        const result = await APISDK.requestForOTP(phoneNumber);
-        // console.log("result", result);
+        const result = await APISDK.requestForOTP(fields.phoneNumber);
+        // console.log("result request otp", result);
         if (result.status === "success") {
           setid(result?.data?.id);
           setexpiryOtpTime(result?.data?.sdatetime);
           setotpVerifydivShowing(true);
           setLoading(false);
+          displayIntervale();
         } else {
           setError(result?.data?.error_msg);
           setLoading(false);
@@ -64,10 +91,66 @@ export const Login = () => {
     }
   };
 
+  // useEffect(() => {
+  //   debugger;
+  //   const timerId = setInterval(() => {
+  //     setTime((time) => {
+  //       if (time === expiryTime) {
+  //         console.log("in if of use effect");
+  //         clearInterval(timerId);
+  //         return time;
+  //       } else {
+  //         console.log("in else of use effect");
+  //         return time + 1;
+  //       }
+  //     });
+  //   }, 1000);
+  // }, clearInterval(timerId));
+
+  const displayIntervale = () => {
+    const timerId = setInterval(() => {
+      debugger;
+      setTime((time) => {
+        if (time === expiryTime) {
+          clearInterval(timerId);
+          return time;
+        } else {
+          return time + 1;
+        }
+      });
+    }, 1000);
+  };
+
+  const formatTime = (time) =>
+    `${String(Math.floor(time / 60)).padStart(2, "0")}:${String(
+      time % 60
+    ).padStart(2, "0")}`;
+
+  const Timer = ({ time }) => {
+    debugger;
+    const timeRemain = expiryTime - (time % expiryTime);
+    return (
+      <>
+        <div>
+          {time === expiryTime ? (
+            <div onClick={requestOtp}>Resend OTP</div>
+          ) : (
+            formatTime(timeRemain)
+          )}
+        </div>
+      </>
+    );
+  };
+
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      const result = await APISDK.handleverifyOtp(otp, expiryOtpTime, id);
+      const result = await APISDK.handleverifyOtp(
+        fields.otp,
+        expiryOtpTime,
+        id
+      );
+      console.log("result verify otp", result);
       if (result.status === "success") {
         setLoading(false);
         navigate("/thankyou");
@@ -84,10 +167,13 @@ export const Login = () => {
   // password= "superacute@1234";
   const verifyPwd = async () => {
     debugger;
-    if (password.length !== 0 || password !== "") {
+    if (fields.password.length !== 0 || fields.password !== "") {
       try {
         setLoading(true);
-        const result = await APISDK.handleverifyPwd(password, phoneNumber);
+        const result = await APISDK.handleverifyPwd(
+          fields.password,
+          fields.phoneNumber
+        );
         // console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);
@@ -108,7 +194,7 @@ export const Login = () => {
   };
 
   const showPassDiv = () => {
-    if (error === "") {
+    if (error === "" && fields.phoneNumber.length === 10) {
       setshowPwddiv(true);
     }
   };
@@ -144,8 +230,9 @@ export const Login = () => {
                 autoComplete="off"
                 type="password"
                 name="password"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
+                value={fields.password}
+                onChange={handleChange("password")}
+                // onChange={(e) => setpassword(e.target.value)}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -157,7 +244,7 @@ export const Login = () => {
 
               <Button
                 onClick={verifyPwd}
-                disabled={password !== "" ? false : true}
+                disabled={fields.password !== "" ? false : true}
                 endIcon={loading ? <CircularProgress size={20} /> : null}
                 className={classes.loginBtn}
               >
@@ -177,16 +264,18 @@ export const Login = () => {
                 fullWidth
                 type="number"
                 name="otp"
-                value={otp}
-                onChange={(e) => setotp(e.target.value)}
+                value={fields.otp}
+                onChange={handleChange("otp")}
+                // onChange={(e) => setotp(e.target.value)}
                 autoComplete="off"
                 inputProps={{ maxLength: 6 }}
                 helperText={error ? error : ""}
                 error={error ? true : false}
                 onBlur={() => setError("")}
               />
+              <Timer time={time} />
               <Button
-                disabled={otp.length !== 6 ? true : false}
+                disabled={fields.otp.length !== 6 ? true : false}
                 onClick={verifyOtp}
                 className={classes.loginBtn}
               >
@@ -210,8 +299,9 @@ export const Login = () => {
                 type="number"
                 name="phoneNumber"
                 autoComplete="off"
-                value={phoneNumber}
-                onChange={(e) => setphoneNumber(e.target.value)}
+                defaultValue={fields.phoneNumber}
+                onChange={handleChange("phoneNumber")}
+                // onChange={(e) => setphoneNumber(e.target.value)}
                 helperText={error ? error : ""}
                 error={error ? true : false}
                 onBlur={() => setError("")}
