@@ -49,7 +49,6 @@ export const Login = () => {
   let expiryTime = 10;
 
   const handleChange = (input) => ({ target: { value } }) => {
-    debugger;
     setFields({ ...fields, [input]: value });
 
     switch (input) {
@@ -66,12 +65,11 @@ export const Login = () => {
   // console.log("phone number", fields.phoneNumber);
 
   const requestOtp = async () => {
-    debugger;
     if (fields.phoneNumber !== "" && fields.phoneNumber.length === 10) {
       try {
         setLoading(true);
         const result = await APISDK.requestForOTP(fields.phoneNumber);
-        // console.log("result request otp", result);
+        console.log("result request otp", result);
         if (result.status === "success") {
           setid(result?.data?.id);
           setexpiryOtpTime(result?.data?.sdatetime);
@@ -92,7 +90,7 @@ export const Login = () => {
   };
 
   // useEffect(() => {
-  //   debugger;
+  //
   //   const timerId = setInterval(() => {
   //     setTime((time) => {
   //       if (time === expiryTime) {
@@ -109,7 +107,6 @@ export const Login = () => {
 
   const displayIntervale = () => {
     const timerId = setInterval(() => {
-      debugger;
       setTime((time) => {
         if (time === expiryTime) {
           clearInterval(timerId);
@@ -127,13 +124,14 @@ export const Login = () => {
     ).padStart(2, "0")}`;
 
   const Timer = ({ time }) => {
-    debugger;
     const timeRemain = expiryTime - (time % expiryTime);
     return (
       <>
-        <div>
+        <div className={classes.OTPTimer}>
           {time === expiryTime ? (
-            <div onClick={requestOtp}>Resend OTP</div>
+            <div onClick={requestOtp} className={classes.resendLink}>
+              Resend OTP
+            </div>
           ) : (
             formatTime(timeRemain)
           )}
@@ -166,7 +164,6 @@ export const Login = () => {
 
   // password= "superacute@1234";
   const verifyPwd = async () => {
-    debugger;
     if (fields.password.length !== 0 || fields.password !== "") {
       try {
         setLoading(true);

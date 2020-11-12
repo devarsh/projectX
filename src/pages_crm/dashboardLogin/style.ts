@@ -8,6 +8,8 @@ export interface LoginPageStyleProps {
   loginBtn: BaseCSSProperties;
   loginImg: BaseCSSProperties;
   formWrap: BaseCSSProperties;
+  OTPTimer: BaseCSSProperties;
+  resendLink: BaseCSSProperties;
 }
 
 export type LoginPageNameProps = Record<keyof LoginPageStyleProps, string>;
@@ -53,5 +55,17 @@ export const loginPageStyle = (theme: Theme): any => ({
     margin: theme.spacing(2, 0),
     fontSize: "1rem",
     padding: "10px .75rem",
+  },
+  OTPTimer: {
+    marginTop: "10px",
+    color: theme.palette.primary.main,
+    fontWeight: "600",
+  },
+  resendLink: {
+    marginTop: "10px",
+    cursor: "pointer",
+    color: theme.palette.secondary.main,
+    fontWeight: "600",
+    fontSize: "0.875 rem",
   },
 });

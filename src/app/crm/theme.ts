@@ -8,7 +8,7 @@ export const theme: Theme = {
     },
     //@ts-ignore
     secondary: {
-      main: "#736f6f",
+      main: "#0063a3",
     },
   },
 
