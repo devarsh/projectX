@@ -194,7 +194,7 @@ export const formsNav: NavBarType = {
               label: "SME CGTMSE",
               href: "/form/sme",
               isRouterLink: true,
-              formCode: "12300002",
+              formCode: "12300010",
               empCode: "98",
             },
           ],
@@ -215,12 +215,24 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "Business Loan",
+              href: "/form/business",
+              isRouterLink: true,
+              formCode: "123000013",
+              empCode: "98",
             },
             {
               label: "Personal Loan",
+              href: "/form/personal",
+              isRouterLink: true,
+              formCode: "123000014",
+              empCode: "98",
             },
             {
               label: "School Fee Funding",
+              href: "/form/schoolFee",
+              isRouterLink: true,
+              formCode: "123000015",
+              empCode: "98",
             },
           ],
         },

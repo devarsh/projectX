@@ -31,6 +31,7 @@ interface AutoCompleteExtendedProps {
   options?: OptionsProps[] | dependentOptionsFn;
   label?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 type MyAutocompleteProps = Merge<
@@ -43,7 +44,7 @@ export type MyAllAutocompleteProps = Merge<
   UseFieldHookProps
 >;
 
-const getOptionLabel = (option: OptionsProps) => option.label;
+const getOptionLabel = (option: OptionsProps) => option?.label ?? "";
 
 const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   name: fieldName,
@@ -72,6 +73,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   label,
   placeholder,
   limitTags,
+  required,
   ...others
 }) => {
   const {
@@ -192,9 +194,9 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
       limitTags={limitTags ?? 2}
       key={fieldKey}
       id={fieldKey}
-      multiple={true}
+      multiple={multiple}
       disableClearable={disableClearable}
-      freeSolo={true}
+      freeSolo={freeSolo}
       options={_options}
       getOptionLabel={getOptionLabel}
       onChange={(_, value) => {
@@ -252,6 +254,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
           onChange={(e) => setInputValue(e.target.value)}
           type="text"
           error={isError}
+          required={required}
           helperText={isError ? error : null}
           InputProps={{
             ...params.InputProps,
