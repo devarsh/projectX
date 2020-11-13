@@ -39,6 +39,38 @@ export default {
     },
 
     {
+      name: "API Management",
+      icon: "faTasks",
+      children: [
+        {
+          name: "Health Check Equifax",
+          url: "",
+          icon: "faCircle",
+        },
+        {
+          name: "Bank Stmt. Analysis",
+          url: "",
+          icon: "faCircle",
+        },
+        {
+          name: "GST Analysis",
+          url: "",
+          icon: "faCircle",
+        },
+        {
+          name: "ITR Anlaysis",
+          url: "",
+          icon: "faCircle",
+        },
+        {
+          name: "Financial Stmt. Analysis",
+          url: "",
+          icon: "faCircle",
+        },
+      ],
+    },
+
+    {
       name: "Customers",
       url: "",
       icon: "faUsers",
