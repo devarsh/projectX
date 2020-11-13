@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -17,13 +17,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MUIDataTable from "mui-datatables";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EmployeeHeader from "../header/index";
 import { TextField } from "@material-ui/core";
+import { APISDK } from "registry/fns/sdk";
 
 const drawerWidth = 240;
 
@@ -247,51 +246,55 @@ const useStyles = makeStyles((theme) => ({
 export default function EmployeeLead() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const [InquiryDetails, setInquiryDetails] = React.useState([]);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [editDetails, setEditDtails] = useState({
+    address: "",
+    birth_dt: "",
+    customer_name: "",
+    email_id: "",
+    employeed_type: "",
+    health_score: "",
+    inquiry_code: "",
+    inquiry_date: "",
+    inquiry_status: "",
+    lead_generaate: "",
+    mobile_no: "",
+    product_type: "",
+    questionaaries: "",
+  });
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  //get user inquiry details
+  let pushEmployeeDetails = [];
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-      backgroundColor: "#26A456",
-      color: "#fff",
-      boxShadow: "0 3px 6px rgba(0,0,0,0.46)",
-      fontSize: 11,
-      borderBottom: "1px solid #26A456",
-    },
-    arrow: {
-      fontSize: 16,
-      width: 17,
-      "&::before": {
-        border: "1px solid #fff",
-        backgroundColor: "#26A456",
-        boxSizing: "border-box",
-      },
-    },
-  }))(Tooltip);
-
-  const drawerWidth = 240;
+  useEffect(async () => {
+    const result = await APISDK.getDashboardEmployeeData();
+    console.log("result", result);
+    try {
+      if (result.status === "success") {
+        for (let i = 0; i < result.data.length; i++) {
+          pushEmployeeDetails.push({
+            inquiry_code: result.data[i].inquiry_code,
+            inquiry_date: result.data[i].inquiry_date,
+            product_type: result.data[i].product_type,
+            customer_name: result.data[i].customer_name,
+            mobile_no: result.data[i].mobile_no,
+            email_id: result.data[i].email_id,
+            inquiry_status: result.data[i].inquiry_status,
+            lead_generaate: result.data[i].lead_generaate,
+            questionaaries:
+              result.data[i].questionaaries + "/" + result.data[i].health_score,
+            address: result.data[i].address,
+            birth_dt: result.data[i].birth_dt,
+            // health_score: result.data[i].health_score,
+          });
+          setInquiryDetails(pushEmployeeDetails);
+        }
+      }
+    } catch (e) {
+      console.log("in catch");
+    }
+  }, []);
 
   const columns = [
     {
@@ -410,208 +413,68 @@ export default function EmployeeLead() {
     },
   ];
 
-  const datatableData = [
-    [
-      "123456",
-      "20-10-2020",
-      "New Home Loan",
-      "Joe James",
-      "7600812222",
-      "abc1@abc.com",
-      "Pending",
-      "No",
-      "Yes / 76%",
-    ],
-    [
-      "232323",
-      "20-10-2020",
-      "Balance Transfer",
-      "John Walsh",
-      "7600812222",
-      "abc2@abc.com",
-      "Rejected",
-      "No",
-      "Yes / 40%",
-    ],
-    [
-      "453243",
-      "20-08-2020",
-      "New Home Loan",
-      "Bob Herm",
-      "7600812222",
-      "abc3@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 76%",
-    ],
-    [
-      "545337",
-      "20-07-2020",
-      "New Home Loan",
-      "James Houston",
-      "7600812222",
-      "abc4@abc.com",
-      "Pending",
-      "No",
-      "No",
-    ],
-    [
-      "777777",
-      "20-05-2020",
-      "Lap",
-      "Prabhakar Linwood",
-      "7600812222",
-      "abc6@abc.com",
-      "Pending",
-      "No",
-      "Yes / 76%",
-    ],
-    [
-      "565645",
-      "20-06-2020",
-      "New Home Loan",
-      "Kaui Ignace",
-      "7600812222",
-      "ddsda@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 96%",
-    ],
+  var dataNew = InquiryDetails.map((x) => {
+    return [
+      x.inquiry_code,
+      x.inquiry_date,
+      x.product_type,
+      x.customer_name,
+      x.mobile_no,
+      x.email_id,
+      x.inquiry_status,
+      x.lead_generaate,
+      x.questionaaries,
+    ];
+  });
+  // var EditableDetails = InquiryDetails.map((edit) => {
+  //   setEditDtails(edit);
+  // });
 
-    [
-      "787878",
-      "20-01-2020",
-      "New Home Loan",
-      "Esperanza Susanne",
-      "7600812222",
-      "rtrtre@abc.com",
-      "Rejected",
-      "No",
-      "No",
-    ],
-    [
-      "563444",
-      "20-10-2020",
-      "New Home Loan",
-      "Christian Birgitte",
-      "7600812222",
-      "sasas@abc.com",
-      "Rejected",
-      "No",
-      "Yes / 46%",
-    ],
-    [
-      "123456",
-      "20-10-2020",
-      "New Home Loan",
-      "Meral Elias",
-      "7600812222",
-      "asssa@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 76%",
-    ],
-    [
-      "343434",
-      "20-10-2020",
-      "Balance Transfer",
-      "Deep Pau",
-      "7600812222",
-      "name@abc.com",
-      "Pending",
-      "No",
-      "Yes / 76%",
-    ],
-    [
-      "324324",
-      "20-02-2020",
-      "New Home Loan",
-      "Sebastiana Hani",
-      "7600812222",
-      "ratnaafin@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 96%",
-    ],
-    [
-      "234432",
-      "20-10-2020",
-      "LRD",
-      "Marciano Oihana",
-      "7600812222",
-      "abcdd@abc.com",
-      "Pending",
-      "No",
-      "Yes / 76%",
-    ],
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-    [
-      "567765",
-      "20-10-2020",
-      "New Home Loan",
-      "Brigid Ankur",
-      "7600812222",
-      "acute@abc.com",
-      "Rejected",
-      "No",
-      "Yes / 76%",
-    ],
-    [
-      "898976",
-      "20-04-2020",
-      "SME",
-      "Anna Siranush",
-      "7600812222",
-      "xyz@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 76%",
-    ],
-    [
-      "675666",
-      "20-10-2020",
-      "New Home Loan",
-      "Avram Sylva",
-      "7600812222",
-      "errd@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 76%",
-    ],
-    [
-      "555555",
-      "20-06-2020",
-      "Balance Transfer",
-      "Serafima Babatunde",
-      "7600812222",
-      "sfggsaee@abc.com",
-      "Pending",
-      "No",
-      "Yes / 76%",
-    ],
-    [
-      "554433",
-      "20-10-2020",
-      "New Home Loan",
-      "Sebastiana Hani",
-      "7600812222",
-      "abcdef@abc.com",
-      "Confirmed",
-      "Yes",
-      "Yes / 76%",
-    ],
-    [
-      "344556",
-      "20-08-2018",
-      "Balance Transfer",
-      "Gaston Festus",
-      "7600812222",
-      "ab12333c@abc.com",
-      "Pending",
-      "No",
-      "Yes / 76%",
-    ],
-  ];
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [selectedDate, setSelectedDate] = React.useState(
+    new Date("2014-08-18T21:11:54")
+  );
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+      backgroundColor: "#26A456",
+      color: "#fff",
+      boxShadow: "0 3px 6px rgba(0,0,0,0.46)",
+      fontSize: 11,
+      borderBottom: "1px solid #26A456",
+    },
+    arrow: {
+      fontSize: 16,
+      width: 17,
+      "&::before": {
+        border: "1px solid #fff",
+        backgroundColor: "#26A456",
+        boxSizing: "border-box",
+      },
+    },
+  }))(Tooltip);
+
+  const drawerWidth = 240;
 
   const [openDetails, setOpenDetails] = React.useState(false);
   const theme = useTheme();
@@ -639,7 +502,7 @@ export default function EmployeeLead() {
             <Grid item xs={12} sm={12} md={12} className="table-cover">
               <MUIDataTable
                 title="Lead Management"
-                data={datatableData}
+                data={dataNew}
                 columns={columns}
                 options={{
                   filterType: "checkbox",
@@ -674,7 +537,8 @@ export default function EmployeeLead() {
                               Product Type:
                             </Box>
                             <Box width="60%" className={classes.formValue}>
-                              Commercial Property Purchase
+                              {editDetails.product_type}
+                              {/* Commercial Property Purchase */}
                             </Box>
                           </Box>
                         </Paper>
@@ -859,6 +723,7 @@ export default function EmployeeLead() {
                 </DialogActions>
               </Dialog>
             </div>
+            ;
           </Grid>
         </Container>
       </main>

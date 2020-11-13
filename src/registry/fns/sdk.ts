@@ -74,6 +74,7 @@ const RaatnaFinAPI = () => {
     try {
       let response = await fetch(url, payload);
       let data = await response.json();
+      console.log("access token", data);
       return data;
     } catch (e) {
       return new Error(`Error fetching data-${e.message}`);
@@ -263,7 +264,6 @@ const RaatnaFinAPI = () => {
   };
 
   const requestForOTP = async (phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("/users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -286,7 +286,6 @@ const RaatnaFinAPI = () => {
     expiryOtpTime: string,
     id: string
   ) => {
-    debugger;
     const { data, status } = await internalFetcher("/users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
@@ -306,7 +305,6 @@ const RaatnaFinAPI = () => {
   };
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("/users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -359,6 +357,24 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.response_data };
     }
   };
+
+  const getDashboardEmployeeData = async () => {
+    const { data, status } = await internalFetcher("users/getInquiryDetails", {
+      body: JSON.stringify({
+        action: "get_inquiry_details",
+        request_data: {
+          inquiry_code: "855",
+        },
+        channel: "W",
+      }),
+    });
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
   //remove this function after migration
   const getAccessToken = async () => {
     await sessionToken;
@@ -381,6 +397,7 @@ const RaatnaFinAPI = () => {
     pushFormData,
     handleverifyOtp,
     handleverifyPwd,
+    getDashboardEmployeeData,
   };
 };
 

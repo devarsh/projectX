@@ -69,7 +69,7 @@ export const Login = () => {
       try {
         setLoading(true);
         const result = await APISDK.requestForOTP(fields.phoneNumber);
-        console.log("result request otp", result);
+        // console.log("result request otp", result);
         if (result.status === "success") {
           setid(result?.data?.id);
           setexpiryOtpTime(result?.data?.sdatetime);
@@ -148,10 +148,10 @@ export const Login = () => {
         expiryOtpTime,
         id
       );
-      console.log("result verify otp", result);
+      // console.log("result verify otp", result);
       if (result.status === "success") {
         setLoading(false);
-        navigate("/thankyou");
+        navigate("/dashboard");
       } else {
         setError(result?.data?.error_msg);
         setLoading(false);
