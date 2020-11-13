@@ -279,22 +279,22 @@ export default function EmployeeHeader() {
             className={classes.title}
           >
             Dashboard
-          </Typography>
-          <Typography
-            variant="caption"
-            display="block"
-            color="secondary"
-            gutterTop
-          >
-            Branch: Rajkot
-          </Typography>
-          <Typography
-            variant="caption"
-            display="block"
-            color="secondary"
-            gutterBottom
-          >
-            Last Login: 21/05/2020 05:00 PM
+            <Typography
+              variant="caption"
+              display="block"
+              color="secondary"
+              gutterTop
+            >
+              Branch: Rajkot
+            </Typography>
+            <Typography
+              variant="caption"
+              display="block"
+              color="secondary"
+              gutterBottom
+            >
+              Last Login: 21/05/2020 05:00 PM
+            </Typography>
           </Typography>
 
           <div className={classes.search}>
