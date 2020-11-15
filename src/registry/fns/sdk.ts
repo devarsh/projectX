@@ -263,7 +263,7 @@ const RaatnaFinAPI = () => {
 
   const requestForOTP = async (phoneNumber: string) => {
     debugger;
-    const { data, status } = await internalFetcher("/users/customer_login", {
+    const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
@@ -286,7 +286,7 @@ const RaatnaFinAPI = () => {
     id: string
   ) => {
     debugger;
-    const { data, status } = await internalFetcher("/users/otpVerify", {
+    const { data, status } = await internalFetcher("./users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
         request_data: {
@@ -306,7 +306,7 @@ const RaatnaFinAPI = () => {
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
     debugger;
-    const { data, status } = await internalFetcher("/users/customer_login", {
+    const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
@@ -324,7 +324,7 @@ const RaatnaFinAPI = () => {
   };
 
   const getMetaData = async (productCode: string, empCode: string) => {
-    const { data, status } = await internalFetcher("/users/getMetaData", {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
         action: "render_form",
         request_data: {
@@ -345,7 +345,7 @@ const RaatnaFinAPI = () => {
     formCode?: string,
     tranCode?: string
   ) => {
-    const { data, status } = await internalFetcher("/users/inquiry", {
+    const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
         request_data: { ...formData, tranCode, formCode },
