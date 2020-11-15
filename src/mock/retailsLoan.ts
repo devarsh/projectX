@@ -1,21 +1,16 @@
-//@ts-nocheck
 import { MetaDataType } from "components/dyanmicForm/types";
 
 const metaData: MetaDataType = {
   form: {
-    name: "rhl-1",
+    name: "12300001",
     label: "Retail Home Loan",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
+    submitAction: "home",
     render: {
       ordering: "auto",
       renderType: "stepper",
-      labels: {
-        next: "Next",
-        complete: "Complete",
-        prev: "Back",
-      },
-      groups: ["Personal Details", "Contact Details", "Conditional"],
+      groups: ["Personal Details", "Contact Details"],
       gridConfig: {
         item: {
           xs: 12,
@@ -49,79 +44,72 @@ const metaData: MetaDataType = {
   fields: [
     {
       render: {
-        componentType: "toggleButtonGroup",
+        componentType: "select",
         group: 0,
       },
-      name: "productType",
+      name: "product_type",
       label: "Product Type",
-      defaultValue: "p",
+      placeholder: "Product Type",
+      required: true,
+      defaultValue: "X",
       GridProps: {
         xs: 12,
-        md: 6,
-        sm: 6,
+        md: 3,
+        sm: 3,
       },
-      options: [
-        { label: "Home Loan", value: "p", iconName: "person" },
-        { label: "Personal Loan", value: "b", iconName: "business" },
-      ],
-      exclusive: true,
+      //@ts-ignore
+      options: "getProductType",
+      runPostValidationHookAlways: true,
+      validate: {
+        conditions: {
+          all: [
+            {
+              fact: "currentField",
+              path: "$.value",
+              operator: "equal",
+              value: "X",
+            },
+          ],
+        },
+        success: "is required salutation",
+        failure: null,
+      },
     },
+
     {
       render: {
         componentType: "spacer",
         group: 0,
       },
       name: "spacer",
+      label: "spacer",
       GridProps: {
         xs: 12,
-        md: 6,
-        sm: 6,
+        md: 9,
+        sm: 9,
       },
       HiddenProps: {
         smDown: true,
       },
     },
+
     {
       render: {
-        componentType: "inputMask",
+        componentType: "autocomplete",
         group: 0,
       },
-      name: "lala",
-      type: "text",
-      label: "Format lalalal",
+      name: "city",
+      label: "City",
+      placeholder: "City",
       required: true,
+      defaultValue: "X",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      MaskProps: {
-        mask: "0000` aaaa` aaaa",
-        lazy: true,
-      },
-      dependentFields: ["productType"],
-      shouldExclude: (_, dData) => {
-        return dData?.productType?.value === "p";
-      },
-    },
-    {
-      render: {
-        componentType: "select",
-        group: 0,
-      },
-      name: "salutation",
-      label: "Salutation",
-      required: true,
-      defaultValue: "0",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-      options: "functionOne",
-      runPostValidationHookAlways: true,
-      validate: "functionTwo",
-      postValidationSetCrossFieldValues: "functionThree",
+      //@ts-ignore
+      options: "getPropertyCity",
     },
     {
       render: {
@@ -132,6 +120,7 @@ const metaData: MetaDataType = {
       type: "text",
       label: "First Name[As Per PAN Card]",
       required: true,
+      placeholder: "First Name[As Per PAN Card]",
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["First Name is required"] }],
@@ -142,13 +131,14 @@ const metaData: MetaDataType = {
         sm: 3,
       },
     },
+
     {
       render: {
         componentType: "textField",
         group: 0,
       },
       name: "middleName",
-       label: "Middle Name",
+      label: "Middle Name",
       placeholder: "Middle Name",
       type: "text",
       GridProps: {
@@ -169,7 +159,7 @@ const metaData: MetaDataType = {
       type: "text",
       schemaValidation: {
         type: "string",
-        rules: [{ name: "required", params: ["Last Name is required"] }],
+        rules: [{ name: "required", params: ["Last Name is required."] }],
       },
       GridProps: {
         xs: 12,
@@ -184,13 +174,20 @@ const metaData: MetaDataType = {
       },
       name: "gender",
       label: "Gender",
+      placeholder: "Gender",
       required: true,
       type: "text",
-      defaultValue: "0",
-      isReadOnly: "functionFour",
-      options: "functionFive",
-      validate: "functionSix",
+      defaultValue: "X",
+      isReadOnly: () => true,
+      //@ts-ignore
+      options: "getGenderList",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "datePicker",
@@ -201,14 +198,19 @@ const metaData: MetaDataType = {
       required: true,
       placeholder: "dd/mm/yyyy",
       format: "dd/MM/yyyy",
-
       schemaValidation: {
         type: "date",
         rules: [
-          { name: "typeError", params: ["Date of Birth is required"] },
-          { name: "required", params: ["Date of Birth is required"] },
+          { name: "required", params: ["Date of Birth is required."] },
+          { name: "typeError", params: ["Please enter valid Date of Birth."] },
         ],
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      validationRun: "onChange",
     },
     {
       render: {
@@ -218,52 +220,37 @@ const metaData: MetaDataType = {
       name: "loanAmount",
       type: "text",
       label: "Your Desired Loan Amount",
+      placeholder: "Your Desired Loan Amount",
       required: true,
-
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Loan Amount is required"] },
-          { name: "required", params: ["Loan Amount is required"] },
+          {
+            name: "required",
+            params: ["Your Desired Loan Amount is required."],
+          },
         ],
       },
       enableNumWords: true,
       FormatProps: {
         thousandSeparator: true,
         prefix: "₹",
-        suffix: "/-",
         thousandsGroupStyle: "lakh",
         allowNegative: false,
         allowLeadingZeros: false,
         decimalScale: 0,
-        fixedDecimalScale: true,
+        maxLength: 13,
       },
       validationRun: "onChange",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
         componentType: "numberFormat",
-        group: 0,
-      },
-      name: "aadhar",
-      type: "text",
-      label: "AadharNumber",
-      required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "typeError", params: ["Loan Amount is required"] },
-          { name: "required", params: ["Loan Amount is required"] },
-        ],
-      },
-      FormatProps: {
-        format: "####-####-####-####",
-      },
-      validationRun: "onChange",
-    },
-    {
-      render: {
-        componentType: "textField",
         group: 1,
       },
       name: "mobileNo",
@@ -274,12 +261,26 @@ const metaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Mobile No is required"] },
-          { name: "required", params: ["Mobile No is required"] },
+          { name: "required", params: ["Mobile No is required."] },
+          { name: "min", params: [10, "Mobile No should be 10 digit."] },
+          { name: "max", params: [10, "Mobile No should be 10 digit."] },
+          {
+            name: "matches",
+            params: [/^\d{10}/, "Please enter valid Mobile No."],
+          },
         ],
       },
+      FormatProps: {
+        format: "##########",
+      },
       StartAdornment: "+91",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -293,11 +294,17 @@ const metaData: MetaDataType = {
       schemaValidation: {
         type: "string",
         rules: [
-          { name: "typeError", params: ["Email is required"] },
-          { name: "required", params: ["Email is required"] },
+          { name: "required", params: ["Email is required."] },
+          { name: "email", params: ["Please enter Email ID."] },
         ],
       },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "select",
@@ -305,31 +312,69 @@ const metaData: MetaDataType = {
       },
       name: "employementStatus",
       label: "How Are You Currently Employed",
+      placeholder: "How Are You Currently Employed",
       required: true,
-      defaultValue: "0",
-      options: "functionSeven",
-    },
-    {
-      render: {
-        componentType: "textField",
-        group: 2,
+      defaultValue: "X",
+      //@ts-ignore
+      options: "getRetailEmployee",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
-      name: "label1",
-      type: "text",
-      label: "Label 1",
-      dependentFields: ["employementStatus"],
-      shouldExclude: "functionEight",
     },
+
     {
       render: {
         componentType: "textField",
         group: 1,
       },
+      name: "landmark",
+      type: "text",
+      label: "Landmark",
+      placeholder: "Landmark",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Landmark is required."] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 1,
+      },
       name: "pincode",
       label: "Residence Pincode",
+      placeholder: "Residence Pincode",
       required: true,
       defaultValue: "",
-      postValidationSetCrossFieldValues: "functionNine",
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "required", params: ["Residence Pincode is required."] },
+          { name: "min", params: [6, "Residence Pincode should be 6 digit."] },
+          { name: "max", params: [6, "Residence Pincode should be 6 digit."] },
+          {
+            name: "matches",
+            params: [/^\d{6}/, "Please enter valid Pincode."],
+          },
+        ],
+      },
+      FormatProps: {
+        format: "######",
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
@@ -338,8 +383,15 @@ const metaData: MetaDataType = {
       },
       name: "location",
       label: "Location",
+      placeholder: "Location",
       required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -348,7 +400,14 @@ const metaData: MetaDataType = {
       name: "city",
       label: "City",
       placeholder: "City",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -357,7 +416,13 @@ const metaData: MetaDataType = {
       name: "district",
       label: "District",
       placeholder: "District",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -366,7 +431,13 @@ const metaData: MetaDataType = {
       name: "state",
       label: "State",
       placeholder: "State",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
+
     {
       render: {
         componentType: "textField",
@@ -375,6 +446,11 @@ const metaData: MetaDataType = {
       name: "country",
       label: "Country",
       placeholder: "Country",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
@@ -382,6 +458,7 @@ const metaData: MetaDataType = {
         group: 1,
       },
       name: "agreed",
+      required: true,
       label:
         "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
       GridProps: {

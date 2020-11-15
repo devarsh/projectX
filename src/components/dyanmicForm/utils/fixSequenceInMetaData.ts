@@ -8,7 +8,7 @@ export const MoveSequenceToRender = (
     fields = fields.map((one) => {
       //@ts-ignore
       const { sequence, render, ...others } = one;
-      return { ...others, render: { ...render, sequence } };
+      return { ...others, render: { sequence, ...render } };
     });
   }
   return {

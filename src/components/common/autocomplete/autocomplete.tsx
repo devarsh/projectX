@@ -193,7 +193,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
       {...others}
       limitTags={limitTags ?? 2}
       key={fieldKey}
-      id={fieldKey}
       multiple={multiple}
       disableClearable={disableClearable}
       freeSolo={freeSolo}
@@ -251,26 +250,33 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
           label={label}
           placeholder={placeholder}
           value={inputValue}
+          autoComplete="disabled"
           onChange={(e) => setInputValue(e.target.value)}
-          type="text"
+          type="search"
           error={isError}
           required={required}
           helperText={isError ? error : null}
           InputProps={{
             ...params.InputProps,
-            endAdornment:
-              validationRunning || loadingOptions ? (
-                <InputAdornment position="end">
+            endAdornment: (
+              <Fragment>
+                {validationRunning || loadingOptions ? (
                   <CircularProgress
                     color="primary"
                     variant="indeterminate"
                     {...CircularProgressProps}
                   />
-                </InputAdornment>
-              ) : null,
+                ) : null}
+                {params.InputProps.endAdornment}
+              </Fragment>
+            ),
           }}
           InputLabelProps={{
             shrink: true,
+          }}
+          inputProps={{
+            ...params.inputProps,
+            autoComplete: "new-user-street-address",
           }}
         />
       )}
