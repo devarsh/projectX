@@ -45,14 +45,15 @@ const RaatnaFinAPI = () => {
       url.href,
       //@ts-ignore
       requestOptions
-    )
+    );
+    sessionToken
       .then((response) => response.json())
       .then((result) => {
         verifyRequest(result);
-      })
-      .catch((error) => {
-        verifyRequest(error);
       });
+    sessionToken.catch((error) => {
+      verifyRequest(error);
+    });
   };
   const verifyRequest = (data) => {
     if (data["access_token"] && data["refresh_token"]) {
@@ -122,6 +123,7 @@ const RaatnaFinAPI = () => {
   ): Promise<CommonFetcherResponse> => {
     try {
       await sessionToken;
+      console.log(url, sessionObj.loginStatus);
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",

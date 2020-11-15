@@ -4,7 +4,6 @@ import Grid, { GridProps } from "@material-ui/core/Grid";
 import CircularProgress, {
   CircularProgressProps,
 } from "@material-ui/core/CircularProgress";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Autocomplete, {
   AutocompleteProps,
   createFilterOptions,
