@@ -7,8 +7,7 @@ export interface NavItemType {
   rel?: string;
   target?: hrefTarget;
   children?: NavItemType[];
-  formCode?: string;
-  empCode?: string;
+  navigationProps?: any;
   icon?: any;
   iconPosition?: "before" | "after";
 }

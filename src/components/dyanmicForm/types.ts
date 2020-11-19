@@ -71,9 +71,6 @@ export interface FormMetaDataType {
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
   submitAction?: string;
-  navigation?: {
-    nextPage: To;
-  };
 }
 
 export interface ComponentTypeProps {
