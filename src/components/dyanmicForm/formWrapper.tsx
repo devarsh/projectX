@@ -145,6 +145,7 @@ export const ParentFormWrapper = () => {
         console.log(e);
         setLoading(false);
       });
+    /*eslint-disable react-hooks/exhaustive-deps*/
     //@ts-ignore
   }, [navigationState?.prodCode, navigationState?.empCode]);
   const result = loading ? (

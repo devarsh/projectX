@@ -1,31 +1,10 @@
 import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
-import App from "app/crm";
-//import App from "app/los";
-//import "mock";
-
+//import App from "app/crm";
+import App from "app/los";
 require("dotenv").config();
-
-// const BUILD_TARGETS: { name: string; path: string }[] = [
-//   {
-//     name: "crm",
-//     path: "./app/crm",
-//   },
-//   {
-//     name: "los",
-//     path: "./app/los",
-//   },
-// ];
-
-// //@ts-ignore
-// const { path } = BUILD_TARGETS.find(
-//   ({ name }) => process.env.REACT_APP_ENTRY_POINT === name
-// );
-
-// import(`${path}`).then(({ default: BuildTarget }) => {
-//   ReactDOM.render(<BuildTarget />, document.getElementById("root"));
-// });
+require("mock");
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
