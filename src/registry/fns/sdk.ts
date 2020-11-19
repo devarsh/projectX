@@ -45,14 +45,15 @@ const RaatnaFinAPI = () => {
       url.href,
       //@ts-ignore
       requestOptions
-    )
+    );
+    sessionToken
       .then((response) => response.json())
       .then((result) => {
         verifyRequest(result);
-      })
-      .catch((error) => {
-        verifyRequest(error);
       });
+    sessionToken.catch((error) => {
+      verifyRequest(error);
+    });
   };
   const verifyRequest = (data) => {
     // console.log("data", data);
@@ -124,6 +125,7 @@ const RaatnaFinAPI = () => {
   ): Promise<CommonFetcherResponse> => {
     try {
       await sessionToken;
+      console.log(url, sessionObj.loginStatus);
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",
@@ -264,7 +266,8 @@ const RaatnaFinAPI = () => {
   };
 
   const requestForOTP = async (phoneNumber: string) => {
-    const { data, status } = await internalFetcher("/users/customer_login", {
+    debugger;
+    const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
@@ -286,7 +289,8 @@ const RaatnaFinAPI = () => {
     expiryOtpTime: string,
     id: string
   ) => {
-    const { data, status } = await internalFetcher("/users/otpVerify", {
+    debugger;
+    const { data, status } = await internalFetcher("./users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
         request_data: {
@@ -305,7 +309,8 @@ const RaatnaFinAPI = () => {
   };
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
-    const { data, status } = await internalFetcher("/users/customer_login", {
+    debugger;
+    const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
@@ -323,7 +328,7 @@ const RaatnaFinAPI = () => {
   };
 
   const getMetaData = async (productCode: string, empCode: string) => {
-    const { data, status } = await internalFetcher("/users/getMetaData", {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
         action: "render_form",
         request_data: {
@@ -344,7 +349,7 @@ const RaatnaFinAPI = () => {
     formCode?: string,
     tranCode?: string
   ) => {
-    const { data, status } = await internalFetcher("/users/inquiry", {
+    const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
         request_data: { ...formData, tranCode, formCode },

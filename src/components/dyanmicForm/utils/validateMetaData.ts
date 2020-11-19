@@ -20,7 +20,7 @@ const field = yup.array().of(
       componentType: yup.string().required(),
       group: yup.number().required(),
     }),
-    sequence: yup.number().required(),
+    sequence: yup.number(),
     GridProps: yup.object().shape({
       xs: yup.number().required(),
       md: yup.number().required(),
@@ -43,6 +43,9 @@ export const validateMetaData = (metaData: MetaDataType) => {
     });
     return true;
   } catch (e) {
+    if (process.env.REACT_APP_DEBUG_MODE === "true") {
+      console.log(e);
+    }
     return false;
   }
 };

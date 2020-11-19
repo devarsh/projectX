@@ -123,7 +123,8 @@ export type FieldMetaDataType =
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {
-  type: string;
+  type: "string" | "number" | "boolean" | "date" | "array";
+  arrayType?: "string" | "number" | "boolean" | "date";
   rules?: YupRulesType[];
 }
 
