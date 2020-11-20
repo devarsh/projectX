@@ -32,7 +32,7 @@ export interface NavRendererType {
   classes: HeaderNameProps;
 }
 
-const overrideMetaData = (metaData: NavBarType) => {
+export const overrideMetaData = (metaData: NavBarType) => {
   if (Array.isArray(metaData.navItems)) {
     return metaData.navItems.map((one) => {
       let result = one;

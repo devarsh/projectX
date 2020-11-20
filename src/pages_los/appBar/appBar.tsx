@@ -38,7 +38,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
   return (
     <div className={classes.root + " DashboardHeader"}>
       <AppBar
-        position="absolute"
+        position="fixed"
         className={clsx(classes.appBar, open && classes.appBarShift)}
       >
         <Toolbar className={classes.toolbar}>
