@@ -4,7 +4,10 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import SuccessImg from "assets/images/success.svg";
-
+import {
+  shouldContinueToQuestionnaireForm,
+  constructNavigationUrlForQuestionnaire,
+} from "components/dyanmicForm/navHelpers";
 import {
   thankyouPageStyle,
   ThankyouPageStyleProps,
@@ -19,7 +22,7 @@ export const ThankYou = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const { state } = location;
+  const { state: naviationState } = location;
   return (
     <Box
       className={classes.wrapper}
@@ -51,23 +54,15 @@ export const ThankYou = () => {
         >
           Back to Home
         </Button>
-        {typeof state === "object" &&
-        //@ts-ignore
-        Boolean(state?.formCode ?? null) &&
-        //@ts-ignore
-        Boolean(state?.empCode ?? null) ? (
+        {shouldContinueToQuestionnaireForm(naviationState) ? (
           <Button
             className={classes.prevNextBtn}
             onClick={(e) => {
               e.preventDefault();
-              navigate(
-                //@ts-ignore
-                `/form/questions-${state.formCode ?? ""}-${
-                  //@ts-ignore
-                  state.empCode ?? ""
-                }`,
-                { state }
-              );
+              const url = `/form/questions-${constructNavigationUrlForQuestionnaire(
+                naviationState
+              )}`;
+              navigate(url, { state: naviationState });
             }}
           >
             Continue

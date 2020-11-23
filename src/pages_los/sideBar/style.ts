@@ -1,6 +1,21 @@
-import { makeStyles } from "@material-ui/styles";
+import { Theme, makeStyles } from "@material-ui/core/styles";
+import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 
-const useStyles = makeStyles((theme) => ({
+export interface SideBarStyleProps {
+  root: BaseCSSProperties;
+  drawer: BaseCSSProperties;
+  item: BaseCSSProperties;
+  button: BaseCSSProperties;
+  btnRoot: BaseCSSProperties;
+  subMenu: BaseCSSProperties;
+  listIcon: BaseCSSProperties;
+  sidebarLnk: BaseCSSProperties;
+  faSmall: BaseCSSProperties;
+}
+
+export type SideBarNameProps = Record<keyof SideBarStyleProps, string>;
+
+const sideBarStyles = (theme: Theme): any => ({
   root: {
     justifyContent: "left",
   },
@@ -30,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   subMenu: {
     paddingLeft: "50px !important",
   },
-  ListIcon: {
+  listIcon: {
     minWidth: "32px",
     color: "#0063A3",
     fontWeight: "700 !important",
@@ -44,6 +59,6 @@ const useStyles = makeStyles((theme) => ({
   faSmall: {
     fontSize: "13px !important",
   },
-}));
+});
 
-export default useStyles;
+export const useStyles = makeStyles<Theme, SideBarStyleProps>(sideBarStyles);

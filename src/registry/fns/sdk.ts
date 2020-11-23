@@ -125,7 +125,6 @@ const RaatnaFinAPI = () => {
   ): Promise<CommonFetcherResponse> => {
     try {
       await sessionToken;
-      console.log(url, sessionObj.loginStatus);
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",
@@ -327,12 +326,13 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getMetaData = async (productCode: string, empCode: string) => {
+  const getMetaData = async (state) => {
+    const { prodCode, empCode } = state;
     const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
         action: "render_form",
         request_data: {
-          main_prod_cd: `${productCode}`,
+          main_prod_cd: `${prodCode}`,
           empl_cd: `${empCode}`,
         },
       }),
@@ -345,14 +345,15 @@ const RaatnaFinAPI = () => {
   };
   const pushFormData = async (
     submitAction?: string,
-    formData?: Object,
-    formCode?: string,
-    tranCode?: string
+    formData?: any,
+    navigationProps?: any
   ) => {
+    //rename prodCode to formCode since backend uses prodCode as FormCode
+    const { prodCode, ...others } = navigationProps;
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
-        request_data: { ...formData, tranCode, formCode },
+        request_data: { ...formData, ...others, formCode: prodCode },
         channel: "W",
       }),
     });

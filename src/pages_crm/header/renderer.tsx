@@ -32,7 +32,7 @@ export interface NavRendererType {
   classes: HeaderNameProps;
 }
 
-const overrideMetaData = (metaData: NavBarType) => {
+export const overrideMetaData = (metaData: NavBarType) => {
   if (Array.isArray(metaData.navItems)) {
     return metaData.navItems.map((one) => {
       let result = one;
@@ -88,7 +88,7 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
                   e.preventDefault();
                   if (item.href !== undefined) {
                     navigate(item.href, {
-                      state: { formCode: item.formCode, empcode: item.empCode },
+                      state: { ...item.navigationProps },
                     });
                   }
                 }}
@@ -158,7 +158,7 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                 e.preventDefault();
                 if (item.href !== undefined) {
                   navigate(item.href, {
-                    state: { formCode: item.formCode, empcode: item.empCode },
+                    state: { ...item.navigationProps },
                   });
                 }
               }}
@@ -194,8 +194,7 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
                     if (one.href !== undefined) {
                       navigate(one.href, {
                         state: {
-                          formCode: one.formCode,
-                          empCode: one.empCode,
+                          ...one.navigationProps,
                         },
                       });
                     }
