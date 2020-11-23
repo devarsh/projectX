@@ -15,8 +15,6 @@ import {
   faHashtag,
 } from "@fortawesome/free-solid-svg-icons";
 
-console.log(faHandsHelping);
-
 library.add(
   faHandsHelping,
   faUsers,

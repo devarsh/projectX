@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useState } from "react";
-import { NavBarType, NavItemType } from "pages_crm/header/types";
+import { useNavigate } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -9,6 +9,7 @@ import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavBarType, NavItemType } from "pages_crm/header/types";
 import { SideBarNameProps } from "./style";
 
 export const SideBar: FC<{
@@ -55,6 +56,7 @@ const SingleListItem: FC<{
   classes: SideBarNameProps;
   level: number;
 }> = ({ item, classes }) => {
+  const navigate = useNavigate();
   const icon = item.icon ? (
     <ListItemIcon>
       <FontAwesomeIcon icon={["fas", item.icon]} />
@@ -62,7 +64,18 @@ const SingleListItem: FC<{
   ) : null;
 
   return (
-    <ListItem button disableGutters>
+    <ListItem
+      button
+      disableGutters
+      onClick={(e) => {
+        e.preventDefault();
+        if (item.isRouterLink) {
+          navigate(item.href as string);
+        } else if (Boolean(item.href)) {
+          window.open(item.href, item.rel ?? "_newtab");
+        }
+      }}
+    >
       {icon}
       <ListItemText primary={item.label}></ListItemText>
     </ListItem>

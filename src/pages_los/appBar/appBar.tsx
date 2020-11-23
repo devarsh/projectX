@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -24,6 +25,7 @@ import { useStyles, NavBarNameProps, NavBarStyleProps } from "./style";
 //import MenuBar from "../sideBar/menuBar";
 
 export const MyAppBar = ({ handleDrawerOpen, open }) => {
+  const navigate = useNavigate();
   const classes: NavBarNameProps = useStyles({} as NavBarStyleProps);
   const [anchorEl, setAnchorEl] = useState(null);
   const inputRef = useRef(null);
@@ -111,17 +113,18 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
               horizontal: "center",
             }}
           >
-            <MenuItem onClick={handleClose}>
-              <a href="/EmployeeProfile">
-                <AccountCircleIcon color="primary" />
-                <span className={classes.vTop}>Profile</span>
-              </a>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile");
+                handleClose();
+              }}
+            >
+              <AccountCircleIcon color="primary" />
+              <span className={classes.vTop}>Profile</span>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <a href="/EmployeeProfile">
-                <AccountCircleIcon color="primary" />
-                <span className={classes.vTop}>Report</span>
-              </a>
+              <AccountCircleIcon color="primary" />
+              <span className={classes.vTop}>Report</span>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <PowerSettingsNewIcon color="primary" />
