@@ -45,14 +45,15 @@ const RaatnaFinAPI = () => {
       url.href,
       //@ts-ignore
       requestOptions
-    )
+    );
+    sessionToken
       .then((response) => response.json())
       .then((result) => {
         verifyRequest(result);
-      })
-      .catch((error) => {
-        verifyRequest(error);
       });
+    sessionToken.catch((error) => {
+      verifyRequest(error);
+    });
   };
   const verifyRequest = (data) => {
     // console.log("data", data);
@@ -264,7 +265,7 @@ const RaatnaFinAPI = () => {
 
   const requestForOTP = async (phoneNumber: string) => {
     debugger;
-    const { data, status } = await internalFetcher("/users/customer_login", {
+    const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
@@ -287,7 +288,7 @@ const RaatnaFinAPI = () => {
     id: string
   ) => {
     debugger;
-    const { data, status } = await internalFetcher("/users/otpVerify", {
+    const { data, status } = await internalFetcher("./users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
         request_data: {
@@ -307,7 +308,7 @@ const RaatnaFinAPI = () => {
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
     debugger;
-    const { data, status } = await internalFetcher("/users/customer_login", {
+    const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
         request_data: {
@@ -324,12 +325,13 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getMetaData = async (productCode: string, empCode: string) => {
-    const { data, status } = await internalFetcher("/users/getMetaData", {
+  const getMetaData = async (state) => {
+    const { prodCode, empCode } = state;
+    const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
         action: "render_form",
         request_data: {
-          main_prod_cd: `${productCode}`,
+          main_prod_cd: `${prodCode}`,
           empl_cd: `${empCode}`,
         },
       }),
@@ -342,14 +344,15 @@ const RaatnaFinAPI = () => {
   };
   const pushFormData = async (
     submitAction?: string,
-    formData?: Object,
-    formCode?: string,
-    tranCode?: string
+    formData?: any,
+    navigationProps?: any
   ) => {
-    const { data, status } = await internalFetcher("/users/inquiry", {
+    //rename prodCode to formCode since backend uses prodCode as FormCode
+    const { prodCode, ...others } = navigationProps;
+    const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
-        request_data: { ...formData, tranCode, formCode },
+        request_data: { ...formData, ...others, formCode: prodCode },
         channel: "W",
       }),
     });

@@ -10,6 +10,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import { InputMaskCustom } from "components/derived/inputMask";
 import { APISDK } from "registry/fns/sdk";
+import { constructNavigationStateFromRespObj } from "./navHelpers";
 
 export interface FormDialogProps {
   isOpen: boolean;
@@ -26,7 +27,7 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
   const [otpText, setOtpText] = useState("");
   const [otpError, setOtpError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { values, submitEnd, submitAction, formCode, tranCode } = submitProps;
+  const { values, submitEnd, submitAction, navigationProps } = submitProps;
   if (typeof submitEnd !== "function" && typeof values !== "object") {
     return null;
   }
@@ -38,22 +39,15 @@ export const FormVerificationDialog: FC<FormDialogProps> = ({
           const result = await APISDK.pushFormData(
             submitAction,
             values,
-            formCode,
-            tranCode
+            navigationProps
           );
           if (result.status === "success") {
             setLoading(false);
             submitEnd(true);
             setShowDialog(false);
+            const navState = constructNavigationStateFromRespObj(result);
             navigate("/thankyou", {
-              state: {
-                //@ts-ignore
-                formCode: result?.data?.productType ?? null,
-                //@ts-ignore
-                empCode: result?.data?.employementStatus ?? null,
-                //@ts-ignore
-                tranCode: result?.data?.refID ?? null,
-              },
+              state: navState,
             });
           } else {
             setLoading(false);

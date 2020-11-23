@@ -24,6 +24,7 @@ import {
 } from "./style";
 import { extendedMetaData } from "./extendedTypes";
 import loaderGif from "assets/images/loader.gif";
+import { displayOTPPage } from "./navHelpers";
 
 const useStyles = makeStyles<Theme, FormWrapperStyleProps>(formWrapperStyle);
 
@@ -32,9 +33,7 @@ interface FormWrapperProps {
   initialValues?: InitialValuesType;
   setShowDialog: Function;
   setSubmitProps: Function;
-  tranCode?: string; //Ref code for inquiry form
-  formCode?: string;
-  empCode?: string;
+  navigationProps: Object;
 }
 
 const FormWrapper: FC<FormWrapperProps> = ({
@@ -42,9 +41,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
   initialValues,
   setShowDialog,
   setSubmitProps,
-  tranCode,
-  formCode,
-  empCode,
+  navigationProps,
 }) => {
   const navigate = useNavigate();
   metaData = extendFieldTypes(metaData, extendedMetaData);
@@ -56,27 +53,20 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (
-    submitAction: string,
-    tranCode?: string,
-    formCode?: string
-  ) => (values, submitEnd) => {
-    if (`${empCode}` === "98") {
+  const onSubmitHandler = (submitAction: string, navigationProps: Object) => (
+    values,
+    submitEnd
+  ) => {
+    if (displayOTPPage(navigationProps)) {
       setSubmitProps(() => ({
         values: values,
         submitEnd: submitEnd,
         submitAction: submitAction,
-        formCode: formCode,
-        tranCode: tranCode,
+        navigationProps: navigationProps,
       }));
       setShowDialog(true);
     } else {
-      const data = APISDK.pushFormData(
-        submitAction,
-        values,
-        formCode,
-        tranCode ?? ""
-      );
+      const data = APISDK.pushFormData(submitAction, values, navigationProps);
       console.log(data);
       submitEnd(true);
       navigate("/thankyou");
@@ -102,8 +92,7 @@ const FormWrapper: FC<FormWrapperProps> = ({
             formName={metaData.form.name}
             submitFn={onSubmitHandler(
               metaData.form.submitAction as string,
-              tranCode,
-              formCode
+              navigationProps
             )}
           />
         </Container>
@@ -134,7 +123,7 @@ export const ParentFormWrapper = () => {
   let metaData = useRef<MetaDataType | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const [submitProps, setSubmitProps] = useState({});
-  const { state } = location;
+  const { state: navigationState } = location;
   const classes: FormWrapperStyleNamesProps = useStyles(
     {} as FormWrapperStyleProps
   );
@@ -146,31 +135,19 @@ export const ParentFormWrapper = () => {
   useEffect(() => {
     setLoading(true);
     metaData.current = null;
-    if (process.env.REACT_APP_STATIC_META_DATA === "true") {
-      import("meta/navigationLogic").then((data) => {
-        const result = data.chooseNaviagtionPath(
-          //@ts-ignore
-          state?.formCode,
-          //@ts-ignore
-          state?.empCode
-        );
-        metaData.current = result.metaData;
+    //@ts-ignore need to find how to set router loaction state type (react-router-dom)
+    APISDK.getMetaData(navigationState)
+      .then((result) => {
+        metaData.current = result;
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
         setLoading(false);
       });
-    } else {
-      //@ts-ignore need to find how to set router loaction state type (react-router-dom)
-      APISDK.getMetaData(state?.formCode, state?.empCode)
-        .then((result) => {
-          metaData.current = result;
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
-    }
+    /*eslint-disable react-hooks/exhaustive-deps*/
     //@ts-ignore
-  }, [state?.formCode, state?.empCode]);
+  }, [navigationState?.prodCode, navigationState?.empCode]);
   const result = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />
   ) : !isMetaDataValid(metaData.current as MetaDataType) ? (
@@ -182,12 +159,7 @@ export const ParentFormWrapper = () => {
         initialValues={initialValues}
         setShowDialog={setShowDialog}
         setSubmitProps={setSubmitProps}
-        //@ts-ignore - this for ref to previous inquiry form
-        tranCode={state?.tranCode ?? ""}
-        //@ts-ignore - form code for this form i.e formName
-        formCode={state?.formCode ?? ""}
-        //@ts-ignore - for otp page when
-        empCode={state?.empCode ?? ""}
+        navigationProps={navigationState ?? {}}
       />
       {showDialog ? (
         <FormVerificationDialog
