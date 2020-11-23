@@ -30,13 +30,6 @@ export const Login = () => {
     phoneNumber: "",
     otp: "",
     password: "",
-    otpVerifydivShowing: false,
-    showPwddiv: false,
-    loading: false,
-    error: "",
-    id: "",
-    expiryOtpTime: "",
-    time: 0,
   });
   const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
@@ -46,7 +39,7 @@ export const Login = () => {
   const [expiryOtpTime, setexpiryOtpTime] = useState("");
   const [time, setTime] = useState(0);
 
-  let expiryTime = 10;
+  let expiryTime = 60;
 
   const handleChange = (input) => ({ target: { value } }) => {
     setFields({ ...fields, [input]: value });
@@ -88,22 +81,6 @@ export const Login = () => {
       setError("mobile number should be 10 digits");
     }
   };
-
-  // useEffect(() => {
-  //
-  //   const timerId = setInterval(() => {
-  //     setTime((time) => {
-  //       if (time === expiryTime) {
-  //         console.log("in if of use effect");
-  //         clearInterval(timerId);
-  //         return time;
-  //       } else {
-  //         console.log("in else of use effect");
-  //         return time + 1;
-  //       }
-  //     });
-  //   }, 1000);
-  // }, clearInterval(timerId));
 
   const displayIntervale = () => {
     const timerId = setInterval(() => {
@@ -174,7 +151,7 @@ export const Login = () => {
         // console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);
-          navigate("/thankyou");
+          navigate("/dashboard");
         } else {
           // console.log("in else", result?.data?.error_msg);
           setError(result?.data?.error_msg);
