@@ -15,7 +15,9 @@ import {
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
 import Profile from "./pages/profile";
-
+import Iframe from "./pages/iframe";
+import { DataGrid } from "components/dataGrid";
+import { APITest } from "./pages/api";
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
 const IndexPage = () => {
@@ -35,6 +37,9 @@ const IndexPage = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/iframe" element={<Iframe />} />
+            <Route path="/dgrid" element={<DataGrid />} />
+            <Route path="/api" element={<APITest />} />
             <Route path="/pages/:id" element={<Child />} />
           </Routes>
         </Content>

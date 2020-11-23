@@ -107,7 +107,6 @@ const RaatnaFinAPI = () => {
           accumlator[current.Name] = val;
           return accumlator;
         }, {});
-        //console.log(areaArray);
         return { options: areaArray, others: otherValues };
       }
     }
@@ -123,6 +122,7 @@ const RaatnaFinAPI = () => {
   ): Promise<CommonFetcherResponse> => {
     try {
       await sessionToken;
+      await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",
@@ -263,7 +263,6 @@ const RaatnaFinAPI = () => {
   };
 
   const requestForOTP = async (phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -286,7 +285,6 @@ const RaatnaFinAPI = () => {
     expiryOtpTime: string,
     id: string
   ) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
@@ -306,7 +304,6 @@ const RaatnaFinAPI = () => {
   };
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -369,6 +366,26 @@ const RaatnaFinAPI = () => {
     }
     return "Bearer not_valid_token";
   };
+
+  const getsubProductDtl = async (fieldData) => {
+    if (fieldData.value.length !== 0) {
+      let codes = await getProductType(null, fieldData.value);
+      return {
+        subProductType: {
+          options: codes,
+          value: "00",
+        },
+      };
+    } else if (fieldData.value === "") {
+      return {
+        subProductType: {
+          options: [],
+          value: "",
+        },
+      };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -383,7 +400,14 @@ const RaatnaFinAPI = () => {
     pushFormData,
     handleverifyOtp,
     handleverifyPwd,
+    getsubProductDtl,
   };
 };
 
 export const APISDK = RaatnaFinAPI();
+
+export const wait = () => {
+  return new Promise((res) => {
+    setTimeout(() => res(true), 1);
+  });
+};
