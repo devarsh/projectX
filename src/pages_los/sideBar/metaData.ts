@@ -8,7 +8,7 @@ export const metaData: NavBarType = {
   navItems: [
     {
       label: "Dashboard",
-      href: "/EmployeeDashboard",
+      href: "/dashboard",
       isRouterLink: true,
       icon: "hashtag",
     },
@@ -18,75 +18,73 @@ export const metaData: NavBarType = {
       children: [
         {
           label: "Inquiries",
-          href: "/EmployeeLead",
+          href: "/leads",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "CAM",
-          href: "/EmployeeLead",
+          href: "/pages/cam",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Customer Interaction",
-          href: "/EmployeeLead",
+          href: "/pages/customer-interaction",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Mandate Status",
-          href: "/EmployeeLead",
+          href: "/pages/mandate-status",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Documents",
-          href: "/EmployeeLead",
+          href: "/pages/documents",
           isRouterLink: true,
           icon: "circle",
         },
       ],
     },
-
     {
       label: "Customers",
-      href: "/Customers",
+      href: "/pages/customers",
       isRouterLink: true,
       icon: "users",
     },
-
     {
       label: "Loans",
       icon: "balance-scale",
       children: [
         {
           label: "Retail",
-          href: "/Retail",
+          href: "/pages/retail",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "SME",
-          href: "/SME",
+          href: "/pages/sme",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Infra",
-          href: "/INFRA",
+          href: "/pages/infra",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Unsecured",
-          href: "/INFRA",
+          href: "/pages/unsecured",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Channel Finance",
-          href: "/ChannelFinance",
+          href: "/pages/channel-fianance",
           isRouterLink: true,
           icon: "circle",
         },
@@ -99,6 +97,7 @@ export const metaData: NavBarType = {
         {
           label: "Interest Subsidy",
           icon: "circle",
+          href: "http://www.google.com",
         },
         {
           label: "Central Govt. Subsidy",
@@ -215,19 +214,19 @@ export const metaData: NavBarType = {
     },
     {
       label: "Partners",
-      href: "/Partners",
+      href: "/pages/partners",
       isRouterLink: true,
       icon: "users-cog",
     },
     {
       label: "Profile",
-      href: "/EmployeeProfile",
+      href: "/pages/employee-profile",
       isRouterLink: true,
       icon: "user-circle",
     },
     {
       label: "Settings",
-      href: "/Settings",
+      href: "/pages/settings",
       isRouterLink: true,
       icon: "cog",
     },

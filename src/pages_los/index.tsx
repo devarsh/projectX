@@ -1,4 +1,5 @@
 import { useState, Fragment } from "react";
+import { Routes, Route, useParams } from "react-router-dom";
 import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
@@ -10,6 +11,10 @@ import {
   WrapperStyleNamesProps,
   wrapperStyles,
 } from "./style";
+
+import Dashboard from "./pages/dashboard";
+import Lead from "./pages/lead";
+import Profile from "./pages/profile";
 
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
@@ -25,12 +30,29 @@ const IndexPage = () => {
         <Drawer open={drawerOpen} handleDrawerClose={handleDrawerClose}>
           <MySideBar handleDrawerOpen={handleDrawerOpen} open={drawerOpen} />
         </Drawer>
-        <main>
-          <Content />
-        </main>
+        <Content>
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/leads" element={<Lead />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/pages/:id" element={<Child />} />
+          </Routes>
+        </Content>
       </div>
     </Fragment>
   );
 };
 
 export default IndexPage;
+
+function Child() {
+  // We can use the `useParams` hook here to access
+  // the dynamic pieces of the URL.
+  let { id } = useParams();
+
+  return (
+    <div>
+      <h3>ID: {id}</h3>
+    </div>
+  );
+}
