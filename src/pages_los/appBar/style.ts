@@ -1,16 +1,16 @@
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { fade } from "@material-ui/core/styles/colorManipulator";
 
 export interface NavBarStyleProps {
-  root: BaseCSSProperties;
   appBar: BaseCSSProperties;
   appBarShift: BaseCSSProperties;
   toolbar: BaseCSSProperties;
   menuButton: BaseCSSProperties;
   menuButtonHidden: BaseCSSProperties;
   title: BaseCSSProperties;
+  searchRoot: BaseCSSProperties;
   search: BaseCSSProperties;
-  searchIcon: BaseCSSProperties;
   inputRoot: BaseCSSProperties;
   inputInput: BaseCSSProperties;
   loggedInUser: BaseCSSProperties;
@@ -24,12 +24,6 @@ export type NavBarNameProps = Record<keyof NavBarStyleProps, string>;
 
 const drawerWidth = 250;
 const navBarStyles = (theme: Theme): any => ({
-  root: {
-    display: "flex",
-    backgroundColor: "#FAFAFA",
-    themecolor1: "#0063A3",
-    themecolor2: "#26A456",
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
@@ -59,23 +53,26 @@ const navBarStyles = (theme: Theme): any => ({
   title: {
     flexGrow: 1,
   },
-  search: {
+  searchRoot: {
+    fontFamily: theme.typography.fontFamily,
     position: "relative",
-    borderRadius: "40px",
-    backgroundColor: "rgba(255, 255, 255,0.15)",
-    "&:hover": {
-      backgroundColor: "rgba(255, 255, 255,0.25)",
-    },
     marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
+    marginLeft: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    "& $inputInput": {
+      transition: theme.transitions.create("width"),
+      width: 120,
+      "&:focus": {
+        width: 170,
+      },
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
+  search: {
+    width: theme.spacing(6),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
@@ -85,16 +82,10 @@ const navBarStyles = (theme: Theme): any => ({
   },
   inputRoot: {
     color: "inherit",
+    marginTop: 0,
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
+    padding: theme.spacing(1, 1, 1, 6),
   },
 
   loggedInUser: {

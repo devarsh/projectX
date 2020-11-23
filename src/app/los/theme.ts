@@ -143,12 +143,6 @@ export const theme: Theme = {
       },
     },
 
-    MuiCssBaseline: {
-      "@global": {
-        //@ts-ignore
-        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
-      },
-    },
     MuiStepper: {
       root: {
         padding: "0",
@@ -163,12 +157,10 @@ export const theme: Theme = {
     MuiFormHelperText: {
       root: {
         color: "#26A456",
-        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
       },
     },
     MuiFormLabel: {
       root: {
-        fontFamily: "'Montserrat',Helvetica,Arial,Lucida,sans-serif'",
         //@ts-ignore
         fontWeight: "600",
       },
