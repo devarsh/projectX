@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import MUIDataTable from "mui-datatables";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EmployeeHeader from "../header/index";
-import { TextField } from "@material-ui/core";
 import { APISDK } from "registry/fns/sdk";
+
+import { DisplayData } from "./displayData";
 
 const drawerWidth = 240;
 
@@ -243,58 +235,73 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "#26A456",
+    color: "#fff",
+    boxShadow: "0 3px 6px rgba(0,0,0,0.46)",
+    fontSize: 11,
+    borderBottom: "1px solid #26A456",
+  },
+  arrow: {
+    fontSize: 16,
+    width: 17,
+    "&::before": {
+      border: "1px solid #fff",
+      backgroundColor: "#26A456",
+      boxSizing: "border-box",
+    },
+  },
+}))(Tooltip);
+
 export default function EmployeeLead() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const [InquiryDetails, setInquiryDetails] = React.useState([]);
+  const [InquiryDetailsList, setInquiryDetailsList] = React.useState([]);
+  const [openDetails, setOpenDetails] = React.useState(false);
+  const currentInqCode = React.useRef("");
+  const [currentRow, setCurrentRow] = React.useState({});
+  const [loading, setLoading] = useState(false);
 
-  const [editDetails, setEditDtails] = useState({
-    address: "",
-    birth_dt: "",
-    customer_name: "",
-    email_id: "",
-    employeed_type: "",
-    health_score: "",
-    inquiry_code: "",
-    inquiry_date: "",
-    inquiry_status: "",
-    lead_generaate: "",
-    mobile_no: "",
-    product_type: "",
-    questionaaries: "",
-  });
+  const handleClickOpen = (event, currenIndex) => {
+    event.preventDefault();
+    setCurrentRow(InquiryDetailsList[currenIndex]);
+    currentInqCode.current = InquiryDetailsList[currenIndex][0];
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
+  };
 
   //get user inquiry details
-  let pushEmployeeDetails = [];
 
   useEffect(async () => {
-    const result = await APISDK.getDashboardEmployeeData();
-    console.log("result", result);
+    const result = await APISDK.getDashboardEmployeeDataList();
+    // console.log("result", result);
     try {
+      setLoading(true);
       if (result.status === "success") {
-        for (let i = 0; i < result.data.length; i++) {
-          pushEmployeeDetails.push({
-            inquiry_code: result.data[i].inquiry_code,
-            inquiry_date: result.data[i].inquiry_date,
-            product_type: result.data[i].product_type,
-            customer_name: result.data[i].customer_name,
-            mobile_no: result.data[i].mobile_no,
-            email_id: result.data[i].email_id,
-            inquiry_status: result.data[i].inquiry_status,
-            lead_generaate: result.data[i].lead_generaate,
-            questionaaries:
-              result.data[i].questionaaries + "/" + result.data[i].health_score,
-            address: result.data[i].address,
-            birth_dt: result.data[i].birth_dt,
-            // health_score: result.data[i].health_score,
-          });
-          setInquiryDetails(pushEmployeeDetails);
-        }
+        let dataNew = result.data.map((x) => {
+          return [
+            x.inquiry_code,
+            x.inquiry_date,
+            x.product_type,
+            x.customer_name,
+            x.mobile_no,
+            x.email_id,
+            x.inquiry_status,
+            x.lead_generaate,
+            x.questionaaries + "/" + x.health_score,
+          ];
+        });
+        setInquiryDetailsList(dataNew);
+        setLoading(false);
       }
     } catch (e) {
+      setLoading(false);
       console.log("in catch");
     }
-  }, []);
+  }, [InquiryDetailsList]);
 
   const columns = [
     {
@@ -368,7 +375,7 @@ export default function EmployeeLead() {
         sort: false,
         empty: true,
         download: false,
-        customBodyRenderLite: (dataIndex) => {
+        customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
             <div>
               <LightTooltip
@@ -389,7 +396,7 @@ export default function EmployeeLead() {
                 arrow
                 placement="bottom"
                 TransitionComponent={Zoom}
-                onClick={handleClickOpen}
+                onClick={(e) => handleClickOpen(e, dataIndex)}
               >
                 <span className={classes.actions}>
                   <EditIcon />
@@ -413,81 +420,6 @@ export default function EmployeeLead() {
     },
   ];
 
-  var dataNew = InquiryDetails.map((x) => {
-    return [
-      x.inquiry_code,
-      x.inquiry_date,
-      x.product_type,
-      x.customer_name,
-      x.mobile_no,
-      x.email_id,
-      x.inquiry_status,
-      x.lead_generaate,
-      x.questionaaries,
-    ];
-  });
-  // var EditableDetails = InquiryDetails.map((edit) => {
-  //   setEditDtails(edit);
-  // });
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-      backgroundColor: "#26A456",
-      color: "#fff",
-      boxShadow: "0 3px 6px rgba(0,0,0,0.46)",
-      fontSize: 11,
-      borderBottom: "1px solid #26A456",
-    },
-    arrow: {
-      fontSize: 16,
-      width: 17,
-      "&::before": {
-        border: "1px solid #fff",
-        backgroundColor: "#26A456",
-        boxSizing: "border-box",
-      },
-    },
-  }))(Tooltip);
-
-  const drawerWidth = 240;
-
-  const [openDetails, setOpenDetails] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const handleClickOpen = () => {
-    setOpenDetails(true);
-  };
-
-  const handleCloseDetails = () => {
-    setOpenDetails(false);
-  };
-
   return (
     <div className={classes.root + " DashboardLayout"}>
       <EmployeeHeader />
@@ -500,9 +432,10 @@ export default function EmployeeLead() {
 
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} className="table-cover">
+              {loading ? <CircularProgress size={20} /> : null}
               <MUIDataTable
                 title="Lead Management"
-                data={dataNew}
+                data={InquiryDetailsList}
                 columns={columns}
                 options={{
                   filterType: "checkbox",
@@ -511,219 +444,14 @@ export default function EmployeeLead() {
                 }}
               />
             </Grid>
-            <div>
-              <Dialog
-                fullScreen={fullScreen}
-                maxWidth="md"
+
+            {openDetails ? (
+              <DisplayData
+                onClose={handleCloseDetails}
                 open={openDetails}
-                onClose={handleClose}
-                aria-labelledby="Details"
-              >
-                <DialogTitle id="Details" className={classes.DialogTitle}>
-                  Convert to Lead
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <h3 className={classes.DetailsTitle}>
-                          Retail LAP (Loan Against Property)
-                        </h3>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Product Type:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              {editDetails.product_type}
-                              {/* Commercial Property Purchase */}
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Cutomer Name:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              Mr. Firstname Middlename Lastname
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Gender:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              Male
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Date of Birth:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              12-12-1980
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Desired Loan Amount:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              &#x20B9; 1,00,00,000
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Email:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              email@gmail.com
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Mobile No:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              +91 9898989898
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Currently Employed:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              Self Employed Professional
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Address:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              K-701, Abcd, Adress
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Paper className={classes.paper}>
-                          <Box display="flex" flexDirection="row">
-                            <Box width="40%" className={classes.formLabel}>
-                              Health Check Score:
-                            </Box>
-                            <Box width="60%" className={classes.formValue}>
-                              76% <small>Good</small>
-                            </Box>
-                          </Box>
-                        </Paper>
-                      </Grid>
-                    </Grid>
-                    <hr className={classes.marginSet}></hr>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <TextField
-                          select
-                          label="Lead Status"
-                          placeholder="Change Status"
-                          fullWidth
-                          required
-                          name="leadtatus"
-                          autoComplete="off"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          value="1"
-                        >
-                          <MenuItem value={0}>Select Status</MenuItem>
-                          <MenuItem value={1}>Pending</MenuItem>
-                          <MenuItem value={2}>Rejected</MenuItem>
-                          <MenuItem value={3}>Confirmed</MenuItem>
-                        </TextField>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6} md={6}>
-                        <TextField
-                          select
-                          label="Lead Assign to Employee"
-                          placeholder="Select Employee"
-                          fullWidth
-                          required
-                          name="leadtatus"
-                          autoComplete="off"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          value="1"
-                        >
-                          <MenuItem value={0}>Select Employee</MenuItem>
-                          <MenuItem value={1}>Employee 1</MenuItem>
-                          <MenuItem value={2}>Employee 2</MenuItem>
-                          <MenuItem value={3}>Employee 3</MenuItem>
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions className="mb-30">
-                  <Button
-                    autoFocus
-                    onClick={handleCloseDetails}
-                    color="primary"
-                    className={classes.backBtn}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleCloseDetails}
-                    color="primary"
-                    autoFocus
-                    className={classes.submit}
-                  >
-                    Submit
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-            ;
+                row={currentInqCode.current}
+              />
+            ) : null}
           </Grid>
         </Container>
       </main>

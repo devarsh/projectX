@@ -266,7 +266,6 @@ const RaatnaFinAPI = () => {
   };
 
   const requestForOTP = async (phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -289,7 +288,6 @@ const RaatnaFinAPI = () => {
     expiryOtpTime: string,
     id: string
   ) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
@@ -309,7 +307,6 @@ const RaatnaFinAPI = () => {
   };
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -363,16 +360,37 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getDashboardEmployeeData = async () => {
-    const { data, status } = await internalFetcher("users/getInquiryDetails", {
+  const getDashboardEmployeeDataList = async () => {
+    const { data, status } = await internalFetcher("./users/getInquiryData", {
       body: JSON.stringify({
-        action: "get_inquiry_details",
+        action: "get_inquiry_data",
         request_data: {
-          inquiry_code: "855",
+          status: "P",
         },
         channel: "W",
       }),
     });
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getDashdoardDisplayEmpDetails = async (inquiryCode: string) => {
+    const { data, status } = await internalFetcher(
+      "./users/getInquiryDetails",
+      {
+        body: JSON.stringify({
+          action: "get_inquiry_details",
+          request_data: {
+            inquiry_code: inquiryCode,
+          },
+          channel: "W",
+        }),
+      }
+    );
 
     if (status === "success") {
       return { status, data: data?.response_data };
@@ -402,7 +420,8 @@ const RaatnaFinAPI = () => {
     pushFormData,
     handleverifyOtp,
     handleverifyPwd,
-    getDashboardEmployeeData,
+    getDashboardEmployeeDataList,
+    getDashdoardDisplayEmpDetails,
   };
 };
 
