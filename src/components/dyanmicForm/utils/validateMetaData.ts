@@ -7,7 +7,7 @@ const form = yup.object().shape({
   render: yup.object().shape({
     ordering: yup.string().required(),
     renderType: yup.string().required(),
-    groups: yup.array().of(yup.string()).required(),
+    groups: yup.object().required(),
   }),
   submitAction: yup.string().required(),
 });

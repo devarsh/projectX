@@ -77,7 +77,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     schemaValidation: {
       type: "string",
       rules: [
-        { name: "required", params: ["Pan Number is required"] },
+        { name: "required", params: ["This Field is required"] },
         {
           name: "pancard",
           params: ["Please enter valid Pan Card Number"],
@@ -117,7 +117,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     schemaValidation: {
       type: "string",
       rules: [
-        { name: "required", params: ["Aadhar Number is required"] },
+        { name: "required", params: ["This Field is required"] },
         {
           name: "aadhar",
           params: ["Please enter valid Aadhar Number"],

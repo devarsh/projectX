@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
-import { string } from "yup";
 import loginImg from "assets/images/login.svg";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 
@@ -151,7 +150,7 @@ export const Login = () => {
       console.log("result verify otp", result);
       if (result.status === "success") {
         setLoading(false);
-        navigate("/thankyou");
+        navigate("/dashboard");
       } else {
         setError(result?.data?.error_msg);
         setLoading(false);
@@ -220,105 +219,99 @@ export const Login = () => {
 
         {showPwddiv === true ? (
           <div className={classes.formWrap}>
-            <form method="post">
-              <TextField
-                label="Password"
-                placeholder="Password for verification"
-                autoComplete="off"
-                type="password"
-                name="password"
-                value={fields.password}
-                onChange={handleChange("password")}
-                // onChange={(e) => setpassword(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-                helperText={error ? error : ""}
-                error={error ? true : false}
-                onBlur={() => setError("")}
-              />
+            <TextField
+              label="Password"
+              placeholder="Password for verification"
+              autoComplete="off"
+              type="password"
+              name="password"
+              value={fields.password}
+              onChange={handleChange("password")}
+              // onChange={(e) => setpassword(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              helperText={error ? error : ""}
+              error={error ? true : false}
+              onBlur={() => setError("")}
+            />
 
-              <Button
-                onClick={verifyPwd}
-                disabled={fields.password !== "" ? false : true}
-                endIcon={loading ? <CircularProgress size={20} /> : null}
-                className={classes.loginBtn}
-              >
-                VERIFY & LOGIN
-              </Button>
-            </form>
+            <Button
+              onClick={verifyPwd}
+              disabled={fields.password !== "" ? false : true}
+              endIcon={loading ? <CircularProgress size={20} /> : null}
+              className={classes.loginBtn}
+            >
+              VERIFY & LOGIN
+            </Button>
           </div>
         ) : otpVerifydivShowing === true ? (
           <div className={classes.formWrap}>
-            <form>
-              <TextField
-                label="OTP"
-                placeholder="OTP for verification"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-                type="number"
-                name="otp"
-                value={fields.otp}
-                onChange={handleChange("otp")}
-                // onChange={(e) => setotp(e.target.value)}
-                autoComplete="off"
-                inputProps={{ maxLength: 6 }}
-                helperText={error ? error : ""}
-                error={error ? true : false}
-                onBlur={() => setError("")}
-              />
-              <Timer time={time} />
-              <Button
-                disabled={fields.otp.length !== 6 ? true : false}
-                onClick={verifyOtp}
-                className={classes.loginBtn}
-              >
-                VERIFY & LOGIN
-              </Button>
-            </form>
+            <TextField
+              label="OTP"
+              placeholder="OTP for verification"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              type="number"
+              name="otp"
+              value={fields.otp}
+              onChange={handleChange("otp")}
+              // onChange={(e) => setotp(e.target.value)}
+              autoComplete="off"
+              inputProps={{ maxLength: 6 }}
+              helperText={error ? error : ""}
+              error={error ? true : false}
+              onBlur={() => setError("")}
+            />
+            <Timer time={time} />
+            <Button
+              disabled={fields.otp.length !== 6 ? true : false}
+              onClick={verifyOtp}
+              className={classes.loginBtn}
+            >
+              VERIFY & LOGIN
+            </Button>
           </div>
         ) : (
           <div className={classes.formWrap}>
-            <form method="post">
-              <TextField
-                label="Mobile Number"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">+91</InputAdornment>
-                  ),
-                }}
-                placeholder="Enter mobile number to get OTP"
-                fullWidth
-                className="mobileNumber"
-                type="number"
-                name="phoneNumber"
-                autoComplete="off"
-                defaultValue={fields.phoneNumber}
-                onChange={handleChange("phoneNumber")}
-                // onChange={(e) => setphoneNumber(e.target.value)}
-                helperText={error ? error : ""}
-                error={error ? true : false}
-                onBlur={() => setError("")}
-              />
-              <Button
-                onClick={requestOtp}
-                endIcon={loading ? <CircularProgress size={20} /> : null}
-                className={classes.loginBtn}
-              >
-                Login With OTP
-              </Button>
+            <TextField
+              label="Mobile Number"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">+91</InputAdornment>
+                ),
+              }}
+              placeholder="Enter mobile number to get OTP"
+              fullWidth
+              className="mobileNumber"
+              type="number"
+              name="phoneNumber"
+              autoComplete="off"
+              defaultValue={fields.phoneNumber}
+              onChange={handleChange("phoneNumber")}
+              // onChange={(e) => setphoneNumber(e.target.value)}
+              helperText={error ? error : ""}
+              error={error ? true : false}
+              onBlur={() => setError("")}
+            />
+            <Button
+              onClick={requestOtp}
+              endIcon={loading ? <CircularProgress size={20} /> : null}
+              className={classes.loginBtn}
+            >
+              Login With OTP
+            </Button>
 
-              <Box display="flex" justifyContent="center" width={1}>
-                <div className="text text-center">Or</div>
-              </Box>
+            <Box display="flex" justifyContent="center" width={1}>
+              <div className="text text-center">Or</div>
+            </Box>
 
-              <Button onClick={showPassDiv} className={classes.loginBtn}>
-                Login With Password
-              </Button>
-            </form>
+            <Button onClick={showPassDiv} className={classes.loginBtn}>
+              Login With Password
+            </Button>
           </div>
         )}
       </Box>

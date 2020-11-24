@@ -239,3 +239,82 @@ export const getGenderValue = (field) => {
     }
   });
 };
+
+export const getSitePincodeDtl = (getPincode) => async (fieldData) => {
+  if (fieldData.value.length === 6) {
+    let codes = await getPincode(fieldData.value);
+    return {
+      siteLocation: {
+        options: codes.options,
+        others: codes.others,
+        value: "",
+      },
+      siteCity: {
+        value: "",
+      },
+      siteState: {
+        value: "",
+      },
+      siteDistrict: {
+        value: "",
+      },
+      siteCountry: {
+        value: "",
+      },
+    };
+  } else if (fieldData.value === "") {
+    return {
+      siteLocation: {
+        options: [],
+        value: "",
+      },
+      siteCity: {
+        value: "",
+      },
+      siteState: {
+        value: "",
+      },
+      siteDistrict: {
+        value: "",
+      },
+      siteCountry: {
+        value: "",
+      },
+    };
+  }
+};
+
+export const getSiteLocationDtl = async (fieldData) => {
+  if (fieldData.value === "") {
+    return {
+      siteCity: {
+        value: "",
+      },
+      siteState: {
+        value: "",
+      },
+      siteDistrict: {
+        value: "",
+      },
+      siteCountry: {
+        value: "",
+      },
+    };
+  } else {
+    const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+    return {
+      siteCity: {
+        value: fieldValues.city,
+      },
+      siteState: {
+        value: fieldValues.state,
+      },
+      siteDistrict: {
+        value: fieldValues.district,
+      },
+      siteCountry: {
+        value: fieldValues.country,
+      },
+    };
+  }
+};

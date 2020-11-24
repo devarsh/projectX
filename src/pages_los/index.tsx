@@ -15,10 +15,15 @@ import {
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
 import Profile from "./pages/profile";
+import Iframe from "./pages/iframe";
+import { DataGrid } from "components/dataGrid";
+import { APITest } from "./pages/api";
+import Login from "./pages/login";
+import DynamicLead from "./pages/leads";
 
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
-const IndexPage = () => {
+const DashbordPages = () => {
   const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
   const [drawerOpen, setDrawerState] = useState(true);
   const handleDrawerOpen = () => setDrawerState(true);
@@ -35,7 +40,11 @@ const IndexPage = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/pages/:id" element={<Child />} />
+            <Route path="/iframe" element={<Iframe />} />
+            <Route path="/dgrid" element={<DataGrid />} />
+            <Route path="/api" element={<APITest />} />
+            <Route path="/cam" element={<DynamicLead />} />
+            <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>
       </div>
@@ -43,9 +52,20 @@ const IndexPage = () => {
   );
 };
 
+const IndexPage = () => {
+  return (
+    <Fragment>
+      <Routes>
+        <Route path="/*" element={<DashbordPages />} />
+        <Route path="/auth" element={<Login />} />
+      </Routes>
+    </Fragment>
+  );
+};
+
 export default IndexPage;
 
-function Child() {
+function Dummy() {
   // We can use the `useParams` hook here to access
   // the dynamic pieces of the URL.
   let { id } = useParams();

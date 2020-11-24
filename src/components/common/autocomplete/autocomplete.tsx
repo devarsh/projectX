@@ -251,7 +251,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
           value={inputValue}
           autoComplete="disabled"
           onChange={(e) => setInputValue(e.target.value)}
-          type="search"
+          type="text"
           error={isError}
           required={required}
           helperText={isError ? error : null}

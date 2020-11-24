@@ -108,7 +108,6 @@ const RaatnaFinAPI = () => {
           accumlator[current.Name] = val;
           return accumlator;
         }, {});
-        //console.log(areaArray);
         return { options: areaArray, others: otherValues };
       }
     }
@@ -124,6 +123,7 @@ const RaatnaFinAPI = () => {
   ): Promise<CommonFetcherResponse> => {
     try {
       await sessionToken;
+      await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",
@@ -264,7 +264,6 @@ const RaatnaFinAPI = () => {
   };
 
   const requestForOTP = async (phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -287,7 +286,6 @@ const RaatnaFinAPI = () => {
     expiryOtpTime: string,
     id: string
   ) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/otpVerify", {
       body: JSON.stringify({
         action: "otp_verify",
@@ -307,7 +305,6 @@ const RaatnaFinAPI = () => {
   };
 
   const handleverifyPwd = async (password: string, phoneNumber: string) => {
-    debugger;
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -370,6 +367,64 @@ const RaatnaFinAPI = () => {
     }
     return "Bearer not_valid_token";
   };
+
+  const getsubProductDtl = async (fieldData) => {
+    if (fieldData.value.length !== 0) {
+      let codes = await getProductType(null, fieldData.value);
+      return {
+        subProductType: {
+          options: codes,
+          value: "00",
+        },
+      };
+    } else if (fieldData.value === "") {
+      return {
+        subProductType: {
+          options: [],
+          value: "",
+        },
+      };
+    }
+  };
+  const getDashboardEmployeeDataList = async () => {
+    const { data, status } = await internalFetcher("./users/getInquiryData", {
+      body: JSON.stringify({
+        action: "get_inquiry_data",
+        request_data: {
+          status: "P",
+        },
+        channel: "W",
+      }),
+    });
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getDashdoardDisplayEmpDetails = async (inquiryCode: string) => {
+    const { data, status } = await internalFetcher(
+      "./users/getInquiryDetails",
+      {
+        body: JSON.stringify({
+          action: "get_inquiry_details",
+          request_data: {
+            inquiry_code: inquiryCode,
+          },
+          channel: "W",
+        }),
+      }
+    );
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -384,7 +439,16 @@ const RaatnaFinAPI = () => {
     pushFormData,
     handleverifyOtp,
     handleverifyPwd,
+    getsubProductDtl,
+    getDashboardEmployeeDataList,
+    getDashdoardDisplayEmpDetails,
   };
 };
 
 export const APISDK = RaatnaFinAPI();
+
+export const wait = () => {
+  return new Promise((res) => {
+    setTimeout(() => res(true), 1);
+  });
+};
