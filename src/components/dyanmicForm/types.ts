@@ -48,7 +48,7 @@ export interface FormRenderConfigType {
     prev?: string;
     complete?: string;
   };
-  groups?: string[];
+  groups?: { [key: string]: string };
   gridConfig: {
     item?: {
       xs?: GridSize;

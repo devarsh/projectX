@@ -30,16 +30,22 @@ export const StepperForm: FC<FormProps> = ({
   formName,
   submitFn,
 }) => {
+  const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
   const classes: FormStyleNamesProps = useStyles({} as FormStyleProps);
   const [activeStep, setActiveStep] = useState(0);
   const { handleSubmit, handleSubmitPartial } = useForm({
     onSubmit: submitFn,
   });
-  const fieldGroups = useRef<string[]>(Object.keys(fields));
+  const fieldGroups = useRef<string[]>(Object.keys(fields).sort());
   const fieldGroupsActiveStatus = fieldGroups.current.map((one) => {
+    let groupName = defaultGroupName;
+    if (typeof formRenderConfig.groups === "object") {
+      groupName = formRenderConfig.groups[one];
+    }
     return {
-      name: one,
+      index: one,
+      name: groupName,
       status: isGroupExcluded(formName, fields[one].fieldNames, excludedFields),
     };
   });
@@ -47,7 +53,7 @@ export const StepperForm: FC<FormProps> = ({
   const handleNext = async () => {
     if (!isLastActiveStep(activeStep, fieldGroupsActiveStatus)) {
       const currentStep = fieldGroupsActiveStatus[activeStep];
-      const currentFieldsToValidate = fields[currentStep.name].fieldNames;
+      const currentFieldsToValidate = fields[currentStep.index].fieldNames;
       let hasError = await handleSubmitPartial(currentFieldsToValidate);
       //In debug mode allow to move to next step without validating
       if (process.env.REACT_APP_DEBUG_MODE === "true") {
@@ -104,7 +110,9 @@ export const StepperForm: FC<FormProps> = ({
         </Stepper>
         <Box width={1} display="flex" justifyContent="flex-start">
           <Typography component="h4" className={classes.subTitle}>
-            {fieldGroups.current[activeStep]}
+            {typeof formRenderConfig.groups === "object"
+              ? formRenderConfig.groups[fieldGroups.current[activeStep]]
+              : defaultGroupName}
           </Typography>
         </Box>
         <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
