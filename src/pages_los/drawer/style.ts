@@ -4,8 +4,9 @@ import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 export interface DrawerStyleProps {
   drawerPaper: BaseCSSProperties;
   drawerPaperClose: BaseCSSProperties;
-  hrCls: BaseCSSProperties;
+  hrCSS: BaseCSSProperties;
   toolbarIcon: BaseCSSProperties;
+  logo: BaseCSSProperties;
 }
 
 export type DrawerNameProps = Record<keyof DrawerStyleProps, string>;
@@ -27,9 +28,9 @@ const drawerStyles = (theme: Theme): any => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
+    width: theme.spacing(6),
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(7),
+      width: theme.spacing(6),
     },
   },
   toolbarIcon: {
@@ -38,10 +39,14 @@ const drawerStyles = (theme: Theme): any => ({
     justifyContent: "space-between",
     padding: "0 8px",
     zIndex: "9999",
+    height: "70px !important",
     ...theme.mixins.toolbar,
   },
-  hrCls: {
+  hrCSS: {
     zIndex: "9999",
+  },
+  logo: {
+    height: "50px",
   },
 });
 
