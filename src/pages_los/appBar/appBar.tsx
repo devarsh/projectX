@@ -54,10 +54,11 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
         >
           <MenuIcon />
         </IconButton>
-
-        <a href="/">
-          <img src={Logo} alt="Ratnaafin" className={classes.logo} />
-        </a>
+        {open !== true ? (
+          <a href="/">
+            <img src={Logo} alt="Ratnaafin" className={classes.logo} />
+          </a>
+        ) : null}
 
         <Typography
           component="h1"

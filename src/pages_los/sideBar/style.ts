@@ -1,6 +1,5 @@
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
-import { camelCase } from "lodash";
 
 export interface SideBarStyleProps {
   root: BaseCSSProperties;
@@ -14,6 +13,8 @@ export interface SideBarStyleProps {
   faSmall: BaseCSSProperties;
   listItem: BaseCSSProperties;
   navLinks: BaseCSSProperties;
+  nestedMenuLevel1: BaseCSSProperties;
+  nestedMenuLevel2: BaseCSSProperties;
 }
 
 export type SideBarNameProps = Record<keyof SideBarStyleProps, string>;
@@ -53,8 +54,11 @@ const sideBarStyles = (theme: Theme): any => ({
     overflowY: "auto",
     overflowX: "hidden",
   },
-  subMenu: {
-    paddingLeft: "50px ",
+  nestedMenuLevel1: {
+    paddingLeft: "20px",
+  },
+  nestedMenuLevel2: {
+    paddingLeft: "24px",
   },
   listIcon: {
     minWidth: "32px",

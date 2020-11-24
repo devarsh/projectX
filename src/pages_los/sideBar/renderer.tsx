@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -55,19 +56,24 @@ const SingleListItem: FC<{
   item: NavItemType;
   classes: SideBarNameProps;
   level: number;
-}> = ({ item, classes }) => {
+}> = ({ item, classes, level }) => {
   const navigate = useNavigate();
   const icon = item.icon ? (
     <ListItemIcon className={classes.listIcon}>
       <FontAwesomeIcon icon={["fas", item.icon]} />
     </ListItemIcon>
   ) : null;
-
+  const levelClassName =
+    level === 1
+      ? classes.nestedMenuLevel1
+      : level === 2
+      ? classes.nestedMenuLevel2
+      : false;
   return (
     <ListItem
       button
       disableGutters
-      className={classes.item}
+      className={clsx(classes.item, levelClassName)}
       onClick={(e) => {
         e.preventDefault();
         if (item.isRouterLink) {
@@ -126,13 +132,19 @@ const NestedListItem: FC<{
       <FontAwesomeIcon icon={["fas", item.icon]} />
     </ListItemIcon>
   ) : null;
+  const levelClassName =
+    level === 1
+      ? classes.nestedMenuLevel1
+      : level === 2
+      ? classes.nestedMenuLevel2
+      : false;
   return (
     <>
       <ListItem
         button
         onClick={handleClick}
         disableGutters
-        className={classes.item}
+        className={clsx(classes.item, levelClassName)}
       >
         {icon}
         <ListItemText
