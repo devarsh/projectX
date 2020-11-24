@@ -7,13 +7,16 @@ import { renderField } from "./fieldRenderer";
 
 export const renderFieldsByGroup = (metaData: MetaDataType) => {
   const { fields, form } = metaData;
-  const defaultGroup = "defaultGroup";
+  const defaultGroup = -1;
   let groupWiseRenderer: GroupWiseRenderedFieldsType = {};
   for (const oneField of fields) {
-    let currentGroupName = "defaultGroup";
-    if (Array.isArray(form.render.groups)) {
-      currentGroupName =
-        form.render.groups[oneField.render?.group ?? -1] ?? defaultGroup;
+    let currentGroupName = defaultGroup;
+    if (typeof form.render.groups === "object") {
+      currentGroupName = form.render.groups.hasOwnProperty(
+        `${oneField.render?.group}`
+      )
+        ? oneField.render?.group ?? -1
+        : -1;
     }
     const element = renderField(
       oneField,

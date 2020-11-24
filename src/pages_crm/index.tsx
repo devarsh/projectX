@@ -8,8 +8,6 @@ import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
 import DynamicForm from "components/dyanmicForm";
-import Login from "./dashboardLogin";
-import Dashboard from "../dashboard/employee/tables/lead";
 
 import {
   WrapperStyleProps,
@@ -36,8 +34,6 @@ const Index = () => {
           }
         />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />
     </Fragment>

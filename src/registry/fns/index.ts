@@ -43,3 +43,10 @@ registerFn(
 registerFn("getcoApplicantLocationDtl", others.getcoApplicantLocationDtl);
 registerFn("getValidateValue", others.getValidateValue);
 registerFn("getGenderValue", others.getGenderValue);
+registerFn("getSecurityOffered", api.getMiscVal("SECURITY_OFF"));
+registerFn("getYouAre", api.getMiscVal("YOU_ARE"));
+registerFn("getsubProductDtl", api.getsubProductDtl);
+registerFn("getInfraEmployee", api.getMiscVal("INFRA_EMPL"));
+registerFn("getEducationDtl", api.getMiscVal("EDUCATION"));
+registerFn("getSitePincodeDtl", others.getSitePincodeDtl(api.getPincode));
+registerFn("getSiteLocationDtl", others.getSiteLocationDtl);

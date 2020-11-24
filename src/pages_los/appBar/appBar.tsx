@@ -122,9 +122,14 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
               <AccountCircleIcon color="primary" />
               <span className={classes.vTop}>Profile</span>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                navigate("/iframe");
+                handleClose();
+              }}
+            >
               <AccountCircleIcon color="primary" />
-              <span className={classes.vTop}>Report</span>
+              <span className={classes.vTop}>Iframe</span>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <PowerSettingsNewIcon color="primary" />

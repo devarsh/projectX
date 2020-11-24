@@ -109,7 +109,6 @@ const RaatnaFinAPI = () => {
           accumlator[current.Name] = val;
           return accumlator;
         }, {});
-        //console.log(areaArray);
         return { options: areaArray, others: otherValues };
       }
     }
@@ -125,6 +124,7 @@ const RaatnaFinAPI = () => {
   ): Promise<CommonFetcherResponse> => {
     try {
       await sessionToken;
+      await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
       if (sessionObj.loginStatus === false) {
         return {
           status: "failure",
@@ -360,7 +360,33 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.response_data };
     }
   };
+  //remove this function after migration
+  const getAccessToken = async () => {
+    await sessionToken;
+    if (sessionObj?.token["access_token"]) {
+      return `Bearer ${sessionObj?.token["access_token"]}`;
+    }
+    return "Bearer not_valid_token";
+  };
 
+  const getsubProductDtl = async (fieldData) => {
+    if (fieldData.value.length !== 0) {
+      let codes = await getProductType(null, fieldData.value);
+      return {
+        subProductType: {
+          options: codes,
+          value: "00",
+        },
+      };
+    } else if (fieldData.value === "") {
+      return {
+        subProductType: {
+          options: [],
+          value: "",
+        },
+      };
+    }
+  };
   const getDashboardEmployeeDataList = async () => {
     const { data, status } = await internalFetcher("./users/getInquiryData", {
       body: JSON.stringify({
@@ -399,14 +425,7 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
-  //remove this function after migration
-  const getAccessToken = async () => {
-    await sessionToken;
-    if (sessionObj?.token["access_token"]) {
-      return `Bearer ${sessionObj?.token["access_token"]}`;
-    }
-    return "Bearer not_valid_token";
-  };
+
   return {
     createSession,
     loginStatus,
@@ -421,9 +440,16 @@ const RaatnaFinAPI = () => {
     pushFormData,
     handleverifyOtp,
     handleverifyPwd,
+    getsubProductDtl,
     getDashboardEmployeeDataList,
     getDashdoardDisplayEmpDetails,
   };
 };
 
 export const APISDK = RaatnaFinAPI();
+
+export const wait = () => {
+  return new Promise((res) => {
+    setTimeout(() => res(true), 1);
+  });
+};

@@ -213,7 +213,7 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300010",
+                prodCode: "123000010",
                 empCode: "98",
               },
             },
@@ -224,9 +224,21 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "Construction Finance",
+              href: "/form/infra",
+              isRouterLink: true,
+              navigationProps: {
+                prodCode: "123000011",
+                empCode: "98",
+              },
             },
             {
               label: "Infrastructure Finance",
+              href: "/form/infra",
+              isRouterLink: true,
+              navigationProps: {
+                prodCode: "123000012",
+                empCode: "98",
+              },
             },
           ],
         },
