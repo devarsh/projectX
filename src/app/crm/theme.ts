@@ -4,11 +4,11 @@ export const theme: Theme = {
   palette: {
     //@ts-ignore
     primary: {
-      main: "#26A456",
+      main: "#0063a3",
     },
     //@ts-ignore
     secondary: {
-      main: "#0063a3",
+      main: "#26A456",
     },
   },
 

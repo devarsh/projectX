@@ -1,5 +1,6 @@
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { camelCase } from "lodash";
 
 export interface SideBarStyleProps {
   root: BaseCSSProperties;
@@ -9,8 +10,10 @@ export interface SideBarStyleProps {
   btnRoot: BaseCSSProperties;
   subMenu: BaseCSSProperties;
   listIcon: BaseCSSProperties;
-  sidebarLnk: BaseCSSProperties;
+  lnk: BaseCSSProperties;
   faSmall: BaseCSSProperties;
+  listItem: BaseCSSProperties;
+  navLinks: BaseCSSProperties;
 }
 
 export type SideBarNameProps = Record<keyof SideBarStyleProps, string>;
@@ -20,14 +23,17 @@ const sideBarStyles = (theme: Theme): any => ({
     justifyContent: "left",
   },
   drawer: {
-    paddingTop: "64px",
+    paddingTop: "70px",
     width: "240px",
   },
   item: {
     display: "flex",
-    paddingTop: 0,
-    paddingBottom: 0,
     borderBottom: "1px solid #ddd",
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    "& svg": {
+      color: theme.palette.primary.main,
+    },
   },
   button: {
     color: "#0063A3",
@@ -40,24 +46,29 @@ const sideBarStyles = (theme: Theme): any => ({
   },
   btnRoot: {
     paddingLeft: "24px",
-    justifyContent: "left !important",
+    justifyContent: "left ",
+  },
+  navLinks: {
+    height: "calc(100vh - 71px)",
+    overflowY: "auto",
+    overflowX: "hidden",
   },
   subMenu: {
-    paddingLeft: "50px !important",
+    paddingLeft: "50px ",
   },
   listIcon: {
     minWidth: "32px",
     color: "#0063A3",
-    fontWeight: "700 !important",
+    fontWeight: "700 ",
     fontSize: "1.25rem",
   },
-  sidebarLnk: {
-    color: "#0063A3 !important",
-    fontSize: "1.5rem !important",
-    fontWeight: "700 !important",
+  lnk: {
+    color: "#0063A3",
+    fontSize: "1.5rem ",
+    fontWeight: "700 ",
   },
   faSmall: {
-    fontSize: "13px !important",
+    fontSize: "13px ",
   },
 });
 

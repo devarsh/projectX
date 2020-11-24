@@ -87,6 +87,8 @@ h4,
 h5,
 h6 {
   line-height: 1.4 !important;
+  margin: 4px 0;
+  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
 }
 h2 {
   color: var(--theme-color2);
@@ -208,6 +210,10 @@ header li > div.dropdown-toggle {
 }
 .CoreProducts .product-wrap:hover .product-icon path {
   fill: var(--theme-color2);
+}
+.submenu .fa-circle {
+  font-size: 11px !important;
+  margin-left: 12px;
 }
 
 @media screen and (min-width: 1440px) {

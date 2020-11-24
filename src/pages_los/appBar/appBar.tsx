@@ -20,6 +20,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
+import Logo from "assets/images/logo.svg";
+
 import { useStyles, NavBarNameProps, NavBarStyleProps } from "./style";
 
 //import MenuBar from "../sideBar/menuBar";
@@ -52,6 +54,11 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
         >
           <MenuIcon />
         </IconButton>
+
+        <a href="/">
+          <img src={Logo} alt="Ratnaafin" className={classes.logo} />
+        </a>
+
         <Typography
           component="h1"
           variant="h6"
@@ -59,7 +66,18 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
           noWrap
           className={classes.title}
         >
-          Dashboard
+          LOS: Loan Origination System
+          <Typography variant="caption" display="block" color="secondary">
+            Branch: Rajkot
+          </Typography>
+          <Typography
+            variant="caption"
+            display="block"
+            color="secondary"
+            gutterBottom
+          >
+            Last Login: 21/11/2020 05:00 PM
+          </Typography>
         </Typography>
 
         <div
@@ -96,7 +114,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             className={classes.nameClass}
           >
             <span className={classes.userName}>Employee Name</span>
-            <ArrowDropDownIcon className={classes.dropDown} />
+            <ArrowDropDownIcon />
           </Button>
           <Menu
             anchorEl={anchorEl}
@@ -121,10 +139,6 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             >
               <AccountCircleIcon color="primary" />
               <span className={classes.vTop}>Profile</span>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <AccountCircleIcon color="primary" />
-              <span className={classes.vTop}>Report</span>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <PowerSettingsNewIcon color="primary" />

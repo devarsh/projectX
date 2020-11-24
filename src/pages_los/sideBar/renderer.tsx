@@ -45,7 +45,7 @@ export const SideBar: FC<{
     });
   }
   return (
-    <List component="nav" disablePadding>
+    <List component="nav" disablePadding className={classes.navLinks}>
       {result}
     </List>
   );
@@ -58,7 +58,7 @@ const SingleListItem: FC<{
 }> = ({ item, classes }) => {
   const navigate = useNavigate();
   const icon = item.icon ? (
-    <ListItemIcon>
+    <ListItemIcon className={classes.listIcon}>
       <FontAwesomeIcon icon={["fas", item.icon]} />
     </ListItemIcon>
   ) : null;
@@ -67,6 +67,7 @@ const SingleListItem: FC<{
     <ListItem
       button
       disableGutters
+      className={classes.item}
       onClick={(e) => {
         e.preventDefault();
         if (item.isRouterLink) {
@@ -77,7 +78,7 @@ const SingleListItem: FC<{
       }}
     >
       {icon}
-      <ListItemText primary={item.label}></ListItemText>
+      <ListItemText primary={item.label} className={classes.lnk}></ListItemText>
     </ListItem>
   );
 };
@@ -121,20 +122,29 @@ const NestedListItem: FC<{
   });
 
   const icon = item.icon ? (
-    <ListItemIcon>
+    <ListItemIcon className={classes.listIcon}>
       <FontAwesomeIcon icon={["fas", item.icon]} />
     </ListItemIcon>
   ) : null;
   return (
     <>
-      <ListItem button onClick={handleClick} disableGutters>
+      <ListItem
+        button
+        onClick={handleClick}
+        disableGutters
+        className={classes.item}
+      >
         {icon}
-        <ListItemText primary={item.label}></ListItemText>
+        <ListItemText
+          primary={item.label}
+          color="primary"
+          className={classes.lnk}
+        ></ListItemText>
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding className={classes.subMenu}>
+      <Collapse in={open} timeout="auto" unmountOnExit className="submenu">
+        <List component="div" disablePadding>
           {childrens}
         </List>
       </Collapse>
