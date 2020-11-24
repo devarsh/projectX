@@ -4,11 +4,11 @@ export const theme: Theme = {
   palette: {
     //@ts-ignore
     primary: {
-      main: "#26A456",
+      main: "#0063a3",
     },
     //@ts-ignore
     secondary: {
-      main: "#736f6f",
+      main: "#26A456",
     },
   },
 
@@ -178,6 +178,12 @@ export const theme: Theme = {
       paper: {
         boxShadow: "0 3px 6px rgba(0,0,0,0.5)",
         border: "1px solid rgba(0,0,0,0.3)",
+      },
+    },
+
+    MuiAutocomplete: {
+      input: {
+        paddingLeft: "7px !important",
       },
     },
   },

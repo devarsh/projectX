@@ -213,6 +213,21 @@ export const metaData: NavBarType = {
       ],
     },
     {
+      label: "Workflow Management",
+      icon: "tasks",
+      children: [
+        {
+          label: "Task Report",
+          icon: "circle",
+        },
+        {
+          label: "Sales Report",
+          icon: "circle",
+        },
+      ],
+    },
+
+    {
       label: "Partners",
       href: "/pages/partners",
       isRouterLink: true,
