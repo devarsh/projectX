@@ -10,7 +10,7 @@ const metaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "stepper",
-      groups: { 0: "Personal Details", 1: "Contact Details", 2: "checking" },
+      groups: { 0: "Personal Details", 1: "Contact Details" },
       gridConfig: {
         item: {
           xs: 12,
@@ -45,7 +45,7 @@ const metaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 2,
+        group: 0,
       },
       name: "product_type",
       label: "Product Type",
