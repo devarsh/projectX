@@ -385,6 +385,44 @@ const RaatnaFinAPI = () => {
       };
     }
   };
+  const getDashboardEmployeeDataList = async () => {
+    const { data, status } = await internalFetcher("./users/getInquiryData", {
+      body: JSON.stringify({
+        action: "get_inquiry_data",
+        request_data: {
+          status: "P",
+        },
+        channel: "W",
+      }),
+    });
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getDashdoardDisplayEmpDetails = async (inquiryCode: string) => {
+    const { data, status } = await internalFetcher(
+      "./users/getInquiryDetails",
+      {
+        body: JSON.stringify({
+          action: "get_inquiry_details",
+          request_data: {
+            inquiry_code: inquiryCode,
+          },
+          channel: "W",
+        }),
+      }
+    );
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
 
   return {
     createSession,
@@ -401,6 +439,8 @@ const RaatnaFinAPI = () => {
     handleverifyOtp,
     handleverifyPwd,
     getsubProductDtl,
+    getDashboardEmployeeDataList,
+    getDashdoardDisplayEmpDetails,
   };
 };
 

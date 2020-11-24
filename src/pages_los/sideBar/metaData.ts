@@ -24,7 +24,7 @@ export const metaData: NavBarType = {
         },
         {
           label: "CAM",
-          href: "/pages/cam",
+          href: "/cam",
           isRouterLink: true,
           icon: "circle",
         },

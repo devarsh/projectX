@@ -14,6 +14,7 @@ export default function EmployeeDashboard() {
       <br />
       {IFrameVisible ? (
         <iframe
+          title="AADHAR"
           src="https://www.acuteinformatics.co.in/"
           width="100%"
           height="700px"
