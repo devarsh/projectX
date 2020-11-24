@@ -20,13 +20,13 @@ export const MyDrawer = ({ open, handleDrawerClose, children }) => {
     >
       <div className={classes.toolbarIcon}>
         <a href="/">
-          <img src={Logo} alt="Ratnaafin" className="DashBoardLogo" />
+          <img src={Logo} alt="Ratnaafin" className={classes.logo} />
         </a>
         <IconButton onClick={handleDrawerClose}>
           <ChevronLeftIcon />
         </IconButton>
       </div>
-      <Divider className={classes.hrCls} />
+      <Divider className={classes.hrCSS} />
       {children}
     </Drawer>
   );
