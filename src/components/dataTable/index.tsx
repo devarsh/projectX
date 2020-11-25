@@ -1,70 +1,48 @@
 import { useMemo } from "react";
-import { useTable } from "react-table";
+import { makeData } from "./makeData";
+import { DataGrid } from "./grid";
 
-export const DataGrid = () => {
-  const data = useMemo(
-    () => [
-      {
-        col1: "Hello",
-        col2: "World",
-      },
-      {
-        col1: "react-table",
-        col2: "rocks",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-    ],
-    []
-  );
-
+export const DataTable = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "Column 1",
-        accessor: "col1", // accessor is the "key" in the data
+        Header: "First Name",
+        accessor: "firstName",
       },
       {
-        Header: "Column 2",
-        accessor: "col2",
+        Header: "Last Name",
+        accessor: "lastName",
+      },
+      {
+        Header: "Age",
+        accessor: "age",
+      },
+      {
+        Header: "Visits",
+        accessor: "visits",
+      },
+      {
+        Header: "Status",
+        accessor: "status",
+      },
+      {
+        Header: "Profile Progress",
+        accessor: "progress",
       },
     ],
     []
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data });
-
+  const data = useMemo(() => makeData(10), []);
+  const defaultColumn = useMemo(
+    () => ({
+      minWidth: 50,
+      width: 150,
+      maxWidth: 400,
+    }),
+    []
+  );
   return (
-    <table {...getTableProps()}>
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <DataGrid columns={columns} data={data} defaultColumn={defaultColumn} />
   );
 };
