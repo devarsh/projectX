@@ -57,7 +57,7 @@ const sideBarStyles = (theme: Theme): any => ({
     overflowX: "hidden",
   },
   nestedMenuLevel1: {
-    paddingLeft: theme.spacing(3),
+    paddingLeft: "20px",
     paddingRight: theme.spacing(3),
     fontSize: "13px",
     "& div > svg": {
@@ -65,7 +65,7 @@ const sideBarStyles = (theme: Theme): any => ({
     },
   },
   nestedMenuLevel2: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: "24px",
     fontSize: "12px",
     "& div > svg": {
       fontSize: "9px",
@@ -79,9 +79,11 @@ const sideBarStyles = (theme: Theme): any => ({
   },
   link: {
     color: "#0063A3",
-    fontSize: "1.5rem ",
+    fontSize: "1rem ",
+    marginTop: "2px",
+    marginBottom: "2px",
     "& span": {
-      fontWeight: "600",
+      fontWeight: "500",
     },
   },
   faSmall: {

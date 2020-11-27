@@ -356,7 +356,7 @@ export const metaData: NavBarType = {
           icon: "circle",
         },
         {
-          label: "Bank Statement Analysis",
+          label: "Bank Statement",
           icon: "circle",
         },
         {
@@ -372,7 +372,7 @@ export const metaData: NavBarType = {
           icon: "circle",
         },
         {
-          label: "Financial Statement Analysis",
+          label: "Financial Statement",
           icon: "circle",
         },
         {

@@ -11,18 +11,10 @@ import GroupIcon from "@material-ui/icons/Group";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 
 import {
-  SMELoanIcon,
   ConstructionFinanceIcon,
-  BusinessLoanIcon,
   RetailHomeLoanIcon,
-  RetailLAPIcon,
-  GovtSubsidaryIcon,
-  FireInsuranceIcon,
-  LifeInsuranceIcon,
-  PersonalLoanIcon,
   HealthInsuranceIcon,
   LiabilityInsuranceIcon,
-  MotorInsuranceIcon,
 } from "../../pages_crm/home/icons/index";
 import { theme } from "app/crm/theme";
 
