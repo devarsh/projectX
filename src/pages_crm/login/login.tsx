@@ -188,7 +188,7 @@ export const Login = () => {
         width={1 / 2}
         className={classes.loginRight}
       >
-        <h2>Employee Login</h2>
+        <h2>Cutomer Login</h2>
         <div className="text">
           Login with your registered mobile number to access your Ratnaafin
           account.

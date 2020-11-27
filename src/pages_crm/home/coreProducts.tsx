@@ -27,24 +27,56 @@ interface ProductTilesType {
   productName: string;
   covidCovered?: boolean;
   href?: string;
-  formCode?: string;
+  navigationProps?: any;
+  prodCode?: string;
+  empCode?: string;
 }
 
 const productTiles: ProductTilesType[] = [
-  { productIcon: SMELoanIcon, productName: "SME Loan" },
-  { productIcon: ConstructionFinanceIcon, productName: "Construction Finance" },
-  { productIcon: BusinessLoanIcon, productName: "Business Loan" },
+  {
+    productIcon: SMELoanIcon,
+    productName: "SME Loan",
+    href: "/form/sme",
+    navigationProps: {
+      prodCode: "12300005",
+      empCode: "98",
+    },
+  },
+  {
+    productIcon: ConstructionFinanceIcon,
+    productName: "Construction Finance",
+    href: "/form/infra",
+    navigationProps: {
+      prodCode: "123000011",
+      empCode: "98",
+    },
+  },
+  {
+    productIcon: BusinessLoanIcon,
+    productName: "Business Loan",
+    href: "/form/business",
+    navigationProps: {
+      prodCode: "123000013",
+      empCode: "98",
+    },
+  },
   {
     productIcon: RetailHomeLoanIcon,
     productName: "Retail Home Loan",
     href: "/form/rhl",
-    formCode: "12300001",
+    navigationProps: {
+      prodCode: "12300001",
+      empCode: "98",
+    },
   },
   {
     productIcon: RetailLAPIcon,
     productName: "Retail LAP",
-    href: "/form/rhl",
-    formCode: "12300002",
+    href: "/form/lap",
+    navigationProps: {
+      prodCode: "12300002",
+      empCode: "98",
+    },
   },
   { productIcon: GovtSubsidaryIcon, productName: "Government Subsidy" },
   { productIcon: FireInsuranceIcon, productName: "Fire Insurance" },
@@ -56,6 +88,11 @@ const productTiles: ProductTilesType[] = [
   {
     productIcon: PersonalLoanIcon,
     productName: "Personal Loan",
+    href: "/form/personal",
+    navigationProps: {
+      prodCode: "123000014",
+      empCode: "98",
+    },
   },
   {
     productIcon: HealthInsuranceIcon,
@@ -98,12 +135,19 @@ function CoreProducts() {
                 onClick={(e) => {
                   e.preventDefault();
                   if (
-                    one.formCode !== undefined &&
+                    one.navigationProps !== undefined &&
+                    one.navigationProps.prodCode !== undefined &&
+                    one.navigationProps.empCode !== undefined &&
                     one.href !== undefined &&
                     Boolean(one.href) &&
-                    Boolean(one.formCode)
+                    Boolean(one.navigationProps.prodCode) &&
+                    Boolean(one.navigationProps.empCode)
                   ) {
-                    navigate(one.href, { state: { formCode: one.formCode } });
+                    navigate(one.href, {
+                      state: {
+                        ...one.navigationProps,
+                      },
+                    });
                   }
                 }}
               >

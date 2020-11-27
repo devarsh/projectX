@@ -7,6 +7,7 @@ import NotFoundPage from "./notFound";
 import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
+import Login from "./login";
 import DynamicForm from "components/dyanmicForm";
 
 import {
@@ -25,6 +26,7 @@ const Index = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="thankyou" element={<ThankYouPage />} />
+        <Route path="login" element={<Login />} />
         <Route
           path="form/:formName"
           element={
