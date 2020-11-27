@@ -12,6 +12,8 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavBarType, NavItemType } from "pages_crm/header/types";
 import { SideBarNameProps } from "./style";
+import ScrollBar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 export const SideBar: FC<{
   metaData: NavBarType;
@@ -47,7 +49,7 @@ export const SideBar: FC<{
   }
   return (
     <List component="nav" disablePadding className={classes.navLinks}>
-      {result}
+      <ScrollBar>{result}</ScrollBar>
     </List>
   );
 };
@@ -84,7 +86,10 @@ const SingleListItem: FC<{
       }}
     >
       {icon}
-      <ListItemText primary={item.label} className={classes.lnk}></ListItemText>
+      <ListItemText
+        primary={item.label}
+        className={classes.link}
+      ></ListItemText>
     </ListItem>
   );
 };
@@ -144,19 +149,27 @@ const NestedListItem: FC<{
         button
         onClick={handleClick}
         disableGutters
-        className={clsx(classes.item, levelClassName)}
+        className={
+          open
+            ? clsx(classes.item, levelClassName, classes.openCurrent)
+            : clsx(classes.item, levelClassName)
+        }
       >
         {icon}
         <ListItemText
           primary={item.label}
           color="primary"
-          className={classes.lnk}
+          className={classes.link}
         ></ListItemText>
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
-      <Collapse in={open} timeout="auto" unmountOnExit className="submenu">
-        <List component="div" disablePadding>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List
+          component="div"
+          disablePadding
+          className={open ? classes.openList : ""}
+        >
           {childrens}
         </List>
       </Collapse>

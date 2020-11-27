@@ -60,27 +60,148 @@ export const metaData: NavBarType = {
       children: [
         {
           label: "Retail",
-          href: "/pages/retail",
-          isRouterLink: true,
+          isRouterLink: false,
           icon: "circle",
+          children: [
+            {
+              label: "All",
+              href: "/pages/retail",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "Home",
+              href: "/pages/retail",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "LAP",
+              href: "/pages/retail",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "LRD",
+              href: "/pages/retail",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "APF",
+              href: "/pages/retail",
+              isRouterLink: true,
+              icon: "square",
+            },
+          ],
         },
         {
           label: "SME",
           href: "/pages/sme",
           isRouterLink: true,
           icon: "circle",
+          children: [
+            {
+              label: "All",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "CC/OD",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "Term Loan",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "Term Loan + CC/OD",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "NFB (Non Fund Base)",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "LAP (Loan Against Property)",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "CGTMSE",
+              href: "/pages/sme",
+              isRouterLink: true,
+              icon: "square",
+            },
+          ],
         },
         {
           label: "Infra",
           href: "/pages/infra",
           isRouterLink: true,
           icon: "circle",
+          children: [
+            {
+              label: "Construction Finance",
+              href: "/pages/infra",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "All",
+              href: "/pages/infra",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "Infrastructure Finance",
+              href: "/pages/infra",
+              isRouterLink: true,
+              icon: "square",
+            },
+          ],
         },
         {
           label: "Unsecured",
           href: "/pages/unsecured",
           isRouterLink: true,
           icon: "circle",
+          children: [
+            {
+              label: "All",
+              href: "/pages/unsecured",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "Business",
+              href: "/pages/unsecured",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "Personal",
+              href: "/pages/unsecured",
+              isRouterLink: true,
+              icon: "square",
+            },
+            {
+              label: "School Fee Funding",
+              href: "/pages/unsecured",
+              isRouterLink: true,
+              icon: "square",
+            },
+          ],
         },
         {
           label: "Channel Finance",
@@ -226,10 +347,50 @@ export const metaData: NavBarType = {
         },
       ],
     },
+    {
+      label: "API Management",
+      icon: "tasks",
+      children: [
+        {
+          label: "Health Checkup",
+          icon: "circle",
+        },
+        {
+          label: "Bank Statement Analysis",
+          icon: "circle",
+        },
+        {
+          label: "Fraud Check Unit (FCU)",
+          icon: "circle",
+        },
+        {
+          label: "GST Analysis",
+          icon: "circle",
+        },
+        {
+          label: "ITR Anlaysis",
+          icon: "circle",
+        },
+        {
+          label: "Financial Statement Analysis",
+          icon: "circle",
+        },
+        {
+          label: "MCA",
+          icon: "circle",
+        },
+      ],
+    },
 
     {
       label: "Partners",
       href: "/pages/partners",
+      isRouterLink: true,
+      icon: "users-cog",
+    },
+    {
+      label: "Employees",
+      href: "/pages/employees",
       isRouterLink: true,
       icon: "users-cog",
     },

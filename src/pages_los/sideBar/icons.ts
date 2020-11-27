@@ -13,6 +13,8 @@ import {
   faCircle,
   faUserCircle,
   faHashtag,
+  faThumbtack,
+  faSquare,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -28,5 +30,7 @@ library.add(
   faUsersCog,
   faCircle,
   faUserCircle,
-  faHashtag
+  faHashtag,
+  faThumbtack,
+  faSquare
 );

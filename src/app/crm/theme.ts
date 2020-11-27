@@ -186,5 +186,14 @@ export const theme: Theme = {
         paddingLeft: "7px !important",
       },
     },
+    typography: {
+      fontFamily: [
+        "Montserrat",
+        "Helvetica",
+        "Arial",
+        "Lucida",
+        "sans-serif",
+      ].join(","),
+    },
   },
 };
