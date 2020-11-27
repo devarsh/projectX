@@ -9,12 +9,14 @@ export interface SideBarStyleProps {
   btnRoot: BaseCSSProperties;
   subMenu: BaseCSSProperties;
   listIcon: BaseCSSProperties;
-  lnk: BaseCSSProperties;
+  link: BaseCSSProperties;
   faSmall: BaseCSSProperties;
   listItem: BaseCSSProperties;
   navLinks: BaseCSSProperties;
   nestedMenuLevel1: BaseCSSProperties;
   nestedMenuLevel2: BaseCSSProperties;
+  openList: BaseCSSProperties;
+  openCurrent: BaseCSSProperties;
 }
 
 export type SideBarNameProps = Record<keyof SideBarStyleProps, string>;
@@ -56,9 +58,18 @@ const sideBarStyles = (theme: Theme): any => ({
   },
   nestedMenuLevel1: {
     paddingLeft: "20px",
+    paddingRight: theme.spacing(3),
+    fontSize: "13px",
+    "& div > svg": {
+      fontSize: "11px",
+    },
   },
   nestedMenuLevel2: {
     paddingLeft: "24px",
+    fontSize: "12px",
+    "& div > svg": {
+      fontSize: "9px",
+    },
   },
   listIcon: {
     minWidth: "32px",
@@ -66,13 +77,31 @@ const sideBarStyles = (theme: Theme): any => ({
     fontWeight: "700 ",
     fontSize: "1.25rem",
   },
-  lnk: {
+  link: {
     color: "#0063A3",
-    fontSize: "1.5rem ",
-    fontWeight: "700 ",
+    fontSize: "1rem ",
+    marginTop: "2px",
+    marginBottom: "2px",
+    "& span": {
+      fontWeight: "500",
+    },
   },
   faSmall: {
     fontSize: "13px ",
+  },
+  openList: {
+    "& > div": {
+      backgroundColor: "rgba(0, 0, 0, 0.04)",
+    },
+    "&  *": {
+      color: theme.palette.secondary.main,
+    },
+  },
+  openCurrent: {
+    backgroundColor: "rgba(0, 0, 0, 0.04)",
+    "&  *": {
+      color: theme.palette.secondary.main,
+    },
   },
 });
 

@@ -41,6 +41,7 @@
     "react-imask": "^6.0.5",
     "react-is": "^17.0.1",
     "react-number-format": "^4.4.1",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-query": "^2.12.1",
     "react-query-devtools": "^2.4.4",
     "react-router-dom": "^6.0.0-beta.0",

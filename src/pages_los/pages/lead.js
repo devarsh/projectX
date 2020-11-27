@@ -239,6 +239,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LeadGenerateButton = withStyles({
+  root: {
+    background:
+      "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
+    border: 0,
+    color: "white",
+    height: 36,
+    padding: "0 1rem",
+    fontSize: "1.2rem",
+    "&:hover": {
+      background:
+        "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,204,160,1) 35%, rgba(33,150,218,1) 100%)",
+    },
+  },
+  label: {
+    textTransform: "capitalize",
+  },
+})(Button);
+
 const LightTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: "#26A456",
@@ -489,9 +508,7 @@ export default function EmployeeLead() {
     {
       label: "Product Type",
       name: "ProductType",
-      options: {
-        filter: true,
-      },
+      options: {},
     },
     {
       label: "Customer Name",
@@ -517,16 +534,12 @@ export default function EmployeeLead() {
     {
       label: "Inquiry Status",
       name: "",
-      options: {
-        filter: true,
-      },
+      options: {},
     },
     {
       label: "Lead Generated",
       name: "Generate_lead",
-      options: {
-        filter: true,
-      },
+      options: {},
     },
     {
       label: "Questionaries / Health Check Score",
@@ -603,7 +616,7 @@ export default function EmployeeLead() {
   return (
     <Fragment>
       <Box display="flex" justifyContent="flex-end" mb={2}>
-        <Button className="btn1 minW themeBtn">Generate New Lead</Button>
+        <LeadGenerateButton>Generate New Lead</LeadGenerateButton>
       </Box>
 
       <Grid container spacing={2}>
@@ -614,7 +627,7 @@ export default function EmployeeLead() {
             columns={columns}
             options={{
               filterType: "checkbox",
-              filter: true,
+
               viewColumns: false,
             }}
           />
@@ -761,7 +774,7 @@ const DataDisplayDialog = ({
                   Address:
                 </Box>
                 <Box width="60%" className={classes.formValue}>
-                  K-701, Abcd, Adress
+                  K-701, Abcd, Address
                 </Box>
               </Box>
             </Paper>
