@@ -349,7 +349,7 @@ export const metaData: NavBarType = {
     },
     {
       label: "API Management",
-      icon: "tasks",
+      icon: "link",
       children: [
         {
           label: "Health Checkup",

@@ -15,6 +15,7 @@ import {
   faHashtag,
   faThumbtack,
   faSquare,
+  faLink,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -32,5 +33,6 @@ library.add(
   faUserCircle,
   faHashtag,
   faThumbtack,
-  faSquare
+  faSquare,
+  faLink
 );
