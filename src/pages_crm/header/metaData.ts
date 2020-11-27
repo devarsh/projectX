@@ -97,10 +97,12 @@ export const siteNav: NavBarType = {
         {
           label: "Customer",
           href: "/login",
+          isRouterLink: true,
         },
         {
           label: "Partner",
           href: "/login",
+          isRouterLink: true,
         },
         {
           label: "Employee",
