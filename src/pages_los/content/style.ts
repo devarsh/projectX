@@ -14,7 +14,7 @@ const contentStyles = (theme: Theme): any => ({
   content: {
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto",
+    overflowY: "auto",
   },
   container: {
     paddingTop: theme.spacing(4),

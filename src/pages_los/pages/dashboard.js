@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -11,23 +11,16 @@ import GroupIcon from "@material-ui/icons/Group";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 
 import {
-  SMELoanIcon,
   ConstructionFinanceIcon,
-  BusinessLoanIcon,
   RetailHomeLoanIcon,
-  RetailLAPIcon,
-  GovtSubsidaryIcon,
-  FireInsuranceIcon,
-  LifeInsuranceIcon,
-  PersonalLoanIcon,
   HealthInsuranceIcon,
   LiabilityInsuranceIcon,
-  MotorInsuranceIcon,
 } from "../../pages_crm/home/icons/index";
+import { theme } from "app/crm/theme";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
@@ -40,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   cardTitle: {
     fontWeight: "600",
+    color: theme.palette.primary.main,
+    fontSize: "1.5rem",
   },
   cardContent: {
     padding: theme.spacing(1.5),
@@ -71,6 +66,11 @@ const useStyles = makeStyles((theme) => ({
   statusText: {
     fontWeight: "600",
     textAlign: "center",
+    fontSize: "13px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "11px",
+      padding: theme.spacing(0.5),
+    },
   },
   pending: {
     color: "#f1c232",
@@ -109,19 +109,50 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#68b6ca",
   },
   unit: {
-    fontSize: "11px",
+    fontSize: "10px",
     color: "#fff",
     padding: theme.spacing(0.5),
-    width: "40px",
-    height: "40px",
+    width: "36px",
+    height: "36px",
     borderRadius: "50%",
     textAlign: "center",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    margin: "2px auto",
+    margin: "2px auto 4px",
   },
 }));
+
+const WelcomeText1 = withStyles({
+  root: {
+    fontSize: "1.5rem",
+    fontWeight: "600",
+    lineHeight: "1.2",
+    color: theme.palette.secondary.main,
+    fontFamily: '"Montserrat", Helvetica, Arial, Lucida, sans-serif',
+  },
+})(Typography);
+const WelcomeText2 = withStyles({
+  root: {
+    fontSize: "13px",
+    fontWeight: "500",
+    color: theme.palette.secondary.main,
+  },
+})(Typography);
+const CardTitle = withStyles({
+  root: {
+    fontSize: "1.2rem",
+    fontWeight: "500",
+    color: theme.palette.primary.main,
+  },
+})(Typography);
+const CardValue = withStyles({
+  root: {
+    fontSize: "1.4rem",
+    fontWeight: "700",
+    color: theme.palette.secondary.main,
+  },
+})(Typography);
 
 export default function EmployeeDashboard() {
   const classes = useStyles();
@@ -135,8 +166,8 @@ export default function EmployeeDashboard() {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Paper className={classes.paper}>
-          <h3 className="theme-color2">Welcome Employee,</h3>
-          <h5 className="theme-color2">This is your Ratnaafin account.</h5>
+          <WelcomeText1>Welcome Employee,</WelcomeText1>
+          <WelcomeText2>This is your Ratnaafin account.</WelcomeText2>
         </Paper>
       </Grid>
 
@@ -148,21 +179,17 @@ export default function EmployeeDashboard() {
         <Paper className={fixedHeightPaperChart}></Paper>
       </Grid> */}
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   Inquiries
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   5,000
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>
                 <LiveHelpIcon />
@@ -195,21 +222,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   All Leads
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   3,000
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>
                 <DataUsageIcon />
@@ -242,21 +265,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   BD Leads
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   800
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>{ConstructionFinanceIcon}</div>
             </div>
@@ -287,21 +306,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   Retail Leads
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   1,000
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>{RetailHomeLoanIcon}</div>
             </div>
@@ -332,21 +347,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   Unsecured Leads
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   600
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>{LiabilityInsuranceIcon}</div>
             </div>
@@ -377,21 +388,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   Insurance Leads
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   400
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>{HealthInsuranceIcon}</div>
             </div>
@@ -422,21 +429,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   Customers
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   300
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>
                 <GroupIcon />
@@ -446,21 +449,17 @@ export default function EmployeeDashboard() {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} sm={6} md={3} lg={3}>
         <Card>
           <CardContent className={classes.cardContent}>
             <div className={classes.content}>
               <div className={classes.info}>
-                <Typography
-                  className={classes.cardTitle}
-                  color="Primary"
-                  variant="h6"
-                >
+                <CardTitle variant="h3" component="h2">
                   Partners
-                </Typography>
-                <Typography variant="h4" component="h2">
+                </CardTitle>
+                <CardValue variant="h4" component="h2">
                   100
-                </Typography>
+                </CardValue>
               </div>
               <div className={classes.icon}>
                 <GroupWorkIcon />

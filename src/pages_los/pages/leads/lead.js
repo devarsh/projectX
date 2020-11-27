@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Zoom from "@material-ui/core/Zoom";
@@ -21,6 +21,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "10px",
   },
 }));
+
+const StyledButton = withStyles({
+  root: {
+    background:
+      "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
+    border: 0,
+    color: "white",
+    height: 36,
+    padding: "0 1rem",
+    fontSize: "1.2rem",
+    "&:hover": {
+      background:
+        "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,204,160,1) 35%, rgba(33,150,218,1) 100%)",
+    },
+  },
+  label: {
+    textTransform: "capitalize",
+  },
+})(Button);
 
 export const EmployeeLead = () => {
   const classes = useStyles();
@@ -194,7 +213,7 @@ export const EmployeeLead = () => {
   return (
     <Fragment>
       <Box display="flex" justifyContent="flex-end" mb={2}>
-        <Button className="btn1 minW themeBtn">Generate New Lead</Button>
+        <StyledButton>Generate New Lead</StyledButton>
       </Box>
 
       <Grid container spacing={2}>
@@ -206,7 +225,7 @@ export const EmployeeLead = () => {
             columns={columns}
             options={{
               filterType: "checkbox",
-              filter: true,
+              filter: false,
               viewColumns: false,
             }}
           />
