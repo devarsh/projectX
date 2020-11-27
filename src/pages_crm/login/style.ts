@@ -3,28 +3,36 @@ import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
 
 export interface LoginPageStyleProps {
   wrapper: BaseCSSProperties;
-  loginEmp: BaseCSSProperties;
+  loginLeft: BaseCSSProperties;
+  loginRight: BaseCSSProperties;
   loginBtn: BaseCSSProperties;
+  loginImg: BaseCSSProperties;
   formWrap: BaseCSSProperties;
   OTPTimer: BaseCSSProperties;
   resendLink: BaseCSSProperties;
-  themeBtn: BaseCSSProperties;
-  logo: BaseCSSProperties;
 }
 
 export type LoginPageNameProps = Record<keyof LoginPageStyleProps, string>;
 
 export const loginPageStyle = (theme: Theme): any => ({
   wrapper: {
-    minHeight: "100vh",
+    marginTop: "102px",
+    minHeight: "calc(100vh - 155px)",
     boxShadow: "0 3px 6px rgba(0,0,0,0.03)",
     [theme.breakpoints.down("sm")]: {
-      minHeight: "100vh",
+      minHeight: "calc(100vh - 200px)",
     },
+  },
+  loginLeft: {
+    display: "flex",
+    justifyContent: "center",
     background:
       "linear-gradient(0deg, rgba(94,231,131,1) 0%, rgba(70,199,165,1) 44%, rgba(33,150,218,1) 100%)",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
-  loginEmp: {
+  loginRight: {
     background: "#fff",
     padding: theme.spacing(2, 4),
     display: "flex",
@@ -36,6 +44,9 @@ export const loginPageStyle = (theme: Theme): any => ({
       width: "100%",
     },
   },
+  loginImg: {
+    // maxHeight: "40vh",
+  },
   formWrap: {
     marginTop: theme.spacing(2),
   },
@@ -44,20 +55,6 @@ export const loginPageStyle = (theme: Theme): any => ({
     margin: theme.spacing(2, 0),
     fontSize: "1rem",
     padding: "10px .75rem",
-    background:
-      "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
-    border: 0,
-    color: "#fff !important",
-    fontWeight: "600",
-    letterSpacing: "0.02857em",
-    boxShadow: "none",
-    textTransform: "capitalize",
-    alignSelf: "flex-end",
-    "&:hover": {
-      background:
-        "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,204,160,1) 35%, rgba(33,150,218,1) 100%)",
-      boxShadow: "none",
-    },
   },
   OTPTimer: {
     marginTop: "10px",
@@ -70,8 +67,5 @@ export const loginPageStyle = (theme: Theme): any => ({
     color: theme.palette.secondary.main,
     fontWeight: "600",
     fontSize: "0.875 rem",
-  },
-  logo: {
-    marginBottom: theme.spacing(1),
   },
 });
