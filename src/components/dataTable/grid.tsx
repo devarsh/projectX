@@ -15,6 +15,12 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { TableHeaderText, ColumnDivier } from "./components";
 
+const DefaultCellRenderer = (props) => {
+  console.log(props);
+  const { value } = props;
+  return String(value);
+};
+
 export const DataGrid = ({ defaultColumn, columns, data }) => {
   const {
     getTableProps,
@@ -29,11 +35,7 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
     useBlockLayout,
     useResizeColumns
   );
-  const handleContextMenuClick = (e) => {
-    console.log(e);
-  };
 
-  console.log(state);
   return (
     <TableContainer>
       <Table component="div" {...getTableProps()}>
@@ -69,11 +71,7 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
             </TableRow>
           ))}
         </TableHead>
-        <TableBody
-          component="div"
-          {...getTableBodyProps()}
-          onContextMenu={handleContextMenuClick}
-        >
+        <TableBody component="div" {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
             return (
