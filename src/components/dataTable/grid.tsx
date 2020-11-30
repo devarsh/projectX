@@ -2,24 +2,19 @@ import { Fragment } from "react";
 import {
   useTable,
   useSortBy,
-  useRowSelect,
   useResizeColumns,
   useBlockLayout,
+  usePagination,
 } from "react-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import { TableHeaderText, ColumnDivier } from "./components";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
 
-const DefaultCellRenderer = (props) => {
-  console.log(props);
-  const { value } = props;
-  return String(value);
-};
+import { CustomCellRenderer, CustomHeaderRenderer } from "./renderers";
 
 export const DataGrid = ({ defaultColumn, columns, data }) => {
   const {
@@ -28,67 +23,65 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
     headerGroups,
     rows,
     prepareRow,
-    state,
+    page,
   } = useTable(
     { columns, data, defaultColumn },
     useSortBy,
     useBlockLayout,
-    useResizeColumns
+    useResizeColumns,
+    usePagination
   );
 
   return (
-    <TableContainer>
-      <Table component="div" {...getTableProps()}>
-        <TableHead component="div">
-          {headerGroups.map((headerGroup) => (
-            <TableRow component="div" {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => {
-                console.log(column);
-                return (
-                  <Fragment>
-                    <TableCell
-                      component="div"
-                      variant="head"
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                    >
-                      <TableHeaderText>
-                        {column.render("Header")}
-                        <TableSortLabel
-                          active={column.isSorted}
-                          direction={column.isSortedDesc ? "desc" : "asc"}
-                        />
-                      </TableHeaderText>
-                    </TableCell>
-                    <ColumnDivier
-                      orientation="vertical"
-                      flexItem
-                      light={true}
-                      {...column.getResizerProps()}
-                    />
-                  </Fragment>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody component="div" {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <TableRow component="div" {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  console.log(cell);
-                  return (
-                    <TableCell component="div" {...cell.getCellProps()}>
-                      {cell.render("Cell")}
-                    </TableCell>
-                  );
+    <Fragment>
+      <TableContainer>
+        <Table component="div" {...getTableProps()}>
+          <TableHead component="div">
+            {headerGroups.map((headerGroup) => (
+              <TableRow component="div" {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => {
+                  return CustomHeaderRenderer(column);
                 })}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            ))}
+          </TableHead>
+          <TableBody component="div" {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <TableRow component="div" {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return CustomCellRenderer(cell);
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Fragment>
   );
 };
+
+/*
+ <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={pageCount}
+        page={page}
+        onChangePage={handleChangePage}
+      />
+*/
+
+/*
+  canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+*/

@@ -16,6 +16,9 @@ export const DataTable = () => {
       {
         Header: "Age",
         accessor: "age",
+        props: {
+          align: "right",
+        },
       },
       {
         Header: "Visits",
