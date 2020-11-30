@@ -53,7 +53,7 @@ export const TablePaginationActions = (props) => {
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page > Math.ceil(count / rowsPerPage) - 1}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next Page"
       >
         {theme.direction === "rtl" ? (

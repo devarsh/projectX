@@ -11,17 +11,22 @@ import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
 
 import { CustomCellRenderer, CustomHeaderRenderer } from "./renderers";
+import { TablePaginationActions } from "./TablePageActions";
+import { TablePagination } from "@material-ui/core";
 
 export const DataGrid = ({ defaultColumn, columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
     page,
+    gotoPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
   } = useTable(
     { columns, data, defaultColumn },
     useSortBy,
@@ -29,6 +34,14 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
     useResizeColumns,
     usePagination
   );
+
+  const handleChangePage = (event, newPage) => {
+    gotoPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPageSize(Number(event.target.value));
+  };
 
   return (
     <Fragment>
@@ -55,6 +68,22 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
               );
             })}
           </TableBody>
+          <TableFooter component="div">
+            <TableRow component="div">
+              <TablePagination
+                variant="body"
+                component="div"
+                rowsPerPageOptions={[5, 10, 25]}
+                colSpan={3}
+                count={data.length}
+                rowsPerPage={pageSize}
+                page={pageIndex}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </Fragment>
