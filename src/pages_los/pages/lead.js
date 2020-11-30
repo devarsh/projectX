@@ -627,7 +627,7 @@ export default function EmployeeLead() {
             columns={columns}
             options={{
               filterType: "checkbox",
-
+              filter: false,
               viewColumns: false,
             }}
           />
