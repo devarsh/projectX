@@ -30,9 +30,9 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
   } = useTable(
     { columns, data, defaultColumn },
     useSortBy,
+    usePagination,
     useBlockLayout,
-    useResizeColumns,
-    usePagination
+    useResizeColumns
   );
 
   const handleChangePage = (event, newPage) => {
@@ -89,26 +89,3 @@ export const DataGrid = ({ defaultColumn, columns, data }) => {
     </Fragment>
   );
 };
-
-/*
- <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={pageCount}
-        page={page}
-        onChangePage={handleChangePage}
-      />
-*/
-
-/*
-  canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-*/
