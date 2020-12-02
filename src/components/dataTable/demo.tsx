@@ -4,6 +4,7 @@ import {
   useTable,
   usePagination,
   useSortBy,
+  useResizeColumns,
   useBlockLayout,
 } from "react-table";
 import Table from "@material-ui/core/Table";
@@ -15,39 +16,72 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TableFooter from "@material-ui/core/TableFooter";
 
+/*
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  colCellWrapper: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  colCell: {
+    display: "flex",
+    position: "relative",
+    padding: "0px 16px",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    fontSize: "0.875rem",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+  
+}));
+*/
+
 const serverData = makeData(1000);
 
 export const App = () => {
   const columns = useMemo(
     () => [
       {
-        Header: DefaultHeaderRenderer("First Name"),
         accessor: "firstName",
+        columnName: "First Name",
         TableCellProps: {
           align: "right",
         },
       },
       {
-        Header: DefaultHeaderRenderer("Last Name"),
         accessor: "lastName",
+        columnName: "Last Name",
       },
       {
-        Header: DefaultHeaderRenderer("Age"),
         accessor: "age",
+        columnName: "Age",
       },
       {
-        Header: DefaultHeaderRenderer("Visits"),
         accessor: "visits",
+        columnName: "Visits",
       },
       {
-        Header: DefaultHeaderRenderer("Status"),
         accessor: "status",
+        columnName: "Status",
       },
       {
-        Header: DefaultHeaderRenderer("Profile Progress"),
         accessor: "progress",
+        columnName: "Progress Percentage",
       },
     ],
+    []
+  );
+  const defaultColumn = useMemo(
+    () => ({
+      width: 150,
+      maxWidth: 400,
+      minWidth: 100,
+      Header: DefaultHeaderRenderer,
+    }),
     []
   );
   const [data, setData] = useState([]);
@@ -72,6 +106,7 @@ export const App = () => {
   return (
     <DataTable
       columns={columns}
+      defaultColumn={defaultColumn}
       data={data}
       fetchData={fetchData}
       loading={loading}
@@ -82,6 +117,7 @@ export const App = () => {
 
 const DataTable = ({
   columns,
+  defaultColumn,
   data,
   fetchData,
   loading,
@@ -92,6 +128,7 @@ const DataTable = ({
     getTableBodyProps,
     headerGroups,
     prepareRow,
+    rows,
     page,
     canPreviousPage,
     canNextPage,
@@ -105,6 +142,7 @@ const DataTable = ({
   } = useTable(
     {
       columns,
+      defaultColumn,
       data,
       initialState: { pageIndex: 0, pageSize: 10 },
       manualPagination: true,
@@ -112,7 +150,8 @@ const DataTable = ({
     },
     useSortBy,
     usePagination,
-    useBlockLayout
+    useBlockLayout,
+    useResizeColumns
   );
 
   useEffect(() => {
@@ -127,13 +166,17 @@ const DataTable = ({
             return (
               <TableRow component="div" {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => {
-                  console.log(column);
                   return (
                     <TableCell
                       component="div"
                       variant="head"
                       {...column.TableCellProps}
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      {...column.getHeaderProps([
+                        {
+                          style: { position: "relative" },
+                        },
+                        column.getSortByToggleProps(),
+                      ])}
                     >
                       {column.render("Header")}
                     </TableCell>
@@ -144,20 +187,50 @@ const DataTable = ({
           })}
         </TableHead>
       </Table>
-      <TableBody component="div" {...getTableBodyProps()}></TableBody>
     </TableContainer>
   );
 };
 
-const DefaultHeaderRenderer = (columnName) => ({ column }) => {
+const DefaultHeaderRenderer = ({ column }) => {
+  console.log(column);
+  /*eslint-disable react-hooks/rules-of-hooks*/
+  const spanEl = useRef(null);
+  useEffect(() => {
+    console.log(column.columnName, "-mounted");
+    return () => {
+      console.log(column.columnName, "-unmounted");
+    };
+  });
+
   return (
     <>
-      <span>{columnName}</span>
       <TableSortLabel
         active={column.isSorted}
         direction={column.isSortedDesc ? "desc" : "asc"}
-      />
-      <div style={{ display: "inline-block" }}>
+      >
+        <span
+          ref={spanEl}
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellpsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {column.columnName}
+        </span>
+      </TableSortLabel>
+
+      <div
+        {...column.getResizerProps([
+          {
+            style: {
+              display: "inline-block",
+              position: "absolute",
+              right: "-12px",
+            },
+          },
+        ])}
+      >
         <svg
           className="MuiSvgIcon-root "
           focusable="false"
@@ -170,3 +243,26 @@ const DefaultHeaderRenderer = (columnName) => ({ column }) => {
     </>
   );
 };
+
+/*
+<TableBody component="div" {...getTableBodyProps()}>
+          {page.map((row) => {
+            prepareRow(row);
+            return (
+              <TableRow component="div" {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <TableCell
+                      component="div"
+                      variant="body"
+                      {...cell.getCellProps([{ ...cell.TableCellProps }])}
+                    >
+                      {cell.render("Cell")}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+*/
