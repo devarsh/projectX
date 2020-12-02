@@ -6,6 +6,7 @@ import {
   useSortBy,
   useResizeColumns,
   useBlockLayout,
+  useRowSelect,
 } from "react-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -15,6 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TableFooter from "@material-ui/core/TableFooter";
+import Checkbox from "@material-ui/core/Checkbox";
 
 /*
 import { makeStyles } from "@material-ui/core/styles";
@@ -48,9 +50,6 @@ export const App = () => {
       {
         accessor: "firstName",
         columnName: "First Name",
-        TableCellProps: {
-          align: "right",
-        },
       },
       {
         accessor: "lastName",
@@ -59,6 +58,10 @@ export const App = () => {
       {
         accessor: "age",
         columnName: "Age",
+        TableCellProps: {
+          align: "right",
+        },
+        width: 90,
       },
       {
         accessor: "visits",
@@ -79,11 +82,15 @@ export const App = () => {
     () => ({
       width: 150,
       maxWidth: 400,
-      minWidth: 100,
+      minWidth: 70,
       Header: DefaultHeaderRenderer,
+      Cell: DefaultCellRenderer,
     }),
     []
   );
+  const getRowId = useCallback((row, relativeIndex, parent) => {
+    return row.id;
+  }, []);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
@@ -111,6 +118,7 @@ export const App = () => {
       fetchData={fetchData}
       loading={loading}
       pageCount={pageCount}
+      getRowId={getRowId}
     />
   );
 };
@@ -122,6 +130,7 @@ const DataTable = ({
   fetchData,
   loading,
   pageCount: controlledPageCount,
+  getRowId,
 }) => {
   const {
     getTableProps,
@@ -138,21 +147,26 @@ const DataTable = ({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, selectedRowIds },
   } = useTable(
     {
       columns,
       defaultColumn,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: 5 },
       manualPagination: true,
       pageCount: controlledPageCount,
+      getRowId,
     },
     useSortBy,
     usePagination,
+    useRowSelect,
+    useResizeColumns,
     useBlockLayout,
-    useResizeColumns
+    useCheckboxColumn
   );
+
+  console.log(selectedRowIds);
 
   useEffect(() => {
     fetchData({ pageIndex, pageSize });
@@ -175,7 +189,6 @@ const DataTable = ({
                         {
                           style: { position: "relative" },
                         },
-                        column.getSortByToggleProps(),
                       ])}
                     >
                       {column.render("Header")}
@@ -186,33 +199,81 @@ const DataTable = ({
             );
           })}
         </TableHead>
+        <TableBody component="div" {...getTableBodyProps()}>
+          {page.map((row) => {
+            prepareRow(row);
+
+            return (
+              <TableRow
+                component="div"
+                selected={row.isSelected}
+                {...row.getRowProps()}
+              >
+                {row.cells.map((cell) => {
+                  return (
+                    <TableCell
+                      component="div"
+                      variant="head"
+                      {...cell.getCellProps([
+                        { ...(cell?.column?.TableCellProps ?? {}) },
+                        {
+                          style: {
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            display: "flex",
+                          },
+                        },
+                      ])}
+                    >
+                      {cell.render("Cell")}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
       </Table>
     </TableContainer>
   );
 };
 
-const DefaultHeaderRenderer = ({ column }) => {
-  console.log(column);
-  /*eslint-disable react-hooks/rules-of-hooks*/
-  const spanEl = useRef(null);
-  useEffect(() => {
-    console.log(column.columnName, "-mounted");
-    return () => {
-      console.log(column.columnName, "-unmounted");
-    };
-  });
+const DefaultCellRenderer = ({ column, value }) => {
+  return (
+    <span
+      style={{
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {value}
+    </span>
+  );
+};
 
+const DefaultHeaderRenderer = ({ column }) => {
   return (
     <>
       <TableSortLabel
         active={column.isSorted}
         direction={column.isSortedDesc ? "desc" : "asc"}
+        {...column.getSortByToggleProps([
+          {
+            style: {
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              display: "flex",
+            },
+          },
+        ])}
       >
         <span
-          ref={spanEl}
           style={{
             overflow: "hidden",
-            textOverflow: "ellpsis",
+            textOverflow: "ellipsis",
             whiteSpace: "nowrap",
           }}
         >
@@ -227,6 +288,8 @@ const DefaultHeaderRenderer = ({ column }) => {
               display: "inline-block",
               position: "absolute",
               right: "-12px",
+              top: "calc(50% - 12px)",
+              padding: "0 5px",
             },
           },
         ])}
@@ -244,25 +307,34 @@ const DefaultHeaderRenderer = ({ column }) => {
   );
 };
 
-/*
-<TableBody component="div" {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <TableRow component="div" {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell
-                      component="div"
-                      variant="body"
-                      {...cell.getCellProps([{ ...cell.TableCellProps }])}
-                    >
-                      {cell.render("Cell")}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-*/
+const CheckboxCellRenderer = ({ row }) => {
+  return (
+    <Checkbox
+      size="small"
+      {...row.getToggleRowSelectedProps([{ style: { padding: 0 } }])}
+    />
+  );
+};
+
+const CheckboxHeaderRenderer = ({ getToggleAllPageRowsSelectedProps }) => {
+  return (
+    <Checkbox
+      size="small"
+      {...getToggleAllPageRowsSelectedProps([{ style: { padding: 0 } }])}
+    />
+  );
+};
+
+const useCheckboxColumn = (hooks) => {
+  hooks.visibleColumns.push((columns) => [
+    {
+      id: "selection",
+      Header: CheckboxHeaderRenderer,
+      Cell: CheckboxCellRenderer,
+      minWidth: 20,
+      width: 20,
+      maxWidth: 20,
+    },
+    ...columns,
+  ]);
+};

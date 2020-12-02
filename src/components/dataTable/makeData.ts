@@ -8,9 +8,10 @@ const range = (len) => {
   return arr;
 };
 
-const newPerson = () => {
+const newPerson = (ID: Number) => {
   const statusChance = Math.random();
   return {
+    id: `X-${ID}`,
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     dob: faker.date.past(),
@@ -29,9 +30,9 @@ const newPerson = () => {
 export const makeData = (...lens) => {
   const makeDataLevel = (depth = 0) => {
     const len = lens[depth];
-    return range(len).map((d) => {
+    return range(len).map((d, index) => {
       return {
-        ...newPerson(),
+        ...newPerson(index),
         subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       };
     });
