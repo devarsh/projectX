@@ -21,7 +21,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import TablePagination from "@material-ui/core/TablePagination";
+
+import FirstPageIcon from "@material-ui/icons/FirstPage";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import LastPageIcon from "@material-ui/icons/LastPage";
 
 /*
 import { makeStyles } from "@material-ui/core/styles";
@@ -47,7 +54,7 @@ const useStyles = makeStyles(() => ({
 }));
 */
 
-const serverData = makeData(70);
+const serverData = makeData(75);
 
 export const App = () => {
   const columns = useMemo(
@@ -137,31 +144,32 @@ const DataTable = ({
   pageCount: controlledPageCount,
   getRowId,
 }) => {
+  const skipPageResetRef = useRef(false);
+
+  useEffect(() => {
+    console.log("mounted-table");
+    return () => console.log("unmounted table");
+  }, []);
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    rows,
     page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
     gotoPage,
-    nextPage,
-    previousPage,
     setPageSize,
-    state: { pageIndex, pageSize, selectedRowIds },
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       defaultColumn,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0 },
       manualPagination: true,
       pageCount: controlledPageCount,
       getRowId,
+      autoResetPage: !skipPageResetRef.current,
     },
     useSortBy,
     usePagination,
@@ -170,15 +178,23 @@ const DataTable = ({
     useBlockLayout,
     useCheckboxColumn
   );
-  const [dense, setDense] = useState(false);
-
+  const [dense, setDense] = useState(true);
   useEffect(() => {
     fetchData({ pageIndex, pageSize });
+    skipPageResetRef.current = true;
   }, [fetchData, pageIndex, pageSize]);
 
   const cellSize = dense ? 34 : 54;
   const emptyRows = pageSize - Math.min(pageSize, page.length);
-  console.log(page.length, pageSize);
+
+  const handleChangePage = (event, newPage) => {
+    gotoPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPageSize(Number(event.target.value));
+  };
+
   return (
     <Paper>
       <EnchancedToolbar dense={dense} />
@@ -259,6 +275,23 @@ const DataTable = ({
               </TableRow>
             ) : null}
           </TableBody>
+          <TableFooter component="div">
+            <TableRow component="div">
+              <TablePagination
+                style={{ display: "flex" }}
+                variant="body"
+                component="div"
+                rowsPerPageOptions={[5, 10, 15]}
+                colSpan={3}
+                count={controlledPageCount * 10}
+                rowsPerPage={pageSize}
+                page={pageIndex}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </Paper>
@@ -385,5 +418,71 @@ const EnchancedToolbar = ({ dense }) => {
         Demo Table
       </Typography>
     </Toolbar>
+  );
+};
+
+const useTablePaginationStyles = makeStyles((theme) => ({
+  root: {
+    flexShrink: 0,
+    marginLeft: theme.spacing(2.5),
+  },
+}));
+
+const TablePaginationActions = (props) => {
+  const classes = useTablePaginationStyles();
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onChangePage } = props;
+
+  const handleFirstPageChange = (event) => {
+    onChangePage(event, 0);
+  };
+  const handleBackButtonClick = (event) => {
+    onChangePage(event, page - 1);
+  };
+  const handleNextButtonClick = (event) => {
+    onChangePage(event, page + 1);
+  };
+  const handleLastPageButtonClick = (event) => {
+    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <div className={classes.root}>
+      <IconButton
+        onClick={handleFirstPageChange}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next Page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </div>
   );
 };
