@@ -16,7 +16,12 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TableFooter from "@material-ui/core/TableFooter";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
 import Checkbox from "@material-ui/core/Checkbox";
+import Paper from "@material-ui/core/Paper";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { makeStyles } from "@material-ui/core/styles";
 
 /*
 import { makeStyles } from "@material-ui/core/styles";
@@ -42,7 +47,7 @@ const useStyles = makeStyles(() => ({
 }));
 */
 
-const serverData = makeData(1000);
+const serverData = makeData(70);
 
 export const App = () => {
   const columns = useMemo(
@@ -153,7 +158,7 @@ const DataTable = ({
       columns,
       defaultColumn,
       data,
-      initialState: { pageIndex: 0, pageSize: 5 },
+      initialState: { pageIndex: 0, pageSize: 10 },
       manualPagination: true,
       pageCount: controlledPageCount,
       getRowId,
@@ -165,77 +170,98 @@ const DataTable = ({
     useBlockLayout,
     useCheckboxColumn
   );
-
-  console.log(selectedRowIds);
+  const [dense, setDense] = useState(false);
 
   useEffect(() => {
     fetchData({ pageIndex, pageSize });
   }, [fetchData, pageIndex, pageSize]);
 
+  const cellSize = dense ? 34 : 54;
+  const emptyRows = pageSize - Math.min(pageSize, page.length);
+  console.log(page.length, pageSize);
   return (
-    <TableContainer>
-      <Table component="div" {...getTableProps()}>
-        <TableHead component="div">
-          {headerGroups.map((headerGroup) => {
-            return (
-              <TableRow component="div" {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => {
-                  return (
-                    <TableCell
-                      component="div"
-                      variant="head"
-                      {...column.TableCellProps}
-                      {...column.getHeaderProps([
-                        {
-                          style: { position: "relative" },
-                        },
-                      ])}
-                    >
-                      {column.render("Header")}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
-        </TableHead>
-        <TableBody component="div" {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
+    <Paper>
+      <EnchancedToolbar dense={dense} />
+      <TableContainer>
+        <Table
+          component="div"
+          {...getTableProps()}
+          size={dense ? "small" : "medium"}
+        >
+          <TableHead component="div">
+            {headerGroups.map((headerGroup) => {
+              return (
+                <TableRow
+                  component="div"
+                  {...headerGroup.getHeaderGroupProps()}
+                >
+                  {headerGroup.headers.map((column) => {
+                    return (
+                      <TableCell
+                        component="div"
+                        variant="head"
+                        {...column.TableCellProps}
+                        {...column.getHeaderProps([
+                          {
+                            style: { position: "relative" },
+                          },
+                        ])}
+                      >
+                        {column.render("Header")}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableHead>
+          {loading ? <LinearProgress /> : null}
+          <TableBody component="div" {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
 
-            return (
+              return (
+                <TableRow
+                  component="div"
+                  selected={row.isSelected}
+                  {...row.getRowProps()}
+                >
+                  {row.cells.map((cell) => {
+                    return (
+                      <TableCell
+                        component="div"
+                        variant="head"
+                        {...cell.getCellProps([
+                          { ...(cell?.column?.TableCellProps ?? {}) },
+                          {
+                            style: {
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              display: "flex",
+                            },
+                          },
+                        ])}
+                      >
+                        {cell.render("Cell")}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+            {emptyRows > 0 ? (
               <TableRow
                 component="div"
-                selected={row.isSelected}
-                {...row.getRowProps()}
+                style={{ height: emptyRows * cellSize }}
               >
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell
-                      component="div"
-                      variant="head"
-                      {...cell.getCellProps([
-                        { ...(cell?.column?.TableCellProps ?? {}) },
-                        {
-                          style: {
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            display: "flex",
-                          },
-                        },
-                      ])}
-                    >
-                      {cell.render("Cell")}
-                    </TableCell>
-                  );
-                })}
+                <TableCell component="div" />
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            ) : null}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 
@@ -259,6 +285,7 @@ const DefaultHeaderRenderer = ({ column }) => {
       <TableSortLabel
         active={column.isSorted}
         direction={column.isSortedDesc ? "desc" : "asc"}
+        hideSortIcon={true}
         {...column.getSortByToggleProps([
           {
             style: {
@@ -337,4 +364,26 @@ const useCheckboxColumn = (hooks) => {
     },
     ...columns,
   ]);
+};
+
+const useToolbarStyles = makeStyles(() => ({
+  title: {
+    flex: "1 1 100%",
+  },
+}));
+
+const EnchancedToolbar = ({ dense }) => {
+  const classes = useToolbarStyles();
+  return (
+    <Toolbar variant={dense ? "dense" : "regular"}>
+      <Typography
+        className={classes.title}
+        color="inherit"
+        variant="h6"
+        component="div"
+      >
+        Demo Table
+      </Typography>
+    </Toolbar>
+  );
 };
