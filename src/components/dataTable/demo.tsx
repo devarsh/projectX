@@ -33,6 +33,7 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
 const serverData = makeData(75);
 
@@ -85,8 +86,9 @@ export const App = () => {
   }, []);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [dense] = useState(false);
+  const [dense] = useState(true);
   const [pageCount, setPageCount] = useState(0);
+
   const fetchIdRef = useRef(0);
 
   const fetchData = useCallback(({ pageSize, pageIndex }) => {
@@ -130,18 +132,9 @@ const DataTable = ({
   getRowId,
 }) => {
   const skipPageResetRef = useRef(false);
+  const maxWidth = 998;
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    gotoPage,
-    setPageSize,
-    selectedFlatRows,
-    state: { pageIndex, pageSize },
-  } = useTable(
+  const tableState = useTable(
     {
       columns,
       defaultColumn,
@@ -159,6 +152,19 @@ const DataTable = ({
     useBlockLayout,
     useCheckboxColumn
   );
+  console.log(tableState);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    gotoPage,
+    setPageSize,
+    selectedFlatRows,
+    totalColumnsWidth,
+    state: { pageIndex, pageSize },
+  } = tableState;
 
   useEffect(() => {
     fetchData({ pageIndex, pageSize });
@@ -177,7 +183,11 @@ const DataTable = ({
   };
 
   return (
-    <Paper>
+    <Paper
+      style={{
+        width: totalColumnsWidth < maxWidth ? totalColumnsWidth : maxWidth,
+      }}
+    >
       <EnchancedToolbar
         tableName={tableName}
         dense={dense}
@@ -238,7 +248,7 @@ const DataTable = ({
               {
                 style: {
                   display: "block",
-                  maxHeight: "calc(100vh - 40*8px)",
+                  maxHeight: "calc(100vh - 42*8px)",
                 },
               },
             ])}
@@ -301,7 +311,7 @@ const DataTable = ({
         style={{ display: "flex" }}
         variant="body"
         component="div"
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[5, 10, 15, 20]}
         colSpan={3}
         count={controlledPageCount * 10}
         rowsPerPage={pageSize}
@@ -472,6 +482,11 @@ const EnchancedToolbar = ({ dense, tableName, getRowId, selectedFlatRows }) => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
+      ) : null}
+      {selectedCount === 0 ? (
+        <IconButton aria-label="config">
+          <FilterListIcon />
+        </IconButton>
       ) : null}
     </Toolbar>
   );
