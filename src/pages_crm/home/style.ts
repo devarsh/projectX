@@ -75,7 +75,6 @@ export const becomePartnerStyle = (theme: Theme): any => ({
     textTransform: "capitalize",
     textAlign: "center",
     background: "#fff",
-    //@ts-ignore
     border: "1px solid #42C2AB",
     borderRadius: "24px",
     minWidth: "145px",
