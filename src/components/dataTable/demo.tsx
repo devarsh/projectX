@@ -30,30 +30,6 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 
-/*
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles(() => ({
-  colCellWrapper: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  colCell: {
-    display: "flex",
-    position: "relative",
-    padding: "0px 16px",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    fontSize: "0.875rem",
-    fontWeight: "600",
-    cursor: "pointer",
-  },
-  
-}));
-*/
-
 const serverData = makeData(75);
 
 export const App = () => {
@@ -100,11 +76,12 @@ export const App = () => {
     }),
     []
   );
-  const getRowId = useCallback((row, relativeIndex, parent) => {
+  const getRowId = useCallback((row) => {
     return row.id;
   }, []);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dense] = useState(true);
   const [pageCount, setPageCount] = useState(0);
   const fetchIdRef = useRef(0);
 
@@ -124,6 +101,8 @@ export const App = () => {
 
   return (
     <DataTable
+      tableName={"Demo Table"}
+      dense={dense}
       columns={columns}
       defaultColumn={defaultColumn}
       data={data}
@@ -136,6 +115,8 @@ export const App = () => {
 };
 
 const DataTable = ({
+  dense,
+  tableName,
   columns,
   defaultColumn,
   data,
@@ -146,11 +127,6 @@ const DataTable = ({
 }) => {
   const skipPageResetRef = useRef(false);
 
-  useEffect(() => {
-    console.log("mounted-table");
-    return () => console.log("unmounted table");
-  }, []);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -159,7 +135,8 @@ const DataTable = ({
     page,
     gotoPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    pageCount,
+    state: { pageIndex, pageSize, selectedRowIds, selectedFlatRows },
   } = useTable(
     {
       columns,
@@ -169,7 +146,7 @@ const DataTable = ({
       manualPagination: true,
       pageCount: controlledPageCount,
       getRowId,
-      autoResetPage: !skipPageResetRef.current,
+      autoResetPage: false,
     },
     useSortBy,
     usePagination,
@@ -178,7 +155,7 @@ const DataTable = ({
     useBlockLayout,
     useCheckboxColumn
   );
-  const [dense, setDense] = useState(true);
+
   useEffect(() => {
     fetchData({ pageIndex, pageSize });
     skipPageResetRef.current = true;
@@ -197,7 +174,12 @@ const DataTable = ({
 
   return (
     <Paper>
-      <EnchancedToolbar dense={dense} />
+      <EnchancedToolbar
+        tableName={tableName}
+        dense={dense}
+        selectedRowsIds={selectedRowIds}
+        selectedFlatRows={selectedFlatRows}
+      />
       <TableContainer>
         <Table
           component="div"
@@ -231,7 +213,7 @@ const DataTable = ({
               );
             })}
           </TableHead>
-          {loading ? <LinearProgress /> : null}
+          {loading ? <LinearProgress /> : <LinearProgressSpacer />}
           <TableBody component="div" {...getTableBodyProps()}>
             {page.map((row) => {
               prepareRow(row);
@@ -275,25 +257,21 @@ const DataTable = ({
               </TableRow>
             ) : null}
           </TableBody>
-          <TableFooter component="div">
-            <TableRow component="div">
-              <TablePagination
-                style={{ display: "flex" }}
-                variant="body"
-                component="div"
-                rowsPerPageOptions={[5, 10, 15]}
-                colSpan={3}
-                count={controlledPageCount * 10}
-                rowsPerPage={pageSize}
-                page={pageIndex}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
         </Table>
       </TableContainer>
+      <TablePagination
+        style={{ display: "flex" }}
+        variant="body"
+        component="div"
+        rowsPerPageOptions={[5, 10, 15]}
+        colSpan={3}
+        count={controlledPageCount * 10}
+        rowsPerPage={pageSize}
+        page={pageIndex}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+        ActionsComponent={TablePaginationActions}
+      />
     </Paper>
   );
 };
@@ -405,8 +383,14 @@ const useToolbarStyles = makeStyles(() => ({
   },
 }));
 
-const EnchancedToolbar = ({ dense }) => {
+const EnchancedToolbar = ({
+  dense,
+  tableName,
+  selectedRowsIds,
+  selectedFlatRows,
+}) => {
   const classes = useToolbarStyles();
+  console.log(selectedRowsIds, selectedFlatRows);
   return (
     <Toolbar variant={dense ? "dense" : "regular"}>
       <Typography
@@ -415,7 +399,7 @@ const EnchancedToolbar = ({ dense }) => {
         variant="h6"
         component="div"
       >
-        Demo Table
+        {tableName}
       </Typography>
     </Toolbar>
   );
@@ -485,4 +469,22 @@ const TablePaginationActions = (props) => {
       </IconButton>
     </div>
   );
+};
+
+const useLinerProgressStyle = makeStyles(() => ({
+  root: {
+    position: "relative",
+    overflow: "hidden",
+    display: "block",
+    height: 4,
+    zIndex: 0,
+    "@media print": {
+      colorAdjust: "exact",
+    },
+  },
+}));
+
+const LinearProgressSpacer = () => {
+  const classes = useLinerProgressStyle();
+  return <div className={classes.root}></div>;
 };
