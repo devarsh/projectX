@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
@@ -34,8 +34,6 @@ export const Login = () => {
   const [showPwddiv, setshowPwddiv] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [id, setid] = useState("");
-  const [expiryOtpTime, setexpiryOtpTime] = useState("");
   const [time, setTime] = useState(0);
 
   let expiryTime = 60;
@@ -61,10 +59,10 @@ export const Login = () => {
       try {
         setLoading(true);
         const result = await APISDK.requestForOTP(fields.phoneNumber);
-        // console.log("result request otp", result);
+        console.log("result request otp", result);
         if (result.status === "success") {
-          setid(result?.data?.id);
-          setexpiryOtpTime(result?.data?.sdatetime);
+          // setid(result?.data?.id);
+          // setexpiryOtpTime(result?.data?.sdatetime);
           setotpVerifydivShowing(true);
           setLoading(false);
           displayIntervale();
@@ -120,11 +118,10 @@ export const Login = () => {
     try {
       setLoading(true);
       const result = await APISDK.handleverifyOtp(
-        fields.otp,
-        expiryOtpTime,
-        id
+        fields.phoneNumber,
+        fields.otp
       );
-      // console.log("result verify otp", result);
+      console.log("result verify otp", result);
       if (result.status === "success") {
         setLoading(false);
         navigate("/dashboard");
@@ -144,10 +141,10 @@ export const Login = () => {
       try {
         setLoading(true);
         const result = await APISDK.handleverifyPwd(
-          fields.password,
-          fields.phoneNumber
+          fields.phoneNumber,
+          fields.password
         );
-        // console.log("result for password", result);
+        console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);
           navigate("/dashboard");

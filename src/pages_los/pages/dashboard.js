@@ -11,7 +11,6 @@ import GroupIcon from "@material-ui/icons/Group";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 
 import {
-  SMELoanIcon,
   ConstructionFinanceIcon,
   BusinessLoanIcon,
   RetailHomeLoanIcon,

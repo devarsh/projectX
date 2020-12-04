@@ -7,6 +7,7 @@ import "registry/fns";
 import "registry/yup";
 import { APISDK } from "registry/fns/sdk";
 import IndexPage from "pages_crm";
+
 APISDK.createSession(process.env.REACT_APP_API_URL ?? "");
 
 const themeObj = createMuiTheme(theme);

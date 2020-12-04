@@ -27,12 +27,12 @@ export const EmployeeLead = () => {
   const [InquiryDetailsList, setInquiryDetailsList] = useState([]);
   const [openDetails, setOpenDetails] = useState(false);
   const currentInqCode = useRef("");
-  const [currentRow, setCurrentRow] = useState({});
+  // const [currentRow, setCurrentRow] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleClickOpen = (event, currenIndex) => {
     event.preventDefault();
-    setCurrentRow(InquiryDetailsList[currenIndex]);
+    // setCurrentRow(InquiryDetailsList[currenIndex]);
     currentInqCode.current = InquiryDetailsList[currenIndex][0];
     setOpenDetails(true);
   };
@@ -77,63 +77,63 @@ export const EmployeeLead = () => {
   const columns = [
     {
       label: "Inquiry ID",
-      name: "InquiryId",
+      name: "inquiryId",
       options: {
         filter: false,
       },
     },
     {
       label: "Inquiry Date",
-      name: "InquiryDate",
+      name: "inquiryDate",
       options: {
         filter: false,
       },
     },
     {
       label: "Product Type",
-      name: "ProductType",
+      name: "productType",
       options: {
         filter: true,
       },
     },
     {
       label: "Customer Name",
-      name: "",
+      name: "customerName",
       options: {
         filter: false,
       },
     },
     {
       label: "Mobile No.",
-      name: "",
+      name: "mobileNumber",
       options: {
         filter: false,
       },
     },
     {
       label: "Email",
-      name: "",
+      name: "email",
       options: {
         filter: false,
       },
     },
     {
       label: "Inquiry Status",
-      name: "",
+      name: "inquiryStatus",
       options: {
         filter: true,
       },
     },
     {
       label: "Lead Generated",
-      name: "Generate_lead",
+      name: "leadGenerated",
       options: {
         filter: true,
       },
     },
     {
       label: "Questionaries / Health Check Score",
-      name: "",
+      name: "questionsHealthCheckScore",
       options: {
         filter: false,
       },

@@ -151,4 +151,22 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       ],
     },
   },
+  email: {
+    render: {
+      componentType: "numberFormat",
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "required", params: ["This field is required"] },
+        {
+          name: "matches",
+          params: [
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            "Please enter Email ID.",
+          ],
+        },
+      ],
+    },
+  },
 };

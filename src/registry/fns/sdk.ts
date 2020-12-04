@@ -18,6 +18,7 @@ const RaatnaFinAPI = () => {
     loginStatus: false,
     token: {},
   };
+
   let sessionToken;
   const createSession = async (APIURL: string) => {
     sessionObj.baseURL = new URL(APIURL);
@@ -56,7 +57,6 @@ const RaatnaFinAPI = () => {
     });
   };
   const verifyRequest = (data) => {
-    // console.log("data", data);
     if (data["access_token"] && data["refresh_token"]) {
       sessionObj.loginStatus = true;
       sessionObj.token = data;
@@ -75,7 +75,7 @@ const RaatnaFinAPI = () => {
     try {
       let response = await fetch(url, payload);
       let data = await response.json();
-      console.log("access token", data);
+      // console.log("access token", data);
       return data;
     } catch (e) {
       return new Error(`Error fetching data-${e.message}`);
@@ -264,13 +264,32 @@ const RaatnaFinAPI = () => {
     ];
   };
 
-  const requestForOTP = async (phoneNumber: string) => {
-    const { data, status } = await internalFetcher("./users/customer_login", {
+  const requestForOTP = async (phoneNumber) => {
+    const { data, status } = await internalFetcher("./users/OTPSent", {
       body: JSON.stringify({
-        action: "customer_login",
+        action: "OTPSent",
         request_data: {
-          mobile: phoneNumber,
-          password: "",
+          mobile_number: phoneNumber,
+          email: "",
+        },
+        channel: "W",
+      }),
+    });
+    console.log("otp sent", data);
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const handleverifyOtp = async (phoneNumber: string, otp) => {
+    const { data, status } = await internalFetcher("./users/OTPVerify", {
+      body: JSON.stringify({
+        action: "OTPVerify",
+        request_data: {
+          mobile_number: phoneNumber,
+          otp: otp,
         },
         channel: "W",
       }),
@@ -282,30 +301,7 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const handleverifyOtp = async (
-    otp: string,
-    expiryOtpTime: string,
-    id: string
-  ) => {
-    const { data, status } = await internalFetcher("./users/otpVerify", {
-      body: JSON.stringify({
-        action: "otp_verify",
-        request_data: {
-          id: id,
-          eotp: otp,
-          sdatetime: expiryOtpTime,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
-  const handleverifyPwd = async (password: string, phoneNumber: string) => {
+  const handleverifyPwd = async (phoneNumber: string, password: string) => {
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
@@ -351,6 +347,22 @@ const RaatnaFinAPI = () => {
       body: JSON.stringify({
         action: submitAction,
         request_data: { ...formData, ...others, formCode: prodCode },
+        channel: "W",
+      }),
+    });
+    console.log("push data ", data);
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
+  };
+
+  const pushBecomePartnerData = async (submitAction, formData?: any) => {
+    const { data, status } = await internalFetcher("./users/become_partner", {
+      body: JSON.stringify({
+        action: submitAction,
+        request_data: { ...formData },
         channel: "W",
       }),
     });
@@ -426,6 +438,19 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const getValidatePanNumber = async (currentField) => {
+    const { data, status } = await internalFetcher("./users/panvalidator", {
+      body: JSON.stringify({
+        action: "panvalidator",
+        request_data: { doc_number: currentField?.value ?? "INVALID_PAN" },
+        channel: "W",
+      }),
+    });
+
+    console.log(data, status);
+    return "invalid";
+  };
+
   return {
     createSession,
     loginStatus,
@@ -443,6 +468,8 @@ const RaatnaFinAPI = () => {
     getsubProductDtl,
     getDashboardEmployeeDataList,
     getDashdoardDisplayEmpDetails,
+    pushBecomePartnerData,
+    getValidatePanNumber,
   };
 };
 

@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import BecomePartnerImg from "assets/images/BecomePartnerImg.svg";
 import { makeStyles, Theme } from "@material-ui/core/styles";
+import { useNavigate } from "react-router-dom";
 import {
   BecomePartnerNameProps,
   BecomePartnerStyleProps,
@@ -15,6 +16,7 @@ const useStyles = makeStyles<Theme, BecomePartnerStyleProps>(
 );
 
 export const BecomePartner = () => {
+  const navigate = useNavigate();
   const classes: BecomePartnerNameProps = useStyles(
     {} as BecomePartnerStyleProps
   );
@@ -42,7 +44,15 @@ export const BecomePartner = () => {
             </div>
           </div>
           <div className="mt-auto mb-2">
-            <Button className={classes.applyButton}>Apply Now</Button>
+            <Button
+              className={classes.applyButton}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/becomepartner");
+              }}
+            >
+              Apply Now
+            </Button>
           </div>
         </Box>
       </Container>

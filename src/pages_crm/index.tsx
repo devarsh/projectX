@@ -8,6 +8,8 @@ import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
 import DynamicForm from "components/dyanmicForm";
+import BecomePartner from "./home/becomePartnerMetaData";
+import { PartnerFormWrapper } from "components/dyanmicForm/partnerFormWrapper";
 
 import {
   WrapperStyleProps,
@@ -25,6 +27,12 @@ const Index = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="thankyou" element={<ThankYouPage />} />
+
+        <Route
+          path="becomepartner"
+          element={<PartnerFormWrapper metaData={BecomePartner} />}
+        />
+
         <Route
           path="form/:formName"
           element={

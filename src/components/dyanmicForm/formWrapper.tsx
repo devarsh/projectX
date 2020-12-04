@@ -53,10 +53,11 @@ const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (submitAction: string, navigationProps: Object) => (
-    values,
-    submitEnd
-  ) => {
+
+  const onSubmitHandler = (
+    submitAction: string,
+    navigationProps: Object
+  ) => async (values, submitEnd) => {
     if (displayOTPPage(navigationProps)) {
       setSubmitProps(() => ({
         values: values,
@@ -66,10 +67,19 @@ const FormWrapper: FC<FormWrapperProps> = ({
       }));
       setShowDialog(true);
     } else {
-      const data = APISDK.pushFormData(submitAction, values, navigationProps);
-      console.log(data);
-      submitEnd(true);
-      navigate("/thankyou");
+      const data = await APISDK.pushFormData(
+        submitAction,
+        values,
+        navigationProps
+      );
+
+      if (data.status === "success") {
+        submitEnd(true);
+        alert(data?.data?.msg);
+        navigate("/thankyou");
+      } else {
+        alert(data?.data?.msg);
+      }
     }
   };
   return (
@@ -130,7 +140,6 @@ export const ParentFormWrapper = () => {
 
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
-  //@ts-ignore
 
   useEffect(() => {
     setLoading(true);
@@ -138,6 +147,7 @@ export const ParentFormWrapper = () => {
     //@ts-ignore need to find how to set router loaction state type (react-router-dom)
     APISDK.getMetaData(navigationState)
       .then((result) => {
+        // console.log("result", result);
         metaData.current = result;
         setLoading(false);
       })

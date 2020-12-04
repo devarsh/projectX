@@ -4,7 +4,6 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,7 +11,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { TextField } from "@material-ui/core";
 import { APISDK } from "registry/fns/sdk";
 
 const useStyles = makeStyles((theme) => ({
@@ -99,13 +97,71 @@ export const DisplayData = ({ onClose, open, row }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [InquiryDetailsData, setInquiryDetailsData] = useState([]);
+  const [temp, setTemp] = useState({});
 
   let inquiryCode = row;
   //   console.log("inquiryCode", inquiryCode);
 
+  const data = [
+    {
+      label: "Product Type",
+      type: "text",
+      name: "productType",
+    },
+    {
+      label: "Cutomer Name",
+      type: "text",
+      name: "name",
+    },
+    {
+      label: "Gender",
+      type: "text",
+      name: "gender",
+    },
+    {
+      label: "Date of Birth",
+      type: "text",
+      name: "birth_dt",
+    },
+    {
+      label: "Desired Loan Amount",
+      type: "text",
+      name: "desired_loan_amt",
+    },
+    {
+      label: "Email",
+      type: "text",
+      name: "email",
+    },
+    {
+      label: "Mobile No",
+      type: "text",
+      name: "phoneNumber",
+    },
+    {
+      label: "Currently Employed",
+      type: "text",
+      name: "employeed_type",
+    },
+    {
+      label: "Address",
+      type: "text",
+      name: "address",
+    },
+    {
+      label: "Health Check Score",
+      type: "text",
+      name: "health_score",
+    },
+    {
+      label: "Lead Status",
+      type: "text",
+      name: "inquiry_status",
+    },
+  ];
+
   useEffect(() => {
     const fetcher = async () => {
-      // debugger;
       const result = await APISDK.getDashdoardDisplayEmpDetails(inquiryCode);
       // console.log("result", result.data);
       try {
@@ -113,6 +169,19 @@ export const DisplayData = ({ onClose, open, row }) => {
           let editableData = result.data;
           setInquiryDetailsData(editableData);
           // console.log("InquiryDetailsData", InquiryDetailsData);
+          setTemp({
+            productType: InquiryDetailsData[0].product_type,
+            name: InquiryDetailsData[0].customer_name,
+            gender: InquiryDetailsData[0].gender,
+            birth_dt: InquiryDetailsData[0].birth_dt,
+            desired_loan_amt: InquiryDetailsData[0].desired_loan_amt,
+            email: InquiryDetailsData[0].email_id,
+            phoneNumber: InquiryDetailsData[0].mobile_no,
+            employeed_type: InquiryDetailsData[0].employeed_type,
+            address: InquiryDetailsData[0].address,
+            health_score: InquiryDetailsData[0].health_score,
+            inquiry_status: InquiryDetailsData[0].inquiry_status,
+          });
         }
       } catch (e) {
         console.log("in catch");
@@ -123,222 +192,58 @@ export const DisplayData = ({ onClose, open, row }) => {
 
   return (
     <div>
-      {InquiryDetailsData.map((edit) => {
-        return (
-          <Dialog
-            fullScreen={fullScreen}
-            maxWidth="md"
-            open={open}
-            onClose={onClose}
-            aria-labelledby="Details"
+      <Dialog
+        fullScreen={fullScreen}
+        maxWidth="md"
+        open={open}
+        onClose={onClose}
+        aria-labelledby="Details"
+        minWidth="500"
+      >
+        <DialogTitle id="Details" className={classes.DialogTitle}>
+          Convert to Lead
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container spacing={2}>
+              {data.map((res) => {
+                return temp[res.name] ? (
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Paper className={classes.paper}>
+                      <Box display="flex" flexDirection="row">
+                        <Box width="40%" className={classes.formLabel}>
+                          {res.label}:
+                        </Box>
+                        <Box width="60%" className={classes.formValue}>
+                          {temp[res.name]}
+                        </Box>
+                      </Box>
+                    </Paper>
+                  </Grid>
+                ) : null;
+              })}
+            </Grid>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className="mb-30">
+          <Button
+            autoFocus
+            onClick={onClose}
+            color="primary"
+            className={classes.backBtn}
           >
-            <DialogTitle id="Details" className={classes.DialogTitle}>
-              Convert to Lead
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <h3 className={classes.DetailsTitle}>
-                      Retail LAP (Loan Against Property)
-                    </h3>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Product Type:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.product_type}
-                          {/* Commercial Property Purchase */}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Cutomer Name:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.customer_name}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Gender:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.gender}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Date of Birth:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.birth_dt}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Desired Loan Amount:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          &#x20B9; {edit.desired_loan_amt}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Email:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.email_id}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Mobile No:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.mobile_no}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Currently Employed:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.employeed_type}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Address:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.address}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Paper className={classes.paper}>
-                      <Box display="flex" flexDirection="row">
-                        <Box width="40%" className={classes.formLabel}>
-                          Health Check Score:
-                        </Box>
-                        <Box width="60%" className={classes.formValue}>
-                          {edit.health_score}
-                          {/* <small>Good</small> */}
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                </Grid>
-                <hr className={classes.marginSet}></hr>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <TextField
-                      select
-                      label="Lead Status"
-                      placeholder="Change Status"
-                      fullWidth
-                      required
-                      name="leadtatus"
-                      autoComplete="off"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value="1"
-                      display={true}
-                    >
-                      {/* <MenuItem value={1}>{edit.inquiry_status}</MenuItem> */}
-                      <MenuItem value={1}>Pending</MenuItem>
-                      <MenuItem value={2}>Rejected</MenuItem>
-                      <MenuItem value={3}>Confirmed</MenuItem>
-                    </TextField>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} md={6}>
-                    <TextField
-                      select
-                      label="Lead Assign to Employee"
-                      placeholder="Select Employee"
-                      fullWidth
-                      required
-                      name="leadtatus"
-                      autoComplete="off"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value="1"
-                    >
-                      <MenuItem value={0}>Select Employee</MenuItem>
-                      <MenuItem value={1}>Employee 1</MenuItem>
-                      <MenuItem value={2}>Employee 2</MenuItem>
-                      <MenuItem value={3}>Employee 3</MenuItem>
-                    </TextField>
-                  </Grid>
-                </Grid>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions className="mb-30">
-              <Button
-                autoFocus
-                onClick={onClose}
-                color="primary"
-                className={classes.backBtn}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={onClose}
-                color="primary"
-                autoFocus
-                className={classes.submit}
-              >
-                Submit
-              </Button>
-            </DialogActions>
-          </Dialog>
-        );
-      })}
+            Cancel
+          </Button>
+          <Button
+            onClick={onClose}
+            color="primary"
+            autoFocus
+            className={classes.submit}
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

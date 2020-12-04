@@ -2,7 +2,6 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import SuccessImg from "assets/images/success.svg";
 import {
   shouldContinueToQuestionnaireForm,
