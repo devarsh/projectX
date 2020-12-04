@@ -12,7 +12,6 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
     textTransform: "capitalize",
     color: "#727272",
     padding: "4px 10px",
-    //@ts-ignore
     fontWeight: 700,
     "&:not(:first-child)": {
       borderRadius: "8px",

@@ -19,6 +19,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { TextField } from "@material-ui/core";
+import FilterOptions from "./filterOptions";
 
 const drawerWidth = 240;
 
@@ -247,7 +248,9 @@ const LeadGenerateButton = withStyles({
     color: "white",
     height: 36,
     padding: "0 1rem",
-    fontSize: "1.2rem",
+    fontSize: "1rem",
+    minWidth: "160px",
+    marginLeft: "10px",
     "&:hover": {
       background:
         "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,204,160,1) 35%, rgba(33,150,218,1) 100%)",
@@ -615,7 +618,8 @@ export default function EmployeeLead() {
 
   return (
     <Fragment>
-      <Box display="flex" justifyContent="flex-end" mb={2}>
+      <Box display="flex" justifyContent="space-between" mb={2}>
+        <FilterOptions />
         <LeadGenerateButton>Generate New Lead</LeadGenerateButton>
       </Box>
 

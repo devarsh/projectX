@@ -65,8 +65,7 @@ export const theme: Theme = {
     MuiInputLabel: {
       formControl: {
         color: "#736f6f",
-        //@ts-ignore
-        fontWeight: "600",
+        fontWeight: 600,
         textTransform: "capitalize",
         fontSize: "1rem",
         "@media (max-width: 1200px)": {
@@ -138,8 +137,7 @@ export const theme: Theme = {
     },
     MuiFormLabel: {
       root: {
-        //@ts-ignore
-        fontWeight: "600",
+        fontWeight: 600,
       },
     },
 
@@ -165,6 +163,9 @@ export const theme: Theme = {
     MUIDataTable: {
       liveAnnounce: {
         position: "unset ",
+      },
+      responsiveBase: {
+        maxHeight: "calc(100vh - 272px)",
       },
     },
     MuiTablePagination: {

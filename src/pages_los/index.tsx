@@ -13,13 +13,16 @@ import {
 } from "./style";
 
 import Dashboard from "./pages/dashboard";
-import Lead from "./pages/lead";
+import Leads from "./pages/lead";
+import Lead from "./pages/leadaction";
 import Profile from "./pages/profile";
 import Iframe from "./pages/iframe";
 import { App } from "components/dataTable/demo";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
+
+import TableDemo from "./pages/table";
 
 const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
 
@@ -38,12 +41,14 @@ const DashbordPages = () => {
         <Content>
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/leads" element={<Lead />} />
+            <Route path="/leads" element={<Leads />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/iframe" element={<Iframe />} />
             <Route path="/dgrid" element={<App />} />
             <Route path="/api" element={<APITest />} />
             <Route path="/cam" element={<DynamicLead />} />
+            <Route path="/table" element={<TableDemo />} />
+            <Route path="/lead" element={<Lead />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

@@ -20,8 +20,7 @@ export const theme: Theme = {
         border: 0,
         color: "#fff !important",
         padding: "4px .75rem",
-        //@ts-ignore
-        fontWeight: "700",
+        fontWeight: 700,
         minWidth: "120px",
         letterSpacing: "0.02857em",
         boxShadow: "none",

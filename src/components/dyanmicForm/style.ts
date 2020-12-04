@@ -55,8 +55,7 @@ export const formStyle = (theme: Theme): any => ({
     color: "#26A456",
     letterSpacing: "2px",
     fontSize: "1.25rem",
-    //@ts-ignore
-    fontWeight: "700",
+    fontWeight: 700,
     alignSelf: "flex-start",
     marginBottom: theme.spacing(2),
   },
