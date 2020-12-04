@@ -1,4 +1,6 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from "react";
+import clsx from "clsx";
+import ScrollBar from "react-perfect-scrollbar";
 import { makeData } from "./makeData";
 import {
   useTable,
@@ -15,13 +17,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import TableFooter from "@material-ui/core/TableFooter";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
+import Tooltip from "@material-ui/core/Tooltip";
 import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { lighten, makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -29,6 +31,8 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const serverData = makeData(75);
 
@@ -81,7 +85,7 @@ export const App = () => {
   }, []);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [dense] = useState(true);
+  const [dense] = useState(false);
   const [pageCount, setPageCount] = useState(0);
   const fetchIdRef = useRef(0);
 
@@ -135,8 +139,8 @@ const DataTable = ({
     page,
     gotoPage,
     setPageSize,
-    pageCount,
-    state: { pageIndex, pageSize, selectedRowIds, selectedFlatRows },
+    selectedFlatRows,
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
@@ -177,9 +181,10 @@ const DataTable = ({
       <EnchancedToolbar
         tableName={tableName}
         dense={dense}
-        selectedRowsIds={selectedRowIds}
+        getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
       />
+
       <TableContainer>
         <Table
           component="div"
@@ -194,6 +199,15 @@ const DataTable = ({
                   {...headerGroup.getHeaderGroupProps()}
                 >
                   {headerGroup.headers.map((column) => {
+                    const stickyCheckboxProps =
+                      column.id === "selectionCheckbox"
+                        ? {
+                            position: "sticky",
+                            background: "white",
+                            left: 0,
+                            zIndex: 1,
+                          }
+                        : {};
                     return (
                       <TableCell
                         component="div"
@@ -201,7 +215,10 @@ const DataTable = ({
                         {...column.TableCellProps}
                         {...column.getHeaderProps([
                           {
-                            style: { position: "relative" },
+                            style: {
+                              position: "relative",
+                              ...stickyCheckboxProps,
+                            },
                           },
                         ])}
                       >
@@ -214,7 +231,18 @@ const DataTable = ({
             })}
           </TableHead>
           {loading ? <LinearProgress /> : <LinearProgressSpacer />}
-          <TableBody component="div" {...getTableBodyProps()}>
+
+          <TableBody
+            component="div"
+            {...getTableBodyProps([
+              {
+                style: {
+                  display: "block",
+                  maxHeight: "calc(100vh - 40*8px)",
+                },
+              },
+            ])}
+          >
             {page.map((row) => {
               prepareRow(row);
 
@@ -225,6 +253,15 @@ const DataTable = ({
                   {...row.getRowProps()}
                 >
                   {row.cells.map((cell) => {
+                    const stickyCheckboxProps =
+                      cell.column.id === "selectionCheckbox"
+                        ? {
+                            position: "sticky",
+                            background: "white",
+                            left: 0,
+                            zIndex: 1,
+                          }
+                        : {};
                     return (
                       <TableCell
                         component="div"
@@ -237,6 +274,7 @@ const DataTable = ({
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap",
                               display: "flex",
+                              ...stickyCheckboxProps,
                             },
                           },
                         ])}
@@ -349,7 +387,13 @@ const CheckboxCellRenderer = ({ row }) => {
   return (
     <Checkbox
       size="small"
-      {...row.getToggleRowSelectedProps([{ style: { padding: 0 } }])}
+      {...row.getToggleRowSelectedProps([
+        {
+          style: {
+            padding: 0,
+          },
+        },
+      ])}
     />
   );
 };
@@ -366,7 +410,7 @@ const CheckboxHeaderRenderer = ({ getToggleAllPageRowsSelectedProps }) => {
 const useCheckboxColumn = (hooks) => {
   hooks.visibleColumns.push((columns) => [
     {
-      id: "selection",
+      id: "selectionCheckbox",
       Header: CheckboxHeaderRenderer,
       Cell: CheckboxCellRenderer,
       minWidth: 20,
@@ -377,30 +421,58 @@ const useCheckboxColumn = (hooks) => {
   ]);
 };
 
-const useToolbarStyles = makeStyles(() => ({
+const useToolbarStyles = makeStyles((theme) => ({
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  },
+  highlight:
+    theme.palette.type === "light"
+      ? {
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
+      : {
+          color: theme.palette.secondary.dark,
+          background: theme.palette.secondary.dark,
+        },
   title: {
     flex: "1 1 100%",
   },
 }));
 
-const EnchancedToolbar = ({
-  dense,
-  tableName,
-  selectedRowsIds,
-  selectedFlatRows,
-}) => {
+const EnchancedToolbar = ({ dense, tableName, getRowId, selectedFlatRows }) => {
   const classes = useToolbarStyles();
-  console.log(selectedRowsIds, selectedFlatRows);
+  const selectedCount = selectedFlatRows.length;
   return (
-    <Toolbar variant={dense ? "dense" : "regular"}>
+    <Toolbar
+      className={clsx(classes.root, {
+        [classes.highlight]: selectedCount > 0,
+      })}
+      variant={dense ? "dense" : "regular"}
+    >
       <Typography
         className={classes.title}
         color="inherit"
-        variant="h6"
+        variant={selectedCount > 0 ? "subtitle1" : "h6"}
         component="div"
       >
-        {tableName}
+        {selectedCount > 0 ? `selected ${selectedCount}` : tableName}
       </Typography>
+      {selectedCount === 1 ? (
+        <Tooltip title="edit">
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+      ) : null}
+      {selectedCount > 0 ? (
+        <Tooltip title="delete">
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : null}
     </Toolbar>
   );
 };

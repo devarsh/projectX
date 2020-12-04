@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavBarType, NavItemType } from "pages_crm/header/types";
 import { SideBarNameProps } from "./style";
 import ScrollBar from "react-perfect-scrollbar";
-import "react-perfect-scrollbar/dist/css/styles.css";
 
 export const SideBar: FC<{
   metaData: NavBarType;

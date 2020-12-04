@@ -11,6 +11,7 @@ import {
   WrapperStyleNamesProps,
   wrapperStyles,
 } from "./style";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
