@@ -60,8 +60,8 @@ export const metaData: NavBarType = {
       children: [
         {
           label: "Retail",
+          isRouterLink: false,
           href: "/pages/retail",
-          isRouterLink: true,
           icon: "circle",
         },
         {
@@ -226,6 +226,40 @@ export const metaData: NavBarType = {
         },
       ],
     },
+    {
+      label: "API Management",
+      icon: "link",
+      children: [
+        {
+          label: "Health Checkup",
+          icon: "circle",
+        },
+        {
+          label: "Bank Statement",
+          icon: "circle",
+        },
+        {
+          label: "Fraud Check Unit (FCU)",
+          icon: "circle",
+        },
+        {
+          label: "GST Analysis",
+          icon: "circle",
+        },
+        {
+          label: "ITR Anlaysis",
+          icon: "circle",
+        },
+        {
+          label: "Financial Statement",
+          icon: "circle",
+        },
+        {
+          label: "MCA",
+          icon: "circle",
+        },
+      ],
+    },
 
     {
       label: "Partners",
@@ -234,8 +268,14 @@ export const metaData: NavBarType = {
       icon: "users-cog",
     },
     {
+      label: "Employees",
+      href: "/pages/employees",
+      isRouterLink: true,
+      icon: "users-cog",
+    },
+    {
       label: "Profile",
-      href: "/pages/employee-profile",
+      href: "/profile",
       isRouterLink: true,
       icon: "user-circle",
     },

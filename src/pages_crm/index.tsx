@@ -7,6 +7,7 @@ import NotFoundPage from "./notFound";
 import Header from "./header";
 import Footer from "./footer";
 import Home from "./home";
+import Login from "./login";
 import DynamicForm from "components/dyanmicForm";
 import BecomePartner from "./home/becomePartnerMetaData";
 import { PartnerFormWrapper } from "components/dyanmicForm/partnerFormWrapper";

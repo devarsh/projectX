@@ -13,29 +13,6 @@ export const theme: Theme = {
   },
 
   overrides: {
-    // MuiButton: {
-    //   text: {
-    //     background:
-    //       "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
-    //     border: 0,
-    //     color: "#fff !important",
-    //     padding: "4px .75rem",
-    //     //@ts-ignore
-    //     fontWeight: "700",
-    //     minWidth: "120px",
-    //     letterSpacing: "0.02857em",
-    //     boxShadow: "none",
-    //     textTransform: "capitalize",
-    //     //@ts-ignore
-    //     alignSelf: "flex-end",
-    //     "&:hover": {
-    //       background:
-    //         "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,204,160,1) 35%, rgba(33,150,218,1) 100%)",
-    //       boxShadow: "none",
-    //     },
-    //   },
-    // },
-
     MuiInputBase: {
       root: {
         border: "1px solid #BABABA",
@@ -176,6 +153,28 @@ export const theme: Theme = {
     MuiBadge: {
       badge: {
         backgroundColor: "#da2121 !important",
+      },
+    },
+    MUIDataTableToolbar: {
+      titleText: {
+        fontWeight: "700",
+        color: "#26A456",
+        letterSpacing: "1px",
+      },
+    },
+    MUIDataTable: {
+      liveAnnounce: {
+        position: "unset ",
+      },
+    },
+    MuiTablePagination: {
+      input: {
+        marginTop: "0px",
+      },
+    },
+    MuiTypography: {
+      body1: {
+        fontFamily: '"Montserrat", Helvetica, Arial, Lucida, sans-serif',
       },
     },
   },

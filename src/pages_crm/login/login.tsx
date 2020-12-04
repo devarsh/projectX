@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
-import logoImg from "assets/images/logo.svg";
+import loginImg from "assets/images/login.svg";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 
 import {
@@ -32,10 +32,10 @@ export const Login = () => {
   });
   const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
+  const [id, setid] = useState("");
+  const [expiryOtpTime, setexpiryOtpTime] = useState("");
   const [time, setTime] = useState(0);
 
   let expiryTime = 60;
@@ -57,17 +57,17 @@ export const Login = () => {
   // console.log("phone number", fields.phoneNumber);
 
   const requestOtp = async () => {
-    debugger;
     if (fields.phoneNumber !== "" && fields.phoneNumber.length === 10) {
       try {
         setLoading(true);
         const result = await APISDK.requestForOTP(fields.phoneNumber);
-        // console.log("result", result);
+        // console.log("result request otp", result);
         if (result.status === "success") {
-          // setid(result?.data?.id);
-          // setexpiryOtpTime(result?.data?.sdatetime);
+          setid(result?.data?.id);
+          setexpiryOtpTime(result?.data?.sdatetime);
           setotpVerifydivShowing(true);
           setLoading(false);
+          displayIntervale();
         } else {
           setError(result?.data?.error_msg);
           setLoading(false);
@@ -120,8 +120,9 @@ export const Login = () => {
     try {
       setLoading(true);
       const result = await APISDK.handleverifyOtp(
-        fields.phoneNumber,
-        fields.otp
+        fields.otp,
+        expiryOtpTime,
+        id
       );
       // console.log("result verify otp", result);
       if (result.status === "success") {
@@ -139,15 +140,14 @@ export const Login = () => {
 
   // password= "superacute@1234";
   const verifyPwd = async () => {
-    debugger;
     if (fields.password.length !== 0 || fields.password !== "") {
       try {
         setLoading(true);
         const result = await APISDK.handleverifyPwd(
-          fields.phoneNumber,
-          fields.password
+          fields.password,
+          fields.phoneNumber
         );
-        console.log("result for password", result);
+        // console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);
           navigate("/dashboard");
@@ -167,7 +167,7 @@ export const Login = () => {
   };
 
   const showPassDiv = () => {
-    if (error === "") {
+    if (error === "" && fields.phoneNumber.length === 10) {
       setshowPwddiv(true);
     }
   };
@@ -178,10 +178,17 @@ export const Login = () => {
         display="flex"
         flexDirection="column"
         width={1 / 2}
-        className={classes.loginEmp}
+        className={classes.loginLeft}
       >
-        <img src={logoImg} alt="Ratnaafin" className={classes.logo} />
-        <h2>Employee Login</h2>
+        <img alt="" src={loginImg} className={classes.loginImg} />
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        width={1 / 2}
+        className={classes.loginRight}
+      >
+        <h2>Cutomer Login</h2>
         <div className="text">
           Login with your registered mobile number to access your Ratnaafin
           account.
@@ -197,6 +204,7 @@ export const Login = () => {
               name="password"
               value={fields.password}
               onChange={handleChange("password")}
+              // onChange={(e) => setpassword(e.target.value)}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -228,12 +236,14 @@ export const Login = () => {
               name="otp"
               value={fields.otp}
               onChange={handleChange("otp")}
+              // onChange={(e) => setotp(e.target.value)}
               autoComplete="off"
               inputProps={{ maxLength: 6 }}
               helperText={error ? error : ""}
               error={error ? true : false}
               onBlur={() => setError("")}
             />
+            <Timer time={time} />
             <Button
               disabled={fields.otp.length !== 6 ? true : false}
               onClick={verifyOtp}
@@ -257,8 +267,9 @@ export const Login = () => {
               type="number"
               name="phoneNumber"
               autoComplete="off"
-              value={fields.phoneNumber}
+              defaultValue={fields.phoneNumber}
               onChange={handleChange("phoneNumber")}
+              // onChange={(e) => setphoneNumber(e.target.value)}
               helperText={error ? error : ""}
               error={error ? true : false}
               onBlur={() => setError("")}
@@ -272,9 +283,7 @@ export const Login = () => {
             </Button>
 
             <Box display="flex" justifyContent="center" width={1}>
-              <div className="text">
-                <b>Or</b>
-              </div>
+              <div className="text text-center">Or</div>
             </Box>
 
             <Button onClick={showPassDiv} className={classes.loginBtn}>

@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,6 +12,8 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavBarType, NavItemType } from "pages_crm/header/types";
 import { SideBarNameProps } from "./style";
+import ScrollBar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 export const SideBar: FC<{
   metaData: NavBarType;
@@ -46,7 +49,7 @@ export const SideBar: FC<{
   }
   return (
     <List component="nav" disablePadding className={classes.navLinks}>
-      {result}
+      <ScrollBar>{result}</ScrollBar>
     </List>
   );
 };
@@ -55,19 +58,24 @@ const SingleListItem: FC<{
   item: NavItemType;
   classes: SideBarNameProps;
   level: number;
-}> = ({ item, classes }) => {
+}> = ({ item, classes, level }) => {
   const navigate = useNavigate();
   const icon = item.icon ? (
     <ListItemIcon className={classes.listIcon}>
       <FontAwesomeIcon icon={["fas", item.icon]} />
     </ListItemIcon>
   ) : null;
-
+  const levelClassName =
+    level === 1
+      ? classes.nestedMenuLevel1
+      : level === 2
+      ? classes.nestedMenuLevel2
+      : false;
   return (
     <ListItem
       button
       disableGutters
-      className={classes.item}
+      className={clsx(classes.item, levelClassName)}
       onClick={(e) => {
         e.preventDefault();
         if (item.isRouterLink) {
@@ -78,7 +86,10 @@ const SingleListItem: FC<{
       }}
     >
       {icon}
-      <ListItemText primary={item.label} className={classes.lnk}></ListItemText>
+      <ListItemText
+        primary={item.label}
+        className={classes.link}
+      ></ListItemText>
     </ListItem>
   );
 };
@@ -126,25 +137,39 @@ const NestedListItem: FC<{
       <FontAwesomeIcon icon={["fas", item.icon]} />
     </ListItemIcon>
   ) : null;
+  const levelClassName =
+    level === 1
+      ? classes.nestedMenuLevel1
+      : level === 2
+      ? classes.nestedMenuLevel2
+      : false;
   return (
     <>
       <ListItem
         button
         onClick={handleClick}
         disableGutters
-        className={classes.item}
+        className={
+          open
+            ? clsx(classes.item, levelClassName, classes.openCurrent)
+            : clsx(classes.item, levelClassName)
+        }
       >
         {icon}
         <ListItemText
           primary={item.label}
           color="primary"
-          className={classes.lnk}
+          className={classes.link}
         ></ListItemText>
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
-      <Collapse in={open} timeout="auto" unmountOnExit className="submenu">
-        <List component="div" disablePadding>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List
+          component="div"
+          disablePadding
+          className={open ? classes.openList : ""}
+        >
           {childrens}
         </List>
       </Collapse>

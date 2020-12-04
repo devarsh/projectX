@@ -96,14 +96,16 @@ export const siteNav: NavBarType = {
       children: [
         {
           label: "Customer",
+          href: "/login",
+          isRouterLink: true,
         },
         {
           label: "Partner",
+          href: "/login",
+          isRouterLink: true,
         },
         {
           label: "Employee",
-          href: "/login",
-          isRouterLink: true,
         },
       ],
     },

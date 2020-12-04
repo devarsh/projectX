@@ -25,7 +25,7 @@ select,
   font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
 }
 html {
-  font-size: 16px;
+  font-size: 14px;
 }
 .theme-color1 {
   color: var(--theme-color1);
@@ -33,24 +33,7 @@ html {
 .theme-color2 {
   color: var(--theme-color2);
 }
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background-color: #fff;
-}
-::-webkit-scrollbar-thumb {
-  background-color: var(--theme-color2) !important;
-  background: linear-gradient(
-    -90deg,
-    rgba(94, 231, 131, 1) 0%,
-    rgba(74, 205, 159, 1) 35%,
-    rgba(33, 150, 218, 1) 100%
-  );
 
-  border-radius: 2px;
-  border: 1px solid var(--theme-color2);
-}
 *:focus {
   outline: none !important;
 }
@@ -102,201 +85,73 @@ h2 {
 .follow-link svg:hover path {
   fill: var(--theme-color1);
 }
-header .navbar-nav {
-  justify-content: flex-end;
-  margin-bottom: 4px;
-}
-header nav {
-  justify-content: flex-end !important;
-}
 
-header .navbar-nav li {
-  align-self: center;
+table {
+  color: #333;
+  background: white;
+  font-size: 12pt;
+  border-collapse: collapse;
+  margin: 0px auto;
+  max-width: calc(100% - 2rem);
 }
-
-header .nav-link {
-  color: #555 !important;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
-  font-size: 14px !important;
-  line-height: 1.2 !important;
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
-  font-weight: 600;
-  text-transform: capitalize !important;
-
-  display: flex;
-  align-items: center !important;
-  cursor: pointer;
-}
-
-header a {
-  color: #555 !important;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
-  font-weight: 600 !important;
-  cursor: pointer;
-  text-transform: capitalize;
-}
-header a:hover {
+table thead th,
+table tfoot th {
   color: var(--theme-color1) !important;
+  background: rgba(0, 0, 0, 0.1);
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+}
+table caption {
+  padding: 4px !important;
+}
+table th,
+table td {
+  padding: 0 8px !important;
+  border: 1px solid lightgrey !important;
+  min-width: 180px;
+  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
+}
+table tr {
+  border: 0 !important;
+}
+table tr:nth-of-type(even) {
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 
-header .nav-one .nav-link {
-  font-size: 13px !important;
+table tr th:last-child {
+  width: 130px;
+  min-width: 126px;
 }
-header .nav-three a {
-  color: var(--theme-color1) !important;
-  font-size: 14px !important;
+table tr th:first-child,
+table tr td:first-child {
+  width: 40px;
+  min-width: 40px;
+  background-color: #fff;
 }
-header .nav-three a:hover,
-header .nav-three a:focus {
-  color: var(--theme-color2) !important;
-  background-color: transparent !important;
-}
-
-.dropdown-menu {
-  border: none !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16) !important;
+table tfoot td {
+  border: 0 !important;
 }
 
-header .EliteDropdown {
-  min-width: 290px !important;
+.table-cover .MuiInput-formControl {
+  margin-top: 0 !important;
 }
-header .dropdown-item {
-  padding: 4px 10px;
+.ps__rail-y {
+  width: 10px;
 }
-.dropdown-item.active,
-.dropdown-item:active {
-  text-decoration: none;
-  background-color: none !important;
-}
-header .dropright .dropdown-toggle::after {
-  top: 4px;
-  position: absolute;
-  right: 10px;
-  top: 8px;
-  margin-right: 12px;
-}
-header .dropright .dropdown-menu {
-  margin-left: -1rem !important;
-}
-header li > .dropdown-menu > li a {
-  padding-right: 36px !important;
-}
-header .dropdown-toggle::after {
-  margin-left: 0;
-}
-header .dropdown > div {
-  padding-left: 2px !important;
-  padding-right: 2px !important;
-}
-header li > div.dropdown-toggle {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-}
-.nav-three .dropdown-toggle::after {
-  color: var(--theme-color1);
-}
-
-.HomeWrap {
-  min-height: calc(100vh - 45px);
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.CoreProducts .product-wrap:hover .product-name {
-  color: var(--theme-color2);
-}
-.CoreProducts .product-wrap:hover .product-icon path {
-  fill: var(--theme-color2);
-}
-.submenu .fa-circle {
-  font-size: 11px !important;
-  margin-left: 12px;
+.ps__rail-y:hover > .ps__thumb-y,
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: var(--theme-color1) !important;
+  width: 6px;
 }
 
 @media screen and (min-width: 1440px) {
   .MuiContainer-maxWidthLg {
-    max-width: 1440px !important;
+    max-width: 100% !important;
   }
 }
-
-@media screen and (max-width: 1279px) {
-  header .navbar-brand img {
-    max-width: 100px;
-  }
-  header .navbar-nav {
-    margin-bottom: 0;
-  }
-  h2 {
-    font-size: 1.35rem;
-  }
-  .text {
-    font-size: 1rem;
-  }
-  .BecomePartnerImgWrap {
-    align-self: center;
-  }
-}
-@media screen and (min-width: 992px) and (max-width: 1139px) {
-  .product-row {
-    max-width: 1000px;
-    margin: auto !important;
-  }
-  .product-col {
-    flex: 0 0 25% !important;
-    max-width: 25% !important;
-  }
-}
-@media screen and (max-width: 1199px) {
-  header .navbar-nav .nav-link {
-    padding-right: 0.25rem !important;
-    padding-left: 0.25rem !important;
-  }
-  header .nav-two a,
-  header .nav-three a {
-    font-size: 13px !important;
-  }
-}
-@media screen and (max-width: 1140px) {
-  header nav {
-    padding: 4px 4px !important;
-  }
-  header .navbar-brand img {
-    max-width: 60px;
-  }
-}
-@media screen and (max-width: 1040px) {
-  html {
-    font-size: 14px;
-  }
-  .navigation-links {
-    width: 100%;
-    margin-top: -54px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .navigation-links {
-    width: 100%;
-    margin-top: 0;
-  }
-  .BrandLogo {
-    margin-top: -40px;
-  }
-}
-@media screen and (max-width: 320px) {
-}
-
-@media (max-height: 700px) {
-  html {
-    font-size: 14px;
-  }
-  .CoreProducts {
-    min-height: calc(100vh - 140px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+@media screen and (max-height: 768px) {
+  .MuiContainer-maxWidthLg {
+    padding: 16px !important;
   }
 }
