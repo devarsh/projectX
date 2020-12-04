@@ -32,9 +32,7 @@ export const Login = () => {
   });
   const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
   const [showPwddiv, setshowPwddiv] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
   const [time, setTime] = useState(0);
 
@@ -54,20 +52,17 @@ export const Login = () => {
         break;
     }
   };
-  // console.log("phone number", fields.phoneNumber);
 
   const requestOtp = async () => {
-    debugger;
     if (fields.phoneNumber !== "" && fields.phoneNumber.length === 10) {
       try {
         setLoading(true);
         const result = await APISDK.requestForOTP(fields.phoneNumber);
-        // console.log("result", result);
+        // console.log("result request otp", result);
         if (result.status === "success") {
-          // setid(result?.data?.id);
-          // setexpiryOtpTime(result?.data?.sdatetime);
           setotpVerifydivShowing(true);
           setLoading(false);
+          displayIntervale();
         } else {
           setError(result?.data?.error_msg);
           setLoading(false);
@@ -123,7 +118,7 @@ export const Login = () => {
         fields.phoneNumber,
         fields.otp
       );
-      // console.log("result verify otp", result);
+      console.log("result verify otp", result);
       if (result.status === "success") {
         setLoading(false);
         navigate("/dashboard");
@@ -139,7 +134,6 @@ export const Login = () => {
 
   // password= "superacute@1234";
   const verifyPwd = async () => {
-    debugger;
     if (fields.password.length !== 0 || fields.password !== "") {
       try {
         setLoading(true);
@@ -167,15 +161,20 @@ export const Login = () => {
   };
 
   const showPassDiv = () => {
-    if (error === "") {
+    if (error === "" && fields.phoneNumber.length === 10) {
       setshowPwddiv(true);
     }
   };
 
   return (
     <Box display="flex" width={1} className={classes.wrapper}>
-      <Box display="flex" flexDirection="column" width={1 / 2}>
-        <img src={logoImg} alt="Ratnaafin" />
+      <Box
+        display="flex"
+        flexDirection="column"
+        width={1 / 2}
+        className={classes.loginEmp}
+      >
+        <img src={logoImg} alt="Ratnaafin" className={classes.logo} />
         <h2>Employee Login</h2>
         <div className="text">
           Login with your registered mobile number to access your Ratnaafin
@@ -229,6 +228,7 @@ export const Login = () => {
               error={error ? true : false}
               onBlur={() => setError("")}
             />
+            <Timer time={time} />
             <Button
               disabled={fields.otp.length !== 6 ? true : false}
               onClick={verifyOtp}
@@ -252,7 +252,7 @@ export const Login = () => {
               type="number"
               name="phoneNumber"
               autoComplete="off"
-              value={fields.phoneNumber}
+              defaultValue={fields.phoneNumber}
               onChange={handleChange("phoneNumber")}
               helperText={error ? error : ""}
               error={error ? true : false}

@@ -96,12 +96,12 @@ export const siteNav: NavBarType = {
       children: [
         {
           label: "Customer",
-          href: "/login",
+          href: "/crmlogin",
           isRouterLink: true,
         },
         {
           label: "Partner",
-          href: "/login",
+          href: "/crmlogin",
           isRouterLink: true,
         },
         {
