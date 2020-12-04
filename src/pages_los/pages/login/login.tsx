@@ -174,13 +174,8 @@ export const Login = () => {
 
   return (
     <Box display="flex" width={1} className={classes.wrapper}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        width={1 / 2}
-        className={classes.loginEmp}
-      >
-        <img src={logoImg} alt="Ratnaafin" className={classes.logo} />
+      <Box display="flex" flexDirection="column" width={1 / 2}>
+        <img src={logoImg} alt="Ratnaafin" />
         <h2>Employee Login</h2>
         <div className="text">
           Login with your registered mobile number to access your Ratnaafin
