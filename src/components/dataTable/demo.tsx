@@ -90,7 +90,8 @@ export const App = () => {
   const [pageCount, setPageCount] = useState(0);
   const fetchIdRef = useRef(0);
   const fetchData = useCallback(
-    ({ pageSize, pageIndex }) => {
+    ({ pageSize, pageIndex, sortBy }) => {
+      console.log(pageSize, pageIndex, sortBy);
       const fetchId = ++fetchIdRef.current;
       setLoading(true);
       setTimeout(() => {
@@ -149,7 +150,7 @@ const DataTable = ({
     totalColumnsWidth,
     gotoPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, sortBy },
   } = useTable(
     {
       columns,
@@ -160,22 +161,24 @@ const DataTable = ({
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: false,
+      manualSortBy: false,
       autoResetSortBy: false,
     },
+    useCheckboxColumn,
     useSortBy,
     usePagination,
     useRowSelect,
     useResizeColumns,
     useBlockLayout,
-    useCheckboxColumn
+    useSequenceColumn
   );
 
   const cellSize = dense ? 34 : 54;
   const emptyRows = pageSize - Math.min(pageSize, page.length);
 
   useEffect(() => {
-    fetchData({ pageIndex, pageSize });
-  }, [fetchData, pageIndex, pageSize]);
+    fetchData({ pageIndex, pageSize, sortBy });
+  }, [fetchData, pageIndex, pageSize, sortBy]);
 
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
@@ -255,7 +258,7 @@ const DataTable = ({
               },
             ])}
           >
-            {page.map((row) => {
+            {page.map((row, index) => {
               prepareRow(row);
 
               return (
@@ -291,7 +294,7 @@ const DataTable = ({
                           },
                         ])}
                       >
-                        {cell.render("Cell")}
+                        {cell.render("Cell", { index: index })}
                       </TableCell>
                     );
                   })}
@@ -395,7 +398,8 @@ const DefaultHeaderRenderer = ({ column }) => {
   );
 };
 
-const CheckboxCellRenderer = ({ row }) => {
+const CheckboxCellRenderer = (props) => {
+  const { row } = props;
   return (
     <Checkbox
       size="small"
@@ -576,4 +580,25 @@ const useLinerProgressStyle = makeStyles(() => ({
 const LinearProgressSpacer = () => {
   const classes = useLinerProgressStyle();
   return <div className={classes.root}></div>;
+};
+
+const SequenceCellRenderer = (props) => {
+  console.log(props);
+  const { index } = props;
+  return <div>{index}</div>;
+};
+
+const SequenceHeaderRenderer = ({ getToggleAllPageRowsSelectedProps }) => {
+  return <div>#</div>;
+};
+
+const useSequenceColumn = (hooks) => {
+  hooks.visibleColumns.push((columns) => [
+    {
+      id: "sequence",
+      Header: SequenceHeaderRenderer,
+      Cell: SequenceCellRenderer,
+    },
+    ...columns,
+  ]);
 };
