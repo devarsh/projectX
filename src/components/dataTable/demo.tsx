@@ -1,6 +1,5 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 import clsx from "clsx";
-import ScrollBar from "react-perfect-scrollbar";
 import { makeData } from "./makeData";
 import {
   useTable,
@@ -35,7 +34,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
-const serverData = makeData(75);
+const TotalRecords = 75;
+const maxWidth = 998;
+
+const serverData = makeData(TotalRecords);
 
 export const App = () => {
   const columns = useMemo(
@@ -54,7 +56,7 @@ export const App = () => {
         TableCellProps: {
           align: "right",
         },
-        width: 90,
+        width: 50,
       },
       {
         accessor: "visits",
@@ -81,28 +83,32 @@ export const App = () => {
     }),
     []
   );
+  const [dense] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const fetchIdRef = useRef(0);
+  const fetchData = useCallback(
+    ({ pageSize, pageIndex }) => {
+      const fetchId = ++fetchIdRef.current;
+      setLoading(true);
+      setTimeout(() => {
+        if (fetchId === fetchIdRef.current) {
+          const startRow = pageSize * pageIndex;
+          const endRow = startRow + pageSize;
+          setData(serverData.slice(startRow, endRow));
+          setPageCount(Math.ceil(serverData.length / pageSize));
+        }
+        setTotalRecords(serverData.length);
+        setLoading(false);
+      }, 1000);
+    },
+    [setTotalRecords]
+  );
+
   const getRowId = useCallback((row) => {
     return row.id;
-  }, []);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [dense] = useState(true);
-  const [pageCount, setPageCount] = useState(0);
-
-  const fetchIdRef = useRef(0);
-
-  const fetchData = useCallback(({ pageSize, pageIndex }) => {
-    const fetchId = ++fetchIdRef.current;
-    setLoading(true);
-    setTimeout(() => {
-      if (fetchId === fetchIdRef.current) {
-        const startRow = pageSize * pageIndex;
-        const endRow = startRow + pageSize;
-        setData(serverData.slice(startRow, endRow));
-      }
-      setPageCount(Math.ceil(serverData.length / pageSize));
-      setLoading(false);
-    }, 1000);
   }, []);
 
   return (
@@ -114,36 +120,47 @@ export const App = () => {
       data={data}
       fetchData={fetchData}
       loading={loading}
-      pageCount={pageCount}
       getRowId={getRowId}
+      totalRecords={totalRecords}
+      pageCount={pageCount}
     />
   );
 };
 
 const DataTable = ({
-  dense,
   tableName,
+  dense,
   columns,
   defaultColumn,
   data,
   fetchData,
   loading,
-  pageCount: controlledPageCount,
   getRowId,
+  totalRecords: controlledTotalRecords,
+  pageCount: controlledPageCount,
 }) => {
-  const skipPageResetRef = useRef(false);
-  const maxWidth = 998;
-
-  const tableState = useTable(
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    selectedFlatRows,
+    totalColumnsWidth,
+    gotoPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
     {
       columns,
       defaultColumn,
       data,
+      getRowId,
       initialState: { pageIndex: 0 },
       manualPagination: true,
       pageCount: controlledPageCount,
-      getRowId,
       autoResetPage: false,
+      autoResetSortBy: false,
     },
     useSortBy,
     usePagination,
@@ -152,32 +169,17 @@ const DataTable = ({
     useBlockLayout,
     useCheckboxColumn
   );
-  console.log(tableState);
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    gotoPage,
-    setPageSize,
-    selectedFlatRows,
-    totalColumnsWidth,
-    state: { pageIndex, pageSize },
-  } = tableState;
-
-  useEffect(() => {
-    fetchData({ pageIndex, pageSize });
-    skipPageResetRef.current = true;
-  }, [fetchData, pageIndex, pageSize]);
 
   const cellSize = dense ? 34 : 54;
   const emptyRows = pageSize - Math.min(pageSize, page.length);
 
+  useEffect(() => {
+    fetchData({ pageIndex, pageSize });
+  }, [fetchData, pageIndex, pageSize]);
+
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
@@ -313,7 +315,7 @@ const DataTable = ({
         component="div"
         rowsPerPageOptions={[5, 10, 15, 20]}
         colSpan={3}
-        count={controlledPageCount * 10}
+        count={controlledTotalRecords}
         rowsPerPage={pageSize}
         page={pageIndex}
         onChangePage={handleChangePage}
