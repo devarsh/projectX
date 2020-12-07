@@ -1,25 +1,15 @@
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import SuccessImg from "assets/images/success.svg";
 import {
   shouldContinueToQuestionnaireForm,
   constructNavigationUrlForQuestionnaire,
 } from "../utils/navHelpers";
-import {
-  thankyouPageStyle,
-  ThankyouPageStyleProps,
-  ThankyouPageNameProps,
-} from "./style";
-
-const useStyles = makeStyles<Theme, ThankyouPageStyleProps>(thankyouPageStyle);
+import { useStyles } from "./style";
 
 export const ThankYou = () => {
-  const classes: ThankyouPageNameProps = useStyles(
-    {} as ThankyouPageStyleProps
-  );
+  const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const { state: naviationState } = location;

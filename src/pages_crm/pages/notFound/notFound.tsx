@@ -1,21 +1,11 @@
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import SuccessImg from "assets/images/success.svg";
 import { useNavigate } from "react-router-dom";
-
-import {
-  notFoundPageStyle,
-  NotFoundPageNameProps,
-  NotFoundPageStyleProps,
-} from "./style";
-
-const useStyles = makeStyles<Theme, NotFoundPageStyleProps>(notFoundPageStyle);
+import { useStyles } from "./style";
 
 export const NotFoundPage = () => {
-  const classes: NotFoundPageNameProps = useStyles(
-    {} as NotFoundPageStyleProps
-  );
+  const classes = useStyles();
 
   const navigate = useNavigate();
   return (

@@ -2,12 +2,12 @@ import { FC } from "react";
 import { metaData } from "./metaData";
 import { SideBar } from "./renderer";
 import "./icons";
-import { useStyles, SideBarNameProps, SideBarStyleProps } from "./style";
+import { useStyles } from "./style";
 export const MySideBar: FC<{
   handleDrawerOpen: Function;
   open: boolean;
 }> = ({ handleDrawerOpen, open }) => {
-  const classes: SideBarNameProps = useStyles({} as SideBarStyleProps);
+  const classes = useStyles();
   return (
     <SideBar
       metaData={metaData}

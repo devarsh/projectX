@@ -1,18 +1,6 @@
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface HeaderStyleProps {
-  navBarCSS: BaseCSSProperties;
-  headerDropdown: BaseCSSProperties;
-  navLinkHeader: BaseCSSProperties;
-  productLink: BaseCSSProperties;
-  font13: BaseCSSProperties;
-  loginDropdown: BaseCSSProperties;
-}
-
-export type HeaderNameProps = Record<keyof HeaderStyleProps, string>;
-
-export const headerStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   navBarCSS: {
     padding: "4px 1rem ",
     backgroundColor: "#fff !important",
@@ -34,7 +22,7 @@ export const headerStyle = (theme: Theme): any => ({
     paddingBottom: "4px",
     paddingRight: ".5rem",
     paddingLeft: ".5rem",
-    fontWeight: "600",
+    fontWeight: 600,
     textTransform: "capitalize",
     display: "flex",
     alignItems: "center",
@@ -58,6 +46,4 @@ export const headerStyle = (theme: Theme): any => ({
   loginDropdown: {
     width: "160px",
   },
-});
-
-export const useStyles = makeStyles<Theme, HeaderStyleProps>(headerStyle);
+}));

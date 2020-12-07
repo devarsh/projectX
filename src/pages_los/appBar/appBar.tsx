@@ -22,13 +22,11 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import Logo from "assets/images/logo.svg";
 
-import { useStyles, NavBarNameProps, NavBarStyleProps } from "./style";
-
-//import MenuBar from "../sideBar/menuBar";
+import { useStyles } from "./style";
 
 export const MyAppBar = ({ handleDrawerOpen, open }) => {
   const navigate = useNavigate();
-  const classes: NavBarNameProps = useStyles({} as NavBarStyleProps);
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const inputRef = useRef(null);
   const theme = useTheme();

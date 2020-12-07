@@ -11,12 +11,12 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavBarType, NavItemType } from "pages_crm/header/types";
-import { SideBarNameProps } from "./style";
+import { useStyles } from "./style";
 import ScrollBar from "react-perfect-scrollbar";
 
 export const SideBar: FC<{
   metaData: NavBarType;
-  classes: SideBarNameProps;
+  classes: ReturnType<typeof useStyles>;
   handleDrawerOpen: Function;
   drawerOpen: boolean;
 }> = ({ metaData, classes, handleDrawerOpen, drawerOpen }) => {
@@ -55,7 +55,7 @@ export const SideBar: FC<{
 
 const SingleListItem: FC<{
   item: NavItemType;
-  classes: SideBarNameProps;
+  classes: ReturnType<typeof useStyles>;
   level: number;
 }> = ({ item, classes, level }) => {
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const SingleListItem: FC<{
 
 const NestedListItem: FC<{
   item: NavItemType;
-  classes: SideBarNameProps;
+  classes: ReturnType<typeof useStyles>;
   level: number;
   handleDrawerOpen: Function;
   drawerOpen: boolean;

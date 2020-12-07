@@ -6,10 +6,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
 
-import { useStyles, DrawerNameProps, DrawerStyleProps } from "./style";
+import { useStyles } from "./style";
 
 export const MyDrawer = ({ open, handleDrawerClose, children }) => {
-  const classes: DrawerNameProps = useStyles({} as DrawerStyleProps);
+  const classes = useStyles();
   return (
     <Drawer
       variant="permanent"

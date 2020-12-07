@@ -1,19 +1,6 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface NotFoundPageStyleProps {
-  wrapper: BaseCSSProperties;
-  failureImg: BaseCSSProperties;
-  continueBtn: BaseCSSProperties;
-  center: BaseCSSProperties;
-}
-
-export type NotFoundPageNameProps = Record<
-  keyof NotFoundPageStyleProps,
-  string
->;
-
-export const notFoundPageStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles(() => ({
   wrapper: {
     marginTop: "120px",
     minHeight: "calc(100vh - 165px)",
@@ -37,4 +24,4 @@ export const notFoundPageStyle = (theme: Theme): any => ({
   center: {
     textAlign: "center",
   },
-});
+}));

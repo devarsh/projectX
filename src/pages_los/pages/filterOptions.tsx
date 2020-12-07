@@ -27,6 +27,10 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   grouped: {
     margin: theme.spacing(0.5),
     border: "none",
+    color: "#393939",
+    "&:selected": {
+      color: theme.palette.primary.main,
+    },
     "&:not(:first-child)": {
       borderRadius: theme.shape.borderRadius,
     },
@@ -37,18 +41,15 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
 }))(ToggleButtonGroup);
 
 export default function CustomizedDividers() {
-  const [status, setStatus] = React.useState(() => [
-    "pending",
-    "rejected",
-    "confirmed",
-  ]);
-  const [stages, setStages] = React.useState(() => ["italic"]);
+  const [status, setStatus] = React.useState(() => ["pending", "rejected"]);
+  const [stages, setStages] = React.useState(() => [""]);
+  const [productTypes, setProductTypes] = React.useState(() => [""]);
 
-  const handleStage = (
+  const handleStageFilter = (
     event: React.MouseEvent<HTMLElement>,
-    newFormats: string[]
+    newStages: string[]
   ) => {
-    setStages(newFormats);
+    setStages(newStages);
   };
 
   const handleStatusFilter = (
@@ -56,6 +57,13 @@ export default function CustomizedDividers() {
     newStatus: string[]
   ) => {
     setStatus(newStatus);
+  };
+
+  const handleProductTypesFilter = (
+    event: React.MouseEvent<HTMLElement>,
+    newProductTypes: string[]
+  ) => {
+    setProductTypes(newProductTypes);
   };
 
   const classes = useStyles();
@@ -67,7 +75,7 @@ export default function CustomizedDividers() {
           size="small"
           value={status}
           onChange={handleStatusFilter}
-          aria-label="text alignment"
+          aria-label="text status"
         >
           <ToggleButton value="pending" aria-label="pending">
             Pending
@@ -83,8 +91,8 @@ export default function CustomizedDividers() {
         <StyledToggleButtonGroup
           size="small"
           value={stages}
-          onChange={handleStage}
-          aria-label="text formatting"
+          onChange={handleStageFilter}
+          aria-label="text stage"
         >
           <ToggleButton value="hot" aria-label="hot">
             Hot
@@ -94,6 +102,26 @@ export default function CustomizedDividers() {
           </ToggleButton>
           <ToggleButton value="cold" aria-label="cold">
             Cold
+          </ToggleButton>
+        </StyledToggleButtonGroup>
+        <Divider flexItem orientation="vertical" className={classes.divider} />
+        <StyledToggleButtonGroup
+          size="small"
+          value={productTypes}
+          onChange={handleProductTypesFilter}
+          aria-label="text productyypes"
+        >
+          <ToggleButton value="retail" aria-label="retail">
+            Retail Leads
+          </ToggleButton>
+          <ToggleButton value="unsecured" aria-label="unsecured">
+            Unsecured Leads
+          </ToggleButton>
+          <ToggleButton value="insurance" aria-label="insurance">
+            Insurance Leads
+          </ToggleButton>
+          <ToggleButton value="all" aria-label="all">
+            All
           </ToggleButton>
         </StyledToggleButtonGroup>
       </Paper>

@@ -15,10 +15,10 @@ import CallIcon from "@material-ui/icons/Call";
 import { formsNav, siteNav } from "./metaData";
 import { NavRenderer } from "./renderer";
 import { useState } from "react";
-import { useStyles, HeaderNameProps, HeaderStyleProps } from "./style";
+import { useStyles } from "./style";
 
 export const Navigation = () => {
-  const classes: HeaderNameProps = useStyles({} as HeaderStyleProps);
+  const classes = useStyles();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((open) => !open);

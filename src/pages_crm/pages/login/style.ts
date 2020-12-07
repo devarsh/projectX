@@ -1,23 +1,9 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface LoginPageStyleProps {
-  wrapper: BaseCSSProperties;
-  loginLeft: BaseCSSProperties;
-  loginRight: BaseCSSProperties;
-  loginBtn: BaseCSSProperties;
-  loginImg: BaseCSSProperties;
-  formWrap: BaseCSSProperties;
-  OTPTimer: BaseCSSProperties;
-  resendLink: BaseCSSProperties;
-}
-
-export type LoginPageNameProps = Record<keyof LoginPageStyleProps, string>;
-
-export const loginPageStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   wrapper: {
     marginTop: "102px",
-    minHeight: "calc(100vh - 155px)",
+    minHeight: "calc(100vh - 187px)",
     boxShadow: "0 3px 6px rgba(0,0,0,0.03)",
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 200px)",
@@ -59,13 +45,13 @@ export const loginPageStyle = (theme: Theme): any => ({
   OTPTimer: {
     marginTop: "10px",
     color: theme.palette.primary.main,
-    fontWeight: "600",
+    fontWeight: 600,
   },
   resendLink: {
     marginTop: "10px",
     cursor: "pointer",
     color: theme.palette.secondary.main,
-    fontWeight: "600",
+    fontWeight: 600,
     fontSize: "0.875 rem",
   },
-});
+}));

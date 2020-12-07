@@ -60,7 +60,7 @@ export const metaData: NavBarType = {
       children: [
         {
           label: "Retail",
-          isRouterLink: false,
+          isRouterLink: true,
           href: "/pages/retail",
           icon: "circle",
         },

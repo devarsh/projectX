@@ -23,13 +23,13 @@ import {
   Dropdown,
 } from "reactstrap";
 import { NavItemType, NavBarType } from "./types";
-import { HeaderNameProps } from "./style";
+import { useStyles } from "./style";
 import { useNavigate } from "react-router-dom";
 import { isValidElementType } from "react-is";
 
 export interface NavRendererType {
   metaData: NavBarType;
-  classes: HeaderNameProps;
+  classes: ReturnType<typeof useStyles>;
 }
 
 export const overrideMetaData = (metaData: NavBarType) => {
@@ -112,7 +112,7 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
 
 export interface NestedNavItemProps {
   item: NavItemType;
-  classes: HeaderNameProps;
+  classes: ReturnType<typeof useStyles>;
   direction?: string;
 }
 

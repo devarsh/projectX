@@ -1,15 +1,6 @@
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface ContentStyleProps {
-  appBarSpacer: BaseCSSProperties;
-  content: BaseCSSProperties;
-  container: BaseCSSProperties;
-}
-
-export type ContentNameProps = Record<keyof ContentStyleProps, string>;
-
-const contentStyles = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
@@ -20,6 +11,4 @@ const contentStyles = (theme: Theme): any => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
-});
-
-export const useStyles = makeStyles<Theme, ContentStyleProps>(contentStyles);
+}));

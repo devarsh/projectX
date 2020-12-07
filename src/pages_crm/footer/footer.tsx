@@ -1,13 +1,10 @@
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import { FooterNameProps, FooterStyleProps, footerStyle } from "./style";
-
-const useStyles = makeStyles<Theme, FooterStyleProps>(footerStyle);
+import { useStyles } from "./style";
 
 export const Footer = () => {
-  const classes: FooterNameProps = useStyles({} as FooterStyleProps);
+  const classes = useStyles();
   return (
     <div className={classes.footerBackground}>
       <Container>

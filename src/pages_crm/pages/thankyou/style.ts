@@ -1,20 +1,6 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface ThankyouPageStyleProps {
-  wrapper: BaseCSSProperties;
-  successImg: BaseCSSProperties;
-  prevNextBtn: BaseCSSProperties;
-  continueBtn: BaseCSSProperties;
-  center: BaseCSSProperties;
-}
-
-export type ThankyouPageNameProps = Record<
-  keyof ThankyouPageStyleProps,
-  string
->;
-
-export const thankyouPageStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles(() => ({
   wrapper: {
     marginTop: "120px",
     minHeight: "calc(100vh - 165px)",
@@ -53,4 +39,4 @@ export const thankyouPageStyle = (theme: Theme): any => ({
   center: {
     textAlign: "center",
   },
-});
+}));

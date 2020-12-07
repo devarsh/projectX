@@ -4,11 +4,8 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { Theme, makeStyles } from "@material-ui/core/styles";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
-import { formStyle, FormStyleProps, FormStyleNamesProps } from "./style";
-
-const useStyles = makeStyles<Theme, FormStyleProps>(formStyle);
+import { useStyles } from "./style";
 
 interface FormProps {
   fields: GroupWiseRenderedFieldsType;
@@ -24,7 +21,7 @@ export const SimpleForm: FC<FormProps> = ({
   formDisplayName,
   submitFn,
 }) => {
-  const classes: FormStyleNamesProps = useStyles({} as FormStyleProps);
+  const classes = useStyles();
   const { handleSubmit } = useForm({
     onSubmit: submitFn,
   });

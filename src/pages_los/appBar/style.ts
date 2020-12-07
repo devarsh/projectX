@@ -1,30 +1,9 @@
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 
-export interface NavBarStyleProps {
-  appBar: BaseCSSProperties;
-  appBarShift: BaseCSSProperties;
-  toolbar: BaseCSSProperties;
-  menuButton: BaseCSSProperties;
-  menuButtonHidden: BaseCSSProperties;
-  title: BaseCSSProperties;
-  searchRoot: BaseCSSProperties;
-  search: BaseCSSProperties;
-  inputRoot: BaseCSSProperties;
-  inputInput: BaseCSSProperties;
-  loggedInUser: BaseCSSProperties;
-  nameClass: BaseCSSProperties;
-  userName: BaseCSSProperties;
-  dropDown: BaseCSSProperties;
-  vTop: BaseCSSProperties;
-  logo: BaseCSSProperties;
-}
-
-export type NavBarNameProps = Record<keyof NavBarStyleProps, string>;
-
 const drawerWidth = 250;
-const navBarStyles = (theme: Theme): any => ({
+
+export const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
@@ -101,15 +80,15 @@ const navBarStyles = (theme: Theme): any => ({
   },
   nameClass: {
     color: "#0063A3",
-    fontWeight: "600",
-    textTransform: "capitalize !important",
+    fontWeight: 600,
+    textTransform: "capitalize",
     lineHeight: "1.4",
     textAlign: "left",
   },
   userName: {
     color: "#0063A3",
-    fontWeight: "600",
-    textTransform: "capitalize !important",
+    fontWeight: 600,
+    textTransform: "capitalize",
     lineHeight: "1.4",
     textAlign: "left",
     fontSize: "14px",
@@ -125,6 +104,4 @@ const navBarStyles = (theme: Theme): any => ({
     height: "50px",
     marginRight: theme.spacing(2),
   },
-});
-
-export const useStyles = makeStyles<Theme, NavBarStyleProps>(navBarStyles);
+}));

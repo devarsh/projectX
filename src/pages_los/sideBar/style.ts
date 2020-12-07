@@ -1,27 +1,6 @@
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface SideBarStyleProps {
-  root: BaseCSSProperties;
-  drawer: BaseCSSProperties;
-  item: BaseCSSProperties;
-  button: BaseCSSProperties;
-  btnRoot: BaseCSSProperties;
-  subMenu: BaseCSSProperties;
-  listIcon: BaseCSSProperties;
-  link: BaseCSSProperties;
-  faSmall: BaseCSSProperties;
-  listItem: BaseCSSProperties;
-  navLinks: BaseCSSProperties;
-  nestedMenuLevel1: BaseCSSProperties;
-  nestedMenuLevel2: BaseCSSProperties;
-  openList: BaseCSSProperties;
-  openCurrent: BaseCSSProperties;
-}
-
-export type SideBarNameProps = Record<keyof SideBarStyleProps, string>;
-
-const sideBarStyles = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     justifyContent: "left",
   },
@@ -74,7 +53,7 @@ const sideBarStyles = (theme: Theme): any => ({
   listIcon: {
     minWidth: "32px",
     color: "#0063A3",
-    fontWeight: "700 ",
+    fontWeight: 700,
     fontSize: "1.25rem",
   },
   link: {
@@ -83,7 +62,7 @@ const sideBarStyles = (theme: Theme): any => ({
     marginTop: "2px",
     marginBottom: "2px",
     "& span": {
-      fontWeight: "500",
+      fontWeight: 500,
     },
   },
   faSmall: {
@@ -103,6 +82,4 @@ const sideBarStyles = (theme: Theme): any => ({
       color: theme.palette.secondary.main,
     },
   },
-});
-
-export const useStyles = makeStyles<Theme, SideBarStyleProps>(sideBarStyles);
+}));

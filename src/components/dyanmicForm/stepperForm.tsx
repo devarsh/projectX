@@ -1,5 +1,6 @@
 import { FC, useState, useRef, Suspense, cloneElement, Fragment } from "react";
-import { useForm, SubmitFnType } from "packages/form";
+import { useRecoilValue } from "recoil";
+import { useForm, SubmitFnType, formFieldsExcludedAtom } from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -7,13 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
-import { formStyle, FormStyleProps, FormStyleNamesProps } from "./style";
-import { useRecoilValue } from "recoil";
-import { formFieldsExcludedAtom } from "packages/form";
-
-const useStyles = makeStyles<Theme, FormStyleProps>(formStyle);
+import { useStyles } from "./style";
 
 interface FormProps {
   fields: GroupWiseRenderedFieldsType;
@@ -32,7 +28,7 @@ export const StepperForm: FC<FormProps> = ({
 }) => {
   const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
-  const classes: FormStyleNamesProps = useStyles({} as FormStyleProps);
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const { handleSubmit, handleSubmitPartial } = useForm({
     onSubmit: submitFn,

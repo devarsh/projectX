@@ -1,14 +1,7 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface WrapperStyleProps {
-  root: BaseCSSProperties;
-}
-
-export type WrapperStyleNamesProps = Record<keyof WrapperStyleProps, string>;
-
-export const wrapperStyles = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-});
+}));

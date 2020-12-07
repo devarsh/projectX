@@ -4,15 +4,6 @@ import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
 import { Content } from "./content";
-import { Theme, makeStyles } from "@material-ui/core/styles";
-
-import {
-  WrapperStyleProps,
-  WrapperStyleNamesProps,
-  wrapperStyles,
-} from "./style";
-import "react-perfect-scrollbar/dist/css/styles.css";
-
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
 import Profile from "./pages/profile";
@@ -21,11 +12,12 @@ import { App } from "components/dataTable/demo";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
-
-const useStyles = makeStyles<Theme, WrapperStyleProps>(wrapperStyles);
+import LeadAction from "./pages/leadaction";
+import { useStyles } from "./style";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 const DashbordPages = () => {
-  const classes: WrapperStyleNamesProps = useStyles({} as WrapperStyleProps);
+  const classes = useStyles();
   const [drawerOpen, setDrawerState] = useState(true);
   const handleDrawerOpen = () => setDrawerState(true);
   const handleDrawerClose = () => setDrawerState(false);
@@ -46,6 +38,7 @@ const DashbordPages = () => {
             <Route path="/api" element={<APITest />} />
             <Route path="/cam" element={<DynamicLead />} />
             <Route path="/pages/:id" element={<Dummy />} />
+            <Route path="/leadAction" element={<LeadAction />} />
           </Routes>
         </Content>
       </div>

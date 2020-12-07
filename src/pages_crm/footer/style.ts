@@ -1,18 +1,6 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface FooterStyleProps {
-  footerBackground: BaseCSSProperties;
-  footerContent: BaseCSSProperties;
-  textRight: BaseCSSProperties;
-  h3Class: BaseCSSProperties;
-  followLink: BaseCSSProperties;
-  followLinks: BaseCSSProperties;
-}
-
-export type FooterNameProps = Record<keyof FooterStyleProps, string>;
-
-export const footerStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   footerBackground: {
     background:
       "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
@@ -31,7 +19,7 @@ export const footerStyle = (theme: Theme): any => ({
     textAlign: "right",
   },
   h3Class: {
-    fontWeight: "400",
+    fontWeight: 400,
     fontSize: "1.5rem",
     color: "#fff",
     margin: 0,
@@ -51,4 +39,4 @@ export const footerStyle = (theme: Theme): any => ({
     justifyContent: "center",
     alignItems: "center",
   },
-});
+}));

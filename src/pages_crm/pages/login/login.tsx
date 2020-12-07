@@ -7,22 +7,13 @@ import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-
-import {
-  loginPageStyle,
-  LoginPageStyleProps,
-  LoginPageNameProps,
-} from "./style";
-
+import { useStyles } from "./style";
 export interface FormDialogProps {
   submitProps: any;
 }
 
-const useStyles = makeStyles<Theme, LoginPageStyleProps>(loginPageStyle);
-
 export const Login = () => {
-  const classes: LoginPageNameProps = useStyles({} as LoginPageStyleProps);
+  const classes = useStyles();
   const navigate = useNavigate();
 
   const [fields, setFields] = useState({

@@ -1,18 +1,8 @@
-import { Theme, makeStyles } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
-
-export interface DrawerStyleProps {
-  drawerPaper: BaseCSSProperties;
-  drawerPaperClose: BaseCSSProperties;
-  hrCSS: BaseCSSProperties;
-  toolbarIcon: BaseCSSProperties;
-  logo: BaseCSSProperties;
-}
-
-export type DrawerNameProps = Record<keyof DrawerStyleProps, string>;
+import { makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 250;
-const drawerStyles = (theme: Theme): any => ({
+
+export const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     position: "relative",
     whiteSpace: "nowrap",
@@ -38,16 +28,14 @@ const drawerStyles = (theme: Theme): any => ({
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 8px",
-    zIndex: "9999",
-    height: "70px !important",
+    zIndex: 9999,
+    height: "70px",
     ...theme.mixins.toolbar,
   },
   hrCSS: {
-    zIndex: "9999",
+    zIndex: 9999,
   },
   logo: {
     height: "50px",
   },
-});
-
-export const useStyles = makeStyles<Theme, DrawerStyleProps>(drawerStyles);
+}));
