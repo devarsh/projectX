@@ -17,7 +17,7 @@ export type LoginPageNameProps = Record<keyof LoginPageStyleProps, string>;
 export const loginPageStyle = (theme: Theme): any => ({
   wrapper: {
     marginTop: "102px",
-    minHeight: "calc(100vh - 155px)",
+    minHeight: "calc(100vh - 187px)",
     boxShadow: "0 3px 6px rgba(0,0,0,0.03)",
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 200px)",

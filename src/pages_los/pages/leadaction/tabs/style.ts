@@ -10,6 +10,7 @@ export interface TabsStyleProps {
   paper: BaseCSSProperties;
   formLabel: BaseCSSProperties;
   formValue: BaseCSSProperties;
+  toggleContainer: BaseCSSProperties;
 }
 
 export type TabsNameProps = Record<keyof TabsStyleProps, string>;
@@ -78,5 +79,8 @@ export const tabsStyle = (theme: Theme): any => ({
   formValue: {
     fontWeight: "500",
     color: "#0063A3",
+  },
+  toggleContainer: {
+    margin: theme.spacing(2, 0),
   },
 });
