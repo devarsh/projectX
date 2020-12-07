@@ -49,3 +49,17 @@ export const validateMetaData = (metaData: MetaDataType) => {
     return false;
   }
 };
+
+export const isMetaDataValid = (metaData) => {
+  if (Boolean(metaData) && typeof metaData === "object") {
+    const { form, fields } = metaData;
+    if (
+      Array.isArray(fields) &&
+      fields.length > 0 &&
+      typeof form === "object"
+    ) {
+      return validateMetaData(metaData);
+    }
+  }
+  return false;
+};

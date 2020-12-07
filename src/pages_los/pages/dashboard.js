@@ -15,7 +15,7 @@ import {
   RetailHomeLoanIcon,
   HealthInsuranceIcon,
   LiabilityInsuranceIcon,
-} from "../../pages_crm/home/icons/index";
+} from "assets/icons/productIcons";
 import { theme } from "app/crm/theme";
 
 const useStyles = makeStyles((theme) => ({

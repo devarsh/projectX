@@ -1,4 +1,5 @@
 import { useState, FC } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { TextField } from "components/styledComponent/textfield";
@@ -7,18 +8,17 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { useNavigate } from "react-router-dom";
 import { InputMaskCustom } from "components/derived/inputMask";
 import { APISDK } from "registry/fns/sdk";
-import { constructNavigationStateFromRespObj } from "./navHelpers";
+import { constructNavigationStateFromRespObj } from "../utils/navHelpers";
 
-export interface FormDialogProps {
+export interface OtpVerificationDialogProps {
   isOpen: boolean;
   setShowDialog: Function;
   submitProps: any;
 }
 
-export const FormVerificationDialog: FC<FormDialogProps> = ({
+export const OtpVerificationDialog: FC<OtpVerificationDialogProps> = ({
   isOpen,
   setShowDialog,
   submitProps,

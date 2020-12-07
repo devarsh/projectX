@@ -3,21 +3,12 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import BecomePartnerImg from "assets/images/BecomePartnerImg.svg";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import {
-  BecomePartnerNameProps,
-  BecomePartnerStyleProps,
-  becomePartnerStyle,
-} from "./style";
+import { becomePartnerUseStyle } from "./style";
+import { useNavigate } from "react-router-dom";
 
-const useStyles = makeStyles<Theme, BecomePartnerStyleProps>(
-  becomePartnerStyle
-);
-
-export const BecomePartner = () => {
-  const classes: BecomePartnerNameProps = useStyles(
-    {} as BecomePartnerStyleProps
-  );
+export const BecomePartnerPage = () => {
+  const classes = becomePartnerUseStyle();
+  const navigate = useNavigate();
   return (
     <React.Fragment>
       <Container
@@ -42,11 +33,17 @@ export const BecomePartner = () => {
             </div>
           </div>
           <div className="mt-auto mb-2">
-            <Button className={classes.applyButton}>Apply Now</Button>
+            <Button
+              className={classes.applyButton}
+              onClick={() => {
+                navigate("/form/becomePartner");
+              }}
+            >
+              Apply Now
+            </Button>
           </div>
         </Box>
       </Container>
     </React.Fragment>
   );
 };
-export default BecomePartner;

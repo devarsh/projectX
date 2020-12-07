@@ -38,7 +38,6 @@ import {
   InputMaskPropsOptional,
   AutocompletePropsOptional,
 } from "./typesFields";
-import { To } from "history";
 
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";

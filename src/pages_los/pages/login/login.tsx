@@ -66,7 +66,7 @@ export const Login = () => {
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      const result = await APISDK.handleverifyOtp(otp, expiryOtpTime, id);
+      const result = await APISDK.handleverifyOtp(phoneNumber, otp);
       if (result.status === "success") {
         setLoading(false);
         navigate("/dashboard");

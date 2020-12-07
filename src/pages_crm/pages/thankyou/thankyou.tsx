@@ -7,7 +7,7 @@ import SuccessImg from "assets/images/success.svg";
 import {
   shouldContinueToQuestionnaireForm,
   constructNavigationUrlForQuestionnaire,
-} from "components/dyanmicForm/navHelpers";
+} from "../utils/navHelpers";
 import {
   thankyouPageStyle,
   ThankyouPageStyleProps,

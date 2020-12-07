@@ -263,9 +263,9 @@ const RaatnaFinAPI = () => {
   };
 
   const requestForOTP = async (phoneNumber: string) => {
-    const { data, status } = await internalFetcher("./users/customer_login", {
+    const { data, status } = await internalFetcher("./users/OTPSent", {
       body: JSON.stringify({
-        action: "customer_login",
+        action: "OTPSent",
         request_data: {
           mobile: phoneNumber,
           password: "",
@@ -280,18 +280,13 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const handleverifyOtp = async (
-    otp: string,
-    expiryOtpTime: string,
-    id: string
-  ) => {
-    const { data, status } = await internalFetcher("./users/otpVerify", {
+  const handleverifyOtp = async (mobileNumber: string, otp: string) => {
+    const { data, status } = await internalFetcher("./users/OTPVerify", {
       body: JSON.stringify({
-        action: "otp_verify",
+        action: "OTPVerify",
         request_data: {
-          id: id,
-          eotp: otp,
-          sdatetime: expiryOtpTime,
+          mobile_number: mobileNumber,
+          otp: otp,
         },
         channel: "W",
       }),
@@ -424,6 +419,70 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const submitBecomePartnerData = async (submitAction, formData?: any) => {
+    const { data, status } = await internalFetcher("./users/become_partner", {
+      body: JSON.stringify({
+        action: submitAction,
+        request_data: { ...formData },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.response_data };
+    }
+  };
+
+  const validatePanNumber = async (currentField) => {
+    const { data, status } = await internalFetcher("./users/panvalidator", {
+      body: JSON.stringify({
+        action: "panvalidator",
+        request_data: { doc_number: currentField?.value ?? "INVALID_PAN" },
+        channel: "W",
+      }),
+    });
+    console.log(data, status);
+    return "invalid";
+  };
+
+  const checkPhoneNumberExists = async (phoneNumber) => {
+    const { data, status } = await internalFetcher("./users/verify_user", {
+      body: JSON.stringify({
+        action: "verify_user",
+        request_data: { mobile: phoneNumber },
+        channel: "W",
+      }),
+    });
+
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const updateUserPassword = async (
+    confirmPassword: string,
+    phoneNumber: string
+  ) => {
+    const { data, status } = await internalFetcher("./users/set_password", {
+      body: JSON.stringify({
+        action: "set_password",
+        request_data: {
+          mobile: phoneNumber,
+          password: confirmPassword,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -441,6 +500,10 @@ const RaatnaFinAPI = () => {
     getsubProductDtl,
     getDashboardEmployeeDataList,
     getDashdoardDisplayEmpDetails,
+    submitBecomePartnerData,
+    validatePanNumber,
+    checkPhoneNumberExists,
+    updateUserPassword,
   };
 };
 

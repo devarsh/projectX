@@ -120,9 +120,8 @@ export const Login = () => {
     try {
       setLoading(true);
       const result = await APISDK.handleverifyOtp(
-        fields.otp,
-        expiryOtpTime,
-        id
+        fields.phoneNumber,
+        fields.otp
       );
       // console.log("result verify otp", result);
       if (result.status === "success") {
