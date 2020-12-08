@@ -25,6 +25,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { lighten, makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from "@material-ui/core/TablePagination";
+import Backdrop from "@material-ui/core/Backdrop";
+import TextField from "@material-ui/core/TextField";
 
 import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
@@ -83,6 +85,7 @@ export const App = () => {
     }),
     []
   );
+
   const [dense] = useState(true);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -169,8 +172,7 @@ const DataTable = ({
     usePagination,
     useRowSelect,
     useResizeColumns,
-    useBlockLayout,
-    useSequenceColumn
+    useBlockLayout
   );
 
   const cellSize = dense ? 34 : 54;
@@ -200,7 +202,7 @@ const DataTable = ({
         selectedFlatRows={selectedFlatRows}
       />
 
-      <TableContainer>
+      <TableContainer style={{ position: "relative" }}>
         <Table
           component="div"
           {...getTableProps()}
@@ -311,6 +313,14 @@ const DataTable = ({
             ) : null}
           </TableBody>
         </Table>
+        <Backdrop
+          open={loading}
+          style={{
+            position: "absolute",
+            zIndex: 9,
+            backgroundColor: "rgb(0 0 0 / 0%)",
+          }}
+        />
       </TableContainer>
       <TablePagination
         style={{ display: "flex" }}
@@ -582,23 +592,18 @@ const LinearProgressSpacer = () => {
   return <div className={classes.root}></div>;
 };
 
-const SequenceCellRenderer = (props) => {
-  console.log(props);
-  const { index } = props;
-  return <div>{index}</div>;
-};
+const DefaultColumnFilter = ({
+  column: { filterValue, preFilteredRows, setFilter },
+}) => {
+  const count = preFilteredRows.length;
 
-const SequenceHeaderRenderer = ({ getToggleAllPageRowsSelectedProps }) => {
-  return <div>#</div>;
-};
-
-const useSequenceColumn = (hooks) => {
-  hooks.visibleColumns.push((columns) => [
-    {
-      id: "sequence",
-      Header: SequenceHeaderRenderer,
-      Cell: SequenceCellRenderer,
-    },
-    ...columns,
-  ]);
+  return (
+    <TextField
+      value={filterValue || ""}
+      onChange={(e) => {
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+      }}
+      placeholder={`Search ${count} records...`}
+    />
+  );
 };
