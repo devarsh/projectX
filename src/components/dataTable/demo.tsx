@@ -8,7 +8,10 @@ import {
   useResizeColumns,
   useBlockLayout,
   useRowSelect,
+  useFilters,
+  useAsyncDebounce,
 } from "react-table";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -82,6 +85,7 @@ export const App = () => {
       minWidth: 70,
       Header: DefaultHeaderRenderer,
       Cell: DefaultCellRenderer,
+      Filter: DefaultColumnFilter,
     }),
     []
   );
@@ -92,9 +96,18 @@ export const App = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const fetchIdRef = useRef(0);
+  const prevFilters = useRef(null);
+  const resetPaginationAndSorting = useRef(false);
+  useEffect(() => {
+    resetPaginationAndSorting.current = false;
+  }, [data]);
+
   const fetchData = useCallback(
-    ({ pageSize, pageIndex, sortBy }) => {
-      console.log(pageSize, pageIndex, sortBy);
+    ({ pageSize, pageIndex, sortBy, filters }) => {
+      if (prevFilters.current !== filters) {
+        resetPaginationAndSorting.current = true;
+      }
+      console.log(pageSize, pageIndex, sortBy, filters);
       const fetchId = ++fetchIdRef.current;
       setLoading(true);
       setTimeout(() => {
@@ -106,9 +119,10 @@ export const App = () => {
         }
         setTotalRecords(serverData.length);
         setLoading(false);
+        prevFilters.current = filters;
       }, 1000);
     },
-    [setTotalRecords]
+    [setTotalRecords, setLoading, setData]
   );
 
   const getRowId = useCallback((row) => {
@@ -122,11 +136,12 @@ export const App = () => {
       columns={columns}
       defaultColumn={defaultColumn}
       data={data}
-      fetchData={fetchData}
+      onFetchData={fetchData}
       loading={loading}
       getRowId={getRowId}
       totalRecords={totalRecords}
       pageCount={pageCount}
+      resetPaginationAndSorting={resetPaginationAndSorting.current}
     />
   );
 };
@@ -137,11 +152,12 @@ const DataTable = ({
   columns,
   defaultColumn,
   data,
-  fetchData,
+  onFetchData,
   loading,
   getRowId,
   totalRecords: controlledTotalRecords,
   pageCount: controlledPageCount,
+  resetPaginationAndSorting,
 }) => {
   const {
     getTableProps,
@@ -153,7 +169,7 @@ const DataTable = ({
     totalColumnsWidth,
     gotoPage,
     setPageSize,
-    state: { pageIndex, pageSize, sortBy },
+    state: tableState,
   } = useTable(
     {
       columns,
@@ -163,24 +179,28 @@ const DataTable = ({
       initialState: { pageIndex: 0 },
       manualPagination: true,
       pageCount: controlledPageCount,
-      autoResetPage: false,
+      autoResetPage: resetPaginationAndSorting,
       manualSortBy: false,
-      autoResetSortBy: false,
+      autoResetSortBy: resetPaginationAndSorting,
+      manualFilters: true,
+      autoResetFilters: false,
     },
-    useCheckboxColumn,
+    useFilters,
     useSortBy,
     usePagination,
     useRowSelect,
     useResizeColumns,
-    useBlockLayout
+    useBlockLayout,
+    useCheckboxColumn
   );
-
+  const { pageIndex, pageSize, sortBy, filters } = tableState;
   const cellSize = dense ? 34 : 54;
   const emptyRows = pageSize - Math.min(pageSize, page.length);
+  const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
   useEffect(() => {
-    fetchData({ pageIndex, pageSize, sortBy });
-  }, [fetchData, pageIndex, pageSize, sortBy]);
+    onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
+  }, [onFetchDataDebounced, pageIndex, pageSize, sortBy, filters]);
 
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
@@ -208,6 +228,47 @@ const DataTable = ({
           {...getTableProps()}
           size={dense ? "small" : "medium"}
         >
+          <TableHead component="div">
+            {headerGroups.map((headerGroup) => {
+              return (
+                <TableRow
+                  component="div"
+                  {...headerGroup.getHeaderGroupProps()}
+                >
+                  {headerGroup.headers.map((column) => {
+                    const stickyCheckboxProps =
+                      column.id === "selectionCheckbox"
+                        ? {
+                            position: "sticky",
+                            background: "white",
+                            left: 0,
+                            zIndex: 1,
+                          }
+                        : {};
+                    return (
+                      <TableCell
+                        component="div"
+                        variant="head"
+                        {...column.TableCellProps}
+                        {...column.getHeaderProps([
+                          {
+                            style: {
+                              position: "relative",
+                              paddingLeft: "16px",
+                              paddingRight: "8px",
+                              ...stickyCheckboxProps,
+                            },
+                          },
+                        ])}
+                      >
+                        {column.canFilter ? column.render("Filter") : null}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableHead>
           <TableHead component="div">
             {headerGroups.map((headerGroup) => {
               return (
@@ -595,15 +656,12 @@ const LinearProgressSpacer = () => {
 const DefaultColumnFilter = ({
   column: { filterValue, preFilteredRows, setFilter },
 }) => {
-  const count = preFilteredRows.length;
-
   return (
     <TextField
       value={filterValue || ""}
       onChange={(e) => {
-        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+        setFilter(e.target.value); // Set undefined to remove the filter entirely
       }}
-      placeholder={`Search ${count} records...`}
     />
   );
 };
