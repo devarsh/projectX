@@ -1,17 +1,3 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface LeadStyleProps {
-  paper: BaseCSSProperties;
-}
-
-export type LeadNameProps = Record<keyof LeadStyleProps, string>;
-
-export const leadStyle = (theme: Theme): any => ({
-  paper: {
-    padding: theme.spacing(1),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-  },
-});
+export const useStyles = makeStyles((theme) => ({}));

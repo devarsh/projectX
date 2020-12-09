@@ -1,21 +1,6 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface TabsStyleProps {
-  tabPanel: BaseCSSProperties;
-  labelText: BaseCSSProperties;
-  valueText: BaseCSSProperties;
-  submitBtn: BaseCSSProperties;
-  backBtn: BaseCSSProperties;
-  paper: BaseCSSProperties;
-  formLabel: BaseCSSProperties;
-  formValue: BaseCSSProperties;
-  toggleContainer: BaseCSSProperties;
-}
-
-export type TabsNameProps = Record<keyof TabsStyleProps, string>;
-
-export const tabsStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   tabPanel: {
     border: "1px solid #e9f2f9",
     borderTop: "0",
@@ -23,12 +8,12 @@ export const tabsStyle = (theme: Theme): any => ({
   },
   labelText: {
     fontSize: "0.9rem",
-    fontWeight: "600",
+    fontWeight: 600,
     color: "#393939",
   },
   valueText: {
     fontSize: "0.875rem",
-    fontWeight: "600",
+    fontWeight: 600,
     letterSpacing: "1px",
     color: theme.palette.secondary.main,
   },
@@ -39,7 +24,7 @@ export const tabsStyle = (theme: Theme): any => ({
     border: 0,
     color: "#fff !important",
     padding: "4px .75rem",
-    fontWeight: "700",
+    fontWeight: 700,
     minWidth: "120px",
     letterSpacing: "0.02857em",
     boxShadow: "none",
@@ -56,7 +41,7 @@ export const tabsStyle = (theme: Theme): any => ({
     border: 0,
     color: "#0b6fb8 !important",
     fontSize: "1.2rem",
-    fontWeight: "700",
+    fontWeight: 700,
     minWidth: "120px",
     letterSpacing: "0.02857em",
     padding: "4px .75rem",
@@ -74,13 +59,13 @@ export const tabsStyle = (theme: Theme): any => ({
     flexDirection: "column",
   },
   formLabel: {
-    fontWeight: "600",
+    fontWeight: 600,
   },
   formValue: {
-    fontWeight: "500",
+    fontWeight: 500,
     color: "#0063A3",
   },
   toggleContainer: {
     margin: theme.spacing(2, 0),
   },
-});
+}));
