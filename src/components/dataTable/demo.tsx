@@ -1,4 +1,11 @@
-import { useMemo, useState, useRef, useCallback, useEffect } from "react";
+import {
+  useMemo,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  MouseEvent,
+} from "react";
 import clsx from "clsx";
 import { makeData } from "./makeData";
 import {
@@ -30,6 +37,7 @@ import IconButton from "@material-ui/core/IconButton";
 import TablePagination from "@material-ui/core/TablePagination";
 import Backdrop from "@material-ui/core/Backdrop";
 import TextField from "@material-ui/core/TextField";
+import Popover from "@material-ui/core/Popover";
 
 import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
@@ -385,6 +393,15 @@ const DefaultCellRenderer = ({ column, value }) => {
 };
 
 const DefaultHeaderRenderer = ({ column }) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(event.currentTarget);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? column.id : undefined;
+
   return (
     <>
       <TableSortLabel
@@ -425,7 +442,9 @@ const DefaultHeaderRenderer = ({ column }) => {
           position: "absolute",
           right: "15px",
           padding: "0",
+          color: open || Boolean(column.filterValue) ? "red" : "inherit",
         }}
+        onClick={handleClick}
       >
         <FilterListIcon />
       </IconButton>
@@ -452,6 +471,22 @@ const DefaultHeaderRenderer = ({ column }) => {
           <path d="M11 19V5h2v14z"></path>
         </svg>
       </div>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        {column.render("Filter")}
+      </Popover>
     </>
   );
 };
