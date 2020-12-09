@@ -52,7 +52,6 @@ const parseSchema = (schema, fieldObj: FieldMetaDataType) => {
     if (!Array.isArray(rules)) {
       return schema;
     }
-    //@ts-ignore
     let validator = yup[type]();
     rules.forEach((rule) => {
       const { params, name } = rule;
