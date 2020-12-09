@@ -61,7 +61,6 @@ export const App = () => {
         TableCellProps: {
           align: "right",
         },
-        width: 50,
       },
       {
         accessor: "visits",
@@ -74,6 +73,9 @@ export const App = () => {
       {
         accessor: "progress",
         columnName: "Progress Percentage",
+        TableCellProps: {
+          align: "right",
+        },
       },
     ],
     []
@@ -82,7 +84,7 @@ export const App = () => {
     () => ({
       width: 150,
       maxWidth: 400,
-      minWidth: 70,
+      minWidth: 50,
       Header: DefaultHeaderRenderer,
       Cell: DefaultCellRenderer,
       Filter: DefaultColumnFilter,
@@ -221,14 +223,23 @@ const DataTable = ({
         getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
       />
-
+      {loading ? <LinearProgress /> : <LinearProgressSpacer />}
       <TableContainer style={{ position: "relative" }}>
         <Table
           component="div"
           {...getTableProps()}
           size={dense ? "small" : "medium"}
         >
-          <TableHead component="div">
+          <TableHead
+            component="div"
+            style={{
+              position: "sticky",
+              zIndex: 10,
+              top: 0,
+              backgroundColor: "white",
+              display: "block",
+            }}
+          >
             {headerGroups.map((headerGroup) => {
               return (
                 <TableRow
@@ -242,7 +253,7 @@ const DataTable = ({
                             position: "sticky",
                             background: "white",
                             left: 0,
-                            zIndex: 1,
+                            zIndex: 12,
                           }
                         : {};
                     return (
@@ -254,47 +265,7 @@ const DataTable = ({
                           {
                             style: {
                               position: "relative",
-                              paddingLeft: "16px",
-                              paddingRight: "8px",
-                              ...stickyCheckboxProps,
-                            },
-                          },
-                        ])}
-                      >
-                        {column.canFilter ? column.render("Filter") : null}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableHead>
-          <TableHead component="div">
-            {headerGroups.map((headerGroup) => {
-              return (
-                <TableRow
-                  component="div"
-                  {...headerGroup.getHeaderGroupProps()}
-                >
-                  {headerGroup.headers.map((column) => {
-                    const stickyCheckboxProps =
-                      column.id === "selectionCheckbox"
-                        ? {
-                            position: "sticky",
-                            background: "white",
-                            left: 0,
-                            zIndex: 1,
-                          }
-                        : {};
-                    return (
-                      <TableCell
-                        component="div"
-                        variant="head"
-                        {...column.TableCellProps}
-                        {...column.getHeaderProps([
-                          {
-                            style: {
-                              position: "relative",
+                              display: "flex",
                               ...stickyCheckboxProps,
                             },
                           },
@@ -308,7 +279,6 @@ const DataTable = ({
               );
             })}
           </TableHead>
-          {loading ? <LinearProgress /> : <LinearProgressSpacer />}
 
           <TableBody
             component="div"
@@ -428,6 +398,11 @@ const DefaultHeaderRenderer = ({ column }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               display: "flex",
+              paddingRight:
+                //@ts-ignore
+                (column?.TableCellProps?.align ?? "left") === "right"
+                  ? "15px"
+                  : "10px",
             },
           },
         ])}
@@ -442,16 +417,28 @@ const DefaultHeaderRenderer = ({ column }) => {
           {column.columnName}
         </span>
       </TableSortLabel>
-
+      <IconButton
+        aria-label="filter"
+        aria-controls="popover"
+        aria-haspopup="true"
+        style={{
+          position: "absolute",
+          right: "15px",
+          padding: "0",
+        }}
+      >
+        <FilterListIcon />
+      </IconButton>
       <div
         {...column.getResizerProps([
           {
             style: {
               display: "inline-block",
               position: "absolute",
-              right: "-12px",
+              right: "-16px",
               top: "calc(50% - 12px)",
               padding: "0 5px",
+              zIndex: 1,
             },
           },
         ])}
@@ -559,11 +546,6 @@ const EnchancedToolbar = ({ dense, tableName, getRowId, selectedFlatRows }) => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : null}
-      {selectedCount === 0 ? (
-        <IconButton aria-label="config">
-          <FilterListIcon />
-        </IconButton>
       ) : null}
     </Toolbar>
   );
