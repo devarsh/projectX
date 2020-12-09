@@ -1,5 +1,6 @@
+/* eslint-disable */
+import { Fragment } from "react";
 import clsx from "clsx";
-
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -18,67 +19,144 @@ import {
 import { useStyles } from "./style";
 import { WelcomeText1, WelcomeText2, CardTitle, CardValue } from "./variants";
 
-// const data = [
-//   {
-//     title: "Inquiries",
-//     value: "5000",
-//     icon: LiveHelpIcon,
-//     informationBlocks: [
-//       { label: "pending", value: "1500",status:'confirmed' },
-//       { label: "rejected", value: " 500", status:'pending' },
-//       { label: "confirmed", value: "3000", status:'rejected' },
-//     ],
-//   },
-//   {
-//     title: 'All Leads',
-//     value:
-//   }
-// ];
+const data = [
+  {
+    title: "Inquiries",
+    num: "5,000",
+    icon: <LiveHelpIcon />,
+    informationBlocks: [
+      { label: "Pending", value: "1500", status: "pending" },
+      { label: "Rejected", value: "500", status: "rejected" },
+      { label: "Confirmed", value: "3000", status: "confirmed" },
+    ],
+  },
+  {
+    title: "All Leads",
+    num: "3,000",
+    icon: <DataUsageIcon />,
+    informationBlocks: [
+      { label: "Hot", value: "1500", status: "hot" },
+      { label: "Warm", value: "500", status: "warm" },
+      { label: "Cold", value: "1000", status: "cold" },
+    ],
+  },
+  {
+    title: "BD Leads",
+    num: "800",
+    icon: ConstructionFinanceIcon,
+    informationBlocks: [
+      { label: "Hot", value: "500", status: "hot" },
+      { label: "Warm", value: "200", status: "warm" },
+      { label: "Cold", value: "100", status: "cold" },
+    ],
+  },
+  {
+    title: "Retail Leads",
+    num: "1,000",
+    icon: RetailHomeLoanIcon,
+    informationBlocks: [
+      { label: "Hot", value: "500", status: "hot" },
+      { label: "Warm", value: "300", status: "warm" },
+      { label: "Cold", value: "200", status: "cold" },
+    ],
+  },
+  {
+    title: "Unsecured Leads",
+    num: "600",
+    icon: LiabilityInsuranceIcon,
+    informationBlocks: [
+      { label: "Hot", value: "300", status: "hot" },
+      { label: "Warm", value: "100", status: "warm" },
+      { label: "Cold", value: "200", status: "cold" },
+    ],
+  },
+  {
+    title: "Insurance Leads",
+    num: "400",
+    icon: HealthInsuranceIcon,
+    informationBlocks: [
+      { label: "Hot", value: "100", status: "hot" },
+      { label: "Warm", value: "200", status: "warm" },
+      { label: "Cold", value: "100", status: "cold" },
+    ],
+  },
+  {
+    title: "Customers",
+    num: "400",
+    icon: <GroupIcon />,
+  },
+  {
+    title: "Partners",
+    num: "400",
+    icon: <GroupWorkIcon />,
+  },
+];
 
-// const DashLet = (data,classes) => {
-
-//   return (
-//   <Grid item xs={12} sm={6} md={3} lg={3}>
-//         <Card>
-//           <CardContent className={classes.cardContent}>
-//             <div className={classes.content}>
-//               <div>
-//                 <CardTitle variant="h3">{data.title}</CardTitle>
-//                 <CardValue variant="h4">{data.value}</CardValue>
-//               </div>
-//               <div className={classes.icon}>
-//                 <data.icon/>
-//               </div>
-//             </div>
-//             <div className={classes.status}>
-//               {data.informationBlocks.map(block) => {
-//                 const currentClass = block.status === 'confirmed' ? classes.confirmed :
-//                 block.status === 'pending' ? classes.pending:
-//                 block.status === 'rejected' ? classes.rejected : ""
-//                 <Typography
-//                 variant="subtitle2"
-//                 className={clsx(currentClass, classes.statusText)}
-//               >
-//                 <span className={confirmedUnit}>3000</span>
-//                 Confirmed
-//               </Typography>
-//               }}
-
-//             </div>
-//           </CardContent>
-//         </Card>
-//       </Grid>
-//   )
-// }
+const DashLet = () => {
+  const classes = useStyles();
+  return (
+    <Fragment>
+      {data.map((val) => {
+        return (
+          <Grid item xs={12} sm={6} md={3} lg={3}>
+            <Card>
+              <CardContent className={classes.cardContent}>
+                <div className={classes.content}>
+                  <div>
+                    <CardTitle variant="h3">{val.title}</CardTitle>
+                    <CardValue variant="h4">{val.num}</CardValue>
+                  </div>
+                  <div className={classes.icon}>{val.icon}</div>
+                </div>
+                <div className={classes.status}>
+                  {val?.informationBlocks?.map((block) => {
+                    let statusClass = "";
+                    let statusBgClass = "";
+                    block.status === "confirmed"
+                      ? ((statusClass = classes.confirmed),
+                        (statusBgClass = classes.confirmedBg))
+                      : block.status === "pending"
+                      ? ((statusClass = classes.pending),
+                        (statusBgClass = classes.pendingBg))
+                      : block.status === "rejected"
+                      ? ((statusClass = classes.rejected),
+                        (statusBgClass = classes.rejectedBg))
+                      : block.status === "hot"
+                      ? ((statusClass = classes.hot),
+                        (statusBgClass = classes.hotBg))
+                      : block.status === "warm"
+                      ? ((statusClass = classes.warm),
+                        (statusBgClass = classes.warmBg))
+                      : block.status === "cold"
+                      ? ((statusClass = classes.cold),
+                        (statusBgClass = classes.coldBg))
+                      : "";
+                    const currentClass = clsx(statusClass, classes.statusText);
+                    const currentBgClass = clsx(classes.unit, statusBgClass);
+                    return (
+                      <>
+                        <Typography
+                          variant="subtitle2"
+                          className={currentClass}
+                        >
+                          <span className={currentBgClass}>{block.value}</span>
+                          {block.label}
+                        </Typography>
+                      </>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        );
+      })}
+    </Fragment>
+  );
+};
 
 export const Dashboard = () => {
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const fixedHeightPaperChart = clsx(classes.paper, classes.fixedHeightChart);
-
-  const pendingUnit = clsx(classes.unit, classes.pendingBg);
-  const rejectedUnit = clsx(classes.unit, classes.rejectedBg);
-  const confirmedUnit = clsx(classes.unit, classes.confirmedBg);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -88,232 +166,7 @@ export const Dashboard = () => {
         </Paper>
       </Grid>
 
-      {/* <Grid item xs={12} md={6} lg={6}>
-        <Paper className={fixedHeightPaperChart}></Paper>
-      </Grid>
-
-      <Grid item xs={12} md={6} lg={6}>
-        <Paper className={fixedHeightPaperChart}></Paper>
-      </Grid> */}
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">All Leads</CardTitle>
-                <CardValue variant="h4">3,000</CardValue>
-              </div>
-              <div className={classes.icon}>
-                <DataUsageIcon />
-              </div>
-            </div>
-            <div className={classes.status}>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.hot, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.hotBg)}>1500</span>
-                <span>Hot</span>
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.warm, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.warmBg)}>500</span>
-                Warm
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.cold, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.coldBg)}>1000</span>
-                Cold
-              </Typography>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">BD Leads</CardTitle>
-                <CardValue variant="h4">800</CardValue>
-              </div>
-              <div className={classes.icon}>{ConstructionFinanceIcon}</div>
-            </div>
-            <div className={classes.status}>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.hot, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.hotBg)}>500</span>
-                <span>Hot</span>
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.warm, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.warmBg)}>200</span>
-                Warm
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.cold, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.coldBg)}>100</span>
-                Cold
-              </Typography>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">Retail Leads</CardTitle>
-                <CardValue variant="h4">1,000</CardValue>
-              </div>
-              <div className={classes.icon}>{RetailHomeLoanIcon}</div>
-            </div>
-            <div className={classes.status}>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.hot, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.hotBg)}>500</span>
-                <span>Hot</span>
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.warm, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.warmBg)}>300</span>
-                Warm
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.cold, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.coldBg)}>200</span>
-                Cold
-              </Typography>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">Unsecured Leads</CardTitle>
-                <CardValue variant="h4">600</CardValue>
-              </div>
-              <div className={classes.icon}>{LiabilityInsuranceIcon}</div>
-            </div>
-            <div className={classes.status}>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.hot, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.hotBg)}>300</span>
-                <span>Hot</span>
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.warm, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.warmBg)}>100</span>
-                Warm
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.cold, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.coldBg)}>200</span>
-                Cold
-              </Typography>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">Insurance Leads</CardTitle>
-                <CardValue variant="h4">400</CardValue>
-              </div>
-              <div className={classes.icon}>{HealthInsuranceIcon}</div>
-            </div>
-            <div className={classes.status}>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.hot, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.hotBg)}>100</span>
-                <span>Hot</span>
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.warm, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.warmBg)}>200</span>
-                Warm
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                className={clsx(classes.cold, classes.statusText)}
-              >
-                <span className={clsx(classes.unit, classes.coldBg)}>100</span>
-                Cold
-              </Typography>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">Customers</CardTitle>
-                <CardValue variant="h4">300</CardValue>
-              </div>
-              <div className={classes.icon}>
-                <GroupIcon />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3} lg={3}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.content}>
-              <div>
-                <CardTitle variant="h3">Partners</CardTitle>
-                <CardValue variant="h4">100</CardValue>
-              </div>
-              <div className={classes.icon}>
-                <GroupWorkIcon />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
+      <DashLet />
     </Grid>
   );
 };

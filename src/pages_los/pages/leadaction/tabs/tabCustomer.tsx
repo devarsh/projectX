@@ -9,12 +9,10 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-import { tabsStyle, TabsStyleProps, TabsNameProps } from "./style";
-
-const useStyles = makeStyles<Theme, TabsStyleProps>(tabsStyle);
+import { useStyles } from "./style";
 
 export const LeadCustomerTab = () => {
-  const classes: TabsNameProps = useStyles({} as TabsStyleProps);
+  const classes = useStyles();
   const [action, setAction] = React.useState<string | null>("left");
   const handleAction = (
     event: React.MouseEvent<HTMLElement>,

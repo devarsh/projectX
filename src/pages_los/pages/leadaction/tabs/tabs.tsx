@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  makeStyles,
-  Theme,
-  withStyles,
-  createStyles,
-} from "@material-ui/core/styles";
+import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
@@ -13,18 +8,17 @@ import Box from "@material-ui/core/Box";
 import { LeadInformationTab } from "./tabInformation";
 import { LeadCustomerTab } from "./tabCustomer";
 
-import { tabsStyle, TabsStyleProps, TabsNameProps } from "./style";
+import { useStyles } from "./style";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
   value: any;
 }
-const useStyles = makeStyles<Theme, TabsStyleProps>(tabsStyle);
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-  const classes: TabsNameProps = useStyles({} as TabsStyleProps);
+  const classes = useStyles();
   return (
     <div
       role="tabpanel"
@@ -101,15 +95,15 @@ export const LeadTabs = () => {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-  const classes: TabsNameProps = useStyles({} as TabsStyleProps);
+  const classes = useStyles();
   return (
     <div>
       <div>
         <Leadtabs value={value} onChange={handleChange} aria-label="lead tabs">
           <Leadtab label="Information" {...a11yProps(0)} />
-          <Leadtab label="Documents" {...a11yProps(1)} />
-          <Leadtab label="Activity History" {...a11yProps(2)} />
-          <Leadtab label="Customer" {...a11yProps(3)} />
+          <Leadtab label="Customer" {...a11yProps(1)} />
+          <Leadtab label="Documents" {...a11yProps(2)} />
+          <Leadtab label="Activity History" {...a11yProps(3)} />
           <Leadtab label="Payout" {...a11yProps(4)} />
         </Leadtabs>
       </div>
@@ -118,37 +112,43 @@ export const LeadTabs = () => {
           <LeadInformationTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <div>
-            is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book. It has survived not only five
-            centuries, but also the leap into electronic typesetting, remaining
-            essentially unchanged. It was popularised in the 1960s with the
-            release of Letraset sheets containing Lorem Ipsum passages, and more
-            recently with desktop publishing software like Aldus PageMaker
-            including versions of Lorem Ipsum.
-          </div>
+          <LeadCustomerTab />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <div>
-            is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book. It has survived not only five
-            centuries, but also the leap into electronic typesetting, remaining
-            essentially unchanged. It was popularised in the 1960s with the
-            release of Letraset sheets containing Lorem Ipsum passages, and more
-            recently with desktop publishing software like Aldus PageMaker
-            including versions of Lorem Ipsum.
+            <b>Table</b>
+            <p>
+              simply dummy text of the printing and typesetting industry. Lorem
+              Ipsum has been the industry's standard dummy text ever since the
+              1500s, when an unknown printer took a galley of type and scrambled
+              it to make a type specimen book. It has survived not only five
+              centuries, but also the leap into electronic typesetting,
+              remaining essentially unchanged. It was popularised in the 1960s
+              with the release of Letraset sheets containing Lorem Ipsum
+              passages, and more recently with desktop publishing software like
+              Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
           </div>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <LeadCustomerTab />
+          <div>
+            <b>Table</b>
+            <p>
+              simply dummy text of the printing and typesetting industry. Lorem
+              Ipsum has been the industry's standard dummy text ever since the
+              1500s, when an unknown printer took a galley of type and scrambled
+              it to make a type specimen book. It has survived not only five
+              centuries, but also the leap into electronic typesetting,
+              remaining essentially unchanged. It was popularised in the 1960s
+              with the release of Letraset sheets containing Lorem Ipsum
+              passages, and more recently with desktop publishing software like
+              Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+          </div>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <div>
-            is simply dummy text of the printing and typesetting industry. Lorem
+            simply dummy text of the printing and typesetting industry. Lorem
             Ipsum has been the industry's standard dummy text ever since the
             1500s, when an unknown printer took a galley of type and scrambled
             it to make a type specimen book. It has survived not only five

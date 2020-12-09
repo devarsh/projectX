@@ -6,12 +6,10 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 
-import { tabsStyle, TabsStyleProps, TabsNameProps } from "./style";
-
-const useStyles = makeStyles<Theme, TabsStyleProps>(tabsStyle);
+import { useStyles } from "./style";
 
 export const LeadInformationTab = () => {
-  const classes: TabsNameProps = useStyles({} as TabsStyleProps);
+  const classes = useStyles();
   return (
     <Box display="flex" flexDirection="column" width={1}>
       <Box display="flex" flexDirection="row" width={1} mb={2}>
