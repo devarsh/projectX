@@ -144,7 +144,6 @@ const NestedNavItem: FC<NestedNavItemProps> = ({
       <Dropdown
         tag="li"
         key={item.label}
-        //@ts-ignore
         direction={Boolean(direction) ? direction : undefined}
         inNavbar={true}
         isOpen={open}
