@@ -483,6 +483,51 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const initiateAadharValidation = async (tranCode) => {
+    const { data, status } = await internalFetcher(
+      "./users/aadharUniqueURLReq",
+      {
+        body: JSON.stringify({
+          action: "aadharUniqueURLReq",
+          request_data: { inquiryID: tranCode },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const fetchAadharRequestStatus = async (aadharRequestID) => {
+    //console.log(refIdForAadhar);
+    const { data, status } = await internalFetcher(
+      "./users/fetchaadharstatus",
+      {
+        body: JSON.stringify({
+          action: "aadharstatus",
+          request_data: {
+            transactionID: aadharRequestID,
+            updateStatus: "",
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const fetchAadharRequestStatusEventStream = async (
+    aadharRequestID,
+    callback
+  ) => {};
+
   return {
     createSession,
     loginStatus,
@@ -504,6 +549,9 @@ const RaatnaFinAPI = () => {
     validatePanNumber,
     checkPhoneNumberExists,
     updateUserPassword,
+    initiateAadharValidation,
+    fetchAadharRequestStatus,
+    fetchAadharRequestStatusEventStream,
   };
 };
 

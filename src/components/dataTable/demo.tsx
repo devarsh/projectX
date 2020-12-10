@@ -29,7 +29,6 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
-import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { lighten, makeStyles, useTheme } from "@material-ui/core/styles";
@@ -46,6 +45,9 @@ import LastPageIcon from "@material-ui/icons/LastPage";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
+
+import { useCheckboxColumn } from "./plugins/checkbox";
+import { LinearProgressBarSpacer } from "./components/linerProgressBarSpacer";
 
 const TotalRecords = 75;
 const maxWidth = 998;
@@ -190,7 +192,7 @@ const DataTable = ({
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: resetPaginationAndSorting,
-      manualSortBy: false,
+      manualSortBy: true,
       autoResetSortBy: resetPaginationAndSorting,
       manualFilters: true,
       autoResetFilters: false,
@@ -231,7 +233,7 @@ const DataTable = ({
         getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
       />
-      {loading ? <LinearProgress /> : <LinearProgressSpacer />}
+      {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>
         <Table
           component="div"
@@ -274,6 +276,7 @@ const DataTable = ({
                             style: {
                               position: "relative",
                               display: "flex",
+                              overflow: "hidden",
                               ...stickyCheckboxProps,
                             },
                           },
@@ -491,45 +494,6 @@ const DefaultHeaderRenderer = ({ column }) => {
   );
 };
 
-const CheckboxCellRenderer = (props) => {
-  const { row } = props;
-  return (
-    <Checkbox
-      size="small"
-      {...row.getToggleRowSelectedProps([
-        {
-          style: {
-            padding: 0,
-          },
-        },
-      ])}
-    />
-  );
-};
-
-const CheckboxHeaderRenderer = ({ getToggleAllPageRowsSelectedProps }) => {
-  return (
-    <Checkbox
-      size="small"
-      {...getToggleAllPageRowsSelectedProps([{ style: { padding: 0 } }])}
-    />
-  );
-};
-
-const useCheckboxColumn = (hooks) => {
-  hooks.visibleColumns.push((columns) => [
-    {
-      id: "selectionCheckbox",
-      Header: CheckboxHeaderRenderer,
-      Cell: CheckboxCellRenderer,
-      minWidth: 20,
-      width: 20,
-      maxWidth: 20,
-    },
-    ...columns,
-  ]);
-};
-
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
@@ -650,24 +614,6 @@ const TablePaginationActions = (props) => {
       </IconButton>
     </div>
   );
-};
-
-const useLinerProgressStyle = makeStyles(() => ({
-  root: {
-    position: "relative",
-    overflow: "hidden",
-    display: "block",
-    height: 4,
-    zIndex: 0,
-    "@media print": {
-      colorAdjust: "exact",
-    },
-  },
-}));
-
-const LinearProgressSpacer = () => {
-  const classes = useLinerProgressStyle();
-  return <div className={classes.root}></div>;
 };
 
 const DefaultColumnFilter = ({
