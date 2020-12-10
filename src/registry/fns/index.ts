@@ -50,3 +50,4 @@ registerFn("getInfraEmployee", api.getMiscVal("INFRA_EMPL"));
 registerFn("getEducationDtl", api.getMiscVal("EDUCATION"));
 registerFn("getSitePincodeDtl", others.getSitePincodeDtl(api.getPincode));
 registerFn("getSiteLocationDtl", others.getSiteLocationDtl);
+registerFn("validatePanNumber", api.validatePanNumber);

@@ -442,8 +442,11 @@ const RaatnaFinAPI = () => {
         channel: "W",
       }),
     });
-    console.log(data, status);
-    return "invalid";
+    if (status === "success") {
+      return "";
+    } else {
+      return "invalid pan number";
+    }
   };
 
   const checkPhoneNumberExists = async (phoneNumber) => {
