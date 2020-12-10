@@ -38,6 +38,7 @@ import {
   InputMaskPropsOptional,
   AutocompletePropsOptional,
 } from "./typesFields";
+import { Merge } from "components/common/types";
 
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";
@@ -97,7 +98,7 @@ export interface MetaDataType {
   fields: FieldMetaDataType[];
 }
 
-export type FieldMetaDataType =
+export type FieldMetaDataTypeX =
   | AllTextFieldProps
   | AllSelectFieldProps
   | AllCheckboxGroupProps
@@ -116,6 +117,11 @@ export type FieldMetaDataType =
   | AllSpacerProps
   | AllInputMaskProps
   | AllAutocompleteProps;
+
+export type FieldMetaDataType = Merge<
+  FieldMetaDataTypeX,
+  { template?: FieldMetaDataType[] }
+>;
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {
