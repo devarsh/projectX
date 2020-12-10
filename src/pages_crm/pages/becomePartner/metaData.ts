@@ -472,7 +472,7 @@ export const becomePartnerMetaData: MetaDataType = {
       type: "text",
       label: "Pan Card Number",
       required: true,
-      validate: "getValidatePanNumber",
+      validate: "validatePanNumber",
       GridProps: {
         xs: 12,
         md: 3,
