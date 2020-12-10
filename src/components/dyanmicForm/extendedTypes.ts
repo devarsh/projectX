@@ -79,7 +79,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       rules: [
         { name: "required", params: ["This Field is required"] },
         {
-          name: "pancard",
+          name: "pan_no",
           params: ["Please enter valid Pan Card Number"],
         },
       ],

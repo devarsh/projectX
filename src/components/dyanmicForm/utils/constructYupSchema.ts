@@ -41,7 +41,6 @@ const parseSchema = (schema, fieldObj: FieldMetaDataType) => {
       schema[name] = arrayOFTypeSchema;
       return schema;
     } else {
-      /* @ts-ignore */
       const { template = [] } = fieldObj;
       const nestedschema = constructYupSchema(template);
       const arrayOFNestedSchema = yup[type]()["of"](nestedschema);
