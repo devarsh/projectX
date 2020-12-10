@@ -8,7 +8,7 @@ import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
 import Profile from "./pages/profile";
 import Iframe from "./pages/iframe";
-import { App } from "components/dataTable/demo";
+import { App } from "components/dataTable";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
