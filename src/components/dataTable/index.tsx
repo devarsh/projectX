@@ -1,12 +1,12 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 import { makeData } from "./makeData";
 import {
-  DefaultCellRenderer,
+  DefaultRowCellRenderer,
   DefaultColumnFilter,
   DefaultHeaderColumnRenderer,
 } from "./components";
 
-import { DataTable } from "./viewport";
+import { DataGrid } from "./grid";
 
 const TotalRecords = 75;
 
@@ -18,6 +18,7 @@ export const App = () => {
       {
         accessor: "firstName",
         columnName: "First Name",
+        sticky: true,
       },
       {
         accessor: "lastName",
@@ -54,7 +55,7 @@ export const App = () => {
       maxWidth: 400,
       minWidth: 50,
       Header: DefaultHeaderColumnRenderer,
-      Cell: DefaultCellRenderer,
+      Cell: DefaultRowCellRenderer,
       Filter: DefaultColumnFilter,
     }),
     []
@@ -100,7 +101,7 @@ export const App = () => {
   }, []);
 
   return (
-    <DataTable
+    <DataGrid
       tableName={"Demo Table"}
       dense={dense}
       columns={columns}

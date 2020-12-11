@@ -9,27 +9,29 @@ import {
   useFilters,
   useAsyncDebounce,
 } from "react-table";
-import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
-import { TablePaginationActions } from "./tablePaginationToolbar";
-import { TableHeaderToolbar } from "./tableHeaderToolbar";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
+
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import TablePagination from "@material-ui/core/TablePagination";
-import Backdrop from "@material-ui/core/Backdrop";
 
-import { useCheckboxColumn } from "./plugins/checkbox";
+import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
+import { TablePaginationActions } from "./tablePaginationToolbar";
+import { TableHeaderToolbar } from "./tableHeaderToolbar";
+import { CustomBackdrop } from "./backdrop";
+import { useCheckboxColumn } from "./components";
+import { HeaderCellWrapper } from "./headerCellWrapper";
+import { RowCellWrapper } from "./rowCellWrapper";
+import { StickyTableHead } from "./stickyTableHeader";
 
 const maxWidth = 998;
 
-export const DataTable = ({
+export const DataGrid = ({
   tableName,
   dense,
   columns,
@@ -111,16 +113,8 @@ export const DataTable = ({
           {...getTableProps()}
           size={dense ? "small" : "medium"}
         >
-          <TableHead
-            component="div"
-            style={{
-              position: "sticky",
-              zIndex: 10,
-              top: 0,
-              backgroundColor: "white",
-              display: "block",
-            }}
-          >
+          {/*@ts-ignore*/}
+          <StickyTableHead component="div">
             {headerGroups.map((headerGroup) => {
               return (
                 <TableRow
@@ -128,40 +122,19 @@ export const DataTable = ({
                   {...headerGroup.getHeaderGroupProps()}
                 >
                   {headerGroup.headers.map((column) => {
-                    const stickyCheckboxProps =
-                      column.id === "selectionCheckbox"
-                        ? {
-                            position: "sticky",
-                            background: "white",
-                            left: 0,
-                            zIndex: 12,
-                          }
-                        : {};
                     return (
-                      <TableCell
-                        component="div"
-                        variant="head"
-                        {...column.TableCellProps}
-                        {...column.getHeaderProps([
-                          {
-                            style: {
-                              position: "relative",
-                              display: "flex",
-                              overflow: "hidden",
-                              ...stickyCheckboxProps,
-                            },
-                          },
-                        ])}
+                      <HeaderCellWrapper
+                        column={column}
+                        key={column.getHeaderProps().key}
                       >
                         {column.render("Header")}
-                      </TableCell>
+                      </HeaderCellWrapper>
                     );
                   })}
                 </TableRow>
               );
             })}
-          </TableHead>
-
+          </StickyTableHead>
           <TableBody
             component="div"
             {...getTableBodyProps([
@@ -175,7 +148,6 @@ export const DataTable = ({
           >
             {page.map((row, index) => {
               prepareRow(row);
-
               return (
                 <TableRow
                   component="div"
@@ -183,34 +155,14 @@ export const DataTable = ({
                   {...row.getRowProps()}
                 >
                   {row.cells.map((cell) => {
-                    const stickyCheckboxProps =
-                      cell.column.id === "selectionCheckbox"
-                        ? {
-                            position: "sticky",
-                            background: "white",
-                            left: 0,
-                            zIndex: 1,
-                          }
-                        : {};
                     return (
-                      <TableCell
-                        component="div"
-                        variant="head"
-                        {...cell.getCellProps([
-                          { ...(cell?.column?.TableCellProps ?? {}) },
-                          {
-                            style: {
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              display: "flex",
-                              ...stickyCheckboxProps,
-                            },
-                          },
-                        ])}
+                      <RowCellWrapper
+                        key={cell.getCellProps().key}
+                        cell={cell}
+                        index={index}
                       >
-                        {cell.render("Cell", { index: index })}
-                      </TableCell>
+                        {cell.render("Cell")}
+                      </RowCellWrapper>
                     );
                   })}
                 </TableRow>
@@ -226,14 +178,7 @@ export const DataTable = ({
             ) : null}
           </TableBody>
         </Table>
-        <Backdrop
-          open={loading}
-          style={{
-            position: "absolute",
-            zIndex: 9,
-            backgroundColor: "rgb(0 0 0 / 0%)",
-          }}
-        />
+        <CustomBackdrop open={loading} />
       </TableContainer>
       <TablePagination
         style={{ display: "flex" }}

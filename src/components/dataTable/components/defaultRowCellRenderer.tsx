@@ -1,4 +1,5 @@
-export const DefaultCellRenderer = ({ column, value }) => {
+export const DefaultRowCellRenderer = (props) => {
+  const { value } = props;
   return (
     <span
       style={{

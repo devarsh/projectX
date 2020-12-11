@@ -9,13 +9,13 @@ export const useCheckboxColumn = (hooks) => {
       minWidth: 20,
       width: 20,
       maxWidth: 20,
+      sticky: true,
     },
     ...columns,
   ]);
 };
 
-const CheckboxCellRenderer = (props) => {
-  const { row } = props;
+const CheckboxCellRenderer = ({ row }) => {
   return (
     <Checkbox
       size="small"
