@@ -162,7 +162,7 @@ export const DisplayData = ({ onClose, open, row }) => {
 
   useEffect(() => {
     const fetcher = async () => {
-      // debugger;
+      // ;
       const result = await APISDK.getDashdoardDisplayEmpDetails(inquiryCode);
       // console.log("result", result.data);
       try {

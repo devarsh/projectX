@@ -53,6 +53,14 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     render: {
       componentType: "numberFormat",
     },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "required", params: ["Mobile No is required"] },
+        { name: "min", params: [10, "Mobile No should be 10 digit."] },
+        { name: "max", params: [10, "Mobile No should be 10 digit."] },
+      ],
+    },
     FormatProps: {
       format: "##########",
       isAllowed: (values) => {
@@ -149,6 +157,49 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
         { name: "typeError", params: ["Please enter existing loan interest"] },
         { name: "required", params: ["Please enter existing loan interest"] },
       ],
+    },
+  },
+  MonthlyEmiPayCurrency: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      thousandSeparator: true,
+      prefix: "₹",
+      thousandsGroupStyle: "lakh",
+      allowNegative: false,
+      allowLeadingZeros: false,
+      decimalScale: 0,
+      maxLength: 13,
+      isAllowed: (values) => {
+        if (values.floatValue === null) {
+          return false;
+        }
+        return true;
+      },
+    },
+    enableNumWords: true,
+  },
+  pincode: {
+    render: {
+      componentType: "numberFormat",
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "required", params: ["Residence Pincode is required"] },
+        { name: "min", params: [6, "Residence Pincode should be 6 digit."] },
+        { name: "max", params: [6, "Residence Pincode should be 6 digit."] },
+      ],
+    },
+    FormatProps: {
+      format: "######",
+      isAllowed: (values) => {
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
     },
   },
 };
