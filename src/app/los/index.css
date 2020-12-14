@@ -145,7 +145,7 @@ table tfoot td {
   width: 6px;
 }
 .ps__rail-x {
-  width: 10px;
+  height: 6px;
 }
 .ps__rail-x:hover > .ps__thumb-x,
 .ps__rail-x:focus > .ps__thumb-x,

@@ -1,20 +1,6 @@
-import { Theme } from "@material-ui/core/styles";
-import { BaseCSSProperties } from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
-export interface LoginPageStyleProps {
-  wrapper: BaseCSSProperties;
-  loginEmp: BaseCSSProperties;
-  loginBtn: BaseCSSProperties;
-  formWrap: BaseCSSProperties;
-  OTPTimer: BaseCSSProperties;
-  resendLink: BaseCSSProperties;
-  themeBtn: BaseCSSProperties;
-  logo: BaseCSSProperties;
-}
-
-export type LoginPageNameProps = Record<keyof LoginPageStyleProps, string>;
-
-export const loginPageStyle = (theme: Theme): any => ({
+export const useStyles = makeStyles((theme) => ({
   wrapper: {
     minHeight: "100vh",
     boxShadow: "0 3px 6px rgba(0,0,0,0.03)",
@@ -48,7 +34,7 @@ export const loginPageStyle = (theme: Theme): any => ({
       "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
     border: 0,
     color: "#fff !important",
-    fontWeight: "600",
+    fontWeight: 600,
     letterSpacing: "0.02857em",
     boxShadow: "none",
     textTransform: "capitalize",
@@ -62,16 +48,16 @@ export const loginPageStyle = (theme: Theme): any => ({
   OTPTimer: {
     marginTop: "10px",
     color: theme.palette.primary.main,
-    fontWeight: "600",
+    fontWeight: 600,
   },
   resendLink: {
     marginTop: "10px",
     cursor: "pointer",
     color: theme.palette.secondary.main,
-    fontWeight: "600",
+    fontWeight: 600,
     fontSize: "0.875 rem",
   },
   logo: {
     marginBottom: theme.spacing(1),
   },
-});
+}));
