@@ -1,5 +1,6 @@
 import { useState, Fragment, useEffect, useRef } from "react";
 import { APISDK } from "registry/fns/sdk";
+import Alert from "@material-ui/lab/Alert";
 
 export default function EmployeeDashboard() {
   const [IFrameVisible, setIFrameVisible] = useState(false);
@@ -8,8 +9,10 @@ export default function EmployeeDashboard() {
     transactionID: "",
     URL: "",
   });
+  const [userMessage, setUserMessage] = useState("");
+  const [failure, setFailure] = useState(false);
   const timeoutDuration = 5 * 60 * 1000;
-  const poolingInterval = 5 * 1000;
+  const poolingInterval = 10 * 1000;
   let timeout, interval;
 
   const handleAadharInitiation = async (inquiryCode) => {
@@ -24,8 +27,8 @@ export default function EmployeeDashboard() {
           URL: url,
         });
         setIFrameVisible(true);
-        startPooling({ transactionID: transactionId, URL: url });
-        //waitForRequestStatus({ transactionID: transactionId, URL: url })
+        //startPooling({ transactionID: transactionId, URL: url });
+        waitForRequestStatus({ transactionID: transactionId, URL: url });
         return aadharParams;
       }
     } catch (e) {
@@ -34,26 +37,56 @@ export default function EmployeeDashboard() {
   };
 
   const fetchRequestID = useRef(0);
-  // const waitForRequestStatus = (data) => {
-  //   var urlEndPoint = `http://10.55.6.63:8081/users/subscribe?transactionId=${data.transactionID}`;
-  //   var eventSource = new EventSource(urlEndPoint);
-  //   eventSource.addEventListener("transactionDtl", function (event) {
-  //     console.log(event.data);
-  //     eventSource.close();
-  //   });
-  // };
+  const waitForRequestStatus = async (data) => {
+    const resp = await APISDK.fetchAadharRequestStatusEventSource(
+      data.transactionID
+    );
+    if (resp.status === "success") {
+      if (
+        resp.data.requestStatus === "success" ||
+        resp.data.requestStatus === "failed"
+      ) {
+        if (resp.data.requestStatus === "failed") {
+          setFailure(true);
+        }
+        setIFrameVisible(false);
+        setUserMessage(resp.data.message);
+      }
+    } else {
+      setIFrameVisible(false);
+      //TODO: Set proper error coming from response
+      setUserMessage("Unknown error occured");
+      setFailure(true);
+    }
+  };
   const startPooling = (data) => {
     interval = setInterval(() => {
-      const currentFetchRequestID = fetchRequestID.current++;
-      APISDK.fetchAadharRequestStatus(data.transactionID).then((data) => {
+      const currentFetchRequestID = ++fetchRequestID.current;
+      APISDK.fetchAadharRequestStatus(data.transactionID).then((resp) => {
+        console.log(currentFetchRequestID, fetchRequestID.current);
         if (currentFetchRequestID === fetchRequestID.current) {
-          console.log(currentFetchRequestID, data);
+          if (resp.status === "success") {
+            if (
+              resp.data.requestStatus === "success" ||
+              resp.data.requestStatus === "failed"
+            ) {
+              if (resp.data.requestStatus === "failed") {
+                setFailure(true);
+              }
+              setIFrameVisible(false);
+              setUserMessage(resp.data.message);
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }
+          }
         }
       });
     }, poolingInterval);
     timeout = setTimeout(() => {
       clearInterval(interval);
-      console.log("aadhar request timedout");
+      setIFrameVisible(false);
+      setUserMessage("Request Time out");
+      setFailure(true);
     }, timeoutDuration);
   };
 
@@ -75,7 +108,7 @@ export default function EmployeeDashboard() {
           }}
           disabled={loading}
         >
-          Go for aadhar validation
+          Start Aadhar Verification
         </button>
       ) : (
         <iframe
@@ -85,6 +118,9 @@ export default function EmployeeDashboard() {
           height="700px"
         />
       )}
+      {!IFrameVisible && Boolean(userMessage) ? (
+        <Alert severity={failure ? "error" : "success"}>{userMessage}</Alert>
+      ) : null}
     </Fragment>
   );
 }

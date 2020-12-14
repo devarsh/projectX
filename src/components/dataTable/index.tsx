@@ -23,6 +23,7 @@ export const App = () => {
       {
         accessor: "lastName",
         columnName: "Last Name",
+        disableSortBy: true,
       },
       {
         accessor: "age",
@@ -30,6 +31,8 @@ export const App = () => {
         TableCellProps: {
           align: "right",
         },
+        disableFilters: true,
+        //defaultCanFilter: false,
       },
       {
         accessor: "visits",

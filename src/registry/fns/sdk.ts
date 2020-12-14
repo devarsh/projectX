@@ -526,10 +526,30 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const fetchAadharRequestStatusEventStream = async (
-    aadharRequestID,
-    callback
-  ) => {};
+  const fetchAadharRequestStatusEventSource = async (
+    aadharRequestID
+  ): Promise<CommonFetcherResponse> => {
+    var urlEndPoint = `https://digix.aiplsolution.in/ratnaafin/users/getaadharstatus?transactionId=${aadharRequestID}`;
+    var eventSource = new EventSource(urlEndPoint);
+    return new Promise((res) => {
+      //@ts-ignore
+      eventSource.addEventListener("transactionId", ({ data: eventData }) => {
+        eventData = JSON.parse(eventData);
+        console.log(eventData);
+        let response: CommonFetcherResponse = { status: "failure", data: "" };
+        if (eventData.status === "0") {
+          response.status = "success";
+          response.data = eventData?.response_data ?? {};
+          res(response);
+        } else {
+          response.status = "failure";
+          response.data = eventData?.response_data ?? {};
+          res(response);
+        }
+        eventSource.close();
+      });
+    });
+  };
 
   return {
     createSession,
@@ -554,7 +574,7 @@ const RaatnaFinAPI = () => {
     updateUserPassword,
     initiateAadharValidation,
     fetchAadharRequestStatus,
-    fetchAadharRequestStatusEventStream,
+    fetchAadharRequestStatusEventSource,
   };
 };
 

@@ -29,7 +29,8 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
               display: "flex",
               paddingRight:
                 //@ts-ignore
-                (column?.TableCellProps?.align ?? "left") === "right"
+                (column?.TableCellProps?.align ?? "left") === "right" &&
+                column.canFilter
                   ? "15px"
                   : "10px",
             },
@@ -46,20 +47,22 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
           {column.columnName}
         </span>
       </TableSortLabel>
-      <IconButton
-        aria-label="filter"
-        aria-controls="popover"
-        aria-haspopup="true"
-        style={{
-          position: "absolute",
-          right: "15px",
-          padding: "0",
-          color: open || Boolean(column.filterValue) ? "red" : "inherit",
-        }}
-        onClick={handleClick}
-      >
-        <FilterListIcon />
-      </IconButton>
+      {column.canFilter ? (
+        <IconButton
+          aria-label="filter"
+          aria-controls="popover"
+          aria-haspopup="true"
+          style={{
+            position: "absolute",
+            right: "15px",
+            padding: "0",
+            color: open || Boolean(column.filterValue) ? "red" : "inherit",
+          }}
+          onClick={handleClick}
+        >
+          <FilterListIcon />
+        </IconButton>
+      ) : null}
       <div
         {...column.getResizerProps([
           {
