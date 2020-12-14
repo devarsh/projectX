@@ -202,7 +202,7 @@ export const getValidateValue = async (fieldData) => {
     fieldData.value === "" ||
     fieldData.value === "0" ||
     fieldData.value === false ||
-    fieldData.value === "" ||
+    fieldData.value === null ||
     fieldData.value === "00"
   ) {
     return "This field is required";
@@ -316,5 +316,17 @@ export const getSiteLocationDtl = async (fieldData) => {
         value: fieldValues.country,
       },
     };
+  }
+};
+
+export const getMonthlyEmiPayValidateValue = async (fieldData) => {
+  if (
+    fieldData.value === "X" ||
+    fieldData.value === false ||
+    fieldData.value === "" ||
+    fieldData.value === null
+  ) {
+    return "This field is required";
+  } else {
   }
 };

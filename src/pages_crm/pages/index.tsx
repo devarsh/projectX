@@ -7,6 +7,8 @@ import ThankYouPage from "./thankyou";
 import NotFoundPage from "./notFound";
 import InquiryForms from "./inquiryForms";
 import { BecomePartnerFormWrapper } from "./becomePartner";
+import { isMobile } from "react-device-detect";
+import AadharVerificationIFrame from "./aadharVerification/aadharVerificationIFrame";
 
 const Index = () => {
   const classes = useStyles();
@@ -30,6 +32,16 @@ const Index = () => {
           <Box width={1} display="flex" className={classes.wrapper}>
             <div className={classes.paper}>
               <InquiryForms />
+            </div>
+          </Box>
+        }
+      />
+      <Route
+        path="aadharVerificationIFrame"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <AadharVerificationIFrame />
             </div>
           </Box>
         }

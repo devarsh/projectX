@@ -51,3 +51,10 @@ registerFn("getEducationDtl", api.getMiscVal("EDUCATION"));
 registerFn("getSitePincodeDtl", others.getSitePincodeDtl(api.getPincode));
 registerFn("getSiteLocationDtl", others.getSiteLocationDtl);
 registerFn("validatePanNumber", api.validatePanNumber);
+registerFn(
+  "getMonthlyEmiPayValidateValue",
+  others.getMonthlyEmiPayValidateValue
+);
+registerFn("getAccountType", api.getMiscVal("ACCT_TYPE"));
+registerFn("getChannelType", api.getMiscVal("CHANNEL_TYPE"));
+registerFn("getBusinessInterest", api.getMiscVal("BUSI_INTREST"));

@@ -422,7 +422,7 @@ const RaatnaFinAPI = () => {
   const submitBecomePartnerData = async (submitAction, formData?: any) => {
     const { data, status } = await internalFetcher("./users/become_partner", {
       body: JSON.stringify({
-        action: submitAction,
+        action: "become_partner",
         request_data: { ...formData },
         channel: "W",
       }),
