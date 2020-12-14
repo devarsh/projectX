@@ -8,6 +8,7 @@ import SmsIcon from "@material-ui/icons/Sms";
 import PhoneIcon from "@material-ui/icons/Phone";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { TextEditor } from "./editor";
 
 import { useStyles } from "./style";
 
@@ -144,6 +145,9 @@ export const LeadCustomerTab = () => {
             <PhoneIcon />
           </ToggleButton>
         </ToggleButtonGroup>
+      </div>
+      <div>
+        <TextEditor />
       </div>
     </>
   );
