@@ -9,20 +9,14 @@ import { useNavigate } from "react-router-dom";
 import logoImg from "assets/images/logo.svg";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 
-import {
-  loginPageStyle,
-  LoginPageStyleProps,
-  LoginPageNameProps,
-} from "./style";
+import { useStyles } from "./style";
 
 export interface FormDialogProps {
   submitProps: any;
 }
 
-const useStyles = makeStyles<Theme, LoginPageStyleProps>(loginPageStyle);
-
 export const Login = () => {
-  const classes: LoginPageNameProps = useStyles({} as LoginPageStyleProps);
+  const classes = useStyles();
   const navigate = useNavigate();
 
   const [phoneNumber, setphoneNumber] = useState("");

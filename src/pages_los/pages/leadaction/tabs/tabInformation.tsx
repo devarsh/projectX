@@ -38,7 +38,7 @@ export const LeadInformationTab = () => {
           <div className={classes.valueText}>Pending</div>
         </Box>
         <Box pl={3}>
-          <div className={classes.labelText}>Priority</div>
+          <div className={classes.labelText}>Current Priority</div>
           <div className={classes.valueText}>Warm</div>
         </Box>
       </Box>
