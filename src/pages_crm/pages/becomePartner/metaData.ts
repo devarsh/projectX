@@ -151,9 +151,9 @@ export const becomePartnerMetaData: MetaDataType = {
       render: {
         componentType: "textField",
       },
-      name: "companyName",
+      name: "gstNo",
       type: "text",
-      label: "Company Name",
+      label: "GST No",
       required: true,
       //@ts-ignore
       schemaValidation: "getValidateValue",
@@ -175,9 +175,9 @@ export const becomePartnerMetaData: MetaDataType = {
       render: {
         componentType: "textField",
       },
-      name: "gstNo",
+      name: "companyName",
       type: "text",
-      label: "GST No",
+      label: "Company Name",
       required: true,
       //@ts-ignore
       schemaValidation: "getValidateValue",
@@ -217,9 +217,8 @@ export const becomePartnerMetaData: MetaDataType = {
       },
       name: "landmark",
       label: "Landmark",
-      required: true,
       type: "text",
-      validate: "getValidateValue",
+      // validate: "getValidateValue",
       GridProps: {
         xs: 12,
         md: 3,
@@ -229,27 +228,14 @@ export const becomePartnerMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "numberFormat",
+        //@ts-ignore
+        componentType: "pincode",
       },
       name: "pincode",
       label: "Residence Pincode",
       required: true,
       defaultValue: "",
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "required", params: ["Residence Pincode is required"] },
-          { name: "min", params: [6, "Residence Pincode should be 6 digit."] },
-          { name: "max", params: [6, "Residence Pincode should be 6 digit."] },
-          {
-            name: "matches",
-            params: [/^\d{6}/, "Please enter valid Pincode."],
-          },
-        ],
-      },
-      FormatProps: {
-        format: "######",
-      },
+
       runPostValidationHookAlways: true,
       //@ts-ignore
       postValidationSetCrossFieldValues: "getPincodeDtl",
@@ -341,16 +327,16 @@ export const becomePartnerMetaData: MetaDataType = {
       },
       name: "inception_date",
       label: "Date of Incorporation",
-      required: true,
+      // required: true,
       placeholder: "dd/mm/yyyy",
       format: "dd/MM/yyyy",
 
-      schemaValidation: {
-        type: "date",
-        rules: [
-          { name: "required", params: ["Date of Incorporation is required"] },
-        ],
-      },
+      // schemaValidation: {
+      //   type: "date",
+      //   rules: [
+      //     { name: "required", params: ["Date of Incorporation is required"] },
+      //   ],
+      // },
       GridProps: {
         xs: 12,
         md: 3,
@@ -396,14 +382,14 @@ export const becomePartnerMetaData: MetaDataType = {
       },
       name: "marraige_date",
       label: "Marriage Anniversary",
-      required: true,
+      // required: true,
       placeholder: "dd/mm/yyyy",
       format: "dd/MM/yyyy",
 
-      schemaValidation: {
-        type: "date",
-        rules: [{ name: "required", params: ["Anniversary date is required"] }],
-      },
+      // schemaValidation: {
+      //   type: "date",
+      //   rules: [{ name: "required", params: ["Anniversary date is required"] }],
+      // },
       GridProps: {
         xs: 12,
         md: 3,
@@ -420,18 +406,6 @@ export const becomePartnerMetaData: MetaDataType = {
       type: "text",
       label: "Mobile No",
       required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "required", params: ["Mobile No is required"] },
-          { name: "min", params: [10, "Mobile No should be 10 digit."] },
-          { name: "max", params: [10, "Mobile No should be 10 digit."] },
-          {
-            name: "matches",
-            params: [/^\d{10}/, "Please enter valid Mobile No."],
-          },
-        ],
-      },
 
       StartAdornment: "+91",
       GridProps: {
@@ -629,6 +603,8 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Primary Business Interest",
       required: true,
       defaultValue: "0",
+      multiple: true,
+      showCheckbox: true,
       //@ts-ignore
       options: "getBusinessInterest",
       validate: "getValidateValue",
@@ -677,9 +653,12 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       validate: "getValidateValue",
-      dependentFields: ["nominee_flag"],
+      dependentFields: ["nominee_flag", "partner_type"],
       shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.nominee_flag?.value === "Y") {
+        if (
+          dependentValues?.nominee_flag?.value === "Y" &&
+          dependentValues?.partner_type?.value === "I"
+        ) {
           return false;
         }
         return true;
@@ -701,9 +680,12 @@ export const becomePartnerMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-      dependentFields: ["nominee_flag"],
+      dependentFields: ["nominee_flag", "partner_type"],
       shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.nominee_flag?.value === "Y") {
+        if (
+          dependentValues?.nominee_flag?.value === "Y" &&
+          dependentValues?.partner_type?.value === "I"
+        ) {
           return false;
         }
         return true;
@@ -726,9 +708,39 @@ export const becomePartnerMetaData: MetaDataType = {
       //@ts-ignore
       options: "getRelationship",
       validate: "getValidateValue",
-      dependentFields: ["nominee_flag"],
+      dependentFields: ["nominee_flag", "partner_type"],
       shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.nominee_flag?.value === "Y") {
+        if (
+          dependentValues?.nominee_flag?.value === "Y" &&
+          dependentValues?.partner_type?.value === "I"
+        ) {
+          return false;
+        }
+        return true;
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "phoneNumber",
+      },
+      name: "nomineeMobile",
+      type: "text",
+      label: "Mobile No",
+      // required: true,
+
+      StartAdornment: "+91",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      dependentFields: ["nominee_flag", "partner_type"],
+      shouldExclude: (_, dependentValues) => {
+        if (
+          dependentValues?.nominee_flag?.value === "Y" &&
+          dependentValues?.partner_type?.value === "I"
+        ) {
           return false;
         }
         return true;

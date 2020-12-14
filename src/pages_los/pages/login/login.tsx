@@ -39,7 +39,6 @@ export const Login = () => {
   const [expiryOtpTime, setexpiryOtpTime] = useState("");
 
   const requestOtp = async () => {
-    debugger;
     if (phoneNumber !== "" && phoneNumber.length === 10) {
       try {
         setLoading(true);
@@ -82,7 +81,6 @@ export const Login = () => {
 
   // password= "superacute@1234";
   const verifyPwd = async () => {
-    debugger;
     if (password.length !== 0 || password !== "") {
       try {
         setLoading(true);

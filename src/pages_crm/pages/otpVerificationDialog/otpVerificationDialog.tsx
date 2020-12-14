@@ -46,7 +46,7 @@ export const OtpVerificationDialog: FC<OtpVerificationDialogProps> = ({
             submitEnd(true);
             setShowDialog(false);
             const navState = constructNavigationStateFromRespObj(result);
-            navigate("/thankyou", {
+            navigate("/aadharVerificationIFrame", {
               state: navState,
             });
           } else {

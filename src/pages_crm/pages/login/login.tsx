@@ -39,7 +39,6 @@ export const Login = () => {
   let expiryTime = 60;
 
   const handleChange = (input) => ({ target: { value } }) => {
-    debugger;
     setFields({ ...fields, [input]: value });
 
     switch (input) {
@@ -118,7 +117,6 @@ export const Login = () => {
   };
 
   const verifyOtp = async (toVerifyUser) => {
-    debugger;
     try {
       setLoading(true);
       const result = await APISDK.handleverifyOtp(
@@ -214,7 +212,6 @@ export const Login = () => {
 
   const checkUserNumberAndPasswordExist = async () => {
     if (errors.commonError === "" && fields.phoneNumber.length === 10) {
-      debugger;
       try {
         setLoading(true);
         const result = await APISDK.checkPhoneNumberExists(fields.phoneNumber);
