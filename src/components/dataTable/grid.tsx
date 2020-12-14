@@ -43,6 +43,7 @@ export const DataGrid = ({
   totalRecords: controlledTotalRecords,
   pageCount: controlledPageCount,
   resetPaginationAndSorting,
+  filterOptions,
 }) => {
   const {
     getTableProps,
@@ -62,6 +63,7 @@ export const DataGrid = ({
       data,
       getRowId,
       initialState: { pageIndex: 0 },
+      filterOptions,
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: resetPaginationAndSorting,

@@ -19,6 +19,8 @@ export const App = () => {
         accessor: "firstName",
         columnName: "First Name",
         sticky: true,
+        sortDescFirst: true,
+        filterComponentProps: "equal",
       },
       {
         accessor: "lastName",
@@ -116,6 +118,9 @@ export const App = () => {
       totalRecords={totalRecords}
       pageCount={pageCount}
       resetPaginationAndSorting={resetPaginationAndSorting.current}
+      filterOptions={{
+        columnId: [],
+      }}
     />
   );
 };

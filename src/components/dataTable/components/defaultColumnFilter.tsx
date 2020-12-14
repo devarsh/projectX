@@ -1,8 +1,10 @@
 import TextField from "@material-ui/core/TextField";
 
-export const DefaultColumnFilter = ({
-  column: { filterValue, preFilteredRows, setFilter },
-}) => {
+export const DefaultColumnFilter = (props) => {
+  const {
+    column: { filterValue, filterComponentProps, preFilteredRows, setFilter },
+  } = props;
+
   return (
     <TextField
       value={filterValue || ""}

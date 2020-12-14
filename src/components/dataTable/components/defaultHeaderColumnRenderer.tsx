@@ -13,7 +13,6 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
   };
   const open = Boolean(anchorEl);
   const id = open ? column.id : undefined;
-
   return (
     <>
       <TableSortLabel
