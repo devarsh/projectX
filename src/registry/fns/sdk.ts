@@ -525,6 +525,22 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
+  const fetchGridMetaData = async (gridCode) => {
+    const { data, status } = await internalFetcher("./users/getInquiryData", {
+      body: JSON.stringify({
+        action: "grid_form_data",
+        request_data: {
+          grid_code: gridCode,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
 
   const fetchAadharRequestStatusEventSource = async (
     aadharRequestID
@@ -575,6 +591,7 @@ const RaatnaFinAPI = () => {
     initiateAadharValidation,
     fetchAadharRequestStatus,
     fetchAadharRequestStatusEventSource,
+    fetchGridMetaData,
   };
 };
 
