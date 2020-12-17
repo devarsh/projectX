@@ -1,6 +1,4 @@
 import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
 import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
@@ -50,7 +48,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export const DefaultColumnFilter = ({
+export const SelectColumnFilter = ({
   column: { filterValue, preFilteredRows, setFilter },
 }) => {
   const classes = useStyles();
@@ -60,56 +58,24 @@ export const DefaultColumnFilter = ({
       <Box
         display="flex"
         justifyContent="space-between"
+        alignItems="center"
         px={2}
-        width={1}
         mt={2}
       >
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="start"
-          width="60%"
-          position="relative"
-          pr={1}
-        >
-          <CssTextField
-            fullWidth
-            value={filterValue || ""}
-            placeholder="Search"
-            onChange={(e) => {
-              setFilter(e.target.value); // Set undefined to remove the filter entirely
-            }}
-          />
-
-          <div className={classes.searchWrap}>
-            <IconButton
-              aria-label="delete"
-              color="secondary"
-              className={classes.searchIcon}
-            >
-              <SearchIcon />
-            </IconButton>
-          </div>
-        </Box>
-        <Box width="40%" pl={1}>
-          <CssTextField select placeholder="Select" fullWidth value={1}>
-            <StyledMenuItem dense={true} value="0">
-              Search with
-            </StyledMenuItem>
-            <StyledMenuItem dense={true} value={1}>
-              Starts with
-            </StyledMenuItem>
-            <StyledMenuItem dense={true} value={2}>
-              Ends with
-            </StyledMenuItem>
-            <StyledMenuItem dense={true} value={3}>
-              General
-            </StyledMenuItem>
-            <StyledMenuItem dense={true} value={4}>
-              Equal
-            </StyledMenuItem>
-          </CssTextField>
-        </Box>
+        <CssTextField select placeholder="Select" fullWidth value={0}>
+          <StyledMenuItem dense={true} value={0}>
+            Select Branch
+          </StyledMenuItem>
+          <StyledMenuItem dense={true} value={1}>
+            Ahmedabad
+          </StyledMenuItem>
+          <StyledMenuItem dense={true} value={2}>
+            Surat
+          </StyledMenuItem>
+          <StyledMenuItem dense={true} value={3}>
+            Rajkot
+          </StyledMenuItem>
+        </CssTextField>
       </Box>
 
       <Box display="flex" justifyContent="flex-end" px={2} width={1}>

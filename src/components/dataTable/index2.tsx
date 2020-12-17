@@ -3,6 +3,11 @@ import { makeData } from "./makeData";
 import {
   DefaultRowCellRenderer,
   DefaultColumnFilter,
+  SelectColumnFilter,
+  MultipleSelectColumnFilter,
+  RangeSliderColumnFilter,
+  RangeInputColumnFilter,
+  DateRangeColumnFilter,
   DefaultHeaderColumnRenderer,
 } from "./components";
 
@@ -61,7 +66,7 @@ export const App = () => {
       minWidth: 50,
       Header: DefaultHeaderColumnRenderer,
       Cell: DefaultRowCellRenderer,
-      Filter: DefaultColumnFilter,
+      Filter: SelectColumnFilter,
     }),
     []
   );

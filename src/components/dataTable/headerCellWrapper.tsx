@@ -21,6 +21,7 @@ export const HeaderCellWrapper = ({ column, children }) => {
             position: "relative",
             display: "flex",
             overflow: "hidden",
+            border: "0.5px dotted #ddd",
             ...stickyHeaderCell,
           },
         },

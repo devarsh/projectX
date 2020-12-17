@@ -486,13 +486,6 @@ const datatableData = [
 export default function EmployeeLead() {
   const classes = useStyles();
 
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
   const columns = [
     {
       label: "Inquiry ID",
