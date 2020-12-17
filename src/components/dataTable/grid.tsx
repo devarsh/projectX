@@ -88,6 +88,7 @@ export const DataGrid = ({
     useBlockLayout,
     useCheckboxColumn
   );
+
   const { pageIndex, pageSize, sortBy, filters } = tableState;
   const cellSize = dense ? 34 : 54;
   const emptyRows = pageSize - Math.min(pageSize, page.length);

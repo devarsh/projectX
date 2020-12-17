@@ -543,7 +543,7 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
-  const fetchGridData = async (gridCode, fromNo, toNo) => {
+  const fetchGridData = async (gridCode, fromNo, toNo, sortBy) => {
     const { data, status } = await internalFetcher("./users/getInquiryData", {
       body: JSON.stringify({
         action: "inquiry_data_pagewise",
@@ -551,6 +551,7 @@ const RaatnaFinAPI = () => {
           grid_code: gridCode,
           from_row: fromNo,
           to_row: toNo,
+          orderby_columns: sortBy,
         },
       }),
     });

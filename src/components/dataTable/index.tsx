@@ -11,6 +11,14 @@ import { APISDK } from "registry/fns/sdk";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
 
+const formatSortBy = (sortBy = []) => {
+  const formatted = sortBy.map((one: any, index) => ({
+    [one?.id ?? ""]: one?.desc ? "desc" : "asc",
+    seq: index + 1,
+  }));
+  return formatted;
+};
+
 export const GridWrapper: FC<{
   metaData: GridTransformedMetaDataType;
   girdCode: string;
@@ -47,28 +55,30 @@ export const GridWrapper: FC<{
       if (prevFilters.current !== filters) {
         resetPaginationAndSorting.current = true;
       }
-
       const fetchId = ++fetchIdRef.current;
       setLoading(true);
-      setTimeout(() => {
-        const startRow = Number(pageSize) * Number(pageIndex) + 1;
-        const endRow = Number(startRow) + Number(pageSize) - 1;
-        APISDK.fetchGridData(girdCode, startRow, endRow).then((result) => {
-          if (fetchId === fetchIdRef.current) {
-            if (result.status === "success") {
-              setData(result?.data?.rows ?? []);
-              setPageCount(
-                Math.ceil(
-                  Number(result?.data?.total_count ?? 1) / Number(pageSize)
-                )
-              );
-              setTotalRecords(Number(result?.data?.total_count ?? 1));
-              setLoading(false);
-              prevFilters.current = filters;
-            }
+      const startRow = Number(pageSize) * Number(pageIndex) + 1;
+      const endRow = Number(startRow) + Number(pageSize) - 1;
+      APISDK.fetchGridData(
+        girdCode,
+        startRow,
+        endRow,
+        formatSortBy(sortBy)
+      ).then((result) => {
+        if (fetchId === fetchIdRef.current) {
+          if (result.status === "success") {
+            setData(result?.data?.rows ?? []);
+            setPageCount(
+              Math.ceil(
+                Number(result?.data?.total_count ?? 1) / Number(pageSize)
+              )
+            );
+            setTotalRecords(Number(result?.data?.total_count ?? 1));
+            setLoading(false);
+            prevFilters.current = filters;
           }
-        });
-      }, 1000);
+        }
+      });
     },
     [setTotalRecords, setLoading, setData]
   );

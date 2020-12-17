@@ -82,7 +82,6 @@ export const App = () => {
       if (prevFilters.current !== filters) {
         resetPaginationAndSorting.current = true;
       }
-      console.log(pageSize, pageIndex, sortBy, filters);
       const fetchId = ++fetchIdRef.current;
       setLoading(true);
       setTimeout(() => {
