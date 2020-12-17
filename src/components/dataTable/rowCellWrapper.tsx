@@ -22,6 +22,7 @@ export const RowCellWrapper = ({ cell, index, children }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
+            border: "0.5px dotted #ddd",
             ...stickyRowCell,
           },
         },

@@ -29,7 +29,7 @@ import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
 import { StickyTableHead } from "./stickyTableHeader";
 
-const maxWidth = 998;
+const maxWidth = "100%";
 
 export const DataGrid = ({
   tableName,
@@ -112,6 +112,7 @@ export const DataGrid = ({
           component="div"
           {...getTableProps()}
           size={dense ? "small" : "medium"}
+          style={{ border: "1px dotted #ddd" }}
         >
           {/*@ts-ignore*/}
           <StickyTableHead component="div">
@@ -141,7 +142,7 @@ export const DataGrid = ({
               {
                 style: {
                   display: "block",
-                  maxHeight: "calc(100vh - 42*8px)",
+                  maxHeight: "calc(100vh - 12*8px)",
                 },
               },
             ])}
