@@ -44,6 +44,7 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
+            paddingRight: 10,
           }}
         >
           {column.columnName}
