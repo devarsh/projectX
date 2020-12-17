@@ -112,7 +112,7 @@ export const App = () => {
 
   return (
     <DataGrid
-      tableName={"Demo Table"}
+      label={"Demo Table"}
       dense={dense}
       columns={columns}
       defaultColumn={defaultColumn}

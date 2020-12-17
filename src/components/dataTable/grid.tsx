@@ -32,7 +32,7 @@ import { StickyTableHead } from "./stickyTableHeader";
 const maxWidth = 998;
 
 export const DataGrid = ({
-  tableName,
+  label,
   dense,
   columns,
   defaultColumn,
@@ -103,7 +103,7 @@ export const DataGrid = ({
       }}
     >
       <TableHeaderToolbar
-        tableName={tableName}
+        label={label}
         dense={dense}
         getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
