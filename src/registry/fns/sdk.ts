@@ -13,6 +13,10 @@ interface sessionObjType {
   token?: any;
 }
 
+const isBroswer = new Function(
+  "try {return this===window;}catch(e){ return false;}"
+);
+
 const RaatnaFinAPI = () => {
   let sessionObj: sessionObjType = {
     loginStatus: false,
@@ -21,26 +25,18 @@ const RaatnaFinAPI = () => {
   let sessionToken;
   const createSession = async (APIURL: string) => {
     sessionObj.baseURL = new URL(APIURL);
-    var myHeaders = new Headers();
-    myHeaders.append("mac_id", "null");
-    myHeaders.append("client_id", "null");
-    myHeaders.append("host_name", "null");
-    myHeaders.append("os_name", osName);
-    myHeaders.append(
-      "Authorization",
-      `Basic ${btoa(`ratnaafin-acute-client:ratnaafin-acute-client-secret`)}`
-    );
     var formdata = new FormData();
-    formdata.append("grant_type", "password");
-    formdata.append("username", "UUID");
-    formdata.append("password", "Windows 8.1");
+    let existingSession = "";
+    if (isBroswer()) {
+      existingSession = localStorage.getItem("currentAccessToken") ?? "";
+    }
+    formdata.append("tokenId", existingSession);
     var requestOptions = {
       method: "POST",
-      headers: myHeaders,
       body: formdata,
       redirect: "follow",
     };
-    const url = new URL("./oauth/token", sessionObj.baseURL);
+    const url = new URL("./Login", sessionObj.baseURL);
     sessionToken = fetch(
       url.href,
       //@ts-ignore
@@ -59,6 +55,12 @@ const RaatnaFinAPI = () => {
     if (data["access_token"] && data["refresh_token"]) {
       sessionObj.loginStatus = true;
       sessionObj.token = data;
+      if (isBroswer()) {
+        localStorage.setItem(
+          "currentAccessToken",
+          sessionObj?.token?.access_token ?? ""
+        );
+      }
     } else {
       sessionObj.loginStatus = false;
     }
@@ -133,7 +135,7 @@ const RaatnaFinAPI = () => {
         method: "POST",
         ...payload,
         headers: new Headers({
-          Authorization: `Bearer ${sessionObj.token.access_token}`,
+          Authorization: `Bearer ${sessionObj?.token?.access_token}`,
         }),
       });
       if (String(response.status) === "200") {
@@ -541,6 +543,23 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
+  const fetchGridData = async (gridCode, fromNo, toNo) => {
+    const { data, status } = await internalFetcher("./users/getInquiryData", {
+      body: JSON.stringify({
+        action: "inquiry_data_pagewise",
+        request_data: {
+          grid_code: gridCode,
+          from_row: fromNo,
+          to_row: toNo,
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
 
   const fetchAadharRequestStatusEventSource = async (
     aadharRequestID
@@ -592,6 +611,7 @@ const RaatnaFinAPI = () => {
     fetchAadharRequestStatus,
     fetchAadharRequestStatusEventSource,
     fetchGridMetaData,
+    fetchGridData,
   };
 };
 

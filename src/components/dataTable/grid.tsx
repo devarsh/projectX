@@ -44,6 +44,9 @@ export const DataGrid = ({
   pageCount: controlledPageCount,
   resetPaginationAndSorting,
   filterOptions,
+  pageSizes,
+  defaultPageSize,
+  defaultHiddenColumns,
 }) => {
   const {
     getTableProps,
@@ -51,6 +54,7 @@ export const DataGrid = ({
     headerGroups,
     prepareRow,
     page,
+    rows,
     selectedFlatRows,
     totalColumnsWidth,
     gotoPage,
@@ -62,7 +66,11 @@ export const DataGrid = ({
       defaultColumn,
       data,
       getRowId,
-      initialState: { pageIndex: 0 },
+      initialState: {
+        pageIndex: 0,
+        pageSize: defaultPageSize,
+        hiddenColumns: defaultHiddenColumns,
+      },
       filterOptions,
       manualPagination: true,
       pageCount: controlledPageCount,
@@ -186,11 +194,11 @@ export const DataGrid = ({
         style={{ display: "flex" }}
         variant="body"
         component="div"
-        rowsPerPageOptions={[5, 10, 15, 20]}
+        rowsPerPageOptions={pageSizes}
         colSpan={3}
         count={controlledTotalRecords}
-        rowsPerPage={pageSize}
-        page={pageIndex}
+        rowsPerPage={Number(pageSize)}
+        page={Number(pageIndex)}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
         ActionsComponent={TablePaginationActions}

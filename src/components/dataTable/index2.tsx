@@ -2,12 +2,7 @@ import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 import { makeData } from "./makeData";
 import {
   DefaultRowCellRenderer,
-  DefaultColumnFilter,
   SelectColumnFilter,
-  MultipleSelectColumnFilter,
-  RangeSliderColumnFilter,
-  RangeInputColumnFilter,
-  DateRangeColumnFilter,
   DefaultHeaderColumnRenderer,
 } from "./components";
 
@@ -39,7 +34,6 @@ export const App = () => {
           align: "right",
         },
         disableFilters: true,
-        //defaultCanFilter: false,
       },
       {
         accessor: "visits",
@@ -126,6 +120,9 @@ export const App = () => {
       filterOptions={{
         columnId: [],
       }}
+      pageSizes={[5, 10, 15, 20]}
+      defaultPageSize={5}
+      defaultHiddenColumns={[]}
     />
   );
 };

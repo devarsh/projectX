@@ -1,9 +1,5 @@
 import { FC, useEffect, useState, useMemo, useCallback, useRef } from "react";
-import {
-  GridMetaDataType,
-  GridTransformedMetaDataType,
-  TransformedGridColumnType,
-} from "./types";
+import { GridMetaDataType, GridTransformedMetaDataType } from "./types";
 import {
   attachComponentsToMetaData,
   attachFilterComponentToMetaData,
@@ -15,14 +11,10 @@ import { APISDK } from "registry/fns/sdk";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
 
-/*code to delete*/
-import { makeData } from "./makeData";
-const TotalRecords = 75;
-const serverData = makeData(TotalRecords);
-
-export const GridWrapper: FC<{ metaData: GridTransformedMetaDataType }> = ({
-  metaData,
-}) => {
+export const GridWrapper: FC<{
+  metaData: GridTransformedMetaDataType;
+  girdCode: string;
+}> = ({ metaData, girdCode }) => {
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(
     () => ({
@@ -37,7 +29,7 @@ export const GridWrapper: FC<{ metaData: GridTransformedMetaDataType }> = ({
     (row) => row[metaData.gridConfig.rowIdColumn],
     []
   );
-  console.log(columns, defaultColumn, getRowId);
+
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -59,31 +51,38 @@ export const GridWrapper: FC<{ metaData: GridTransformedMetaDataType }> = ({
       const fetchId = ++fetchIdRef.current;
       setLoading(true);
       setTimeout(() => {
-        if (fetchId === fetchIdRef.current) {
-          const startRow = pageSize * pageIndex;
-          const endRow = startRow + pageSize;
-          setData(serverData.slice(startRow, endRow));
-          setPageCount(Math.ceil(serverData.length / pageSize));
-        }
-        setTotalRecords(serverData.length);
-        setLoading(false);
-        prevFilters.current = filters;
+        const startRow = Number(pageSize) * Number(pageIndex) + 1;
+        const endRow = Number(startRow) + Number(pageSize) - 1;
+        APISDK.fetchGridData(girdCode, startRow, endRow).then((result) => {
+          if (fetchId === fetchIdRef.current) {
+            if (result.status === "success") {
+              setData(result?.data?.rows ?? []);
+              setPageCount(
+                Math.ceil(
+                  Number(result?.data?.total_count ?? 1) / Number(pageSize)
+                )
+              );
+              setTotalRecords(Number(result?.data?.total_count ?? 1));
+              setLoading(false);
+              prevFilters.current = filters;
+            }
+          }
+        });
       }, 1000);
     },
     [setTotalRecords, setLoading, setData]
   );
-
-  console.log(columns);
+  console.log(data, totalRecords, pageCount);
 
   return (
     <DataGrid
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
-      dense={metaData.gridConfig?.dense ?? true}
+      dense={true}
       getRowId={getRowId}
       columns={columns}
       defaultColumn={defaultColumn}
       loading={loading}
-      data={[]}
+      data={data}
       pageCount={pageCount}
       totalRecords={totalRecords}
       resetPaginationAndSorting={resetPaginationAndSorting.current}
@@ -91,33 +90,47 @@ export const GridWrapper: FC<{ metaData: GridTransformedMetaDataType }> = ({
         columnId: [],
       }}
       onFetchData={fetchData}
+      pageSizes={metaData.gridConfig?.pageSize}
+      defaultPageSize={metaData.gridConfig?.defaultPageSize}
+      defaultHiddenColumns={metaData.hiddenColumns}
     />
   );
 };
 
 export const ParentGridWrapper = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState({});
+  const gridCode = "trn/001";
   useEffect(() => {
-    const runEffect = async () => {
-      setLoading(true);
-      let result = await APISDK.fetchGridMetaData("trn/001");
-      console.log(result);
-      if (result.status === "success") {
-        setData(result.data);
-        setError(false);
-        setLoading(false);
-      } else {
-        setData(result.data);
+    APISDK.fetchGridMetaData(gridCode)
+      .then((result) => {
+        if (result.status === "success") {
+          let finalData = transformMetaData(result.data);
+          setData(finalData);
+          setError(false);
+          setLoading(false);
+        } else {
+          setData(result.data);
+          setError(true);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
         setError(true);
-        setLoading(false);
-      }
-    };
-    runEffect();
+        setData(err);
+      });
   }, []);
-
-  return null;
+  return loading ? (
+    <span>{"loading..."}</span>
+  ) : error ? (
+    <span>{"error loading grid"}</span>
+  ) : (
+    <GridWrapper
+      metaData={data as GridTransformedMetaDataType}
+      girdCode={gridCode}
+    />
+  );
 };
 
 const transformMetaData = (
