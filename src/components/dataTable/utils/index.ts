@@ -1,6 +1,5 @@
 import { GridColumnType } from "../types";
 import { DefaultRowCellRenderer, DefaultColumnFilter } from "../components";
-import { useCallback } from "react";
 
 export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
@@ -39,8 +38,8 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
 export const attachAlignmentProps = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
-      const { alignmnent, ...others } = column;
-      switch (alignmnent) {
+      const { alignment, ...others } = column;
+      switch (alignment) {
         case "right":
           return { ...others, TableCellProps: { align: "right" } };
         default:
@@ -53,7 +52,7 @@ export const attachAlignmentProps = (columns: GridColumnType[]) => {
 
 export const extractHiddenColumns = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
-    return columns.reduce<String[]>((accumulator, column) => {
+    return columns.reduce<string[]>((accumulator, column) => {
       if (column.isVisible === false) {
         accumulator.push(column.accessor);
       }
@@ -65,14 +64,12 @@ export const extractHiddenColumns = (columns: GridColumnType[]) => {
 
 export const sortColumnsBySequence = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
-    return columns.sort((column1, column2) => {
-      if (column1.sequence < column2.sequence) return -1;
-      if (column2.sequence > column1.sequence) return 1;
+    let result = columns.sort((column1, column2) => {
+      if (Number(column1.sequence) < Number(column2.sequence)) return -1;
+      if (Number(column2.sequence) > Number(column1.sequence)) return 1;
       return 0;
     });
+    return result.map(({ sequence, ...others }) => others);
   }
   return [];
 };
-
-// export const getRowID = (rowIDColumn) =>
-//   useCallback((row) => row[rowIDColumn], []);

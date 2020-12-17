@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const TableHeaderToolbar = ({
   dense,
-  tableName,
+  label,
   getRowId,
   selectedFlatRows,
 }) => {
@@ -48,7 +48,7 @@ export const TableHeaderToolbar = ({
         variant={selectedCount > 0 ? "subtitle1" : "h6"}
         component="div"
       >
-        {selectedCount > 0 ? `selected ${selectedCount}` : tableName}
+        {selectedCount > 0 ? `selected ${selectedCount}` : label}
       </Typography>
       {selectedCount === 1 ? (
         <Tooltip title="edit">
