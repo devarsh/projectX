@@ -26,6 +26,9 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               display: "flex",
+              color: "#0063a3",
+              fontSize: "1 rem",
+              fontWeight: "600",
               paddingRight:
                 //@ts-ignore
                 (column?.TableCellProps?.align ?? "left") === "right" &&
@@ -68,22 +71,21 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
             style: {
               display: "inline-block",
               position: "absolute",
-              right: "-16px",
-              top: "calc(50% - 12px)",
+              right: "-5px",
+              top: "0",
               padding: "0 5px",
               zIndex: 1,
             },
           },
         ])}
       >
-        <svg
-          className="MuiSvgIcon-root "
-          focusable="false"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path d="M11 19V5h2v14z"></path>
-        </svg>
+        <div
+          style={{
+            height: "35px",
+            width: "6px",
+            backgroundColor: "#888",
+          }}
+        ></div>
       </div>
       <Popover
         id={id}
