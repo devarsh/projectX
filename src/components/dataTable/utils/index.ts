@@ -92,3 +92,11 @@ export const formatSortBy = (sortBy = []) => {
   }));
   return formatted;
 };
+
+export const formatFilterBy = (filterBy = []) => {
+  const formatted = filterBy.map((one: any, index) => ({
+    accessor: one.id,
+    ...one.value,
+  }));
+  return formatted;
+};
