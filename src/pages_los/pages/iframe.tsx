@@ -28,10 +28,10 @@ export default function EmployeeDashboard() {
           ...state,
           loading: false,
           currentScreen: "aadharValidation",
-          apiResult: action.apiResult,
-          apiResultStatus: action.apiResultStatus,
-          transactionID: action.payload.transactionId,
-          URL: action.payload.url,
+          apiResult: action.payload.status,
+          apiResultStatus: action.payload.status,
+          transactionID: action.payload.data.transactionId,
+          URL: action.payload.data.url,
         };
       case "endAadharValidation":
         return {
@@ -49,12 +49,11 @@ export default function EmployeeDashboard() {
     try {
       const result = await APISDK.initiateAadharValidation(1001);
       if (result.status === "success") {
+        const aadharValidationStatus = result;
         const { transactionId, url } = result.data;
         dispatch({
           type: "inititateAadharValidation",
-          apiResult: result.status,
-          apiResultStatus: result.status,
-          payload: result.data,
+          payload: result,
         });
         startPooling({ transactionID: transactionId, URL: url });
       }
@@ -78,9 +77,9 @@ export default function EmployeeDashboard() {
           if (resp.status === "success") {
             if (
               resp.data.requestStatus === "success" ||
-              resp.data.requestStatus === "pending"
+              resp.data.requestStatus === "failed"
             ) {
-              if (resp.data.requestStatus === "pending") {
+              if (resp.data.requestStatus === "failed") {
                 dispatch({
                   type: "endAadharValidation",
                   apiResult: resp.status,

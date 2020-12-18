@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { TextField } from "components/styledComponent/textfield";
@@ -16,68 +16,102 @@ export interface FormDialogProps {
 export const Login = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [time, setTime] = useState(0);
+  const [userPhoneNumberVerified, setUserPhoneNumberVerified] = useState("");
 
-  const [fields, setFields] = useState({
+  const initialState = {
+    currentScreens: "initiateLoginProcessWithPasswordAndOtp",
+    apiOTPId: "",
+    loading: false,
+    apiResult: "",
+    apiResultStatus: "",
+    transactionID: "",
+    URL: "",
     phoneNumber: "",
     otp: "",
     password: "",
     createPassword: "",
     confirmPassword: "",
-  });
+  };
 
-  const [errors, setErrors] = useState({
-    commonError: "",
-    passworderror: "",
-  });
-  const [otpVerifydivShowing, setotpVerifydivShowing] = useState(false);
-  const [showPwddiv, setshowPwddiv] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [expiryOtpTime, setexpiryOtpTime] = useState("");
-  const [time, setTime] = useState(0);
-  const [passwordGenerateDiv, setpasswordGenerateDiv] = useState(false);
-
-  let expiryTime = 60;
-
-  const handleChange = (input) => ({ target: { value } }) => {
-    setFields({ ...fields, [input]: value });
-
-    switch (input) {
-      case "phoneNumber":
-        return { value };
-      case "otp":
-        return { value };
-      case "password":
-        return { value };
+  const reducer = (state, action) => {
+    debugger;
+    switch (action.type) {
+      case "fields":
+        return {
+          ...state,
+          [action.fieldName]: action.payload,
+        };
+      case "startInitiateLoginProcessWithPasswordAndOtp":
+        return {
+          ...state,
+          loading: action.loading,
+          apiResultStatus: action.apiResultStatus,
+        };
+      case "initiateLoginProcessWithOtp":
+        return {
+          ...state,
+          currentScreens: "verifyOtp",
+          loading: action.loading,
+          apiResult: action.apiResult,
+          apiResultStatus: action.apiResultStatus,
+        };
+      case "initiateLoginWithPassword":
+        return {
+          ...state,
+          currentScreens: "loginWithPassword",
+          loading: action.loading,
+          apiResult: action.apiResult,
+          apiResultStatus: action.apiResultStatus,
+        };
+      case "InitiateCreateNewPassword":
+        return {
+          ...state,
+          currentScreens: "createNewPassword",
+          loading: action.loading,
+          apiResult: action.apiResult,
+          apiResultStatus: action.apiResultStatus,
+        };
       default:
-        break;
+        return state;
     }
   };
 
-  const requestOtp = async (toVerifyUser) => {
-    if (fields.phoneNumber !== "" && fields.phoneNumber.length === 10) {
+  const expiryTime = 60;
+
+  const requestOtp = async () => {
+    if (state.phoneNumber !== "" && state.phoneNumber.length === 10) {
       try {
-        setLoading(true);
-        const result = await APISDK.requestForOTP(fields.phoneNumber);
-        // console.log("result request otp", result);
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: true,
+        });
+        const result = await APISDK.requestForLocalOTP(state.phoneNumber);
         if (result.status === "success") {
-          setErrors({ ...errors, commonError: result?.data?.error_msg });
-          setexpiryOtpTime(result?.data?.sdatetime);
-          setotpVerifydivShowing(true);
-          setLoading(false);
+          dispatch({
+            type: "initiateLoginProcessWithOtp",
+            currentScreens: "verifyOtp",
+            loading: false,
+            apiOTPId: result?.data?.id,
+            apiResult: result.status,
+            apiResultStatus: "",
+          });
+          // setexpiryOtpTime(result?.data?.sdatetime);
           displayIntervale();
         } else {
-          setErrors({ ...errors, commonError: result?.data?.error_msg });
-          setLoading(false);
+          dispatch({
+            type: "startInitiateLoginProcessWithPasswordAndOtp",
+            loading: false,
+            apiResultStatus: result?.data?.error_msg,
+          });
         }
       } catch (e) {
-        setLoading(false);
-        console.log("in catch");
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: false,
+          apiResultStatus: e,
+        });
       }
-    } else {
-      setErrors({
-        ...errors,
-        commonError: "mobile number should be 10 digits",
-      });
     }
   };
 
@@ -116,140 +150,146 @@ export const Login = () => {
     );
   };
 
-  const verifyOtp = async (toVerifyUser) => {
+  const verifyOtp = async () => {
     try {
-      setLoading(true);
-      const result = await APISDK.handleverifyOtp(
-        fields.phoneNumber,
-        fields.otp
+      dispatch({
+        type: "startInitiateLoginProcessWithPasswordAndOtp",
+        loading: true,
+      });
+      let sdatetime = "20200915110135";
+      const result = await APISDK.verifyLocalOTP(
+        state.apiOTPId,
+        state.otp,
+        sdatetime
       );
-      // console.log("result verify otp", result);
       if (result.status === "success") {
-        setLoading(false);
-        if (toVerifyUser === "Yes") {
-          setshowPwddiv(false);
-          setpasswordGenerateDiv(true);
+        if (userPhoneNumberVerified === "Yes") {
+          dispatch({
+            type: "InitiateCreateNewPassword",
+            currentScreens: "createNewPassword",
+            loading: false,
+            apiResult: result.status,
+            apiResultStatus: result?.data?.message,
+          });
         } else {
           navigate("/dashboard");
         }
       } else {
-        setErrors({ ...errors, commonError: result?.data?.error_msg });
-        setLoading(false);
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: false,
+          apiResultStatus: result?.data?.error_msg,
+        });
       }
     } catch (e) {
-      setLoading(false);
       console.log("in catch");
-    }
-  };
-
-  // password= "superacute@1234";
-  const verifyPwd = async () => {
-    if (fields.password.length !== 0 || fields.password !== "") {
-      try {
-        setLoading(true);
-        const result = await APISDK.handleverifyPwd(
-          fields.password,
-          fields.phoneNumber
-        );
-        // console.log("result for password", result);
-        if (result.status === "success") {
-          setLoading(false);
-          navigate("/dashboard");
-        } else {
-          // console.log("in else", result?.data?.error_msg);
-          setErrors({ ...errors, commonError: result?.data?.error_msg });
-          setLoading(false);
-        }
-      } catch (e) {
-        setLoading(false);
-        console.log("in catch");
-      }
-    } else {
-      setLoading(false);
-      console.log("Password should not be empty");
-    }
-  };
-
-  const showPassDiv = () => {
-    if (errors.commonError === "" && fields.phoneNumber.length === 10) {
-      setshowPwddiv(true);
     }
   };
 
   const updateNewPassword = async () => {
     if (
-      fields.createPassword !== "" &&
-      fields.confirmPassword !== "" &&
-      fields.createPassword === fields.confirmPassword
+      state.createPassword !== "" &&
+      state.confirmPassword !== "" &&
+      state.createPassword === state.confirmPassword
     ) {
       try {
-        setLoading(true);
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: true,
+        });
         const result = await APISDK.updateUserPassword(
-          fields.password,
-          fields.phoneNumber
+          state.confirmPassword,
+          state.phoneNumber
         );
-        // console.log("result for password", result);
         if (result.status === "success") {
-          setLoading(false);
           navigate("/dashboard");
         } else {
-          setErrors({ ...errors, passworderror: result?.data?.error_msg });
-          setLoading(false);
+          dispatch({
+            type: "startInitiateLoginProcessWithPasswordAndOtp",
+            loading: false,
+            apiResultStatus: result?.data?.error_msg,
+          });
         }
       } catch (e) {
-        setLoading(false);
-        console.log("in catch");
-      }
-    } else {
-      setLoading(false);
-      if (fields.createPassword === "" && fields.confirmPassword === "") {
-        setErrors({ ...errors, passworderror: "Password should not be empty" });
-      } else {
-        setErrors({ ...errors, passworderror: "Password not matched" });
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: false,
+          apiResultStatus: e,
+        });
       }
     }
   };
 
   const checkUserNumberAndPasswordExist = async () => {
-    if (errors.commonError === "" && fields.phoneNumber.length === 10) {
+    if (state.apiResultStatus === "" && state.phoneNumber.length === 10) {
       try {
-        setLoading(true);
-        const result = await APISDK.checkPhoneNumberExists(fields.phoneNumber);
-        console.log("checkUserNumberAndPasswordExist", result);
+        const result = await APISDK.checkPhoneNumberExists(state.phoneNumber);
         if (result.status === "success") {
           if (
             result?.data?.user_mobile === "Y" &&
             result?.data?.user_password === "N"
           ) {
-            var toVerifyUser = "Yes";
-            setLoading(false);
-            requestOtp(toVerifyUser);
-            // setshowPwddiv(false);
-            // setpasswordGenerateDiv(true);
+            setUserPhoneNumberVerified("Yes");
+            requestOtp();
           } else if (
             result?.data?.user_mobile === "Y" &&
             result?.data?.user_password === "Y"
           ) {
-            setshowPwddiv(true);
-            setLoading(false);
+            dispatch({
+              type: "initiateLoginWithPassword",
+              currentScreens: "loginWithPassword",
+              loading: false,
+              apiResult: result.status,
+              apiResultStatus: result?.data?.message,
+            });
           }
-          setLoading(false);
         } else {
           if (result?.data?.error_cd === "-999") {
-            setErrors({ ...errors, commonError: result?.data?.error_msg });
-            setLoading(false);
+            dispatch({
+              type: "startInitiateLoginProcessWithPasswordAndOtp",
+              loading: false,
+              apiResultStatus: result?.data?.error_msg,
+            });
           }
         }
       } catch (e) {
-        setLoading(false);
-        console.log("in catch");
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: false,
+          apiResultStatus: e,
+        });
       }
-    } else {
-      setLoading(false);
-      setErrors({ ...errors, commonError: "Please enter valid mobile number" });
     }
   };
 
+  const verifyPwd = async () => {
+    if (state.password.length !== 0 || state.password !== "") {
+      try {
+        const result = await APISDK.handleverifyPwd(
+          state.password,
+          state.phoneNumber
+        );
+        if (result.status === "success") {
+          navigate("/dashboard");
+        } else {
+          dispatch({
+            type: "startInitiateLoginProcessWithPasswordAndOtp",
+            loading: false,
+            apiResultStatus: result?.data?.error_msg,
+          });
+        }
+      } catch (e) {
+        dispatch({
+          type: "startInitiateLoginProcessWithPasswordAndOtp",
+          loading: false,
+          apiResultStatus: e,
+        });
+      }
+    }
+  };
+
+  // password= "superacute@1234";
+  const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <Box display="flex" width={1} className={classes.wrapper}>
       <Box
@@ -272,137 +312,27 @@ export const Login = () => {
           account.
         </div>
 
-        {showPwddiv === true ? (
-          <div className={classes.formWrap}>
-            <TextField
-              label="Password"
-              placeholder="Password for verification"
-              autoComplete="off"
-              type="password"
-              name="password"
-              value={fields.password}
-              onChange={handleChange("password")}
-              // onChange={(e) => setpassword(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              helperText={errors.commonError ? errors.commonError : ""}
-              error={errors.commonError ? true : false}
-              onBlur={() => setErrors({ ...errors, commonError: "" })}
-            />
-
-            <Button
-              onClick={verifyPwd}
-              disabled={fields.password !== "" ? false : true}
-              endIcon={loading ? <CircularProgress size={20} /> : null}
-              className={classes.loginBtn}
-            >
-              VERIFY & LOGIN
-            </Button>
-          </div>
-        ) : otpVerifydivShowing === true ? (
-          <div className={classes.formWrap}>
-            <TextField
-              label="OTP"
-              placeholder="OTP for verification"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              type="number"
-              name="otp"
-              value={fields.otp}
-              onChange={handleChange("otp")}
-              inputProps={{ maxLength: 6 }}
-              error={Boolean(errors.commonError)}
-              helperText={
-                Boolean(errors.commonError) ? errors.commonError : null
-              }
-              onBlur={() => setErrors({ ...errors, commonError: "" })}
-              InputProps={{
-                inputComponent: InputMaskCustom,
-                inputProps: {
-                  MaskProps: {
-                    mask: "0 0 0 0 0 0",
-                  },
-                },
-              }}
-            />
-            <Timer time={time} />
-            <Button
-              disabled={fields.otp.length !== 6 ? true : false}
-              onClick={verifyOtp}
-              className={classes.loginBtn}
-            >
-              VERIFY & LOGIN
-            </Button>
-          </div>
-        ) : passwordGenerateDiv === true ? (
-          <div className={classes.formWrap}>
-            <TextField
-              label="New Password"
-              placeholder="Enter new password"
-              autoComplete="off"
-              type="password"
-              name="createPassword"
-              value={fields.createPassword}
-              onChange={handleChange("createPassword")}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              helperText={errors.passworderror ? errors.passworderror : ""}
-              error={errors.passworderror ? true : false}
-              onBlur={() => setErrors({ ...errors, passworderror: "" })}
-            />
-
-            <TextField
-              label="Confirm Password"
-              placeholder="Enter confirm password"
-              autoComplete="off"
-              type="password"
-              name="confirmPassword"
-              value={fields.confirmPassword}
-              onChange={handleChange("confirmPassword")}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-              helperText={errors.passworderror ? errors.passworderror : ""}
-              error={errors.passworderror ? true : false}
-              onBlur={() => setErrors({ ...errors, passworderror: "" })}
-            />
-
-            <Button
-              onClick={updateNewPassword}
-              disabled={
-                fields.createPassword !== "" || fields.confirmPassword !== ""
-                  ? false
-                  : true
-              }
-              endIcon={loading ? <CircularProgress size={20} /> : null}
-              className={classes.loginBtn}
-            >
-              VERIFY & LOGIN
-            </Button>
-          </div>
-        ) : (
+        {state.currentScreens === "initiateLoginProcessWithPasswordAndOtp" ? (
           <div className={classes.formWrap}>
             <TextField
               label="Mobile Number"
               placeholder="Enter mobile number"
               fullWidth
               className="mobileNumber"
-              type="email"
+              type="text"
               name="phoneNumber"
-              value={fields.phoneNumber}
-              onChange={handleChange("phoneNumber")}
-              error={Boolean(errors.commonError)}
-              helperText={
-                Boolean(errors.commonError) ? errors.commonError : null
+              onChange={(e) =>
+                dispatch({
+                  type: "fields",
+                  fieldName: "phoneNumber",
+                  payload: e.target.value,
+                })
               }
-              onBlur={() => setErrors({ ...errors, commonError: "" })}
+              value={state.phoneNumber}
+              error={Boolean(state.apiResultStatus)}
+              helperText={
+                Boolean(state.apiResultStatus) ? state.apiResultStatus : null
+              }
               InputProps={{
                 inputComponent: InputMaskCustom,
                 inputProps: {
@@ -417,7 +347,7 @@ export const Login = () => {
             />
             <Button
               onClick={requestOtp}
-              endIcon={loading ? <CircularProgress size={20} /> : null}
+              endIcon={state.loading ? <CircularProgress size={20} /> : null}
               className={classes.loginBtn}
             >
               Login With OTP
@@ -434,7 +364,141 @@ export const Login = () => {
               Login With Password
             </Button>
           </div>
-        )}
+        ) : state.currentScreens === "verifyOtp" ? (
+          <div className={classes.formWrap}>
+            <TextField
+              label="OTP"
+              placeholder="OTP for verification"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              type="email"
+              name="otp"
+              onChange={(e) =>
+                dispatch({
+                  type: "fields",
+                  fieldName: "otp",
+                  payload: e.target.value,
+                })
+              }
+              value={state.otp}
+              inputProps={{ maxLength: 6 }}
+              error={Boolean(state.apiResultStatus)}
+              helperText={
+                Boolean(state.apiResultStatus) ? state.apiResultStatus : null
+              }
+              InputProps={{
+                inputComponent: InputMaskCustom,
+                inputProps: {
+                  MaskProps: {
+                    mask: "0 0 0 0 0 0",
+                  },
+                },
+              }}
+            />
+            <Timer time={time} />
+            <Button
+              disabled={state.otp.length !== 6 ? true : false}
+              onClick={verifyOtp}
+              className={classes.loginBtn}
+            >
+              VERIFY & LOGIN
+            </Button>
+          </div>
+        ) : state.currentScreens === "createNewPassword" ? (
+          <div className={classes.formWrap}>
+            <TextField
+              label="Create Password"
+              placeholder="Create password"
+              autoComplete="off"
+              type="password"
+              name="createPassword"
+              onChange={(e) =>
+                dispatch({
+                  type: "fields",
+                  fieldName: "createPassword",
+                  payload: e.target.value,
+                })
+              }
+              value={state.createPassword}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              helperText={state.apiResultStatus ? state.apiResultStatus : ""}
+              error={state.apiResultStatus ? true : false}
+            />
+
+            <TextField
+              label="Confirm Password"
+              placeholder="Confirm password"
+              autoComplete="off"
+              type="password"
+              name="confirmPassword"
+              onChange={(e) =>
+                dispatch({
+                  type: "fields",
+                  fieldName: "confirmPassword",
+                  payload: e.target.value,
+                })
+              }
+              value={state.confirmPassword}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              helperText={state.apiResultStatus ? state.apiResultStatus : ""}
+              error={state.apiResultStatus ? true : false}
+            />
+
+            <Button
+              onClick={updateNewPassword}
+              disabled={
+                state.createPassword !== "" || state.confirmPassword !== ""
+                  ? false
+                  : true
+              }
+              endIcon={state.loading ? <CircularProgress size={20} /> : null}
+              className={classes.loginBtn}
+            >
+              VERIFY & LOGIN
+            </Button>
+          </div>
+        ) : state.currentScreens === "loginWithPassword" ? (
+          <div className={classes.formWrap}>
+            <TextField
+              label="Password"
+              placeholder="Password for verification"
+              autoComplete="off"
+              type="password"
+              name="password"
+              onChange={(e) =>
+                dispatch({
+                  type: "fields",
+                  fieldName: "password",
+                  payload: e.target.value,
+                })
+              }
+              value={state.password}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              helperText={state.apiResultStatus ? state.apiResultStatus : ""}
+              error={state.apiResultStatus ? true : false}
+            />
+
+            <Button
+              onClick={verifyPwd}
+              disabled={state.password !== "" ? false : true}
+              endIcon={state.loading ? <CircularProgress size={20} /> : null}
+              className={classes.loginBtn}
+            >
+              VERIFY & LOGIN
+            </Button>
+          </div>
+        ) : null}
       </Box>
     </Box>
   );
