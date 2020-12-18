@@ -45,6 +45,7 @@ export const GridWrapper: FC<{
 
   const fetchData = useCallback(
     ({ pageSize, pageIndex, sortBy, filters }) => {
+      console.log(filters);
       if (prevFilters.current !== filters) {
         resetPaginationAndSorting.current = true;
       }

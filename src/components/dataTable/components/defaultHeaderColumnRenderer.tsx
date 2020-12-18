@@ -102,7 +102,7 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
           horizontal: "right",
         }}
       >
-        {column.render("Filter")}
+        {column.render("Filter", { handleClose })}
       </Popover>
     </>
   );

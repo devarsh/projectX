@@ -24,7 +24,7 @@ import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
 import { TablePaginationActions } from "./tablePaginationToolbar";
 import { TableHeaderToolbar } from "./tableHeaderToolbar";
 import { CustomBackdrop } from "./backdrop";
-import { useCheckboxColumn } from "./components";
+import { useCheckboxColumn, useSequenceColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
 import { StickyTableHead } from "./stickyTableHeader";
@@ -54,7 +54,6 @@ export const DataGrid = ({
     headerGroups,
     prepareRow,
     page,
-    rows,
     selectedFlatRows,
     totalColumnsWidth,
     gotoPage,
@@ -87,6 +86,7 @@ export const DataGrid = ({
     useResizeColumns,
     useBlockLayout,
     useCheckboxColumn
+    //useSequenceColumn
   );
 
   const { pageIndex, pageSize, sortBy, filters } = tableState;
@@ -172,7 +172,7 @@ export const DataGrid = ({
                         cell={cell}
                         index={index}
                       >
-                        {cell.render("Cell")}
+                        {cell.render("Cell", { index: index })}
                       </RowCellWrapper>
                     );
                   })}
