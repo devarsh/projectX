@@ -1,5 +1,6 @@
 import { GridColumnType } from "../types";
-import { DefaultRowCellRenderer, DefaultColumnFilter } from "../components";
+import { DefaultRowCellRenderer } from "../components";
+import { TextColumnFilter } from "../components/filters";
 
 export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
@@ -22,13 +23,13 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
       const { filterComponentType, ...others } = column;
       switch (filterComponentType) {
         case "ValueFilter":
-          return { ...others, Filter: DefaultColumnFilter };
+          return { ...others, Filter: TextColumnFilter };
         case "RangeFilter":
-          return { ...others, Filter: DefaultColumnFilter };
+          return { ...others, Filter: TextColumnFilter };
         case "OptionsFilter":
-          return { ...others, Filter: DefaultColumnFilter };
+          return { ...others, Filter: TextColumnFilter };
         default:
-          return { ...others, Filter: DefaultColumnFilter };
+          return { ...others, Filter: TextColumnFilter };
       }
     });
   }
@@ -72,4 +73,12 @@ export const sortColumnsBySequence = (columns: GridColumnType[]) => {
     return result.map(({ sequence, ...others }) => others);
   }
   return [];
+};
+
+export const formatSortBy = (sortBy = []) => {
+  const formatted = sortBy.map((one: any, index) => ({
+    [one?.id ?? ""]: one?.desc ? "desc" : "asc",
+    seq: index + 1,
+  }));
+  return formatted;
 };

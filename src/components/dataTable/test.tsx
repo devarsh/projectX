@@ -2,9 +2,9 @@ import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 import { makeData } from "./makeData";
 import {
   DefaultRowCellRenderer,
-  SelectColumnFilter,
   DefaultHeaderColumnRenderer,
 } from "./components";
+import { SelectColumnFilter } from "./components/filters";
 
 import { DataGrid } from "./grid";
 
