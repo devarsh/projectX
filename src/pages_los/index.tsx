@@ -9,7 +9,7 @@ import Lead from "./pages/lead";
 import Profile from "./pages/profile";
 import Iframe from "./pages/iframe";
 import { ParentGridWrapper } from "components/dataTable";
-import { App } from "components/dataTable/index2";
+import { App } from "components/dataTable/test";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";

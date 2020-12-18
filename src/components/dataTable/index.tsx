@@ -6,18 +6,11 @@ import {
   attachAlignmentProps,
   extractHiddenColumns,
   sortColumnsBySequence,
+  formatSortBy,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
-
-const formatSortBy = (sortBy = []) => {
-  const formatted = sortBy.map((one: any, index) => ({
-    [one?.id ?? ""]: one?.desc ? "desc" : "asc",
-    seq: index + 1,
-  }));
-  return formatted;
-};
 
 export const GridWrapper: FC<{
   metaData: GridTransformedMetaDataType;

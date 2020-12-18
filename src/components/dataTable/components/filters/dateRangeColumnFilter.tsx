@@ -5,8 +5,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import Button from "@material-ui/core/Button";
 import { useStyles } from "./style";
+import { FilterContainer } from "./filterContainer";
 
 export const DateRangeColumnFilter = ({
   column: { filterValue, preFilteredRows, setFilter },
@@ -21,9 +21,10 @@ export const DateRangeColumnFilter = ({
   const handleEndDateChange = (date) => {
     setSelectedEndDate(date);
   };
+  const setFilterValue = () => {};
 
   return (
-    <Box style={{ width: "360px" }}>
+    <FilterContainer setFilterValue={setFilterValue}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -68,10 +69,6 @@ export const DateRangeColumnFilter = ({
           </MuiPickersUtilsProvider>
         </Box>
       </Box>
-
-      <Box display="flex" justifyContent="flex-end" px={2} width={1}>
-        <Button className={classes.applyBtn}>Apply Filter</Button>
-      </Box>
-    </Box>
+    </FilterContainer>
   );
 };
