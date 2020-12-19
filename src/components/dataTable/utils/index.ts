@@ -1,6 +1,13 @@
 import { GridColumnType } from "../types";
 import { DefaultRowCellRenderer } from "../components";
-import { TextColumnFilter } from "../components/filters";
+import {
+  TextColumnFilter,
+  DateRangeColumnFilter,
+  MultipleSelectColumnFilter,
+  RangeInputColumnFilter,
+  RangeSliderColumnFilter,
+  SelectColumnFilter,
+} from "../components/filters";
 
 export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
@@ -23,7 +30,10 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
       const { filterComponentType, ...others } = column;
       switch (filterComponentType) {
         case "ValueFilter":
-          return { ...others, Filter: TextColumnFilter };
+          return {
+            ...others,
+            Filter: TextColumnFilter,
+          };
         case "RangeFilter":
           return { ...others, Filter: TextColumnFilter };
         case "OptionsFilter":
@@ -79,6 +89,14 @@ export const formatSortBy = (sortBy = []) => {
   const formatted = sortBy.map((one: any, index) => ({
     [one?.id ?? ""]: one?.desc ? "desc" : "asc",
     seq: index + 1,
+  }));
+  return formatted;
+};
+
+export const formatFilterBy = (filterBy = []) => {
+  const formatted = filterBy.map((one: any, index) => ({
+    accessor: one.id,
+    ...one.value,
   }));
   return formatted;
 };

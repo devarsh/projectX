@@ -7,6 +7,7 @@ import {
   extractHiddenColumns,
   sortColumnsBySequence,
   formatSortBy,
+  formatFilterBy,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { DefaultHeaderColumnRenderer } from "./components";
@@ -45,6 +46,7 @@ export const GridWrapper: FC<{
 
   const fetchData = useCallback(
     ({ pageSize, pageIndex, sortBy, filters }) => {
+      console.log(formatFilterBy(filters));
       if (prevFilters.current !== filters) {
         resetPaginationAndSorting.current = true;
       }
