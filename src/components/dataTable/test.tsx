@@ -1,12 +1,12 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from "react";
-import { makeData } from "./makeData";
+import { makeData } from "./utils/makeData";
 import {
   DefaultRowCellRenderer,
   DefaultHeaderColumnRenderer,
 } from "./components";
-import { SelectColumnFilter } from "./components/filters";
+//import { SelectColumnFilter } from "./components/filters";
 
-import { DataGrid } from "./grid";
+//import { DataGrid } from "./grid";
 
 // const TotalRecords = 75;
 

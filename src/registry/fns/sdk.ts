@@ -1,5 +1,4 @@
 import { OptionsProps } from "components/common/types";
-import { osName } from "react-device-detect";
 
 interface CommonFetcherResponse {
   data: any;

@@ -1,24 +1,20 @@
 import { GridColumnType } from "../types";
 import { DefaultRowCellRenderer } from "../components";
-import { ValueFilter } from "../components/filters";
+import { ValueFilter, RangeFilterWrapper } from "../components/filters";
 
 export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
-      const { componentType, accessor, ...others } = column;
+      const { componentType, ...others } = column;
       switch (componentType) {
         case "default":
           return {
             ...others,
-            accessor,
-            id: accessor,
             Cell: DefaultRowCellRenderer,
           };
         default:
           return {
             ...others,
-            accessor,
-            id: accessor,
             Cell: DefaultRowCellRenderer,
           };
       }
@@ -27,55 +23,62 @@ export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   return [];
 };
 
-export const extractFilterComponentsForOptionsAndRange = (
-  columns: GridColumnType[]
-) => {
-  if (Array.isArray(columns)) {
-    return columns.reduce((accumulator: any[], column) => {
-      const { filterComponentType, accessor } = column;
-      switch (filterComponentType) {
-        case "RangeFilter":
-          accumulator.push({
-            accessor: accessor,
-            result_type: "getRange",
-            filter_conditions: [],
-          });
-          break;
-        case "OptionsFilter":
-          accumulator.push({
-            accessor: accessor,
-            result_type: "getGroups",
-            filter_conditions: [],
-          });
-          break;
-      }
-      return accumulator;
-    }, []);
-  }
-  return [];
-};
-
 export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
-      const { filterComponentType, ...others } = column;
+      const {
+        filterComponentType,
+        filterComponentProps,
+        accessor,
+        ...others
+      } = column;
       switch (filterComponentType) {
         case "ValueFilter":
           return {
             ...others,
+            accessor,
+            filterComponentProps,
             Filter: ValueFilter,
             filter: "valueFilter",
           };
         case "RangeFilter":
-          return { ...others, Filter: ValueFilter, filter: "rangeFilter" };
+          return {
+            ...others,
+            Filter: RangeFilterWrapper,
+            filter: "rangeFilter",
+            accessor,
+            filterComponentProps: {
+              ...filterComponentProps,
+              query: {
+                accessor: accessor,
+                result_type: "getRange",
+                filter_conditions: [],
+              },
+            },
+          };
         case "OptionsFilter":
           return {
             ...others,
             Filter: ValueFilter,
-            filter: "optionsFilter",
+            //filter:'optionsFilter'
+            accessor,
+            filterComponentProps: {
+              ...filterComponentProps,
+              query: {
+                accessor: accessor,
+                result_type: "getGroups",
+                filter_conditions: [],
+              },
+            },
           };
         default:
-          return { ...others, Filter: ValueFilter, filter: "valueFilter" };
+          return {
+            ...others,
+            accessor,
+            filterComponentProps,
+            Filter: ValueFilter,
+            filter: "valueFilter",
+          };
       }
     });
   }

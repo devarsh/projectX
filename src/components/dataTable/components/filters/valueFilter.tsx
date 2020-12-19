@@ -3,6 +3,14 @@ import Box from "@material-ui/core/Box";
 import { CssTextField, StyledMenuItem } from "./styledComponents";
 import { FilterContainer } from "./filterContainer";
 
+export const ValueFilterFn = (rows) => {
+  return rows;
+};
+ValueFilterFn.autoRemove = (val) => {
+  console.log(!val);
+  return !val;
+};
+
 export const ValueFilter = (props) => {
   const {
     column: { filterValue, setFilter },

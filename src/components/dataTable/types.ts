@@ -58,5 +58,4 @@ export interface GridTransformedMetaDataType {
   columns: TransformedGridColumnType[];
   gridConfig: GridConfigType;
   hiddenColumns: string[];
-  extractedFilters: any[];
 }

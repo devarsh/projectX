@@ -27,7 +27,7 @@ import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn, useSequenceColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
-import { StickyTableHead } from "./stickyTableHeader";
+import { StickyTableHead } from "./stickyTableHead";
 
 const maxWidth = 998;
 

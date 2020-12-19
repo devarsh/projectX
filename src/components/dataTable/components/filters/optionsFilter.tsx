@@ -7,35 +7,43 @@ import Input from "@material-ui/core/Input";
 import { FilterContainer } from "./filterContainer";
 import { StyledSelect, StyledMenuItem } from "./styledComponents";
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
+const myOptions = [
+  { label: "abc", value: 1 },
+  {
+    label: "pqr",
+    value: 2,
+  },
+  {
+    label: "wer",
+    value: 3,
+  },
+  {
+    label: "rrrt",
+    value: 4,
+  },
+  {
+    label: "ertty",
+    value: 5,
+  },
 ];
 
 export const MultipleSelectColumnFilter = ({
   column: { filterValue, preFilteredRows, setFilter },
 }) => {
-  const [personName, setPersonName] = useState<string[]>([]);
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const [personName, setPersonName] = useState<string | string[]>([]);
+  const [options, setOptions] = useState<
+    {
+      label: string;
+      value: number;
+    }[]
+  >(myOptions);
+  const handleSelectChange = (event: React.ChangeEvent<any>) => {
     setPersonName(event.target.value as string[]);
   };
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      },
-    },
-  };
+
   const applyFilter = () => {};
   const clearFilter = () => {};
   return (
@@ -56,19 +64,15 @@ export const MultipleSelectColumnFilter = ({
               onChange={handleSelectChange}
               input={<Input />}
               renderValue={(selected) => (selected as string[]).join(", ")}
-              MenuProps={MenuProps}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                  },
+                },
+              }}
               className={classes.multipleSelect}
-            >
-              {names.map((name) => (
-                <StyledMenuItem key={name} value={name} dense={true}>
-                  <Checkbox
-                    size="small"
-                    checked={personName.indexOf(name) > -1}
-                  />
-                  <ListItemText primary={name} />
-                </StyledMenuItem>
-              ))}
-            </StyledSelect>
+            />
           </FormControl>
         </Box>
       )}
