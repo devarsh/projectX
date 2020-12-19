@@ -21,10 +21,11 @@ export const DateRangeColumnFilter = ({
   const handleEndDateChange = (date) => {
     setSelectedEndDate(date);
   };
-  const setFilterValue = () => {};
+  const applyFilter = () => {};
+  const clearFilter = () => {};
 
   return (
-    <FilterContainer setFilterValue={setFilterValue}>
+    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
       <Box
         display="flex"
         justifyContent="space-between"

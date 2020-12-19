@@ -5,6 +5,7 @@ import {
   attachFilterComponentToMetaData,
   attachAlignmentProps,
   extractHiddenColumns,
+  extractFilterComponentsForOptionsAndRange,
   sortColumnsBySequence,
   formatSortBy,
   formatFilterBy,
@@ -12,6 +13,14 @@ import {
 import { APISDK } from "registry/fns/sdk";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
+
+const ValueFilterFn = (rows) => {
+  return rows;
+};
+ValueFilterFn.autoRemove = (val) => {
+  console.log(val);
+  return true;
+};
 
 export const GridWrapper: FC<{
   metaData: GridTransformedMetaDataType;
@@ -31,6 +40,12 @@ export const GridWrapper: FC<{
     (row) => row[metaData.gridConfig.rowIdColumn],
     []
   );
+  const filterTypes = useMemo(
+    () => ({
+      textFilterFn: ValueFilterFn,
+    }),
+    []
+  );
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -39,14 +54,15 @@ export const GridWrapper: FC<{
   const fetchIdRef = useRef(0);
   const prevFilters = useRef(null);
   const resetPaginationAndSorting = useRef(false);
+  const resetFilters = useRef(false);
 
   useEffect(() => {
     resetPaginationAndSorting.current = false;
+    resetFilters.current = false;
   }, [data]);
 
   const fetchData = useCallback(
     ({ pageSize, pageIndex, sortBy, filters }) => {
-      console.log(formatFilterBy(filters));
       if (prevFilters.current !== filters) {
         resetPaginationAndSorting.current = true;
       }
@@ -58,7 +74,8 @@ export const GridWrapper: FC<{
         girdCode,
         startRow,
         endRow,
-        formatSortBy(sortBy)
+        formatSortBy(sortBy),
+        formatFilterBy(filters)
       ).then((result) => {
         if (fetchId === fetchIdRef.current) {
           if (result.status === "success") {
@@ -77,7 +94,6 @@ export const GridWrapper: FC<{
     },
     [setTotalRecords, setLoading, setData]
   );
-  console.log(data, totalRecords, pageCount);
 
   return (
     <DataGrid
@@ -91,13 +107,12 @@ export const GridWrapper: FC<{
       pageCount={pageCount}
       totalRecords={totalRecords}
       resetPaginationAndSorting={resetPaginationAndSorting.current}
-      filterOptions={{
-        columnId: [],
-      }}
+      resetFilters={resetFilters.current}
       onFetchData={fetchData}
       pageSizes={metaData.gridConfig?.pageSize}
       defaultPageSize={metaData.gridConfig?.defaultPageSize}
       defaultHiddenColumns={metaData.hiddenColumns}
+      filterTypes={filterTypes}
     />
   );
 };
@@ -142,14 +157,19 @@ const transformMetaData = (
   metaData: GridMetaDataType
 ): GridTransformedMetaDataType => {
   let columns = metaData.columns as any;
+
+  //make sure extract functions are called before attach and lastly sort
+  const hiddenColumns = extractHiddenColumns(columns);
+  const extractedFilters = extractFilterComponentsForOptionsAndRange(columns);
   columns = attachComponentsToMetaData(columns);
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
-  const hiddenColumns = extractHiddenColumns(columns);
+
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
+    extractedFilters: extractedFilters,
   };
 };

@@ -1,25 +1,56 @@
 import { GridColumnType } from "../types";
 import { DefaultRowCellRenderer } from "../components";
-import {
-  TextColumnFilter,
-  DateRangeColumnFilter,
-  MultipleSelectColumnFilter,
-  RangeInputColumnFilter,
-  RangeSliderColumnFilter,
-  SelectColumnFilter,
-} from "../components/filters";
+import { ValueFilter } from "../components/filters";
 
 export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
-      const { componentType, ...others } = column;
+      const { componentType, accessor, ...others } = column;
       switch (componentType) {
         case "default":
-          return { ...others, Cell: DefaultRowCellRenderer };
+          return {
+            ...others,
+            accessor,
+            id: accessor,
+            Cell: DefaultRowCellRenderer,
+          };
         default:
-          return { ...others, Cell: DefaultRowCellRenderer };
+          return {
+            ...others,
+            accessor,
+            id: accessor,
+            Cell: DefaultRowCellRenderer,
+          };
       }
     });
+  }
+  return [];
+};
+
+export const extractFilterComponentsForOptionsAndRange = (
+  columns: GridColumnType[]
+) => {
+  if (Array.isArray(columns)) {
+    return columns.reduce((accumulator: any[], column) => {
+      const { filterComponentType, accessor } = column;
+      switch (filterComponentType) {
+        case "RangeFilter":
+          accumulator.push({
+            accessor: accessor,
+            result_type: "getRange",
+            filter_conditions: [],
+          });
+          break;
+        case "OptionsFilter":
+          accumulator.push({
+            accessor: accessor,
+            result_type: "getGroups",
+            filter_conditions: [],
+          });
+          break;
+      }
+      return accumulator;
+    }, []);
   }
   return [];
 };
@@ -32,14 +63,19 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
         case "ValueFilter":
           return {
             ...others,
-            Filter: TextColumnFilter,
+            Filter: ValueFilter,
+            filter: "valueFilter",
           };
         case "RangeFilter":
-          return { ...others, Filter: TextColumnFilter };
+          return { ...others, Filter: ValueFilter, filter: "rangeFilter" };
         case "OptionsFilter":
-          return { ...others, Filter: TextColumnFilter };
+          return {
+            ...others,
+            Filter: ValueFilter,
+            filter: "optionsFilter",
+          };
         default:
-          return { ...others, Filter: TextColumnFilter };
+          return { ...others, Filter: ValueFilter, filter: "valueFilter" };
       }
     });
   }

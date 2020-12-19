@@ -10,11 +10,11 @@ export const RangeSliderColumnFilter = ({
   const handleChange = (event: any, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
-  const setFilterValue = () => {
-    setFilter(value);
-  };
+  const applyFilter = () => {};
+  const clearFilter = () => {};
+
   return (
-    <FilterContainer setFilterValue={setFilterValue} filterActionLabel="Apply">
+    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
       <Box
         display="flex"
         justifyContent="space-between"

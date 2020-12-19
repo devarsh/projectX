@@ -4,11 +4,11 @@ import { FilterContainer } from "./filterContainer";
 export const RangeInputColumnFilter = ({
   column: { filterValue, preFilteredRows, setFilter },
 }) => {
-  const setFilterValue = () => {
-    setFilter(filterValue);
-  };
+  const applyFilter = () => {};
+  const clearFilter = () => {};
+
   return (
-    <FilterContainer filterActionLabel="Apply" setFilterValue={setFilterValue}>
+    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
       <Box
         display="flex"
         justifyContent="space-between"

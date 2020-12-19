@@ -4,8 +4,10 @@ import { useStyles } from "./style";
 
 export const FilterContainer = ({
   children,
-  setFilterValue,
-  filterActionLabel = "Apply",
+  applyFilterLabel = "Apply",
+  clearFilterLabel = "Clear",
+  applyFilter,
+  clearFilter,
   width = 360,
 }) => {
   const classes = useStyles();
@@ -13,8 +15,11 @@ export const FilterContainer = ({
     <Box style={{ width: `${width}px` }}>
       {typeof children === "function" ? children(classes) : children}
       <Box display="flex" justifyContent="flex-end" px={2} width={1}>
-        <Button className={classes.applyBtn} onClick={() => setFilterValue()}>
-          {filterActionLabel}
+        <Button className={classes.applyBtn} onClick={() => applyFilter()}>
+          {applyFilterLabel}
+        </Button>
+        <Button className={classes.applyBtn} onClick={() => clearFilter()}>
+          {clearFilterLabel}
         </Button>
       </Box>
     </Box>

@@ -3,14 +3,15 @@ import Box from "@material-ui/core/Box";
 import { CssTextField, StyledMenuItem } from "./styledComponents";
 import { FilterContainer } from "./filterContainer";
 
-export const TextColumnFilter = ({
-  column: { filterValue, setFilter },
-  handleClose,
-}) => {
+export const ValueFilter = (props) => {
+  const {
+    column: { filterValue, setFilter },
+    handleClose,
+  } = props;
   const options = [
     { label: "starts with", value: "startsWith" },
     { label: "ends with", value: "endsWith" },
-    { label: "equals", value: "equals" },
+    { label: "equal", value: "equal" },
     { label: "contains", value: "contains" },
   ];
   const [text, setText] = useState(filterValue?.value ?? "");
@@ -24,6 +25,10 @@ export const TextColumnFilter = ({
     });
     handleClose();
   };
+  const clearFilterValue = () => {
+    setFilter("");
+    handleClose();
+  };
 
   const optionValues = options.map((one) => (
     <StyledMenuItem key={one.value} dense={true} value={one.value}>
@@ -32,7 +37,10 @@ export const TextColumnFilter = ({
   ));
 
   return (
-    <FilterContainer filterActionLabel="Apply" setFilterValue={setFilterValue}>
+    <FilterContainer
+      applyFilter={setFilterValue}
+      clearFilter={clearFilterValue}
+    >
       <Box
         display="flex"
         justifyContent="space-between"

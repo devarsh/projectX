@@ -543,7 +543,7 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
-  const fetchGridData = async (gridCode, fromNo, toNo, sortBy) => {
+  const fetchGridData = async (gridCode, fromNo, toNo, sortBy, filterBy) => {
     const { data, status } = await internalFetcher("./users/getInquiryData", {
       body: JSON.stringify({
         action: "inquiry_data_pagewise",
@@ -552,6 +552,23 @@ const RaatnaFinAPI = () => {
           from_row: fromNo,
           to_row: toNo,
           orderby_columns: sortBy,
+          filter_conditions: filterBy,
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+  const fetchGridColumnFilterProps = async (gridCode, options) => {
+    const { data, status } = await internalFetcher("./users/getInquiryData", {
+      body: JSON.stringify({
+        action: "grid_column_options",
+        request_data: {
+          grid_code: gridCode,
+          ...options,
         },
       }),
     });
@@ -649,6 +666,7 @@ const RaatnaFinAPI = () => {
     fetchAadharRequestStatus,
     fetchAadharRequestStatusEventSource,
     fetchGridMetaData,
+    fetchGridColumnFilterProps,
     fetchGridData,
     requestForLocalOTP,
     verifyLocalOTP,

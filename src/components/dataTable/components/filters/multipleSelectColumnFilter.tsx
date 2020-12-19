@@ -36,12 +36,10 @@ export const MultipleSelectColumnFilter = ({
       },
     },
   };
-  const setFilterValue = () => {
-    setFilter(filterValue);
-  };
-
+  const applyFilter = () => {};
+  const clearFilter = () => {};
   return (
-    <FilterContainer filterActionLabel="Apply" setFilterValue={setFilterValue}>
+    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
       {(classes) => (
         <Box
           display="flex"
