@@ -490,11 +490,11 @@ const RaatnaFinAPI = () => {
 
   const initiateAadharValidation = async (tranCode) => {
     const { data, status } = await internalFetcher(
-      "./users/aadharUniqueURLReq",
+      "./users/initiateaadharreq",
       {
         body: JSON.stringify({
-          action: "aadharUniqueURLReq",
-          request_data: { inquiryID: tranCode },
+          action: "initiateaadharreq",
+          request_data: { inquiryID: tranCode, sms: "0" },
           channel: "W",
         }),
       }
@@ -587,6 +587,43 @@ const RaatnaFinAPI = () => {
     });
   };
 
+  const requestForLocalOTP = async (phoneNumber: string) => {
+    const { data, status } = await internalFetcher("./users/customer_login", {
+      body: JSON.stringify({
+        action: "customer_login",
+        request_data: {
+          mobile: phoneNumber,
+          password: "",
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const verifyLocalOTP = async (id: any, otp: any, sdatetime: any) => {
+    const { data, status } = await internalFetcher("./users/otpVerify", {
+      body: JSON.stringify({
+        action: "otp_verify",
+        request_data: {
+          id: id,
+          eotp: otp,
+          sdatetime: sdatetime,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -613,6 +650,8 @@ const RaatnaFinAPI = () => {
     fetchAadharRequestStatusEventSource,
     fetchGridMetaData,
     fetchGridData,
+    requestForLocalOTP,
+    verifyLocalOTP,
   };
 };
 

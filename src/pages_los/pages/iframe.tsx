@@ -1,69 +1,84 @@
-import { useState, Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useReducer } from "react";
 import { APISDK } from "registry/fns/sdk";
 import Alert from "@material-ui/lab/Alert";
 
 export default function EmployeeDashboard() {
-  const [IFrameVisible, setIFrameVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [aadharParams, setAadharParams] = useState({
-    transactionID: "",
-    URL: "",
-  });
-  const [userMessage, setUserMessage] = useState("");
-  const [failure, setFailure] = useState(false);
   const timeoutDuration = 5 * 60 * 1000;
   const poolingInterval = 10 * 1000;
   let timeout, interval;
 
-  const handleAadharInitiation = async (inquiryCode) => {
-    setLoading(true);
+  const initialState = {
+    currentScreen: "inititateAadharValidation",
+    loading: false,
+    apiResult: "",
+    apiResultStatus: "",
+    aadharTransactionID: "",
+    aadharAuthenticationURL: "",
+  };
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "startInititateAadharValidation":
+        return {
+          ...state,
+          loading: true,
+        };
+      case "inititateAadharValidation":
+        return {
+          ...state,
+          loading: false,
+          currentScreen: "aadharValidation",
+          apiResult: action.payload.status,
+          apiResultStatus: action.payload.status,
+          aadharTransactionID: action.payload.data.transactionId,
+          aadharAuthenticationURL: action.payload.data.url,
+        };
+      case "endAadharValidation":
+        return {
+          ...state,
+          loading: false,
+          apiResult: action.apiResult,
+          apiResultStatus: action.apiResultStatus,
+          currentScreen: "aadharValidationResult",
+        };
+      default:
+        return state;
+    }
+  };
+
+  const handleAadharInitiation = async (transCode) => {
+    dispatch({
+      type: "startInititateAadharValidation",
+    });
     try {
-      const result = await APISDK.initiateAadharValidation(inquiryCode);
-      setLoading(false);
+      const result = await APISDK.initiateAadharValidation(1001);
       if (result.status === "success") {
-        const { transactionId, url } = result.data;
-        setAadharParams({
-          transactionID: transactionId,
-          URL: url,
+        const { aadharTransactionID, aadharAuthenticationURL } = result.data;
+        dispatch({
+          type: "inititateAadharValidation",
+          payload: result,
         });
-        setIFrameVisible(true);
-        //startPooling({ transactionID: transactionId, URL: url });
-        waitForRequestStatus({ transactionID: transactionId, URL: url });
-        return aadharParams;
+        startPooling({
+          aadharTransactionID: aadharTransactionID,
+          aadharAuthenticationURL: aadharAuthenticationURL,
+        });
       }
-    } catch (e) {
-      setLoading(false);
+    } catch (err) {
+      dispatch({
+        type: "endAadharValidation",
+        apiResult: "error",
+        apiResultStatus: err,
+      });
+      console.log(err);
     }
   };
 
   const fetchRequestID = useRef(0);
-  const waitForRequestStatus = async (data) => {
-    const resp = await APISDK.fetchAadharRequestStatusEventSource(
-      data.transactionID
-    );
-    if (resp.status === "success") {
-      if (
-        resp.data.requestStatus === "success" ||
-        resp.data.requestStatus === "failed"
-      ) {
-        if (resp.data.requestStatus === "failed") {
-          setFailure(true);
-        }
-        setIFrameVisible(false);
-        setUserMessage(resp.data.message);
-      }
-    } else {
-      setIFrameVisible(false);
-      //TODO: Set proper error coming from response
-      setUserMessage("Unknown error occured");
-      setFailure(true);
-    }
-  };
+
   const startPooling = (data) => {
     interval = setInterval(() => {
-      const currentFetchRequestID = ++fetchRequestID.current;
-      APISDK.fetchAadharRequestStatus(data.transactionID).then((resp) => {
-        console.log(currentFetchRequestID, fetchRequestID.current);
+      const currentFetchRequestID = fetchRequestID.current++;
+      APISDK.fetchAadharRequestStatus(data.aadharTransactionID).then((resp) => {
         if (currentFetchRequestID === fetchRequestID.current) {
           if (resp.status === "success") {
             if (
@@ -71,10 +86,17 @@ export default function EmployeeDashboard() {
               resp.data.requestStatus === "failed"
             ) {
               if (resp.data.requestStatus === "failed") {
-                setFailure(true);
+                dispatch({
+                  type: "endAadharValidation",
+                  apiResult: resp.status,
+                  apiResultStatus: resp.data.requestStatus,
+                });
               }
-              setIFrameVisible(false);
-              setUserMessage(resp.data.message);
+              dispatch({
+                type: "endAadharValidation",
+                apiResult: resp.status,
+                apiResultStatus: resp.data.requestStatus,
+              });
               clearInterval(interval);
               clearTimeout(timeout);
             }
@@ -83,43 +105,49 @@ export default function EmployeeDashboard() {
       });
     }, poolingInterval);
     timeout = setTimeout(() => {
+      dispatch({
+        type: "endAadharValidation",
+        apiResult: "error",
+        apiResultStatus: "Request Time out",
+      });
       clearInterval(interval);
-      setIFrameVisible(false);
-      setUserMessage("Request Time out");
-      setFailure(true);
     }, timeoutDuration);
   };
 
   useEffect(() => {
-    console.log("mounted");
     return () => {
-      console.log("unmounted");
       clearTimeout(timeout);
       clearInterval(interval);
     };
   }, []);
 
+  const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <Fragment>
-      {!IFrameVisible ? (
-        <button
-          onClick={() => {
-            handleAadharInitiation(1001);
-          }}
-          disabled={loading}
-        >
-          Start Aadhar Verification
-        </button>
-      ) : (
+      {state.currentScreen === "inititateAadharValidation" ? (
+        <div>
+          <span>Do you want to go for aadhar verification ??</span>
+          <button
+            disabled={state.loading ? true : false}
+            onClick={() => {
+              handleAadharInitiation(1001);
+            }}
+          >
+            Yes
+          </button>
+          <button>No</button>
+        </div>
+      ) : state.currentScreen === "aadharValidation" ? (
         <iframe
           title="AADHAR"
-          src={aadharParams.URL}
+          src={state.aadharAuthenticationURL}
           width="100%"
           height="700px"
         />
-      )}
-      {!IFrameVisible && Boolean(userMessage) ? (
-        <Alert severity={failure ? "error" : "success"}>{userMessage}</Alert>
+      ) : state.currentScreen === "aadharValidationResult" ? (
+        <Alert severity={state.apiResult ? "error" : "success"}>
+          {state.apiResultStatus}
+        </Alert>
       ) : null}
     </Fragment>
   );
