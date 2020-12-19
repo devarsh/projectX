@@ -12,8 +12,8 @@ export default function EmployeeDashboard() {
     loading: false,
     apiResult: "",
     apiResultStatus: "",
-    transactionID: "",
-    URL: "",
+    aadharTransactionID: "",
+    aadharAuthenticationURL: "",
   };
 
   const reducer = (state, action) => {
@@ -30,12 +30,13 @@ export default function EmployeeDashboard() {
           currentScreen: "aadharValidation",
           apiResult: action.payload.status,
           apiResultStatus: action.payload.status,
-          transactionID: action.payload.data.transactionId,
-          URL: action.payload.data.url,
+          aadharTransactionID: action.payload.data.transactionId,
+          aadharAuthenticationURL: action.payload.data.url,
         };
       case "endAadharValidation":
         return {
           ...state,
+          loading: false,
           apiResult: action.apiResult,
           apiResultStatus: action.apiResultStatus,
           currentScreen: "aadharValidationResult",
@@ -46,16 +47,21 @@ export default function EmployeeDashboard() {
   };
 
   const handleAadharInitiation = async (transCode) => {
+    dispatch({
+      type: "startInititateAadharValidation",
+    });
     try {
       const result = await APISDK.initiateAadharValidation(1001);
       if (result.status === "success") {
-        const aadharValidationStatus = result;
-        const { transactionId, url } = result.data;
+        const { aadharTransactionID, aadharAuthenticationURL } = result.data;
         dispatch({
           type: "inititateAadharValidation",
           payload: result,
         });
-        startPooling({ transactionID: transactionId, URL: url });
+        startPooling({
+          aadharTransactionID: aadharTransactionID,
+          aadharAuthenticationURL: aadharAuthenticationURL,
+        });
       }
     } catch (err) {
       dispatch({
@@ -72,7 +78,7 @@ export default function EmployeeDashboard() {
   const startPooling = (data) => {
     interval = setInterval(() => {
       const currentFetchRequestID = fetchRequestID.current++;
-      APISDK.fetchAadharRequestStatus(data.transactionID).then((resp) => {
+      APISDK.fetchAadharRequestStatus(data.aadharTransactionID).then((resp) => {
         if (currentFetchRequestID === fetchRequestID.current) {
           if (resp.status === "success") {
             if (
@@ -109,8 +115,10 @@ export default function EmployeeDashboard() {
   };
 
   useEffect(() => {
-    clearTimeout(timeout);
-    clearInterval(interval);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, []);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -120,6 +128,7 @@ export default function EmployeeDashboard() {
         <div>
           <span>Do you want to go for aadhar verification ??</span>
           <button
+            disabled={state.loading ? true : false}
             onClick={() => {
               handleAadharInitiation(1001);
             }}
@@ -129,7 +138,12 @@ export default function EmployeeDashboard() {
           <button>No</button>
         </div>
       ) : state.currentScreen === "aadharValidation" ? (
-        <iframe title="AADHAR" src={state.URL} width="100%" height="700px" />
+        <iframe
+          title="AADHAR"
+          src={state.aadharAuthenticationURL}
+          width="100%"
+          height="700px"
+        />
       ) : state.currentScreen === "aadharValidationResult" ? (
         <Alert severity={state.apiResult ? "error" : "success"}>
           {state.apiResultStatus}
