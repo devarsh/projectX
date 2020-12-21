@@ -9,31 +9,34 @@ import {
   useFilters,
   useAsyncDebounce,
 } from "react-table";
+import Paper from "@material-ui/core/Paper";
+import { TableHeaderToolbar } from "./tableHeaderToolbar";
+import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
-
+import Table from "@material-ui/core/Table";
+import { StickyTableHead } from "./stickyTableHead";
+import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import Paper from "@material-ui/core/Paper";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import TablePagination from "@material-ui/core/TablePagination";
-
-import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
 import { TablePaginationActions } from "./tablePaginationToolbar";
-import { TableHeaderToolbar } from "./tableHeaderToolbar";
+
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
+
 import { CustomBackdrop } from "./backdrop";
-import { useCheckboxColumn, useSequenceColumn } from "./components";
+import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
-import { StickyTableHead } from "./stickyTableHead";
 
 const maxWidth = 998;
 
 export const DataGrid = ({
   label,
   dense,
+  headerFilters,
+  headerFilterManager,
   columns,
   defaultColumn,
   data,
@@ -60,6 +63,8 @@ export const DataGrid = ({
     gotoPage,
     setPageSize,
     state: tableState,
+    setAllFilters,
+    setSortBy,
   } = useTable(
     {
       columns,
@@ -117,6 +122,14 @@ export const DataGrid = ({
         dense={dense}
         getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
+      />
+      <TableHeaderFilterToolbar
+        dense={dense}
+        filters={headerFilters}
+        headerFilterManager={headerFilterManager}
+        setAllFilters={setAllFilters}
+        setSortBy={setSortBy}
+        gotoPage={gotoPage}
       />
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>

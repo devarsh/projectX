@@ -1,0 +1,2 @@
+- Enable filtering (Header level & Column level)
+- Enable Column (Hide/Show)

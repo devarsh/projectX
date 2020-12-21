@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { GridTransformedMetaDataType } from "./types";
-import { formatSortBy, formatFilterBy } from "./utils";
+import { GridMetaDataType } from "./types";
+import { formatSortBy, formatFilterBy, useFilterState } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 
 import { DefaultHeaderColumnRenderer } from "./components";
@@ -8,7 +8,7 @@ import { DataGrid } from "./grid";
 import { filtersRegistration } from "./components/filters";
 
 export const GirdController: FC<{
-  metaData: GridTransformedMetaDataType;
+  metaData: GridMetaDataType;
   girdCode: string;
 }> = ({ metaData, girdCode }) => {
   const columns = useMemo(() => metaData.columns, []);
@@ -31,11 +31,12 @@ export const GirdController: FC<{
   const [data, setData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-
   const fetchIdCounterRef = useRef(0);
   const lastAppliedFilterRef = useRef(null);
   const resetPaginationAndSorting = useRef(false);
   const resetTableFilters = useRef(false);
+  const headerFilterManager = useFilterState();
+  const { state: headerFilterState } = headerFilterManager;
 
   useEffect(() => {
     resetPaginationAndSorting.current = false;
@@ -44,7 +45,6 @@ export const GirdController: FC<{
 
   const fetchData = useCallback(
     ({ pageSize, pageIndex, sortBy, filters }) => {
-      console.log(filters);
       if (lastAppliedFilterRef.current !== filters) {
         resetPaginationAndSorting.current = true;
       }
@@ -52,12 +52,19 @@ export const GirdController: FC<{
       setLoading(true);
       const startRow = Number(pageSize) * Number(pageIndex) + 1;
       const endRow = Number(startRow) + Number(pageSize) - 1;
+      let localFilters = formatFilterBy(filters);
+      let headerFilters: any[] = [];
+      if (headerFilterState !== null) {
+        headerFilters = Object.values(headerFilterState);
+      }
+      let combinedFilters = [...headerFilters, ...localFilters];
+
       APISDK.fetchGridData(
         girdCode,
         startRow,
         endRow,
         formatSortBy(sortBy),
-        formatFilterBy(filters)
+        combinedFilters
       ).then((result) => {
         if (currentFetchId === fetchIdCounterRef.current) {
           if (result.status === "success") {
@@ -76,13 +83,15 @@ export const GirdController: FC<{
         }
       });
     },
-    [setTotalRecords, setLoading, setData]
+    [setTotalRecords, setLoading, setData, headerFilterState]
   );
 
   return (
     <DataGrid
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
       dense={true}
+      headerFilters={metaData.headerFilters ?? []}
+      headerFilterManager={headerFilterManager}
       getRowId={getRowId}
       columns={columns}
       filterTypes={filterTypes}

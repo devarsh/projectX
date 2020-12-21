@@ -1,6 +1,96 @@
-import { GridColumnType } from "../types";
+import { GridColumnType, HeaderFilterMultiType } from "../types";
 import { DefaultRowCellRenderer } from "../components";
 import { ValueFilter, RangeFilterWrapper } from "../components/filters";
+import { APISDK } from "registry/fns/sdk";
+import { useState } from "react";
+
+export const transformHeaderFilters = (
+  gridCode: string,
+  headerFilters?: HeaderFilterMultiType
+) => {
+  if (Array.isArray(headerFilters)) {
+    const result = headerFilters.map((filter) => {
+      const {
+        accessor,
+        filterComponentType,
+        filterComponentProps,
+        ...others
+      } = filter;
+      switch (filterComponentType) {
+        case "groupByFilter":
+          return new Promise((res) => {
+            APISDK.fetchGridColumnFilterProps(gridCode, {
+              accessor: accessor,
+              result_type: "getGroups",
+              filter_conditions: [],
+            }).then((result) => {
+              if (result.status === "success") {
+                res({
+                  filterComponentType,
+                  filterComponentProps: {
+                    accessor,
+                    ...others,
+                    ...filterComponentProps,
+                    ...result.data,
+                  },
+                });
+              } else {
+                res({
+                  filterComponentType,
+                  filterComponentProps: {
+                    accessor,
+                    ...others,
+                    ...filterComponentProps,
+                  },
+                });
+              }
+            });
+          });
+        //Uncomment if you plan on using rangeFilter - this much precision is not usually required.
+
+        // case "daysFilter":
+        //   return new Promise((res) => {
+        //     APISDK.fetchGridColumnFilterProps(gridCode, {
+        //       accessor: accessor,
+        //       result_type: "getRange",
+        //       filter_conditions: [],
+        //     }).then((result) => {
+        //       if (result.status === "success") {
+        //         res({
+        //           filterComponentType,
+        //           filterComponentProps: {
+        //             accessor,
+        //             ...filterComponentProps,
+        //             ...result.data,
+        //           },
+        //           ...others,
+        //         });
+        //       } else {
+        //         res({
+        //           filterComponentType,
+        //           filterComponentProps: { accessor, ...filterComponentProps },
+        //           ...others,
+        //         });
+        //       }
+        //     });
+        //   });
+        default:
+          return new Promise((res) => {
+            res({
+              filterComponentType,
+              filterComponentProps: {
+                accessor,
+                ...others,
+                ...filterComponentProps,
+              },
+            });
+          });
+      }
+    });
+    return Promise.all(result);
+  }
+  return Promise.resolve([]);
+};
 
 export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
@@ -33,7 +123,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
         ...others
       } = column;
       switch (filterComponentType) {
-        case "ValueFilter":
+        case "valueFilter":
           return {
             ...others,
             accessor,
@@ -41,7 +131,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
             Filter: ValueFilter,
             filter: "valueFilter",
           };
-        case "RangeFilter":
+        case "rangeFilter":
           return {
             ...others,
             Filter: RangeFilterWrapper,
@@ -56,7 +146,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
               },
             },
           };
-        case "OptionsFilter":
+        case "optionsFilter":
           return {
             ...others,
             Filter: ValueFilter,
@@ -138,4 +228,38 @@ export const formatFilterBy = (filterBy = []) => {
     ...one.value,
   }));
   return formatted;
+};
+
+export const useFilterState = () => {
+  const [state, setState] = useState<object | null>(null);
+  const [gridCurrentPageSize, setGridCurrentPageSize] = useState(0);
+  const addHeaderFilter = (accessor, filterValue) => {
+    if (typeof state !== "object" || state === null) {
+      setState({ [accessor]: filterValue });
+    } else {
+      setState((old) => ({ ...old, [accessor]: filterValue }));
+    }
+  };
+  const removeHeaderFilter = (accessor) => {
+    if (typeof state === "object" && state !== null) {
+      const result = delete state[accessor];
+      if (result) {
+        if (Object.keys(state).length === 0) {
+          setState(null);
+        }
+        setState(state);
+      }
+    }
+  };
+  const clearHeaderFilter = () => {
+    setState(null);
+  };
+  return {
+    addHeaderFilter,
+    removeHeaderFilter,
+    clearHeaderFilter,
+    state,
+    setGridCurrentPageSize,
+    gridCurrentPageSize,
+  };
 };

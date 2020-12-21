@@ -562,6 +562,9 @@ const RaatnaFinAPI = () => {
     }
   };
   const fetchGridColumnFilterProps = async (gridCode, options) => {
+    /*
+    ...options = {accessor:'',}
+    */
     const { data, status } = await internalFetcher("./users/getInquiryData", {
       body: JSON.stringify({
         action: "grid_column_options",

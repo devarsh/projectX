@@ -1,30 +1,35 @@
 import { FC, useEffect, useState } from "react";
-import { GridMetaDataType, GridTransformedMetaDataType } from "./types";
+import { GridMetaDataType, HeaderFilterType } from "./types";
 import {
   attachComponentsToMetaData,
   attachFilterComponentToMetaData,
   attachAlignmentProps,
   extractHiddenColumns,
   sortColumnsBySequence,
+  transformHeaderFilters,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
 
 export const ParentGridWrapper = () => {
+  const gridCode = "trn/001";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [data, setData] = useState({});
-  const gridCode = "trn/001";
+  const [metaData, setMetaData] = useState({});
+
   useEffect(() => {
     APISDK.fetchGridMetaData(gridCode)
       .then((result) => {
         if (result.status === "success") {
-          let finalData = transformMetaData(result.data);
-          setData(finalData);
-          setError(false);
-          setLoading(false);
+          let finalData = transformMetaData(result.data, gridCode);
+          Promise.resolve(finalData.headerFilters).then((filtersResult) => {
+            finalData.headerFilters = filtersResult;
+            setMetaData(finalData);
+            setError(false);
+            setLoading(false);
+          });
         } else {
-          setData(result.data);
+          setMetaData(result.data);
           setError(true);
           setLoading(false);
         }
@@ -32,7 +37,7 @@ export const ParentGridWrapper = () => {
       .catch((err) => {
         setLoading(false);
         setError(true);
-        setData(err);
+        setMetaData(err);
       });
   }, []);
   return loading ? (
@@ -41,15 +46,16 @@ export const ParentGridWrapper = () => {
     <span>{"error loading grid"}</span>
   ) : (
     <GirdController
-      metaData={data as GridTransformedMetaDataType}
+      metaData={metaData as GridMetaDataType}
       girdCode={gridCode}
     />
   );
 };
 
 const transformMetaData = (
-  metaData: GridMetaDataType
-): GridTransformedMetaDataType => {
+  metaData: GridMetaDataType,
+  gridCode: string
+): GridMetaDataType => {
   let columns = metaData.columns as any;
 
   //make sure extract functions are called before attach and lastly sort
@@ -58,10 +64,15 @@ const transformMetaData = (
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
+  const transformedHeaderFilters = transformHeaderFilters(
+    gridCode,
+    metaData.headerFilters
+  );
 
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
+    headerFilters: transformedHeaderFilters,
   };
 };
