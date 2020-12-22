@@ -21,6 +21,7 @@ export const TableHeaderFilterToolbar = ({
   setAllFilters,
   setSortBy,
   gotoPage,
+  localFilterManager,
 }) => {
   const classes = useStyles();
   const renderFilters = filters.map((one, index) => {
@@ -34,6 +35,7 @@ export const TableHeaderFilterToolbar = ({
             setAllFilters={setAllFilters}
             setSortBy={setSortBy}
             gotoPage={gotoPage}
+            localFilterManager={localFilterManager}
             {...filterComponentProps}
           />
         );
@@ -62,6 +64,7 @@ export const GroupByFilter = ({
   setAllFilters,
   setSortBy,
   gotoPage,
+  localFilterManager,
 }) => {
   const [value, setValue] = useState<any | any[] | null>(null);
   const [clearAllSelected, setClearAllSelected] = useState(false);
@@ -78,11 +81,13 @@ export const GroupByFilter = ({
       setAllFilters([]);
       setSortBy([]);
       gotoPage(0);
+      localFilterManager.clearFilterState();
     } else {
       headerFilterManager.removeHeaderFilter(accessor);
       setAllFilters([]);
       setSortBy([]);
       gotoPage(0);
+      localFilterManager.clearFilterState();
     }
   }, [value]);
   if (!Array.isArray(groups)) {
@@ -110,7 +115,7 @@ export const GroupByFilter = ({
         {buttons}
         {selectType === "single" ? (
           <ToggleButton key={`${accessor}-all-single`} value={""}>
-            All
+            Clear
           </ToggleButton>
         ) : (
           <ToggleButton
@@ -121,6 +126,7 @@ export const GroupByFilter = ({
               setValue([]);
               setClearAllSelected(true);
             }}
+            value=""
           >
             Clear
           </ToggleButton>

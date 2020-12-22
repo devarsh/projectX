@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
-import { CssTextField, StyledMenuItem } from "./styledComponents";
+import { StyledTextField, StyledMenuItem } from "./styledComponents";
 import { FilterContainer } from "./filterContainer";
 
 export const ValueFilterFn = (rows) => {
@@ -16,6 +16,7 @@ export const ValueFilter = (props) => {
     column: { filterValue, setFilter },
     handleClose,
   } = props;
+
   const options = [
     { label: "starts with", value: "startsWith" },
     { label: "ends with", value: "endsWith" },
@@ -57,7 +58,7 @@ export const ValueFilter = (props) => {
         mt={2}
       >
         <Box width="40%" pl={1}>
-          <CssTextField
+          <StyledTextField
             select
             placeholder="Select"
             fullWidth
@@ -67,7 +68,7 @@ export const ValueFilter = (props) => {
             }}
           >
             {optionValues}
-          </CssTextField>
+          </StyledTextField>
         </Box>
         <Box
           display="flex"
@@ -77,7 +78,7 @@ export const ValueFilter = (props) => {
           position="relative"
           pr={1}
         >
-          <CssTextField
+          <StyledTextField
             fullWidth
             value={text || ""}
             placeholder="Search"

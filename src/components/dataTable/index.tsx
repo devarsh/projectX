@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { GridMetaDataType, HeaderFilterType } from "./types";
+import { GridMetaDataType } from "./types";
 import {
   attachComponentsToMetaData,
   attachFilterComponentToMetaData,
@@ -47,7 +47,7 @@ export const ParentGridWrapper = () => {
   ) : (
     <GirdController
       metaData={metaData as GridMetaDataType}
-      girdCode={gridCode}
+      gridCode={gridCode}
     />
   );
 };

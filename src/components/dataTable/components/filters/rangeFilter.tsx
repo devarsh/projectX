@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
-import { CssTextField } from "./styledComponents";
+import { StyledTextField } from "./styledComponents";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -132,7 +132,7 @@ const MinMaxValueRenderer = ({
 }) => (
   <>
     <Box width="45%">
-      <CssTextField
+      <StyledTextField
         fullWidth
         value={minValue}
         onChange={(e) => setMinValue(e.target.value)}
@@ -142,7 +142,7 @@ const MinMaxValueRenderer = ({
       to
     </Box>
     <Box width="45%">
-      <CssTextField
+      <StyledTextField
         fullWidth
         value={maxValue}
         onChange={(e) => setMaxValue(e.target.value)}

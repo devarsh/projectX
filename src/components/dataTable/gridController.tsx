@@ -1,6 +1,11 @@
 import { FC, useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { GridMetaDataType } from "./types";
-import { formatSortBy, formatFilterBy, useFilterState } from "./utils";
+import {
+  formatSortBy,
+  formatFilterBy,
+  useFilterState,
+  useLocalFilterState,
+} from "./utils";
 import { APISDK } from "registry/fns/sdk";
 
 import { DefaultHeaderColumnRenderer } from "./components";
@@ -9,8 +14,8 @@ import { filtersRegistration } from "./components/filters";
 
 export const GirdController: FC<{
   metaData: GridMetaDataType;
-  girdCode: string;
-}> = ({ metaData, girdCode }) => {
+  gridCode: string;
+}> = ({ metaData, gridCode }) => {
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(
     () => ({
@@ -36,6 +41,7 @@ export const GirdController: FC<{
   const resetPaginationAndSorting = useRef(false);
   const resetTableFilters = useRef(false);
   const headerFilterManager = useFilterState();
+  const localFilterManager = useLocalFilterState();
   const { state: headerFilterState } = headerFilterManager;
 
   useEffect(() => {
@@ -60,7 +66,7 @@ export const GirdController: FC<{
       let combinedFilters = [...headerFilters, ...localFilters];
 
       APISDK.fetchGridData(
-        girdCode,
+        gridCode,
         startRow,
         endRow,
         formatSortBy(sortBy),
@@ -88,10 +94,12 @@ export const GirdController: FC<{
 
   return (
     <DataGrid
+      gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
       dense={true}
       headerFilters={metaData.headerFilters ?? []}
       headerFilterManager={headerFilterManager}
+      localFilterManager={localFilterManager}
       getRowId={getRowId}
       columns={columns}
       filterTypes={filterTypes}

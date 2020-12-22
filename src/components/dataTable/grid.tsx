@@ -33,10 +33,12 @@ import { RowCellWrapper } from "./rowCellWrapper";
 const maxWidth = 998;
 
 export const DataGrid = ({
+  gridCode,
   label,
   dense,
   headerFilters,
   headerFilterManager,
+  localFilterManager,
   columns,
   defaultColumn,
   data,
@@ -77,6 +79,7 @@ export const DataGrid = ({
         pageSize: defaultPageSize,
         hiddenColumns: defaultHiddenColumns,
       },
+      gridCode,
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: resetPaginationAndSorting,
@@ -84,6 +87,8 @@ export const DataGrid = ({
       autoResetSortBy: resetPaginationAndSorting,
       manualFilters: true,
       autoResetFilters: resetFilters,
+      localFilterManager,
+      headerFilterState: headerFilterManager.state,
     },
     useFilters,
     useSortBy,
@@ -130,6 +135,7 @@ export const DataGrid = ({
         setAllFilters={setAllFilters}
         setSortBy={setSortBy}
         gotoPage={gotoPage}
+        localFilterManager={localFilterManager}
       />
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>

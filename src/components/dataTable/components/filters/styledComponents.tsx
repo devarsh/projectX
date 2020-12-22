@@ -1,22 +1,7 @@
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Slider from "@material-ui/core/Slider";
 import { withStyles } from "@material-ui/core/styles";
-
-export const StyledSelect = withStyles({
-  root: {
-    minHeight: "18px",
-    lineHeight: "18px",
-  },
-  MuiInput: {
-    underline: {
-      "&:after": {
-        borderBottom: "2px solid #3f51b5",
-      },
-    },
-  },
-})(Select);
 
 export const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -26,7 +11,7 @@ export const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export const CssTextField = withStyles({
+export const StyledTextField = withStyles({
   root: {
     "& .MuiInputBase-root": {
       border: "1px solid #BABABA",

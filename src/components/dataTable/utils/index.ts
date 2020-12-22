@@ -1,8 +1,13 @@
 import { GridColumnType, HeaderFilterMultiType } from "../types";
 import { DefaultRowCellRenderer } from "../components";
-import { ValueFilter, RangeFilterWrapper } from "../components/filters";
+import {
+  ValueFilter,
+  RangeFilterWrapper,
+  OptionsFilter,
+} from "../components/filters";
 import { APISDK } from "registry/fns/sdk";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { filter } from "lodash";
 
 export const transformHeaderFilters = (
   gridCode: string,
@@ -130,6 +135,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
             filterComponentProps,
             Filter: ValueFilter,
             filter: "valueFilter",
+            id: accessor,
           };
         case "rangeFilter":
           return {
@@ -137,6 +143,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
             Filter: RangeFilterWrapper,
             filter: "rangeFilter",
             accessor,
+            id: accessor,
             filterComponentProps: {
               ...filterComponentProps,
               query: {
@@ -149,9 +156,10 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
         case "optionsFilter":
           return {
             ...others,
-            Filter: ValueFilter,
+            Filter: OptionsFilter,
             //filter:'optionsFilter'
             accessor,
+            id: accessor,
             filterComponentProps: {
               ...filterComponentProps,
               query: {
@@ -261,5 +269,43 @@ export const useFilterState = () => {
     state,
     setGridCurrentPageSize,
     gridCurrentPageSize,
+  };
+};
+
+export const useLocalFilterState = () => {
+  const filterState = useRef<object>({});
+  const addFilterState = (accessor, state) => {
+    let currentState;
+    currentState = { [accessor]: state };
+
+    if (filterState.current === null) {
+      filterState.current = currentState;
+    } else {
+      filterState.current = {
+        ...filterState.current,
+        ...currentState,
+      };
+    }
+  };
+  const getFilterState = (accessor) => {
+    if (typeof filterState.current === "object") {
+      return filterState.current[accessor];
+    }
+    return;
+  };
+  const removeFilterState = (accessor) => {
+    if (typeof filterState.current === "object") {
+      delete filterState.current[accessor];
+    }
+  };
+  const clearFilterState = () => {
+    filterState.current = {};
+  };
+
+  return {
+    addFilterState,
+    removeFilterState,
+    clearFilterState,
+    getFilterState,
   };
 };
