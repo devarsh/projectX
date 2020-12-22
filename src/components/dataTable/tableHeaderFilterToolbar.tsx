@@ -18,10 +18,7 @@ export const TableHeaderFilterToolbar = ({
   dense,
   filters,
   headerFilterManager,
-  setAllFilters,
-  setSortBy,
-  gotoPage,
-  localFilterManager,
+  handleResetGridState,
 }) => {
   const classes = useStyles();
   const renderFilters = filters.map((one, index) => {
@@ -32,10 +29,7 @@ export const TableHeaderFilterToolbar = ({
           <GroupByFilter
             key={one?.filterComponentProps?.accessor ?? index}
             headerFilterManager={headerFilterManager}
-            setAllFilters={setAllFilters}
-            setSortBy={setSortBy}
-            gotoPage={gotoPage}
-            localFilterManager={localFilterManager}
+            handleResetGridState={handleResetGridState}
             {...filterComponentProps}
           />
         );
@@ -61,11 +55,9 @@ export const GroupByFilter = ({
   selectType,
   groups,
   headerFilterManager,
-  setAllFilters,
-  setSortBy,
-  gotoPage,
-  localFilterManager,
+  handleResetGridState,
 }) => {
+  const isSingle = selectType === "single" ? true : false;
   const [value, setValue] = useState<any | any[] | null>(null);
   const [clearAllSelected, setClearAllSelected] = useState(false);
   useEffect(() => {
@@ -75,19 +67,13 @@ export const GroupByFilter = ({
     ) {
       headerFilterManager.addHeaderFilter(accessor, {
         accessor,
-        condition: selectType === "single" ? "equal" : "in",
+        condition: isSingle ? "equal" : "in",
         value,
       });
-      setAllFilters([]);
-      setSortBy([]);
-      gotoPage(0);
-      localFilterManager.clearFilterState();
+      handleResetGridState();
     } else {
       headerFilterManager.removeHeaderFilter(accessor);
-      setAllFilters([]);
-      setSortBy([]);
-      gotoPage(0);
-      localFilterManager.clearFilterState();
+      handleResetGridState();
     }
   }, [value]);
   if (!Array.isArray(groups)) {
@@ -110,10 +96,10 @@ export const GroupByFilter = ({
           setValue(value);
           setClearAllSelected(false);
         }}
-        exclusive={selectType === "single" ? true : false}
+        exclusive={isSingle ? true : false}
       >
         {buttons}
-        {selectType === "single" ? (
+        {isSingle ? (
           <ToggleButton key={`${accessor}-all-single`} value={""}>
             Clear
           </ToggleButton>

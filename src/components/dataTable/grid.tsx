@@ -115,6 +115,12 @@ export const DataGrid = ({
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
+  const handleResetGridState = () => {
+    setAllFilters([]);
+    setSortBy([]);
+    gotoPage(0);
+    localFilterManager.clearFilterState();
+  };
 
   return (
     <Paper
@@ -132,10 +138,7 @@ export const DataGrid = ({
         dense={dense}
         filters={headerFilters}
         headerFilterManager={headerFilterManager}
-        setAllFilters={setAllFilters}
-        setSortBy={setSortBy}
-        gotoPage={gotoPage}
-        localFilterManager={localFilterManager}
+        handleResetGridState={handleResetGridState}
       />
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>
