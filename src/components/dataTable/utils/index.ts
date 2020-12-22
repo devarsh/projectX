@@ -240,7 +240,6 @@ export const formatFilterBy = (filterBy = []) => {
 
 export const useFilterState = () => {
   const [state, setState] = useState<object | null>(null);
-  const [gridCurrentPageSize, setGridCurrentPageSize] = useState(0);
   const addHeaderFilter = (accessor, filterValue) => {
     if (typeof state !== "object" || state === null) {
       setState({ [accessor]: filterValue });
@@ -267,8 +266,6 @@ export const useFilterState = () => {
     removeHeaderFilter,
     clearHeaderFilter,
     state,
-    setGridCurrentPageSize,
-    gridCurrentPageSize,
   };
 };
 
