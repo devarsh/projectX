@@ -75,6 +75,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     render: {
       componentType: "inputMask",
     },
+    fullWidth: true,
     MaskProps: {
       mask: "aaaaa0000a",
       prepare: function (str) {
@@ -118,6 +119,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     render: {
       componentType: "inputMask",
     },
+    fullWidth: true,
     MaskProps: {
       mask: "0000` 0000` 0000",
       lazy: true,
