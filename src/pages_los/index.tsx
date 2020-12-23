@@ -9,15 +9,14 @@ import Lead from "./pages/lead";
 import { Profile } from "./pages/profile";
 import Iframe from "./pages/iframe";
 import { ParentGridWrapper } from "components/dataTable";
-//import { App } from "components/dataTable/test";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
 import LeadAction from "./pages/leadaction";
 import View from "./pages/tabView";
 import { useStyles } from "./style";
+import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import { DataGrid } from "components/dataTable/grid";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -38,7 +37,7 @@ const DashbordPages = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/iframe" element={<Iframe />} />
             <Route path="/dgrid" element={<ParentGridWrapper />} />
-
+            <Route path="/cam" element={<CC_ODFormWrapper />} />
             <Route path="/api" element={<APITest />} />
             <Route path="/cam" element={<DynamicLead />} />
             <Route path="/pages/:id" element={<Dummy />} />

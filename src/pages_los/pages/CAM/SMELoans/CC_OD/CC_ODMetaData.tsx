@@ -9,13 +9,13 @@ export const CC_ODMetaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "tabs",
-      tabs: [
-        "General Details",
-        "Business Details ",
-        "Management Details",
-        "Financial Ratios",
-        "Collateral Details",
-      ],
+      groups: {
+        0: "General Details",
+        1: "Business Details ",
+        2: "Management Details",
+        3: "Financial Ratios",
+        4: "Collateral Details",
+      },
       gridConfig: {
         item: {
           xs: 12,
@@ -47,7 +47,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "addOffice",
       label: "Office Address",
@@ -67,7 +67,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "datePicker",
-        tab: 0,
+        group: 0,
       },
       name: "inception_date",
       label: "Date of Incorporation",
@@ -84,7 +84,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "proposedBusiness",
       label: "Proposed Business",
@@ -103,7 +103,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 0,
+        group: 0,
       },
       name: "externalCreditRating",
       label: "External Credit Rating",
@@ -133,7 +133,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "msme",
       label: "Micro, Small or Medium ",
@@ -149,7 +149,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "aadharCard",
-        tab: 0,
+        group: 0,
       },
       name: "aadharNumber",
       type: "text",
@@ -164,7 +164,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "promotersDirectorsName",
       label: "Name of Promoters / Directors",
@@ -183,7 +183,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 0,
+        group: 0,
       },
       name: "loanAmount",
       type: "text",
@@ -215,7 +215,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 0,
+        group: 0,
       },
       name: "loanDetails",
       label: "Loan details",
@@ -243,7 +243,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "natureOfFacility",
       label: "Nature of Facility",
@@ -272,7 +272,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "bankName",
       label: "Name of Bank ",
@@ -298,7 +298,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 0,
+        group: 0,
       },
       name: "outstandingAmount",
       type: "text",
@@ -338,7 +338,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        tab: 0,
+        group: 0,
       },
       name: "rateOfInterest",
       type: "text",
@@ -362,7 +362,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "newTakeover",
       label: "New / Takeover",
@@ -388,7 +388,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "requestedROI",
       label: "Requested ROI",
@@ -414,7 +414,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 0,
+        group: 0,
       },
       name: "proposedAmount",
       type: "text",
@@ -453,7 +453,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "presentProposedLoancomments",
       label: "Comments",
@@ -485,7 +485,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 0,
+        group: 0,
       },
       name: "loanPurpose",
       label: "Purpose of Loan",
@@ -523,7 +523,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        tab: 0,
+        group: 0,
       },
       name: "chequeBounce",
       type: "text",
@@ -543,7 +543,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "companyHistory",
       label: "Brief history of the Company",
@@ -559,7 +559,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "existingProducts",
       label: "Existing Products / Services of the company ",
@@ -573,7 +573,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "productEndUse",
       label: "End Use of the Products",
@@ -587,7 +587,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "majorSuppliers",
       label: "Name of Major Suppliers",
@@ -601,7 +601,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "paymenttermSupplier",
       label: "Payment terms with Supplier",
@@ -615,7 +615,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "majorCustomers",
       label: "Name of Major Customers",
@@ -629,7 +629,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "paymenttermCustomer",
       label: "Payment terms with Customers",
@@ -643,7 +643,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "currentOrderPosition",
       label: "Current Order Book Position",
@@ -657,7 +657,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "marketingDistributionPolicy/Strategy",
       label: "Marketing & Distribution Policy/Strategy",
@@ -671,7 +671,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "competitorsName",
       label: "Name of Competitors ",
@@ -685,7 +685,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "exportingCountries",
       label: "Name of Major Countries where Exporting",
@@ -699,7 +699,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "domesticExportSalesRatio",
       label: "Domestic and export sales ratio",
@@ -713,7 +713,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "employeeNumbers",
       label: "No. of Employees",
@@ -727,7 +727,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "industryApprovalsAndLicense",
       label: "Other Industry specific approvals / license",
@@ -741,7 +741,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "awardRecognitionreceived",
       label: "Any awards / Recognition received ",
@@ -758,7 +758,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "panCard",
-        tab: 2,
+        group: 2,
       },
       name: "managementPanNumber",
       type: "text",
@@ -774,7 +774,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "aadharCard",
-        tab: 2,
+        group: 2,
       },
       name: "managementAadharNumber",
       type: "text",
@@ -789,7 +789,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 2,
+        group: 2,
       },
       name: "age",
       label: "Age",
@@ -818,7 +818,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 2,
+        group: 2,
       },
       name: "education_qualifi",
       label: "Education Qualification",
@@ -837,7 +837,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 2,
+        group: 2,
       },
       name: "experience",
       label: "Experience",
@@ -855,7 +855,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "associateCompanies",
       label: "Associate Companies",
@@ -870,7 +870,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        tab: 2,
+        group: 2,
       },
       name: "profitSharingAndShareHolding",
       type: "text",
@@ -885,7 +885,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "firstYearSummary",
       label: "Previous First Year Income Summary",
@@ -899,7 +899,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "secondYearSummary",
       label: "Previous Second Year Income Summary",
@@ -913,7 +913,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "thirdYearSummary",
       label: "Previous Third Year Income Summary",
@@ -929,7 +929,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "firstYearSummary",
       label: "Next One Year Income Summary",
@@ -943,7 +943,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "secondYearSummary",
       label: "Next Second Year Income Summary",
@@ -959,7 +959,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "primarySecurityOfficeAddress",
       label: "Address of the Property for Primary Security",
@@ -975,7 +975,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "primarySecurityPropertyArea",
       label: "Area of the Property for Primary Security",
@@ -990,7 +990,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "primarySecurityOwnerName",
       label: "Owner Name for Primary Security",
@@ -1004,7 +1004,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 4,
+        group: 4,
       },
       name: "primarySecurityMarketValue",
       label: "Market Value (Rs. In Crore) for Primary Security",
@@ -1027,7 +1027,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "collateralSecurityOfficeAddress",
       label: "Address of the Property for collateral Security",
@@ -1043,7 +1043,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "collateralSecurityPropertyArea",
       label: "Area of the Property for collateral Security",
@@ -1058,7 +1058,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "collateralSecurityOwnerName",
       label: "Owner Name for Collateral Security",
@@ -1072,7 +1072,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "facr",
       label: "FACR",
@@ -1086,7 +1086,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "acr",
       label: "ACR",
@@ -1100,7 +1100,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 4,
+        group: 4,
       },
       name: "collateralSecurityMarketValue",
       label: "Market Value (Rs. In Crore) for Collateral Security",
@@ -1123,7 +1123,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "guarantorName",
       label: "Name of Guarantor for Personal Guarantee",
@@ -1138,7 +1138,7 @@ export const CC_ODMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "panCard",
-        tab: 4,
+        group: 4,
       },
       name: "panNumberofGuarantor",
       type: "text",
@@ -1153,7 +1153,7 @@ export const CC_ODMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "guarantorNetWorth",
       label: "Net Worth for Personal Guarantee",

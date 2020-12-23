@@ -18,7 +18,6 @@ export const InquiryFormWrapper = () => {
   let metaData = useRef<MetaDataType | null>(null);
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
-
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
   let currentSeq = 0;

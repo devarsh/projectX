@@ -9,14 +9,14 @@ export const TermLoanMetaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "tabs",
-      tabs: [
-        "General Details",
-        "Business Details ",
-        "Project Details",
-        "Management Details",
-        "Financial Ratios",
-        "Collateral Details",
-      ],
+      groups: {
+        0: "General Details",
+        1: "Business Details ",
+        2: "Project Details",
+        3: "Management Details",
+        4: "Financial Ratios",
+        5: "Collateral Details",
+      },
       gridConfig: {
         item: {
           xs: 12,
@@ -48,7 +48,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "addOffice",
       label: "Office Address",
@@ -68,7 +68,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "datePicker",
-        tab: 0,
+        group: 0,
       },
       name: "inception_date",
       label: "Date of Incorporation",
@@ -85,7 +85,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "proposedBusiness",
       label: "Proposed Business",
@@ -104,7 +104,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 0,
+        group: 0,
       },
       name: "externalCreditRating",
       label: "External Credit Rating",
@@ -134,7 +134,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "msme",
       label: "Micro, Small or Medium ",
@@ -150,7 +150,7 @@ export const TermLoanMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "aadharCard",
-        tab: 0,
+        group: 0,
       },
       name: "udhyogAadharNumber",
       type: "text",
@@ -165,7 +165,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "promotersDirectorsName",
       label: "Name of Promoters / Directors",
@@ -184,7 +184,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 0,
+        group: 0,
       },
       name: "loanAmount",
       type: "text",
@@ -216,7 +216,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 0,
+        group: 0,
       },
       name: "loanDetails",
       label: "Loan details",
@@ -244,7 +244,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "natureOfFacility",
       label: "Nature of Facility",
@@ -273,7 +273,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "bankName",
       label: "Name of Bank ",
@@ -299,7 +299,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 0,
+        group: 0,
       },
       name: "outstandingAmount",
       type: "text",
@@ -339,7 +339,7 @@ export const TermLoanMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        tab: 0,
+        group: 0,
       },
       name: "rateOfInterest",
       type: "text",
@@ -363,7 +363,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "newTakeover",
       label: "New / Takeover",
@@ -389,7 +389,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "requestedROI",
       label: "Requested ROI",
@@ -415,7 +415,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 0,
+        group: 0,
       },
       name: "proposedAmount",
       type: "text",
@@ -454,7 +454,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 0,
+        group: 0,
       },
       name: "presentProposedLoancomments",
       label: "Comments",
@@ -486,7 +486,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 0,
+        group: 0,
       },
       name: "loanPurpose",
       label: "Purpose of Loan",
@@ -524,7 +524,7 @@ export const TermLoanMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        tab: 0,
+        group: 0,
       },
       name: "chequeBounce",
       type: "text",
@@ -544,7 +544,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "companyHistory",
       label: "Brief history of the Company",
@@ -560,7 +560,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "existingProducts",
       label: "Existing Products / Services of the company ",
@@ -574,7 +574,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "productEndUse",
       label: "End Use of the Products",
@@ -588,7 +588,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "majorSuppliers",
       label: "Name of Major Suppliers",
@@ -602,7 +602,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "paymentTermCustomer",
       label: "Payment terms with Suppliers",
@@ -616,7 +616,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "majorCustomers",
       label: "Name of Major Customers",
@@ -630,7 +630,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "paymentTermCustomer",
       label: "Payment terms with Customers",
@@ -644,7 +644,7 @@ export const TermLoanMetaData: MetaDataType = {
     // {
     //   render: {
     //     componentType: "textField",
-    //     tab: 1,
+    //     group: 1,
     //   },
     //   name: "paymenttermSupplier",
     //   label: "Payment terms with Supplier",
@@ -658,7 +658,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "currentOrderPosition",
       label: "Current Order Book Position",
@@ -672,7 +672,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "marketingDistributionPolicy/Strategy",
       label: "Marketing & Distribution Policy/Strategy",
@@ -686,7 +686,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "competitorsName",
       label: "Name of Competitors ",
@@ -700,7 +700,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "exportingCountries",
       label: "Name of Major Countries where Exporting",
@@ -714,7 +714,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "domesticExportSalesRatio",
       label: "Domestic and export sales ratio",
@@ -728,7 +728,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "employeeNumbers",
       label: "No. of Employees",
@@ -742,7 +742,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "gpcbLicense",
       label: "GPCB License ",
@@ -756,7 +756,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "factoryLicense",
       label: "Factory License ",
@@ -770,7 +770,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "fassaiLicense",
       label: "FASSAI License ",
@@ -784,7 +784,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "industryApprovalsAndLicense",
       label: "Other Industry specific approvals / license",
@@ -798,7 +798,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 1,
+        group: 1,
       },
       name: "awardRecognitionreceived",
       label: "Any awards / Recognition received ",
@@ -814,7 +814,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "projectLocation",
       label: "Location of the project ",
@@ -828,7 +828,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 2,
+        group: 2,
       },
       name: "landDetails",
       label: "Land Details ",
@@ -854,7 +854,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "projectArea",
       label: "Area of the Project Land and approx valuation",
@@ -878,7 +878,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "datePicker",
-        tab: 2,
+        group: 2,
       },
       name: "commencementDate",
       label: "Expected Date of Commencement (DCCO)",
@@ -895,7 +895,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 2,
+        group: 2,
       },
       name: "totalCostOfProject",
       type: "text",
@@ -926,7 +926,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 2,
+        group: 2,
       },
       name: "particularMeansOfFinance",
       label: "Particulars for Total Cost of Project",
@@ -953,7 +953,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 2,
+        group: 2,
       },
       name: "amountMeansOfFinance",
       type: "text",
@@ -985,7 +985,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 2,
+        group: 2,
       },
       name: "particularCostOfProject",
       label: "Particulars for Total Means of Finance ",
@@ -1014,7 +1014,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 2,
+        group: 2,
       },
       name: "totalMeansOfFinance",
       type: "text",
@@ -1045,7 +1045,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 2,
+        group: 2,
       },
       name: "amountCostOfProject",
       type: "text",
@@ -1077,7 +1077,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "projectCurrentStage",
       label: "Current Stage of Project ",
@@ -1091,7 +1091,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "moratorium",
       label: "Moratorium",
@@ -1105,7 +1105,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "installmentsOrBalloonig",
       label: "Equal Installments or Balloonig ",
@@ -1119,7 +1119,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "macineriesList",
       label: "List of Machineries ",
@@ -1133,7 +1133,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "installedCapacity",
       label: "Installed Capacity ",
@@ -1147,7 +1147,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "manufacturedProducts",
       label: "Products to be manufactured",
@@ -1161,7 +1161,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "manufacturingProcess",
       label: "Manufacturing Process",
@@ -1175,7 +1175,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "requirementArrangementofPower",
       label: "Requirement and arrangement of Power",
@@ -1189,7 +1189,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "requirementArrangementofWater",
       label: "Requirement and arrangement of Water",
@@ -1203,7 +1203,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "requirementArrangementofEmployees",
       label: "Requirement and arrangement of Employees",
@@ -1217,7 +1217,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "technicalPersonPlanManagerBrief",
       label: "Brief about Technical Person / Plant manager",
@@ -1233,7 +1233,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "unitMatrix ",
       label: "Unit Matrix ",
@@ -1247,7 +1247,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 2,
+        group: 2,
       },
       name: "projectedTurnOverAndProfit",
       label: "Projected Turnover & Profit",
@@ -1263,7 +1263,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "dinOrLLPINNumber",
       label: "DIN / LLPIN No.",
@@ -1277,7 +1277,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 3,
+        group: 3,
       },
       name: "age",
       label: "Age",
@@ -1306,7 +1306,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 3,
+        group: 3,
       },
       name: "education_qualifi",
       label: "Education Qualification",
@@ -1325,7 +1325,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        tab: 3,
+        group: 3,
       },
       name: "experience",
       label: "Experience",
@@ -1343,7 +1343,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "associateCompanies",
       label: "Associate Companies",
@@ -1358,7 +1358,7 @@ export const TermLoanMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        tab: 3,
+        group: 3,
       },
       name: "profitSharingAndShareHolding",
       type: "text",
@@ -1373,7 +1373,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "netWorth",
       label: "Networth",
@@ -1387,7 +1387,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "firstYearSummary",
       label: "Previous First Year Income Summary",
@@ -1401,7 +1401,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "secondYearSummary",
       label: "Previous Second Year Income Summary",
@@ -1415,7 +1415,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 3,
+        group: 3,
       },
       name: "thirdYearSummary",
       label: "Previous Third Year Income Summary",
@@ -1431,7 +1431,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "firstYearSummary",
       label: "Next One Year Income Summary",
@@ -1445,7 +1445,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 4,
+        group: 4,
       },
       name: "secondYearSummary",
       label: "Next Second Year Income Summary",
@@ -1461,7 +1461,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "primarySecurityOfficeAddress",
       label: "Address of the Property for Primary Security",
@@ -1477,7 +1477,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "primarySecurityPropertyArea",
       label: "Area of the Property for Primary Security",
@@ -1492,7 +1492,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "primarySecurityOwnerName",
       label: "Owner Name for Primary Security",
@@ -1506,7 +1506,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 5,
+        group: 5,
       },
       name: "primarySecurityMarketValue",
       label: "Market Value (Rs. In Crore) for Primary Security",
@@ -1529,7 +1529,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "collateralSecurityOfficeAddress",
       label: "Address of the Property for collateral Security",
@@ -1545,7 +1545,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "collateralSecurityPropertyArea",
       label: "Area of the Property for collateral Security",
@@ -1560,7 +1560,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "collateralSecurityOwnerName",
       label: "Owner Name for Collateral Security",
@@ -1574,7 +1574,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
-        tab: 5,
+        group: 5,
       },
       name: "collateralSecurityMarketValue",
       label: "Market Value (Rs. In Crore) for Collateral Security",
@@ -1597,7 +1597,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "facr",
       label: "FACR",
@@ -1611,7 +1611,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "acr",
       label: "ACR",
@@ -1625,7 +1625,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "guarantorName",
       label: "Name of Guarantor for Personal Guarantee",
@@ -1640,7 +1640,7 @@ export const TermLoanMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "panCard",
-        tab: 5,
+        group: 5,
       },
       name: "panNumberofGuarantor",
       type: "text",
@@ -1655,7 +1655,7 @@ export const TermLoanMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        tab: 5,
+        group: 5,
       },
       name: "guarantorNetWorth",
       label: "Net Worth for Personal Guarantee",

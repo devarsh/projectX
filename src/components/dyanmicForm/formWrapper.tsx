@@ -4,7 +4,6 @@ import Container from "@material-ui/core/Container";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext, InitialValuesType, SubmitFnType } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
-import { renderFieldsByTab } from "./utils/tabWiserenderer";
 import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
@@ -12,9 +11,8 @@ import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 import { extendFieldTypes } from "./utils/extendedFieldTypes";
 import { MoveSequenceToRender } from "./utils/fixSequenceInMetaData";
 import { MetaDataType } from "./types";
-import { StepperForm } from "./stepperForm";
+import { GroupedForm } from "./groupedForms";
 import { SimpleForm } from "./simpleForm";
-import { TabbedForm } from "./tabForm";
 import { extendedMetaData } from "./extendedTypes";
 
 interface FormWrapperProps {
@@ -38,8 +36,6 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
 
-  const tabWiseFields = renderFieldsByTab(metaData);
-
   const formRenderType = metaData.form.render.renderType ?? "simple";
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -53,8 +49,8 @@ export const FormWrapper: FC<FormWrapperProps> = ({
         }}
       >
         <Container component="main">
-          {formRenderType === "stepper" ? (
-            <StepperForm
+          {formRenderType === "stepper" || formRenderType === "tabs" ? (
+            <GroupedForm
               key={metaData.form.name}
               fields={groupWiseFields}
               formRenderConfig={metaData.form.render}
@@ -66,15 +62,6 @@ export const FormWrapper: FC<FormWrapperProps> = ({
             <SimpleForm
               key={metaData.form.name}
               fields={groupWiseFields}
-              formRenderConfig={metaData.form.render}
-              formDisplayName={metaData.form.label}
-              formName={metaData.form.name}
-              submitFn={onSubmitHandler}
-            />
-          ) : formRenderType === "tabs" ? (
-            <TabbedForm
-              key={metaData.form.name}
-              fields={tabWiseFields}
               formRenderConfig={metaData.form.render}
               formDisplayName={metaData.form.label}
               formName={metaData.form.name}
