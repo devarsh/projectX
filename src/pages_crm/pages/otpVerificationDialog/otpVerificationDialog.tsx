@@ -1,68 +1,88 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { TextField } from "components/styledComponent/textfield";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { InputMaskCustom } from "components/derived/inputMask";
+import Typography from "@material-ui/core/Typography";
 //import { APISDK } from "registry/fns/sdk";
-//import { constructNavigationStateFromRespObj } from "../utils/navHelpers";
+import { navigationFlowDecisionMaker } from "../utils/navHelpers";
+import { makeStyles } from "@material-ui/core/styles";
 
-export const OtpVerificationDialog = ({}) => {
+export const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: theme.spacing(3, 3, 0, 3),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "1rem 0rem",
+    backgroundColor: "#fff",
+    boxShadow: "0 0 20px rgba(0,0,0,0.06)",
+    borderRadius: 8,
+    width: "100%",
+    minHeight: "30vh",
+    [theme.breakpoints.down("md")]: {
+      margin: theme.spacing(3, 2, 0, 2),
+    },
+  },
+  paper2: {
+    padding: "24px",
+    borderRadius: 8,
+    width: "30%",
+    //backgroundColor: "#fff",
+    //boxShadow: "0 0 20px rgba(0,0,0,0.06)",
+  },
+}));
+
+export const OtpVerificationPage = ({}) => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [otpText, setOtpText] = useState("");
   const [otpError, setOtpError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { state: navigationState } = location;
+  const classes = useStyles();
+  //@ts-ignore
+  const { refID, prevSeq = -1, flow } = navigationState ?? {};
+  //@ts-ignore
+  const currentSeq = prevSeq + 1;
+  const verifyOTP = () => {
+    const trimmedOTPText = otpText.trim();
+    if (!Boolean(trimmedOTPText)) {
+      setOtpError("This is a required Field");
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      if (trimmedOTPText !== "000000") {
+        setOtpError("Invalid Otp");
+        setLoading(false);
+        return;
+      } else {
+        setOtpError("");
+        setLoading(false);
+        let nextFlow = navigationFlowDecisionMaker(flow, currentSeq);
+        navigate(nextFlow.url, {
+          state: {
+            ...navigationState,
+            prevSeq: currentSeq,
+          },
+        });
+      }
+    }, 2000);
+  };
 
-  // const verifyOtp = async () => {
-  //   setLoading(true);
-  //   if (Boolean(otpText)) {
-  //     if (otpText === "000000") {
-  //       try {
-  //         const result = await APISDK.pushFormData(
-  //           submitAction,
-  //           values,
-  //           navigationProps
-  //         );
-  //         if (result.status === "success") {
-  //           setLoading(false);
-  //           submitEnd(true);
-  //           setShowDialog(false);
-  //           const navState = constructNavigationStateFromRespObj(result);
-  //           navigate("/aadharVerificationIFrame", {
-  //             state: navState,
-  //           });
-  //         } else {
-  //           setLoading(false);
-  //           submitEnd(false);
-  //         }
-  //       } catch (e) {
-  //         setLoading(false);
-  //       }
-  //     } else {
-  //       setLoading(false);
-  //       submitEnd(false, "Error submitting form - server error");
-  //       setOtpError("Invalid Otp");
-  //     }
-  //   }
-  // };
-  // const handleReturnBackToForm = () => {
-  //   submitEnd(false, "");
-  //   setShowDialog(false);
-  // };
+  if (!Array.isArray(flow) && refID === undefined && currentSeq <= 0) {
+    navigate("/thankyou");
+    return null;
+  }
   return (
-    <Fragment>
-      <DialogTitle id="form-dialog-title">Verify OTP</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          OTP has been sent to your registered mobile number:{" "}
-          {/*<b>{`${values?.mobileNo ?? ""}`}</b>*/}
-        </DialogContentText>
+    <div className={classes.paper}>
+      <div className={classes.paper2}>
+        <Typography>Verify OTP</Typography>
+        <Typography>
+          OTP has been sent to your registered mobile number:
+        </Typography>
         <TextField
           autoFocus
           margin="dense"
@@ -86,17 +106,15 @@ export const OtpVerificationDialog = ({}) => {
             },
           }}
         />
-      </DialogContent>
-      <DialogActions>
         <Button
-          //onClick={verifyOtp}
+          onClick={verifyOTP}
           color="primary"
           disabled={loading || otpText.length !== 6 ? true : false}
           endIcon={loading ? <CircularProgress size={20} /> : null}
         >
           Verify
         </Button>
-      </DialogActions>
-    </Fragment>
+      </div>
+    </div>
   );
 };

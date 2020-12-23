@@ -2,10 +2,6 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import SuccessImg from "assets/images/success.svg";
-import {
-  shouldContinueToQuestionnaireForm,
-  constructNavigationUrlForQuestionnaire,
-} from "../utils/navHelpers";
 import { useStyles } from "./style";
 
 export const ThankYou = () => {
@@ -13,6 +9,11 @@ export const ThankYou = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state: naviationState } = location;
+  //@ts-ignore
+  const { refID, prevSeq = -1, flow } = navigationState ?? {};
+  //@ts-ignore
+  const currentSeq = prevSeq + 1;
+
   return (
     <Box
       className={classes.wrapper}
@@ -44,20 +45,19 @@ export const ThankYou = () => {
         >
           Back to Home
         </Button>
-        {shouldContinueToQuestionnaireForm(naviationState) ? (
-          <Button
-            className={classes.prevNextBtn}
-            onClick={(e) => {
-              e.preventDefault();
-              const url = `/form/questions-${constructNavigationUrlForQuestionnaire(
-                naviationState
-              )}`;
-              navigate(url, { state: naviationState });
-            }}
-          >
-            Continue
-          </Button>
-        ) : null}
+
+        <Button
+          className={classes.prevNextBtn}
+          onClick={(e) => {
+            e.preventDefault();
+            // const url = `/form/questions-${constructNavigationUrlForQuestionnaire(
+            //   naviationState
+            // )}`;
+            // navigate(url, { state: naviationState });
+          }}
+        >
+          Continue
+        </Button>
       </Box>
     </Box>
   );

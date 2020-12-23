@@ -1,1 +1,1 @@
-export { OtpVerificationDialog as default } from "./otpVerificationDialog";
+export { OtpVerificationPage as default } from "./otpVerificationDialog";

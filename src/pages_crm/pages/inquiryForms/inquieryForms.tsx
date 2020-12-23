@@ -24,7 +24,10 @@ export const InquiryFormWrapper = () => {
   const onSubmitHandler = async (values, submitEnd) => {
     const result = await APISDK.pushFormData(
       metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
-      values
+      values,
+      //@ts-ignore
+      navigationState?.metaProps ?? {},
+      metaData.current?.form?.refID
     );
     if (result.status === "success") {
       submitEnd(true);
@@ -32,21 +35,17 @@ export const InquiryFormWrapper = () => {
         metaData.current?.form?.flow,
         ++currentSeq
       );
-      if (nextFlow) {
-        navigate(nextFlow.url, {
-          state: {
-            flow: metaData.current?.form?.flow ?? [],
+      navigate(nextFlow.url, {
+        state: {
+          flow: metaData.current?.form?.flow ?? [],
+          refID: metaData.current?.form?.refID,
+          prevSeq: currentSeq,
+          metaProps: {
+            action: result.data.questionnaireAction,
             refID: metaData.current?.form?.refID,
-            nextSeq: ++currentSeq,
-            metaProps: {
-              action: result.data.questionnaireAction,
-              refID: metaData.current?.form?.refID,
-            },
           },
-        });
-      } else {
-        navigate("/thankyou");
-      }
+        },
+      });
     } else {
       submitEnd(false, "Error submitting form");
     }

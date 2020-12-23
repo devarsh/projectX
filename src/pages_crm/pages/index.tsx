@@ -26,16 +26,14 @@ const Index = () => {
           </Box>
         }
       />
-      {/* <Route
+      <Route
         path="otp"
         element={
           <Box width={1} display="flex" className={classes.wrapper}>
-            <div className={classes.paper}>
-              <OTPVerificationPage />
-            </div>
+            <OTPVerificationPage />
           </Box>
         }
-      /> */}
+      />
       <Route path="thankyou" element={<ThankYouPage />} />
       <Route
         path="form/becomePartner"

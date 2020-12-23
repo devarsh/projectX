@@ -342,7 +342,7 @@ const RaatnaFinAPI = () => {
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
-        request_data: { redID: refID, ...formData, ...navigationProps },
+        request_data: { refID: refID, ...formData, ...navigationProps },
         channel: "W",
       }),
     });
