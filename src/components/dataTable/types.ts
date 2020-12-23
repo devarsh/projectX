@@ -44,6 +44,7 @@ export interface HeaderFilterType {
     result_type: string;
     filter_conditions: any[];
   };
+  level: number;
 }
 
 export type HeaderFilterMultiType = HeaderFilterType[] | Promise<any[]>;

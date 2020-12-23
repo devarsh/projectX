@@ -7,6 +7,7 @@ import {
   extractHiddenColumns,
   sortColumnsBySequence,
   transformHeaderFilters,
+  transformHeaderFiltersNew,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
@@ -68,6 +69,10 @@ const transformMetaData = (
     gridCode,
     metaData.headerFilters
   );
+  if (metaData.headerFilters !== undefined) {
+    const filters = transformHeaderFiltersNew(metaData.headerFilters);
+    console.log(filters);
+  }
 
   return {
     columns: columns,
