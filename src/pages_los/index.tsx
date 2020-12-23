@@ -17,7 +17,6 @@ import LeadAction from "./pages/leadaction";
 import { useStyles } from "./style";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { DataGrid } from "components/dataTable/grid";
-import { CC_ODFormWrapper } from "./pages/CAM";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -43,7 +42,6 @@ const DashbordPages = () => {
             <Route path="/cam" element={<DynamicLead />} />
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
-            <Route path="/cc_odForm" element={<CC_ODFormWrapper />} />
           </Routes>
         </Content>
       </div>

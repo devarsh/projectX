@@ -9,7 +9,6 @@ import InquiryForms from "./inquiryForms";
 import { BecomePartnerFormWrapper } from "./becomePartner";
 import { isMobile } from "react-device-detect";
 import AadharVerificationIFrame from "./aadharVerification/aadharVerificationIFrame";
-import { TabFormWrapper } from "./tab";
 
 const Index = () => {
   const classes = useStyles();
@@ -43,16 +42,6 @@ const Index = () => {
           <Box width={1} display="flex" className={classes.wrapper}>
             <div className={classes.paper}>
               <AadharVerificationIFrame />
-            </div>
-          </Box>
-        }
-      />
-      <Route
-        path="form/tabFormDemo"
-        element={
-          <Box width={1} display="flex" className={classes.wrapper}>
-            <div className={classes.paper}>
-              <TabFormWrapper />
             </div>
           </Box>
         }
