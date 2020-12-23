@@ -4,7 +4,7 @@ import {
   DefaultRowCellRenderer,
   DefaultHeaderColumnRenderer,
 } from "./components";
-import { SelectColumnFilter } from "./components/filters";
+import { TextColumnFilter } from "./components/filters";
 
 import { DataGrid } from "./grid";
 
@@ -60,7 +60,7 @@ export const App = () => {
       minWidth: 50,
       Header: DefaultHeaderColumnRenderer,
       Cell: DefaultRowCellRenderer,
-      Filter: SelectColumnFilter,
+      Filter: TextColumnFilter,
     }),
     []
   );

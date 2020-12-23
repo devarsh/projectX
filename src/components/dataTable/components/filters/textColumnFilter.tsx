@@ -20,10 +20,16 @@ export const TextColumnFilter = ({
           width={1}
           mt={2}
         >
-          <Box width="40%" pl={1}>
-            <CssTextField select placeholder="Select" fullWidth value={1}>
+          <Box width="32%">
+            <CssTextField
+              select
+              placeholder="Select"
+              fullWidth
+              value={1}
+              className={classes.adornmentSelect}
+            >
               <StyledMenuItem dense={true} value="0">
-                Search with
+                <i>Search with</i>
               </StyledMenuItem>
               <StyledMenuItem dense={true} value={1}>
                 Starts with
@@ -32,10 +38,10 @@ export const TextColumnFilter = ({
                 Ends with
               </StyledMenuItem>
               <StyledMenuItem dense={true} value={3}>
-                General
+                Contains
               </StyledMenuItem>
               <StyledMenuItem dense={true} value={4}>
-                Equal
+                Equals
               </StyledMenuItem>
             </CssTextField>
           </Box>
@@ -43,9 +49,8 @@ export const TextColumnFilter = ({
             display="flex"
             justifyContent="space-between"
             alignItems="start"
-            width="60%"
+            width="68%"
             position="relative"
-            pr={1}
           >
             <CssTextField
               fullWidth
@@ -54,6 +59,7 @@ export const TextColumnFilter = ({
               onChange={(e) => {
                 setFilter(e.target.value); // Set undefined to remove the filter entirely
               }}
+              className={classes.searchField}
             />
 
             <div className={classes.searchWrap}>

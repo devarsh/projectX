@@ -10,14 +10,14 @@ export const useStyles = makeStyles((theme) => ({
   },
   applyBtn: {
     margin: theme.spacing(2, 0, 2),
-    fontSize: "1.2rem",
+    fontSize: "0.875rem",
     background:
       "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
     border: 0,
     color: "#fff ",
     padding: "4px .75rem",
     fontWeight: 500,
-    minWidth: "120px",
+    minWidth: "80px",
     letterSpacing: "0.02857em",
     boxShadow: "none",
     textTransform: "capitalize",
@@ -46,6 +46,19 @@ export const useStyles = makeStyles((theme) => ({
     "& input": {
       height: 18,
       fontSize: 12,
+    },
+  },
+  adornmentSelect: {
+    "& .MuiInputBase-root": {
+      borderRight: "0 !important",
+      borderTopRightRadius: "0 !important",
+      borderBottomRightRadius: "0 !important",
+    },
+  },
+  searchField: {
+    "& .MuiInputBase-root": {
+      borderTopLeftRadius: "0 !important",
+      borderBottomLeftRadius: "0 !important",
     },
   },
 }));

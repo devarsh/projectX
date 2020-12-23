@@ -1,1 +1,2 @@
-export { Profile as default } from "./profile";
+export { Profile } from "./profile";
+export { ChangePassword } from "./changePassword";

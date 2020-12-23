@@ -2,14 +2,10 @@ import React from "react";
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-
 import { LeadInformationTab } from "./tabInformation";
 import { LeadCustomerTab } from "./tabCustomer";
-
 import { useStyles } from "./style";
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -29,7 +25,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box p={2} className={classes.tabPanel}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -95,7 +91,6 @@ export const LeadTabs = () => {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-  const classes = useStyles();
   return (
     <div>
       <div>

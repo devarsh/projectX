@@ -158,7 +158,7 @@ const DashLet = () => {
 export const Dashboard = () => {
   const classes = useStyles();
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper className={classes.paper}>
           <WelcomeText1>Welcome Employee,</WelcomeText1>
