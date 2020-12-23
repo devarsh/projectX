@@ -8,13 +8,16 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useStyles } from "./style";
 
-export default function ChangePassword() {
+export const ChangePassword = () => {
   const classes = useStyles();
+  const [OpenDialog, setOpenDialog] = React.useState(false);
 
-  const [openD, setOpenD] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
 
-  const handleCloseD = () => {
-    setOpenD(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
   return (
     <>
@@ -73,14 +76,14 @@ export default function ChangePassword() {
       </DialogContent>
       <DialogActions className="mb-30">
         <Button
-          onClick={handleCloseD}
+          onClick={handleCloseDialog}
           color="primary"
           className={classes.backBtn}
         >
           Cancel
         </Button>
         <Button
-          onClick={handleCloseD}
+          onClick={handleCloseDialog}
           color="primary"
           className={classes.submit}
         >
@@ -89,4 +92,4 @@ export default function ChangePassword() {
       </DialogActions>
     </>
   );
-}
+};
