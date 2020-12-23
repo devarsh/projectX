@@ -8,6 +8,7 @@ const form = yup.object().shape({
     ordering: yup.string().required(),
     renderType: yup.string().required(),
     groups: yup.object().required(),
+    tabs: yup.object().required(),
   }),
   submitAction: yup.string().required(),
 });
@@ -19,6 +20,7 @@ const field = yup.array().of(
     render: yup.object().shape({
       componentType: yup.string().required(),
       group: yup.number().required(),
+      tab: yup.number().required(),
     }),
     sequence: yup.number(),
     GridProps: yup.object().shape({
