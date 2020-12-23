@@ -6,7 +6,7 @@ import { Drawer } from "./drawer";
 import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
-import Profile from "./pages/profile";
+import { Profile } from "./pages/profile";
 import Iframe from "./pages/iframe";
 import { ParentGridWrapper } from "components/dataTable";
 //import { App } from "components/dataTable/test";
@@ -14,6 +14,7 @@ import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
 import LeadAction from "./pages/leadaction";
+import View from "./pages/tabView";
 import { useStyles } from "./style";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { DataGrid } from "components/dataTable/grid";
@@ -42,6 +43,7 @@ const DashbordPages = () => {
             <Route path="/cam" element={<DynamicLead />} />
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
+            <Route path="/view" element={<View />} />
           </Routes>
         </Content>
       </div>

@@ -13,7 +13,7 @@ import { useStyles } from "./style";
 
 export const LeadCustomerTab = () => {
   const classes = useStyles();
-  const [action, setAction] = React.useState<string | null>("left");
+  const [action, setAction] = React.useState<string | null>("email");
   const handleAction = (
     event: React.MouseEvent<HTMLElement>,
     newAction: string | null

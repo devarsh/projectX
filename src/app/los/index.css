@@ -86,55 +86,6 @@ h2 {
   fill: var(--theme-color1);
 }
 
-table {
-  color: #333;
-  background: white;
-  font-size: 12pt;
-  border-collapse: collapse;
-  margin: 0px auto;
-  max-width: calc(100% - 2rem);
-}
-table thead th,
-table tfoot th {
-  color: var(--theme-color1) !important;
-  background: rgba(0, 0, 0, 0.1);
-  font-weight: 700 !important;
-  font-size: 1rem !important;
-}
-table caption {
-  padding: 4px !important;
-}
-table th,
-table td {
-  padding: 0 8px !important;
-  border: 1px solid lightgrey !important;
-  min-width: 180px;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
-}
-table tr {
-  border: 0 !important;
-}
-table tr:nth-of-type(even) {
-  background: rgba(0, 0, 0, 0.05) !important;
-}
-
-table tr th:last-child {
-  width: 130px;
-  min-width: 126px;
-}
-table tr th:first-child,
-table tr td:first-child {
-  width: 40px;
-  min-width: 40px;
-  background-color: #fff;
-}
-table tfoot td {
-  border: 0 !important;
-}
-
-.table-cover .MuiInput-formControl {
-  margin-top: 0 !important;
-}
 .ps__rail-y {
   width: 10px;
 }

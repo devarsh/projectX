@@ -67,7 +67,6 @@ export default function CustomizedDividers() {
   };
 
   const classes = useStyles();
-
   return (
     <Paper elevation={0} className={classes.paper}>
       <StyledToggleButtonGroup
