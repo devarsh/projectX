@@ -7,7 +7,6 @@ import { APISDK } from "registry/fns/sdk";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import logoImg from "assets/images/logo.svg";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 
 import { useStyles } from "./style";
 

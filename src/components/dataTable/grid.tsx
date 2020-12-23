@@ -9,31 +9,36 @@ import {
   useFilters,
   useAsyncDebounce,
 } from "react-table";
+import Paper from "@material-ui/core/Paper";
+import { TableHeaderToolbar } from "./tableHeaderToolbar";
+import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
-
+import Table from "@material-ui/core/Table";
+import { StickyTableHead } from "./stickyTableHead";
+import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import Paper from "@material-ui/core/Paper";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import TablePagination from "@material-ui/core/TablePagination";
-
-import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
 import { TablePaginationActions } from "./tablePaginationToolbar";
-import { TableHeaderToolbar } from "./tableHeaderToolbar";
+
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
+
 import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
-import { StickyTableHead } from "./stickyTableHeader";
 
 const maxWidth = 998;
 
 export const DataGrid = ({
+  gridCode,
   label,
   dense,
+  headerFilters,
+  headerFilterManager,
+  localFilterManager,
   columns,
   defaultColumn,
   data,
@@ -43,10 +48,11 @@ export const DataGrid = ({
   totalRecords: controlledTotalRecords,
   pageCount: controlledPageCount,
   resetPaginationAndSorting,
-  filterOptions,
+  resetFilters,
   pageSizes,
   defaultPageSize,
   defaultHiddenColumns,
+  filterTypes,
 }) => {
   const {
     getTableProps,
@@ -54,31 +60,35 @@ export const DataGrid = ({
     headerGroups,
     prepareRow,
     page,
-    rows,
     selectedFlatRows,
     totalColumnsWidth,
     gotoPage,
     setPageSize,
     state: tableState,
+    setAllFilters,
+    setSortBy,
   } = useTable(
     {
       columns,
       defaultColumn,
       data,
       getRowId,
+      filterTypes,
       initialState: {
         pageIndex: 0,
         pageSize: defaultPageSize,
         hiddenColumns: defaultHiddenColumns,
       },
-      filterOptions,
+      gridCode,
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: resetPaginationAndSorting,
       manualSortBy: true,
       autoResetSortBy: resetPaginationAndSorting,
       manualFilters: true,
-      autoResetFilters: false,
+      autoResetFilters: resetFilters,
+      localFilterManager,
+      headerFilterState: headerFilterManager.state,
     },
     useFilters,
     useSortBy,
@@ -87,6 +97,7 @@ export const DataGrid = ({
     useResizeColumns,
     useBlockLayout,
     useCheckboxColumn
+    //useSequenceColumn
   );
 
   const { pageIndex, pageSize, sortBy, filters } = tableState;
@@ -104,6 +115,12 @@ export const DataGrid = ({
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
+  const handleResetGridState = () => {
+    setAllFilters([]);
+    setSortBy([]);
+    gotoPage(0);
+    localFilterManager.clearFilterState();
+  };
 
   return (
     <Paper
@@ -116,6 +133,12 @@ export const DataGrid = ({
         dense={dense}
         getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
+      />
+      <TableHeaderFilterToolbar
+        dense={dense}
+        filters={headerFilters}
+        headerFilterManager={headerFilterManager}
+        handleResetGridState={handleResetGridState}
       />
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>
@@ -172,7 +195,7 @@ export const DataGrid = ({
                         cell={cell}
                         index={index}
                       >
-                        {cell.render("Cell")}
+                        {cell.render("Cell", { index: index })}
                       </RowCellWrapper>
                     );
                   })}

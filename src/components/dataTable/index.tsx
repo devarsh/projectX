@@ -1,134 +1,44 @@
-import { FC, useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { GridMetaDataType, GridTransformedMetaDataType } from "./types";
+import { FC, useEffect, useState } from "react";
+import { GridMetaDataType } from "./types";
 import {
   attachComponentsToMetaData,
   attachFilterComponentToMetaData,
   attachAlignmentProps,
   extractHiddenColumns,
   sortColumnsBySequence,
+  transformHeaderFilters,
+  transformHeaderFiltersNew,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
-import { DefaultHeaderColumnRenderer } from "./components";
-import { DataGrid } from "./grid";
-
-const formatSortBy = (sortBy = []) => {
-  const formatted = sortBy.map((one: any, index) => ({
-    [one?.id ?? ""]: one?.desc ? "desc" : "asc",
-    seq: index + 1,
-  }));
-  return formatted;
-};
-
-export const GridWrapper: FC<{
-  metaData: GridTransformedMetaDataType;
-  girdCode: string;
-}> = ({ metaData, girdCode }) => {
-  const columns = useMemo(() => metaData.columns, []);
-  const defaultColumn = useMemo(
-    () => ({
-      width: 150,
-      maxWidth: 400,
-      minWidth: 50,
-      Header: DefaultHeaderColumnRenderer,
-    }),
-    []
-  );
-  const getRowId = useCallback(
-    (row) => row[metaData.gridConfig.rowIdColumn],
-    []
-  );
-
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
-  const fetchIdRef = useRef(0);
-  const prevFilters = useRef(null);
-  const resetPaginationAndSorting = useRef(false);
-
-  useEffect(() => {
-    resetPaginationAndSorting.current = false;
-  }, [data]);
-
-  const fetchData = useCallback(
-    ({ pageSize, pageIndex, sortBy, filters }) => {
-      if (prevFilters.current !== filters) {
-        resetPaginationAndSorting.current = true;
-      }
-      const fetchId = ++fetchIdRef.current;
-      setLoading(true);
-      const startRow = Number(pageSize) * Number(pageIndex) + 1;
-      const endRow = Number(startRow) + Number(pageSize) - 1;
-      APISDK.fetchGridData(
-        girdCode,
-        startRow,
-        endRow,
-        formatSortBy(sortBy)
-      ).then((result) => {
-        if (fetchId === fetchIdRef.current) {
-          if (result.status === "success") {
-            setData(result?.data?.rows ?? []);
-            setPageCount(
-              Math.ceil(
-                Number(result?.data?.total_count ?? 1) / Number(pageSize)
-              )
-            );
-            setTotalRecords(Number(result?.data?.total_count ?? 1));
-            setLoading(false);
-            prevFilters.current = filters;
-          }
-        }
-      });
-    },
-    [setTotalRecords, setLoading, setData]
-  );
-  console.log(data, totalRecords, pageCount);
-
-  return (
-    <DataGrid
-      label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
-      dense={true}
-      getRowId={getRowId}
-      columns={columns}
-      defaultColumn={defaultColumn}
-      loading={loading}
-      data={data}
-      pageCount={pageCount}
-      totalRecords={totalRecords}
-      resetPaginationAndSorting={resetPaginationAndSorting.current}
-      filterOptions={{
-        columnId: [],
-      }}
-      onFetchData={fetchData}
-      pageSizes={metaData.gridConfig?.pageSize}
-      defaultPageSize={metaData.gridConfig?.defaultPageSize}
-      defaultHiddenColumns={metaData.hiddenColumns}
-    />
-  );
-};
+import { GirdController } from "./gridController";
 
 export const ParentGridWrapper = () => {
+  const gridCode = "trn/001";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [data, setData] = useState({});
-  const gridCode = "trn/001";
+  const [metaData, setMetaData] = useState({});
+
   useEffect(() => {
     APISDK.fetchGridMetaData(gridCode)
       .then((result) => {
         if (result.status === "success") {
-          let finalData = transformMetaData(result.data);
-          setData(finalData);
-          setError(false);
-          setLoading(false);
+          let finalData = transformMetaData(result.data, gridCode);
+          Promise.resolve(finalData.headerFilters).then((filtersResult) => {
+            finalData.headerFilters = filtersResult;
+            setMetaData(finalData);
+            setError(false);
+            setLoading(false);
+          });
         } else {
-          setData(result.data);
+          setMetaData(result.data);
           setError(true);
           setLoading(false);
         }
       })
       .catch((err) => {
+        setLoading(false);
         setError(true);
-        setData(err);
+        setMetaData(err);
       });
   }, []);
   return loading ? (
@@ -136,25 +46,38 @@ export const ParentGridWrapper = () => {
   ) : error ? (
     <span>{"error loading grid"}</span>
   ) : (
-    <GridWrapper
-      metaData={data as GridTransformedMetaDataType}
-      girdCode={gridCode}
+    <GirdController
+      metaData={metaData as GridMetaDataType}
+      gridCode={gridCode}
     />
   );
 };
 
 const transformMetaData = (
-  metaData: GridMetaDataType
-): GridTransformedMetaDataType => {
+  metaData: GridMetaDataType,
+  gridCode: string
+): GridMetaDataType => {
   let columns = metaData.columns as any;
+
+  //make sure extract functions are called before attach and lastly sort
+  const hiddenColumns = extractHiddenColumns(columns);
   columns = attachComponentsToMetaData(columns);
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
-  const hiddenColumns = extractHiddenColumns(columns);
+  const transformedHeaderFilters = transformHeaderFilters(
+    gridCode,
+    metaData.headerFilters
+  );
+  if (metaData.headerFilters !== undefined) {
+    const filters = transformHeaderFiltersNew(metaData.headerFilters);
+    console.log(filters);
+  }
+
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
+    headerFilters: transformedHeaderFilters,
   };
 };

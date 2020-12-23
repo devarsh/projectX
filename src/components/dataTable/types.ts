@@ -3,17 +3,20 @@ export interface GridColumnType {
   accessor: string;
   sequence: number;
   componentType: "default";
-  disableSortBy?: boolean;
-  disableFilters?: boolean;
-  filterComponentType?: "ValueFilter" | "RangeFilter" | "OptionsFilter";
+  Cell?: any;
+  Filter?: any;
+  filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";
   filterComponentProps?: {
     type: string;
   };
+  disableFilters?: boolean;
+  alignment?: string;
+  TableCellProps?: any;
+  disableSortBy?: boolean;
   width?: number;
   maxWidth?: number;
   minWidth?: number;
   isVisible?: boolean;
-  alignment?: string;
   sortDescFirst?: boolean;
 }
 
@@ -30,32 +33,25 @@ export interface GridConfigType {
   };
 }
 
+export interface HeaderFilterType {
+  accessor: string;
+  columnName: string;
+  Filter?: any;
+  filterComponentType: string;
+  filterComponentProps: any;
+  query?: {
+    accessor: string;
+    result_type: string;
+    filter_conditions: any[];
+  };
+  level: number;
+}
+
+export type HeaderFilterMultiType = HeaderFilterType[] | Promise<any[]>;
+
 export interface GridMetaDataType {
   columns: GridColumnType[];
   gridConfig: GridConfigType;
-}
-
-export interface TransformedGridColumnType {
-  columnName: string;
-  accessor: string;
-  disableSortBy?: boolean;
-  disableFilters?: boolean;
-  filterComponentProps?: {
-    type: string;
-  };
-  Cell: any;
-  Filter: any;
-  TableCellProps?: any;
-  width?: number;
-  maxWidth?: number;
-  minWidth?: number;
-  isVisible?: boolean;
-  alignment?: string;
-  sortDescFirst?: boolean;
-}
-
-export interface GridTransformedMetaDataType {
-  columns: TransformedGridColumnType[];
-  gridConfig: GridConfigType;
-  hiddenColumns: string[];
+  hiddenColumns?: string[];
+  headerFilters?: HeaderFilterType[] | Promise<any[]>;
 }

@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, memo, Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { APISDK } from "registry/fns/sdk";
-import OTPVerificationDialog from "../otpVerificationDialog";
-import { displayOTPPage } from "../utils/navHelpers";
+import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
 import FormWrapper, {
@@ -17,35 +16,40 @@ export const InquiryFormWrapper = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   let metaData = useRef<MetaDataType | null>(null);
-  const [showDialog, setShowDialog] = useState(false);
-  const [submitProps, setSubmitProps] = useState({});
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
+
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
-
+  let currentSeq = 0;
   const onSubmitHandler = async (values, submitEnd) => {
-    if (displayOTPPage(navigationState)) {
-      setSubmitProps(() => ({
-        values: values,
-        submitEnd: submitEnd,
-        submitAction: metaData.current?.form.submitAction ?? "",
-        navigationProps: navigationState,
-      }));
-      setShowDialog(true);
-    } else {
-      const data = await APISDK.pushFormData(
-        metaData.current?.form.submitAction ?? "",
-        values,
-        navigationState
+    const result = await APISDK.pushFormData(
+      metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
+      values
+    );
+    if (result.status === "success") {
+      submitEnd(true);
+      let nextFlow = navigationFlowDecisionMaker(
+        metaData.current?.form?.flow,
+        ++currentSeq
       );
-      if (data.status === "success") {
-        submitEnd(true);
-        navigate("/thankyou");
+      if (nextFlow) {
+        navigate(nextFlow.url, {
+          state: {
+            flow: metaData.current?.form?.flow ?? [],
+            refID: metaData.current?.form?.refID,
+            nextSeq: ++currentSeq,
+            metaProps: {
+              action: result.data.questionnaireAction,
+              refID: metaData.current?.form?.refID,
+            },
+          },
+        });
       } else {
-        //Todo: Need to set server error received in API
-        submitEnd(false, "Error submitting form");
+        navigate("/thankyou");
       }
+    } else {
+      submitEnd(false, "Error submitting form");
     }
   };
 
@@ -54,7 +58,7 @@ export const InquiryFormWrapper = () => {
     setLoading(true);
     metaData.current = null;
     //@ts-ignore need to find how to set router loaction state type (react-router-dom)
-    APISDK.getMetaData(navigationState)
+    APISDK.getMetaData(navigationState?.metaProps ?? {})
       .then((result) => {
         metaData.current = result;
         setLoading(false);
@@ -65,7 +69,7 @@ export const InquiryFormWrapper = () => {
       });
     /*eslint-disable react-hooks/exhaustive-deps*/
     //@ts-ignore
-  }, [navigationState?.prodCode, navigationState?.empCode]);
+  }, Object.values(navigationState));
 
   const result = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />
@@ -78,13 +82,6 @@ export const InquiryFormWrapper = () => {
         initialValues={initialValues}
         onSubmitHandler={onSubmitHandler}
       />
-      {showDialog ? (
-        <OTPVerificationDialog
-          isOpen={showDialog}
-          setShowDialog={setShowDialog}
-          submitProps={submitProps}
-        />
-      ) : null}
     </Fragment>
   );
   return result;

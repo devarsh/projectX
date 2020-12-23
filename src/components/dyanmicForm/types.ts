@@ -64,6 +64,11 @@ export interface FormRenderConfigType {
   };
 }
 
+export interface UserFlowType {
+  componentName: string;
+  sequence: number;
+}
+
 export interface FormMetaDataType {
   name: string;
   label: string;
@@ -71,7 +76,9 @@ export interface FormMetaDataType {
   validationRun: "onBlur" | "onChange" | "all";
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
+  flow?: UserFlowType[];
   submitAction?: string;
+  refID?: string | number;
 }
 
 export interface ComponentTypeProps {

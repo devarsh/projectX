@@ -1,3 +1,5 @@
+import { UserFlowType } from "components/dyanmicForm";
+
 export const displayOTPPage = (navigationState) => {
   if (`${navigationState.empCode ?? ""}` === "98") {
     return true;
@@ -27,4 +29,26 @@ export const shouldContinueToQuestionnaireForm = (navigationState) => {
 
 export const constructNavigationUrlForQuestionnaire = (navigationState) => {
   return `${navigationState.prodCode ?? ""}-${navigationState.empCode ?? ""}`;
+};
+
+const flowComponentPathMapping = {
+  OTP: "/otp",
+  thankyou: "/thankyou",
+  aadhar: "/aadhar",
+};
+
+export const navigationFlowDecisionMaker = (
+  flow: UserFlowType[] = [],
+  currentSequence: number
+) => {
+  const result = flow.find((one) => one.sequence === currentSequence);
+
+  if (result !== undefined) {
+    const finalResult = {
+      ...result,
+      url: flowComponentPathMapping[result?.componentName ?? ""],
+    };
+    return finalResult;
+  }
+  return result;
 };
