@@ -318,14 +318,12 @@ const RaatnaFinAPI = () => {
   };
 
   const getMetaData = async (state) => {
-    const { prodCode, empCode } = state;
+    const { action, ...others } = state;
+
     const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
-        action: "render_form",
-        request_data: {
-          main_prod_cd: `${prodCode}`,
-          empl_cd: `${empCode}`,
-        },
+        action: action,
+        request_data: others,
       }),
     });
     if (status === "success") {
@@ -337,14 +335,14 @@ const RaatnaFinAPI = () => {
   const pushFormData = async (
     submitAction?: string,
     formData?: any,
-    navigationProps?: any
+    navigationProps?: any,
+    refID?: any
   ) => {
     //rename prodCode to formCode since backend uses prodCode as FormCode
-    const { prodCode, ...others } = navigationProps;
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
-        request_data: { ...formData, ...others, formCode: prodCode },
+        request_data: { redID: refID, ...formData, ...navigationProps },
         channel: "W",
       }),
     });

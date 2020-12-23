@@ -7,7 +7,7 @@ import ThankYouPage from "./thankyou";
 import NotFoundPage from "./notFound";
 import InquiryForms from "./inquiryForms";
 import { BecomePartnerFormWrapper } from "./becomePartner";
-import { isMobile } from "react-device-detect";
+import OTPVerificationPage from "./otpVerificationDialog";
 import AadharVerificationIFrame from "./aadharVerification/aadharVerificationIFrame";
 
 const Index = () => {
@@ -16,6 +16,27 @@ const Index = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login />} />
+      <Route
+        path="aadharVerificationIFrame"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <AadharVerificationIFrame />
+            </div>
+          </Box>
+        }
+      />
+      {/* <Route
+        path="otp"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <OTPVerificationPage />
+            </div>
+          </Box>
+        }
+      /> */}
+      <Route path="thankyou" element={<ThankYouPage />} />
       <Route
         path="form/becomePartner"
         element={
@@ -36,17 +57,6 @@ const Index = () => {
           </Box>
         }
       />
-      <Route
-        path="aadharVerificationIFrame"
-        element={
-          <Box width={1} display="flex" className={classes.wrapper}>
-            <div className={classes.paper}>
-              <AadharVerificationIFrame />
-            </div>
-          </Box>
-        }
-      />
-      <Route path="thankyou" element={<ThankYouPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

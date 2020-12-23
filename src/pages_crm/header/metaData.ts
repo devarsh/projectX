@@ -131,8 +131,10 @@ export const formsNav: NavBarType = {
               href: "/form/rhl",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300001",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300001",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -140,8 +142,10 @@ export const formsNav: NavBarType = {
               href: "/form/lap",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300002",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300002",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -149,8 +153,10 @@ export const formsNav: NavBarType = {
               href: "/form/ldr",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300003",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300003",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -158,8 +164,10 @@ export const formsNav: NavBarType = {
               href: "/form/apf",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300004",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300004",
+                  action: "render_inquiry_form",
+                },
               },
             },
           ],
@@ -172,8 +180,10 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300005",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300005",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -181,8 +191,10 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300006",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300006",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -190,8 +202,10 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300007",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300007",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -199,8 +213,10 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300008",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300008",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -208,8 +224,10 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "12300009",
-                empCode: "98",
+                metaProps: {
+                  productID: "12300009",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -217,8 +235,10 @@ export const formsNav: NavBarType = {
               href: "/form/sme",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "123000010",
-                empCode: "98",
+                metaProps: {
+                  productID: "123000010",
+                  action: "render_inquiry_form",
+                },
               },
             },
           ],
@@ -231,8 +251,10 @@ export const formsNav: NavBarType = {
               href: "/form/infra",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "123000011",
-                empCode: "98",
+                metaProps: {
+                  productID: "123000011",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -240,8 +262,10 @@ export const formsNav: NavBarType = {
               href: "/form/infra",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "123000012",
-                empCode: "98",
+                metaProps: {
+                  productID: "123000012",
+                  action: "render_inquiry_form",
+                },
               },
             },
           ],
@@ -254,8 +278,10 @@ export const formsNav: NavBarType = {
               href: "/form/business",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "123000013",
-                empCode: "98",
+                metaProps: {
+                  productID: "123000013",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -263,8 +289,10 @@ export const formsNav: NavBarType = {
               href: "/form/personal",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "123000014",
-                empCode: "98",
+                metaProps: {
+                  productID: "123000014",
+                  action: "render_inquiry_form",
+                },
               },
             },
             {
@@ -272,8 +300,10 @@ export const formsNav: NavBarType = {
               href: "/form/schoolFee",
               isRouterLink: true,
               navigationProps: {
-                prodCode: "123000015",
-                empCode: "98",
+                metaProps: {
+                  productID: "123000015",
+                  action: "render_inquiry_form",
+                },
               },
             },
           ],
