@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
+import { useStyles } from "./style";
 import { StyledTextField, StyledMenuItem } from "./styledComponents";
 import { FilterContainer } from "./filterContainer";
 
@@ -44,7 +45,7 @@ export const ValueFilter = (props) => {
       {one.label}
     </StyledMenuItem>
   ));
-
+  const classes = useStyles();
   return (
     <FilterContainer
       applyFilter={setFilterValue}
@@ -57,12 +58,13 @@ export const ValueFilter = (props) => {
         width={1}
         mt={2}
       >
-        <Box width="40%" pl={1}>
+        <Box width="32%">
           <StyledTextField
             select
             placeholder="Select"
             fullWidth
             value={searchCriteria}
+            className={classes.adornmentSelect}
             onChange={(e) => {
               setSearchCriteria(e.target.value);
             }}
@@ -74,14 +76,14 @@ export const ValueFilter = (props) => {
           display="flex"
           justifyContent="space-between"
           alignItems="start"
-          width="60%"
+          width="68%"
           position="relative"
-          pr={1}
         >
           <StyledTextField
             fullWidth
             value={text || ""}
             placeholder="Search"
+            className={classes.searchField}
             onChange={(e) => {
               setText(e.target.value);
             }}
