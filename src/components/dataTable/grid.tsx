@@ -7,6 +7,7 @@ import {
   useBlockLayout,
   useRowSelect,
   useFilters,
+  useColumnOrder,
   useAsyncDebounce,
 } from "react-table";
 import Paper from "@material-ui/core/Paper";
@@ -67,6 +68,7 @@ export const DataGrid = ({
     state: tableState,
     setAllFilters,
     setSortBy,
+    columns: availableColumns,
   } = useTable(
     {
       columns,
@@ -90,6 +92,7 @@ export const DataGrid = ({
       localFilterManager,
       headerFilterState: headerFilterManager.state,
     },
+    useColumnOrder,
     useFilters,
     useSortBy,
     usePagination,
@@ -133,6 +136,8 @@ export const DataGrid = ({
         dense={dense}
         getRowId={getRowId}
         selectedFlatRows={selectedFlatRows}
+        visibleColumns={availableColumns}
+        defaultHiddenColumns={defaultHiddenColumns}
       />
       <TableHeaderFilterToolbar
         dense={dense}

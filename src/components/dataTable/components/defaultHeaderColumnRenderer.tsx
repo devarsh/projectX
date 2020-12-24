@@ -1,24 +1,55 @@
-import { useState, MouseEvent } from "react";
+import { useState, useRef, MouseEvent } from "react";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Popover from "@material-ui/core/Popover";
 import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import { useDrag, useDrop } from "react-dnd";
 
-export const DefaultHeaderColumnRenderer = ({ column }) => {
+export const DefaultHeaderColumnRenderer = ({
+  column,
+  visibleColumns,
+  setColumnOrder,
+}) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const open = Boolean(anchorEl);
   const id = open ? column.id : undefined;
+  //Column change order using drag and drop
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: "Column" },
+    collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
+    end: (_, monitor) => {
+      if (monitor.didDrop()) {
+        const { id } = monitor.getDropResult();
+        const columns = visibleColumns.map((one) => one.id);
+        const toIndex = columns.indexOf(id);
+        const fromIndex = columns.indexOf(column.id);
+        var b = columns[toIndex];
+        columns[toIndex] = columns[fromIndex];
+        columns[fromIndex] = b;
+        setColumnOrder(columns);
+      }
+    },
+  });
+  const [{ isOver }, drop] = useDrop({
+    accept: "Column",
+    drop: () => ({ id: column.id }),
+    collect: (monitor) => ({ isOver: !!monitor.isOver() }),
+  });
+  const dragDropRef = useRef(null);
+  drag(drop(dragDropRef));
   return (
     <>
       <TableSortLabel
         active={column.isSorted}
         direction={column.isSortedDesc ? "desc" : "asc"}
         hideSortIcon={true}
+        ref={dragDropRef}
         {...column.getSortByToggleProps([
           {
             style: {
@@ -35,6 +66,8 @@ export const DefaultHeaderColumnRenderer = ({ column }) => {
                 column.canFilter
                   ? "15px"
                   : "10px",
+              opacity: isDragging || isOver ? 0.5 : 1,
+              cursor: isDragging ? "move" : "default",
             },
           },
         ])}
