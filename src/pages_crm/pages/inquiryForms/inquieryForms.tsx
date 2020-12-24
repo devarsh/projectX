@@ -67,7 +67,7 @@ export const InquiryFormWrapper = () => {
       });
     /*eslint-disable react-hooks/exhaustive-deps*/
     //@ts-ignore
-  }, Object.values(navigationState));
+  }, Object.values(navigationState ?? []));
 
   const result = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />
