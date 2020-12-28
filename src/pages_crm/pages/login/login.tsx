@@ -88,7 +88,7 @@ export const Login = () => {
         type: "startInitiateLoginProcessWithPasswordAndOtp",
       });
       try {
-        const result = await APISDK.requestForLocalOTP(state.phoneNumber);
+        const result = await APISDK.requestOTP(state.phoneNumber);
         if (result.status === "success") {
           dispatch({
             type: "initiateLoginProcessWithOtp",
@@ -154,7 +154,7 @@ export const Login = () => {
         type: "startInitiateLoginProcessWithPasswordAndOtp",
       });
       let sdatetime = "20200915110135";
-      const result = await APISDK.verifyLocalOTP(
+      const result = await APISDK.verifyOTP(
         state.apiOTPId,
         state.otp,
         sdatetime

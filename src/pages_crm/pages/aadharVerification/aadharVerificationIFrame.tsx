@@ -1,135 +1,203 @@
 import { Fragment, useEffect, useRef, useReducer } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import { reducer } from "./reducer";
 import { APISDK } from "registry/fns/sdk";
-import { navigationFlowDecisionMaker } from "../utils/navHelpers";
+import { useNavigationFlow } from "../utils/navHelpers";
+
+const initialState = {
+  currentScreen: "welcomeView",
+  loading: false,
+  error: "",
+  verificationSuccessful: false,
+  aadharTransactionID: "",
+  aadharAuthenticationURL: "",
+};
+
+export const reducer = (state, action) => {
+  switch (action.type) {
+    case "startAadharRequest":
+      return {
+        ...state,
+        currentScreen: "welcomeView",
+        error: "",
+        loading: true,
+      };
+    case "endAadharRequestFailure": {
+      return {
+        ...state,
+        currentScreen: "welcomeView",
+        loading: false,
+        error: action?.payload?.error,
+      };
+    }
+    case "endAadharRequestSuccess": {
+      return {
+        ...state,
+        currentScreen: "addharIFrameView",
+        aadharTransactionID: action?.payload?.transactionId,
+        aadharAuthenticationURL: action?.payload?.url,
+        loading: false,
+        error: "",
+      };
+    }
+    case "aadharValidationSuccess": {
+      return {
+        ...state,
+        currentScreen: "resultView",
+        verificationSuccessful: true,
+        error: action?.payload?.error,
+      };
+    }
+    case "aadharValidationFailure": {
+      return {
+        ...state,
+        currentScreen: "resultView",
+        verificationSuccessful: false,
+        error: action?.payload?.error,
+      };
+    }
+    default:
+      return state;
+  }
+};
 
 const timeoutDuration = 5 * 60 * 1000;
 const poolingInterval = 10 * 1000;
 
-export default function EmployeeDashboard() {
-  let timeout, interval;
-  const [state, dispatch] = useReducer(reducer, {
-    currentScreen: "inititateAadharValidation",
-    loading: false,
-    apiResult: "",
-    apiResultStatus: "",
-    aadharTransactionID: "",
-    aadharAuthenticationURL: "",
-  });
+export const AadharVerification = () => {
+  //if needed move this variables to REf state (needs investigation)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const fetchRequestID = useRef(0);
-  useEffect(() => {
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
-    };
-  }, []);
   const navigate = useNavigate();
   const location = useLocation();
-  const { state: navigationState } = location;
-  //@ts-ignore
-  const { refID, prevSeq = -1, flow } = navigationState ?? {};
-  //@ts-ignore
-  const currentSeq = prevSeq + 1;
+  const [
+    flowExist,
+    refID,
+    nextURL,
+    nextFlowNavigationProps,
+    fallbackURL,
+  ] = useNavigationFlow(location, "/thankyou");
 
-  const handleAadharInitiation = async () => {
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutRef.current as NodeJS.Timeout);
+      clearInterval(intervalRef.current as NodeJS.Timeout);
+    };
+  }, []);
+
+  const handleStartAadharRequest = async () => {
     dispatch({
-      type: "startInititateAadharValidation",
+      type: "startAadharRequest",
     });
     try {
-      const result = await APISDK.initiateAadharValidation(1001);
+      const result = await APISDK.initiateAadharValidation(refID);
       if (result.status === "success") {
-        const { aadharTransactionID, aadharAuthenticationURL } = result.data;
+        const { transactionId, url } = result.data;
         dispatch({
-          type: "inititateAadharValidation",
-          payload: result,
+          type: "endAadharRequestSuccess",
+          payload: {
+            transactionId,
+            url,
+          },
         });
-        startPooling({
-          aadharTransactionID: aadharTransactionID,
-          aadharAuthenticationURL: aadharAuthenticationURL,
+        startPooling(transactionId);
+      } else {
+        dispatch({
+          type: "endAadharRequestFailure",
+          payload: {
+            error: "Couldnt Initiate Aadhar Request an internal error occured",
+          },
         });
       }
     } catch (err) {
       dispatch({
-        type: "endAadharValidation",
-        apiResult: "error",
-        apiResultStatus: err,
+        type: "endAadharRequestFailure",
+        payload: {
+          error:
+            err?.message?.() ??
+            "Couldnt Initiate Aadhar Request an internal error occured ",
+        },
       });
-      console.log(err);
     }
   };
 
-  const startPooling = (data) => {
-    interval = setInterval(() => {
+  const startPooling = (aadharTransactionID) => {
+    intervalRef.current = setInterval(() => {
       const currentFetchRequestID = fetchRequestID.current++;
-      APISDK.fetchAadharRequestStatus(data.aadharTransactionID).then((resp) => {
-        if (currentFetchRequestID === fetchRequestID.current) {
-          if (resp.status === "success") {
-            if (resp.data.requestStatus === "failed") {
-              dispatch({
-                type: "endAadharValidation",
-                apiResult: resp.status,
-                apiResultStatus: resp.data.requestStatus,
-              });
-            }
-            if (resp.data.requestStatus === "success") {
-              dispatch({
-                type: "endAadharValidation",
-                apiResult: resp.status,
-                apiResultStatus: resp.data.requestStatus,
-              });
-              clearInterval(interval);
-              clearTimeout(timeout);
-              let nextFlow = navigationFlowDecisionMaker(flow, currentSeq);
-              navigate(nextFlow.url, {
-                state: {
-                  ...navigationState,
-                  prevSeq: currentSeq,
-                },
-              });
-            }
+      APISDK.fetchAadharRequestStatus(aadharTransactionID).then((resp) => {
+        console.log(resp);
+        if (resp.status === "success") {
+          if (resp.data.requestStatus === "failed") {
+            dispatch({
+              type: "aadharValidationFailure",
+              payload: {
+                error: "Failed to validate aadhar",
+              },
+            });
+          } else if (resp.data.requestStatus === "success") {
+            dispatch({
+              type: "aadharValidationSuccess",
+              payload: {
+                error:
+                  "Congratulations youve successfully verified your aadhar",
+              },
+            });
+            clearInterval(intervalRef.current as NodeJS.Timeout);
+            clearTimeout(timeoutRef.current as NodeJS.Timeout);
+            navigate(nextURL, nextFlowNavigationProps);
           }
         }
       });
     }, poolingInterval);
-    timeout = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       dispatch({
-        type: "endAadharValidation",
-        apiResult: "error",
-        apiResultStatus: "Request Time out",
+        type: "aadharValidationFailure",
+        payload: {
+          error: "Validation timed out",
+        },
       });
-      clearInterval(interval);
+      clearInterval(intervalRef.current as NodeJS.Timeout);
     }, timeoutDuration);
   };
 
   return (
     <Fragment>
-      {state.currentScreen === "inititateAadharValidation" ? (
+      {state.currentScreen === "welcomeView" ? (
         <div>
-          <span>Do you want to go for aadhar verification ??</span>
+          <span>Do you want to go for aadhar verification ?</span>
           <button
             disabled={state.loading ? true : false}
             onClick={() => {
-              handleAadharInitiation();
+              handleStartAadharRequest();
             }}
           >
             Yes
           </button>
-          <button>No</button>
+          <button
+            onClick={() => {
+              navigate(nextURL, nextFlowNavigationProps);
+            }}
+          >
+            No
+          </button>
+          {Boolean(state.error) ? (
+            <Alert severity={"error"}>{state.error}</Alert>
+          ) : null}
         </div>
-      ) : state.currentScreen === "aadharValidation" ? (
+      ) : state.currentScreen === "addharIFrameView" ? (
         <iframe
           title="AADHAR"
           src={state.aadharAuthenticationURL}
           width="100%"
-          height="700px"
+          height="500px"
         />
-      ) : state.currentScreen === "aadharValidationResult" ? (
-        <Alert severity={state.apiResult ? "error" : "success"}>
-          {state.apiResultStatus}
+      ) : state.currentScreen === "resultView" ? (
+        <Alert severity={state.verificationSuccessful ? "success" : "error"}>
+          {state.error}
         </Alert>
       ) : null}
     </Fragment>
   );
-}
+};

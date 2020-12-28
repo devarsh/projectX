@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   useTable,
   usePagination,
@@ -19,6 +19,7 @@ import Table from "@material-ui/core/Table";
 import { StickyTableHead } from "./stickyTableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
+import { MyTableRow } from "./focusableTableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import { TablePaginationActions } from "./tablePaginationToolbar";
@@ -108,6 +109,41 @@ export const DataGrid = ({
   const emptyRows = pageSize - Math.min(pageSize, page.length);
   const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
+  const tbodyRef = useRef(null);
+  const handleKeyDown = (event, row) => {
+    event.stopPropagation();
+    //@ts-ignore
+    const currentRow = tbodyRef.current?.children.namedItem(row.id);
+    //@ts-ignore
+    let rowToFocus;
+    switch (event.keyCode) {
+      case 38:
+        rowToFocus = currentRow?.previousElementSibling;
+        if (rowToFocus !== null) {
+          rowToFocus?.focus();
+          event.preventDefault();
+          //@ts-ignore
+          if (rowToFocus.offsetTop > tbodyRef.current?.offsetHeight) {
+            console.log("need to scroll here");
+          }
+        }
+        break;
+      case 40:
+        rowToFocus = currentRow?.nextElementSibling;
+        if (rowToFocus !== null) {
+          rowToFocus?.focus();
+          event.preventDefault();
+        }
+        break;
+      case 32:
+        row.toggleRowSelected();
+        event.preventDefault();
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
   }, [onFetchDataDebounced, pageIndex, pageSize, sortBy, filters]);
@@ -176,6 +212,7 @@ export const DataGrid = ({
           </StickyTableHead>
           <TableBody
             component="div"
+            ref={tbodyRef}
             {...getTableBodyProps([
               {
                 style: {
@@ -188,10 +225,13 @@ export const DataGrid = ({
             {page.map((row, index) => {
               prepareRow(row);
               return (
-                <TableRow
+                <MyTableRow
+                  {...row.getRowProps()}
+                  id={row.id}
+                  tabIndex={0}
                   component="div"
                   selected={row.isSelected}
-                  {...row.getRowProps()}
+                  onKeyDown={(e) => handleKeyDown(e, row)}
                 >
                   {row.cells.map((cell) => {
                     return (
@@ -204,7 +244,7 @@ export const DataGrid = ({
                       </RowCellWrapper>
                     );
                   })}
-                </TableRow>
+                </MyTableRow>
               );
             })}
             {emptyRows > 0 ? (

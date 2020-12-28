@@ -263,13 +263,12 @@ const RaatnaFinAPI = () => {
     ];
   };
 
-  const requestForOTP = async (phoneNumber: string) => {
-    const { data, status } = await internalFetcher("./users/OTPSent", {
+  const requestOTP = async (refID: number | string) => {
+    const { data, status } = await internalFetcher("./users/OTPRequest", {
       body: JSON.stringify({
-        action: "OTPSent",
+        action: "OTPRequest",
         request_data: {
-          mobile: phoneNumber,
-          password: "",
+          refID: refID,
         },
         channel: "W",
       }),
@@ -281,12 +280,17 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const handleverifyOtp = async (mobileNumber: string, otp: string) => {
+  const verifyOTP = async (
+    refID: string,
+    transactionID: string,
+    otp: string
+  ) => {
     const { data, status } = await internalFetcher("./users/OTPVerify", {
       body: JSON.stringify({
         action: "OTPVerify",
         request_data: {
-          mobile_number: mobileNumber,
+          refID: refID,
+          transaction_id: transactionID,
           otp: otp,
         },
         channel: "W",
@@ -485,13 +489,13 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const initiateAadharValidation = async (tranCode) => {
+  const initiateAadharValidation = async (refID) => {
     const { data, status } = await internalFetcher(
       "./users/initiateaadharreq",
       {
         body: JSON.stringify({
           action: "initiateaadharreq",
-          request_data: { inquiryID: tranCode, sms: "0" },
+          request_data: { refID: refID, sms: "0" },
           channel: "W",
         }),
       }
@@ -604,43 +608,6 @@ const RaatnaFinAPI = () => {
     });
   };
 
-  const requestForLocalOTP = async (phoneNumber: string) => {
-    const { data, status } = await internalFetcher("./users/customer_login", {
-      body: JSON.stringify({
-        action: "customer_login",
-        request_data: {
-          mobile: phoneNumber,
-          password: "",
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
-  const verifyLocalOTP = async (id: any, otp: any, sdatetime: any) => {
-    const { data, status } = await internalFetcher("./users/otpVerify", {
-      body: JSON.stringify({
-        action: "otp_verify",
-        request_data: {
-          id: id,
-          eotp: otp,
-          sdatetime: sdatetime,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
   return {
     createSession,
     loginStatus,
@@ -650,10 +617,8 @@ const RaatnaFinAPI = () => {
     getBankList,
     getMiscVal,
     getAccessToken,
-    requestForOTP,
     getMetaData,
     pushFormData,
-    handleverifyOtp,
     handleverifyPwd,
     getsubProductDtl,
     getDashboardEmployeeDataList,
@@ -668,8 +633,8 @@ const RaatnaFinAPI = () => {
     fetchGridMetaData,
     fetchGridColumnFilterProps,
     fetchGridData,
-    requestForLocalOTP,
-    verifyLocalOTP,
+    requestOTP,
+    verifyOTP,
   };
 };
 

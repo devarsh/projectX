@@ -13,7 +13,6 @@ const ITEM_HEIGHT = 48;
 export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  console.log(anchorEl, open);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

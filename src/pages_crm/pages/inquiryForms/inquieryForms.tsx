@@ -33,16 +33,25 @@ export const InquiryFormWrapper = () => {
       submitEnd(true);
       let nextFlow = navigationFlowDecisionMaker(
         metaData.current?.form?.flow,
-        ++currentSeq
+        ++currentSeq,
+        "/thankyou"
       );
       navigate(nextFlow.url, {
         state: {
           flow: metaData.current?.form?.flow ?? [],
-          refID: metaData.current?.form?.refID,
+          refID:
+            metaData.current?.form?.refID ??
+            //@ts-ignore
+            navigationState?.metaProps?.refID ??
+            "",
           prevSeq: currentSeq,
           metaProps: {
             action: result.data.questionnaireAction,
-            refID: metaData.current?.form?.refID,
+            refID:
+              metaData.current?.form?.refID ??
+              //@ts-ignore
+              navigationState?.metaProps?.refID ??
+              "",
           },
         },
       });

@@ -1,120 +1,128 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+import loaderGif from "assets/images/loader.gif";
 import { TextField } from "components/styledComponent/textfield";
 import { InputMaskCustom } from "components/derived/inputMask";
-import Typography from "@material-ui/core/Typography";
-//import { APISDK } from "registry/fns/sdk";
-import { navigationFlowDecisionMaker } from "../utils/navHelpers";
-import { makeStyles } from "@material-ui/core/styles";
-
-export const useStyles = makeStyles((theme) => ({
-  paper: {
-    margin: theme.spacing(3, 3, 0, 3),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "1rem 0rem",
-    backgroundColor: "#fff",
-    boxShadow: "0 0 20px rgba(0,0,0,0.06)",
-    borderRadius: 8,
-    width: "100%",
-    minHeight: "30vh",
-    [theme.breakpoints.down("md")]: {
-      margin: theme.spacing(3, 2, 0, 2),
-    },
-  },
-  paper2: {
-    padding: "24px",
-    borderRadius: 8,
-    width: "30%",
-    //backgroundColor: "#fff",
-    //boxShadow: "0 0 20px rgba(0,0,0,0.06)",
-  },
-}));
+import { APISDK } from "registry/fns/sdk";
+import { useStyles } from "./style";
+import { useNavigationFlow } from "../utils/navHelpers";
 
 export const OtpVerificationPage = ({}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [otpText, setOtpText] = useState("");
-  const [otpError, setOtpError] = useState("");
+  const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { state: navigationState } = location;
+  const [maskedMobileNo, setMaskedMobileNo] = useState("");
+  const [transactionID, setTransactionID] = useState("");
   const classes = useStyles();
-  //@ts-ignore
-  const { refID, prevSeq = -1, flow } = navigationState ?? {};
-  //@ts-ignore
-  const currentSeq = prevSeq + 1;
+  const [
+    flowExist,
+    refID,
+    nextURL,
+    nextFlowNavigationProps,
+    fallbackURL,
+  ] = useNavigationFlow(location, "/thankyou");
+  const trimmedOTP = otp.trim();
+  const trimmedOTPLengthValid = trimmedOTP.length === 6;
+  const trimmedOTPLengthMsg = "Otp must be of 6 characters long";
+
+  useEffect(() => {
+    if (flowExist) {
+      APISDK.requestOTP(refID).then((result) => {
+        if (result.status === "success") {
+          const { mobileNo, transactionId } = result.data;
+          setMaskedMobileNo(mobileNo ?? "");
+          setTransactionID(transactionId ?? "");
+        } else {
+          setError("An unknown error occured, kindly reach raatnafin team");
+          setLoading(false);
+        }
+      });
+    } else {
+      navigate(fallbackURL);
+    }
+  }, []);
+
   const verifyOTP = () => {
-    const trimmedOTPText = otpText.trim();
-    if (!Boolean(trimmedOTPText)) {
-      setOtpError("This is a required Field");
+    if (!Boolean(trimmedOTP)) {
+      setError("This is a required Field");
+      return;
+    }
+    if (!trimmedOTPLengthValid) {
+      setError(trimmedOTPLengthMsg);
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      if (trimmedOTPText !== "000000") {
-        setOtpError("Invalid Otp");
+    APISDK.verifyOTP(refID, transactionID, trimmedOTP).then((result) => {
+      if (result.status === "success") {
+        setError("");
         setLoading(false);
-        return;
+        navigate(nextURL, nextFlowNavigationProps);
       } else {
-        setOtpError("");
+        const { message } = result.data;
+        setError(message ?? "An Unknown error occured");
         setLoading(false);
-        let nextFlow = navigationFlowDecisionMaker(flow, currentSeq);
-        navigate(nextFlow.url, {
-          state: {
-            ...navigationState,
-            prevSeq: currentSeq,
-          },
-        });
       }
-    }, 2000);
+    });
   };
 
-  if (!Array.isArray(flow) && refID === undefined && currentSeq <= 0) {
-    navigate("/thankyou");
-    return null;
-  }
+  let result = (
+    <>
+      <Typography>Verify OTP </Typography>
+      {maskedMobileNo.trim() !== "" ? (
+        <>
+          <Typography>
+            OTP has been sent to your mobile number ending with:{maskedMobileNo}
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            type="email"
+            fullWidth
+            value={otp}
+            error={Boolean(error)}
+            helperText={error}
+            onChange={(e) => setOtp(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              inputComponent: InputMaskCustom,
+              inputProps: {
+                MaskProps: {
+                  mask: "0 0 0 0 0 0",
+                },
+              },
+            }}
+          />
+          <Button
+            onClick={verifyOTP}
+            color="primary"
+            endIcon={loading ? <CircularProgress size={20} /> : null}
+          >
+            Verify
+          </Button>
+        </>
+      ) : loading === false && Boolean(error) ? (
+        <Typography>{error}</Typography>
+      ) : (
+        <img
+          src={loaderGif}
+          style={{ justifyContent: "center", margin: "auto" }}
+          alt="loader"
+        />
+      )}
+    </>
+  );
+
   return (
     <div className={classes.paper}>
-      <div className={classes.paper2}>
-        <Typography>Verify OTP</Typography>
-        <Typography>
-          OTP has been sent to your registered mobile number:
-        </Typography>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="OTP"
-          type="email"
-          fullWidth
-          value={otpText}
-          error={Boolean(otpError)}
-          helperText={Boolean(otpError) ? otpError : null}
-          onChange={(e) => setOtpText(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-            inputComponent: InputMaskCustom,
-            inputProps: {
-              MaskProps: {
-                mask: "0 0 0 0 0 0",
-              },
-            },
-          }}
-        />
-        <Button
-          onClick={verifyOTP}
-          color="primary"
-          disabled={loading || otpText.length !== 6 ? true : false}
-          endIcon={loading ? <CircularProgress size={20} /> : null}
-        >
-          Verify
-        </Button>
-      </div>
+      <div className={classes.paper2}>{result}</div>
     </div>
   );
 };

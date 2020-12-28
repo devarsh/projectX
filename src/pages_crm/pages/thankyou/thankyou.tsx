@@ -3,16 +3,23 @@ import Button from "@material-ui/core/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import SuccessImg from "assets/images/success.svg";
 import { useStyles } from "./style";
+import { useNavigationFlow } from "../utils/navHelpers";
 
 export const ThankYou = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const { state: naviationState } = location;
-  //@ts-ignore
-  const { refID, prevSeq = -1, flow } = navigationState ?? {};
-  //@ts-ignore
-  const currentSeq = prevSeq + 1;
+  const [
+    flowExist,
+    ,
+    nextURL,
+    nextFlowNavigationProps,
+    ,
+    getCurrentFlow,
+  ] = useNavigationFlow(location, "/form/questionnaire");
+  const result = getCurrentFlow();
+
+  const shouldContinue = flowExist || Boolean(result?.continue);
 
   return (
     <Box
@@ -45,19 +52,16 @@ export const ThankYou = () => {
         >
           Back to Home
         </Button>
-
-        <Button
-          className={classes.prevNextBtn}
-          onClick={(e) => {
-            e.preventDefault();
-            // const url = `/form/questions-${constructNavigationUrlForQuestionnaire(
-            //   naviationState
-            // )}`;
-            // navigate(url, { state: naviationState });
-          }}
-        >
-          Continue
-        </Button>
+        {shouldContinue ? (
+          <Button
+            className={classes.prevNextBtn}
+            onClick={(e) => {
+              navigate(nextURL, nextFlowNavigationProps);
+            }}
+          >
+            Continue
+          </Button>
+        ) : null}
       </Box>
     </Box>
   );
