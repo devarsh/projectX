@@ -1,18 +1,17 @@
 import { FC, useEffect, useState, useRef, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
-
 import { SelectProps } from "@material-ui/core/Select";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import { OptionsProps, Merge } from "../types";
 import CircularProgress, {
   CircularProgressProps,
 } from "@material-ui/core/CircularProgress";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Checkbox } from "components/styledComponent/checkbox";
-import { dependentOptionsFn } from "../types";
+import { OptionsProps, Merge, dependentOptionsFn } from "../types";
+import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFieldProps extends UseFieldHookProps {
   options?: OptionsProps[] | dependentOptionsFn;
@@ -85,8 +84,8 @@ const MySelect: FC<MySelectAllProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
-
   const focusRef = useRef();
+  const [_options, setOptions] = useState<OptionsProps[]>([]);
   useEffect(() => {
     if (isFieldFocused) {
       setTimeout(() => {
@@ -95,11 +94,6 @@ const MySelect: FC<MySelectAllProps> = ({
       }, 1);
     }
   }, [isFieldFocused]);
-
-  const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const lastOptionsPromise = useRef<Promise<any> | null>(null);
-  const [loadingOptions, setLoadingOptions] = useState(false);
-
   const getLabelFromValuesForOptions = useCallback(
     (values) => getLabelFromValues(_options)(values),
     [_options]
@@ -114,70 +108,17 @@ const MySelect: FC<MySelectAllProps> = ({
     },
     [handleChange, getLabelFromValuesForOptions]
   );
-
-  const syncAsyncSetOptions = useCallback(
-    (options, dependentValues) => {
-      if (Array.isArray(options)) {
-        setOptions(options);
-      } else if (typeof options === "function") {
-        try {
-          setLoadingOptions(true);
-          setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(
-            options(dependentValues, formState)
-          );
-          lastOptionsPromise.current = currentPromise;
-          currentPromise
-            .then((result) => {
-              setLoadingOptions(false);
-              if (lastOptionsPromise.current === currentPromise) {
-                if (Array.isArray(result)) {
-                  setOptions(result);
-                } else {
-                  setOptions([{ label: "Couldn't fetch", value: null }]);
-                  console.log(
-                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-                  );
-                }
-              }
-            })
-            .catch((e) => {
-              setLoadingOptions(false);
-              setOptions([{ label: "Couldn't fetch", value: null }]);
-              console.log(`error occured while fetching options`, e?.message);
-            });
-        } catch (e) {
-          setLoadingOptions(false);
-          setOptions([{ label: "Couldn't fetch", value: null }]);
-          console.log(`error occured while fetching options`, e?.message);
-        }
-      }
-    },
-    [setOptions, formState]
-  );
-
-  useEffect(() => {
-    syncAsyncSetOptions(options, dependentValues);
-  }, [options, dependentValues, syncAsyncSetOptions]);
-
-  useEffect(() => {
-    if (incomingMessage !== null && typeof incomingMessage === "object") {
-      const { value, options } = incomingMessage;
-      handleChangeInterceptor(value);
-      if (whenToRunValidation === "onBlur") {
-        runValidation({ value: value }, true);
-      }
-      if (Array.isArray(options)) {
-        setOptions(options);
-      }
-    }
-  }, [
-    incomingMessage,
+  const { loadingOptions } = useOptionsFetcher(
+    formState,
+    options,
     setOptions,
     handleChangeInterceptor,
+    dependentValues,
+    incomingMessage,
     runValidation,
-    whenToRunValidation,
-  ]);
+    whenToRunValidation
+  );
+
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
@@ -261,25 +202,3 @@ const MySelect: FC<MySelectAllProps> = ({
 };
 
 export default MySelect;
-
-const getLabelFromValues = (
-  options: OptionsProps[],
-  getString: boolean = false
-) => (values: any[] | any) => {
-  let result: any[] = [];
-  if (!Array.isArray(values)) {
-    values = [values];
-  }
-  if (Array.isArray(options)) {
-    result = options.reduce<string[]>((acc, current) => {
-      if (values.indexOf(current.value) >= 0) {
-        acc.push(current.label);
-      }
-      return acc;
-    }, []);
-  }
-  if (getString) {
-    return result.join(",");
-  }
-  return result;
-};

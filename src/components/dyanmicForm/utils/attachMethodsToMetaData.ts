@@ -121,7 +121,7 @@ const JSONWalker = (
   currentPath: string = "",
   lastKey: string | number = ""
 ) => {
-  if (typeof currentObj === "object") {
+  if (typeof currentObj === "object" && currentObj !== null) {
     if (SkipWalkingForKeys.indexOf(lastKey as string) > -1) {
       JSONWalkerFinalPath(
         currentObj,

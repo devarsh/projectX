@@ -462,6 +462,7 @@ export const useField = ({
       if (fieldDataRef.current !== null) {
         eventOrTextValue = eventOrTextValue ?? "";
         let val = eventOrTextValue;
+        let displayVal = displayValue;
         if (
           !(
             eventOrTextValue instanceof Date ||
@@ -493,8 +494,16 @@ export const useField = ({
             : !!multiple
             ? getSelectedValues(options)
             : value;
+          displayVal = /checkbox/.test(type)
+            ? getValueForCheckbox(
+                fieldDataRef.current.displayValue ?? "00",
+                checked,
+                displayValue
+              )
+            : displayValue;
         }
-        setValue(val, displayValue);
+
+        setValue(val, displayVal);
         if (
           isValidationFnRef.current &&
           (whenToRunValidation.current === "onChange" ||
