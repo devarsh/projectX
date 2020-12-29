@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
     right: "8px",
   },
   applyBtn: {
-    margin: theme.spacing(2, 0, 2),
+    margin: theme.spacing(2, 1, 2, 0),
     fontSize: "0.875rem",
     background:
       "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
@@ -18,13 +18,31 @@ export const useStyles = makeStyles((theme) => ({
     padding: "4px .75rem",
     fontWeight: 500,
     minWidth: "80px",
-    letterSpacing: "0.02857em",
+    letterSpacing: "1px",
     boxShadow: "none",
     textTransform: "capitalize",
     alignSelf: "flex-end",
     "&:hover": {
       background:
         "linear-gradient(90deg, rgba(94,231,131,1) 0%, rgba(74,204,160,1) 35%, rgba(33,150,218,1) 100%)",
+      boxShadow: "none",
+    },
+  },
+  clearBtn: {
+    margin: theme.spacing(2, 0, 2),
+    fontSize: "0.875rem",
+    background: "#ccc",
+    border: 0,
+    color: "#393939",
+    padding: "4px .75rem",
+    fontWeight: 500,
+    minWidth: "80px",
+    letterSpacing: "1px",
+    boxShadow: "none",
+    textTransform: "capitalize",
+    alignSelf: "flex-end",
+    "&:hover": {
+      background: "#ddd",
       boxShadow: "none",
     },
   },

@@ -18,7 +18,7 @@ export const FilterContainer = ({
         <Button className={classes.applyBtn} onClick={() => applyFilter()}>
           {applyFilterLabel}
         </Button>
-        <Button className={classes.applyBtn} onClick={() => clearFilter()}>
+        <Button className={classes.clearBtn} onClick={() => clearFilter()}>
           {clearFilterLabel}
         </Button>
       </Box>
