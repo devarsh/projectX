@@ -8,8 +8,11 @@ import Typography from "@material-ui/core/Typography";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
 import { useStyles } from "./style";
+
 interface FormProps {
   fields: GroupWiseRenderedFieldsType;
   formRenderConfig: FormRenderConfigType;
@@ -18,7 +21,7 @@ interface FormProps {
   submitFn: SubmitFnType;
 }
 
-export const StepperForm: FC<FormProps> = ({
+export const GroupedForm: FC<FormProps> = ({
   fields,
   formRenderConfig,
   formDisplayName,
@@ -88,60 +91,25 @@ export const StepperForm: FC<FormProps> = ({
   const filteredFieldGroups = fieldGroupsActiveStatus.filter(
     (one) => one.status
   );
-  return (
-    <Fragment>
-      <Typography component="h3" className={classes.title}>
-        {formDisplayName}
-      </Typography>
-      <div className={classes.form}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {filteredFieldGroups.map((field) => {
-            return (
-              <Step key={field.name}>
-                <StepLabel>{field.name}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <Box width={1} display="flex" justifyContent="flex-start">
-          <Typography component="h4" className={classes.subTitle}>
-            {typeof formRenderConfig.groups === "object"
-              ? formRenderConfig.groups[fieldGroups.current[activeStep]]
-              : defaultGroupName}
-          </Typography>
-        </Box>
-        <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+  const CURRENT_COMPONENT =
+    formRenderConfig.renderType === "stepper" ? MyStepper : MyTabs;
 
-        <Box width={1} display="flex" justifyContent="flex-end">
-          {activeStep === 0 ? null : (
-            <Button
-              type="button"
-              onClick={handlePrev}
-              className={classes.backBtn}
-            >
-              {formRenderConfig?.labels?.prev ?? "Back"}
-            </Button>
-          )}
-          {!isLastActiveStep(activeStep, fieldGroupsActiveStatus) ? (
-            <Button
-              type="button"
-              className={classes.submit}
-              onClick={handleNext}
-            >
-              {formRenderConfig?.labels?.next ?? "Next"}
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              className={classes.submit}
-              onClick={handleSubmit}
-            >
-              {formRenderConfig?.labels?.complete ?? "Submit"}
-            </Button>
-          )}
-        </Box>
-      </div>
-    </Fragment>
+  return (
+    <CURRENT_COMPONENT
+      key={formRenderConfig.renderType}
+      classes={classes}
+      formDisplayName={formDisplayName}
+      activeStep={activeStep}
+      filteredFieldGroups={filteredFieldGroups}
+      formRenderConfig={formRenderConfig}
+      defaultGroupName={defaultGroupName}
+      fieldGroups={fieldGroups}
+      fieldGroupsActiveStatus={fieldGroupsActiveStatus}
+      steps={steps}
+      handlePrev={handlePrev}
+      handleNext={handleNext}
+      handleSubmit={handleSubmit}
+    />
   );
 };
 
@@ -208,3 +176,129 @@ const isLastActiveStep = (
 
   return finalStep === currentStep;
 };
+
+const MyStepper = ({
+  classes,
+  formDisplayName,
+  activeStep,
+  filteredFieldGroups,
+  formRenderConfig,
+  defaultGroupName,
+  fieldGroups,
+  steps,
+  handlePrev,
+  handleNext,
+  handleSubmit,
+  fieldGroupsActiveStatus,
+}) => (
+  <Fragment>
+    <Typography component="h3" className={classes.title}>
+      {formDisplayName}
+    </Typography>
+    <div className={classes.form}>
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {filteredFieldGroups.map((field) => {
+          return (
+            <Step key={field.name}>
+              <StepLabel>{field.name}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      <Box width={1} display="flex" justifyContent="flex-start">
+        <Typography component="h4" className={classes.subTitle}>
+          {typeof formRenderConfig.groups === "object"
+            ? formRenderConfig.groups[fieldGroups.current[activeStep]]
+            : defaultGroupName}
+        </Typography>
+      </Box>
+      <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+
+      <Box width={1} display="flex" justifyContent="flex-end">
+        {activeStep === 0 ? null : (
+          <Button
+            type="button"
+            onClick={handlePrev}
+            className={classes.backBtn}
+          >
+            {formRenderConfig?.labels?.prev ?? "Back"}
+          </Button>
+        )}
+        {!isLastActiveStep(activeStep, fieldGroupsActiveStatus) ? (
+          <Button type="button" className={classes.submit} onClick={handleNext}>
+            {formRenderConfig?.labels?.next ?? "Next"}
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            className={classes.submit}
+            onClick={handleSubmit}
+          >
+            {formRenderConfig?.labels?.complete ?? "Submit"}
+          </Button>
+        )}
+      </Box>
+    </div>
+  </Fragment>
+);
+
+const MyTabs = ({
+  classes,
+  formDisplayName,
+  activeStep,
+  filteredFieldGroups,
+  formRenderConfig,
+  defaultGroupName,
+  fieldGroups,
+  steps,
+  handlePrev,
+  handleNext,
+  handleSubmit,
+  fieldGroupsActiveStatus,
+}) => (
+  <Fragment>
+    <Typography component="h3" className={classes.title}>
+      {formDisplayName}
+    </Typography>
+    <div className={classes.form}>
+      <Tabs value={activeStep}>
+        {filteredFieldGroups.map((field) => {
+          return <Tab key={field.name} label={field.name} />;
+        })}
+      </Tabs>
+      <Box width={1} display="flex" justifyContent="flex-start">
+        <Typography component="h4" className={classes.subTitle}>
+          {typeof formRenderConfig.groups === "object"
+            ? formRenderConfig.groups[fieldGroups.current[activeStep]]
+            : defaultGroupName}
+        </Typography>
+      </Box>
+      <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+
+      <Box width={1} display="flex" justifyContent="flex-end">
+        {activeStep === 0 ? null : (
+          <Button
+            type="button"
+            onClick={handlePrev}
+            className={classes.backBtn}
+          >
+            {formRenderConfig?.labels?.prev ?? "Back"}
+          </Button>
+        )}
+        {!isLastActiveStep(activeStep, fieldGroupsActiveStatus) ? (
+          <Button type="button" className={classes.submit} onClick={handleNext}>
+            {formRenderConfig?.labels?.next ?? "Next"}
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            className={classes.submit}
+            onClick={handleSubmit}
+          >
+            {formRenderConfig?.labels?.complete ?? "Submit"}
+          </Button>
+        )}
+      </Box>
+    </div>
+  </Fragment>
+);

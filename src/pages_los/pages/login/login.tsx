@@ -35,7 +35,7 @@ export const Login = () => {
     if (phoneNumber !== "" && phoneNumber.length === 10) {
       try {
         setLoading(true);
-        const result = await APISDK.requestForOTP(phoneNumber);
+        const result = await APISDK.requestOTP(phoneNumber);
         // console.log("result", result);
         if (result.status === "success") {
           setid(result?.data?.id);
@@ -58,7 +58,7 @@ export const Login = () => {
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      const result = await APISDK.handleverifyOtp(phoneNumber, otp);
+      const result = await APISDK.verifyOTP(phoneNumber, "", otp);
       if (result.status === "success") {
         setLoading(false);
         navigate("/dashboard");

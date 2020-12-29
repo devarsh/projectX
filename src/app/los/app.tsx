@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { RecoilRoot } from "recoil";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter } from "react-router-dom";
 import IndexPage from "pages_los";
@@ -14,7 +15,9 @@ export const App = () => {
       <CssBaseline />
       <BrowserRouter>
         <ThemeProvider theme={themeObj}>
-          <IndexPage />
+          <RecoilRoot>
+            <IndexPage />
+          </RecoilRoot>
         </ThemeProvider>
       </BrowserRouter>
     </Fragment>

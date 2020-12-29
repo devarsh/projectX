@@ -1,114 +1,128 @@
-import { useState, FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+import loaderGif from "assets/images/loader.gif";
 import { TextField } from "components/styledComponent/textfield";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { InputMaskCustom } from "components/derived/inputMask";
 import { APISDK } from "registry/fns/sdk";
-import { constructNavigationStateFromRespObj } from "../utils/navHelpers";
+import { useStyles } from "./style";
+import { useNavigationFlow } from "../utils/navHelpers";
 
-export interface OtpVerificationDialogProps {
-  isOpen: boolean;
-  setShowDialog: Function;
-  submitProps: any;
-}
-
-export const OtpVerificationDialog: FC<OtpVerificationDialogProps> = ({
-  isOpen,
-  setShowDialog,
-  submitProps,
-}) => {
+export const OtpVerificationPage = ({}) => {
   const navigate = useNavigate();
-  const [otpText, setOtpText] = useState("");
-  const [otpError, setOtpError] = useState("");
+  const location = useLocation();
+  const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { values, submitEnd, submitAction, navigationProps } = submitProps;
-  if (typeof submitEnd !== "function" && typeof values !== "object") {
-    return null;
-  }
-  const verifyOtp = async () => {
-    setLoading(true);
-    if (Boolean(otpText)) {
-      if (otpText === "000000") {
-        try {
-          const result = await APISDK.pushFormData(
-            submitAction,
-            values,
-            navigationProps
-          );
-          if (result.status === "success") {
-            setLoading(false);
-            submitEnd(true);
-            setShowDialog(false);
-            const navState = constructNavigationStateFromRespObj(result);
-            navigate("/aadharVerificationIFrame", {
-              state: navState,
-            });
-          } else {
-            setLoading(false);
-            submitEnd(false);
-          }
-        } catch (e) {
+  const [maskedMobileNo, setMaskedMobileNo] = useState("");
+  const [transactionID, setTransactionID] = useState("");
+  const classes = useStyles();
+  const [
+    flowExist,
+    refID,
+    nextURL,
+    nextFlowNavigationProps,
+    fallbackURL,
+  ] = useNavigationFlow(location, "/thankyou");
+  const trimmedOTP = otp.trim();
+  const trimmedOTPLengthValid = trimmedOTP.length === 6;
+  const trimmedOTPLengthMsg = "Otp must be of 6 characters long";
+
+  useEffect(() => {
+    if (flowExist) {
+      APISDK.requestOTP(refID).then((result) => {
+        if (result.status === "success") {
+          const { mobileNo, transactionId } = result.data;
+          setMaskedMobileNo(mobileNo ?? "");
+          setTransactionID(transactionId ?? "");
+        } else {
+          setError("An unknown error occured, kindly reach raatnafin team");
           setLoading(false);
         }
-      } else {
-        setLoading(false);
-        submitEnd(false, "Error submitting form - server error");
-        setOtpError("Invalid Otp");
-      }
+      });
+    } else {
+      navigate(fallbackURL);
     }
+  }, []);
+
+  const verifyOTP = () => {
+    if (!Boolean(trimmedOTP)) {
+      setError("This is a required Field");
+      return;
+    }
+    if (!trimmedOTPLengthValid) {
+      setError(trimmedOTPLengthMsg);
+      return;
+    }
+    setLoading(true);
+    APISDK.verifyOTP(refID, transactionID, trimmedOTP).then((result) => {
+      if (result.status === "success") {
+        setError("");
+        setLoading(false);
+        navigate(nextURL, nextFlowNavigationProps);
+      } else {
+        const { message } = result.data;
+        setError(message ?? "An Unknown error occured");
+        setLoading(false);
+      }
+    });
   };
-  // const handleReturnBackToForm = () => {
-  //   submitEnd(false, "");
-  //   setShowDialog(false);
-  // };
-  return (
-    <Dialog id="otp-dialog" open={isOpen} aria-labelledby="form-otp-dialog">
-      <DialogTitle id="form-dialog-title">Verify OTP</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          OTP has been sent to your registered mobile number:{" "}
-          <b>{`${values?.mobileNo ?? ""}`}</b>
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="OTP"
-          type="email"
-          fullWidth
-          value={otpText}
-          error={Boolean(otpError)}
-          helperText={Boolean(otpError) ? otpError : null}
-          onChange={(e) => setOtpText(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-            inputComponent: InputMaskCustom,
-            inputProps: {
-              MaskProps: {
-                mask: "0 0 0 0 0 0",
+
+  let result = (
+    <>
+      <Typography>Verify OTP </Typography>
+      {maskedMobileNo.trim() !== "" ? (
+        <>
+          <Typography>
+            OTP has been sent to your mobile number ending with:{maskedMobileNo}
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            type="email"
+            fullWidth
+            value={otp}
+            error={Boolean(error)}
+            helperText={error}
+            onChange={(e) => setOtp(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              inputComponent: InputMaskCustom,
+              inputProps: {
+                MaskProps: {
+                  mask: "0 0 0 0 0 0",
+                },
               },
-            },
-          }}
+            }}
+          />
+          <Button
+            onClick={verifyOTP}
+            color="primary"
+            endIcon={loading ? <CircularProgress size={20} /> : null}
+          >
+            Verify
+          </Button>
+        </>
+      ) : loading === false && Boolean(error) ? (
+        <Typography>{error}</Typography>
+      ) : (
+        <img
+          src={loaderGif}
+          style={{ justifyContent: "center", margin: "auto" }}
+          alt="loader"
         />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={verifyOtp}
-          color="primary"
-          disabled={loading || otpText.length !== 6 ? true : false}
-          endIcon={loading ? <CircularProgress size={20} /> : null}
-        >
-          Verify
-        </Button>
-      </DialogActions>
-    </Dialog>
+      )}
+    </>
+  );
+
+  return (
+    <div className={classes.paper}>
+      <div className={classes.paper2}>{result}</div>
+    </div>
   );
 };

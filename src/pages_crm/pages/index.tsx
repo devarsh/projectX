@@ -8,7 +8,8 @@ import NotFoundPage from "./notFound";
 import InquiryForms from "./inquiryForms";
 import { BecomePartnerFormWrapper } from "./becomePartner";
 import OTPVerificationPage from "./otpVerificationDialog";
-import AadharVerificationIFrame from "./aadharVerification/aadharVerificationIFrame";
+import AadharVerification from "./aadharVerification";
+import Equifax from "./equifax";
 
 const Index = () => {
   const classes = useStyles();
@@ -17,25 +18,44 @@ const Index = () => {
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route
-        path="aadharVerificationIFrame"
+        path="equifx"
         element={
           <Box width={1} display="flex" className={classes.wrapper}>
             <div className={classes.paper}>
-              <AadharVerificationIFrame />
+              <Equifax />
             </div>
           </Box>
         }
       />
-      {/* <Route
-        path="otp"
+      <Route
+        path="equifax"
         element={
           <Box width={1} display="flex" className={classes.wrapper}>
             <div className={classes.paper}>
-              <OTPVerificationPage />
+              <Equifax />
             </div>
           </Box>
         }
-      /> */}
+      />
+      <Route
+        path="aadhar"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <AadharVerification />
+            </div>
+          </Box>
+        }
+      />
+      <Route
+        path="otp"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <OTPVerificationPage />
+          </Box>
+        }
+      />
+
       <Route path="thankyou" element={<ThankYouPage />} />
       <Route
         path="form/becomePartner"

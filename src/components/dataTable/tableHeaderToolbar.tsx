@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import clsx from "clsx";
+import { ColumnVisibility } from "./columnVisibility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +33,8 @@ export const TableHeaderToolbar = ({
   label,
   getRowId,
   selectedFlatRows,
+  visibleColumns,
+  defaultHiddenColumns,
 }) => {
   const classes = useStyles();
   const selectedCount = selectedFlatRows.length;
@@ -64,6 +67,10 @@ export const TableHeaderToolbar = ({
           </IconButton>
         </Tooltip>
       ) : null}
+      <ColumnVisibility
+        visibleColumns={visibleColumns}
+        defaultHiddenColumns={defaultHiddenColumns}
+      />
     </Toolbar>
   );
 };

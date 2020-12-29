@@ -49,7 +49,6 @@ export interface FormRenderConfigType {
     complete?: string;
   };
   groups?: { [key: string]: string };
-  tabs?: string[];
   gridConfig: {
     item?: {
       xs?: GridSize;
@@ -156,10 +155,6 @@ export interface GroupWiseRenderedFieldsType {
 export interface RouterState {
   formCode?: string;
   productCode?: string;
-}
-
-export interface TabWiseRenderedFieldsType {
-  [key: string]: RenderedFieldsType;
 }
 
 //This is to create custom types to extend base types

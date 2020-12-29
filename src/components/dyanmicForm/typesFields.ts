@@ -24,7 +24,6 @@ export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
   sequence?: number;
-  tab?: number;
 }
 
 export interface CustomRuleType {
@@ -69,7 +68,9 @@ export type AllToggleButtonGroupProps = Merge<
   Omitted<ToggleButtonGroupProps>,
   FieldMetaData<"toggleButtonGroup">
 >;
-export type ToggleButtonGroupPropsOptional = Optional<AllToggleButtonGroupProps>;
+export type ToggleButtonGroupPropsOptional = Optional<
+  AllToggleButtonGroupProps
+>;
 
 export type AllNumberFormatProps = Merge<
   Omitted<NumberFormatProps>,

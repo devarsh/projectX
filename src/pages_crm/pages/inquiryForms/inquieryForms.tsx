@@ -18,36 +18,43 @@ export const InquiryFormWrapper = () => {
   let metaData = useRef<MetaDataType | null>(null);
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
-
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
   let currentSeq = 0;
   const onSubmitHandler = async (values, submitEnd) => {
     const result = await APISDK.pushFormData(
       metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
-      values
+      values,
+      //@ts-ignore
+      navigationState?.metaProps ?? {},
+      metaData.current?.form?.refID
     );
     if (result.status === "success") {
       submitEnd(true);
       let nextFlow = navigationFlowDecisionMaker(
         metaData.current?.form?.flow,
-        ++currentSeq
+        ++currentSeq,
+        "/thankyou"
       );
-      if (nextFlow) {
-        navigate(nextFlow.url, {
-          state: {
-            flow: metaData.current?.form?.flow ?? [],
-            refID: metaData.current?.form?.refID,
-            nextSeq: ++currentSeq,
-            metaProps: {
-              action: result.data.questionnaireAction,
-              refID: metaData.current?.form?.refID,
-            },
+      navigate(nextFlow.url, {
+        state: {
+          flow: metaData.current?.form?.flow ?? [],
+          refID:
+            metaData.current?.form?.refID ??
+            //@ts-ignore
+            navigationState?.metaProps?.refID ??
+            "",
+          prevSeq: currentSeq,
+          metaProps: {
+            action: result.data.questionnaireAction,
+            refID:
+              metaData.current?.form?.refID ??
+              //@ts-ignore
+              navigationState?.metaProps?.refID ??
+              "",
           },
-        });
-      } else {
-        navigate("/thankyou");
-      }
+        },
+      });
     } else {
       submitEnd(false, "Error submitting form");
     }
@@ -69,7 +76,7 @@ export const InquiryFormWrapper = () => {
       });
     /*eslint-disable react-hooks/exhaustive-deps*/
     //@ts-ignore
-  }, Object.values(navigationState));
+  }, Object.values(navigationState ?? []));
 
   const result = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />

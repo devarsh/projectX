@@ -11,6 +11,8 @@ import {
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export const ParentGridWrapper = () => {
   const gridCode = "trn/001";
@@ -46,10 +48,12 @@ export const ParentGridWrapper = () => {
   ) : error ? (
     <span>{"error loading grid"}</span>
   ) : (
-    <GirdController
-      metaData={metaData as GridMetaDataType}
-      gridCode={gridCode}
-    />
+    <DndProvider backend={HTML5Backend}>
+      <GirdController
+        metaData={metaData as GridMetaDataType}
+        gridCode={gridCode}
+      />
+    </DndProvider>
   );
 };
 
