@@ -181,3 +181,12 @@ export type FieldMetaDataTypeOptional =
 export type ExtendedFieldMetaDataTypeOptional = {
   [key: string]: FieldMetaDataTypeOptional;
 };
+
+export interface RenderFunctionType {
+  (
+    fieldObj: FieldMetaDataType,
+    formRenderConfig: FormRenderConfigType,
+    formName: string,
+    componentProps?: ComponentTypeProps
+  ): JSX.Element;
+}
