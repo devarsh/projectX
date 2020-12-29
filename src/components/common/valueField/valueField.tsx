@@ -12,7 +12,14 @@ interface MyGridExtendedProps {
 const MyValueField: FC<MyGridExtendedProps> = (props) => {
   let { defaultValue, label, enableGrid, GridProps } = props;
   if (typeof defaultValue === "object") {
-    defaultValue = defaultValue?.toDateString?.() ?? "Invalid Value";
+    if (Array.isArray(defaultValue)) {
+      defaultValue = defaultValue.join(",");
+    } else {
+      defaultValue = defaultValue?.toDateString?.() ?? "Invalid Value";
+    }
+  }
+  if (typeof defaultValue === "boolean") {
+    defaultValue = defaultValue ? "Yes" : "No";
   }
 
   let result = (

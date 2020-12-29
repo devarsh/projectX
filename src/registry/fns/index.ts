@@ -5,8 +5,6 @@ import { singletonFunctionRegisrationFactory } from "components/dyanmicForm";
 
 const { registerFn } = singletonFunctionRegisrationFactory;
 
-//let token = "Bearer eaf78a37-d2f1-45cc-90a9-0fad6159af95";
-
 registerFn("getOtherSourceIncome", api.getMiscVal("INCOME_SOURCE"));
 registerFn("getResidentialStatus", api.getMiscVal("RESI_STATUS"));
 registerFn("getSalutation", api.getMiscVal("SALUTATION_TYPE"));

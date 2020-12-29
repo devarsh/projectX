@@ -76,7 +76,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   ...others
 }) => {
   const {
-    formName,
+    formState,
     error,
     touched,
     handleChange,
@@ -127,7 +127,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
           setLoadingOptions(true);
           setOptions([{ label: "loading...", value: null }]);
           let currentPromise = Promise.resolve(
-            options(dependentValues, formName)
+            options(dependentValues, formState)
           );
           lastOptionsPromise.current = currentPromise;
           currentPromise
@@ -156,7 +156,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
         }
       }
     },
-    [setOptions, formName]
+    [setOptions, formState]
   );
   useEffect(() => {
     syncAsyncSetOptions(options, dependentValues);

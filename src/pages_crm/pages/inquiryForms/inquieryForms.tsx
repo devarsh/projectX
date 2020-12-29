@@ -24,11 +24,11 @@ export const InquiryFormWrapper = () => {
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
   let currentSeq = 0;
-  const onSubmitHandlerNew = (values, submitEnd) => {
-    setFormData(values);
+  const onSubmitHandlerNew = (values, displayValues, submitEnd) => {
+    setFormData(displayValues);
     setShowDialog(true);
   };
-  const onSubmitHandler = async (values, submitEnd) => {
+  const onSubmitHandler = async (values, displayValues, submitEnd) => {
     const result = await APISDK.pushFormData(
       metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
       values,

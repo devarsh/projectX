@@ -57,7 +57,6 @@ const MySelect: FC<MySelectAllProps> = ({
   ...others
 }) => {
   const {
-    formName,
     value,
     error,
     touched,
@@ -73,6 +72,7 @@ const MySelect: FC<MySelectAllProps> = ({
     incomingMessage,
     whenToRunValidation,
     readOnly,
+    formState,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -100,6 +100,21 @@ const MySelect: FC<MySelectAllProps> = ({
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
   const [loadingOptions, setLoadingOptions] = useState(false);
 
+  const getLabelFromValuesForOptions = useCallback(
+    (values) => getLabelFromValues(_options)(values),
+    [_options]
+  );
+
+  const handleChangeInterceptor = useCallback(
+    (e) => {
+      const value = typeof e === "object" ? e?.target?.value ?? "" : e;
+      let result = getLabelFromValuesForOptions(value);
+      result = multiple ? result : result[0];
+      handleChange(e, result as any);
+    },
+    [handleChange, getLabelFromValuesForOptions]
+  );
+
   const syncAsyncSetOptions = useCallback(
     (options, dependentValues) => {
       if (Array.isArray(options)) {
@@ -109,7 +124,7 @@ const MySelect: FC<MySelectAllProps> = ({
           setLoadingOptions(true);
           setOptions([{ label: "loading...", value: null }]);
           let currentPromise = Promise.resolve(
-            options(dependentValues, formName)
+            options(dependentValues, formState)
           );
           lastOptionsPromise.current = currentPromise;
           currentPromise
@@ -138,7 +153,7 @@ const MySelect: FC<MySelectAllProps> = ({
         }
       }
     },
-    [setOptions, formName]
+    [setOptions, formState]
   );
 
   useEffect(() => {
@@ -148,7 +163,7 @@ const MySelect: FC<MySelectAllProps> = ({
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value, options } = incomingMessage;
-      handleChange(value);
+      handleChangeInterceptor(value);
       if (whenToRunValidation === "onBlur") {
         runValidation({ value: value }, true);
       }
@@ -159,7 +174,7 @@ const MySelect: FC<MySelectAllProps> = ({
   }, [
     incomingMessage,
     setOptions,
-    handleChange,
+    handleChangeInterceptor,
     runValidation,
     whenToRunValidation,
   ]);
@@ -202,33 +217,14 @@ const MySelect: FC<MySelectAllProps> = ({
       value={multiple && !Array.isArray(value) ? [value] : value}
       error={isError}
       helperText={isError ? error : null}
-      onChange={handleChange}
+      onChange={handleChangeInterceptor}
       onBlur={handleBlur}
       disabled={isSubmitting}
       SelectProps={{
         ...SelectProps,
         native: false,
         multiple: multiple,
-        renderValue: multiple
-          ? (values: any[] | any) => {
-              if (!Array.isArray(values)) {
-                values = [values];
-              }
-              if (Array.isArray(_options)) {
-                return _options.reduce((acc, current) => {
-                  if (values.indexOf(current.value) >= 0) {
-                    if (acc === "") {
-                      return current.label;
-                    } else {
-                      return `${acc},${current.label}`;
-                    }
-                  }
-                  return acc;
-                }, "");
-              }
-              return "";
-            }
-          : undefined,
+        renderValue: multiple ? getLabelFromValues(_options, true) : undefined,
         //@ts-ignore
       }}
       InputLabelProps={{
@@ -265,3 +261,25 @@ const MySelect: FC<MySelectAllProps> = ({
 };
 
 export default MySelect;
+
+const getLabelFromValues = (
+  options: OptionsProps[],
+  getString: boolean = false
+) => (values: any[] | any) => {
+  let result: any[] = [];
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
+  if (Array.isArray(options)) {
+    result = options.reduce<string[]>((acc, current) => {
+      if (values.indexOf(current.value) >= 0) {
+        acc.push(current.label);
+      }
+      return acc;
+    }, []);
+  }
+  if (getString) {
+    return result.join(",");
+  }
+  return result;
+};

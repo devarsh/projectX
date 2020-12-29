@@ -76,6 +76,7 @@ const App = () => {
                 .required("required field")
                 .email("should be valid email"),
             }),
+            formState: {},
           }}
         >
           <Container component="main">

@@ -293,16 +293,21 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             fieldState.dependentFields
           );
           result = await Promise.resolve(
-            customValidator(fieldState, dependentFieldsState)
+            customValidator(
+              fieldState,
+              dependentFieldsState,
+              formContext.formState
+            )
           );
         } catch (e) {
-          result = { error: e.message };
+          result = { error: e.message, apiResult: null };
         }
         const newFieldState = {
           ...fieldState,
           validationRunning: false,
           touched: true,
           error: result.error,
+          validationAPIResult: result.apiResult,
         };
         set(formFieldAtom(field), newFieldState);
         return newFieldState;
@@ -362,15 +367,26 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
           }
           if (!hasError) {
             if (typeof onSubmit === "function") {
-              let obj = {};
+              let resultValueObj = {};
+              let resultDisplayValueObj = {};
               for (const field of fieldsAggrigator) {
-                obj = setIn(
-                  obj,
+                resultValueObj = setIn(
+                  resultValueObj,
                   field.name.replace(`${formContext.formName}/`, ""),
                   field.value
                 );
+                resultDisplayValueObj = setIn(
+                  resultDisplayValueObj,
+                  field.name.replace(`${formContext.formName}/`, ""),
+                  field.displayValue
+                );
               }
-              onSubmit(obj, endSubmit, setFieldErrors);
+              onSubmit(
+                resultValueObj,
+                resultDisplayValueObj,
+                endSubmit,
+                setFieldErrors
+              );
             }
           } else {
             endSubmit(false);

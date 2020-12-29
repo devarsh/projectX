@@ -43,6 +43,7 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
     fieldKey: fieldKey ?? "",
     name: fieldKey ?? "",
     value: "",
+    displayValue: "",
     touched: false,
     error: null,
     validationRunning: false,
