@@ -24,7 +24,7 @@ export const extendFieldTypes = (
         runPostValidationHookAlways,
         ...others
       } = extendedType;
-      const result = { ...one, ...others } as FieldMetaDataType;
+      const result = Object.assign({}, one, others) as FieldMetaDataType;
       if (result && result.render && result.render.componentType) {
         //@ts-ignore
         result.render.componentType = extendedType.render?.componentType;
@@ -33,5 +33,8 @@ export const extendFieldTypes = (
     }
     return one;
   });
-  return { form: metaData.form, fields: newMetaDataFields } as MetaDataType;
+  return {
+    form: metaData.form,
+    fields: [...newMetaDataFields],
+  } as MetaDataType;
 };

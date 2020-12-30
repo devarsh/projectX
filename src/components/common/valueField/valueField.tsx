@@ -24,7 +24,9 @@ const MyValueField: FC<MyGridExtendedProps> = (props) => {
 
   let result = (
     <div>
-      {label}:{defaultValue}
+      <b>{label}</b>
+      <br />
+      {defaultValue}
     </div>
   );
   if (Boolean(enableGrid)) {

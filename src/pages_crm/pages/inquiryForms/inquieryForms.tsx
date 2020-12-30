@@ -1,4 +1,11 @@
-import { useState, useEffect, useRef, memo, Fragment } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  memo,
+  Fragment,
+  useCallback,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { APISDK } from "registry/fns/sdk";
 import { navigationFlowDecisionMaker } from "../utils/navHelpers";
@@ -16,28 +23,45 @@ export const InquiryFormWrapper = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const [formDisplayValues, setFormDisplayValues] = useState({});
   const [formData, setFormData] = useState({});
+  const submitEndRef = useRef<any>(() => {});
   let metaData = useRef<MetaDataType | null>(null);
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
   let currentSeq = 0;
-  const onSubmitHandlerNew = (values, displayValues, submitEnd) => {
-    setFormData(displayValues);
+  const onSubmitHandlerNew = useCallback((values, displayValues, submitEnd) => {
+    setFormDisplayValues(displayValues);
+    setFormData(values);
+    submitEndRef.current = submitEnd;
     setShowDialog(true);
+  }, []);
+
+  const rejectSubmission = (submissionError) => {
+    setIsSubmitting(false);
+    setShowDialog(false);
+    setFormData({});
+    setFormDisplayValues({});
+    const submitEndFn = submitEndRef.current;
+    submitEndFn(false, submissionError);
+    submitEndRef.current = () => {};
   };
-  const onSubmitHandler = async (values, displayValues, submitEnd) => {
+
+  const postFormData = async () => {
+    setIsSubmitting(true);
     const result = await APISDK.pushFormData(
       metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
-      values,
+      formData,
       //@ts-ignore
       navigationState?.metaProps ?? {},
       metaData.current?.form?.refID
     );
     if (result.status === "success") {
-      submitEnd(true);
+      submitEndRef.current(true);
       let nextFlow = navigationFlowDecisionMaker(
         metaData.current?.form?.flow,
         ++currentSeq,
@@ -63,7 +87,7 @@ export const InquiryFormWrapper = () => {
         },
       });
     } else {
-      submitEnd(false, "Error submitting form");
+      rejectSubmission("Error submitting form");
     }
   };
 
@@ -92,6 +116,7 @@ export const InquiryFormWrapper = () => {
   ) : (
     <Fragment>
       <MemoizedFormWrapper
+        key={"dataForm"}
         metaData={metaData.current as MetaDataType}
         initialValues={initialValues}
         onSubmitHandler={onSubmitHandlerNew}
@@ -99,8 +124,12 @@ export const InquiryFormWrapper = () => {
       />
       {showDialog ? (
         <ViewFormWrapper
+          key={"viewForm"}
           metaData={metaData.current as MetaDataType}
-          formData={formData}
+          formDisplayValues={formDisplayValues}
+          submitting={isSubmitting}
+          onAccept={postFormData}
+          onReject={rejectSubmission}
         />
       ) : null}
     </Fragment>
