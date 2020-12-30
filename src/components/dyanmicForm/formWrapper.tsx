@@ -19,12 +19,14 @@ interface FormWrapperProps {
   metaData: MetaDataType;
   initialValues?: InitialValuesType;
   onSubmitHandler: SubmitFnType;
+  hidden?: boolean;
 }
 
 export const FormWrapper: FC<FormWrapperProps> = ({
   metaData,
   initialValues,
   onSubmitHandler,
+  hidden = false,
 }) => {
   metaData = extendFieldTypes(metaData, extendedMetaData);
   metaData = attachMethodsToMetaData(
@@ -46,9 +48,16 @@ export const FormWrapper: FC<FormWrapperProps> = ({
           validationRun: metaData.form.validationRun,
           initialValues: initValues,
           validationSchema: yupValidationSchema,
+          formState: {
+            refID: metaData.form.refID,
+            formCode: metaData.form.name,
+          },
         }}
       >
-        <Container component="main">
+        <Container
+          component="main"
+          style={{ display: hidden ? "none" : "block" }}
+        >
           {formRenderType === "stepper" || formRenderType === "tabs" ? (
             <GroupedForm
               key={metaData.form.name}

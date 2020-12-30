@@ -2,10 +2,14 @@ import {
   MetaDataType,
   GroupWiseRenderedFieldsType,
   RenderedFieldsType,
+  RenderFunctionType,
 } from "../types";
 import { renderField } from "./fieldRenderer";
+import { renderValue } from "./valueRenderer";
 
-export const renderFieldsByGroup = (metaData: MetaDataType) => {
+const renderByGroup = (renderMethod: RenderFunctionType) => (
+  metaData: MetaDataType
+) => {
   const { fields, form } = metaData;
   const defaultGroup = -1;
   let groupWiseRenderer: GroupWiseRenderedFieldsType = {};
@@ -18,7 +22,7 @@ export const renderFieldsByGroup = (metaData: MetaDataType) => {
         ? oneField.render?.group ?? -1
         : -1;
     }
-    const element = renderField(
+    const element = renderMethod(
       oneField,
       form?.render,
       form?.name,
@@ -63,3 +67,7 @@ export const renderFieldsByGroup = (metaData: MetaDataType) => {
   }
   return groupWiseRenderer;
 };
+
+export const renderFieldsByGroup = renderByGroup(renderField);
+
+export const renderValuesByGroup = renderByGroup(renderValue);

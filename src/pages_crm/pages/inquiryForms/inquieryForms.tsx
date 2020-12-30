@@ -5,6 +5,7 @@ import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
 import FormWrapper, {
+  ViewFormWrapper,
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
@@ -15,13 +16,19 @@ export const InquiryFormWrapper = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [formData, setFormData] = useState({});
   let metaData = useRef<MetaDataType | null>(null);
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
   let currentSeq = 0;
-  const onSubmitHandler = async (values, submitEnd) => {
+  const onSubmitHandlerNew = (values, displayValues, submitEnd) => {
+    setFormData(displayValues);
+    setShowDialog(true);
+  };
+  const onSubmitHandler = async (values, displayValues, submitEnd) => {
     const result = await APISDK.pushFormData(
       metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
       values,
@@ -87,8 +94,15 @@ export const InquiryFormWrapper = () => {
       <MemoizedFormWrapper
         metaData={metaData.current as MetaDataType}
         initialValues={initialValues}
-        onSubmitHandler={onSubmitHandler}
+        onSubmitHandler={onSubmitHandlerNew}
+        hidden={showDialog === true}
       />
+      {showDialog ? (
+        <ViewFormWrapper
+          metaData={metaData.current as MetaDataType}
+          formData={formData}
+        />
+      ) : null}
     </Fragment>
   );
   return result;

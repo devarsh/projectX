@@ -1,10 +1,5 @@
 import { lazy, FC } from "react";
-
-import {
-  FormRenderConfigType,
-  ComponentTypeProps,
-  FieldMetaDataType,
-} from "../types";
+import { RenderFunctionType } from "../types";
 
 const CheckboxGroup = lazy(() =>
   import("components/common/checkbox").then((module) => ({
@@ -63,11 +58,11 @@ const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
 };
 
-export const renderField = (
-  fieldObj: FieldMetaDataType,
-  formRenderConfig: FormRenderConfigType,
-  formName: string,
-  componentProps: ComponentTypeProps = {}
+export const renderField: RenderFunctionType = (
+  fieldObj,
+  formRenderConfig,
+  formName,
+  componentProps = {}
 ) => {
   const { render, schemaValidation, defaultValue, ...others } = fieldObj;
   let Component: any = null;

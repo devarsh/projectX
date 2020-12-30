@@ -16,6 +16,8 @@ import { Merge, OptionsProps, dependentOptionsFn } from "../types";
 import Chip, { ChipProps } from "@material-ui/core/Chip";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
+import { useOptionsFetcher } from "../utils";
+
 //will use it if there is a neeed for advance sorter
 //import matchSorter from "match-sorter";
 
@@ -76,7 +78,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   ...others
 }) => {
   const {
-    formName,
+    formState,
     error,
     touched,
     handleChange,
@@ -114,72 +116,17 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   }, [isFieldFocused]);
 
   const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const lastOptionsPromise = useRef<Promise<any> | null>(null);
-  const [loadingOptions, setLoadingOptions] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
-  const syncAsyncSetOptions = useCallback(
-    (options, dependentValues) => {
-      if (Array.isArray(options)) {
-        setOptions(options);
-      } else if (typeof options === "function") {
-        try {
-          setLoadingOptions(true);
-          setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(
-            options(dependentValues, formName)
-          );
-          lastOptionsPromise.current = currentPromise;
-          currentPromise
-            .then((result) => {
-              setLoadingOptions(false);
-              if (lastOptionsPromise.current === currentPromise) {
-                if (Array.isArray(result)) {
-                  setOptions(result);
-                } else {
-                  setOptions([{ label: "Couldn't fetch", value: null }]);
-                  console.log(
-                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-                  );
-                }
-              }
-            })
-            .catch((e) => {
-              setLoadingOptions(false);
-              setOptions([{ label: "Couldn't fetch", value: null }]);
-              console.log(`error occured while fetching options`, e?.message);
-            });
-        } catch (e) {
-          setLoadingOptions(false);
-          setOptions([{ label: "Couldn't fetch", value: null }]);
-          console.log(`error occured while fetching options`, e?.message);
-        }
-      }
-    },
-    [setOptions, formName]
-  );
-  useEffect(() => {
-    syncAsyncSetOptions(options, dependentValues);
-  }, [options, dependentValues, syncAsyncSetOptions]);
-
-  useEffect(() => {
-    if (incomingMessage !== null && typeof incomingMessage === "object") {
-      const { value, options } = incomingMessage;
-      handleChange(value);
-      if (whenToRunValidation === "onBlur") {
-        runValidation({ value: value }, true);
-      }
-      if (Array.isArray(options)) {
-        setOptions(options);
-      }
-    }
-  }, [
-    incomingMessage,
+  const { loadingOptions } = useOptionsFetcher(
+    formState,
+    options,
     setOptions,
     handleChange,
+    dependentValues,
+    incomingMessage,
     runValidation,
-    whenToRunValidation,
-  ]);
+    whenToRunValidation
+  );
 
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls

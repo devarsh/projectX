@@ -159,13 +159,13 @@ const RaatnaFinAPI = () => {
 
   const getProductType = async (
     _: any,
-    productCode: string
+    formState: any
   ): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./users/get_sub_product", {
       body: JSON.stringify({
         action: "get_sub_product",
         request_data: {
-          code: productCode,
+          code: formState?.formCode,
         },
         channel: "W",
       }),
