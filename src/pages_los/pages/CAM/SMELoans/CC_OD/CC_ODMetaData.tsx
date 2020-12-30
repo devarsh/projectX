@@ -51,12 +51,13 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "addOffice",
       label: "Office Address",
+      required: true,
       multiline: true,
       rowsMax: 3,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [{ name: "required", params: ["Office Address is required"] }],
-      // },
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Office Address is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -69,7 +70,7 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "datePicker",
         group: 0,
       },
-      name: "inception_date",
+      name: "incorporationDate",
       label: "Date of Incorporation",
       // required: true,
       placeholder: "dd/mm/yyyy",
@@ -107,6 +108,7 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "externalCreditRating",
       label: "External Credit Rating",
+      required: true,
       options: () => {
         return new Promise((res) => {
           setTimeout(() => {
@@ -151,8 +153,9 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "aadharCard",
         group: 0,
       },
-      name: "aadharNumber",
+      name: "udhyamAadharNumber",
       type: "text",
+      required: true,
       label: "Udhyog Aadhar Number",
       GridProps: {
         xs: 12,
@@ -168,7 +171,7 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "promotersDirectorsName",
       label: "Name of Promoters / Directors",
-      // required: true,
+      required: true,
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["This field is required"] }],
@@ -188,7 +191,7 @@ export const CC_ODMetaData: MetaDataType = {
       name: "loanAmount",
       type: "text",
       label: "Loan amount (Rs.)",
-      // required: true,
+      required: true,
       schemaValidation: {
         type: "string",
         rules: [
@@ -219,7 +222,7 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "loanDetails",
       label: "Loan details",
-
+      required: true,
       defaultValue: "0",
       options: () => {
         return new Promise((res) => {
@@ -247,11 +250,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "natureOfFacility",
       label: "Nature of Facility",
-      // required: true,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [{ name: "required", params: ["This field is required"] }],
-      // },
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -276,7 +279,7 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "bankName",
       label: "Name of Bank ",
-      // required: true,
+      required: true,
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["This field is required"] }],
@@ -303,14 +306,14 @@ export const CC_ODMetaData: MetaDataType = {
       name: "outstandingAmount",
       type: "text",
       label: "O/s Amount as on ",
-      // required: true,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [
-      //     { name: "typeError", params: ["This field is required"] },
-      //     { name: "required", params: ["This field is required"] },
-      //   ],
-      // },
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["This field is required"] },
+          { name: "required", params: ["This field is required"] },
+        ],
+      },
       enableNumWords: true,
       FormatProps: {
         thousandSeparator: true,
@@ -343,7 +346,7 @@ export const CC_ODMetaData: MetaDataType = {
       name: "rateOfInterest",
       type: "text",
       label: "Rate of Interest",
-      // required: true,
+      required: true,
       // validationRun: "onChange",
       GridProps: {
         xs: 12,
@@ -366,11 +369,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "newTakeover",
       label: "New / Takeover",
-      // required: true,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [{ name: "required", params: ["This field is required"] }],
-      // },
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -392,11 +395,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "requestedROI",
       label: "Requested ROI",
-      // required: true,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [{ name: "required", params: ["This field is required"] }],
-      // },
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -419,14 +422,14 @@ export const CC_ODMetaData: MetaDataType = {
       name: "proposedAmount",
       type: "text",
       label: "Amount",
-      // required: true,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [
-      //     { name: "typeError", params: ["This field is required"] },
-      //     { name: "required", params: ["This field is required"] },
-      //   ],
-      // },
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "typeError", params: ["This field is required"] },
+          { name: "required", params: ["This field is required"] },
+        ],
+      },
       enableNumWords: true,
       FormatProps: {
         thousandSeparator: true,
@@ -489,11 +492,7 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "loanPurpose",
       label: "Purpose of Loan",
-      // required: true,
-      // schemaValidation: {
-      //   type: "string",
-      //   rules: [{ name: "required", params: ["This field is required"] }],
-      // },
+      required: true,
       defaultValue: "0",
       options: () => {
         return new Promise((res) => {
@@ -547,8 +546,13 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "companyHistory",
       label: "Brief history of the Company",
+      required: true,
       multiline: true,
       rowsMax: 3,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -563,6 +567,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "existingProducts",
       label: "Existing Products / Services of the company ",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -577,6 +586,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "productEndUse",
       label: "End Use of the Products",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -589,8 +603,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 1,
       },
-      name: "majorSuppliers",
+      name: "majorSuppliersName",
       label: "Name of Major Suppliers",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -605,6 +624,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "paymenttermSupplier",
       label: "Payment terms with Supplier",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -617,8 +641,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 1,
       },
-      name: "majorCustomers",
+      name: "majorCustomersName",
       label: "Name of Major Customers",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -633,6 +662,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "paymenttermCustomer",
       label: "Payment terms with Customers",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -647,6 +681,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "currentOrderPosition",
       label: "Current Order Book Position",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -659,8 +698,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 1,
       },
-      name: "marketingDistributionPolicy/Strategy",
+      name: "marketingDistributionPolicyOrStrategy",
       label: "Marketing & Distribution Policy/Strategy",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -675,6 +719,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "competitorsName",
       label: "Name of Competitors ",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -689,6 +738,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "exportingCountries",
       label: "Name of Major Countries where Exporting",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -703,6 +757,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "domesticExportSalesRatio",
       label: "Domestic and export sales ratio",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -717,6 +776,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "employeeNumbers",
       label: "No. of Employees",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -731,6 +795,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "industryApprovalsAndLicense",
       label: "Other Industry specific approvals / license",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -745,6 +814,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "awardRecognitionreceived",
       label: "Any awards / Recognition received ",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -763,6 +837,7 @@ export const CC_ODMetaData: MetaDataType = {
       name: "managementPanNumber",
       type: "text",
       label: "PAN Card Number",
+      required: true,
       GridProps: {
         xs: 12,
         md: 3,
@@ -779,6 +854,11 @@ export const CC_ODMetaData: MetaDataType = {
       name: "managementAadharNumber",
       type: "text",
       label: "Aadhar Card Number",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -859,6 +939,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "associateCompanies",
       label: "Associate Companies",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -875,6 +960,11 @@ export const CC_ODMetaData: MetaDataType = {
       name: "profitSharingAndShareHolding",
       type: "text",
       label: "Profit Sharing / Shareholding %",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -887,8 +977,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 2,
       },
-      name: "firstYearSummary",
+      name: "previousFirstYearSummary",
       label: "Previous First Year Income Summary",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -901,8 +996,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 2,
       },
-      name: "secondYearSummary",
+      name: "previousSecondYearSummary",
       label: "Previous Second Year Income Summary",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -915,8 +1015,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 2,
       },
-      name: "thirdYearSummary",
+      name: "previousThirdYearSummary",
       label: "Previous Third Year Income Summary",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -931,8 +1036,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 3,
       },
-      name: "firstYearSummary",
+      name: "nextFirstYearSummary",
       label: "Next One Year Income Summary",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -945,8 +1055,13 @@ export const CC_ODMetaData: MetaDataType = {
         componentType: "textField",
         group: 3,
       },
-      name: "secondYearSummary",
+      name: "nextSecondYearSummary",
       label: "Next Second Year Income Summary",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -965,6 +1080,11 @@ export const CC_ODMetaData: MetaDataType = {
       label: "Address of the Property for Primary Security",
       multiline: true,
       rowsMax: 3,
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -980,6 +1100,11 @@ export const CC_ODMetaData: MetaDataType = {
       name: "primarySecurityPropertyArea",
       label: "Area of the Property for Primary Security",
       placeholder: "in Square meter",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -994,6 +1119,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "primarySecurityOwnerName",
       label: "Owner Name for Primary Security",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -1009,6 +1139,7 @@ export const CC_ODMetaData: MetaDataType = {
       name: "primarySecurityMarketValue",
       label: "Market Value (Rs. In Crore) for Primary Security",
       enableNumWords: true,
+      required: true,
       FormatProps: {
         thousandSeparator: true,
         prefix: "₹",
@@ -1033,6 +1164,11 @@ export const CC_ODMetaData: MetaDataType = {
       label: "Address of the Property for collateral Security",
       multiline: true,
       rowsMax: 3,
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -1048,6 +1184,11 @@ export const CC_ODMetaData: MetaDataType = {
       name: "collateralSecurityPropertyArea",
       label: "Area of the Property for collateral Security",
       placeholder: "in Square meter",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -1062,6 +1203,35 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "collateralSecurityOwnerName",
       label: "Owner Name for Collateral Security",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 4,
+      },
+      name: "collateralSecurityMarketValue",
+      label: "Market Value (Rs. In Crore) for Collateral Security",
+      enableNumWords: true,
+      required: true,
+      FormatProps: {
+        thousandSeparator: true,
+        prefix: "₹",
+        thousandsGroupStyle: "lakh",
+        allowNegative: false,
+        allowLeadingZeros: false,
+      },
+      validationRun: "onChange",
       GridProps: {
         xs: 12,
         md: 3,
@@ -1099,34 +1269,16 @@ export const CC_ODMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "numberFormat",
-        group: 4,
-      },
-      name: "collateralSecurityMarketValue",
-      label: "Market Value (Rs. In Crore) for Collateral Security",
-      enableNumWords: true,
-      FormatProps: {
-        thousandSeparator: true,
-        prefix: "₹",
-        thousandsGroupStyle: "lakh",
-        allowNegative: false,
-        allowLeadingZeros: false,
-      },
-      validationRun: "onChange",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
         componentType: "textField",
         group: 4,
       },
       name: "guarantorName",
       label: "Name of Guarantor for Personal Guarantee",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -1143,6 +1295,11 @@ export const CC_ODMetaData: MetaDataType = {
       name: "panNumberofGuarantor",
       type: "text",
       label: "PAN Card Number of Guarantor",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -1157,6 +1314,11 @@ export const CC_ODMetaData: MetaDataType = {
       },
       name: "guarantorNetWorth",
       label: "Net Worth for Personal Guarantee",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This field is required"] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
