@@ -22,7 +22,7 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "fields":
+    case "updateOTP":
       return {
         ...state,
         otp: action?.payload,
@@ -30,7 +30,6 @@ const reducer = (state, action) => {
     case "startOTPRequest":
       return {
         ...state,
-        currentScreen: "welcomeOTPVerification",
         error: "",
         loading: true,
       };
@@ -41,7 +40,7 @@ const reducer = (state, action) => {
         loading: false,
         maskedMobileNo: action?.payload?.mobileNo,
         transactionID: action?.payload?.transactionId,
-        error: action?.payload?.error,
+        error: "",
       };
     case "endOTPRequestFailure": {
       return {
@@ -55,7 +54,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         currentScreen: "welcomeOTPVerification",
-        error: "",
         loading: true,
       };
     case "endOTPVerificationSuccess":
@@ -63,7 +61,7 @@ const reducer = (state, action) => {
         ...state,
         currentScreen: "welcomeOTPVerification",
         loading: false,
-        error: action?.payload?.error,
+        error: "",
       };
     case "endOTPVerificationFailure":
       return {
@@ -191,7 +189,7 @@ export const OtpVerificationPage = ({}) => {
             helperText={Boolean(state.error) ? state.error : null}
             onChange={(e) =>
               dispatch({
-                type: "fields",
+                type: "updateOTP",
                 fieldName: "otp",
                 payload: e.target.value,
               })
