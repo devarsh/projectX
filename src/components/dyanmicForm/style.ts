@@ -47,4 +47,14 @@ export const useStyles = makeStyles((theme) => ({
       boxShadow: "none ",
     },
   },
+  buttonProgress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  buttonWrapper: {
+    position: "relative",
+  },
 }));

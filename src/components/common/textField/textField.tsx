@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
@@ -76,6 +76,13 @@ const MyTextField: FC<MyTextFieldProps> = ({
     runValidationOnDependentFieldsChange,
   });
 
+  const customHandleChange = useCallback(
+    (e) => {
+      handleChange(e, e.target?.formattedValue ?? undefined);
+    },
+    [handleChange]
+  );
+
   const focusRef = useRef();
   useEffect(() => {
     if (isFieldFocused) {
@@ -151,9 +158,9 @@ const MyTextField: FC<MyTextFieldProps> = ({
       inputRef={focusRef}
       onChange={(e) => {
         if (maxLength === -1) {
-          handleChange(e);
+          customHandleChange(e);
         } else if (e.target.value.length <= maxLength) {
-          handleChange(e);
+          customHandleChange(e);
         }
       }}
       inputProps={{
