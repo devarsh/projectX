@@ -30,7 +30,6 @@ export const FormWrapper: FC<FormWrapperProps> = ({
 }) => {
   //this line is very important to preserve our metaData across render - deep clone hack
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
-  console.log(metaData, freshMetaData);
   metaData = extendFieldTypes(metaData, extendedMetaData);
   metaData = attachMethodsToMetaData(
     metaData,

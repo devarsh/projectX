@@ -6,6 +6,9 @@ import {
   Fragment,
   useCallback,
 } from "react";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
 import { APISDK } from "registry/fns/sdk";
 import { navigationFlowDecisionMaker } from "../utils/navHelpers";
@@ -16,6 +19,7 @@ import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import { ConfirmationBox } from "./confirmationBox";
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
@@ -29,6 +33,10 @@ export const InquiryFormWrapper = () => {
   const [formData, setFormData] = useState({});
   const submitEndRef = useRef<any>(() => {});
   let metaData = useRef<MetaDataType | null>(null);
+
+  const [confirmation, setConfirmation] = useState(false);
+  const [confirmationError, setConfirmationError] = useState("");
+
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
   //passed as NOOP attach it if api returns the same
@@ -42,6 +50,8 @@ export const InquiryFormWrapper = () => {
   }, []);
 
   const rejectSubmission = (submissionError) => {
+    setConfirmation(false);
+    setConfirmationError("");
     setIsSubmitting(false);
     setShowDialog(false);
     setFormData({});
@@ -52,10 +62,18 @@ export const InquiryFormWrapper = () => {
   };
 
   const postFormData = async () => {
+    if (confirmation === false) {
+      setConfirmationError("This is a required field");
+      return;
+    }
     setIsSubmitting(true);
     const result = await APISDK.pushFormData(
-      metaData.current?.form.submitAction ?? "NO_ACTION_FOUND",
-      formData,
+      metaData?.current?.form.submitAction ?? "NO_ACTION_FOUND",
+      {
+        ...formData,
+        [metaData.current?.form?.confirmationBox?.name ??
+        "confirmation_value_not_found"]: confirmation,
+      },
       //@ts-ignore
       navigationState?.metaProps ?? {},
       metaData.current?.form?.refID
@@ -127,10 +145,53 @@ export const InquiryFormWrapper = () => {
           key={"viewForm"}
           metaData={metaData.current as MetaDataType}
           formDisplayValues={formDisplayValues}
-          submitting={isSubmitting}
+          isSubmitting={isSubmitting}
           onAccept={postFormData}
           onReject={rejectSubmission}
-        />
+        >
+          {({ classes, isSubmitting, formMetaData, onAccept, onReject }) => (
+            <Fragment>
+              <Box width={1} display="flex" justifyContent="flex-start">
+                <ConfirmationBox
+                  name={formMetaData?.confirmationBox?.name}
+                  label={formMetaData?.confirmationBox?.label}
+                  value={confirmation}
+                  error={confirmationError}
+                  handleChange={(e) => {
+                    setConfirmation(e.target.checked);
+                  }}
+                  isSubmitting={isSubmitting}
+                />
+              </Box>
+              <Box width={1} display="flex" justifyContent="flex-end">
+                <Button
+                  type="button"
+                  className={classes.backBtn}
+                  disabled={isSubmitting}
+                  onClick={onReject}
+                >
+                  {formMetaData?.render?.labels?.prev ?? "Go Back"}
+                </Button>
+                <div className={classes.buttonWrapper}>
+                  <Button
+                    type="button"
+                    className={classes.submit}
+                    disabled={isSubmitting}
+                    onClick={onAccept}
+                  >
+                    {formMetaData?.render?.labels?.complete ?? "Accept"}
+                  </Button>
+                  {isSubmitting && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
+              </Box>
+            </Fragment>
+          )}
+        </ViewFormWrapper>
       ) : null}
     </Fragment>
   );
