@@ -145,6 +145,9 @@ export const OtpVerificationPage = ({}) => {
       });
       return;
     }
+    dispatch({
+      type: "startOTPVerification",
+    });
     APISDK.verifyOTP(refID, state.transactionID, trimmedOTP).then((result) => {
       if (result.status === "success") {
         dispatch({
