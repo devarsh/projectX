@@ -190,7 +190,6 @@ export const OtpVerificationPage = ({}) => {
             onChange={(e) =>
               dispatch({
                 type: "updateOTP",
-                fieldName: "otp",
                 payload: e.target.value,
               })
             }
