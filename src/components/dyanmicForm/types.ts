@@ -78,6 +78,10 @@ export interface FormMetaDataType {
   flow?: UserFlowType[];
   submitAction?: string;
   refID?: string | number;
+  confirmationBox?: {
+    name: string;
+    label: string;
+  };
 }
 
 export interface ComponentTypeProps {
