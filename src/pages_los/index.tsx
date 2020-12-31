@@ -15,7 +15,7 @@ import DynamicLead from "./pages/leads";
 import LeadAction from "./pages/leadaction";
 import View from "./pages/tabView";
 import { useStyles } from "./style";
-import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD";
+import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
 const DashbordPages = () => {
