@@ -37,6 +37,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   enableGrid,
   InputProps,
   inputProps,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -60,6 +61,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = useCallback(

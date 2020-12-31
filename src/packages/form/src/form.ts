@@ -11,6 +11,8 @@ import {
   formFieldRegistryAtom,
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
+  formFieldsExcludedAtom,
+  subscribeToFormFieldsSelector,
 } from "./atoms";
 import { setIn, getIn } from "./util";
 import {
@@ -48,6 +50,8 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
       }
       reset(formFieldRegistryAtom(formContext.formName));
       reset(formArrayFieldRowsAtom(formContext.formName));
+      reset(formFieldsExcludedAtom(formContext.formName));
+      reset(formAtom(formContext.formName));
     },
     [formContext.formName]
   );
@@ -113,6 +117,9 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
 
   const endSubmit = useRecoilCallback(
     ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {
+      if (typeof message !== "string") {
+        message = "";
+      }
       set(formAtom(formContext.formName), (currVal) => ({
         ...currVal,
         isSubmitting: false,
@@ -220,6 +227,23 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     [formContext.formName]
   );
 
+  const getDependentValues = useRecoilCallback(
+    ({ snapshot }) => (fields?: string[] | string) => {
+      const loadable = snapshot.getLoadable(
+        subscribeToFormFieldsSelector({
+          formName: formContext.formName,
+          fields: fields,
+        })
+      );
+      switch (loadable.state) {
+        case "hasValue": {
+          return loadable.contents;
+        }
+      }
+      return {};
+    }
+  );
+
   const handleResetPartial = useCallback(
     (fields: string[]) => {
       if (
@@ -268,15 +292,25 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
                 error: data.error,
               });
         try {
-          result = await Promise.resolve(customValidator(fieldState));
+          const dependentFieldsState = getDependentValues(
+            fieldState.dependentFields
+          );
+          result = await Promise.resolve(
+            customValidator(
+              fieldState,
+              dependentFieldsState,
+              formContext.formState
+            )
+          );
         } catch (e) {
-          result = { error: e.message };
+          result = { error: e.message, apiResult: null };
         }
         const newFieldState = {
           ...fieldState,
           validationRunning: false,
           touched: true,
           error: result.error,
+          validationAPIResult: result.apiResult,
         };
         set(formFieldAtom(field), newFieldState);
         return newFieldState;
@@ -330,14 +364,32 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
             }
             fieldsAggrigator.push(result);
           }
-          //if form has no errors would procced with submitting the form
+          //In debug mode allow to move to next step without validating
+          if (process.env.REACT_APP_DEBUG_MODE === "true") {
+            hasError = false;
+          }
           if (!hasError) {
             if (typeof onSubmit === "function") {
-              let obj = {};
+              let resultValueObj = {};
+              let resultDisplayValueObj = {};
               for (const field of fieldsAggrigator) {
-                obj = setIn(obj, field.name, field.value);
+                resultValueObj = setIn(
+                  resultValueObj,
+                  field.name.replace(`${formContext.formName}/`, ""),
+                  field.value
+                );
+                resultDisplayValueObj = setIn(
+                  resultDisplayValueObj,
+                  field.name.replace(`${formContext.formName}/`, ""),
+                  field.displayValue
+                );
               }
-              onSubmit(obj, endSubmit, setFieldErrors);
+              onSubmit(
+                resultValueObj,
+                resultDisplayValueObj,
+                endSubmit,
+                setFieldErrors
+              );
             }
           } else {
             endSubmit(false);

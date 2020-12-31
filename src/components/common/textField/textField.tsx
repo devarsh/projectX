@@ -1,18 +1,22 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress, {
+  CircularProgressProps,
+} from "@material-ui/core/CircularProgress";
 import { Merge } from "../types";
 import numWords from "num-words";
 
 interface MyGridExtendedProps {
   enableNumWords?: boolean;
+  maxLength?: number;
   GridProps?: GridProps;
   StartAdornment?: string;
   EndAdornment?: string;
+  CircularProgressProps?: CircularProgressProps;
   enableGrid: boolean;
 }
 
@@ -25,12 +29,14 @@ const MyTextField: FC<MyTextFieldProps> = ({
   validate,
   validationRun,
   postValidationSetCrossFieldValues,
+  runValidationOnDependentFieldsChange,
   runPostValidationHookAlways,
   shouldExclude,
   isReadOnly,
   dependentFields,
   fieldKey: fieldID,
   GridProps,
+  CircularProgressProps,
   enableGrid,
   enableNumWords,
   InputProps,
@@ -39,6 +45,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   EndAdornment,
   //@ts-ignore
   isFieldFocused,
+  maxLength = -1,
   ...others
 }) => {
   const {
@@ -54,6 +61,8 @@ const MyTextField: FC<MyTextFieldProps> = ({
     excluded,
     readOnly,
     incomingMessage,
+    whenToRunValidation,
+    runValidation,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -64,7 +73,15 @@ const MyTextField: FC<MyTextFieldProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
+
+  const customHandleChange = useCallback(
+    (e) => {
+      handleChange(e, e.target?.formattedValue ?? undefined);
+    },
+    [handleChange]
+  );
 
   const focusRef = useRef();
   useEffect(() => {
@@ -81,8 +98,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
       handleChange(value);
+      if (whenToRunValidation === "onBlur") {
+        runValidation({ value: value }, true);
+      }
     }
-  }, [incomingMessage, handleChange]);
+  }, [incomingMessage, handleChange, runValidation, whenToRunValidation]);
 
   if (excluded) {
     return null;
@@ -118,7 +138,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
       InputProps={{
         endAdornment: validationRunning ? (
           <InputAdornment position="end">
-            <CircularProgress color="primary" variant="indeterminate" />
+            <CircularProgress
+              color="primary"
+              variant="indeterminate"
+              {...CircularProgressProps}
+            />
           </InputAdornment>
         ) : Boolean(EndAdornment) ? (
           EndAdornment
@@ -132,7 +156,13 @@ const MyTextField: FC<MyTextFieldProps> = ({
         shrink: true,
       }}
       inputRef={focusRef}
-      onChange={handleChange}
+      onChange={(e) => {
+        if (maxLength === -1) {
+          customHandleChange(e);
+        } else if (e.target.value.length <= maxLength) {
+          customHandleChange(e);
+        }
+      }}
       inputProps={{
         readOnly: readOnly,
         tabIndex: readOnly ? -1 : undefined,

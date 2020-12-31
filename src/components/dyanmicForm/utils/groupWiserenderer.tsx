@@ -2,20 +2,32 @@ import {
   MetaDataType,
   GroupWiseRenderedFieldsType,
   RenderedFieldsType,
+  RenderFunctionType,
 } from "../types";
 import { renderField } from "./fieldRenderer";
+import { renderValue } from "./valueRenderer";
 
-export const renderFieldsByGroup = (metaData: MetaDataType) => {
+const renderByGroup = (renderMethod: RenderFunctionType) => (
+  metaData: MetaDataType
+) => {
   const { fields, form } = metaData;
-  const defaultGroup = "defaultGroup";
+  const defaultGroup = -1;
   let groupWiseRenderer: GroupWiseRenderedFieldsType = {};
   for (const oneField of fields) {
-    let currentGroupName = "defaultGroup";
-    if (Array.isArray(form.render.groups)) {
-      currentGroupName =
-        form.render.groups[oneField.render?.group ?? -1] ?? defaultGroup;
+    let currentGroupName = defaultGroup;
+    if (typeof form.render.groups === "object") {
+      currentGroupName = form.render.groups.hasOwnProperty(
+        `${oneField.render?.group}`
+      )
+        ? oneField.render?.group ?? -1
+        : -1;
     }
-    const element = renderField(oneField, form?.render, form?.componentProps);
+    const element = renderMethod(
+      oneField,
+      form?.render,
+      form?.name,
+      form?.componentProps
+    );
     let currentGroup: RenderedFieldsType;
     currentGroup = groupWiseRenderer[currentGroupName];
     if (currentGroup === undefined) {
@@ -55,3 +67,7 @@ export const renderFieldsByGroup = (metaData: MetaDataType) => {
   }
   return groupWiseRenderer;
 };
+
+export const renderFieldsByGroup = renderByGroup(renderField);
+
+export const renderValuesByGroup = renderByGroup(renderValue);

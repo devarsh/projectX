@@ -20,6 +20,7 @@ export interface FormContextType {
   resetFieldOnUnmount?: boolean;
   initialValues?: InitialValuesType;
   validationSchema?: ObjectSchema;
+  formState: any;
 }
 
 export type FormFieldRegistryAtomType = string[];
@@ -44,6 +45,7 @@ export interface FormFieldAtomType {
   fieldKey: string;
   name: string;
   value: any;
+  displayValue: any;
   touched: boolean;
   error: string | null;
   validationRunning: boolean;
@@ -51,6 +53,8 @@ export interface FormFieldAtomType {
   readOnly: boolean;
   validate?: null | typeof ValidateFnType | EmptyFnType;
   incomingMessage?: any;
+  dependentFields?: string[] | string;
+  validationAPIResult?: any;
 }
 
 export interface DependentValuesType {
@@ -78,6 +82,7 @@ export interface UseFieldHookProps {
   isReadOnly?: typeof shouldExcludeFnType;
   postValidationSetCrossFieldValues?: typeof PostValidationSetCrossFieldValuesFnType;
   runPostValidationHookAlways?: boolean;
+  runValidationOnDependentFieldsChange?: boolean;
 }
 
 export interface UseFieldArrayHookProps {
@@ -91,15 +96,24 @@ export interface SubscritionFieldsType {
 
 export declare function shouldExcludeFnType(
   fieldData: FormFieldAtomType,
-  dependentFieldsValues: DependentValuesType
+  dependentFieldsValues: DependentValuesType,
+  formState: any
 ): Promise<boolean> | boolean;
 
+export declare function SchemaValidateFnType(
+  fieldData: FormFieldAtomType,
+  formState: any
+): Promise<any> | any;
+
 export declare function ValidateFnType(
-  data: FormFieldAtomType
+  fieldData: FormFieldAtomType,
+  dependentFieldsValues: DependentValuesType,
+  formState: any
 ): Promise<any> | any;
 
 export declare function PostValidationSetCrossFieldValuesFnType(
-  fieldData: FormFieldAtomType
+  fieldData: FormFieldAtomType,
+  formState: any
 ):
   | Promise<InitialValuesType | undefined | null>
   | InitialValuesType
@@ -112,7 +126,8 @@ export interface EmptyFnType {
 
 export interface SubmitFnType {
   (
-    obj: Object,
+    values: Object,
+    displayValues: Object,
     endSubmit: (submitSuccessful: boolean, message?: string) => void,
     setFieldErrors: (fieldsErrorObj: FieldsErrorObjType) => void
   ): void;

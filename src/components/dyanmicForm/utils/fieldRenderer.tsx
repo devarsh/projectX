@@ -1,10 +1,5 @@
 import { lazy, FC } from "react";
-
-import {
-  FormRenderConfigType,
-  ComponentTypeProps,
-  FieldMetaDataType,
-} from "../types";
+import { RenderFunctionType } from "../types";
 
 const CheckboxGroup = lazy(() =>
   import("components/common/checkbox").then((module) => ({
@@ -57,15 +52,17 @@ const ToggleButtonGroup = lazy(
 const NumberFormat = lazy(() => import("components/derived/numberFormat"));
 const PasswordField = lazy(() => import("components/derived/passwordField"));
 const InputMask = lazy(() => import("components/derived/inputMask"));
+const AutoComplete = lazy(() => import("components/common/autocomplete"));
 
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
 };
 
-export const renderField = (
-  fieldObj: FieldMetaDataType,
-  formRenderConfig: FormRenderConfigType,
-  componentProps: ComponentTypeProps
+export const renderField: RenderFunctionType = (
+  fieldObj,
+  formRenderConfig,
+  formName,
+  componentProps = {}
 ) => {
   const { render, schemaValidation, defaultValue, ...others } = fieldObj;
   let Component: any = null;
@@ -118,6 +115,9 @@ export const renderField = (
     case "inputMask":
       Component = InputMask;
       break;
+    case "autocomplete":
+      Component = AutoComplete;
+      break;
     case "spacer":
       Component = Spacer;
       break;
@@ -128,7 +128,7 @@ export const renderField = (
   if (Component === EmptyComponent) {
     return <Component componentType={render.componentType} />;
   } else if (Component === Spacer) {
-    return <Component key={others.name} {...others} />;
+    return <Component key={`${formName}/${others.name}`} {...others} />;
   } else {
     const currentComponentTypeProps = componentProps[render.componentType];
     const allProps = { ...currentComponentTypeProps, ...others };
@@ -140,7 +140,7 @@ export const renderField = (
       <Component
         {...allProps}
         fieldKey={others.name}
-        key={others.name}
+        key={`${formName}/${others.name}`}
         enableGrid={true}
         GridProps={{
           item: true,

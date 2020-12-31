@@ -17,6 +17,7 @@ import {
   AllSpacerProps,
   AllToggleButtonGroupProps,
   AllInputMaskProps,
+  AllAutocompleteProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -35,8 +36,9 @@ import {
   PasswordFieldPropsOptional,
   ToggleButtonGroupPropsOptional,
   InputMaskPropsOptional,
+  AutocompletePropsOptional,
 } from "./typesFields";
-import { To } from "history";
+import { Merge } from "components/common/types";
 
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";
@@ -46,7 +48,7 @@ export interface FormRenderConfigType {
     prev?: string;
     complete?: string;
   };
-  groups?: string[];
+  groups?: { [key: string]: string };
   gridConfig: {
     item?: {
       xs?: GridSize;
@@ -61,6 +63,11 @@ export interface FormRenderConfigType {
   };
 }
 
+export interface UserFlowType {
+  componentName: string;
+  sequence: number;
+}
+
 export interface FormMetaDataType {
   name: string;
   label: string;
@@ -68,8 +75,12 @@ export interface FormMetaDataType {
   validationRun: "onBlur" | "onChange" | "all";
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
-  navigation: {
-    nextPage: To;
+  flow?: UserFlowType[];
+  submitAction?: string;
+  refID?: string | number;
+  confirmationBox?: {
+    name: string;
+    label: string;
   };
 }
 
@@ -90,6 +101,7 @@ export interface ComponentTypeProps {
   passwordField?: PasswordFieldPropsOptional;
   toggleButtonGroup?: ToggleButtonGroupPropsOptional;
   inputMask?: InputMaskPropsOptional;
+  autocomplete?: AutocompletePropsOptional;
 }
 
 export interface MetaDataType {
@@ -97,7 +109,7 @@ export interface MetaDataType {
   fields: FieldMetaDataType[];
 }
 
-export type FieldMetaDataType =
+export type FieldMetaDataTypeX =
   | AllTextFieldProps
   | AllSelectFieldProps
   | AllCheckboxGroupProps
@@ -114,11 +126,18 @@ export type FieldMetaDataType =
   | AllPasswordFieldProps
   | AllToggleButtonGroupProps
   | AllSpacerProps
-  | AllInputMaskProps;
+  | AllInputMaskProps
+  | AllAutocompleteProps;
+
+export type FieldMetaDataType = Merge<
+  FieldMetaDataTypeX,
+  { template?: FieldMetaDataType[] }
+>;
 
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {
-  type: string;
+  type: "string" | "number" | "boolean" | "date" | "array";
+  arrayType?: "string" | "number" | "boolean" | "date";
   rules?: YupRulesType[];
 }
 
@@ -135,4 +154,43 @@ export interface RenderedFieldsType {
 
 export interface GroupWiseRenderedFieldsType {
   [key: string]: RenderedFieldsType;
+}
+
+export interface RouterState {
+  formCode?: string;
+  productCode?: string;
+}
+
+//This is to create custom types to extend base types
+
+export type FieldMetaDataTypeOptional =
+  | TextFieldPropsOptional
+  | SelectPropsOptional
+  | CheckboxPropsOptional
+  | CheckboxGroupPropsOptional
+  | DateTimePickerPropsOptional
+  | DatePickerPropsOptional
+  | TimePickerPropsOptional
+  | RadioPropsOptional
+  | RatingPropsOptional
+  | SliderPropsOptional
+  | SwitchPropsOptional
+  | SwitchGroupPropsOptional
+  | NumberFormatPropsOptional
+  | PasswordFieldPropsOptional
+  | ToggleButtonGroupPropsOptional
+  | InputMaskPropsOptional
+  | AutocompletePropsOptional;
+
+export type ExtendedFieldMetaDataTypeOptional = {
+  [key: string]: FieldMetaDataTypeOptional;
+};
+
+export interface RenderFunctionType {
+  (
+    fieldObj: FieldMetaDataType,
+    formRenderConfig: FormRenderConfigType,
+    formName: string,
+    componentProps?: ComponentTypeProps
+  ): JSX.Element;
 }

@@ -1,45 +1,45 @@
-import { FC, useState, memo, Fragment } from "react";
-import { FormContext } from "packages/form";
+import { FC } from "react";
+import DateFnsUtils from "@date-io/date-fns";
+import Container from "@material-ui/core/Container";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { FormContext, InitialValuesType, SubmitFnType } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
 import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
-import { MetaDataType } from "./types";
-import { StepperForm } from "./stepperForm";
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import Container from "@material-ui/core/Container";
-import { InitialValuesType } from "packages/form";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
-import { FormVerificationDialog } from "components/dyanmicForm/formVerificationDialog";
+import { extendFieldTypes } from "./utils/extendedFieldTypes";
+import { MoveSequenceToRender } from "./utils/fixSequenceInMetaData";
+import { MetaDataType } from "./types";
+import { GroupedForm } from "./groupedForms";
+import { SimpleForm } from "./simpleForm";
+import { extendedMetaData } from "./extendedTypes";
+
 interface FormWrapperProps {
   metaData: MetaDataType;
-  inititalValues?: InitialValuesType;
-  setShowDialog: Function;
-  setSubmitProps: Function;
+  initialValues?: InitialValuesType;
+  onSubmitHandler: SubmitFnType;
+  hidden?: boolean;
 }
 
-const FormWrapper: FC<FormWrapperProps> = ({
-  metaData,
-  inititalValues,
-  setShowDialog,
-  setSubmitProps,
+export const FormWrapper: FC<FormWrapperProps> = ({
+  metaData: freshMetaData,
+  initialValues,
+  onSubmitHandler,
+  hidden = false,
 }) => {
+  //this line is very important to preserve our metaData across render - deep clone hack
+  let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
+  metaData = extendFieldTypes(metaData, extendedMetaData);
   metaData = attachMethodsToMetaData(
     metaData,
     singletonFunctionRegisrationFactory
   );
+  metaData = MoveSequenceToRender(metaData);
   const groupWiseFields = renderFieldsByGroup(metaData);
-  const initValues = constructInitialValue(metaData.fields, inititalValues);
+  const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-  const onSubmitHandler = (values, submitEnd) => {
-    setSubmitProps(() => ({
-      values: values,
-      submitEnd: submitEnd,
-    }));
-    setShowDialog(true);
-  };
-
+  const formRenderType = metaData.form.render.renderType ?? "simple";
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <FormContext.Provider
@@ -49,51 +49,39 @@ const FormWrapper: FC<FormWrapperProps> = ({
           validationRun: metaData.form.validationRun,
           initialValues: initValues,
           validationSchema: yupValidationSchema,
+          formState: {
+            refID: metaData.form.refID,
+            formCode: metaData.form.name,
+          },
         }}
       >
-        <Container component="main">
-          <StepperForm
-            fields={groupWiseFields}
-            formRenderConfig={metaData.form.render}
-            formDisplayName={metaData.form.label}
-            formName={metaData.form.name}
-            submitFn={onSubmitHandler}
-          />
+        <Container
+          component="main"
+          style={{ display: hidden ? "none" : "block" }}
+        >
+          {formRenderType === "stepper" || formRenderType === "tabs" ? (
+            <GroupedForm
+              key={`${metaData.form.name}-grouped`}
+              fields={groupWiseFields}
+              formRenderConfig={metaData.form.render}
+              formDisplayName={metaData.form.label}
+              formName={metaData.form.name}
+              submitFn={onSubmitHandler}
+            />
+          ) : formRenderType === "simple" ? (
+            <SimpleForm
+              key={`${metaData.form.name}-simple`}
+              fields={groupWiseFields}
+              formRenderConfig={metaData.form.render}
+              formDisplayName={metaData.form.label}
+              formName={metaData.form.name}
+              submitFn={onSubmitHandler}
+            />
+          ) : (
+            <div>RenderType {formRenderType} not available</div>
+          )}
         </Container>
       </FormContext.Provider>
     </MuiPickersUtilsProvider>
-  );
-};
-
-const MemoizedFormWrapper = memo(FormWrapper);
-
-interface ParentFormWrapperProps {
-  metaData: MetaDataType;
-  inititalValues?: InitialValuesType;
-}
-
-export const ParentFormWrapper: FC<ParentFormWrapperProps> = ({
-  metaData,
-  inititalValues,
-}) => {
-  const [showDialog, setShowDialog] = useState(false);
-  const [submitProps, setSubmitProps] = useState({});
-  return (
-    <Fragment>
-      <MemoizedFormWrapper
-        metaData={metaData}
-        inititalValues={inititalValues}
-        setShowDialog={setShowDialog}
-        setSubmitProps={setSubmitProps}
-      />
-      {showDialog ? (
-        <FormVerificationDialog
-          isOpen={showDialog}
-          setShowDialog={setShowDialog}
-          submitProps={submitProps}
-          nextPagePath={metaData?.form?.navigation?.nextPage}
-        />
-      ) : null}
-    </Fragment>
   );
 };

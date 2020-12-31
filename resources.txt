@@ -26,3 +26,16 @@ https://gist.github.com/int128/e0cdec598c5b3db728ff35758abdbafd
 https://github.com/azmenak/material-ui-nested-menu-item
 https://codesandbox.io/s/material-ui-nested-menu-v2-s7szu?file=/src/Demo.js <3 so far
 https://codesandbox.io/s/material-ui-nested-menu-item-simpler-version-ginu9
+
+#Application sandboxing
+https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
+
+#IFRAME
+http://www.awongcm.io/blog/2018/11/25/using-iframes-api-to-toggle-client-side-routing-of-react-router-for-legacy-web-apps/
+https://christoshrousis.com/05-how-to-communicate-with-an-iframe-using-react-hooks/
+
+#CRA env variables
+https://medium.com/@adostes/using-environment-variables-in-a-react-application-ac3b6c307373
+
+#Multiple entry points CRA 
+https://blog.logrocket.com/multiple-entry-points-in-create-react-app-without-ejecting/

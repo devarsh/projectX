@@ -1,30 +1,29 @@
 import { FC, useEffect, useState, useRef, useCallback } from "react";
-import {
-  useField,
-  UseFieldHookProps,
-  DependentValuesType,
-} from "packages/form";
-
+import { useField, UseFieldHookProps } from "packages/form";
 import { SelectProps } from "@material-ui/core/Select";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import { OptionsProps, Merge } from "../types";
-
-interface dependentOptionsFn {
-  (optionsFn?: DependentValuesType): OptionsProps[] | Promise<OptionsProps[]>;
-}
+import CircularProgress, {
+  CircularProgressProps,
+} from "@material-ui/core/CircularProgress";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { Checkbox } from "components/styledComponent/checkbox";
+import { OptionsProps, Merge, dependentOptionsFn } from "../types";
+import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFieldProps extends UseFieldHookProps {
   options?: OptionsProps[] | dependentOptionsFn;
   multiple?: boolean;
+  showCheckbox?: boolean;
 }
 type MySelectProps = Merge<TextFieldProps, extendedFieldProps>;
 
 interface MySelectExtendedProps {
   MenuItemProps?: MenuItemProps;
   SelectProps?: SelectProps;
+  CircularProgressProps?: CircularProgressProps;
   GridProps?: GridProps;
   enableGrid: boolean;
 }
@@ -47,10 +46,13 @@ const MySelect: FC<MySelectAllProps> = ({
   GridProps,
   enableGrid,
   multiple,
+  showCheckbox,
   //@ts-ignore
   isFieldFocused,
   InputProps,
   inputProps,
+  CircularProgressProps,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -60,6 +62,7 @@ const MySelect: FC<MySelectAllProps> = ({
     handleChange,
     handleBlur,
     runValidation,
+    validationRunning,
     isSubmitting,
     fieldKey,
     name,
@@ -68,6 +71,7 @@ const MySelect: FC<MySelectAllProps> = ({
     incomingMessage,
     whenToRunValidation,
     readOnly,
+    formState,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -78,9 +82,10 @@ const MySelect: FC<MySelectAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
-
   const focusRef = useRef();
+  const [_options, setOptions] = useState<OptionsProps[]>([]);
   useEffect(() => {
     if (isFieldFocused) {
       setTimeout(() => {
@@ -89,85 +94,60 @@ const MySelect: FC<MySelectAllProps> = ({
       }, 1);
     }
   }, [isFieldFocused]);
-
-  const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const lastOptionsPromise = useRef<Promise<any> | null>(null);
-
-  const syncAsyncSetOptions = useCallback(
-    (options, dependentValues) => {
-      if (Array.isArray(options)) {
-        setOptions(options);
-      } else if (typeof options === "function") {
-        try {
-          setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(options(dependentValues));
-          lastOptionsPromise.current = currentPromise;
-          currentPromise
-            .then((result) => {
-              if (lastOptionsPromise.current === currentPromise) {
-                if (Array.isArray(result)) {
-                  setOptions(result);
-                } else {
-                  setOptions([{ label: "Couldn't fetch", value: null }]);
-                  console.log(
-                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-                  );
-                }
-              }
-            })
-            .catch((e) => {
-              setOptions([{ label: "Couldn't fetch", value: null }]);
-              console.log(`error occured while fetching options`, e?.message);
-            });
-        } catch (e) {
-          setOptions([{ label: "Couldn't fetch", value: null }]);
-          console.log(`error occured while fetching options`, e?.message);
-        }
-      }
-    },
-    [setOptions]
+  const getLabelFromValuesForOptions = useCallback(
+    (values) => getLabelFromValues(_options)(values),
+    [_options]
   );
 
-  useEffect(() => {
-    syncAsyncSetOptions(options, dependentValues);
-  }, [options, dependentValues, syncAsyncSetOptions]);
-
-  useEffect(() => {
-    if (incomingMessage !== null && typeof incomingMessage === "object") {
-      const { value, options } = incomingMessage;
-      if (Boolean(value)) {
-        handleChange(value);
-        if (whenToRunValidation === "onBlur") {
-          runValidation({ value: value }, true, true);
-        }
-      }
-      if (Array.isArray(options)) {
-        setOptions(options);
-      }
-    }
-  }, [
-    incomingMessage,
+  const handleChangeInterceptor = useCallback(
+    (e) => {
+      const value = typeof e === "object" ? e?.target?.value ?? "" : e;
+      let result = getLabelFromValuesForOptions(value);
+      result = multiple ? result : result[0];
+      handleChange(e, result as any);
+    },
+    [handleChange, getLabelFromValuesForOptions]
+  );
+  const { loadingOptions } = useOptionsFetcher(
+    formState,
+    options,
     setOptions,
-    handleChange,
+    handleChangeInterceptor,
+    dependentValues,
+    incomingMessage,
     runValidation,
-    whenToRunValidation,
-  ]);
+    whenToRunValidation
+  );
+
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
     return null;
   }
   const isError = touched && (error ?? "") !== "";
-  const menuItems = _options.map((menuItem, index) => (
-    // @ts-ignore
-    <MenuItem
-      {...MenuItemProps}
-      key={menuItem.value ?? index}
-      value={menuItem.value}
-    >
-      {menuItem.label}
-    </MenuItem>
-  ));
+  const menuItems = _options.map((menuItem, index) => {
+    return (
+      <MenuItem
+        {...MenuItemProps}
+        //keep button value to true else keyboard navigation for select will stop working
+        button={true}
+        key={menuItem.value ?? index}
+        value={menuItem.value}
+        disabled={menuItem.disabled}
+      >
+        {showCheckbox ? (
+          <Checkbox
+            checked={
+              Boolean(multiple)
+                ? Array.isArray(value) && value.indexOf(menuItem.value) >= 0
+                : value === menuItem.value
+            }
+          />
+        ) : null}
+        {menuItem.label}
+      </MenuItem>
+    );
+  });
   const result = (
     <TextField
       {...others}
@@ -178,22 +158,35 @@ const MySelect: FC<MySelectAllProps> = ({
       value={multiple && !Array.isArray(value) ? [value] : value}
       error={isError}
       helperText={isError ? error : null}
-      onChange={handleChange}
+      onChange={handleChangeInterceptor}
       onBlur={handleBlur}
       disabled={isSubmitting}
       SelectProps={{
         ...SelectProps,
+        native: false,
         multiple: multiple,
+        renderValue: multiple ? getLabelFromValues(_options, true) : undefined,
+        //@ts-ignore
       }}
       InputLabelProps={{
         shrink: true,
       }}
       inputRef={focusRef}
       InputProps={{
-        readOnly: readOnly,
+        endAdornment:
+          validationRunning || loadingOptions ? (
+            <InputAdornment position="end">
+              <CircularProgress
+                color="primary"
+                variant="indeterminate"
+                {...CircularProgressProps}
+              />
+            </InputAdornment>
+          ) : null,
         ...InputProps,
       }}
       inputProps={{
+        readOnly: readOnly,
         tabIndex: readOnly ? -1 : undefined,
         ...inputProps,
       }}

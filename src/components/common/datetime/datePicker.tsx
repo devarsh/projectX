@@ -37,6 +37,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   isFieldFocused,
   InputProps,
   inputProps,
+  runValidationOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -60,6 +61,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
 
   const focusRef = useRef();

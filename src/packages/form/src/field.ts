@@ -23,6 +23,8 @@ import {
   InitialValuesType,
   PostValidationSetCrossFieldValuesFnType,
   ValidateFnType,
+  SchemaValidateFnType,
+  DependentValuesType,
 } from "./types";
 import { FormContext } from "./context";
 import { getIn, yupReachAndValidate } from "./util";
@@ -37,6 +39,7 @@ export const useField = ({
   isReadOnly,
   postValidationSetCrossFieldValues,
   runPostValidationHookAlways,
+  runValidationOnDependentFieldsChange,
 }: UseFieldHookProps) => {
   //formContext provides formName for scoping of fields, and initialValue for the field
   const formContext = useContext(FormContext);
@@ -127,17 +130,35 @@ export const useField = ({
   //always enable and check  if we are not excluding any other field
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
+    const extractedFieldName = fieldData.name.replace(
+      `${formContext.formName}/`,
+      ""
+    );
     const wrappedValidation = wrapValidationMethod(
-      yupReachAndValidate(formContext.validationSchema, fieldData.name),
+      yupReachAndValidate(formContext.validationSchema, extractedFieldName),
       validate,
       postValidationSetCrossFieldValues,
       runPostValidationHookAlways
     );
     if (typeof wrappedValidation === "function") {
       isValidationFnRef.current = true;
-      setFieldData((currVal) => ({ ...currVal, validate: wrappedValidation }));
+      setFieldData((currVal) => ({
+        ...currVal,
+        validate: wrappedValidation,
+        dependentFields: dependentFields,
+      }));
+    } else {
+      setFieldData((currVal) => ({
+        ...currVal,
+        dependentFields: dependentFields,
+      }));
     }
-  }, [setFieldData, formContext.validationSchema, fieldData.name]);
+  }, [
+    setFieldData,
+    formContext.formName,
+    formContext.validationSchema,
+    fieldData.name,
+  ]);
 
   //Subscribe to cross fields values, provide an array of dependent field names,
   //this field will be rerendered when any of the provided dependent field's value updates.
@@ -159,40 +180,66 @@ export const useField = ({
       fields: dependentFields,
     })
   );
+  const dependentFieldsStateRef = useRef(dependentFieldsState);
+  dependentFieldsStateRef.current = dependentFieldsState;
+  useEffect(() => {
+    if (runValidationOnDependentFieldsChange === true) {
+      handleValidation(fieldData, dependentFieldsState, true);
+    }
+  }, [dependentFieldsState]);
+
   // this determine if the field should be excluded
+  const lastShouldExcludePromise = useRef<Promise<any> | null>(null);
+  const lastIsReadOnlyPromise = useRef<Promise<any> | null>(null);
   useEffect(() => {
     if (typeof shouldExclude === "function") {
-      let result = shouldExclude(fieldData, dependentFieldsState);
-      if (result === true && fieldData.excluded === false) {
-        setFieldData((old) => ({
-          ...old,
-          excluded: true,
-        }));
-        addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
-      } else if (result === false && fieldData.excluded === true) {
-        setFieldData((old) => ({
-          ...old,
-          excluded: false,
-        }));
-        addRemoveExcludedFields({ fieldName: fieldData.name, flag: "remove" });
-      }
+      const currentShouldExcludePromise = Promise.resolve(
+        shouldExclude(fieldData, dependentFieldsState, formContext.formState)
+      );
+      lastShouldExcludePromise.current = currentShouldExcludePromise;
+      currentShouldExcludePromise.then((result) => {
+        if (currentShouldExcludePromise === lastShouldExcludePromise.current) {
+          if (result === true && fieldData.excluded === false) {
+            setFieldData((old) => ({
+              ...old,
+              excluded: true,
+            }));
+            addRemoveExcludedFields({ fieldName: fieldData.name, flag: "add" });
+          } else if (result === false && fieldData.excluded === true) {
+            setFieldData((old) => ({
+              ...old,
+              excluded: false,
+            }));
+            addRemoveExcludedFields({
+              fieldName: fieldData.name,
+              flag: "remove",
+            });
+          }
+        }
+      });
     }
     if (typeof isReadOnly === "function") {
-      let result = isReadOnly(fieldData, dependentFieldsState);
-      if (result === true && fieldData.readOnly === false) {
-        setFieldData((old) => ({
-          ...old,
-          readOnly: true,
-        }));
-      } else if (result === false && fieldData.readOnly === true) {
-        setFieldData((old) => ({
-          ...old,
-          readOnly: true,
-        }));
-      }
+      const currentIsReadOnlyPromise = Promise.resolve(
+        isReadOnly(fieldData, dependentFieldsState, formContext.formState)
+      );
+      lastIsReadOnlyPromise.current = currentIsReadOnlyPromise;
+      currentIsReadOnlyPromise.then((result) => {
+        if (currentIsReadOnlyPromise === lastIsReadOnlyPromise.current) {
+          if (result === true && fieldData.readOnly === false) {
+            setFieldData((old) => ({
+              ...old,
+              readOnly: true,
+            }));
+          } else if (result === false && fieldData.readOnly === true) {
+            setFieldData((old) => ({
+              ...old,
+              readOnly: true,
+            }));
+          }
+        }
+      });
     }
   });
-
   const passCrossFieldMessage = useRecoilCallback(
     ({ snapshot, set }) => (fieldsObj: InitialValuesType) => {
       const fieldsLoadable = snapshot.getLoadable(
@@ -233,6 +280,7 @@ export const useField = ({
   const handleValidation = useCallback(
     (
       data: FormFieldAtomType,
+      dependentFieldsState: DependentValuesType,
       alwaysRun?: boolean,
       touchAndValidate?: boolean
     ) => {
@@ -247,15 +295,19 @@ export const useField = ({
         validationRunning: true,
       }));
       const currentPromise = Promise.resolve(
-        fieldDataRef.current.validate(data)
+        fieldDataRef.current.validate(
+          data,
+          dependentFieldsState,
+          formContext.formState
+        )
       );
       //@ts-ignore
       lastValidationValue.current = data.value;
       lastValidationPromise.current = currentPromise;
       currentPromise
         .then((result) => {
-          const { error, crossFieldMessages } = result;
           if (lastValidationPromise.current === currentPromise) {
+            const { error, crossFieldMessages, apiResult } = result;
             let finalResult;
             if (
               typeof error === "string" ||
@@ -273,6 +325,7 @@ export const useField = ({
                   ...old,
                   validationRunning: false,
                   error: finalResult,
+                  validationAPIResult: apiResult,
                 };
               });
             } else {
@@ -282,6 +335,7 @@ export const useField = ({
                   validationRunning: false,
                   touched: true,
                   error: finalResult,
+                  validationAPIResult: apiResult,
                 };
               });
             }
@@ -305,6 +359,7 @@ export const useField = ({
                   ...old,
                   validationRunning: false,
                   error: finalResult,
+                  validationAPIResult: err,
                 };
               });
             } else {
@@ -314,6 +369,7 @@ export const useField = ({
                   validationRunning: false,
                   touched: true,
                   error: finalResult,
+                  validationAPIResult: err,
                 };
               });
             }
@@ -325,6 +381,10 @@ export const useField = ({
   /**
    * End of validation Logic
    */
+  // //Run validation when dependent field changes
+  // useEffect(()=> {
+
+  // },[dependentFieldsState])
 
   const setTouched = useCallback(() => {
     setFieldData((currVal) => {
@@ -339,7 +399,7 @@ export const useField = ({
     });
   }, [setFieldData]);
   const setValue = useCallback(
-    (val: any, alwaysRun?: boolean) => {
+    (val: any, displayValue: any, alwaysRun?: boolean) => {
       if (!!alwaysRun === false) {
         setFieldData((currVal) => {
           if (currVal.value === val) {
@@ -348,6 +408,7 @@ export const useField = ({
             return {
               ...currVal,
               value: val,
+              displayValue: displayValue ?? val,
             };
           }
         });
@@ -356,6 +417,7 @@ export const useField = ({
           return {
             ...currVal,
             value: val,
+            displayValue: displayValue ?? val,
           };
         });
       }
@@ -367,31 +429,46 @@ export const useField = ({
       if (mergeObj) {
         handleValidation(
           { ...fieldDataRef.current, ...mergeObj },
+          dependentFieldsStateRef.current,
           alwaysRun,
           touchAndValidate
         );
       } else {
-        handleValidation(fieldDataRef.current, alwaysRun, touchAndValidate);
+        handleValidation(
+          fieldDataRef.current,
+          dependentFieldsStateRef.current,
+          alwaysRun,
+          touchAndValidate
+        );
       }
     },
     []
   );
 
   //handleChange will be responsible for setting fieldValue when will be passed as a props to the
-  //inputs, it can take event, date, number, string
+  //inputs, it can take event, date, number, string, boolean,
   //It will run validation if validationRun == 'onChange'
   const handleChange = useCallback(
     (
-      eventOrTextValue: React.ChangeEvent<any> | Date | string | number | any[]
+      eventOrTextValue:
+        | React.ChangeEvent<any>
+        | Date
+        | string
+        | number
+        | boolean
+        | any[],
+      displayValue?: Date | string | number | boolean | any[]
     ) => {
       if (fieldDataRef.current !== null) {
         eventOrTextValue = eventOrTextValue ?? "";
         let val = eventOrTextValue;
+        let displayVal = displayValue;
         if (
           !(
             eventOrTextValue instanceof Date ||
             typeof eventOrTextValue === "string" ||
             typeof eventOrTextValue === "number" ||
+            typeof eventOrTextValue === "boolean" ||
             Array.isArray(eventOrTextValue)
           )
         ) {
@@ -417,8 +494,16 @@ export const useField = ({
             : !!multiple
             ? getSelectedValues(options)
             : value;
+          displayVal = /checkbox/.test(type)
+            ? getValueForCheckbox(
+                fieldDataRef.current.displayValue ?? "00",
+                checked,
+                displayValue
+              )
+            : displayValue;
         }
-        setValue(val);
+
+        setValue(val, displayVal);
         if (
           isValidationFnRef.current &&
           (whenToRunValidation.current === "onChange" ||
@@ -448,6 +533,7 @@ export const useField = ({
 
   return {
     ...fieldData,
+    formState: formContext.formState,
     whenToRunValidation: whenToRunValidation.current,
     isSubmitting: formState.isSubmitting,
     handleChange,
@@ -513,7 +599,7 @@ function getSelectedValues(options: any[]) {
 
 //Need to rethink this API - its too messy
 function wrapValidationMethod(
-  schemaValidation?: typeof ValidateFnType,
+  schemaValidation?: typeof SchemaValidateFnType,
   validationFn?: typeof ValidateFnType,
   postValidationSetCrossFieldValuesFn?: typeof PostValidationSetCrossFieldValuesFnType,
   runPostValidationHookAlways?: boolean
@@ -527,23 +613,42 @@ function wrapValidationMethod(
   }
   const shouldRunAlways = Boolean(runPostValidationHookAlways);
   if (!shouldRunAlways) {
-    const wrapperFunction = async (field: any) => {
+    const wrapperFunction = async (
+      field: any,
+      dependentFieldsState: DependentValuesType,
+      formState: any
+    ) => {
       let errorMsg: any = null;
+      let apiResult: any = null;
+      let errorMsgObj: any = null;
       let crossFieldMessages: InitialValuesType | null | undefined;
       if (typeof schemaValidation === "function") {
-        errorMsg = await schemaValidation(field);
+        errorMsg = await schemaValidation(field, formState);
       }
       if (Boolean(errorMsg)) {
-        return { error: errorMsg };
+        return { error: errorMsg, crossFieldMessages: {}, apiResult };
       }
       if (typeof validationFn === "function") {
-        errorMsg = await validationFn(field);
+        errorMsgObj = await validationFn(
+          field,
+          dependentFieldsState,
+          formState
+        );
+        if (typeof errorMsgObj === "object") {
+          errorMsg = errorMsgObj.error;
+          apiResult = errorMsg.apiResult;
+        } else {
+          errorMsg = errorMsgObj;
+        }
       }
       if (Boolean(errorMsg)) {
-        return { error: errorMsg };
+        return { error: errorMsg, crossFieldMessages: {}, apiResult };
       }
       if (typeof postValidationSetCrossFieldValuesFn === "function") {
-        crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
+        crossFieldMessages = await postValidationSetCrossFieldValuesFn(
+          field,
+          formState
+        );
         if (
           crossFieldMessages === null ||
           crossFieldMessages === undefined ||
@@ -552,15 +657,24 @@ function wrapValidationMethod(
           crossFieldMessages = {};
         }
       }
-      return { error: errorMsg, crossFieldMessages };
+      return { error: errorMsg, crossFieldMessages, apiResult };
     };
     return wrapperFunction;
   } else {
-    const wrapperFunctionAlways = async (field: any) => {
+    const wrapperFunctionAlways = async (
+      field: any,
+      dependentFieldsState: DependentValuesType,
+      formState: any
+    ) => {
       let errorMsg: any = null;
+      let apiResult: any = null;
+      let errorMsgObj: any = null;
       let crossFieldMessages: InitialValuesType | null | undefined;
       if (typeof postValidationSetCrossFieldValuesFn === "function") {
-        crossFieldMessages = await postValidationSetCrossFieldValuesFn(field);
+        crossFieldMessages = await postValidationSetCrossFieldValuesFn(
+          field,
+          formState
+        );
         if (
           crossFieldMessages === null ||
           crossFieldMessages === undefined ||
@@ -570,15 +684,26 @@ function wrapValidationMethod(
         }
       }
       if (typeof schemaValidation === "function") {
-        errorMsg = await schemaValidation(field);
+        errorMsg = await schemaValidation(field, formState);
       }
       if (Boolean(errorMsg)) {
-        return { error: errorMsg, crossFieldMessages };
+        return { error: errorMsg, crossFieldMessages, apiResult };
       }
       if (typeof validationFn === "function") {
-        errorMsg = await validationFn(field);
+        errorMsgObj = await validationFn(
+          field,
+          dependentFieldsState,
+          formState
+        );
+        //to handle error type as object or string
+        if (typeof errorMsgObj === "object") {
+          errorMsg = errorMsgObj.error;
+          apiResult = errorMsgObj.apiResult;
+        } else {
+          errorMsg = errorMsgObj;
+        }
       }
-      return { error: errorMsg, crossFieldMessages };
+      return { error: errorMsg, crossFieldMessages, apiResult };
     };
     return wrapperFunctionAlways;
   }

@@ -1,5 +1,6 @@
-import { FC, useState, useRef, Suspense, cloneElement } from "react";
-import { useForm, SubmitFnType } from "packages/form";
+import { FC, useState, useRef, Suspense, cloneElement, Fragment } from "react";
+import { useRecoilValue } from "recoil";
+import { useForm, SubmitFnType, formFieldsExcludedAtom } from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -7,14 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
-import { formStyle, FormStyleProps, FormStyleNamesProps } from "./style";
-import { useRecoilValue } from "recoil";
-import { formFieldsExcludedAtom } from "packages/form";
-
-const useStyles = makeStyles<Theme, FormStyleProps>(formStyle);
-
+import { useStyles } from "./style";
 interface FormProps {
   fields: GroupWiseRenderedFieldsType;
   formRenderConfig: FormRenderConfigType;
@@ -30,16 +25,22 @@ export const StepperForm: FC<FormProps> = ({
   formName,
   submitFn,
 }) => {
+  const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
-  const classes: FormStyleNamesProps = useStyles({} as FormStyleProps);
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const { handleSubmit, handleSubmitPartial } = useForm({
     onSubmit: submitFn,
   });
-  const fieldGroups = useRef<string[]>(Object.keys(fields));
+  const fieldGroups = useRef<string[]>(Object.keys(fields).sort());
   const fieldGroupsActiveStatus = fieldGroups.current.map((one) => {
+    let groupName = defaultGroupName;
+    if (typeof formRenderConfig.groups === "object") {
+      groupName = formRenderConfig.groups[one];
+    }
     return {
-      name: one,
+      index: one,
+      name: groupName,
       status: isGroupExcluded(formName, fields[one].fieldNames, excludedFields),
     };
   });
@@ -47,11 +48,13 @@ export const StepperForm: FC<FormProps> = ({
   const handleNext = async () => {
     if (!isLastActiveStep(activeStep, fieldGroupsActiveStatus)) {
       const currentStep = fieldGroupsActiveStatus[activeStep];
-      const currentFieldsToValidate = fields[currentStep.name].fieldNames;
-      let isError = await handleSubmitPartial(currentFieldsToValidate);
-
-      isError = false;
-      if (!isError) {
+      const currentFieldsToValidate = fields[currentStep.index].fieldNames;
+      let hasError = await handleSubmitPartial(currentFieldsToValidate);
+      //In debug mode allow to move to next step without validating
+      if (process.env.REACT_APP_DEBUG_MODE === "true") {
+        hasError = false;
+      }
+      if (!hasError) {
         const nextStep = getNextActiveStep(activeStep, fieldGroupsActiveStatus);
         setActiveStep(nextStep);
       }
@@ -86,12 +89,12 @@ export const StepperForm: FC<FormProps> = ({
     (one) => one.status
   );
   return (
-    <div className={classes.paper}>
+    <Fragment>
       <Typography component="h3" className={classes.title}>
         {formDisplayName}
       </Typography>
       <div className={classes.form}>
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={activeStep} alternativeLabel>
           {filteredFieldGroups.map((field) => {
             return (
               <Step key={field.name}>
@@ -102,14 +105,20 @@ export const StepperForm: FC<FormProps> = ({
         </Stepper>
         <Box width={1} display="flex" justifyContent="flex-start">
           <Typography component="h4" className={classes.subTitle}>
-            {fieldGroups.current[activeStep]}
+            {typeof formRenderConfig.groups === "object"
+              ? formRenderConfig.groups[fieldGroups.current[activeStep]]
+              : defaultGroupName}
           </Typography>
         </Box>
         <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
 
         <Box width={1} display="flex" justifyContent="flex-end">
           {activeStep === 0 ? null : (
-            <Button type="button" onClick={handlePrev}>
+            <Button
+              type="button"
+              onClick={handlePrev}
+              className={classes.backBtn}
+            >
               {formRenderConfig?.labels?.prev ?? "Back"}
             </Button>
           )}
@@ -127,12 +136,12 @@ export const StepperForm: FC<FormProps> = ({
               className={classes.submit}
               onClick={handleSubmit}
             >
-              {formRenderConfig?.labels?.complete ?? "Complete"}
+              {formRenderConfig?.labels?.complete ?? "Submit"}
             </Button>
           )}
         </Box>
       </div>
-    </div>
+    </Fragment>
   );
 };
 
@@ -143,12 +152,12 @@ const isGroupExcluded = (
 ) => {
   const remaningFields = currentGroupFields.filter((fieldName) => {
     const fullFieldName = `${formName}/${fieldName}`;
-    return excludedFields.indexOf(fullFieldName) >= 0 ? true : false;
+    return excludedFields.indexOf(fullFieldName) >= 0 ? false : true;
   });
   if (remaningFields.length > 0) {
-    return false;
+    return true;
   }
-  return true;
+  return false;
 };
 
 const getNextActiveStep = (

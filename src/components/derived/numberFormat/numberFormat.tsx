@@ -1,23 +1,27 @@
 //remove this to support
 //number.toLocaleString('en-IN', { maximumFracationDigits:2, style:'currency', currency:'INR' })
-
 import NumberFormat, { NumberFormatProps } from "react-number-format";
 import { TextField, TextFieldProps } from "components/common/textField";
 import { Merge } from "components/common/types";
 
 export function NumberFormatCustom(props) {
   const { inputRef, onChange, FormatProps, ...other } = props;
+
   return (
     <NumberFormat
       {...other}
       getInputRef={inputRef}
       onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
+        onChange(
+          {
+            target: {
+              name: props.name,
+              value: values.value,
+              formattedValue: values.formattedValue,
+            },
           },
-        });
+          values.formattedValue
+        );
       }}
       {...FormatProps}
     />

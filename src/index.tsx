@@ -1,15 +1,34 @@
+import { useState } from "react";
 import ReactDOM from "react-dom";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
-//import "api";
-import App from "./app";
-//import App from "pages/header/header";
+import CRM from "app/crm";
+import LOS from "app/los";
+require("dotenv").config();
+require("mock");
+// let App;
+// if (process.env.REACT_APP_ENTRY_POINT === "crm") {
+//   App = CRM;
+// } else {
+//   App = LOS;
+// }
 
-//import App from "packages/form/examples/01-basic";
+const Picker = () => {
+  const [app, setApp] = useState("");
 
-ReactDOM.render(<App />, document.getElementById("root"));
+  return app === "CRM" ? (
+    <CRM />
+  ) : app === "LOS" ? (
+    <LOS />
+  ) : (
+    <>
+      <button onClick={() => setApp("CRM")}>CRM</button>
+      <button onClick={() => setApp("LOS")}>LOS</button>
+    </>
+  );
+};
 
-//import "components/dyanmicForm/utils";
+ReactDOM.render(<Picker />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

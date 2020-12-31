@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback, useState } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
 import FormGroup, { FormGroupProps } from "@material-ui/core/FormGroup";
@@ -11,7 +11,12 @@ import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
 import Grid, { GridProps } from "@material-ui/core/Grid";
+import CircularProgress, {
+  CircularProgressProps,
+} from "@material-ui/core/CircularProgress";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { Merge, OptionsProps } from "../types";
+import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[];
@@ -28,6 +33,7 @@ interface MySwitchExtendedProps {
   FormHelperTextProps?: FormHelperTextProps;
   GridProps?: GridProps;
   enableGrid: boolean;
+  CircularProgressProps?: CircularProgressProps;
 }
 
 export type MySwitchGroupAllProps = Merge<
@@ -46,6 +52,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
   shouldExclude,
   isReadOnly,
   postValidationSetCrossFieldValues,
+  runValidationOnDependentFieldsChange,
   runPostValidationHookAlways,
   dependentFields,
   fieldKey: fieldID,
@@ -58,9 +65,11 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
   FormControlLabelProps,
   GridProps,
   enableGrid,
+  CircularProgressProps,
   ...others
 }) => {
   const {
+    formState,
     value,
     error,
     touched,
@@ -71,6 +80,10 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     name,
     excluded,
     readOnly,
+    dependentValues,
+    incomingMessage,
+    runValidation,
+    whenToRunValidation,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -81,12 +94,38 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     postValidationSetCrossFieldValues,
     isReadOnly,
     shouldExclude,
+    runValidationOnDependentFieldsChange,
   });
+  const [_options, setOptions] = useState<OptionsProps[]>([]);
+  const getLabelFromValuesForOptions = useCallback(
+    (values) => getLabelFromValues(_options)(values),
+    [_options]
+  );
+
+  const handleChangeInterceptor = useCallback(
+    (e) => {
+      const value = typeof e === "object" ? e?.target?.value ?? "" : e;
+      let result = getLabelFromValuesForOptions(value);
+      handleChange(e, result[0] as any);
+    },
+    [handleChange, getLabelFromValuesForOptions]
+  );
+  const { loadingOptions } = useOptionsFetcher(
+    formState,
+    options,
+    setOptions,
+    handleChangeInterceptor,
+    dependentValues,
+    incomingMessage,
+    runValidation,
+    whenToRunValidation
+  );
+
   if (excluded) {
     return null;
   }
   const isError = touched && (error ?? "") !== "";
-  const switches = options.map((oneSwitch) => (
+  const switches = _options.map((oneSwitch) => (
     <FormControlLabel
       {...FormControlLabelProps}
       control={
@@ -98,7 +137,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
       }
       key={oneSwitch.value}
       name={name}
-      onChange={handleChange}
+      onChange={handleChangeInterceptor}
       label={oneSwitch.label}
       value={oneSwitch.value}
       checked={valueExists(value, oneSwitch.value)}
@@ -117,7 +156,19 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
       <FormLabel {...FormLabelProps} component="label">
         {label}
       </FormLabel>
-      <FormGroup {...FormGroupProps}>{switches}</FormGroup>
+      <FormGroup {...FormGroupProps}>
+        {loadingOptions ? (
+          <InputAdornment position="end">
+            <CircularProgress
+              color="primary"
+              variant="indeterminate"
+              {...CircularProgressProps}
+            />
+          </InputAdornment>
+        ) : (
+          switches
+        )}
+      </FormGroup>
       {isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
