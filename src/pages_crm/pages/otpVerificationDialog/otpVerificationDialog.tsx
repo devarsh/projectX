@@ -25,24 +25,16 @@ const reducer = (state, action) => {
     case "fields":
       return {
         ...state,
-        [action.fieldName]: action?.payload,
+        otp: action?.payload,
       };
-    case "startOTPVerification":
+    case "startOTPRequest":
       return {
         ...state,
         currentScreen: "welcomeOTPVerification",
         error: "",
         loading: true,
       };
-    case "endOTPSendAndVerificationFailure": {
-      return {
-        ...state,
-        currentScreen: "welcomeOTPVerification",
-        loading: false,
-        error: action?.payload?.error,
-      };
-    }
-    case "endOTPSendSuccess":
+    case "endOTPRequestSuccess":
       return {
         ...state,
         currentScreen: "welcomeOTPVerification",
@@ -51,6 +43,36 @@ const reducer = (state, action) => {
         transactionID: action?.payload?.transactionId,
         error: action?.payload?.error,
       };
+    case "endOTPRequestFailure": {
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        error: action?.payload?.error,
+      };
+    }
+    case "startOTPVerification":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        error: "",
+        loading: true,
+      };
+    case "endOTPVerificationSuccess":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        error: action?.payload?.error,
+      };
+    case "endOTPVerificationFailure":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        error: action?.payload?.error,
+      };
+
     default:
       return state;
   }
@@ -73,12 +95,15 @@ export const OtpVerificationPage = ({}) => {
   const trimmedOTPLengthMsg = "Otp must be of 6 characters long";
 
   useEffect(() => {
+    dispatch({
+      type: "startOTPRequest",
+    });
     if (flowExist) {
       APISDK.requestOTP(refID).then((result) => {
         if (result.status === "success") {
           const { mobileNo, transactionId } = result.data;
           dispatch({
-            type: "endOTPSendSuccess",
+            type: "endOTPRequestSuccess",
             payload: {
               mobileNo,
               transactionId,
@@ -86,7 +111,7 @@ export const OtpVerificationPage = ({}) => {
           });
         } else {
           dispatch({
-            type: "endOTPSendAndVerificationFailure",
+            type: "endOTPRequestFailure",
             payload: {
               error: "An unknown error occured, kindly reach raatnafin team",
             },
@@ -99,9 +124,12 @@ export const OtpVerificationPage = ({}) => {
   }, []);
 
   const verifyOTP = () => {
+    dispatch({
+      type: "startOTPVerification",
+    });
     if (!Boolean(trimmedOTP)) {
       dispatch({
-        type: "endOTPSendAndVerificationFailure",
+        type: "endOTPVerificationFailure",
         payload: {
           error: "This is a required Field",
         },
@@ -110,7 +138,7 @@ export const OtpVerificationPage = ({}) => {
     }
     if (!trimmedOTPLengthValid) {
       dispatch({
-        type: "endOTPSendAndVerificationFailure",
+        type: "endOTPVerificationFailure",
         payload: {
           error: trimmedOTPLengthMsg,
         },
@@ -129,7 +157,7 @@ export const OtpVerificationPage = ({}) => {
       } else {
         const { message } = result.data;
         dispatch({
-          type: "endOTPSendAndVerificationFailure",
+          type: "endOTPVerificationFailure",
           payload: {
             error: message ?? "An Unknown error occured",
           },
@@ -141,7 +169,8 @@ export const OtpVerificationPage = ({}) => {
   let result = (
     <>
       <Typography>Verify OTP </Typography>
-      {state.currentScreen === "welcomeOTPVerification" ? (
+      {state.currentScreen === "welcomeOTPVerification" ||
+      state.maskedMobileNo.trim() !== "" ? (
         <>
           <Typography>
             OTP has been sent to your mobile number ending with:
