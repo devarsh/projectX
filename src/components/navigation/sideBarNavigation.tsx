@@ -10,16 +10,16 @@ import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavBarType, NavItemType } from "pages_crm/header/types";
-import { useStyles } from "./style";
+import { NavItemType, SideBarRendererType } from "./types";
+import { useStylesSideBar } from "./style";
 import ScrollBar from "react-perfect-scrollbar";
 
-export const SideBar: FC<{
-  metaData: NavBarType;
-  classes: ReturnType<typeof useStyles>;
-  handleDrawerOpen: Function;
-  drawerOpen: boolean;
-}> = ({ metaData, classes, handleDrawerOpen, drawerOpen }) => {
+export const SideBarNav: FC<SideBarRendererType> = ({
+  metaData,
+  handleDrawerOpen,
+  drawerOpen,
+}) => {
+  const classes = useStylesSideBar();
   let result: JSX.Element[] | null = null;
   if (Array.isArray(metaData.navItems)) {
     result = metaData.navItems.map((one) => {
@@ -55,7 +55,7 @@ export const SideBar: FC<{
 
 const SingleListItem: FC<{
   item: NavItemType;
-  classes: ReturnType<typeof useStyles>;
+  classes: ReturnType<typeof useStylesSideBar>;
   level: number;
 }> = ({ item, classes, level }) => {
   const navigate = useNavigate();
@@ -78,7 +78,9 @@ const SingleListItem: FC<{
       onClick={(e) => {
         e.preventDefault();
         if (item.isRouterLink) {
-          navigate(item.href as string);
+          navigate(item.href as string, {
+            state: { ...item?.navigationProps },
+          });
         } else if (Boolean(item.href)) {
           window.open(item.href, item.rel ?? "_newtab");
         }
@@ -95,7 +97,7 @@ const SingleListItem: FC<{
 
 const NestedListItem: FC<{
   item: NavItemType;
-  classes: ReturnType<typeof useStyles>;
+  classes: ReturnType<typeof useStylesSideBar>;
   level: number;
   handleDrawerOpen: Function;
   drawerOpen: boolean;

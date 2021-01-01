@@ -1,11 +1,11 @@
 import { UserFlowType } from "components/dyanmicForm";
 
 const flowComponentPathMapping = {
-  OTP: { url: "/otp" },
-  Aadhar: { url: "/aadhar" },
-  Equifax: { url: "/equifax" },
-  ThankyouAndContinue: { url: "/thankyou", continue: true },
-  Thankyou: { url: "/thankyou" },
+  OTP: { url: "./otp" },
+  Aadhar: { url: "./aadhar" },
+  Equifax: { url: "./equifax" },
+  ThankyouAndContinue: { url: "./thankyou", continue: true },
+  Thankyou: { url: "./thankyou" },
 };
 
 export const navigationFlowDecisionMaker = (

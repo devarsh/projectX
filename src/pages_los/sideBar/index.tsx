@@ -1,17 +1,15 @@
 import { FC } from "react";
 import { metaData } from "./metaData";
-import { SideBar } from "./renderer";
+import { SideBarNav } from "components/navigation/sideBarNavigation";
 import "./icons";
-import { useStyles } from "./style";
+
 export const MySideBar: FC<{
   handleDrawerOpen: Function;
   open: boolean;
 }> = ({ handleDrawerOpen, open }) => {
-  const classes = useStyles();
   return (
-    <SideBar
+    <SideBarNav
       metaData={metaData}
-      classes={classes}
       handleDrawerOpen={handleDrawerOpen}
       drawerOpen={open}
     />

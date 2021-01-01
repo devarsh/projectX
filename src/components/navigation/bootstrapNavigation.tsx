@@ -22,17 +22,17 @@ import {
   DropdownItem,
   Dropdown,
 } from "reactstrap";
-import { NavItemType, NavBarType } from "./types";
-import { useStyles } from "./style";
+import {
+  NavItemType,
+  NavBarMetaDataType,
+  NestedNavItemProps,
+  NavRendererType,
+} from "./types";
+import { useStylesBootstrapNav } from "./style";
 import { useNavigate } from "react-router-dom";
 import { isValidElementType } from "react-is";
 
-export interface NavRendererType {
-  metaData: NavBarType;
-  classes: ReturnType<typeof useStyles>;
-}
-
-export const overrideMetaData = (metaData: NavBarType) => {
+export const overrideMetaData = (metaData: NavBarMetaDataType) => {
   if (Array.isArray(metaData.navItems)) {
     return metaData.navItems.map((one) => {
       let result = one;
@@ -71,7 +71,8 @@ const RenderLabel: FC<{ one: NavItemType }> = ({ one }) => {
   );
 };
 
-export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
+export const BootstrapNav: FC<NavRendererType> = ({ metaData }) => {
+  const classes = useStylesBootstrapNav();
   const navigate = useNavigate();
   const newMetaData = overrideMetaData({ ...metaData });
   let result;
@@ -88,7 +89,7 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
                   e.preventDefault();
                   if (item.href !== undefined) {
                     navigate(item.href, {
-                      state: { ...item.navigationProps },
+                      state: { ...item?.navigationProps },
                     });
                   }
                 }}
@@ -109,12 +110,6 @@ export const NavRenderer: FC<NavRendererType> = ({ metaData, classes }) => {
   }
   return result;
 };
-
-export interface NestedNavItemProps {
-  item: NavItemType;
-  classes: ReturnType<typeof useStyles>;
-  direction?: string;
-}
 
 const NestedNavItem: FC<NestedNavItemProps> = ({
   item,

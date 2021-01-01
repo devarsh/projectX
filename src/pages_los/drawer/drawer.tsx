@@ -1,15 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
-import Logo from "assets/images/logo.svg";
-
 import Divider from "@material-ui/core/Divider";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
+import Logo from "assets/images/logo.svg";
 
 import { useStyles } from "./style";
 
 export const MyDrawer = ({ open, handleDrawerClose, children }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
   return (
     <Drawer
       variant="permanent"
@@ -19,7 +20,13 @@ export const MyDrawer = ({ open, handleDrawerClose, children }) => {
       open={open}
     >
       <div className={classes.toolbarIcon}>
-        <a href="/">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("./");
+          }}
+        >
           <img src={Logo} alt="Ratnaafin" className={classes.logo} />
         </a>
         <IconButton onClick={handleDrawerClose}>

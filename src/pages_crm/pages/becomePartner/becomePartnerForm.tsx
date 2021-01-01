@@ -1,10 +1,7 @@
 import { memo, Fragment, FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { APISDK } from "registry/fns/sdk";
-import FormWrapper, {
-  isMetaDataValid,
-  MetaDataType,
-} from "components/dyanmicForm";
+import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { InitialValuesType } from "packages/form";
 import { becomePartnerMetaData } from "./metaData";
 
@@ -21,14 +18,14 @@ const BecomePartnerForm: FC<BecomePartnerFormProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const onSubmitHandler = async (values, submitEnd) => {
+  const onSubmitHandler = async (values, _, submitEnd) => {
     const data = await APISDK.submitBecomePartnerData(
       metaData.form.submitAction ?? "",
       values
     );
     if (data.status === "success") {
       submitEnd(true);
-      navigate("/thankyou");
+      navigate("./thankyou");
     } else {
       //Todo: Need to set server error received in API
       submitEnd(false, "Error submitting form");

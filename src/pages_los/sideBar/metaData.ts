@@ -1,6 +1,6 @@
-import { NavBarType } from "pages_crm/header/types";
+import { NavBarMetaDataType } from "components/navigation";
 
-export const metaData: NavBarType = {
+export const metaData: NavBarMetaDataType = {
   config: {
     rel: "noopener noreferrer",
     target: "_blank",
@@ -8,7 +8,7 @@ export const metaData: NavBarType = {
   navItems: [
     {
       label: "Dashboard",
-      href: "/dashboard",
+      href: "./dashboard",
       isRouterLink: true,
       icon: "hashtag",
     },
@@ -18,31 +18,31 @@ export const metaData: NavBarType = {
       children: [
         {
           label: "Inquiries",
-          href: "/leads",
+          href: "./leads",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "CAM",
-          href: "/cam",
+          href: "./cam",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Customer Interaction",
-          href: "/pages/customer-interaction",
+          href: "./pages/customer-interaction",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Mandate Status",
-          href: "/pages/mandate-status",
+          href: "./pages/mandate-status",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Documents",
-          href: "/pages/documents",
+          href: "./pages/documents",
           isRouterLink: true,
           icon: "circle",
         },
@@ -50,7 +50,7 @@ export const metaData: NavBarType = {
     },
     {
       label: "Customers",
-      href: "/pages/customers",
+      href: "./pages/customers",
       isRouterLink: true,
       icon: "users",
     },
@@ -61,30 +61,30 @@ export const metaData: NavBarType = {
         {
           label: "Retail",
           isRouterLink: true,
-          href: "/pages/retail",
+          href: "./pages/retail",
           icon: "circle",
         },
         {
           label: "SME",
-          href: "/pages/sme",
+          href: "./pages/sme",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Infra",
-          href: "/pages/infra",
+          href: "./pages/infra",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Unsecured",
-          href: "/pages/unsecured",
+          href: "./pages/unsecured",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Channel Finance",
-          href: "/pages/channel-fianance",
+          href: "./pages/channel-fianance",
           isRouterLink: true,
           icon: "circle",
         },
@@ -263,25 +263,25 @@ export const metaData: NavBarType = {
 
     {
       label: "Partners",
-      href: "/pages/partners",
+      href: "./pages/partners",
       isRouterLink: true,
       icon: "users-cog",
     },
     {
       label: "Employees",
-      href: "/pages/employees",
+      href: "./pages/employees",
       isRouterLink: true,
       icon: "users-cog",
     },
     {
       label: "Profile",
-      href: "/profile",
+      href: "./profile",
       isRouterLink: true,
       icon: "user-circle",
     },
     {
       label: "Settings",
-      href: "/pages/settings",
+      href: "./pages/settings",
       isRouterLink: true,
       icon: "cog",
     },

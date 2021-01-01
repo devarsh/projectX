@@ -1,5 +1,5 @@
 import { useState, Fragment } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
@@ -32,6 +32,7 @@ const DashbordPages = () => {
         </Drawer>
         <Content>
           <Routes>
+            <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
@@ -43,6 +44,7 @@ const DashbordPages = () => {
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />
+            <Route path="/auth" element={<Login />} />
           </Routes>
         </Content>
       </div>
@@ -50,18 +52,13 @@ const DashbordPages = () => {
   );
 };
 
-const IndexPage = () => {
-  return (
-    <Fragment>
-      <Routes>
-        <Route path="/*" element={<DashbordPages />} />
-        <Route path="/auth" element={<Login />} />
-      </Routes>
-    </Fragment>
-  );
-};
+export default DashbordPages;
 
-export default IndexPage;
+const RedirectComponent = () => {
+  const navigate = useNavigate();
+  setTimeout(() => navigate("./dashboard"), 1);
+  return null;
+};
 
 function Dummy() {
   // We can use the `useParams` hook here to access
