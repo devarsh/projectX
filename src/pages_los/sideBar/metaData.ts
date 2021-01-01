@@ -1,6 +1,6 @@
-import { NavBarType } from "pages_crm/header/types";
+import { NavBarMetaDataType } from "components/navigation";
 
-export const metaData: NavBarType = {
+export const metaData: NavBarMetaDataType = {
   config: {
     rel: "noopener noreferrer",
     target: "_blank",
