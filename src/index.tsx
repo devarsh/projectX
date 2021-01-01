@@ -12,8 +12,9 @@ require("dotenv").config();
 require("mock");
 
 const Redirect = () => {
+  console.log("redirecting...");
   const navigate = useNavigate();
-  navigate("/crm/*");
+  setTimeout(() => navigate("crm/"), 1);
   return null;
 };
 
@@ -25,7 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/los/*" element={<LOS />} />
           <Route path="/crm/*" element={<CRM />} />
-          <Route path="/" element={<Redirect />} />
+          <Route path="*" element={<Redirect />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
