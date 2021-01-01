@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GridMetaDataType } from "./types";
 import {
   attachComponentsToMetaData,
@@ -75,9 +75,7 @@ const transformMetaData = (
   );
   if (metaData.headerFilters !== undefined) {
     const filters = transformHeaderFiltersNew(metaData.headerFilters);
-    console.log(filters);
   }
-
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,

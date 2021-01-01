@@ -114,6 +114,11 @@ export const GirdController: FC<{
       totalRecords={totalRecords}
       pageSizes={metaData.gridConfig?.pageSize}
       defaultPageSize={metaData.gridConfig?.defaultPageSize}
+      allowColumnReorder={metaData.gridConfig?.allowColumnReorder ?? false}
+      allowColumnHiding={metaData.gridConfig?.allowColumnHiding ?? false}
+      allowKeyboardNavigation={
+        metaData.gridConfig?.allowKeyboardNavigation ?? false
+      }
     />
   );
 };
