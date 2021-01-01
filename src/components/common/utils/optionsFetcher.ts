@@ -13,6 +13,9 @@ export const useOptionsFetcher = (
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
   const [loadingOptions, setLoadingOptions] = useState(false);
 
+  //formState value mutates causing this component to rerender, need to fix
+  //for now we wont pass form state as depedency and fix it but needs investigation why this
+  //is happening
   const syncAsyncSetOptions = useCallback(
     (options, dependentValues) => {
       if (Array.isArray(options)) {
@@ -51,8 +54,14 @@ export const useOptionsFetcher = (
         }
       }
     },
-    [setOptions, formState]
+    [setOptions]
   );
+  const values = useRef({
+    options,
+    dependentValues,
+    syncAsyncSetOptions,
+    formState,
+  });
   useEffect(() => {
     syncAsyncSetOptions(options, dependentValues);
   }, [options, dependentValues, syncAsyncSetOptions]);

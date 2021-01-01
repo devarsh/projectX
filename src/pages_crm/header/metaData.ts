@@ -1,7 +1,7 @@
-import { NavBarType } from "./types";
+import { NavBarMetaDataType } from "components/navigation";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
-export const siteNav: NavBarType = {
+export const siteNav: NavBarMetaDataType = {
   config: {
     rel: "noopener noreferrer",
     target: "_blank",
@@ -114,7 +114,7 @@ export const siteNav: NavBarType = {
   ],
 };
 
-export const formsNav: NavBarType = {
+export const formsNav: NavBarMetaDataType = {
   config: {
     rel: "noopener noreferrer",
     target: "_blank",
@@ -128,7 +128,7 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "Retail Home Loan",
-              href: "/form/rhl",
+              href: "./form/rhl",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -139,7 +139,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "Retail LAP (Loan Against Property)",
-              href: "/form/lap",
+              href: "./form/lap",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -150,7 +150,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "Retail LRD (Lease Rental Discount)",
-              href: "/form/ldr",
+              href: "./form/ldr",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -161,7 +161,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "Retail APF",
-              href: "/form/apf",
+              href: "./form/apf",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -177,7 +177,7 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "SME CC/OD",
-              href: "/form/sme",
+              href: "./form/sme",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -188,7 +188,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "SME Term Loan",
-              href: "/form/sme",
+              href: "./form/sme",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -199,7 +199,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "SME Term Loan + CC/OD",
-              href: "/form/sme",
+              href: "./form/sme",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -210,7 +210,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "SME NFB (Non Fund Base)",
-              href: "/form/sme",
+              href: "./form/sme",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -221,7 +221,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "SME LAP (Loan Against Property)",
-              href: "/form/sme",
+              href: "./form/sme",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -232,7 +232,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "SME CGTMSE",
-              href: "/form/sme",
+              href: "./form/sme",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -248,7 +248,7 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "Construction Finance",
-              href: "/form/infra",
+              href: "./form/infra",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -259,7 +259,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "Infrastructure Finance",
-              href: "/form/infra",
+              href: "./form/infra",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -275,7 +275,7 @@ export const formsNav: NavBarType = {
           children: [
             {
               label: "Business Loan",
-              href: "/form/business",
+              href: "./form/business",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -286,7 +286,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "Personal Loan",
-              href: "/form/personal",
+              href: "./form/personal",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {
@@ -297,7 +297,7 @@ export const formsNav: NavBarType = {
             },
             {
               label: "School Fee Funding",
-              href: "/form/schoolFee",
+              href: "./form/schoolFee",
               isRouterLink: true,
               navigationProps: {
                 metaProps: {

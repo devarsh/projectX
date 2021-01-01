@@ -117,6 +117,9 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
 
   const endSubmit = useRecoilCallback(
     ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {
+      if (typeof message !== "string") {
+        message = "";
+      }
       set(formAtom(formContext.formName), (currVal) => ({
         ...currVal,
         isSubmitting: false,

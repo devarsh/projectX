@@ -78,7 +78,7 @@ export const AadharVerification = () => {
     nextURL,
     nextFlowNavigationProps,
     fallbackURL,
-  ] = useNavigationFlow(location, "/thankyou");
+  ] = useNavigationFlow(location, "./thankyou");
 
   useEffect(() => {
     return () => {

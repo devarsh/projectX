@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -10,14 +10,76 @@ import { APISDK } from "registry/fns/sdk";
 import { useStyles } from "./style";
 import { useNavigationFlow } from "../utils/navHelpers";
 
+const initialState = {
+  currentScreen: "welcomeOTPVerification",
+  otp: "",
+  loading: false,
+  error: "",
+  transactionID: "",
+  verificationSuccessful: false,
+  maskedMobileNo: "",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "updateOTP":
+      return {
+        ...state,
+        otp: action?.payload,
+      };
+    case "startOTPRequest":
+      return {
+        ...state,
+        error: "",
+        loading: true,
+      };
+    case "endOTPRequestSuccess":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        maskedMobileNo: action?.payload?.mobileNo,
+        transactionID: action?.payload?.transactionId,
+        error: "",
+      };
+    case "endOTPRequestFailure": {
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        error: action?.payload?.error,
+      };
+    }
+    case "startOTPVerification":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: true,
+      };
+    case "endOTPVerificationSuccess":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        error: "",
+      };
+    case "endOTPVerificationFailure":
+      return {
+        ...state,
+        currentScreen: "welcomeOTPVerification",
+        loading: false,
+        error: action?.payload?.error,
+      };
+
+    default:
+      return state;
+  }
+};
+
 export const OtpVerificationPage = ({}) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
   const location = useLocation();
-  const [otp, setOtp] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [maskedMobileNo, setMaskedMobileNo] = useState("");
-  const [transactionID, setTransactionID] = useState("");
   const classes = useStyles();
   const [
     flowExist,
@@ -26,20 +88,32 @@ export const OtpVerificationPage = ({}) => {
     nextFlowNavigationProps,
     fallbackURL,
   ] = useNavigationFlow(location, "/thankyou");
-  const trimmedOTP = otp.trim();
+  const trimmedOTP = state.otp.trim();
   const trimmedOTPLengthValid = trimmedOTP.length === 6;
   const trimmedOTPLengthMsg = "Otp must be of 6 characters long";
 
   useEffect(() => {
+    dispatch({
+      type: "startOTPRequest",
+    });
     if (flowExist) {
       APISDK.requestOTP(refID).then((result) => {
         if (result.status === "success") {
           const { mobileNo, transactionId } = result.data;
-          setMaskedMobileNo(mobileNo ?? "");
-          setTransactionID(transactionId ?? "");
+          dispatch({
+            type: "endOTPRequestSuccess",
+            payload: {
+              mobileNo,
+              transactionId,
+            },
+          });
         } else {
-          setError("An unknown error occured, kindly reach raatnafin team");
-          setLoading(false);
+          dispatch({
+            type: "endOTPRequestFailure",
+            payload: {
+              error: "An unknown error occured, kindly reach raatnafin team",
+            },
+          });
         }
       });
     } else {
@@ -48,24 +122,47 @@ export const OtpVerificationPage = ({}) => {
   }, []);
 
   const verifyOTP = () => {
+    dispatch({
+      type: "startOTPVerification",
+    });
     if (!Boolean(trimmedOTP)) {
-      setError("This is a required Field");
+      dispatch({
+        type: "endOTPVerificationFailure",
+        payload: {
+          error: "This is a required Field",
+        },
+      });
       return;
     }
     if (!trimmedOTPLengthValid) {
-      setError(trimmedOTPLengthMsg);
+      dispatch({
+        type: "endOTPVerificationFailure",
+        payload: {
+          error: trimmedOTPLengthMsg,
+        },
+      });
       return;
     }
-    setLoading(true);
-    APISDK.verifyOTP(refID, transactionID, trimmedOTP).then((result) => {
+    dispatch({
+      type: "startOTPVerification",
+    });
+    APISDK.verifyOTP(refID, state.transactionID, trimmedOTP).then((result) => {
       if (result.status === "success") {
-        setError("");
-        setLoading(false);
+        dispatch({
+          type: "endOTPVerificationSuccess",
+          payload: {
+            error: "",
+          },
+        });
         navigate(nextURL, nextFlowNavigationProps);
       } else {
         const { message } = result.data;
-        setError(message ?? "An Unknown error occured");
-        setLoading(false);
+        dispatch({
+          type: "endOTPVerificationFailure",
+          payload: {
+            error: message ?? "An Unknown error occured",
+          },
+        });
       }
     });
   };
@@ -73,21 +170,29 @@ export const OtpVerificationPage = ({}) => {
   let result = (
     <>
       <Typography>Verify OTP </Typography>
-      {maskedMobileNo.trim() !== "" ? (
+      {state.currentScreen === "welcomeOTPVerification" ||
+      state.maskedMobileNo.trim() !== "" ? (
         <>
           <Typography>
-            OTP has been sent to your mobile number ending with:{maskedMobileNo}
+            OTP has been sent to your mobile number ending with:
+            {state.maskedMobileNo}
           </Typography>
           <TextField
             autoFocus
             margin="dense"
             id="name"
             type="email"
+            name="otp"
             fullWidth
-            value={otp}
-            error={Boolean(error)}
-            helperText={error}
-            onChange={(e) => setOtp(e.target.value)}
+            value={state.otp}
+            error={Boolean(state.error)}
+            helperText={Boolean(state.error) ? state.error : null}
+            onChange={(e) =>
+              dispatch({
+                type: "updateOTP",
+                payload: e.target.value,
+              })
+            }
             InputLabelProps={{
               shrink: true,
             }}
@@ -103,13 +208,13 @@ export const OtpVerificationPage = ({}) => {
           <Button
             onClick={verifyOTP}
             color="primary"
-            endIcon={loading ? <CircularProgress size={20} /> : null}
+            endIcon={state.loading ? <CircularProgress size={20} /> : null}
           >
             Verify
           </Button>
         </>
-      ) : loading === false && Boolean(error) ? (
-        <Typography>{error}</Typography>
+      ) : state.loading === false && Boolean(state.error) ? (
+        <Typography>{state.error}</Typography>
       ) : (
         <img
           src={loaderGif}

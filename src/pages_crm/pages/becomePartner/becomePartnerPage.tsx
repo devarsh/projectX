@@ -36,7 +36,7 @@ export const BecomePartnerPage = () => {
             <Button
               className={classes.applyButton}
               onClick={() => {
-                navigate("/form/becomePartner");
+                navigate("./form/becomePartner");
               }}
             >
               Apply Now

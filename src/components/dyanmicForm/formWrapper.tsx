@@ -23,11 +23,13 @@ interface FormWrapperProps {
 }
 
 export const FormWrapper: FC<FormWrapperProps> = ({
-  metaData,
+  metaData: freshMetaData,
   initialValues,
   onSubmitHandler,
   hidden = false,
 }) => {
+  //this line is very important to preserve our metaData across render - deep clone hack
+  let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
   metaData = extendFieldTypes(metaData, extendedMetaData);
   metaData = attachMethodsToMetaData(
     metaData,
@@ -37,7 +39,6 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
   const yupValidationSchema = constructYupSchema(metaData.fields);
-
   const formRenderType = metaData.form.render.renderType ?? "simple";
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -60,7 +61,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
         >
           {formRenderType === "stepper" || formRenderType === "tabs" ? (
             <GroupedForm
-              key={metaData.form.name}
+              key={`${metaData.form.name}-grouped`}
               fields={groupWiseFields}
               formRenderConfig={metaData.form.render}
               formDisplayName={metaData.form.label}
@@ -69,7 +70,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
             />
           ) : formRenderType === "simple" ? (
             <SimpleForm
-              key={metaData.form.name}
+              key={`${metaData.form.name}-simple`}
               fields={groupWiseFields}
               formRenderConfig={metaData.form.render}
               formDisplayName={metaData.form.label}
