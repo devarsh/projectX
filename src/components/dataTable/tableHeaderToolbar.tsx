@@ -35,6 +35,7 @@ export const TableHeaderToolbar = ({
   selectedFlatRows,
   visibleColumns,
   defaultHiddenColumns,
+  allowColumnHiding,
 }) => {
   const classes = useStyles();
   const selectedCount = selectedFlatRows.length;
@@ -67,10 +68,12 @@ export const TableHeaderToolbar = ({
           </IconButton>
         </Tooltip>
       ) : null}
-      <ColumnVisibility
-        visibleColumns={visibleColumns}
-        defaultHiddenColumns={defaultHiddenColumns}
-      />
+      {allowColumnHiding ? (
+        <ColumnVisibility
+          visibleColumns={visibleColumns}
+          defaultHiddenColumns={defaultHiddenColumns}
+        />
+      ) : null}
     </Toolbar>
   );
 };

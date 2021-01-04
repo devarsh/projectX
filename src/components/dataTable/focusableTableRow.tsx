@@ -2,7 +2,6 @@ import { withStyles } from "@material-ui/core/styles";
 import TableRow from "@material-ui/core/TableRow";
 
 export const MyTableRow = withStyles((theme) => {
-  console.log(theme);
   return {
     root: {
       "&:focus": {
@@ -18,6 +17,10 @@ export const MyTableRow = withStyles((theme) => {
       },
       "&$selected, &$selected:hover": {
         outline: "none !important",
+      },
+      "&:hover": {
+        outline: "none !important",
+        background: theme.palette.action.hover,
       },
     },
     selected: {

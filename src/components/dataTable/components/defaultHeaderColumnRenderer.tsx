@@ -9,6 +9,7 @@ export const DefaultHeaderColumnRenderer = ({
   column,
   visibleColumns,
   setColumnOrder,
+  allowColumnReorder,
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) =>
@@ -35,11 +36,19 @@ export const DefaultHeaderColumnRenderer = ({
         setColumnOrder(columns);
       }
     },
+    canDrag: () => {
+      return allowColumnReorder;
+    },
   });
   const [{ isOver }, drop] = useDrop({
     accept: "Column",
     drop: () => ({ id: column.id }),
-    collect: (monitor) => ({ isOver: !!monitor.isOver() }),
+    collect: (monitor) => ({
+      isOver: allowColumnReorder && !!monitor.isOver(),
+    }),
+    canDrop: () => {
+      return allowColumnReorder;
+    },
   });
   const dragDropRef = useRef(null);
   drag(drop(dragDropRef));

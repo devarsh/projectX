@@ -55,6 +55,9 @@ export const DataGrid = ({
   defaultPageSize,
   defaultHiddenColumns,
   filterTypes,
+  allowColumnReorder,
+  allowColumnHiding,
+  allowKeyboardNavigation,
 }) => {
   const {
     getTableProps,
@@ -92,6 +95,7 @@ export const DataGrid = ({
       autoResetFilters: resetFilters,
       localFilterManager,
       headerFilterState: headerFilterManager.state,
+      allowColumnReorder: allowColumnReorder,
     },
     useColumnOrder,
     useFilters,
@@ -174,6 +178,7 @@ export const DataGrid = ({
         selectedFlatRows={selectedFlatRows}
         visibleColumns={availableColumns}
         defaultHiddenColumns={defaultHiddenColumns}
+        allowColumnHiding={allowColumnHiding}
       />
       <TableHeaderFilterToolbar
         dense={dense}
@@ -231,7 +236,11 @@ export const DataGrid = ({
                   tabIndex={0}
                   component="div"
                   selected={row.isSelected}
-                  onKeyDown={(e) => handleKeyDown(e, row)}
+                  onKeyDown={
+                    allowKeyboardNavigation
+                      ? (e) => handleKeyDown(e, row)
+                      : undefined
+                  }
                 >
                   {row.cells.map((cell) => {
                     return (

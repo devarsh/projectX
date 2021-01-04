@@ -26,6 +26,9 @@ export interface GridConfigType {
   defaultPageSize?: number;
   gridLabel: string;
   rowIdColumn: string;
+  allowColumnReorder?: boolean;
+  allowColumnHiding?: boolean;
+  allowKeyboardNavigation?: boolean;
   defaultColumnConfig: {
     width?: number;
     maxWidth?: number;
