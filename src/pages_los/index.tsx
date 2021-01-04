@@ -7,7 +7,6 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
 import { Profile } from "./pages/profile";
-import Iframe from "./pages/iframe";
 import { ParentGridWrapper } from "components/dataTable";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
@@ -36,7 +35,6 @@ const DashbordPages = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/iframe" element={<Iframe />} />
             <Route path="/dgrid" element={<ParentGridWrapper />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
             <Route path="/api" element={<APITest />} />

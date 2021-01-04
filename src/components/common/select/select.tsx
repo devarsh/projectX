@@ -106,7 +106,7 @@ const MySelect: FC<MySelectAllProps> = ({
       result = multiple ? result : result[0];
       handleChange(e, result as any);
     },
-    [handleChange, getLabelFromValuesForOptions]
+    [handleChange, getLabelFromValuesForOptions, multiple]
   );
   const { loadingOptions } = useOptionsFetcher(
     formState,
