@@ -16,7 +16,7 @@ export const ThankYou = () => {
     nextFlowNavigationProps,
     ,
     getCurrentFlow,
-  ] = useNavigationFlow(location, "/form/questionnaire");
+  ] = useNavigationFlow(location, "/crm/form/questionnaire");
   const result = getCurrentFlow();
 
   const shouldContinue = flowExist || Boolean(result?.continue);
@@ -47,7 +47,7 @@ export const ThankYou = () => {
           className={classes.prevNextBtn}
           onClick={(e) => {
             e.preventDefault();
-            navigate("/");
+            navigate("/crm");
           }}
         >
           Back to Home
