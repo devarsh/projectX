@@ -1,6 +1,6 @@
 import React from "react";
-import { ParentGridWrapper } from "../../../components/dataTable";
+import GridWrapper from "components/dataTable";
 
 export const GridTabPanel = () => {
-  return <ParentGridWrapper />;
+  return <GridWrapper />;
 };
