@@ -2,7 +2,7 @@ export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default";
+  componentType: "default" | "date";
   Cell?: any;
   Filter?: any;
   filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";
@@ -29,6 +29,7 @@ export interface GridConfigType {
   allowColumnReordering?: boolean;
   allowColumnHiding?: boolean;
   allowKeyboardNavigation?: boolean;
+  allowGlobalFilter?: boolean;
   defaultColumnConfig: {
     width?: number;
     maxWidth?: number;

@@ -80,7 +80,7 @@ export const GirdController: FC<{
     <DataGrid
       gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
-      headerFilterMeta={metaData?.headerFilters}
+      globalFilterMeta={metaData?.headerFilters}
       dense={true}
       localFilterManager={localFilterManager}
       globalFiltersState={globalFiltersState}
@@ -96,13 +96,12 @@ export const GirdController: FC<{
       totalRecords={totalRecords}
       pageSizes={metaData.gridConfig?.pageSize}
       defaultPageSize={metaData.gridConfig?.defaultPageSize}
-      allowColumnReordering={
-        metaData.gridConfig?.allowColumnReordering ?? false
-      }
-      allowColumnHiding={metaData.gridConfig?.allowColumnHiding ?? false}
+      allowColumnReordering={metaData.gridConfig?.allowColumnReordering ?? true}
+      allowColumnHiding={metaData.gridConfig?.allowColumnHiding ?? true}
       allowKeyboardNavigation={
-        metaData.gridConfig?.allowKeyboardNavigation ?? false
+        metaData.gridConfig?.allowKeyboardNavigation ?? true
       }
+      allowGlobalFilter={metaData.gridConfig?.allowGlobalFilter ?? true}
     />
   );
 };

@@ -56,7 +56,8 @@ export const DataGrid = ({
   allowColumnReordering,
   allowColumnHiding,
   allowKeyboardNavigation,
-  headerFilterMeta,
+  allowGlobalFilter,
+  globalFilterMeta,
 }) => {
   const {
     getTableProps,
@@ -180,11 +181,13 @@ export const DataGrid = ({
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
       />
-      <TableHeaderFilterToolbar
-        dense={dense}
-        filters={headerFilterMeta}
-        gridCode={gridCode}
-      />
+      {allowGlobalFilter ? (
+        <TableHeaderFilterToolbar
+          dense={dense}
+          filters={globalFilterMeta}
+          gridCode={gridCode}
+        />
+      ) : null}
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>
         <Table

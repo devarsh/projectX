@@ -6,12 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import { APISDK } from "registry/fns/sdk";
 import { filterAtom, filtersAtom, subscribeToFilterChange } from "../../atoms";
 
-export const GroupByFilter = (props) => {
+export const GroupByMultipleFilter = (props) => {
   const {
     accessor,
     result_type,
     columnName,
-    selectType,
     dependencies,
     last,
     gridCode,
@@ -23,42 +22,38 @@ export const GroupByFilter = (props) => {
   );
   //the last filter will set the state of all the dependent filters
   const setFiltersCondition = useSetRecoilState(filtersAtom(gridCode));
-  const isSingle = selectType === "single" ? true : false;
-  const [clearAllSelected, setClearAllSelected] = useState(true);
-  const [groups, setGroups] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [value, setValue] = useState([]);
-  const apiCount = useRef(0);
+  //filter dependencies
   const dependentFilters = useRecoilValue(
     subscribeToFilterChange({ gridCode: gridCode, accessors: dependencies })
   );
+  //clear filter on unmount
   const resetFilter = useResetRecoilState(
     filterAtom(`${gridCode}/${accessor}`)
   );
-
   useEffect(() => {
     return resetFilter;
   }, []);
 
+  const [groups, setGroups] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [value, setValue] = useState([]);
+  const [clear, setClear] = useState(true);
+  const apiCount = useRef(0);
+
   useEffect(() => {
-    if (
-      (Array.isArray(value) && value.length > 0) ||
-      (typeof value === "string" && value !== "")
-    ) {
+    if (Array.isArray(value) && value.length > 0) {
       const condition = {
         accessor,
-        condition: isSingle ? "equal" : "in",
+        condition: "in",
         value,
       };
       setFilterCondition(condition);
       if (last) {
-        console.log([...dependentFilters, condition]);
         setFiltersCondition([...dependentFilters, condition]);
       }
     } else {
       setFilterCondition(null);
-      setClearAllSelected(true);
     }
   }, [value]);
 
@@ -66,9 +61,8 @@ export const GroupByFilter = (props) => {
     setLoading(true);
     setError("");
     setValue([]);
-    setClearAllSelected(true);
+    setClear(true);
     if (last) {
-      console.log(dependentFilters);
       setFiltersCondition(dependentFilters);
     }
     let currentCount = ++apiCount.current;
@@ -113,35 +107,31 @@ export const GroupByFilter = (props) => {
       ) : Boolean(error) ? (
         error
       ) : (
-        <ToggleButtonGroup
-          size="small"
-          value={value}
-          onChange={(event, value) => {
-            setValue(value);
-            setClearAllSelected(false);
-          }}
-          exclusive={isSingle ? true : false}
-        >
-          {buttons}
-          {isSingle ? (
-            <ToggleButton key={`${accessor}-all-single`} value={""}>
-              Clear
-            </ToggleButton>
-          ) : (
+        <>
+          <ToggleButtonGroup
+            size="small"
+            onChange={(_, value) => {
+              setValue(value);
+              setClear(false);
+            }}
+            value={value}
+            exclusive={false}
+          >
+            {buttons}
             <ToggleButton
-              selected={clearAllSelected}
-              key={`${accessor}-all-multiple`}
+              selected={clear}
+              key={`${accessor}-all-single`}
+              value={""}
               onClick={(e) => {
                 e.preventDefault();
                 setValue([]);
-                setClearAllSelected(true);
+                setClear(true);
               }}
-              value=""
             >
               Clear
             </ToggleButton>
-          )}
-        </ToggleButtonGroup>
+          </ToggleButtonGroup>
+        </>
       )}
     </Fragment>
   );
