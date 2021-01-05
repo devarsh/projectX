@@ -10,9 +10,9 @@ import {
   useColumnOrder,
   useAsyncDebounce,
 } from "react-table";
+
 import Paper from "@material-ui/core/Paper";
 import { TableHeaderToolbar } from "./tableHeaderToolbar";
-import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
 
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
@@ -23,6 +23,7 @@ import { MyTableRow } from "./focusableTableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import { TablePaginationActions } from "./tablePaginationToolbar";
+import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
@@ -38,9 +39,8 @@ export const DataGrid = ({
   gridCode,
   label,
   dense,
-  headerFilters,
-  headerFilterManager,
   localFilterManager,
+  globalFiltersState,
   columns,
   defaultColumn,
   data,
@@ -49,15 +49,15 @@ export const DataGrid = ({
   getRowId,
   totalRecords: controlledTotalRecords,
   pageCount: controlledPageCount,
-  resetPaginationAndSorting,
-  resetFilters,
   pageSizes,
   defaultPageSize,
   defaultHiddenColumns,
   filterTypes,
-  allowColumnReorder,
+  allowColumnReordering,
   allowColumnHiding,
   allowKeyboardNavigation,
+  allowGlobalFilter,
+  globalFilterMeta,
 }) => {
   const {
     getTableProps,
@@ -88,14 +88,14 @@ export const DataGrid = ({
       gridCode,
       manualPagination: true,
       pageCount: controlledPageCount,
-      autoResetPage: resetPaginationAndSorting,
+      autoResetPage: false,
       manualSortBy: true,
-      autoResetSortBy: resetPaginationAndSorting,
+      autoResetSortBy: false,
       manualFilters: true,
-      autoResetFilters: resetFilters,
+      autoResetFilters: false,
       localFilterManager,
-      headerFilterState: headerFilterManager.state,
-      allowColumnReorder: allowColumnReorder,
+      globalFiltersState,
+      allowColumnReordering: allowColumnReordering,
     },
     useColumnOrder,
     useFilters,
@@ -158,12 +158,13 @@ export const DataGrid = ({
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
-  const handleResetGridState = () => {
+
+  useEffect(() => {
     setAllFilters([]);
     setSortBy([]);
     gotoPage(0);
     localFilterManager.clearFilterState();
-  };
+  }, [globalFiltersState]);
 
   return (
     <Paper
@@ -180,12 +181,13 @@ export const DataGrid = ({
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
       />
-      <TableHeaderFilterToolbar
-        dense={dense}
-        filters={headerFilters}
-        headerFilterManager={headerFilterManager}
-        handleResetGridState={handleResetGridState}
-      />
+      {allowGlobalFilter ? (
+        <TableHeaderFilterToolbar
+          dense={dense}
+          filters={globalFilterMeta}
+          gridCode={gridCode}
+        />
+      ) : null}
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer style={{ position: "relative" }}>
         <Table

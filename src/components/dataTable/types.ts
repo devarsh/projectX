@@ -2,7 +2,7 @@ export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default";
+  componentType: "default" | "date";
   Cell?: any;
   Filter?: any;
   filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";
@@ -26,9 +26,10 @@ export interface GridConfigType {
   defaultPageSize?: number;
   gridLabel: string;
   rowIdColumn: string;
-  allowColumnReorder?: boolean;
+  allowColumnReordering?: boolean;
   allowColumnHiding?: boolean;
   allowKeyboardNavigation?: boolean;
+  allowGlobalFilter?: boolean;
   defaultColumnConfig: {
     width?: number;
     maxWidth?: number;
@@ -39,22 +40,14 @@ export interface GridConfigType {
 export interface HeaderFilterType {
   accessor: string;
   columnName: string;
-  Filter?: any;
-  filterComponentType: string;
-  filterComponentProps: any;
-  query?: {
-    accessor: string;
-    result_type: string;
-    filter_conditions: any[];
-  };
   level: number;
+  filterComponentProps: any;
+  filterComponentType: string;
 }
-
-export type HeaderFilterMultiType = HeaderFilterType[] | Promise<any[]>;
 
 export interface GridMetaDataType {
   columns: GridColumnType[];
   gridConfig: GridConfigType;
   hiddenColumns?: string[];
-  headerFilters?: HeaderFilterType[] | Promise<any[]>;
+  headerFilters?: HeaderFilterType[];
 }
