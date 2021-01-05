@@ -1,46 +1,49 @@
 import { atomFamily, selectorFamily, DefaultValue } from "recoil";
-
-interface QueryType {
+export interface QueryType {
   accessor: string;
-  result_type: string;
-  filter_conditions: any[];
-}
-interface FilterAtomType {
-  query: QueryType | null;
-  result:
-    | {
-        label: string;
-        value: string;
-        count: string;
-      }[]
-    | {
-        minValue: string;
-        maxValue: string;
-      }
-    | null;
+  condition: string;
+  value: any[] | any;
 }
 
-export const filterAtom = atomFamily<FilterAtomType, string>({
-  key: "filters",
-  default: {
-    query: null,
-    result: null,
-  },
+export interface SubscriptionType {
+  [key: string]: string[] | string | undefined;
+}
+
+export const filterAtom = atomFamily<QueryType | null, string>({
+  key: "filterAtom",
+  default: null,
 });
 
-export const subscribeToUpdates = selectorFamily<QueryType[], string[]>({
+export const filtersAtom = atomFamily<QueryType[] | null, string>({
+  key: "filtersAtom",
+  default: null,
+});
+
+export const subscribeToFilterChange = selectorFamily<
+  QueryType[],
+  SubscriptionType
+>({
   key: "filterSubscriber",
   get: (subscriptionFilters) => ({ get }) => {
-    if (Array.isArray(subscriptionFilters)) {
-      let result: QueryType[] = [];
-      for (let filter of subscriptionFilters) {
-        let fieldState = get(filterAtom(filter));
-        if (typeof fieldState.query === "object" && fieldState.query !== null) {
-          result.push(fieldState.query);
-        }
-      }
-      return result;
+    if (typeof subscriptionFilters !== "object") {
+      return [];
     }
-    return [];
+    let accessors = subscriptionFilters.accessors;
+    if (accessors === undefined) {
+      accessors = [];
+    }
+    if (typeof accessors === "string") {
+      accessors = [accessors];
+    }
+    let result: QueryType[] = [];
+    for (let accessor of accessors as string[]) {
+      let filterCondition = get(
+        filterAtom(`${subscriptionFilters.gridCode as string}/${accessor}`)
+      );
+      if (typeof filterCondition === "object" && filterCondition !== null) {
+        result.push(filterCondition);
+      }
+    }
+    return result;
   },
 });

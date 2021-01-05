@@ -7,7 +7,7 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import Lead from "./pages/lead";
 import { Profile } from "./pages/profile";
-import { ParentGridWrapper } from "components/dataTable";
+import GridWrapper from "components/dataTable";
 import { APITest } from "./pages/api";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
@@ -35,7 +35,7 @@ const DashbordPages = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/dgrid" element={<ParentGridWrapper />} />
+            <Route path="/dgrid" element={<GridWrapper />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
             <Route path="/api" element={<APITest />} />
             <Route path="/cam" element={<DynamicLead />} />

@@ -1,12 +1,9 @@
-import { FC, useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { FC, useState, useMemo, useCallback, useRef } from "react";
 import { GridMetaDataType } from "./types";
-import {
-  formatSortBy,
-  formatFilterBy,
-  useFilterState,
-  useLocalFilterState,
-} from "./utils";
+import { formatSortBy, formatFilterBy, useLocalFilterState } from "./utils";
 import { APISDK } from "registry/fns/sdk";
+import { useRecoilValue } from "recoil";
+import { filtersAtom } from "./atoms";
 
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
@@ -37,31 +34,19 @@ export const GirdController: FC<{
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const fetchIdCounterRef = useRef(0);
-  const lastAppliedFilterRef = useRef(null);
-  const resetPaginationAndSorting = useRef(false);
-  const resetTableFilters = useRef(false);
-  const headerFilterManager = useFilterState();
   const localFilterManager = useLocalFilterState();
-  const { state: headerFilterState } = headerFilterManager;
-
-  useEffect(() => {
-    resetPaginationAndSorting.current = false;
-    resetTableFilters.current = false;
-  }, [data]);
+  const globalFiltersState = useRecoilValue(filtersAtom(gridCode));
 
   const fetchData = useCallback(
     ({ pageSize, pageIndex, sortBy, filters }) => {
-      if (lastAppliedFilterRef.current !== filters) {
-        resetPaginationAndSorting.current = true;
-      }
-      const currentFetchId = ++fetchIdCounterRef.current;
       setLoading(true);
+      const currentFetchId = ++fetchIdCounterRef.current;
       const startRow = Number(pageSize) * Number(pageIndex) + 1;
       const endRow = Number(startRow) + Number(pageSize) - 1;
       let localFilters = formatFilterBy(filters);
       let headerFilters: any[] = [];
-      if (headerFilterState !== null) {
-        headerFilters = Object.values(headerFilterState);
+      if (globalFiltersState !== null) {
+        headerFilters = Object.values(globalFiltersState);
       }
       let combinedFilters = [...headerFilters, ...localFilters];
 
@@ -82,24 +67,23 @@ export const GirdController: FC<{
             );
             setTotalRecords(Number(result?.data?.total_count ?? 1));
             setLoading(false);
-            lastAppliedFilterRef.current = filters;
           } else {
             setLoading(false);
           }
         }
       });
     },
-    [setTotalRecords, setLoading, setData, headerFilterState]
+    [setTotalRecords, setLoading, setData, globalFiltersState]
   );
 
   return (
     <DataGrid
       gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
+      headerFilterMeta={metaData?.headerFilters}
       dense={true}
-      headerFilters={metaData.headerFilters ?? []}
-      headerFilterManager={headerFilterManager}
       localFilterManager={localFilterManager}
+      globalFiltersState={globalFiltersState}
       getRowId={getRowId}
       columns={columns}
       filterTypes={filterTypes}
@@ -108,13 +92,13 @@ export const GirdController: FC<{
       loading={loading}
       data={data}
       onFetchData={fetchData}
-      resetPaginationAndSorting={resetPaginationAndSorting.current}
-      resetFilters={resetTableFilters.current}
       pageCount={pageCount}
       totalRecords={totalRecords}
       pageSizes={metaData.gridConfig?.pageSize}
       defaultPageSize={metaData.gridConfig?.defaultPageSize}
-      allowColumnReorder={metaData.gridConfig?.allowColumnReorder ?? false}
+      allowColumnReordering={
+        metaData.gridConfig?.allowColumnReordering ?? false
+      }
       allowColumnHiding={metaData.gridConfig?.allowColumnHiding ?? false}
       allowKeyboardNavigation={
         metaData.gridConfig?.allowKeyboardNavigation ?? false

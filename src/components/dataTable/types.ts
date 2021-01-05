@@ -26,7 +26,7 @@ export interface GridConfigType {
   defaultPageSize?: number;
   gridLabel: string;
   rowIdColumn: string;
-  allowColumnReorder?: boolean;
+  allowColumnReordering?: boolean;
   allowColumnHiding?: boolean;
   allowKeyboardNavigation?: boolean;
   defaultColumnConfig: {
@@ -39,22 +39,14 @@ export interface GridConfigType {
 export interface HeaderFilterType {
   accessor: string;
   columnName: string;
-  Filter?: any;
-  filterComponentType: string;
-  filterComponentProps: any;
-  query?: {
-    accessor: string;
-    result_type: string;
-    filter_conditions: any[];
-  };
   level: number;
+  filterComponentProps: any;
+  filterComponentType: string;
 }
-
-export type HeaderFilterMultiType = HeaderFilterType[] | Promise<any[]>;
 
 export interface GridMetaDataType {
   columns: GridColumnType[];
   gridConfig: GridConfigType;
   hiddenColumns?: string[];
-  headerFilters?: HeaderFilterType[] | Promise<any[]>;
+  headerFilters?: HeaderFilterType[];
 }
