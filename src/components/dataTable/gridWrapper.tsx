@@ -7,7 +7,6 @@ import {
   extractHiddenColumns,
   sortColumnsBySequence,
   transformHeaderFilters,
-  transformHeaderFiltersNew,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
@@ -25,14 +24,10 @@ export const GridWrapper = ({ gridCode }) => {
         if (result.status === "success") {
           let finalData = transformMetaData({
             metaData: result.data,
-            gridCode,
           });
-          Promise.resolve(finalData.headerFilters).then((filtersResult) => {
-            finalData.headerFilters = filtersResult;
-            setMetaData(finalData);
-            setError(false);
-            setLoading(false);
-          });
+          setMetaData(finalData);
+          setError(false);
+          setLoading(false);
         } else {
           setMetaData(result.data);
           setError(true);
@@ -60,10 +55,7 @@ export const GridWrapper = ({ gridCode }) => {
   );
 };
 
-const transformMetaData = ({
-  metaData: freshMetaData,
-  gridCode,
-}): GridMetaDataType => {
+const transformMetaData = ({ metaData: freshMetaData }): GridMetaDataType => {
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
 
   let columns = metaData.columns as any;
@@ -73,18 +65,12 @@ const transformMetaData = ({
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
-  const transformedHeaderFilters = transformHeaderFilters(
-    gridCode,
-    metaData.headerFilters
-  );
-  if (metaData.headerFilters !== undefined) {
-    const filters = transformHeaderFiltersNew(metaData.headerFilters);
-    console.log(filters);
-  }
+  let headerFilters = transformHeaderFilters(metaData?.headerFilters);
+  console.log(headerFilters);
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
-    headerFilters: transformedHeaderFilters,
+    headerFilters: headerFilters,
   };
 };

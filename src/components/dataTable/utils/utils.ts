@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export const formatSortBy = (sortBy = []) => {
   const formatted = sortBy.map((one: any, index) => ({
@@ -51,36 +51,5 @@ export const useLocalFilterState = () => {
     removeFilterState,
     clearFilterState,
     getFilterState,
-  };
-};
-
-export const useFilterState = () => {
-  const [state, setState] = useState<object | null>(null);
-  const addHeaderFilter = (accessor, filterValue) => {
-    if (typeof state !== "object" || state === null) {
-      setState({ [accessor]: filterValue });
-    } else {
-      setState((old) => ({ ...old, [accessor]: filterValue }));
-    }
-  };
-  const removeHeaderFilter = (accessor) => {
-    if (typeof state === "object" && state !== null) {
-      const result = delete state[accessor];
-      if (result) {
-        if (Object.keys(state).length === 0) {
-          setState(null);
-        }
-        setState(state);
-      }
-    }
-  };
-  const clearHeaderFilter = () => {
-    setState(null);
-  };
-  return {
-    addHeaderFilter,
-    removeHeaderFilter,
-    clearHeaderFilter,
-    state,
   };
 };

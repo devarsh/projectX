@@ -16,6 +16,8 @@ export const ValueFilter = (props) => {
   const {
     column: { filterValue, setFilter },
     handleClose,
+    setSortBy,
+    gotoPage,
   } = props;
 
   const options = [
@@ -33,10 +35,14 @@ export const ValueFilter = (props) => {
       condition: searchCriteria,
       value: text,
     });
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
   const clearFilterValue = () => {
     setFilter("");
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
 

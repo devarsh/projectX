@@ -19,11 +19,14 @@ export const OptionsFilter = (props) => {
       filterComponentProps: { selectType },
       id,
     },
-    headerFilterState,
+    globalFiltersState,
     localFilterManager,
     gridCode,
     handleClose,
+    setSortBy,
+    gotoPage,
   } = props;
+  console.log(props);
   const isMultiple = selectType === "multiple" ? true : false;
   const [loading, setLoading] = useState(false);
   const [_options, setOptions] = useState(
@@ -39,14 +42,14 @@ export const OptionsFilter = (props) => {
   useEffect(() => {
     if (!Boolean(localFilterManager.getFilterState(id))) {
       setLoading(true);
-      const verifiedHeaderFilter =
-        typeof headerFilterState === "object" && headerFilterState !== null
-          ? Object.values(headerFilterState)
+      const verifiedGlobalFilter =
+        typeof globalFiltersState === "object" && globalFiltersState !== null
+          ? Object.values(globalFiltersState)
           : [];
       APISDK.fetchGridColumnFilterProps(gridCode, {
         accessor: id,
         result_type: "getGroups",
-        filter_conditions: verifiedHeaderFilter,
+        filter_conditions: verifiedGlobalFilter,
       }).then((result) => {
         if (result.status === "success") {
           localFilterManager.addFilterState(id, {
@@ -71,10 +74,14 @@ export const OptionsFilter = (props) => {
       condition: isMultiple ? "in" : "equal",
       value,
     });
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
   const clearFilter = () => {
     setFilter("");
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
 
@@ -160,13 +167,3 @@ export const OptionsFilter = (props) => {
     </FilterContainer>
   );
 };
-
-/*
-MenuProps={{
-                PaperProps: {
-                  style: {
-                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                  },
-                },
-              }}
-*/
