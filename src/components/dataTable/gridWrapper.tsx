@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GridMetaDataType } from "./types";
 import {
-  attachComponentsToMetaData,
+  attachCellComponentsToMetaData,
   attachFilterComponentToMetaData,
   attachAlignmentProps,
   extractHiddenColumns,
@@ -61,7 +61,7 @@ const transformMetaData = ({ metaData: freshMetaData }): GridMetaDataType => {
   let columns = metaData.columns as any;
   //make sure extract functions are called before attach and lastly sort
   const hiddenColumns = extractHiddenColumns(columns);
-  columns = attachComponentsToMetaData(columns);
+  columns = attachCellComponentsToMetaData(columns);
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);

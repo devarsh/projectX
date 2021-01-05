@@ -1,7 +1,11 @@
 import { GridColumnType } from "../types";
-import { DefaultRowCellRenderer, DateRowCellRenderer } from "../components";
+import {
+  DefaultRowCellRenderer,
+  DateRowCellRenderer,
+  CurrencyRowCellRenderer,
+} from "../components/cells";
 
-export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
+export const attachCellComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
       const { componentType, ...others } = column;
@@ -11,10 +15,10 @@ export const attachComponentsToMetaData = (columns: GridColumnType[]) => {
             ...others,
             Cell: DateRowCellRenderer,
           };
-        case "default":
+        case "currency":
           return {
             ...others,
-            Cell: DefaultRowCellRenderer,
+            Cell: CurrencyRowCellRenderer,
           };
         default:
           return {
