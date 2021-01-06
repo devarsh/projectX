@@ -10,6 +10,10 @@ import { BecomePartnerFormWrapper } from "./becomePartner";
 import OTPVerificationPage from "./otpVerificationDialog";
 import AadharVerification from "./aadharVerification";
 import Equifax from "./equifax";
+import { InquiryViewFormWrapper } from "./inquiryFormActions/inquiryFormView";
+import { InquiryEditFormWrapper } from "./inquiryFormActions/inquiryFormEdit";
+import { QuestionnaireViewFormWrapper } from "./questionnaireFormActions/questionnaireFormView";
+import { QuestionnaireEditFormWrapper } from "./questionnaireFormActions/questionnaireFormEdit";
 
 const Index = () => {
   const classes = useStyles();
@@ -73,6 +77,49 @@ const Index = () => {
           <Box width={1} display="flex" className={classes.wrapper}>
             <div className={classes.paper}>
               <InquiryForms />
+            </div>
+          </Box>
+        }
+      />
+      <Route
+        path="form/inquiryFormView"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <InquiryViewFormWrapper />
+            </div>
+          </Box>
+        }
+      />
+
+      <Route
+        path="form/inquiryFormEdit"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <InquiryEditFormWrapper />
+            </div>
+          </Box>
+        }
+      />
+
+      <Route
+        path="form/questionnaireFormView"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <QuestionnaireViewFormWrapper />
+            </div>
+          </Box>
+        }
+      />
+
+      <Route
+        path="form/questionnaireFormEdit"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <QuestionnaireEditFormWrapper />
             </div>
           </Box>
         }

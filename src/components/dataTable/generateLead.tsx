@@ -12,6 +12,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { APISDK } from "registry/fns/sdk";
+import MenuItem from "@material-ui/core/MenuItem";
+import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
 
   formLabel: {
-    fontWeight: "600",
+    fontWeight: 600,
   },
   formValue: {
-    fontWeight: "500",
+    fontWeight: 500,
     color: "#0063A3",
   },
   marginSet: {
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#26A456",
     letterSpacing: "2px",
     fontSize: "1.2rem",
-    fontWeight: "700",
+    fontWeight: 700,
     alignSelf: "flex-start",
     margin: "0",
   },
@@ -57,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     border: 0,
     color: "#fff !important",
     padding: "4px .75rem",
-    fontWeight: "700",
+    fontWeight: 700,
     minWidth: "120px",
     letterSpacing: "0.02857em",
     boxShadow: "none",
@@ -78,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 2, 2),
     fontSize: "1.2rem",
     borderRadius: "24px",
-    fontWeight: "700",
+    fontWeight: 700,
     minWidth: "120px",
     letterSpacing: "0.02857em",
     padding: "4px .75rem",
@@ -96,10 +98,11 @@ export const DisplayData = ({ onClose, open, row }) => {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [InquiryDetailsData, setInquiryDetailsData] = useState([]);
   const [temp, setTemp] = useState({});
+  const [assignemployeeList, setAssignEmployeeList] = useState<any[]>([]);
+  const [employeevalue, setEmployeeValue] = useState("");
 
-  let inquiryCode = row;
+  let refID = row;
 
   const data = [
     {
@@ -140,17 +143,12 @@ export const DisplayData = ({ onClose, open, row }) => {
     {
       label: "Currently Employed",
       type: "text",
-      name: "employeed_type",
+      name: "employementStatus",
     },
     {
       label: "Address",
       type: "text",
       name: "address",
-    },
-    {
-      label: "Health Check Score",
-      type: "text",
-      name: "health_score",
     },
     {
       label: "Lead Status",
@@ -161,23 +159,26 @@ export const DisplayData = ({ onClose, open, row }) => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const result = await APISDK.getInquiryDataToConvertIntoLead(inquiryCode);
+      const result = await APISDK.getInquiryDataToConvertIntoLead(refID);
       try {
         if (result.status === "success") {
           let editableData = result.data;
-          setInquiryDetailsData(editableData);
           setTemp({
-            productType: InquiryDetailsData[0].product_type,
-            name: InquiryDetailsData[0].customer_name,
-            gender: InquiryDetailsData[0].gender,
-            birth_dt: InquiryDetailsData[0].birth_dt,
-            desired_loan_amt: InquiryDetailsData[0].desired_loan_amt,
-            email: InquiryDetailsData[0].email_id,
-            phoneNumber: InquiryDetailsData[0].mobile_no,
-            employeed_type: InquiryDetailsData[0].employeed_type,
-            address: InquiryDetailsData[0].address,
-            health_score: InquiryDetailsData[0].health_score,
-            inquiry_status: InquiryDetailsData[0].inquiry_status,
+            productType: editableData.productID,
+            name:
+              editableData.firstName +
+              " " +
+              editableData.middleName +
+              " " +
+              editableData.lastName,
+            gender: editableData.gender,
+            birth_dt: editableData.dob,
+            desired_loan_amt: editableData.loanAmount,
+            email: editableData.email,
+            phoneNumber: editableData.mobileNo,
+            employementStatus: editableData.employementStatus,
+            address: editableData.location,
+            inquiry_status: editableData.status,
           });
         }
       } catch (e) {
@@ -185,7 +186,20 @@ export const DisplayData = ({ onClose, open, row }) => {
       }
     };
     fetcher();
-  });
+    getLeadAssignEmployeeList();
+  }, []);
+
+  const getLeadAssignEmployeeList = async () => {
+    const result = await APISDK.getTeamLeaList();
+    let employeeList = [] as any;
+    for (let i = 0; i < result.data.length; i++) {
+      employeeList.push({
+        label: result.data[i].fullname,
+        value: result.data[i].empID,
+      });
+    }
+    setAssignEmployeeList(employeeList);
+  };
 
   return (
     <div>
@@ -195,7 +209,6 @@ export const DisplayData = ({ onClose, open, row }) => {
         open={open}
         onClose={onClose}
         aria-labelledby="Details"
-        minWidth="500"
       >
         <DialogTitle id="Details" className={classes.DialogTitle}>
           Convert to Lead
@@ -219,6 +232,31 @@ export const DisplayData = ({ onClose, open, row }) => {
                   </Grid>
                 ) : null;
               })}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={6}>
+                  <TextField
+                    select
+                    label="Lead Assign to Employee"
+                    placeholder="Select Employee"
+                    fullWidth
+                    required
+                    name="leadtatus"
+                    autoComplete="off"
+                    onChange={(e) => setEmployeeValue(e.target.value)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={employeevalue}
+                  >
+                    <MenuItem value={0}>Select Employee</MenuItem>
+                    {assignemployeeList.map((data) => {
+                      return (
+                        <MenuItem value={data.value}>{data.label}</MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </Grid>
+              </Grid>
             </Grid>
           </DialogContentText>
         </DialogContent>
@@ -232,7 +270,7 @@ export const DisplayData = ({ onClose, open, row }) => {
             Cancel
           </Button>
           <Button
-            onClick={onClose}
+            // onClick={onClose}
             color="primary"
             autoFocus
             className={classes.submit}
