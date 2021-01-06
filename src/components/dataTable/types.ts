@@ -51,4 +51,14 @@ export interface GridMetaDataType {
   gridConfig: GridConfigType;
   hiddenColumns?: string[];
   headerFilters?: HeaderFilterType[];
+  actions?: ActionTypes[];
+  setAction?: any;
+}
+
+export interface ActionTypes {
+  actionName: string;
+  actionLabel: string;
+  actionIcon?: any;
+  tooltip?: string;
+  multiple: boolean;
 }
