@@ -2,7 +2,7 @@ export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default" | "date";
+  componentType: "default" | "date" | "currency";
   Cell?: any;
   Filter?: any;
   filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";
@@ -18,6 +18,7 @@ export interface GridColumnType {
   minWidth?: number;
   isVisible?: boolean;
   sortDescFirst?: boolean;
+  dateFormat?: string;
 }
 
 export interface GridConfigType {
@@ -50,4 +51,14 @@ export interface GridMetaDataType {
   gridConfig: GridConfigType;
   hiddenColumns?: string[];
   headerFilters?: HeaderFilterType[];
+  actions?: ActionTypes[];
+  setAction?: any;
+}
+
+export interface ActionTypes {
+  actionName: string;
+  actionLabel: string;
+  actionIcon?: any;
+  tooltip?: string;
+  multiple: boolean;
 }

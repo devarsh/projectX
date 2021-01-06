@@ -1,5 +1,5 @@
 export * from "./attachAlignmentProps";
-export * from "./attachComponentsToMetaData";
+export * from "./attachCellComponentsToMetaData";
 export * from "./attachFilterProps";
 export * from "./attachGlobalFilterProps";
 export * from "./attachGlobalFilterProps";

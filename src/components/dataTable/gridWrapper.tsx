@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { GridMetaDataType } from "./types";
+import { useEffect, useState, FC } from "react";
+import { GridMetaDataType, ActionTypes } from "./types";
 import {
-  attachComponentsToMetaData,
+  attachCellComponentsToMetaData,
   attachFilterComponentToMetaData,
   attachAlignmentProps,
   extractHiddenColumns,
@@ -13,7 +13,11 @@ import { GirdController } from "./gridController";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-export const GridWrapper = ({ gridCode }) => {
+export const GridWrapper: FC<{
+  gridCode: string;
+  actions?: ActionTypes[];
+  setAction: any;
+}> = ({ gridCode, actions, setAction }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [metaData, setMetaData] = useState<GridMetaDataType | null>();
@@ -24,6 +28,8 @@ export const GridWrapper = ({ gridCode }) => {
         if (result.status === "success") {
           let finalData = transformMetaData({
             metaData: result.data,
+            actions,
+            setAction,
           });
           setMetaData(finalData);
           setError(false);
@@ -55,13 +61,17 @@ export const GridWrapper = ({ gridCode }) => {
   );
 };
 
-const transformMetaData = ({ metaData: freshMetaData }): GridMetaDataType => {
+const transformMetaData = ({
+  metaData: freshMetaData,
+  actions,
+  setAction,
+}): GridMetaDataType => {
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
 
   let columns = metaData.columns as any;
   //make sure extract functions are called before attach and lastly sort
   const hiddenColumns = extractHiddenColumns(columns);
-  columns = attachComponentsToMetaData(columns);
+  columns = attachCellComponentsToMetaData(columns);
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
@@ -72,5 +82,7 @@ const transformMetaData = ({ metaData: freshMetaData }): GridMetaDataType => {
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
     headerFilters: headerFilters,
+    actions: actions,
+    setAction: setAction,
   };
 };

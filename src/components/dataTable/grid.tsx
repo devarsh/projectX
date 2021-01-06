@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   useTable,
   usePagination,
@@ -24,6 +24,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import { TablePaginationActions } from "./tablePaginationToolbar";
 import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
+import { TableActionToolbar } from "./tableActionToolbar";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
@@ -58,6 +59,8 @@ export const DataGrid = ({
   allowKeyboardNavigation,
   allowGlobalFilter,
   globalFilterMeta,
+  gridActions,
+  setGridAction,
 }) => {
   const {
     getTableProps,
@@ -175,11 +178,16 @@ export const DataGrid = ({
       <TableHeaderToolbar
         label={label}
         dense={dense}
-        getRowId={getRowId}
-        selectedFlatRows={selectedFlatRows}
         visibleColumns={availableColumns}
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
+      />
+      <TableActionToolbar
+        dense={dense}
+        selectedFlatRows={selectedFlatRows}
+        getRowId={getRowId}
+        gridActions={gridActions}
+        setGridAction={setGridAction}
       />
       {allowGlobalFilter ? (
         <TableHeaderFilterToolbar
