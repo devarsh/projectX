@@ -651,9 +651,9 @@ const RaatnaFinAPI = () => {
       }),
     });
     if (status === "success") {
-      return data?.response_data ?? {};
+      return { status, data: data?.response_data };
     } else {
-      return {};
+      return { status, data: data?.error_data };
     }
   };
 
@@ -683,9 +683,9 @@ const RaatnaFinAPI = () => {
       }),
     });
     if (status === "success") {
-      return data?.response_data ?? {};
+      return { status, data: data?.response_data };
     } else {
-      return {};
+      return { status, data: data?.error_data };
     }
   };
 

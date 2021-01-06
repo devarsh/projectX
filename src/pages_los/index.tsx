@@ -16,9 +16,6 @@ import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import "react-perfect-scrollbar/dist/css/styles.css";
-
-import Box from "@material-ui/core/Box";
-
 import { InquiryViewFormWrapper } from "./pages/inquiryFormActions/inquiryFormView";
 import { InquiryEditFormWrapper } from "./pages/inquiryFormActions/inquiryFormEdit";
 import { QuestionnaireViewFormWrapper } from "./pages/questionnaireFormActions/questionnaireFormView";

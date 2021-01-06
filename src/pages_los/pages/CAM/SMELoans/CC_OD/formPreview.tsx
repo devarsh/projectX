@@ -6,7 +6,6 @@ import Box from "@material-ui/core/Box";
 import { useNavigate } from "react-router-dom";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import { useStyles } from "./style";
-import { APISDK } from "registry/fns/sdk";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -19,7 +18,7 @@ export const CAMFormPreviewPage = ({ onClose, isOpen, row }) => {
   let temp = row.values;
 
   useEffect(() => {
-    const getCAMDatapreview = async () => {
+    const getCAMDatapreview = () => {
       let toStoreData: any = [];
       toStoreData.push({
         udhyamAadharNumber: temp.udhyamAadharNumber,
@@ -45,7 +44,6 @@ export const CAMFormPreviewPage = ({ onClose, isOpen, row }) => {
         productEndUse: temp.productEndUse,
         majorSuppliers: temp.majorSuppliers,
         paymenttermSupplier: temp.paymenttermSupplier,
-
         acr: temp.acr,
         addOffice: temp.addOffice,
         age: temp.age,
@@ -55,7 +53,7 @@ export const CAMFormPreviewPage = ({ onClose, isOpen, row }) => {
       setPreviewDetailsList(toStoreData);
     };
     getCAMDatapreview();
-  }, []);
+  }, [temp]);
 
   return (
     <>
