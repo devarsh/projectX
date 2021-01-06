@@ -46,12 +46,10 @@ export const EmployeeLead = () => {
   const [InquiryDetailsList, setInquiryDetailsList] = useState([]);
   const [openDetails, setOpenDetails] = useState(false);
   const currentInqCode = useRef("");
-  const [currentRow, setCurrentRow] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleClickOpen = (event, currenIndex) => {
     event.preventDefault();
-    setCurrentRow(InquiryDetailsList[currenIndex]);
     currentInqCode.current = InquiryDetailsList[currenIndex][0];
     setOpenDetails(true);
   };
