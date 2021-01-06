@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Box from "@material-ui/core/Box";
 import { renderValuesByGroup } from "../utils/groupWiserenderer";
 import { MoveSequenceToRender } from "../utils/fixSequenceInMetaData";
 import { attachValuesToMetaData } from "../utils/attachValuesToMetaData";

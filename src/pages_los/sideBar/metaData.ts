@@ -18,6 +18,12 @@ export const metaData: NavBarMetaDataType = {
       children: [
         {
           label: "Inquiries",
+          href: "./view",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Leads",
           href: "./leads",
           isRouterLink: true,
           icon: "circle",

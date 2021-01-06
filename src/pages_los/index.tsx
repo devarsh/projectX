@@ -16,6 +16,10 @@ import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import { InquiryViewFormWrapper } from "./pages/inquiryFormActions/inquiryFormView";
+import { InquiryEditFormWrapper } from "./pages/inquiryFormActions/inquiryFormEdit";
+import { QuestionnaireViewFormWrapper } from "./pages/questionnaireFormActions/questionnaireFormView";
+import { QuestionnaireEditFormWrapper } from "./pages/questionnaireFormActions/questionnaireFormEdit";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -43,6 +47,23 @@ const DashbordPages = () => {
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />
             <Route path="/auth" element={<Login />} />
+
+            <Route
+              path="/inquiryFormView"
+              element={<InquiryViewFormWrapper />}
+            />
+            <Route
+              path="/inquiryFormEdit"
+              element={<InquiryEditFormWrapper />}
+            />
+            <Route
+              path="/questionnaireFormView"
+              element={<QuestionnaireViewFormWrapper />}
+            />
+            <Route
+              path="/questionnaireFormEdit"
+              element={<QuestionnaireEditFormWrapper />}
+            />
           </Routes>
         </Content>
       </div>
