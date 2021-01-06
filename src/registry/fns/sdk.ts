@@ -343,6 +343,7 @@ const RaatnaFinAPI = () => {
     refID?: any
   ) => {
     //rename prodCode to formCode since backend uses prodCode as FormCode
+
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action: submitAction,
@@ -401,19 +402,16 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getDashdoardDisplayEmpDetails = async (inquiryCode: string) => {
-    const { data, status } = await internalFetcher(
-      "./users/getInquiryDetails",
-      {
-        body: JSON.stringify({
-          action: "get_inquiry_details",
-          request_data: {
-            inquiry_code: inquiryCode,
-          },
-          channel: "W",
-        }),
-      }
-    );
+  const getInquiryDataToConvertIntoLead = async (refID) => {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
+      body: JSON.stringify({
+        action: "crm_inquiry_view",
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
 
     if (status === "success") {
       return { status, data: data?.response_data };
@@ -608,6 +606,153 @@ const RaatnaFinAPI = () => {
     });
   };
 
+  const getTeamLeaList = async () => {
+    const { data, status } = await internalFetcher(
+      "http://10.55.6.72:8081/users/getTeamLeadList",
+      {
+        body: JSON.stringify({
+          action: "get_team_lead_list",
+          request_data: {
+            product_code: "12300001",
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getInquiryFormDataForView = async () => {
+    const { data, status } = await internalFetcher("./users/inquiry", {
+      body: JSON.stringify({
+        action: "crm_inquiry_view",
+        request_data: {
+          refID: "1113",
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getInquiryFormMetaDataForViewOnly = async () => {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
+      body: JSON.stringify({
+        action: "render_inquiry_form",
+        request_data: {
+          productID: "12300001",
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data ?? {};
+    } else {
+      return {};
+    }
+  };
+
+  const getInquiryFormDataForEdit = async () => {
+    const { data, status } = await internalFetcher("./users/inquiry", {
+      body: JSON.stringify({
+        action: "crm_inquiry_edit",
+        request_data: {
+          refID: "1097",
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getInquiryFormMetaDataForEditOnly = async () => {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
+      body: JSON.stringify({
+        action: "render_inquiry_form_edit",
+        request_data: {
+          productID: "12300001",
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data ?? {};
+    } else {
+      return {};
+    }
+  };
+
+  const getQuestionnairesFormDataForView = async () => {
+    const { data, status } = await internalFetcher("./users/inquiry", {
+      body: JSON.stringify({
+        action: "crm_questionnaire_view",
+        request_data: {
+          refID: "862",
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getQuestionnaireFormMetaDataForViewOnly = async () => {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
+      body: JSON.stringify({
+        action: "render_questionnaire_form",
+        request_data: {
+          refID: "1113",
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data ?? {};
+    } else {
+      return {};
+    }
+  };
+
+  const getQuestionnairesFormDataForEdit = async () => {
+    const { data, status } = await internalFetcher("./users/inquiry", {
+      body: JSON.stringify({
+        action: "crm_questionnaire_edit",
+        request_data: {
+          refID: "862",
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getQuestannaiareFormMetaDataForEditOnly = async () => {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
+      body: JSON.stringify({
+        action: "render_questionnaire_form_edit",
+        request_data: {
+          refID: "1113",
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data ?? {};
+    } else {
+      return {};
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -622,7 +767,7 @@ const RaatnaFinAPI = () => {
     handleverifyPwd,
     getsubProductDtl,
     getDashboardEmployeeDataList,
-    getDashdoardDisplayEmpDetails,
+    getInquiryDataToConvertIntoLead,
     submitBecomePartnerData,
     validatePanNumber,
     checkPhoneNumberExists,
@@ -635,6 +780,18 @@ const RaatnaFinAPI = () => {
     fetchGridData,
     requestOTP,
     verifyOTP,
+    getTeamLeaList,
+
+    //remove this later
+    getInquiryFormDataForView,
+    getInquiryFormMetaDataForViewOnly,
+    getInquiryFormDataForEdit,
+    getInquiryFormMetaDataForEditOnly,
+
+    getQuestionnairesFormDataForView,
+    getQuestionnaireFormMetaDataForViewOnly,
+    getQuestionnairesFormDataForEdit,
+    getQuestannaiareFormMetaDataForEditOnly,
   };
 };
 
