@@ -12,6 +12,7 @@ export const InquiryEditFormWrapper = () => {
   const [loading, setLoading] = useState(false);
   const [metaData, setMetaData] = useState({});
   const [formEditableValues, setFormEditableValues] = useState({});
+  const [error, setError] = useState("");
 
   const onSubmitHandlerNew = () => {};
 
@@ -24,10 +25,14 @@ export const InquiryEditFormWrapper = () => {
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
-          console.log("edit view", responses);
-          setMetaData(data[1]);
-          setFormEditableValues(data[0].data);
-          setLoading(false);
+          if (data[0].status === "success") {
+            setLoading(false);
+            setMetaData(data[1]);
+            setFormEditableValues(data[0].data);
+          } else {
+            setLoading(false);
+            setError(data[0].status);
+          }
         });
       })
       .catch(function (error) {

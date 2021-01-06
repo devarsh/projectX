@@ -6,11 +6,16 @@ import {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import { useNavigate } from "react-router-dom";
 
 export const InquiryViewFormWrapper = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formDisplayValues, setFormDisplayValues] = useState({});
   const [metaData, setMetaData] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -20,15 +25,16 @@ export const InquiryViewFormWrapper = () => {
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
-          console.log("view", data);
-          setFormDisplayValues(data[0].data);
-          setMetaData(data[1]);
-          setLoading(false);
+          if (data[0].status === "success") {
+            setLoading(false);
+            setFormDisplayValues(data[0].data);
+            setMetaData(data[1]);
+            setLoading(false);
+          } else {
+            setLoading(false);
+            setError(data[0].status);
+          }
         });
-      })
-      .then(function (data) {
-        setLoading(false);
-        // console.log("fmrdata", data);
       })
       .catch(function (error) {
         setLoading(false);

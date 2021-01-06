@@ -7,8 +7,8 @@ import { LeadInformationTab } from "./tabInformation";
 import { LeadCustomerTab } from "./tabCustomer";
 import { useStyles } from "./style";
 
-import { InquiryViewFormWrapper } from "pages_crm/pages/inquiryFormActions/inquiryFormView";
-import { QuestionnaireViewFormWrapper } from "pages_crm/pages/questionnaireFormActions/questionnaireFormView";
+import { InquiryViewFormWrapper } from "pages_los/pages/inquiryFormActions/inquiryFormView";
+import { QuestionnaireViewFormWrapper } from "pages_los/pages/questionnaireFormActions/questionnaireFormView";
 
 interface TabPanelProps {
   children?: React.ReactNode;

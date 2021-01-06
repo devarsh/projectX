@@ -12,6 +12,7 @@ export const QuestionnaireEditFormWrapper = () => {
   const [loading, setLoading] = useState(false);
   const [metaData, setMetaData] = useState({});
   const [formEditableValues, setFormEditableValues] = useState({});
+  const [error, setError] = useState("");
 
   const onSubmitHandlerNew = () => {};
 
@@ -24,9 +25,13 @@ export const QuestionnaireEditFormWrapper = () => {
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
-          setMetaData(data[1]);
-          setFormEditableValues(data[0].data);
-          setLoading(false);
+          if (data[0].status === "success") {
+            setLoading(false);
+            setMetaData(data[1]);
+            setFormEditableValues(data[0].data);
+          } else {
+            setError(data[0].status);
+          }
         });
       })
       .catch(function (error) {
