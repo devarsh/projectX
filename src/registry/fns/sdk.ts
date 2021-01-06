@@ -429,10 +429,11 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getInquiryFormData = async (inquiryID: string) => {
+  const getInquiryFormData = async (inquiryID: string, type: string) => {
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
-        action: "crm_inquiry_edit",
+        action:
+          type === "inquiry" ? "crm_inquiry_edit" : "crm_questionnaire_edit",
         request_data: {
           refID: inquiryID,
         },
@@ -444,10 +445,11 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
-  const getInquiryFormDisplayData = async (inquiryID: string) => {
+  const getInquiryFormDisplayData = async (inquiryID: string, type: string) => {
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
-        action: "crm_inquiry_view",
+        action:
+          type === "inquiry" ? "crm_inquiry_view" : "crm_questionnaire_view",
         request_data: {
           refID: inquiryID,
         },
@@ -460,42 +462,16 @@ const RaatnaFinAPI = () => {
     }
   };
   //change this API to fetch against refID
-  const getInquiryFormDisplayMetaData = async (inquiryID: string) => {
+  const getInquiryFormDisplayMetaData = async (
+    inquiryID: string,
+    type: string
+  ) => {
     const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
-        action: "render_inquiry_form",
-        request_data: {
-          productID: "12300001",
-        },
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
-  const getInquiryFormEditMetaData = async (inquiryID: string) => {
-    const { data, status } = await internalFetcher("./users/getMetaData", {
-      body: JSON.stringify({
-        action: "render_inquiry_form_edit",
-        request_data: {
-          productID: "12300001",
-        },
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
-  const getQuestionnaireDisplayData = async (inquiryID: string) => {
-    const { data, status } = await internalFetcher("./users/inquiry", {
-      body: JSON.stringify({
-        action: "crm_questionnaire_view",
+        action:
+          type === "inquiry"
+            ? "render_inquiry_form"
+            : "render_questionnaire_form",
         request_data: {
           refID: inquiryID,
         },
@@ -508,10 +484,16 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getQuestionnaireFormData = async (inquiryID: string) => {
-    const { data, status } = await internalFetcher("./users/inquiry", {
+  const getInquiryFormEditMetaData = async (
+    inquiryID: string,
+    type: string
+  ) => {
+    const { data, status } = await internalFetcher("./users/getMetaData", {
       body: JSON.stringify({
-        action: "crm_questionnaire_edit",
+        action:
+          type === "inquiry"
+            ? "render_inquiry_form_edit"
+            : "render_questionnaire_form_edit",
         request_data: {
           refID: inquiryID,
         },
@@ -521,38 +503,6 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.response_data };
     } else {
       return { status, data: data?.error_data };
-    }
-  };
-
-  const getQuestionnaireFormDisplayMetaData = async () => {
-    const { data, status } = await internalFetcher("./users/getMetaData", {
-      body: JSON.stringify({
-        action: "render_questionnaire_form",
-        request_data: {
-          refID: "1113",
-        },
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data ?? {};
-    } else {
-      return {};
-    }
-  };
-
-  const getQuestannaiareFormEditMetaData = async () => {
-    const { data, status } = await internalFetcher("./users/getMetaData", {
-      body: JSON.stringify({
-        action: "render_questionnaire_form_edit",
-        request_data: {
-          refID: "1113",
-        },
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data ?? {};
-    } else {
-      return {};
     }
   };
 
@@ -749,38 +699,38 @@ const RaatnaFinAPI = () => {
     loginStatus,
     getPincode,
     getProductType,
+    getsubProductDtl,
     getPropertyCity,
     getBankList,
     getMiscVal,
-    verifyPwd,
-    getsubProductDtl,
-    getDashboardEmployeeDataList,
-    getInquiryDataToConvertIntoLead,
-    submitBecomePartnerData,
+    //Need to fix this API -to allow pass api result
     validatePanNumber,
-    checkPhoneNumberExists,
-    updateUserPassword,
-    initiateAadharValidation,
-    fetchAadharRequestStatus,
-    fetchAadharRequestStatusEventSource,
-    fetchGridMetaData,
-    fetchGridColumnFilterProps,
-    fetchGridData,
     requestOTP,
     verifyOTP,
-    getTeamLeaList,
+    initiateAadharValidation,
+    fetchAadharRequestStatus,
+    submitBecomePartnerData,
 
     getInquiryMetaData,
     sumibtInquiryData,
+
     getInquiryFormData,
     getInquiryFormDisplayData,
     getInquiryFormDisplayMetaData,
     getInquiryFormEditMetaData,
 
-    getQuestionnaireFormData,
-    getQuestionnaireDisplayData,
-    getQuestionnaireFormDisplayMetaData,
-    getQuestannaiareFormEditMetaData,
+    fetchGridMetaData,
+    fetchGridColumnFilterProps,
+    fetchGridData,
+
+    //Need to fix these APIS
+    fetchAadharRequestStatusEventSource,
+    updateUserPassword,
+    getTeamLeaList,
+    verifyPwd,
+    getDashboardEmployeeDataList,
+    checkPhoneNumberExists,
+    getInquiryDataToConvertIntoLead,
   };
 };
 

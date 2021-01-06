@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, FC } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
 import {
@@ -6,7 +6,10 @@ import {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
-export const InquiryViewFormWrapper = () => {
+export const InquiryViewFormWrapper: FC<{
+  inquiryID: string;
+  inquiryType: "questionnaire" | "inquiry";
+}> = ({ inquiryID, inquiryType }) => {
   const [loading, setLoading] = useState(false);
   const [formDisplayValues, setFormDisplayValues] = useState({});
   const [metaData, setMetaData] = useState({});
@@ -14,8 +17,8 @@ export const InquiryViewFormWrapper = () => {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      APISDK.getInquiryFormDisplayData("1033"),
-      APISDK.getInquiryFormDisplayMetaData("1033"),
+      APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
+      APISDK.getInquiryFormDisplayMetaData(inquiryID, inquiryType),
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
@@ -26,8 +29,7 @@ export const InquiryViewFormWrapper = () => {
             setLoading(false);
           } else {
             setLoading(false);
-            setError(data[0].data.error_msg);
-            setError(data[1].data.error_msg);
+            setError(`${data[0]?.data?.error_msg} ${data[1]?.data?.error_msg}`);
           }
         });
       })

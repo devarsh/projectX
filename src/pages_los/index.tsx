@@ -6,7 +6,7 @@ import { Drawer } from "./drawer";
 import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
-import { Inquiry } from "./pages/inquiry";
+import { Inquiry, InquiryDetails } from "./pages/inquiry";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
 import LeadAction from "./pages/leadaction";
@@ -32,6 +32,7 @@ const DashbordPages = () => {
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/inquiries" element={<Inquiry />} />
+            <Route path="/inquiryDetails" element={<InquiryDetails />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
             <Route path="/cam" element={<DynamicLead />} />

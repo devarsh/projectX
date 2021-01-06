@@ -1,6 +1,4 @@
-import { icon } from "@fortawesome/fontawesome-svg-core";
 import { NavBarMetaDataType } from "components/navigation";
-import { Children } from "react";
 
 export const metaData: NavBarMetaDataType = {
   config: {
@@ -21,6 +19,12 @@ export const metaData: NavBarMetaDataType = {
         {
           label: "Inquiries",
           href: "./inquiries",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Inquiry Details",
+          href: "./inquiryDetails",
           isRouterLink: true,
           icon: "circle",
         },
