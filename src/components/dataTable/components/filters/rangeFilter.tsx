@@ -18,7 +18,6 @@ RangeFilterFn.autoRemove = (val) => {
 };
 
 export const RangeFilterWrapper = (props) => {
-  console.log(props);
   const type = props?.column?.filterComponentProps?.type ?? "slider";
   if (type === "slider") {
     return <RangeSliderColumnFilter {...props} />;
@@ -74,8 +73,13 @@ const RangeColumnFilter = ({
   handleClose,
 }) => {
   const componentType = filterComponentProps?.type ?? "minMax";
-  const [minValue, setMinValue] = useState(filterValue?.value[0] ?? 0);
-  const [maxValue, setMaxValue] = useState(filterValue?.value[1] ?? 100);
+  console.log(componentType, filterValue);
+  const [minValue, setMinValue] = useState(
+    filterValue?.value[0] ?? componentType === "minMax" ? 0 : new Date()
+  );
+  const [maxValue, setMaxValue] = useState(
+    filterValue?.value[1] ?? componentType === "minMax" ? 100 : new Date()
+  );
 
   const applyFilter = () => {
     setFilter({
@@ -157,40 +161,43 @@ const DateRangeRenderer = ({
   maxValue,
   setMaxValue,
   classes,
-}) => (
-  <>
-    <Box width="45%">
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          fullWidth
-          placeholder="Start Date"
-          format="dd/MM/yyyy"
-          value={minValue}
-          onChange={setMinValue}
-          KeyboardButtonProps={{
-            "aria-label": "Select Date",
-          }}
-          className={classes.datePicker}
-        />
-      </MuiPickersUtilsProvider>
-    </Box>
-    <Box width="10%" textAlign="center">
-      to
-    </Box>
-    <Box width="45%">
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          fullWidth
-          placeholder="End Date"
-          format="dd/MM/yyyy"
-          value={maxValue}
-          onChange={setMaxValue}
-          KeyboardButtonProps={{
-            "aria-label": "Select Date",
-          }}
-          className={classes.datePicker}
-        />
-      </MuiPickersUtilsProvider>
-    </Box>
-  </>
-);
+}) => {
+  console.log(minValue, maxValue);
+  return (
+    <>
+      <Box width="45%">
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            fullWidth
+            placeholder="Start Date"
+            format="dd/MM/yyyy"
+            value={minValue}
+            onChange={setMinValue}
+            KeyboardButtonProps={{
+              "aria-label": "Select Date",
+            }}
+            className={classes.datePicker}
+          />
+        </MuiPickersUtilsProvider>
+      </Box>
+      <Box width="10%" textAlign="center">
+        to
+      </Box>
+      <Box width="45%">
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            fullWidth
+            placeholder="End Date"
+            format="dd/MM/yyyy"
+            value={maxValue}
+            onChange={setMaxValue}
+            KeyboardButtonProps={{
+              "aria-label": "Select Date",
+            }}
+            className={classes.datePicker}
+          />
+        </MuiPickersUtilsProvider>
+      </Box>
+    </>
+  );
+};
