@@ -80,7 +80,9 @@ export const GirdController: FC<{
     <DataGrid
       gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
-      headerFilterMeta={metaData?.headerFilters}
+      globalFilterMeta={metaData?.headerFilters}
+      gridActions={metaData?.actions}
+      setGridAction={metaData?.setAction}
       dense={true}
       localFilterManager={localFilterManager}
       globalFiltersState={globalFiltersState}
@@ -103,6 +105,7 @@ export const GirdController: FC<{
       allowKeyboardNavigation={
         metaData.gridConfig?.allowKeyboardNavigation ?? false
       }
+      allowGlobalFilter={metaData.gridConfig?.allowGlobalFilter ?? false}
     />
   );
 };

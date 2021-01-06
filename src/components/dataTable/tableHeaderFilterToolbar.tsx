@@ -2,7 +2,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
-import { GroupByFilter, DaysFilter } from "./components/globalFilters";
+import {
+  GroupByExclusiveFilter,
+  GroupByMultipleFilter,
+  DaysFilter,
+} from "./components/globalFilters";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,23 +21,38 @@ export const TableHeaderFilterToolbar = ({ dense, gridCode, filters }) => {
     const { filterComponentType, filterComponentProps, key } = one;
     let component;
     switch (filterComponentType) {
-      case "groupByFilter":
-        component = (
-          <GroupByFilter gridCode={gridCode} {...filterComponentProps} />
-        );
+      case "groupByFilter": {
+        if (filterComponentProps.selectType === "multiple") {
+          component = (
+            <GroupByMultipleFilter
+              gridCode={gridCode}
+              {...filterComponentProps}
+            />
+          );
+        } else {
+          component = (
+            <GroupByExclusiveFilter
+              gridCode={gridCode}
+              {...filterComponentProps}
+            />
+          );
+        }
         break;
-      case "daysFilter":
+      }
+      case "daysFilter": {
         component = (
           <DaysFilter gridCode={gridCode} {...filterComponentProps} />
         );
         break;
-      default:
+      }
+      default: {
         component = null;
         break;
+      }
     }
     if (component !== null) {
       return (
-        <Grid item xs={12} sm={12} md={12}>
+        <Grid key={key} item xs={12} sm={12} md={12}>
           {component}
         </Grid>
       );
