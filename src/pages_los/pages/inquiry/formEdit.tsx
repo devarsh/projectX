@@ -1,11 +1,11 @@
-import { useState, useEffect, Fragment, memo } from "react";
+import { useState, useEffect } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
-const MemoizedFormWrapper = memo(FormWrapper);
+
 export const InquiryEditFormWrapper = () => {
   const [loading, setLoading] = useState(false);
   const [metaData, setMetaData] = useState({});
@@ -15,8 +15,8 @@ export const InquiryEditFormWrapper = () => {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      APISDK.getInquiryFormDataForEdit(),
-      APISDK.getInquiryFormMetaDataForEditOnly(),
+      APISDK.getInquiryFormEditMetaData("1033"),
+      APISDK.getInquiryFormData("1033"),
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
@@ -43,14 +43,12 @@ export const InquiryEditFormWrapper = () => {
   ) : !isMetaDataValid(metaData as MetaDataType) ? (
     <span>"Error loading form"</span>
   ) : (
-    <Fragment>
-      <MemoizedFormWrapper
-        key={"dataForm"}
-        metaData={metaData as MetaDataType}
-        initialValues={formEditableValues}
-        onSubmitHandler={onSubmitHandlerNew}
-      />
-    </Fragment>
+    <FormWrapper
+      key={"dataForm"}
+      metaData={metaData as MetaDataType}
+      initialValues={formEditableValues}
+      onSubmitHandler={onSubmitHandlerNew}
+    />
   );
   return result;
 };

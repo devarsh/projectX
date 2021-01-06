@@ -14,8 +14,8 @@ export const InquiryViewFormWrapper = () => {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      APISDK.getInquiryFormDataForView(),
-      APISDK.getInquiryFormMetaDataForViewOnly(),
+      APISDK.getInquiryFormDisplayData("1033"),
+      APISDK.getInquiryFormDisplayMetaData("1033"),
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {

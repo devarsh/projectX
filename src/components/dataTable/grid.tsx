@@ -172,7 +172,7 @@ export const DataGrid = ({
   return (
     <Paper
       style={{
-        width: totalColumnsWidth < maxWidth ? totalColumnsWidth : maxWidth,
+        width: "100%",
       }}
     >
       <TableHeaderToolbar
