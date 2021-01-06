@@ -7,6 +7,9 @@ import { LeadInformationTab } from "./tabInformation";
 import { LeadCustomerTab } from "./tabCustomer";
 import { useStyles } from "./style";
 
+import { InquiryViewFormWrapper } from "pages_los/pages/inquiryFormActions/inquiryFormView";
+import { QuestionnaireViewFormWrapper } from "pages_los/pages/questionnaireFormActions/questionnaireFormView";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -108,6 +111,8 @@ export const DetailsTabContainer = () => {
         <Leadtab label="Documents" {...a11yProps(2)} />
         <Leadtab label="Activity History" {...a11yProps(3)} />
         <Leadtab label="Payout" {...a11yProps(4)} />
+        <Leadtab label="Inquiry Form" {...a11yProps(5)} />
+        <Leadtab label="Questionnarie" {...a11yProps(6)} />
       </Leadtabs>
       <div>
         <TabPanel value={value} index={0}>
@@ -121,6 +126,13 @@ export const DetailsTabContainer = () => {
         </TabPanel>
         <TabPanel value={value} index={3}></TabPanel>
         <TabPanel value={value} index={4}></TabPanel>
+
+        <TabPanel value={value} index={5}>
+          <InquiryViewFormWrapper />
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          <QuestionnaireViewFormWrapper />
+        </TabPanel>
       </div>
     </>
   );
