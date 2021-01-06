@@ -81,6 +81,8 @@ export const GirdController: FC<{
       gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
       globalFilterMeta={metaData?.headerFilters}
+      gridActions={metaData?.actions}
+      setGridAction={metaData?.setAction}
       dense={true}
       localFilterManager={localFilterManager}
       globalFiltersState={globalFiltersState}
@@ -96,12 +98,14 @@ export const GirdController: FC<{
       totalRecords={totalRecords}
       pageSizes={metaData.gridConfig?.pageSize}
       defaultPageSize={metaData.gridConfig?.defaultPageSize}
-      allowColumnReordering={metaData.gridConfig?.allowColumnReordering ?? true}
-      allowColumnHiding={metaData.gridConfig?.allowColumnHiding ?? true}
-      allowKeyboardNavigation={
-        metaData.gridConfig?.allowKeyboardNavigation ?? true
+      allowColumnReordering={
+        metaData.gridConfig?.allowColumnReordering ?? false
       }
-      allowGlobalFilter={metaData.gridConfig?.allowGlobalFilter ?? true}
+      allowColumnHiding={metaData.gridConfig?.allowColumnHiding ?? false}
+      allowKeyboardNavigation={
+        metaData.gridConfig?.allowKeyboardNavigation ?? false
+      }
+      allowGlobalFilter={metaData.gridConfig?.allowGlobalFilter ?? false}
     />
   );
 };
