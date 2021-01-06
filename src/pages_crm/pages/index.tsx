@@ -77,7 +77,6 @@ const Index = () => {
           </Box>
         }
       />
-
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
