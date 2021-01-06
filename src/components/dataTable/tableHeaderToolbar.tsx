@@ -39,7 +39,6 @@ export const TableHeaderToolbar = ({
 }) => {
   const classes = useStyles();
   const selectedCount = selectedFlatRows.length;
-
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -69,7 +68,6 @@ export const TableHeaderToolbar = ({
           </IconButton>
         </Tooltip>
       ) : null}
-
       {allowColumnHiding ? (
         <ColumnVisibility
           visibleColumns={visibleColumns}
