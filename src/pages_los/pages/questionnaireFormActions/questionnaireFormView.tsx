@@ -11,6 +11,7 @@ export const QuestionnaireViewFormWrapper = () => {
   const [loading, setLoading] = useState(false);
   const [formDisplayValues, setFormDisplayValues] = useState({});
   const [metaData, setMetaData] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -20,10 +21,14 @@ export const QuestionnaireViewFormWrapper = () => {
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
-          console.log("questions", responses);
-          setMetaData(data[1]);
-          setFormDisplayValues(data[0].data);
-          setLoading(false);
+          if (data[0].status === "success") {
+            setLoading(false);
+            setMetaData(data[1]);
+            setFormDisplayValues(data[0].data);
+          } else {
+            setLoading(false);
+            setError(data[0].data.error_msg);
+          }
         });
       })
       .then(function (data) {

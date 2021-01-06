@@ -32,7 +32,7 @@ export const InquiryViewFormWrapper = () => {
             setLoading(false);
           } else {
             setLoading(false);
-            setError(data[0].status);
+            setError(data[0].data.error_msg);
           }
         });
       })

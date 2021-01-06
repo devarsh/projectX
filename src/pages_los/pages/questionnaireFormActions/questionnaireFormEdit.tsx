@@ -30,7 +30,8 @@ export const QuestionnaireEditFormWrapper = () => {
             setMetaData(data[1]);
             setFormEditableValues(data[0].data);
           } else {
-            setError(data[0].status);
+            setLoading(false);
+            setError(data[0].data.error_msg);
           }
         });
       })

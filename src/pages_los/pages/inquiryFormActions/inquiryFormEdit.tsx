@@ -31,7 +31,7 @@ export const InquiryEditFormWrapper = () => {
             setFormEditableValues(data[0].data);
           } else {
             setLoading(false);
-            setError(data[0].status);
+            setError(data[0].data.error_msg);
           }
         });
       })
