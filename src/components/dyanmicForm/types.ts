@@ -151,6 +151,7 @@ export interface RenderedFieldsType {
   fields: JSX.Element[];
   sequence: number[];
   fieldNames: string[];
+  excluded?: boolean;
 }
 
 export interface GroupWiseRenderedFieldsType {

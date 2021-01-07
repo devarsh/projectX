@@ -14,6 +14,8 @@ import {
   subscribeToFormFieldsSelector,
   formFieldExcludeAddSelector,
   formFieldExcludeRemoveSelector,
+  formFieldsErrorWatcherAddSelector,
+  formFieldsErrorWatcherRemoveSelector,
 } from "./atoms";
 import {
   FormFieldAtomType,
@@ -178,6 +180,18 @@ export const useField = ({
     },
     [formContext.formName]
   );
+  const addRemoveFieldsFromErrorWatcher = useRecoilCallback(
+    ({ set }) => ({ fieldName, flag }) => {
+      if (flag === "add") {
+        set(formFieldsErrorWatcherAddSelector(formContext.formName), fieldName);
+      } else if (flag === "remove") {
+        set(
+          formFieldsErrorWatcherRemoveSelector(formContext.formName),
+          fieldName
+        );
+      }
+    }
+  );
 
   const dependentFieldsState = useRecoilValue(
     subscribeToFormFieldsSelector({
@@ -242,6 +256,17 @@ export const useField = ({
             }));
           }
         }
+      });
+    }
+    if (Boolean(fieldData.error)) {
+      addRemoveFieldsFromErrorWatcher({
+        fieldName: fieldData.name,
+        flag: "add",
+      });
+    } else {
+      addRemoveFieldsFromErrorWatcher({
+        fieldName: fieldData.name,
+        flag: "remove",
       });
     }
   });

@@ -7,8 +7,26 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { GroupedView } from "./groupedView";
 import { SimpleView } from "./simpleView";
-import { MetaDataType, FormMetaDataType } from "../types";
+import {
+  MetaDataType,
+  FormMetaDataType,
+  GroupWiseRenderedFieldsType,
+} from "../types";
+import { InitialValuesType } from "packages/form";
 import { useStyles } from "../style";
+
+const attachGroupExcludedProps = (
+  groupWiseFields: GroupWiseRenderedFieldsType,
+  inititalValues: InitialValuesType
+) => {
+  const fieldGroups = Object.keys(groupWiseFields).sort();
+  const transformedFieldGroups = fieldGroups.map((group) => {
+    const excluded = groupWiseFields[group].fieldNames.filter((one) =>
+      Boolean(inititalValues[one])
+    );
+    groupWiseFields[group].excluded = excluded.length > 0 ? false : true;
+  });
+};
 
 export const ViewFormWrapper: FC<ViewFormWrapperProps> = ({
   metaData,
@@ -29,6 +47,7 @@ export const ViewFormWrapper: FC<ViewFormWrapperProps> = ({
     fields: transformedFields,
   } as MetaDataType;
   const groupWiseFields = renderValuesByGroup(transformedMetaData);
+  attachGroupExcludedProps(groupWiseFields, formDisplayValues);
   const formRenderType = transformedMetaData.form.render.renderType ?? "simple";
   const classes = useStyles();
 

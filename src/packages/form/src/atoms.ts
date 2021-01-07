@@ -25,6 +25,9 @@ export const atomKeys = {
   formFieldsExcludedAtom: "formFieldsExcludedAtom",
   formFieldExcludeAddSelector: "formFieldExcludeAddSelector",
   formFieldExcludeRemoveSelector: "formFieldExcludeRemoveSelector",
+  formFieldsErrorWatcherAtom: "formFieldsErrorWatcherAtom",
+  formFieldsErrorWatcherAddSelector: "formFieldsErrorWatcherAddSelector",
+  formFieldsErrorWatcherRemoveSelector: "formFieldsErrorWatcherAddSelector",
 };
 
 export const formAtom = atomFamily<FormAtomType, string>({
@@ -52,6 +55,53 @@ export const formFieldAtom = atomFamily<FormFieldAtomType, string>({
     readOnly: false,
     incomingMessage: null,
   }),
+});
+
+export const formFieldsErrorWatcherAtom = atomFamily<string[], string>({
+  key: atomKeys.formFieldsErrorWatcherAtom,
+  default: [],
+});
+
+export const formFieldsErrorWatcherAddSelector = selectorFamily<string, string>(
+  {
+    key: atomKeys.formFieldsErrorWatcherAddSelector,
+    set: (formName) => ({ set, get }, fieldName) => {
+      if (!(fieldName instanceof DefaultValue)) {
+        const fields = get(formFieldsErrorWatcherAtom(formName));
+        const valueExists = fields.indexOf(fieldName) > -1;
+        if (!valueExists) {
+          const newFields = [...fields, fieldName];
+          set(formFieldsErrorWatcherAtom(formName), newFields);
+        }
+      }
+    },
+    get: (_) => () => {
+      return "";
+    },
+  }
+);
+
+export const formFieldsErrorWatcherRemoveSelector = selectorFamily<
+  string,
+  string
+>({
+  key: atomKeys.formFieldsErrorWatcherRemoveSelector,
+  set: (formName) => ({ set, get }, fieldName) => {
+    if (!(fieldName instanceof DefaultValue)) {
+      const fields = get(formFieldsErrorWatcherAtom(formName));
+      const index = fields.indexOf(fieldName);
+      if (index > -1) {
+        const newFields = [
+          ...fields.slice(0, index),
+          ...fields.slice(index + 1),
+        ];
+        set(formFieldsErrorWatcherAtom(formName), newFields);
+      }
+    }
+  },
+  get: (_) => () => {
+    return "";
+  },
 });
 
 export const formFieldsExcludedAtom = atomFamily<string[], string>({
