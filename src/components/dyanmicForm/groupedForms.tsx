@@ -1,6 +1,11 @@
-import { FC, useState, useRef, Suspense, cloneElement, Fragment } from "react";
+import { FC, useState, useRef, cloneElement } from "react";
 import { useRecoilValue } from "recoil";
-import { useForm, SubmitFnType, formFieldsExcludedAtom } from "packages/form";
+import {
+  useForm,
+  SubmitFnType,
+  formFieldsExcludedAtom,
+  formFieldsErrorWatcherAtom,
+} from "packages/form";
 import Grid from "@material-ui/core/Grid";
 import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
 import { useStyles } from "./style";
@@ -24,6 +29,9 @@ export const GroupedForm: FC<FormProps> = ({
 }) => {
   const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
+  const errorWatcherFields = useRecoilValue(
+    formFieldsErrorWatcherAtom(formName)
+  );
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const { handleSubmit, handleSubmitPartial } = useForm({
@@ -39,6 +47,11 @@ export const GroupedForm: FC<FormProps> = ({
       index: one,
       name: groupName,
       status: isGroupExcluded(formName, fields[one].fieldNames, excludedFields),
+      hasError: isGroupHavingError(
+        formName,
+        fields[one].fieldNames,
+        errorWatcherFields
+      ),
     };
   });
 
@@ -109,21 +122,6 @@ export const GroupedForm: FC<FormProps> = ({
   );
 };
 
-const isGroupExcluded = (
-  formName: string,
-  currentGroupFields: string[],
-  excludedFields: string[]
-) => {
-  const remaningFields = currentGroupFields.filter((fieldName) => {
-    const fullFieldName = `${formName}/${fieldName}`;
-    return excludedFields.indexOf(fullFieldName) >= 0 ? false : true;
-  });
-  if (remaningFields.length > 0) {
-    return true;
-  }
-  return false;
-};
-
 const getNextActiveStep = (
   currentStep: number,
   fieldGroupsActiveStatus: {
@@ -171,4 +169,34 @@ const isLastActiveStep = (
   }
 
   return finalStep === currentStep;
+};
+
+const isGroupExcluded = (
+  formName: string,
+  currentGroupFields: string[],
+  excludedFields: string[]
+) => {
+  const remaningFields = currentGroupFields.filter((fieldName) => {
+    const fullFieldName = `${formName}/${fieldName}`;
+    return excludedFields.indexOf(fullFieldName) >= 0 ? false : true;
+  });
+  if (remaningFields.length > 0) {
+    return true;
+  }
+  return false;
+};
+
+const isGroupHavingError = (
+  formName: string,
+  currentGroupFields: string[],
+  errorFields: string[]
+) => {
+  const remaningFields = currentGroupFields.filter((fieldName) => {
+    const fullFieldName = `${formName}/${fieldName}`;
+    return errorFields.indexOf(fullFieldName) >= 0 ? true : false;
+  });
+  if (remaningFields.length > 0) {
+    return true;
+  }
+  return false;
 };

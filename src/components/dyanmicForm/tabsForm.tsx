@@ -30,6 +30,7 @@ export const MyTabs = ({
               key={field.name}
               label={field.name}
               onClick={() => setActiveStep(Number(field.index))}
+              style={field.hasError ? { color: "red" } : {}}
             />
           );
         })}
