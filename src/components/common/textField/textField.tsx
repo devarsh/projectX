@@ -97,7 +97,9 @@ const MyTextField: FC<MyTextFieldProps> = ({
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
-      handleChange(value);
+      if (value !== "DEFAULT_VALUE") {
+        handleChange(value);
+      }
       if (whenToRunValidation === "onBlur") {
         runValidation({ value: value }, true);
       }

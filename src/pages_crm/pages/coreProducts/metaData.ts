@@ -25,46 +25,56 @@ export const productTilesMeta: ProductTilesType[] = [
   {
     productIcon: SMELoanIcon,
     productName: "SME Loan",
-    href: "/form/sme",
+    href: "./form/sme",
     navigationProps: {
-      prodCode: "12300005",
-      empCode: "98",
+      metaProps: {
+        productID: "12300005",
+        action: "crm_inquiry_metaData",
+      },
     },
   },
   {
     productIcon: ConstructionFinanceIcon,
     productName: "Construction Finance",
-    href: "/form/infra",
+    href: "./form/infra",
     navigationProps: {
-      prodCode: "123000011",
-      empCode: "98",
+      metaProps: {
+        productID: "123000011",
+        action: "crm_inquiry_metaData",
+      },
     },
   },
   {
     productIcon: BusinessLoanIcon,
     productName: "Business Loan",
-    href: "/form/business",
+    href: "./form/business",
     navigationProps: {
-      prodCode: "123000013",
-      empCode: "98",
+      metaProps: {
+        productID: "123000013",
+        action: "crm_inquiry_metaData",
+      },
     },
   },
   {
     productIcon: RetailHomeLoanIcon,
     productName: "Retail Home Loan",
-    href: "/form/rhl",
+    href: "./form/rhl",
     navigationProps: {
-      prodCode: "12300001",
-      empCode: "98",
+      metaProps: {
+        productID: "12300001",
+        action: "crm_inquiry_metaData",
+      },
     },
   },
   {
     productIcon: RetailLAPIcon,
     productName: "Retail LAP",
-    href: "/form/lap",
+    href: "./form/lap",
     navigationProps: {
-      prodCode: "12300002",
-      empCode: "98",
+      metaProps: {
+        productID: "12300002",
+        action: "crm_inquiry_metaData",
+      },
     },
   },
   { productIcon: GovtSubsidaryIcon, productName: "Government Subsidy" },
@@ -77,10 +87,12 @@ export const productTilesMeta: ProductTilesType[] = [
   {
     productIcon: PersonalLoanIcon,
     productName: "Personal Loan",
-    href: "/form/personal",
+    href: "./form/personal",
     navigationProps: {
-      prodCode: "123000014",
-      empCode: "98",
+      metaProps: {
+        productID: "123000014",
+        action: "crm_inquiry_metaData",
+      },
     },
   },
   {

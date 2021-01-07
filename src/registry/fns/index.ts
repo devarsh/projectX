@@ -1,5 +1,6 @@
 import { APISDK as api } from "./sdk";
 import * as others from "./others";
+import * as pincode from "./pincode";
 
 import { singletonFunctionRegisrationFactory } from "components/dyanmicForm";
 
@@ -32,13 +33,6 @@ registerFn("getPropertyCity", api.getPropertyCity);
 registerFn("getBankList", api.getBankList);
 registerFn("getYesOrNoOptions", others.getYesOrNoOptions);
 registerFn("AutoFillGender", others.AutoFillGender);
-registerFn("getPincodeDtl", others.getPincodeDtl(api.getPincode));
-registerFn("getLocationDtl", others.getLocationDtl);
-registerFn(
-  "getcoApplicantPincodeDtl",
-  others.getcoApplicantPincodeDtl(api.getPincode)
-);
-registerFn("getcoApplicantLocationDtl", others.getcoApplicantLocationDtl);
 registerFn("getValidateValue", others.getValidateValue);
 registerFn("getGenderValue", others.getGenderValue);
 registerFn("getSecurityOffered", api.getMiscVal("SECURITY_OFF"));
@@ -46,8 +40,6 @@ registerFn("getYouAre", api.getMiscVal("YOU_ARE"));
 registerFn("getsubProductDtl", api.getsubProductDtl);
 registerFn("getInfraEmployee", api.getMiscVal("INFRA_EMPL"));
 registerFn("getEducationDtl", api.getMiscVal("EDUCATION"));
-registerFn("getSitePincodeDtl", others.getSitePincodeDtl(api.getPincode));
-registerFn("getSiteLocationDtl", others.getSiteLocationDtl);
 registerFn("validatePanNumber", api.validatePanNumber);
 registerFn(
   "getMonthlyEmiPayValidateValue",
@@ -56,3 +48,29 @@ registerFn(
 registerFn("getAccountType", api.getMiscVal("ACCT_TYPE"));
 registerFn("getChannelType", api.getMiscVal("CHANNEL_TYPE"));
 registerFn("getBusinessInterest", api.getMiscVal("BUSI_INTREST"));
+
+registerFn("getPincodeDtl", pincode.getPincodeDtl(api.getPincode));
+registerFn("getLocationDtl", pincode.getLocationDtl);
+registerFn(
+  "getcoApplicantPincodeDtl",
+  pincode.getcoApplicantPincodeDtl(api.getPincode)
+);
+registerFn("getcoApplicantLocationDtl", pincode.getcoApplicantLocationDtlEdit);
+registerFn("getSitePincodeDtl", pincode.getSitePincodeDtlEdit(api.getPincode));
+registerFn("getSiteLocationDtl", pincode.getSiteLocationDtlEdit);
+
+registerFn("getPincodeDtlEdit", pincode.getPincodeDtlEdit(api.getPincode));
+registerFn("getLocationDtlEdit", pincode.getLocationDtlEdit);
+registerFn(
+  "getcoApplicantPincodeDtlEdit",
+  pincode.getcoApplicantPincodeDtlEdit(api.getPincode)
+);
+registerFn(
+  "getcoApplicantLocationDtlEdit",
+  pincode.getcoApplicantLocationDtlEdit
+);
+registerFn(
+  "getSitePincodeDtlEdit",
+  pincode.getSitePincodeDtlEdit(api.getPincode)
+);
+registerFn("getSiteLocationDtlEdit", pincode.getSiteLocationDtlEdit);

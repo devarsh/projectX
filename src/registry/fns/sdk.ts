@@ -433,32 +433,37 @@ const RaatnaFinAPI = () => {
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action:
-          type === "inquiry" ? "crm_inquiry_edit" : "crm_questionnaire_edit",
+          type === "inquiry"
+            ? "crm_inquiry_edit_data"
+            : "crm_questionnaire_edit_data",
         request_data: {
           refID: inquiryID,
         },
+        channel: "W",
       }),
     });
     if (status === "success") {
-      return { status, data: data?.response_data };
+      return data?.response_data;
     } else {
-      return { status, data: data?.error_data };
+      throw data?.error_data;
     }
   };
   const getInquiryFormDisplayData = async (inquiryID: string, type: string) => {
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action:
-          type === "inquiry" ? "crm_inquiry_view" : "crm_questionnaire_view",
+          type === "inquiry"
+            ? "crm_inquiry_view_data"
+            : "crm_questionnaire_view_data",
         request_data: {
           refID: inquiryID,
         },
       }),
     });
     if (status === "success") {
-      return { status, data: data?.response_data };
+      return data?.response_data;
     } else {
-      return { status, data: data?.error_data };
+      throw data?.error_data;
     }
   };
   //change this API to fetch against refID
@@ -470,17 +475,17 @@ const RaatnaFinAPI = () => {
       body: JSON.stringify({
         action:
           type === "inquiry"
-            ? "render_inquiry_form"
-            : "render_questionnaire_form",
+            ? "crm_inquiry_view_metaData"
+            : "crm_questionnaire_view_metaData",
         request_data: {
           refID: inquiryID,
         },
       }),
     });
     if (status === "success") {
-      return { status, data: data?.response_data };
+      return data?.response_data;
     } else {
-      return { status, data: data?.error_data };
+      throw data?.error_data;
     }
   };
 
@@ -492,17 +497,39 @@ const RaatnaFinAPI = () => {
       body: JSON.stringify({
         action:
           type === "inquiry"
-            ? "render_inquiry_form_edit"
-            : "render_questionnaire_form_edit",
+            ? "crm_inquiry_edit_metaData"
+            : "crm_questionnaire_edit_metaData",
         request_data: {
           refID: inquiryID,
         },
       }),
     });
     if (status === "success") {
-      return { status, data: data?.response_data };
+      return data?.response_data;
     } else {
-      return { status, data: data?.error_data };
+      throw data?.error_data;
+    }
+  };
+
+  const updateInquiryFormData = async (
+    InquiryID: string,
+    type: string,
+    fromData: any
+  ) => {
+    const { data, status } = await internalFetcher("./users/inquiry", {
+      body: JSON.stringify({
+        action: type === "inquiry" ? "inquiry_update" : "questionnaire_update",
+        request_data: {
+          refID: InquiryID,
+          ...fromData,
+        },
+      }),
+    });
+    console.log(data, status);
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
     }
   };
 
@@ -718,6 +745,7 @@ const RaatnaFinAPI = () => {
     getInquiryFormDisplayData,
     getInquiryFormDisplayMetaData,
     getInquiryFormEditMetaData,
+    updateInquiryFormData,
 
     fetchGridMetaData,
     fetchGridColumnFilterProps,

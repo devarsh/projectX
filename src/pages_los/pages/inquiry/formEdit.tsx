@@ -1,56 +1,114 @@
-import { useState, useEffect, FC } from "react";
+import { FC } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import { SubmitFnType, InitialValuesType } from "packages/form";
+import { useMutation, useQueries } from "react-query";
+import { transformMetaDataForEdit } from "pages_los/utils/transformMetaDataForEdit";
+import { queryClient } from "./cache";
+
+interface updateFormDataType {
+  data: object;
+  displayData?: object;
+  endSubmit?: any;
+  setFieldError?: any;
+  inquiryID: string;
+  inquiryType: "questionnaire" | "inquiry";
+}
+
+const updateFormData = async ({
+  data,
+  inquiryID,
+  inquiryType,
+}: updateFormDataType) => {
+  return APISDK.updateInquiryFormData(inquiryID, inquiryType, data);
+};
 
 export const InquiryEditFormWrapper: FC<{
   inquiryID: string;
   inquiryType: "questionnaire" | "inquiry";
 }> = ({ inquiryID, inquiryType }) => {
-  const [loading, setLoading] = useState(false);
-  const [metaData, setMetaData] = useState({});
-  const [formEditableValues, setFormEditableValues] = useState({});
-  const [error, setError] = useState("");
-  const onSubmitHandlerNew = () => {};
-  useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      APISDK.getInquiryFormEditMetaData(inquiryID, inquiryType),
-      APISDK.getInquiryFormData(inquiryID, inquiryType),
-    ])
-      .then(function (responses) {
-        Promise.all(responses).then((data) => {
-          if (data[0].status === "success" && data[1].status === "success") {
-            setLoading(false);
-            setMetaData(data[1].data);
-            setFormEditableValues(data[0].data);
-          } else {
-            setLoading(false);
-            setError(`${data[0]?.data?.error_msg} ${data[1]?.data?.error_msg}`);
-          }
-        });
-      })
-      .catch(function (error) {
-        setLoading(false);
-        setError(error);
-      });
-  }, []);
-  /*eslint-disable react-hooks/exhaustive-deps*/
-  //@ts-ignore
-  const result = loading ? (
+  const mutation = useMutation(updateFormData, {
+    onError: (error: any, { endSubmit }) => {
+      console.log("error");
+      if (typeof error === "object") {
+        console.log(error?.error_msg);
+      }
+      endSubmit(false, error);
+    },
+    onSuccess: (data, { endSubmit }) => {
+      console.log("success");
+      endSubmit(true, "");
+      queryClient.invalidateQueries(["viewMetaData", inquiryType, inquiryID]);
+      queryClient.invalidateQueries(["viewFormData", inquiryType, inquiryID]);
+    },
+  });
+
+  const onSubmitHandler: SubmitFnType = (
+    data,
+    displayData,
+    endSubmit,
+    setFieldError
+  ) => {
+    mutation.mutate({
+      data,
+      displayData,
+      endSubmit,
+      setFieldError,
+      inquiryID,
+      inquiryType,
+    });
+  };
+
+  const result = useQueries([
+    {
+      queryKey: ["editMetaData", inquiryType, inquiryID],
+      queryFn: () => APISDK.getInquiryFormEditMetaData(inquiryID, inquiryType),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+    {
+      queryKey: ["editFormData", inquiryType, inquiryID],
+      queryFn: () => APISDK.getInquiryFormData(inquiryID, inquiryType),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  ]);
+
+  const loading = result[0].isLoading || result[1].isLoading;
+  let isError = result[0].isError || result[1].isError;
+  let errorMsg = `${result[0].error} ${result[1].error}`;
+  let metaData = JSON.parse(
+    JSON.stringify(result[0].data ?? {})
+  ) as MetaDataType;
+  let formEditData = result[1].data;
+  if (loading === false && isError === false) {
+    isError = !isMetaDataValid(metaData);
+    if (isError === false) {
+      metaData = transformMetaDataForEdit(metaData as MetaDataType);
+    } else {
+      errorMsg = "Error loading form";
+    }
+  }
+
+  //for some odd reason our formWrapper is called without initial values need to find out why
+
+  const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />
-  ) : !isMetaDataValid(metaData as MetaDataType) ? (
-    <span>"Error loading form"</span>
+  ) : isError === true ? (
+    <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={"dataForm"}
+      key={`${inquiryID}-${inquiryType}`}
       metaData={metaData as MetaDataType}
-      initialValues={formEditableValues}
-      onSubmitHandler={onSubmitHandlerNew}
+      initialValues={formEditData as InitialValuesType}
+      onSubmitHandler={onSubmitHandler}
     />
   );
-  return result;
+  return renderResult;
 };

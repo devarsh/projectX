@@ -39,6 +39,7 @@ import {
   AutocompletePropsOptional,
 } from "./typesFields";
 import { Merge } from "components/common/types";
+import { InitialValuesType, SubmitFnType } from "packages/form";
 
 export interface FormRenderConfigType {
   ordering: "auto" | "sequence";
@@ -193,4 +194,11 @@ export interface RenderFunctionType {
     formName: string,
     componentProps?: ComponentTypeProps
   ): JSX.Element;
+}
+
+export interface FormWrapperProps {
+  metaData: MetaDataType;
+  initialValues?: InitialValuesType;
+  onSubmitHandler: SubmitFnType;
+  hidden?: boolean;
 }

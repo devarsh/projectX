@@ -127,7 +127,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     runValidation,
     whenToRunValidation
   );
-
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {

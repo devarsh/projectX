@@ -5,7 +5,6 @@ import { attachValuesToMetaData } from "../utils/attachValuesToMetaData";
 import { ViewFormWrapperProps } from "./types";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import { GroupedView } from "./groupedView";
 import { SimpleView } from "./simpleView";
 import { MetaDataType, FormMetaDataType } from "../types";
@@ -36,9 +35,8 @@ export const ViewFormWrapper: FC<ViewFormWrapperProps> = ({
   return (
     <Container component="main" style={{ display: hidden ? "none" : "block" }}>
       <Typography component="h3" className={classes.title}>
-        {metaData.form.label} View Only
+        {metaData.form.label} View Mode
       </Typography>
-      <Divider />
       <div className={classes.form}>
         {formRenderType === "stepper" || formRenderType === "tabs" ? (
           <GroupedView

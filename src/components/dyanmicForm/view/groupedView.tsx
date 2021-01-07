@@ -15,6 +15,7 @@ export const GroupedView: FC<FormProps> = ({
     const current = fields[one];
     return (
       <Fragment key={index}>
+        <Divider />
         <Typography component="h4" className={classes.subTitle}>
           {typeof formRenderConfig.groups === "object"
             ? formRenderConfig.groups[fieldGroups.current[one]]
@@ -30,7 +31,6 @@ export const GroupedView: FC<FormProps> = ({
         >
           {current.fields}
         </Grid>
-        <Divider />
       </Fragment>
     );
   });

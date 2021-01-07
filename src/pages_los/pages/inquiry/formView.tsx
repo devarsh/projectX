@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, FC } from "react";
+import { FC } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
 import {
@@ -6,51 +6,52 @@ import {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import { useQueries } from "react-query";
+
 export const InquiryViewFormWrapper: FC<{
   inquiryID: string;
   inquiryType: "questionnaire" | "inquiry";
 }> = ({ inquiryID, inquiryType }) => {
-  const [loading, setLoading] = useState(false);
-  const [formDisplayValues, setFormDisplayValues] = useState({});
-  const [metaData, setMetaData] = useState({});
-  const [error, setError] = useState("");
-  useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
-      APISDK.getInquiryFormDisplayMetaData(inquiryID, inquiryType),
-    ])
-      .then(function (responses) {
-        Promise.all(responses).then((data) => {
-          if (data[0].status === "success" && data[1].status === "success") {
-            setLoading(false);
-            setFormDisplayValues(data[0].data);
-            setMetaData(data[1].data);
-            setLoading(false);
-          } else {
-            setLoading(false);
-            setError(`${data[0]?.data?.error_msg} ${data[1]?.data?.error_msg}`);
-          }
-        });
-      })
-      .catch(function (error) {
-        setLoading(false);
-        setError(error);
-      });
-  }, []);
-  /*eslint-disable react-hooks/exhaustive-deps*/
-  //@ts-ignore
-  const result = loading ? (
+  const result = useQueries([
+    {
+      queryKey: ["viewMetaData", inquiryType, inquiryID],
+      queryFn: () =>
+        APISDK.getInquiryFormDisplayMetaData(inquiryID, inquiryType),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+    {
+      queryKey: ["viewFormData", inquiryType, inquiryID],
+      queryFn: () => APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  ]);
+
+  const loading = result[0].isLoading || result[1].isLoading;
+  let isError = result[0].isError || result[1].isError;
+  let errorMsg = `${result[0].error} ${result[1].error}`;
+  let metaData = result[0].data;
+  let formDisplayValues = result[1].data;
+  if (loading === false && isError === false) {
+    isError = !isMetaDataValid(metaData);
+    if (isError === true) {
+      errorMsg = "Error loading form";
+    }
+  }
+
+  const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />
-  ) : !isMetaDataValid(metaData as MetaDataType) ? (
-    <span>"Error loading form"</span>
+  ) : isError === true ? (
+    <span>{errorMsg}</span>
   ) : (
-    <Fragment>
-      <ViewFormWrapper
-        metaData={metaData as MetaDataType}
-        formDisplayValues={formDisplayValues}
-      ></ViewFormWrapper>
-    </Fragment>
+    <ViewFormWrapper
+      metaData={metaData as MetaDataType}
+      //@ts-ignore
+      formDisplayValues={formDisplayValues}
+    />
   );
-  return result;
+  return renderResult;
 };

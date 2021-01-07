@@ -133,7 +133,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300001",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -144,7 +144,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300002",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -155,7 +155,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300003",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -166,7 +166,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300004",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -182,7 +182,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300005",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -193,7 +193,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300006",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -204,7 +204,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300007",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -215,7 +215,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300008",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -226,7 +226,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "12300009",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -237,7 +237,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "123000010",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -253,7 +253,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "123000011",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -264,7 +264,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "123000012",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -280,7 +280,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "123000013",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -291,7 +291,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "123000014",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },
@@ -302,7 +302,7 @@ export const formsNav: NavBarMetaDataType = {
               navigationProps: {
                 metaProps: {
                   productID: "123000015",
-                  action: "render_inquiry_form",
+                  action: "crm_inquiry_metaData",
                 },
               },
             },

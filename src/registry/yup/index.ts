@@ -1,4 +1,4 @@
-import { addMethod, string, StringSchema } from "yup";
+import { addMethod, string, StringSchema, DateSchema } from "yup";
 
 function isValidPanCard(this: StringSchema, message: string) {
   return this.matches(/^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$/, message);
