@@ -1,12 +1,15 @@
-import { useState, useEffect, Fragment, memo } from "react";
+import { useState, useEffect, FC } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
-const MemoizedFormWrapper = memo(FormWrapper);
-export const InquiryEditFormWrapper = () => {
+
+export const InquiryEditFormWrapper: FC<{
+  inquiryID: string;
+  inquiryType: "questionnaire" | "inquiry";
+}> = ({ inquiryID, inquiryType }) => {
   const [loading, setLoading] = useState(false);
   const [metaData, setMetaData] = useState({});
   const [formEditableValues, setFormEditableValues] = useState({});
@@ -15,8 +18,8 @@ export const InquiryEditFormWrapper = () => {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      APISDK.getInquiryFormDataForEdit(),
-      APISDK.getInquiryFormMetaDataForEditOnly(),
+      APISDK.getInquiryFormEditMetaData(inquiryID, inquiryType),
+      APISDK.getInquiryFormData(inquiryID, inquiryType),
     ])
       .then(function (responses) {
         Promise.all(responses).then((data) => {
@@ -26,8 +29,7 @@ export const InquiryEditFormWrapper = () => {
             setFormEditableValues(data[0].data);
           } else {
             setLoading(false);
-            setError(data[0].data.error_msg);
-            setError(data[1].data.error_msg);
+            setError(`${data[0]?.data?.error_msg} ${data[1]?.data?.error_msg}`);
           }
         });
       })
@@ -43,14 +45,12 @@ export const InquiryEditFormWrapper = () => {
   ) : !isMetaDataValid(metaData as MetaDataType) ? (
     <span>"Error loading form"</span>
   ) : (
-    <Fragment>
-      <MemoizedFormWrapper
-        key={"dataForm"}
-        metaData={metaData as MetaDataType}
-        initialValues={formEditableValues}
-        onSubmitHandler={onSubmitHandlerNew}
-      />
-    </Fragment>
+    <FormWrapper
+      key={"dataForm"}
+      metaData={metaData as MetaDataType}
+      initialValues={formEditableValues}
+      onSubmitHandler={onSubmitHandlerNew}
+    />
   );
   return result;
 };

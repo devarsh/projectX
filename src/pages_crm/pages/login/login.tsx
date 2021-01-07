@@ -263,7 +263,7 @@ export const Login = () => {
         type: "startInitiateLoginProcessWithPasswordAndOtp",
       });
       try {
-        const result = await APISDK.handleverifyPwd(
+        const result = await APISDK.verifyPwd(
           state.password,
           state.phoneNumber
         );
