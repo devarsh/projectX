@@ -33,14 +33,12 @@ export const InquiryEditFormWrapper: FC<{
 }> = ({ inquiryID, inquiryType }) => {
   const mutation = useMutation(updateFormData, {
     onError: (error: any, { endSubmit }) => {
-      console.log("error");
       if (typeof error === "object") {
         console.log(error?.error_msg);
       }
       endSubmit(false, error);
     },
     onSuccess: (data, { endSubmit }) => {
-      console.log("success");
       endSubmit(true, "");
       queryClient.refetchQueries(["viewFormData", inquiryType, inquiryID]);
       queryClient.refetchQueries(["editFormData", inquiryType, inquiryID]);

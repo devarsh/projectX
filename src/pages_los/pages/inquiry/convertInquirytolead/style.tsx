@@ -1,41 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(1),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-    backgroundColor: "rgba(0, 0, 0, 0.04)",
-  },
-  fixedHeight: {
-    height: 240,
-  },
-
-  formLabel: {
-    fontWeight: 600,
-  },
-  formValue: {
-    fontWeight: 500,
-    color: "#0063A3",
-  },
-  marginSet: {
-    margin: theme.spacing(3, 0),
-  },
-
-  DialogTitle: {
-    color: "#0063A3",
-    borderBottom: "1px solid #ddd",
-  },
-  DetailsTitle: {
-    color: "#26A456",
-    letterSpacing: "2px",
-    fontSize: "1.2rem",
-    fontWeight: 700,
-    alignSelf: "flex-start",
-    margin: "0",
-  },
-
   submit: {
     margin: theme.spacing(3, 0, 2),
     fontSize: "1.2rem",
