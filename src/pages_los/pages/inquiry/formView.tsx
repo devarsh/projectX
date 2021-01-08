@@ -32,7 +32,11 @@ export const InquiryViewFormWrapper: FC<{
 
   const loading = result[0].isLoading || result[1].isLoading;
   let isError = result[0].isError || result[1].isError;
-  let errorMsg = `${result[0].error} ${result[1].error}`;
+  //@ts-ignore
+  let errorMsg = `${result[0].error?.error_msg ?? ""} ${
+    //@ts-ignore
+    result[1].error?.error_msg ?? ""
+  }`;
   let metaData = result[0].data;
   let formDisplayValues = result[1].data;
   if (loading === false && isError === false) {

@@ -42,8 +42,8 @@ export const InquiryEditFormWrapper: FC<{
     onSuccess: (data, { endSubmit }) => {
       console.log("success");
       endSubmit(true, "");
-      queryClient.invalidateQueries(["viewMetaData", inquiryType, inquiryID]);
-      queryClient.invalidateQueries(["viewFormData", inquiryType, inquiryID]);
+      queryClient.refetchQueries(["viewFormData", inquiryType, inquiryID]);
+      queryClient.refetchQueries(["editFormData", inquiryType, inquiryID]);
     },
   });
 
@@ -82,7 +82,11 @@ export const InquiryEditFormWrapper: FC<{
 
   const loading = result[0].isLoading || result[1].isLoading;
   let isError = result[0].isError || result[1].isError;
-  let errorMsg = `${result[0].error} ${result[1].error}`;
+  //@ts-ignore
+  let errorMsg = `${result[0].error?.error_msg ?? ""} ${
+    //@ts-ignore
+    result[1].error?.error_msg ?? ""
+  }`;
   let metaData = JSON.parse(
     JSON.stringify(result[0].data ?? {})
   ) as MetaDataType;
