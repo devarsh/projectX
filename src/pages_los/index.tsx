@@ -32,7 +32,6 @@ const DashbordPages = () => {
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/inquiries" element={<Inquiry />} />
-            <Route path="/inquiryDetails" element={<InquiryDetails />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
             <Route path="/cam" element={<DynamicLead />} />

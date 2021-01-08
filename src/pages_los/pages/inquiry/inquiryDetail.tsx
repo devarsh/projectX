@@ -15,8 +15,7 @@ const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
 
-export const InquiryDetails: FC<{ inquiryID?: string }> = ({ inquiryID }) => {
-  inquiryID = "1406";
+export const InquiryDetails: FC<{ inquiryID: string }> = ({ inquiryID }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
     setCurrentTab(currentTab);

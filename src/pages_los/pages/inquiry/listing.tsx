@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
+import Dialog from "@material-ui/core/Dialog";
 import DataGrid, { ActionTypes } from "components/dataTable";
+import { InquiryDetails } from "./inquiryDetail";
+import Slide from "@material-ui/core/Slide";
 
 const actions: ActionTypes[] = [
   {
@@ -7,16 +10,29 @@ const actions: ActionTypes[] = [
     actionLabel: "360 View",
     multiple: false,
   },
-  {
-    actionName: "Delete",
-    actionLabel: "delete",
-    multiple: true,
-  },
 ];
 
+const Transition = forwardRef(function Transition(props, ref) {
+  //@ts-ignore
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export const Inquiry = () => {
-  const [action, setAction] = useState();
+  const [action, setAction] = useState<null | any>(null);
+  const handleDialogClose = () => setAction(null);
+  console.log(action);
   return (
-    <DataGrid gridCode="trn/001" actions={actions} setAction={setAction} />
+    <>
+      <DataGrid gridCode="trn/001" actions={actions} setAction={setAction} />
+      <Dialog
+        fullScreen
+        open={action !== null}
+        //@ts-ignore
+        TransitionComponent={Transition}
+        onClose={handleDialogClose}
+      >
+        <InquiryDetails inquiryID={action?.rows[0].id} />
+      </Dialog>
+    </>
   );
 };
