@@ -449,7 +449,9 @@ const RaatnaFinAPI = () => {
     const { data, status } = await internalFetcher("./users/inquiry", {
       body: JSON.stringify({
         action:
-          type === "inquiry" ? "crm_inquiry_view" : "crm_questionnaire_view",
+          type === "inquiry"
+            ? "crm_inquiry_view_data"
+            : "crm_questionnaire_view",
         request_data: {
           refID: inquiryID,
         },
@@ -586,25 +588,6 @@ const RaatnaFinAPI = () => {
     });
   };
 
-  const getTeamLeaList = async () => {
-    const { data, status } = await internalFetcher(
-      "http://10.55.6.72:8081/users/getTeamLeadList",
-      {
-        body: JSON.stringify({
-          action: "get_team_lead_list",
-          request_data: {
-            product_code: "12300001",
-          },
-        }),
-      }
-    );
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
   const updateUserPassword = async (
     confirmPassword: string,
     phoneNumber: string
@@ -694,6 +677,45 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const getEmployeeListToAssignLead = async (branchCode) => {
+    const { data, status } = await internalFetcher("./users/getEmployeeList", {
+      body: JSON.stringify({
+        action: "get_employee_list",
+        request_data: {
+          branch_code: branchCode,
+        },
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const inquiryAssignToLead = async (
+    refID: any,
+    empIDToAssignLead: any,
+    inquiryStatus: string
+  ) => {
+    const { data, status } = await internalFetcher("./users/inquiryAssign", {
+      body: JSON.stringify({
+        action: "inquiryAssign",
+        request_data: {
+          refID: refID,
+          assignID: empIDToAssignLead,
+          inquiryStatus: inquiryStatus,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -726,11 +748,14 @@ const RaatnaFinAPI = () => {
     //Need to fix these APIS
     fetchAadharRequestStatusEventSource,
     updateUserPassword,
-    getTeamLeaList,
     verifyPwd,
     getDashboardEmployeeDataList,
     checkPhoneNumberExists,
     getInquiryDataToConvertIntoLead,
+
+    //For inquiry assign to employee
+    getEmployeeListToAssignLead,
+    inquiryAssignToLead,
   };
 };
 
