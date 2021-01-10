@@ -96,17 +96,17 @@ export const siteNav: NavBarMetaDataType = {
       children: [
         {
           label: "Customer",
-          href: "/login",
+          href: "/crm/login",
           isRouterLink: true,
         },
         {
           label: "Partner",
-          href: "/login",
-          isRouterLink: true,
+          href: "https://www.instagram.com/",
+          target: "_self",
         },
         {
           label: "Employee",
-          href: "/auth",
+          href: "/crm/auth",
           isRouterLink: true,
         },
       ],

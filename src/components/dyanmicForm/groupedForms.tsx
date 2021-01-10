@@ -18,6 +18,7 @@ interface FormProps {
   formDisplayName: string;
   formName: string;
   submitFn: SubmitFnType;
+  cancelFn: any;
 }
 
 export const GroupedForm: FC<FormProps> = ({
@@ -26,6 +27,7 @@ export const GroupedForm: FC<FormProps> = ({
   formDisplayName,
   formName,
   submitFn,
+  cancelFn,
 }) => {
   const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
@@ -116,6 +118,7 @@ export const GroupedForm: FC<FormProps> = ({
       handlePrev={handlePrev}
       handleNext={handleNext}
       handleSubmit={handleSubmit}
+      handleCancel={cancelFn}
       isLastActiveStep={isLastActiveStep}
       setActiveStep={setActiveStep}
     />

@@ -30,18 +30,37 @@ const updateFormData = async ({
 export const InquiryEditFormWrapper: FC<{
   inquiryID: string;
   inquiryType: "questionnaire" | "inquiry";
-}> = ({ inquiryID, inquiryType }) => {
+  moveToViewForm: any;
+  setUserMessage: any;
+}> = ({ inquiryID, inquiryType, moveToViewForm, setUserMessage }) => {
+  if (typeof setUserMessage !== "function") {
+    setUserMessage = () => alert("userMessage function not set");
+  }
+  if (typeof moveToViewForm !== "function") {
+    moveToViewForm = () => alert("move to view form function not set");
+  }
   const mutation = useMutation(updateFormData, {
     onError: (error: any, { endSubmit }) => {
+      let errorMsg = "Unknown Error occured";
       if (typeof error === "object") {
-        console.log(error?.error_msg);
+        errorMsg = error?.error_msg ?? errorMsg;
       }
-      endSubmit(false, error);
+      endSubmit(false, errorMsg);
+      setUserMessage({
+        type: "error",
+        message: errorMsg,
+      });
     },
     onSuccess: (data, { endSubmit }) => {
-      endSubmit(true, "");
       queryClient.refetchQueries(["viewFormData", inquiryType, inquiryID]);
       queryClient.refetchQueries(["editFormData", inquiryType, inquiryID]);
+      endSubmit(true, "");
+      console.log("saved");
+      setUserMessage({
+        type: "success",
+        message: "Changes successfully saved",
+      });
+      moveToViewForm();
     },
   });
 
@@ -77,6 +96,7 @@ export const InquiryEditFormWrapper: FC<{
       refetchOnMount: false,
     },
   ]);
+  const dataUniqueKey = result[1].dataUpdatedAt;
 
   const loading = result[0].isLoading || result[1].isLoading;
   let isError = result[0].isError || result[1].isError;
@@ -106,10 +126,11 @@ export const InquiryEditFormWrapper: FC<{
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${inquiryID}-${inquiryType}`}
+      key={`${inquiryID}-${inquiryType}-${dataUniqueKey}-editMode`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
+      onCancleHandler={moveToViewForm}
     />
   );
   return renderResult;

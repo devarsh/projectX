@@ -6,12 +6,16 @@ import {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+
 import { useQueries } from "react-query";
 
 export const InquiryViewFormWrapper: FC<{
   inquiryID: string;
   inquiryType: "questionnaire" | "inquiry";
-}> = ({ inquiryID, inquiryType }) => {
+  moveToEditForm: any;
+}> = ({ inquiryID, inquiryType, moveToEditForm }) => {
   const result = useQueries([
     {
       queryKey: ["viewMetaData", inquiryType, inquiryID],
@@ -29,7 +33,7 @@ export const InquiryViewFormWrapper: FC<{
       refetchOnMount: false,
     },
   ]);
-
+  const dataUniqueKey = result[1].dataUpdatedAt;
   const loading = result[0].isLoading || result[1].isLoading;
   let isError = result[0].isError || result[1].isError;
   //@ts-ignore
@@ -52,10 +56,20 @@ export const InquiryViewFormWrapper: FC<{
     <span>{errorMsg}</span>
   ) : (
     <ViewFormWrapper
+      key={`${inquiryID}-${inquiryType}-${dataUniqueKey}-viewMode`}
       metaData={metaData as MetaDataType}
       //@ts-ignore
       formDisplayValues={formDisplayValues}
-    />
+      onAccept={moveToEditForm}
+    >
+      {({ onAccept }) => (
+        <Box width={1} display="flex" justifyContent="flex-end">
+          <Button type="button" onClick={onAccept}>
+            Edit Data
+          </Button>
+        </Box>
+      )}
+    </ViewFormWrapper>
   );
   return renderResult;
 };

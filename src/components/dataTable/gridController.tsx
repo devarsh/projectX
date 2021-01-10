@@ -24,8 +24,8 @@ export const GirdController: FC<{
     []
   );
   const getRowId = useCallback(
-    (row) => row[metaData.gridConfig.rowIdColumn],
-    []
+    (row) => row[metaData?.gridConfig?.rowIdColumn],
+    [metaData?.gridConfig?.rowIdColumn]
   );
   const filterTypes = useMemo(() => filtersRegistration, []);
 
@@ -73,7 +73,7 @@ export const GirdController: FC<{
         }
       });
     },
-    [setTotalRecords, setLoading, setData, globalFiltersState]
+    [setTotalRecords, setLoading, setData, globalFiltersState, gridCode]
   );
 
   return (
@@ -81,7 +81,9 @@ export const GirdController: FC<{
       gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
       globalFilterMeta={metaData?.headerFilters}
-      gridActions={metaData?.actions}
+      multipleActions={metaData?.multipleActions}
+      singleActions={metaData?.singleActions}
+      doubleClickAction={metaData?.doubleClickAction}
       setGridAction={metaData?.setAction}
       dense={true}
       localFilterManager={localFilterManager}

@@ -116,14 +116,6 @@ const RaatnaFinAPI = () => {
   const loginStatus = () => {
     return sessionObj.loginStatus;
   };
-  //remove this function after migration
-  const getAccessToken = async () => {
-    await sessionToken;
-    if (sessionObj?.token["access_token"]) {
-      return `Bearer ${sessionObj?.token["access_token"]}`;
-    }
-    return "Bearer not_valid_token";
-  };
 
   const internalFetcher = async (
     url: string,
@@ -287,7 +279,7 @@ const RaatnaFinAPI = () => {
     ];
   };
   const validatePanNumber = async (currentField) => {
-    const { data, status } = await internalFetcher("./users/panvalidator", {
+    const { status } = await internalFetcher("./users/panvalidator", {
       body: JSON.stringify({
         action: "panvalidator",
         request_data: { doc_number: currentField?.value ?? "INVALID_PAN" },

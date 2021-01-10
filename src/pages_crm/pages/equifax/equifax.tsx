@@ -9,12 +9,10 @@ export const Equifax = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
-  const [
-    flowExist,
-    refID,
-    nextURL,
-    nextFlowNavigationProps,
-  ] = useNavigationFlow(location, "/thankyou");
+  const [nextURL, nextFlowNavigationProps] = useNavigationFlow(
+    location,
+    "/thankyou"
+  );
 
   let score = 750;
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -37,7 +37,7 @@ export const CustomerDetails = ({ inquiryID, inquiryType }) => {
   const renderResult = result.isLoading ? (
     <img src={loaderGif} alt="loader" />
   ) : error ? (
-    <span>{error}</span>
+    <span>{errorMsg}</span>
   ) : (
     <TableContainer className={classes.tableContainer}>
       <Table className={classes.table} size="small" aria-label="lead table">

@@ -1,4 +1,4 @@
-import { atomFamily, selectorFamily, DefaultValue } from "recoil";
+import { atomFamily, selectorFamily } from "recoil";
 export interface QueryType {
   accessor: string;
   condition: string;

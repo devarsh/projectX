@@ -19,6 +19,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   metaData: freshMetaData,
   initialValues,
   onSubmitHandler,
+  onCancleHandler,
   hidden = false,
 }) => {
   //this line is very important to preserve our metaData across render - deep clone hack
@@ -60,6 +61,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
               formDisplayName={metaData.form.label}
               formName={metaData.form.name}
               submitFn={onSubmitHandler}
+              cancelFn={onCancleHandler}
             />
           ) : formRenderType === "simple" ? (
             <SimpleForm
@@ -69,6 +71,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
               formDisplayName={metaData.form.label}
               formName={metaData.form.name}
               submitFn={onSubmitHandler}
+              cancelFn={onCancleHandler}
             />
           ) : (
             <div>RenderType {formRenderType} not available</div>

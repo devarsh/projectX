@@ -7,6 +7,7 @@ import {
   extractHiddenColumns,
   sortColumnsBySequence,
   transformHeaderFilters,
+  SplitActions,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
@@ -45,7 +46,7 @@ export const GridWrapper: FC<{
         setError(true);
         setMetaData(err);
       });
-  }, []);
+  }, [gridCode, actions, setAction, setLoading, setError, setMetaData]);
 
   return loading ? (
     <span>{"loading..."}</span>
@@ -76,13 +77,13 @@ const transformMetaData = ({
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
   let headerFilters = transformHeaderFilters(metaData?.headerFilters);
-  console.log(headerFilters);
+  const splittedActions = SplitActions(actions ?? null);
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
     headerFilters: headerFilters,
-    actions: actions,
     setAction: setAction,
+    ...splittedActions,
   };
 };

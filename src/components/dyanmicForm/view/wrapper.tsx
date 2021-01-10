@@ -20,7 +20,9 @@ const attachGroupExcludedProps = (
   inititalValues: InitialValuesType
 ) => {
   const fieldGroups = Object.keys(groupWiseFields).sort();
-  const transformedFieldGroups = fieldGroups.map((group) => {
+  //we will only loop through array and mutate the object
+  /* eslint-disable array-callback-return */
+  fieldGroups.map((group) => {
     const excluded = groupWiseFields[group].fieldNames.filter((one) =>
       Boolean(inititalValues[one])
     );

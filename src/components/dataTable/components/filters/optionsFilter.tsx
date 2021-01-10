@@ -26,7 +26,6 @@ export const OptionsFilter = (props) => {
     setSortBy,
     gotoPage,
   } = props;
-  console.log(props);
   const isMultiple = selectType === "multiple" ? true : false;
   const [loading, setLoading] = useState(false);
   const [_options, setOptions] = useState(
@@ -63,7 +62,7 @@ export const OptionsFilter = (props) => {
         }
       });
     }
-  }, []);
+  }, [gridCode, id, setLoading, setOptions]);
 
   const handleSelectChange = (event: React.ChangeEvent<any>) => {
     setValue(event.target.value);

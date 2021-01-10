@@ -54,7 +54,6 @@ export const AssignInquiryToEmployee = ({ inquiryID }) => {
     employeeListQuery.isLoading === false &&
     employeeListQuery.isError === false
   ) {
-    console.log(employeeListQuery.data);
     employeeListOptions = transformOptions(employeeListQuery.data);
   }
 
@@ -104,7 +103,11 @@ export const AssignInquiryToEmployee = ({ inquiryID }) => {
           >
             <MenuItem value={0}>Select Employee</MenuItem>
             {employeeListOptions.map((data) => {
-              return <MenuItem value={data.value}>{data.label}</MenuItem>;
+              return (
+                <MenuItem key={data.value} value={data.value}>
+                  {data.label}
+                </MenuItem>
+              );
             })}
           </TextField>
         </Grid>

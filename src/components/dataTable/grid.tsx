@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   useTable,
   usePagination,
@@ -24,7 +24,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import { TablePaginationActions } from "./tablePaginationToolbar";
 import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
-import { TableActionToolbar } from "./tableActionToolbar";
+import { TableActionToolbar, ActionContextMenu } from "./tableActionToolbar";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
@@ -33,8 +33,6 @@ import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
-
-const maxWidth = 998;
 
 export const DataGrid = ({
   gridCode,
@@ -59,8 +57,10 @@ export const DataGrid = ({
   allowKeyboardNavigation,
   allowGlobalFilter,
   globalFilterMeta,
-  gridActions,
   setGridAction,
+  multipleActions,
+  singleActions,
+  doubleClickAction,
 }) => {
   const {
     getTableProps,
@@ -69,7 +69,6 @@ export const DataGrid = ({
     prepareRow,
     page,
     selectedFlatRows,
-    totalColumnsWidth,
     gotoPage,
     setPageSize,
     state: tableState,
@@ -117,6 +116,37 @@ export const DataGrid = ({
   const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
   const tbodyRef = useRef(null);
+  const [contextMenuPosition, setContextMenuPosition] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+  const [contextMenuRow, setContextMenuRow] = useState<null | any>(null);
+  const [contextMenuSelectedRowId, setContextMenuSelectedRowId] = useState<
+    string | null
+  >(null);
+  const handleContextMenuClose = () => {
+    setContextMenuRow(null);
+    setContextMenuPosition(null);
+    setContextMenuSelectedRowId(null);
+  };
+  const handleContextMenuOpen = (row) => (e) => {
+    e.preventDefault();
+    setContextMenuRow(row);
+    setContextMenuSelectedRowId(row?.id);
+    setContextMenuPosition(
+      contextMenuPosition === null
+        ? { mouseX: e.clientX - 2, mouseY: e.clientY - 4 }
+        : null
+    );
+  };
+  const handleRowDoubleClickAction = (row) => (e) => {
+    e.preventDefault();
+    setGridAction({
+      name: doubleClickAction.actionName,
+      rows: [row],
+    });
+  };
+
   const handleKeyDown = (event, row) => {
     event.stopPropagation();
     //@ts-ignore
@@ -167,7 +197,13 @@ export const DataGrid = ({
     setSortBy([]);
     gotoPage(0);
     localFilterManager.clearFilterState();
-  }, [globalFiltersState]);
+  }, [
+    setAllFilters,
+    setSortBy,
+    gotoPage,
+    globalFiltersState,
+    localFilterManager.clearFilterState,
+  ]);
 
   return (
     <Paper
@@ -185,9 +221,17 @@ export const DataGrid = ({
       <TableActionToolbar
         dense={dense}
         selectedFlatRows={selectedFlatRows}
-        getRowId={getRowId}
-        gridActions={gridActions}
+        multipleActions={multipleActions}
+        singleActions={singleActions}
         setGridAction={setGridAction}
+      />
+      <ActionContextMenu
+        selectedFlatRows={contextMenuRow}
+        singleActions={singleActions}
+        setGridAction={setGridAction}
+        mouseX={contextMenuPosition?.mouseX ?? null}
+        mouseY={contextMenuPosition?.mouseY ?? null}
+        handleClose={handleContextMenuClose}
       />
       {allowGlobalFilter ? (
         <TableHeaderFilterToolbar
@@ -239,16 +283,26 @@ export const DataGrid = ({
           >
             {page.map((row, index) => {
               prepareRow(row);
+              const rightClickHandler = handleContextMenuOpen(row);
+              const thisRowDblClickHandler = handleRowDoubleClickAction(row);
               return (
                 <MyTableRow
                   {...row.getRowProps()}
                   id={row.id}
                   tabIndex={0}
                   component="div"
-                  selected={row.isSelected}
+                  selected={
+                    row.isSelected || contextMenuSelectedRowId === row.id
+                  }
                   onKeyDown={
                     allowKeyboardNavigation
                       ? (e) => handleKeyDown(e, row)
+                      : undefined
+                  }
+                  onContextMenu={rightClickHandler}
+                  onDoubleClick={
+                    Boolean(doubleClickAction)
+                      ? thisRowDblClickHandler
                       : undefined
                   }
                 >

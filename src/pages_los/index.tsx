@@ -6,7 +6,7 @@ import { Drawer } from "./drawer";
 import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
-import { Inquiry, InquiryDetails } from "./pages/inquiry";
+import { Inquiry } from "./pages/inquiry";
 import Login from "./pages/login";
 import DynamicLead from "./pages/leads";
 import LeadAction from "./pages/leadaction";

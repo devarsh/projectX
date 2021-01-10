@@ -16,6 +16,7 @@ export const MyTabs = ({
   steps,
   setActiveStep,
   handleSubmit,
+  handleCancel,
 }) => (
   <Fragment>
     <Typography component="h3" className={classes.title}>
@@ -47,6 +48,15 @@ export const MyTabs = ({
         <Button type="button" className={classes.submit} onClick={handleSubmit}>
           {formRenderConfig?.labels?.complete ?? "Submit"}
         </Button>
+        {typeof handleCancel === "function" ? (
+          <Button
+            type="button"
+            className={classes.submit}
+            onClick={handleCancel}
+          >
+            cancel
+          </Button>
+        ) : null}
       </Box>
     </div>
   </Fragment>

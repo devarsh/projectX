@@ -76,7 +76,7 @@ const reducer = (state, action) => {
   }
 };
 
-export const OtpVerificationPage = ({}) => {
+export const OtpVerificationPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
   const location = useLocation();
@@ -119,7 +119,7 @@ export const OtpVerificationPage = ({}) => {
     } else {
       navigate(fallbackURL);
     }
-  }, []);
+  }, [dispatch, navigate]);
 
   const verifyOTP = () => {
     dispatch({

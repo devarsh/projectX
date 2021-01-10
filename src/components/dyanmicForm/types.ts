@@ -201,5 +201,6 @@ export interface FormWrapperProps {
   metaData: MetaDataType;
   initialValues?: InitialValuesType;
   onSubmitHandler: SubmitFnType;
+  onCancleHandler?: any;
   hidden?: boolean;
 }
