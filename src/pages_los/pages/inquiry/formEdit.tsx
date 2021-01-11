@@ -32,7 +32,14 @@ export const InquiryEditFormWrapper: FC<{
   inquiryType: "questionnaire" | "inquiry";
   moveToViewForm: any;
   setUserMessage: any;
-}> = ({ inquiryID, inquiryType, moveToViewForm, setUserMessage }) => {
+  isInquiryEditedRef: any;
+}> = ({
+  inquiryID,
+  inquiryType,
+  moveToViewForm,
+  setUserMessage,
+  isInquiryEditedRef,
+}) => {
   if (typeof setUserMessage !== "function") {
     setUserMessage = () => alert("userMessage function not set");
   }
@@ -55,11 +62,11 @@ export const InquiryEditFormWrapper: FC<{
       queryClient.refetchQueries(["viewFormData", inquiryType, inquiryID]);
       queryClient.refetchQueries(["editFormData", inquiryType, inquiryID]);
       endSubmit(true, "");
-      console.log("saved");
       setUserMessage({
         type: "success",
-        message: "Changes successfully saved",
+        message: data?.msg ?? "Changes successfully saved",
       });
+      isInquiryEditedRef.current = true;
       moveToViewForm();
     },
   });

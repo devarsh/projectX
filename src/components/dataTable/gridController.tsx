@@ -12,7 +12,9 @@ import { filtersRegistration } from "./components/filters";
 export const GirdController: FC<{
   metaData: GridMetaDataType;
   gridCode: string;
-}> = ({ metaData, gridCode }) => {
+  gridRefresh: boolean;
+  setGridRefresh: any;
+}> = ({ metaData, gridCode, gridRefresh, setGridRefresh }) => {
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(
     () => ({
@@ -96,6 +98,8 @@ export const GirdController: FC<{
       loading={loading}
       data={data}
       onFetchData={fetchData}
+      gridRefresh={gridRefresh}
+      setGridRefresh={setGridRefresh}
       pageCount={pageCount}
       totalRecords={totalRecords}
       pageSizes={metaData.gridConfig?.pageSize}

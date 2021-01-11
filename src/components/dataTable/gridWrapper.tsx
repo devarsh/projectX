@@ -18,7 +18,15 @@ export const GridWrapper: FC<{
   gridCode: string;
   actions?: ActionTypes[];
   setAction: any;
-}> = ({ gridCode, actions, setAction }) => {
+  gridRefresh?: boolean;
+  setGridRefresh?: any;
+}> = ({
+  gridCode,
+  actions,
+  setAction,
+  gridRefresh = false,
+  setGridRefresh = () => false,
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [metaData, setMetaData] = useState<GridMetaDataType | null>();
@@ -57,6 +65,8 @@ export const GridWrapper: FC<{
       <GirdController
         metaData={metaData as GridMetaDataType}
         gridCode={gridCode}
+        gridRefresh={gridRefresh}
+        setGridRefresh={setGridRefresh}
       />
     </DndProvider>
   );

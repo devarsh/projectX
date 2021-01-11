@@ -61,6 +61,8 @@ export const DataGrid = ({
   multipleActions,
   singleActions,
   doubleClickAction,
+  gridRefresh,
+  setGridRefresh,
 }) => {
   const {
     getTableProps,
@@ -184,6 +186,13 @@ export const DataGrid = ({
   useEffect(() => {
     onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
   }, [onFetchDataDebounced, pageIndex, pageSize, sortBy, filters]);
+
+  useEffect(() => {
+    if (gridRefresh === true) {
+      onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
+      setGridRefresh(false);
+    }
+  }, [gridRefresh]);
 
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);

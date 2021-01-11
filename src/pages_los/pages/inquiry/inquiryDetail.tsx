@@ -18,7 +18,8 @@ const TabPanel = ({ value, index, children }) => {
 export const InquiryDetails: FC<{
   inquiryID: string;
   setDisableDialogClose: any;
-}> = ({ inquiryID, setDisableDialogClose }) => {
+  isInquiryEditedRef: any;
+}> = ({ inquiryID, setDisableDialogClose, isInquiryEditedRef }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
     setCurrentTab(currentTab);
@@ -43,6 +44,7 @@ export const InquiryDetails: FC<{
               inquiryID={inquiryID}
               inquiryType="inquiry"
               setDisableDialogClose={setDisableDialogClose}
+              isInquiryEditedRef={isInquiryEditedRef}
             />
           </TabPanel>
           <TabPanel value={currentTab} index="1" key={1}>
@@ -50,6 +52,7 @@ export const InquiryDetails: FC<{
               inquiryID={inquiryID}
               inquiryType="questionnaire"
               setDisableDialogClose={setDisableDialogClose}
+              isInquiryEditedRef={isInquiryEditedRef}
             />
           </TabPanel>
           <TabPanel value={currentTab} index="2" key={2}>

@@ -7,6 +7,7 @@ export const ViewEditCompositeComponent = ({
   inquiryID,
   inquiryType,
   setDisableDialogClose,
+  isInquiryEditedRef,
 }) => {
   const [currentView, setCurrentView] = useState("viewMode");
   const [userMessage, setUserMessage] = useState<any>(null);
@@ -43,6 +44,7 @@ export const ViewEditCompositeComponent = ({
           inquiryType={inquiryType}
           moveToViewForm={moveToViewForm}
           setUserMessage={setUserMessage}
+          isInquiryEditedRef={isInquiryEditedRef}
         />
       )}
     </>
