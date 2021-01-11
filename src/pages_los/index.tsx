@@ -7,7 +7,7 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
-import Login from "./pages/login";
+import Login from "./auth";
 import LeadAction from "./pages/leadaction";
 import View from "./pages/tabView";
 import { useStyles } from "./style";
