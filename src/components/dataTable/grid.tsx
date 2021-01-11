@@ -51,7 +51,6 @@ export const DataGrid = ({
   pageSizes,
   defaultPageSize,
   defaultHiddenColumns,
-  filterTypes,
   allowColumnReordering,
   allowColumnHiding,
   allowKeyboardNavigation,
@@ -83,7 +82,6 @@ export const DataGrid = ({
       defaultColumn,
       data,
       getRowId,
-      filterTypes,
       initialState: {
         pageIndex: 0,
         pageSize: defaultPageSize,

@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
-import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import { FilterContainer } from "./filterContainer";
-import { StyledTextField, StyledMenuItem } from "../../styledComponents";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { APISDK } from "registry/fns/sdk";
-
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
+import { ListItemIcon } from "@material-ui/core";
 
 export const OptionsFilter = (props) => {
   const {
@@ -64,8 +62,23 @@ export const OptionsFilter = (props) => {
     }
   }, [gridCode, id, setLoading, setOptions]);
 
-  const handleSelectChange = (event: React.ChangeEvent<any>) => {
-    setValue(event.target.value);
+  const handleSingleChange = (currentValue) => () => {
+    setValue([currentValue]);
+  };
+  const handleMultipleChange = (currentValue) => () => {
+    if (Array.isArray(value)) {
+      const currentIndex = value.indexOf(currentValue);
+      const newChecked = [...value];
+
+      if (currentIndex === -1) {
+        newChecked.push(currentValue);
+      } else {
+        newChecked.splice(currentIndex, 1);
+      }
+      setValue(newChecked);
+    } else {
+      setValue([currentValue]);
+    }
   };
 
   const applyFilter = () => {
@@ -84,30 +97,38 @@ export const OptionsFilter = (props) => {
     handleClose();
   };
 
-  const menuItems = _options.map((menuItem, index) => {
+  const listItems = _options.map((menuItem, index) => {
     return (
-      <StyledMenuItem
+      <ListItem
         //keep button value to true else keyboard navigation for select will stop working
         button={true}
+        dense={true}
         key={menuItem.value ?? index}
-        value={menuItem.value}
+        onClick={
+          isMultiple
+            ? handleMultipleChange(menuItem.value)
+            : handleSingleChange(menuItem.value)
+        }
+        style={{ padding: "0px" }}
       >
-        {isMultiple ? (
+        <ListItemIcon>
           <Checkbox
-            checked={
-              Boolean(isMultiple)
-                ? Array.isArray(value) && value.indexOf(menuItem.value) >= 0
-                : value === menuItem.value
-            }
+            style={{ padding: "0px" }}
+            checked={Array.isArray(value) && value.indexOf(menuItem.value) >= 0}
           />
-        ) : null}
-        {menuItem.label}
-      </StyledMenuItem>
+        </ListItemIcon>
+        <ListItemText>{menuItem.label}</ListItemText>
+      </ListItem>
     );
   });
 
   return (
-    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
+    <FilterContainer
+      width={200}
+      applyFilter={applyFilter}
+      clearFilter={clearFilter}
+      value={filterValue}
+    >
       {(classes) => (
         <Box
           display="flex"
@@ -116,51 +137,11 @@ export const OptionsFilter = (props) => {
           px={2}
           mt={2}
         >
-          <FormControl fullWidth>
-            <StyledTextField
-              fullWidth
-              select={true}
-              value={value}
-              SelectProps={{
-                multiple: isMultiple ? true : false,
-                native: false,
-                renderValue: isMultiple
-                  ? (values: any[] | any) => {
-                      if (!Array.isArray(values)) {
-                        values = [values];
-                      }
-                      if (Array.isArray(_options)) {
-                        return _options.reduce((acc, current) => {
-                          if (values.indexOf(current.value) >= 0) {
-                            if (acc === "") {
-                              return current.label;
-                            } else {
-                              return `${acc},${current.label}`;
-                            }
-                          }
-                          return acc;
-                        }, "");
-                      }
-                      return "";
-                    }
-                  : undefined,
-              }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                endAdornment: loading ? (
-                  <InputAdornment position="end">
-                    <CircularProgress color="primary" variant="indeterminate" />
-                  </InputAdornment>
-                ) : null,
-              }}
-              onChange={handleSelectChange}
-              className={classes.multipleSelect}
-            >
-              {menuItems}
-            </StyledTextField>
-          </FormControl>
+          {loading ? (
+            <CircularProgress color="primary" variant="indeterminate" />
+          ) : (
+            <List>{listItems}</List>
+          )}
         </Box>
       )}
     </FilterContainer>

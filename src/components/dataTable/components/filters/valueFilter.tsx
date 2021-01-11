@@ -4,14 +4,6 @@ import { useStyles } from "./style";
 import { StyledTextField, StyledMenuItem } from "../../styledComponents";
 import { FilterContainer } from "./filterContainer";
 
-export const ValueFilterFn = (rows) => {
-  return rows;
-};
-ValueFilterFn.autoRemove = (val) => {
-  console.log(!val);
-  return !val;
-};
-
 export const ValueFilter = (props) => {
   const {
     column: { filterValue, setFilter },
@@ -54,6 +46,7 @@ export const ValueFilter = (props) => {
   const classes = useStyles();
   return (
     <FilterContainer
+      value={text}
       applyFilter={setFilterValue}
       clearFilter={clearFilterValue}
     >

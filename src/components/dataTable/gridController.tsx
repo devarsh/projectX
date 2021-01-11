@@ -7,7 +7,6 @@ import { filtersAtom } from "./atoms";
 
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
-import { filtersRegistration } from "./components/filters";
 
 export const GirdController: FC<{
   metaData: GridMetaDataType;
@@ -29,7 +28,6 @@ export const GirdController: FC<{
     (row) => row[metaData?.gridConfig?.rowIdColumn],
     [metaData?.gridConfig?.rowIdColumn]
   );
-  const filterTypes = useMemo(() => filtersRegistration, []);
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -92,7 +90,6 @@ export const GirdController: FC<{
       globalFiltersState={globalFiltersState}
       getRowId={getRowId}
       columns={columns}
-      filterTypes={filterTypes}
       defaultColumn={defaultColumn}
       defaultHiddenColumns={metaData.hiddenColumns}
       loading={loading}
