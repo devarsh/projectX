@@ -12,7 +12,9 @@ import { filtersRegistration } from "./components/filters";
 export const GirdController: FC<{
   metaData: GridMetaDataType;
   gridCode: string;
-}> = ({ metaData, gridCode }) => {
+  gridRefresh: boolean;
+  setGridRefresh: any;
+}> = ({ metaData, gridCode, gridRefresh, setGridRefresh }) => {
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(
     () => ({
@@ -24,8 +26,8 @@ export const GirdController: FC<{
     []
   );
   const getRowId = useCallback(
-    (row) => row[metaData.gridConfig.rowIdColumn],
-    []
+    (row) => row[metaData?.gridConfig?.rowIdColumn],
+    [metaData?.gridConfig?.rowIdColumn]
   );
   const filterTypes = useMemo(() => filtersRegistration, []);
 
@@ -73,7 +75,7 @@ export const GirdController: FC<{
         }
       });
     },
-    [setTotalRecords, setLoading, setData, globalFiltersState]
+    [setTotalRecords, setLoading, setData, globalFiltersState, gridCode]
   );
 
   return (
@@ -81,7 +83,9 @@ export const GirdController: FC<{
       gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
       globalFilterMeta={metaData?.headerFilters}
-      gridActions={metaData?.actions}
+      multipleActions={metaData?.multipleActions}
+      singleActions={metaData?.singleActions}
+      doubleClickAction={metaData?.doubleClickAction}
       setGridAction={metaData?.setAction}
       dense={true}
       localFilterManager={localFilterManager}
@@ -94,6 +98,8 @@ export const GirdController: FC<{
       loading={loading}
       data={data}
       onFetchData={fetchData}
+      gridRefresh={gridRefresh}
+      setGridRefresh={setGridRefresh}
       pageCount={pageCount}
       totalRecords={totalRecords}
       pageSizes={metaData.gridConfig?.pageSize}

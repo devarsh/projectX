@@ -7,6 +7,7 @@ import {
   extractHiddenColumns,
   sortColumnsBySequence,
   transformHeaderFilters,
+  SplitActions,
 } from "./utils";
 import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
@@ -17,7 +18,15 @@ export const GridWrapper: FC<{
   gridCode: string;
   actions?: ActionTypes[];
   setAction: any;
-}> = ({ gridCode, actions, setAction }) => {
+  gridRefresh?: boolean;
+  setGridRefresh?: any;
+}> = ({
+  gridCode,
+  actions,
+  setAction,
+  gridRefresh = false,
+  setGridRefresh = () => false,
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [metaData, setMetaData] = useState<GridMetaDataType | null>();
@@ -45,7 +54,7 @@ export const GridWrapper: FC<{
         setError(true);
         setMetaData(err);
       });
-  }, []);
+  }, [gridCode, actions, setAction, setLoading, setError, setMetaData]);
 
   return loading ? (
     <span>{"loading..."}</span>
@@ -56,6 +65,8 @@ export const GridWrapper: FC<{
       <GirdController
         metaData={metaData as GridMetaDataType}
         gridCode={gridCode}
+        gridRefresh={gridRefresh}
+        setGridRefresh={setGridRefresh}
       />
     </DndProvider>
   );
@@ -76,13 +87,13 @@ const transformMetaData = ({
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
   let headerFilters = transformHeaderFilters(metaData?.headerFilters);
-  console.log(headerFilters);
+  const splittedActions = SplitActions(actions ?? null);
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
     headerFilters: headerFilters,
-    actions: actions,
     setAction: setAction,
+    ...splittedActions,
   };
 };

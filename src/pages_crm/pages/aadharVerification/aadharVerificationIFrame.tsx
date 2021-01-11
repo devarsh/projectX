@@ -69,16 +69,12 @@ export const AadharVerification = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const fetchRequestID = useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
-  const [
-    flowExist,
-    refID,
-    nextURL,
-    nextFlowNavigationProps,
-    fallbackURL,
-  ] = useNavigationFlow(location, "./thankyou");
+  const [_, refID, nextURL, nextFlowNavigationProps] = useNavigationFlow(
+    location,
+    "./thankyou"
+  );
 
   useEffect(() => {
     return () => {
@@ -125,9 +121,7 @@ export const AadharVerification = () => {
 
   const startPooling = (aadharTransactionID) => {
     intervalRef.current = setInterval(() => {
-      const currentFetchRequestID = fetchRequestID.current++;
       APISDK.fetchAadharRequestStatus(aadharTransactionID).then((resp) => {
-        console.log(resp);
         if (resp.status === "success") {
           if (resp.data.requestStatus === "failed") {
             dispatch({

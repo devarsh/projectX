@@ -28,10 +28,10 @@ export const DaysFilter = (props) => {
   const resetFilter = useResetRecoilState(
     filterAtom(`${gridCode}/${accessor}`)
   );
-
+  //reset the filter when component unmounts
   useEffect(() => {
     return resetFilter;
-  }, []);
+  }, [resetFilter]);
 
   useEffect(() => {
     setFilterCondition(condition);
@@ -42,14 +42,14 @@ export const DaysFilter = (props) => {
         setFiltersCondition([...dependentFilters]);
       }
     }
-  }, [condition]);
+  }, [condition, last, setFilterCondition, setFiltersCondition]);
 
   useEffect(() => {
     setCondition(null);
     if (last) {
       setFiltersCondition(dependentFilters);
     }
-  }, [last, dependentFilters]);
+  }, [last, dependentFilters, setFilterCondition, setFiltersCondition]);
 
   return (
     <Fragment>

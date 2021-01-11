@@ -32,7 +32,7 @@ export const GroupByExclusiveFilter = (props) => {
   );
   useEffect(() => {
     return resetFilter;
-  }, []);
+  }, [resetFilter]);
 
   const [groups, setGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -54,7 +54,7 @@ export const GroupByExclusiveFilter = (props) => {
     } else {
       setFilterCondition(null);
     }
-  }, [value]);
+  }, [value, last, accessor, setFilterCondition, setFiltersCondition]);
 
   useEffect(() => {
     setLoading(true);
@@ -88,7 +88,18 @@ export const GroupByExclusiveFilter = (props) => {
         console.log(err);
         setError("Error fetching filter");
       });
-  }, [last, dependentFilters]);
+  }, [
+    last,
+    dependentFilters,
+    accessor,
+    gridCode,
+    result_type,
+    setFiltersCondition,
+    setLoading,
+    setGroups,
+    setError,
+    setValue,
+  ]);
 
   const buttons = groups.map((one) => {
     return (

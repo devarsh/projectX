@@ -5,11 +5,30 @@ import { attachValuesToMetaData } from "../utils/attachValuesToMetaData";
 import { ViewFormWrapperProps } from "./types";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import { GroupedView } from "./groupedView";
 import { SimpleView } from "./simpleView";
-import { MetaDataType, FormMetaDataType } from "../types";
+import {
+  MetaDataType,
+  FormMetaDataType,
+  GroupWiseRenderedFieldsType,
+} from "../types";
+import { InitialValuesType } from "packages/form";
 import { useStyles } from "../style";
+
+const attachGroupExcludedProps = (
+  groupWiseFields: GroupWiseRenderedFieldsType,
+  inititalValues: InitialValuesType
+) => {
+  const fieldGroups = Object.keys(groupWiseFields).sort();
+  //we will only loop through array and mutate the object
+  /* eslint-disable array-callback-return */
+  fieldGroups.map((group) => {
+    const excluded = groupWiseFields[group].fieldNames.filter((one) =>
+      Boolean(inititalValues[one])
+    );
+    groupWiseFields[group].excluded = excluded.length > 0 ? false : true;
+  });
+};
 
 export const ViewFormWrapper: FC<ViewFormWrapperProps> = ({
   metaData,
@@ -30,15 +49,15 @@ export const ViewFormWrapper: FC<ViewFormWrapperProps> = ({
     fields: transformedFields,
   } as MetaDataType;
   const groupWiseFields = renderValuesByGroup(transformedMetaData);
+  attachGroupExcludedProps(groupWiseFields, formDisplayValues);
   const formRenderType = transformedMetaData.form.render.renderType ?? "simple";
   const classes = useStyles();
 
   return (
     <Container component="main" style={{ display: hidden ? "none" : "block" }}>
       <Typography component="h3" className={classes.title}>
-        {metaData.form.label} View Only
+        {metaData.form.label} View Mode
       </Typography>
-      <Divider />
       <div className={classes.form}>
         {formRenderType === "stepper" || formRenderType === "tabs" ? (
           <GroupedView

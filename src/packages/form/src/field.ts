@@ -14,6 +14,8 @@ import {
   subscribeToFormFieldsSelector,
   formFieldExcludeAddSelector,
   formFieldExcludeRemoveSelector,
+  formFieldsErrorWatcherAddSelector,
+  formFieldsErrorWatcherRemoveSelector,
 } from "./atoms";
 import {
   FormFieldAtomType,
@@ -112,6 +114,14 @@ export const useField = ({
       fieldName: currentfield,
     };
     registerField(registrationValue);
+    //we need to run handleBlur for postValidation hook - this a hack to fix an issue
+    if (
+      typeof postValidationSetCrossFieldValues === "function" &&
+      Boolean(defaultValue)
+    ) {
+      setTimeout(handleBlur, 1);
+    }
+    //end of hack
 
     if (Boolean(formContext.resetFieldOnUnmount) === true) {
       return () => {
@@ -172,6 +182,18 @@ export const useField = ({
       }
     },
     [formContext.formName]
+  );
+  const addRemoveFieldsFromErrorWatcher = useRecoilCallback(
+    ({ set }) => ({ fieldName, flag }) => {
+      if (flag === "add") {
+        set(formFieldsErrorWatcherAddSelector(formContext.formName), fieldName);
+      } else if (flag === "remove") {
+        set(
+          formFieldsErrorWatcherRemoveSelector(formContext.formName),
+          fieldName
+        );
+      }
+    }
   );
 
   const dependentFieldsState = useRecoilValue(
@@ -237,6 +259,17 @@ export const useField = ({
             }));
           }
         }
+      });
+    }
+    if (Boolean(fieldData.error)) {
+      addRemoveFieldsFromErrorWatcher({
+        fieldName: fieldData.name,
+        flag: "add",
+      });
+    } else {
+      addRemoveFieldsFromErrorWatcher({
+        fieldName: fieldData.name,
+        flag: "remove",
       });
     }
   });

@@ -13,6 +13,7 @@ interface FormProps {
   formDisplayName: string;
   formName: string;
   submitFn: SubmitFnType;
+  cancelFn: any;
 }
 
 export const SimpleForm: FC<FormProps> = ({
@@ -20,6 +21,7 @@ export const SimpleForm: FC<FormProps> = ({
   formRenderConfig,
   formDisplayName,
   submitFn,
+  cancelFn,
 }) => {
   const classes = useStyles();
   const { handleSubmit } = useForm({
@@ -59,6 +61,11 @@ export const SimpleForm: FC<FormProps> = ({
           >
             {formRenderConfig?.labels?.complete ?? "Submit"}
           </Button>
+          {typeof cancelFn === "function" ? (
+            <Button type="button" className={classes.submit} onClick={cancelFn}>
+              Cancel
+            </Button>
+          ) : null}
         </Box>
       </div>
     </div>

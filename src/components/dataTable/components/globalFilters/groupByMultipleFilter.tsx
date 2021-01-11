@@ -32,7 +32,7 @@ export const GroupByMultipleFilter = (props) => {
   );
   useEffect(() => {
     return resetFilter;
-  }, []);
+  }, [resetFilter]);
 
   const [groups, setGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ export const GroupByMultipleFilter = (props) => {
     } else {
       setFilterCondition(null);
     }
-  }, [value]);
+  }, [value, last, accessor, setFilterCondition, setFiltersCondition]);
 
   useEffect(() => {
     setLoading(true);
@@ -90,7 +90,18 @@ export const GroupByMultipleFilter = (props) => {
         console.log(err);
         setError("Error fetching filter");
       });
-  }, [last, dependentFilters]);
+  }, [
+    last,
+    dependentFilters,
+    accessor,
+    gridCode,
+    result_type,
+    setFiltersCondition,
+    setLoading,
+    setGroups,
+    setError,
+    setClear,
+  ]);
 
   const buttons = groups.map((one) => {
     return (

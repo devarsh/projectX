@@ -53,15 +53,15 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
           <MenuIcon />
         </IconButton>
         {open !== true ? (
-          <a
-            href="#"
+          <img
+            src={Logo}
+            alt="Ratnaafin"
+            className={classes.logo}
             onClick={(e) => {
               e.preventDefault();
               navigate("./");
             }}
-          >
-            <img src={Logo} alt="Ratnaafin" className={classes.logo} />
-          </a>
+          />
         ) : null}
 
         <Typography
@@ -138,7 +138,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
           >
             <MenuItem
               onClick={() => {
-                navigate("./profile");
+                navigate("/los/profile");
                 handleClose();
               }}
             >
@@ -147,7 +147,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                navigate("./iframe");
+                navigate("/los/iframe");
                 handleClose();
               }}
             >

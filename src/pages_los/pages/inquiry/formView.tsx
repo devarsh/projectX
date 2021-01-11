@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, FC } from "react";
+import { FC } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
 import {
@@ -6,51 +6,70 @@ import {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+
+import { useQueries } from "react-query";
+
 export const InquiryViewFormWrapper: FC<{
   inquiryID: string;
   inquiryType: "questionnaire" | "inquiry";
-}> = ({ inquiryID, inquiryType }) => {
-  const [loading, setLoading] = useState(false);
-  const [formDisplayValues, setFormDisplayValues] = useState({});
-  const [metaData, setMetaData] = useState({});
-  const [error, setError] = useState("");
-  useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
-      APISDK.getInquiryFormDisplayMetaData(inquiryID, inquiryType),
-    ])
-      .then(function (responses) {
-        Promise.all(responses).then((data) => {
-          if (data[0].status === "success" && data[1].status === "success") {
-            setLoading(false);
-            setFormDisplayValues(data[0].data);
-            setMetaData(data[1].data);
-            setLoading(false);
-          } else {
-            setLoading(false);
-            setError(`${data[0]?.data?.error_msg} ${data[1]?.data?.error_msg}`);
-          }
-        });
-      })
-      .catch(function (error) {
-        setLoading(false);
-        setError(error);
-      });
-  }, []);
-  /*eslint-disable react-hooks/exhaustive-deps*/
+  moveToEditForm: any;
+}> = ({ inquiryID, inquiryType, moveToEditForm }) => {
+  const result = useQueries([
+    {
+      queryKey: ["viewMetaData", inquiryType, inquiryID],
+      queryFn: () =>
+        APISDK.getInquiryFormDisplayMetaData(inquiryID, inquiryType),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+    {
+      queryKey: ["viewFormData", inquiryType, inquiryID],
+      queryFn: () => APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  ]);
+  const dataUniqueKey = result[1].dataUpdatedAt;
+  const loading = result[0].isLoading || result[1].isLoading;
+  let isError = result[0].isError || result[1].isError;
   //@ts-ignore
-  const result = loading ? (
+  let errorMsg = `${result[0].error?.error_msg ?? ""} ${
+    //@ts-ignore
+    result[1].error?.error_msg ?? ""
+  }`;
+  let metaData = result[0].data;
+  let formDisplayValues = result[1].data;
+  if (loading === false && isError === false) {
+    isError = !isMetaDataValid(metaData);
+    if (isError === true) {
+      errorMsg = "Error loading form";
+    }
+  }
+
+  const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />
-  ) : !isMetaDataValid(metaData as MetaDataType) ? (
-    <span>"Error loading form"</span>
+  ) : isError === true ? (
+    <span>{errorMsg}</span>
   ) : (
-    <Fragment>
-      <ViewFormWrapper
-        metaData={metaData as MetaDataType}
-        formDisplayValues={formDisplayValues}
-      ></ViewFormWrapper>
-    </Fragment>
+    <ViewFormWrapper
+      key={`${inquiryID}-${inquiryType}-${dataUniqueKey}-viewMode`}
+      metaData={metaData as MetaDataType}
+      //@ts-ignore
+      formDisplayValues={formDisplayValues}
+      onAccept={moveToEditForm}
+    >
+      {({ onAccept }) => (
+        <Box width={1} display="flex" justifyContent="flex-end">
+          <Button type="button" onClick={onAccept}>
+            Edit Data
+          </Button>
+        </Box>
+      )}
+    </ViewFormWrapper>
   );
-  return result;
+  return renderResult;
 };

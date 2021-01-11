@@ -5,7 +5,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import { ActionTypes } from "./types";
+import { TableActionType, RenderActionType } from "./types";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,30 +29,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TableActionToolbar: FC<{
-  dense: boolean;
-  getRowId: any;
-  selectedFlatRows: any;
-  gridActions: ActionTypes[];
-  setGridAction: any;
-}> = ({ dense, getRowId, selectedFlatRows, gridActions, setGridAction }) => {
+export const TableActionToolbar: FC<TableActionType> = ({
+  dense,
+  selectedFlatRows,
+  multipleActions,
+  singleActions,
+  setGridAction,
+}) => {
   const classes = useStyles();
   const selectedCount = selectedFlatRows.length;
-  const selectedRows = selectedFlatRows.map((one) => ({
-    data: one.original,
-    id: getRowId(one.original),
-  }));
+  const selectedRows = selectedFlatRows.map((one) => {
+    return {
+      data: one.original,
+      id: one.id,
+    };
+  });
   if (selectedCount <= 0) {
     return null;
-  }
-  if (!Array.isArray(gridActions)) {
-    gridActions = [];
   }
   if (typeof setGridAction !== "function") {
     setGridAction = () => {};
   }
-  const multipleActions = gridActions.filter((one) => one.multiple === true);
-  const singleActions = gridActions.filter((one) => one.multiple === false);
   return (
     <Toolbar
       className={clsx(classes.root, classes.highlight)}
@@ -75,7 +74,7 @@ export const TableActionToolbar: FC<{
       {selectedCount > 0 ? (
         <RenderActions
           key="multipleFilters"
-          actions={multipleActions}
+          actions={multipleActions ?? []}
           setAction={setGridAction}
           selectedRows={selectedRows}
         />
@@ -85,11 +84,11 @@ export const TableActionToolbar: FC<{
 };
 
 //@ts-ignore
-export const RenderActions: FC<{
-  actions: ActionTypes[];
-  setAction: any;
-  selectedRows: any;
-}> = ({ actions, setAction, selectedRows }) => {
+export const RenderActions: FC<RenderActionType> = ({
+  actions,
+  setAction,
+  selectedRows,
+}) => {
   if (Array.isArray(actions) && actions.length > 0) {
     return actions.map((one) => (
       <Tooltip title={one.tooltip ?? one.actionLabel} key={one.actionName}>
@@ -108,4 +107,60 @@ export const RenderActions: FC<{
   } else {
     return null;
   }
+};
+
+export const ActionContextMenu: FC<TableActionType> = ({
+  singleActions,
+  setGridAction,
+  selectedFlatRows: selectedFlatRow,
+  mouseX,
+  mouseY,
+  handleClose,
+}) => {
+  let menuItems: null | JSX.Element[] = null;
+  if (typeof setGridAction !== "function") {
+    setGridAction = () => {};
+  }
+  if (singleActions.length > 0 && selectedFlatRow !== null) {
+    menuItems = singleActions.map((one) => (
+      <MenuItem
+        key={one.actionName}
+        onClick={() => {
+          setGridAction({
+            name: one.actionName,
+            rows: [
+              {
+                data: selectedFlatRow?.original,
+                id: selectedFlatRow?.id,
+              },
+            ],
+          });
+          handleClose();
+        }}
+      >
+        {one.actionLabel}
+      </MenuItem>
+    ));
+  }
+  return (
+    <Menu
+      onContextMenu={(e) => {
+        e.preventDefault();
+        handleClose();
+      }}
+      open={mouseY !== null && singleActions.length > 0}
+      onClose={handleClose}
+      anchorReference="anchorPosition"
+      anchorPosition={
+        mouseY !== null && mouseX !== null
+          ? {
+              top: mouseY,
+              left: mouseX,
+            }
+          : undefined
+      }
+    >
+      {menuItems}
+    </Menu>
+  );
 };
