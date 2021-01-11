@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
+import Skeleton from "@material-ui/lab/Skeleton";
 import { makeStyles } from "@material-ui/core/styles";
 import { APISDK } from "registry/fns/sdk";
 import { filterAtom, filtersAtom, subscribeToFilterChange } from "../../atoms";
@@ -133,7 +134,9 @@ export const GroupByExclusiveFilter = (props) => {
     <Fragment>
       <Typography className={classes.filterType}>{columnName}</Typography>
       {loading ? (
-        "loading filter..."
+        <Paper elevation={0} className={classes.paper}>
+          <Skeleton variant="rect" animation="wave" width={200} height={35} />
+        </Paper>
       ) : Boolean(error) ? (
         error
       ) : (

@@ -53,7 +53,12 @@ export const TableHeaderFilterToolbar = ({ dense, gridCode, filters }) => {
     }
     if (component !== null) {
       return (
-        <Box key={key} p={1} mx={1} my={1}>
+        <Box
+          key={key}
+          p={1}
+          mx={1}
+          style={{ display: "flex", alignItems: "center" }}
+        >
           {component}
         </Box>
       );
