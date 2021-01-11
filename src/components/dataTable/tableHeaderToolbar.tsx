@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flex: "1 1 100%",
+    color: theme.palette.primary.main,
+    letterSpacing: "1px",
+    fontSize: "2rem",
   },
 }));
 
