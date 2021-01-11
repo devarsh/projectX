@@ -56,6 +56,7 @@ export const Inquiry = () => {
         onClose={handleDialogClose}
       >
         <InquiryDetails
+          inquiryData={action?.rows[0]}
           inquiryID={action?.rows[0].id}
           setDisableDialogClose={setDisableDialogClose}
           isInquiryEditedRef={isInquiryEditedRef}
