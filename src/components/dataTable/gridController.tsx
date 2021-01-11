@@ -99,7 +99,8 @@ export const GirdController: FC<{
       setGridRefresh={setGridRefresh}
       pageCount={pageCount}
       totalRecords={totalRecords}
-      pageSizes={metaData.gridConfig?.pageSize}
+      //pageSizes={metaData.gridConfig?.pageSize}
+      pageSizes={[5, 10, 200]}
       defaultPageSize={metaData.gridConfig?.defaultPageSize}
       allowColumnReordering={
         metaData.gridConfig?.allowColumnReordering ?? false

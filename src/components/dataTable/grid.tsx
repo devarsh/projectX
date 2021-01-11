@@ -111,8 +111,6 @@ export const DataGrid = ({
   );
 
   const { pageIndex, pageSize, sortBy, filters } = tableState;
-  const cellSize = dense ? 34 : 54;
-  const emptyRows = pageSize - Math.min(pageSize, page.length);
   const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
   const tbodyRef = useRef(null);
@@ -248,7 +246,14 @@ export const DataGrid = ({
         />
       ) : null}
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
-      <TableContainer style={{ position: "relative" }}>
+      <TableContainer
+        style={{
+          position: "relative",
+          display: "inline-block",
+          overflow: "auto",
+          height: "calc(100vh - 35*8px)",
+        }}
+      >
         <Table
           component="div"
           {...getTableProps()}
@@ -283,7 +288,6 @@ export const DataGrid = ({
               {
                 style: {
                   display: "block",
-                  maxHeight: "calc(100vh - 42*8px)",
                 },
               },
             ])}
@@ -327,14 +331,6 @@ export const DataGrid = ({
                 </MyTableRow>
               );
             })}
-            {emptyRows > 0 ? (
-              <TableRow
-                component="div"
-                style={{ height: emptyRows * cellSize }}
-              >
-                <TableCell component="div" />
-              </TableRow>
-            ) : null}
           </TableBody>
         </Table>
         <CustomBackdrop open={loading} />
