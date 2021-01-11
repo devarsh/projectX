@@ -7,8 +7,20 @@ import Paper from "@material-ui/core/Paper";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
+import { withStyles } from "@material-ui/core/styles";
 
 const ITEM_HEIGHT = 48;
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    "& .MuiCheckbox-root": {
+      padding: "2px 6px",
+    },
+    "& label": {
+      marginBottom: 0,
+    },
+  },
+}))(MenuItem);
 
 export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -26,7 +38,7 @@ export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
     const { checked, style, onChange } = column.getToggleHiddenProps();
     if (defaultHiddenColumns.indexOf(column.id) === -1) {
       accum.push(
-        <MenuItem dense={true} key={column.id} onChange={onChange}>
+        <StyledMenuItem dense={true} key={column.id} onChange={onChange}>
           <FormControlLabel
             control={
               <Checkbox
@@ -39,7 +51,7 @@ export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
             label={column.columnName}
             style={style}
           />
-        </MenuItem>
+        </StyledMenuItem>
       );
     }
     return accum;

@@ -1,12 +1,33 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from "recoil";
+import Paper from "@material-ui/core/Paper";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import { APISDK } from "registry/fns/sdk";
 import { filterAtom, filtersAtom, subscribeToFilterChange } from "../../atoms";
 
+const useStyles = makeStyles((theme) => ({
+  filterType: {
+    color: theme.palette.secondary.main,
+    fontSize: "11px",
+    paddingRight: "4px",
+    fontWeight: 500,
+    display: "inline-flex",
+  },
+  paper: {
+    display: "inline-flex",
+    border: `1px solid ${theme.palette.divider}`,
+    flexWrap: "wrap",
+  },
+  divider: {
+    margin: theme.spacing(1, 0.5),
+  },
+}));
+
 export const GroupByExclusiveFilter = (props) => {
+  const classes = useStyles();
   const {
     accessor,
     result_type,
@@ -110,25 +131,27 @@ export const GroupByExclusiveFilter = (props) => {
   });
   return (
     <Fragment>
-      <Typography style={{ display: "inline-flex" }}>{columnName}</Typography>
+      <Typography className={classes.filterType}>{columnName}</Typography>
       {loading ? (
         "loading filter..."
       ) : Boolean(error) ? (
         error
       ) : (
-        <ToggleButtonGroup
-          size="small"
-          value={value}
-          onChange={(_, value) => {
-            setValue(value);
-          }}
-          exclusive={true}
-        >
-          {buttons}
-          <ToggleButton key={`${accessor}-all-single`} value="all">
-            Clear
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Paper elevation={0} className={classes.paper}>
+          <ToggleButtonGroup
+            size="small"
+            value={value}
+            onChange={(_, value) => {
+              setValue(value);
+            }}
+            exclusive={true}
+          >
+            {buttons}
+            <ToggleButton key={`${accessor}-all-single`} value="all">
+              Clear
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Paper>
       )}
     </Fragment>
   );

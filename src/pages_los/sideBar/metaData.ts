@@ -14,7 +14,7 @@ export const metaData: NavBarMetaDataType = {
     },
     {
       label: "Inquiry Management",
-      icon: "tasks",
+      icon: "question",
       children: [
         {
           label: "Inquiries",
@@ -115,7 +115,6 @@ export const metaData: NavBarMetaDataType = {
         {
           label: "Interest Subsidy",
           icon: "circle",
-          href: "http://www.google.com",
         },
         {
           label: "Central Govt. Subsidy",
