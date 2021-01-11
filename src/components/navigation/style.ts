@@ -99,7 +99,7 @@ export const useStylesSideBar = makeStyles((theme) => ({
     },
   },
   listIcon: {
-    minWidth: "32px",
+    minWidth: "32px !important",
     color: "#0063A3",
     fontWeight: 700,
     fontSize: "1.25rem",
