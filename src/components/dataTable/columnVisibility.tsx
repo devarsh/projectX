@@ -1,26 +1,14 @@
 import React from "react";
 import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
+import { StyledMenuItem } from "./styledComponents";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Paper from "@material-ui/core/Paper";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
-import { withStyles } from "@material-ui/core/styles";
 
 const ITEM_HEIGHT = 48;
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    "& .MuiCheckbox-root": {
-      padding: "2px 6px",
-    },
-    "& label": {
-      marginBottom: 0,
-    },
-  },
-}))(MenuItem);
 
 export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);

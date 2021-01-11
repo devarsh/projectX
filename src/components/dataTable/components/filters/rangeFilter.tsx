@@ -1,12 +1,11 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
-import { StyledTextField } from "./styledComponents";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { StyledSlider } from "./styledComponents";
+import { StyledSlider, StyledTextField } from "../../styledComponents";
 import { FilterContainer } from "./filterContainer";
 
 export const RangeFilterFn = (rows) => {

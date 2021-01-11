@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
 import { useStyles } from "./style";
-import { StyledTextField, StyledMenuItem } from "./styledComponents";
+import { StyledTextField, StyledMenuItem } from "../../styledComponents";
 import { FilterContainer } from "./filterContainer";
 
 export const ValueFilterFn = (rows) => {

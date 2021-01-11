@@ -5,7 +5,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { FilterContainer } from "./filterContainer";
-import { StyledTextField, StyledMenuItem } from "./styledComponents";
+import { StyledTextField, StyledMenuItem } from "../../styledComponents";
 import { APISDK } from "registry/fns/sdk";
 
 // const ITEM_HEIGHT = 48;
