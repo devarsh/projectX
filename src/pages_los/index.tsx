@@ -13,6 +13,7 @@ import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import Documents from "components/fileUpload";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -34,6 +35,7 @@ const DashbordPages = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
             {/*dummy routes*/}
+            <Route path="/docs" element={<Documents />} />
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />

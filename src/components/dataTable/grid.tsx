@@ -292,6 +292,19 @@ export const DataGrid = ({
               },
             ])}
           >
+            {page.length <= 0 && loading === false ? (
+              <div
+                style={{
+                  height: "calc(100vh - 35*8px)",
+                  width: "100%",
+                  display: "flex",
+
+                  alignItems: "center",
+                }}
+              >
+                No data found
+              </div>
+            ) : null}
             {page.map((row, index) => {
               prepareRow(row);
               const rightClickHandler = handleContextMenuOpen(row);
