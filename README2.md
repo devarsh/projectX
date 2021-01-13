@@ -13,7 +13,7 @@ C -->|has many| F(Credit Head)
 E -->|has many| G(BDE)
 F -->|has many| H(Credit Associate)
 
-# Lead Flow of Partner
+# Lead Flow of Channel Partner
 
 sequenceDiagram
 Participant Partner
