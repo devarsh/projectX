@@ -6,7 +6,7 @@ const Index = () => {
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
-        <FileUploadControl />
+        <FileUploadControl docLabel="Pan Card" docType="pan" />
       </DndProvider>
     </div>
   );

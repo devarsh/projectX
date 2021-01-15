@@ -1,15 +1,18 @@
 import { DropTargetMonitor } from "react-dnd";
 
 export interface FileListType {
-  filePointer: File;
-  fingerprint: number;
+  file: File | string;
+  name: string;
+  size: string | number;
+  mimeType: string;
+  fingerprint?: string | number;
+  ext?: string;
   rejected?: boolean;
   rejectReason?: string;
-  ext?: string;
 }
 
 export interface TargetBoxType {
-  onDrop: (props: TargetBoxType, monitor: DropTargetMonitor | File[]) => void;
+  onDrop: (props: TargetBoxType, monitor: File[]) => void;
   disabled?: boolean;
 }
 
@@ -17,6 +20,9 @@ export interface FileUploadControlType {
   allowedExtensions?: string[] | string;
   maxAllowedSize?: number;
   maxAllowedFiles?: number;
+  docType: string;
+  docLabel: string;
+  docDescription?: string;
 }
 
 export interface FileListingControlType {

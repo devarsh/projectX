@@ -4,7 +4,6 @@ import DataGrid, { ActionTypes } from "components/dataTable";
 import { InquiryDetails } from "./inquiryDetail";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
-import { setIn } from "packages/form";
 
 const actions: ActionTypes[] = [
   {

@@ -56,15 +56,21 @@ export const isMimeTypeValid = async (
     result.rejected = true;
     result.rejectReason = "file type is not allowed";
   }
-  return { ...result, filePointer: file };
+  return {
+    ...result,
+    file: file,
+    size: file.size,
+    name: file.name,
+    mimeType: file.type,
+  };
 };
 
 export const removeDuplicateFiles = (files: FileListType[]) => {
   if (Array.isArray(files) && files.length > 0) {
-    const visitedSignature: number[] = [];
+    const visitedSignature: string[] = [];
     let uniqueFiles = files.reduce<FileListType[]>((accum, current) => {
-      if (visitedSignature.indexOf(current.fingerprint) === -1) {
-        visitedSignature.push(current.fingerprint);
+      if (visitedSignature.indexOf(String(current.fingerprint ?? "")) === -1) {
+        visitedSignature.push(String(current.fingerprint ?? ""));
         accum.push(current);
       }
       return accum;
@@ -73,3 +79,21 @@ export const removeDuplicateFiles = (files: FileListType[]) => {
   }
   return [];
 };
+
+export function downloadFile(fileObj: FileListType) {
+  const url =
+    typeof fileObj.file === "object"
+      ? URL.createObjectURL(fileObj.file)
+      : fileObj.file;
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileObj.name ?? `download-${new Date().getUTCMilliseconds()}`;
+  const clickHandler = () => {
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      a.removeEventListener("click", clickHandler);
+    }, 150);
+  };
+  a.addEventListener("click", clickHandler, false);
+  a.click();
+}

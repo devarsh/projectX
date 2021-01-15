@@ -27,7 +27,8 @@ export const UploadTarget: FC<TargetBoxType> = (props) => {
     accept: [NativeTypes.FILE],
     drop(item, monitor) {
       if (typeof onDrop === "function") {
-        onDrop(props, monitor);
+        const files = Array.from(monitor.getItem().files) as File[];
+        onDrop(props, files);
       }
     },
     collect: (monitor) => ({

@@ -45,6 +45,7 @@
     "react-imask": "^6.0.5",
     "react-is": "^17.0.1",
     "react-number-format": "^4.4.1",
+    "react-pdf": "^5.1.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-query": "^3.5.11",
     "react-query-devtools": "^2.6.3",
