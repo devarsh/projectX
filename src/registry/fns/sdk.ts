@@ -750,6 +750,53 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const uploadFile = async (
+    files: File[],
+    docID: string,
+    refID: string,
+    progressHandler: any = () => {},
+    completeHandler: any = () => {}
+  ) => {
+    await sessionToken;
+    await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
+    const newURL = new URL("./users/testDoc", sessionObj.baseURL).href;
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("file", files[i]);
+    }
+    formData.append("refID", refID);
+    formData.append("docID", docID);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", newURL, true);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader(
+      "Authorization",
+      `Bearer ${sessionObj?.token?.access_token}`
+    );
+    xhr.onreadystatechange = () => {
+      console.log(xhr.readyState, xhr.responseText);
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+      }
+    };
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        var precentage = Math.round((e.loaded / e.total) * 100);
+        progressHandler(precentage);
+      } else {
+        progressHandler(Infinity);
+      }
+    };
+    xhr.onload = (e) => {
+      if (xhr.status === 200) {
+        completeHandler(true);
+      } else {
+        completeHandler(false, xhr.statusText);
+      }
+    };
+    xhr.send(formData);
+  };
+
   return {
     createSession,
     loginStatus,
@@ -793,6 +840,7 @@ const RaatnaFinAPI = () => {
     inquiryAssignToLead,
 
     getHealthCheckScore,
+    uploadFile,
   };
 };
 

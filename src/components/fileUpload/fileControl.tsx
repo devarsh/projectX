@@ -11,6 +11,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Collapse from "@material-ui/core/Collapse";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { APISDK } from "registry/fns/sdk";
 
 export const FileUploadControl: FC<FileUploadControlType> = ({
   allowedExtensions = ["jpg", "png", "pdf"],
@@ -26,6 +27,8 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
     message: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(Infinity);
+  const [error, setError] = useState(false);
 
   const transformAndSetDroppedFiles = (files: File[]) => {
     let result = files.map((one) => isMimeTypeValid(one, allowedExtensions));
@@ -95,21 +98,36 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
       return;
     }
     setLoading(true);
-    let fileData = new FormData();
-    for (let i = 0; i < droppedFiles.length; i++) {
-      if (droppedFiles[i].rejected === false) {
-        fileData.append(`file[]`, droppedFiles[i].file);
+    const files = droppedFiles.map((one) => one.file);
+    APISDK.uploadFile(
+      files as File[],
+      docType,
+      "1583",
+      (precentage) => {
+        setProgress(precentage);
+      },
+      (status, errorMsg) => {
+        if (status === false) {
+          setError(true);
+          setUserMessage({ severity: "error", message: errorMsg });
+          setLoading(false);
+        } else {
+          setError(false);
+          setUserMessage(null);
+          setLoading(false);
+        }
       }
-    }
-    fileData.append("docType", docType);
-    var client = new XMLHttpRequest();
-    client.open("POST", "/upload");
-    client.send(fileData);
+    );
   };
 
   return (
     <Card>
-      {loading ? <LinearProgress /> : null}
+      {loading ? (
+        <LinearProgress
+          variant={progress !== Infinity ? "determinate" : "indeterminate"}
+          value={progress !== Infinity ? progress : undefined}
+        />
+      ) : null}
       <CardContent>
         <Typography color="textPrimary" variant="h6" gutterBottom>
           {docLabel}
