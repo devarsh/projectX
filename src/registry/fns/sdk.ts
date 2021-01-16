@@ -768,17 +768,10 @@ const RaatnaFinAPI = () => {
     formData.append("docID", docID);
     let xhr = new XMLHttpRequest();
     xhr.open("POST", newURL, true);
-    xhr.withCredentials = true;
     xhr.setRequestHeader(
       "Authorization",
       `Bearer ${sessionObj?.token?.access_token}`
     );
-    xhr.onreadystatechange = () => {
-      console.log(xhr.readyState, xhr.responseText);
-      if (xhr.readyState === 4) {
-        console.log(xhr.responseText);
-      }
-    };
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) {
         var precentage = Math.round((e.loaded / e.total) * 100);
@@ -788,10 +781,18 @@ const RaatnaFinAPI = () => {
       }
     };
     xhr.onload = (e) => {
-      if (xhr.status === 200) {
-        completeHandler(true);
-      } else {
-        completeHandler(false, xhr.statusText);
+      try {
+        const result = JSON.parse(xhr.responseText);
+        if (result.status === "0") {
+          completeHandler({ status: "success", data: result?.response_data });
+        } else {
+          completeHandler({ status: "failure", data: result?.error_data });
+        }
+      } catch (e) {
+        completeHandler({
+          status: "failure",
+          data: { message: "unknown error occured" },
+        });
       }
     };
     xhr.send(formData);

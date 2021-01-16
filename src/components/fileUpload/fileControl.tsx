@@ -28,7 +28,6 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(Infinity);
-  const [error, setError] = useState(false);
 
   const transformAndSetDroppedFiles = (files: File[]) => {
     let result = files.map((one) => isMimeTypeValid(one, allowedExtensions));
@@ -106,15 +105,19 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
       (precentage) => {
         setProgress(precentage);
       },
-      (status, errorMsg) => {
-        if (status === false) {
-          setError(true);
-          setUserMessage({ severity: "error", message: errorMsg });
-          setLoading(false);
+      (result) => {
+        setLoading(false);
+        console.log(result);
+        if (result.status === "success") {
+          setUserMessage({
+            severity: "info",
+            message: result?.data?.message ?? "",
+          });
         } else {
-          setError(false);
-          setUserMessage(null);
-          setLoading(false);
+          setUserMessage({
+            severity: "error",
+            message: result?.data?.message ?? "",
+          });
         }
       }
     );
