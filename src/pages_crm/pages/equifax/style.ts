@@ -1,11 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    marginTop: "20px",
-    minHeight: "calc(100vh - 165px)",
-    boxShadow: "0 3px 6px rgba(0,0,0,0.03)",
-  },
   continueBtn: {
     background: "#fff !important",
     height: "48px",
@@ -38,5 +33,25 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     borderBottom: "2px solid #fff",
     backgroundColor: "#fafafa",
+  },
+  historyHeading: {
+    paddingRight: "10px",
+    color: theme.palette.secondary.main,
+  },
+  accDetailsLabel: {
+    color: "#808080",
+    fontSize: "10px",
+    fontWeight: 400,
+    lineHeight: 1,
+    padding: "0px 25px",
+    paddingBottom: "5px",
+    paddingTop: "5px",
+  },
+  accDetailsValue: {
+    color: "#000",
+    fontSize: "10px",
+    fontWeight: 600,
+    lineHeight: 1,
+    paddingTop: "6px",
   },
 }));
