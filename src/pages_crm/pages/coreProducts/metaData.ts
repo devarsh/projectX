@@ -28,6 +28,7 @@ export const productTilesMeta: ProductTilesType[] = [
     href: "./form/sme",
     navigationProps: {
       metaProps: {
+        categoryID: "12000002",
         productID: "12300005",
         action: "crm_inquiry_metaData",
       },
@@ -39,6 +40,7 @@ export const productTilesMeta: ProductTilesType[] = [
     href: "./form/infra",
     navigationProps: {
       metaProps: {
+        categoryID: "12000003",
         productID: "123000011",
         action: "crm_inquiry_metaData",
       },
@@ -50,6 +52,7 @@ export const productTilesMeta: ProductTilesType[] = [
     href: "./form/business",
     navigationProps: {
       metaProps: {
+        categoryID: "12000004",
         productID: "123000013",
         action: "crm_inquiry_metaData",
       },
@@ -61,6 +64,7 @@ export const productTilesMeta: ProductTilesType[] = [
     href: "./form/rhl",
     navigationProps: {
       metaProps: {
+        categoryID: "12000001",
         productID: "12300001",
         action: "crm_inquiry_metaData",
       },
@@ -72,6 +76,7 @@ export const productTilesMeta: ProductTilesType[] = [
     href: "./form/lap",
     navigationProps: {
       metaProps: {
+        categoryID: "12000001",
         productID: "12300002",
         action: "crm_inquiry_metaData",
       },
@@ -90,6 +95,7 @@ export const productTilesMeta: ProductTilesType[] = [
     href: "./form/personal",
     navigationProps: {
       metaProps: {
+        categoryID: "12000004",
         productID: "123000014",
         action: "crm_inquiry_metaData",
       },

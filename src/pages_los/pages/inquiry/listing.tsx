@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState, useRef, forwardRef } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DataGrid, { ActionTypes } from "components/dataTable";
 import { InquiryDetails } from "./inquiryDetail";
@@ -23,11 +23,16 @@ export const Inquiry = () => {
   const [action, setAction] = useState<null | any>(null);
   const [disableDialogClose, setDisableDialogClose] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [hasDataChanged, setHasDataChanged] = useState();
+  const [gridRefresh, setGridRefresh] = useState(false);
+  const isInquiryEditedRef = useRef(false);
 
   const handleDialogClose = () => {
     if (!disableDialogClose) {
       setAction(null);
+      if (isInquiryEditedRef.current) {
+        setGridRefresh(true);
+        isInquiryEditedRef.current = false;
+      }
     } else {
       setSnackBarOpen(true);
     }
@@ -35,7 +40,13 @@ export const Inquiry = () => {
 
   return (
     <>
-      <DataGrid gridCode="trn/001" actions={actions} setAction={setAction} />
+      <DataGrid
+        gridCode="trn/001"
+        actions={actions}
+        setAction={setAction}
+        gridRefresh={gridRefresh}
+        setGridRefresh={setGridRefresh}
+      />
       <Dialog
         fullScreen
         open={action !== null}
@@ -44,8 +55,10 @@ export const Inquiry = () => {
         onClose={handleDialogClose}
       >
         <InquiryDetails
+          inquiryData={action?.rows[0]}
           inquiryID={action?.rows[0].id}
           setDisableDialogClose={setDisableDialogClose}
+          isInquiryEditedRef={isInquiryEditedRef}
         />
         <Snackbar
           open={snackBarOpen}

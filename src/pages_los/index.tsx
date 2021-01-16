@@ -7,13 +7,13 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
-import Login from "./pages/login";
-import DynamicLead from "./pages/leads";
+import Login from "./auth";
 import LeadAction from "./pages/leadaction";
 import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import Documents from "components/fileUpload";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -34,11 +34,11 @@ const DashbordPages = () => {
             <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
-            <Route path="/cam" element={<DynamicLead />} />
+            {/*dummy routes*/}
+            <Route path="/docs" element={<Documents />} />
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />
-            <Route path="/auth" element={<Login />} />
           </Routes>
         </Content>
       </div>
@@ -46,7 +46,16 @@ const DashbordPages = () => {
   );
 };
 
-export default DashbordPages;
+const EntryPoint = () => (
+  <Fragment>
+    <Routes>
+      <Route path="/*" element={<DashbordPages />} />
+      <Route path="/auth" element={<Login />} />
+    </Routes>
+  </Fragment>
+);
+
+export default EntryPoint;
 
 const RedirectComponent = () => {
   const navigate = useNavigate();

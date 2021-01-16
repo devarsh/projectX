@@ -9,6 +9,7 @@ export const FilterContainer = ({
   applyFilter,
   clearFilter,
   width = 360,
+  value,
 }) => {
   const classes = useStyles();
   return (
@@ -18,7 +19,11 @@ export const FilterContainer = ({
         <Button className={classes.applyBtn} onClick={() => applyFilter()}>
           {applyFilterLabel}
         </Button>
-        <Button className={classes.clearBtn} onClick={() => clearFilter()}>
+        <Button
+          className={classes.clearBtn}
+          disabled={Boolean(value) ? false : true}
+          onClick={() => clearFilter()}
+        >
           {clearFilterLabel}
         </Button>
       </Box>

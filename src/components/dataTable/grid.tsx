@@ -51,7 +51,6 @@ export const DataGrid = ({
   pageSizes,
   defaultPageSize,
   defaultHiddenColumns,
-  filterTypes,
   allowColumnReordering,
   allowColumnHiding,
   allowKeyboardNavigation,
@@ -61,6 +60,8 @@ export const DataGrid = ({
   multipleActions,
   singleActions,
   doubleClickAction,
+  gridRefresh,
+  setGridRefresh,
 }) => {
   const {
     getTableProps,
@@ -81,7 +82,6 @@ export const DataGrid = ({
       defaultColumn,
       data,
       getRowId,
-      filterTypes,
       initialState: {
         pageIndex: 0,
         pageSize: defaultPageSize,
@@ -111,8 +111,6 @@ export const DataGrid = ({
   );
 
   const { pageIndex, pageSize, sortBy, filters } = tableState;
-  const cellSize = dense ? 34 : 54;
-  const emptyRows = pageSize - Math.min(pageSize, page.length);
   const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
   const tbodyRef = useRef(null);
@@ -185,6 +183,13 @@ export const DataGrid = ({
     onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
   }, [onFetchDataDebounced, pageIndex, pageSize, sortBy, filters]);
 
+  useEffect(() => {
+    if (gridRefresh === true) {
+      onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
+      setGridRefresh(false);
+    }
+  }, [gridRefresh]);
+
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
   };
@@ -241,7 +246,14 @@ export const DataGrid = ({
         />
       ) : null}
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
-      <TableContainer style={{ position: "relative" }}>
+      <TableContainer
+        style={{
+          position: "relative",
+          display: "inline-block",
+          overflow: "auto",
+          height: "calc(100vh - 35*8px)",
+        }}
+      >
         <Table
           component="div"
           {...getTableProps()}
@@ -276,11 +288,23 @@ export const DataGrid = ({
               {
                 style: {
                   display: "block",
-                  maxHeight: "calc(100vh - 42*8px)",
                 },
               },
             ])}
           >
+            {page.length <= 0 && loading === false ? (
+              <div
+                style={{
+                  height: "calc(100vh - 35*8px)",
+                  width: "100%",
+                  display: "flex",
+
+                  alignItems: "center",
+                }}
+              >
+                No data found
+              </div>
+            ) : null}
             {page.map((row, index) => {
               prepareRow(row);
               const rightClickHandler = handleContextMenuOpen(row);
@@ -320,14 +344,6 @@ export const DataGrid = ({
                 </MyTableRow>
               );
             })}
-            {emptyRows > 0 ? (
-              <TableRow
-                component="div"
-                style={{ height: emptyRows * cellSize }}
-              >
-                <TableCell component="div" />
-              </TableRow>
-            ) : null}
           </TableBody>
         </Table>
         <CustomBackdrop open={loading} />

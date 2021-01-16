@@ -1,15 +1,5 @@
-import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import Slider from "@material-ui/core/Slider";
 import { withStyles } from "@material-ui/core/styles";
-
-export const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    "& .MuiCheckbox-root": {
-      padding: "2px 6px",
-    },
-  },
-}))(MenuItem);
 
 export const StyledTextField = withStyles({
   root: {
@@ -45,33 +35,3 @@ export const StyledTextField = withStyles({
     },
   },
 })(TextField);
-
-export const StyledSlider = withStyles({
-  root: {
-    color: "#26A456",
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: "#fff",
-    border: "2px solid currentColor",
-    marginTop: -8,
-    marginLeft: -12,
-    "&:focus, &:hover, &$active": {
-      boxShadow: "inherit",
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: "calc(-50% + 4px)",
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-  },
-})(Slider);

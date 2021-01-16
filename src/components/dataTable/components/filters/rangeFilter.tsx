@@ -1,21 +1,12 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
-import { StyledTextField } from "./styledComponents";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { StyledSlider } from "./styledComponents";
+import { StyledSlider, StyledTextField } from "../../styledComponents";
 import { FilterContainer } from "./filterContainer";
-
-export const RangeFilterFn = (rows) => {
-  return rows;
-};
-RangeFilterFn.autoRemove = (val) => {
-  console.log(!val?.value ?? "");
-  return !val?.value ?? "";
-};
 
 export const RangeFilterWrapper = (props) => {
   const type = props?.column?.filterComponentProps?.type ?? "slider";
@@ -26,8 +17,10 @@ export const RangeFilterWrapper = (props) => {
 };
 
 const RangeSliderColumnFilter = ({
-  column: { filterValue, preFilteredRows, setFilter },
+  column: { filterValue, setFilter },
   handleClose,
+  setSortBy,
+  gotoPage,
 }) => {
   const [value, setValue] = useState<number[]>(filterValue.value ?? [0, 100]);
   const handleChange = (event: any, newValue: number | number[]) => {
@@ -38,17 +31,23 @@ const RangeSliderColumnFilter = ({
       condition: "between",
       value: value,
     });
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
   const clearFilter = () => {
-    setFilter({
-      options: [],
-    });
+    setFilter("");
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
 
   return (
-    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
+    <FilterContainer
+      value={filterValue}
+      applyFilter={applyFilter}
+      clearFilter={clearFilter}
+    >
       <Box
         display="flex"
         justifyContent="space-between"
@@ -69,11 +68,12 @@ const RangeSliderColumnFilter = ({
 };
 
 const RangeColumnFilter = ({
-  column: { filterValue, preFilteredRows, filterComponentProps, setFilter },
+  column: { filterValue, filterComponentProps, setFilter },
   handleClose,
+  setSortBy,
+  gotoPage,
 }) => {
   const componentType = filterComponentProps?.type ?? "minMax";
-  console.log(componentType, filterValue);
   const [minValue, setMinValue] = useState(
     filterValue?.value[0] ?? componentType === "minMax" ? 0 : new Date()
   );
@@ -86,17 +86,23 @@ const RangeColumnFilter = ({
       condition: "between",
       value: [minValue, maxValue],
     });
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
   const clearFilter = () => {
-    setFilter({
-      options: [],
-    });
+    setFilter("");
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
 
   return (
-    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
+    <FilterContainer
+      value={filterValue}
+      applyFilter={applyFilter}
+      clearFilter={clearFilter}
+    >
       {(classes) => (
         <Box
           display="flex"
@@ -162,7 +168,6 @@ const DateRangeRenderer = ({
   setMaxValue,
   classes,
 }) => {
-  console.log(minValue, maxValue);
   return (
     <>
       <Box width="45%">

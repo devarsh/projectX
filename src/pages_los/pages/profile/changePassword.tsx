@@ -21,9 +21,7 @@ export const ChangePassword = () => {
   };
   return (
     <>
-      <DialogTitle id="form-dialog-title">
-        Change Password fsdfdsffs
-      </DialogTitle>
+      <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Password must be 8-16 characters and include both numbers and letters.

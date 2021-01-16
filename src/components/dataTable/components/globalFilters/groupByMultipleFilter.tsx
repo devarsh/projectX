@@ -3,10 +3,32 @@ import { useSetRecoilState, useResetRecoilState, useRecoilValue } from "recoil";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { makeStyles } from "@material-ui/core/styles";
 import { APISDK } from "registry/fns/sdk";
 import { filterAtom, filtersAtom, subscribeToFilterChange } from "../../atoms";
 
+const useStyles = makeStyles((theme) => ({
+  filterType: {
+    color: theme.palette.secondary.main,
+    fontSize: "11px",
+    paddingRight: "4px",
+    fontWeight: 500,
+    display: "inline-flex",
+  },
+  paper: {
+    display: "inline-flex",
+    border: `1px solid ${theme.palette.divider}`,
+    flexWrap: "wrap",
+  },
+  divider: {
+    margin: theme.spacing(1, 0.5),
+  },
+}));
+
 export const GroupByMultipleFilter = (props) => {
+  const classes = useStyles();
   const {
     accessor,
     result_type,
@@ -112,36 +134,40 @@ export const GroupByMultipleFilter = (props) => {
   });
   return (
     <Fragment>
-      <Typography style={{ display: "inline-flex" }}>{columnName}</Typography>
+      <Typography className={classes.filterType}>{columnName}</Typography>
       {loading ? (
-        "loading filter..."
+        <Paper elevation={0} className={classes.paper}>
+          <Skeleton variant="rect" animation="wave" width={200} height={35} />
+        </Paper>
       ) : Boolean(error) ? (
         error
       ) : (
         <>
-          <ToggleButtonGroup
-            size="small"
-            onChange={(_, value) => {
-              setValue(value);
-              setClear(false);
-            }}
-            value={value}
-            exclusive={false}
-          >
-            {buttons}
-            <ToggleButton
-              selected={clear}
-              key={`${accessor}-all-single`}
-              value={""}
-              onClick={(e) => {
-                e.preventDefault();
-                setValue([]);
-                setClear(true);
+          <Paper elevation={0} className={classes.paper}>
+            <ToggleButtonGroup
+              size="small"
+              onChange={(_, value) => {
+                setValue(value);
+                setClear(false);
               }}
+              value={value}
+              exclusive={false}
             >
-              Clear
-            </ToggleButton>
-          </ToggleButtonGroup>
+              {buttons}
+              <ToggleButton
+                selected={clear}
+                key={`${accessor}-all-single`}
+                value={""}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setValue([]);
+                  setClear(true);
+                }}
+              >
+                Clear
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Paper>
         </>
       )}
     </Fragment>
