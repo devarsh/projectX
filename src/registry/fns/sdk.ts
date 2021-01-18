@@ -626,7 +626,7 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const verifyPwd = async (password: string, phoneNumber: string) => {
+  const verifyPwd = async (phoneNumber: string, password: string) => {
     const { data, status } = await internalFetcher("./users/customer_login", {
       body: JSON.stringify({
         action: "customer_login",
