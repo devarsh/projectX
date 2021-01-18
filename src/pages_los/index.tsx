@@ -15,6 +15,8 @@ import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Documents from "components/fileUpload";
 
+import { CustomerLogin } from "./auth/customerLogin";
+
 const DashbordPages = () => {
   const classes = useStyles();
   const [drawerOpen, setDrawerState] = useState(true);
@@ -39,6 +41,7 @@ const DashbordPages = () => {
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />
+            <Route path="customerLogin" element={<CustomerLogin />} />
           </Routes>
         </Content>
       </div>

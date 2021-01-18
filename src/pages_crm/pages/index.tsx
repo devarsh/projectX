@@ -10,7 +10,6 @@ import { BecomePartnerFormWrapper } from "./becomePartner";
 import OTPVerificationPage from "./otpVerificationDialog";
 import AadharVerification from "./aadharVerification";
 import Equifax from "./equifax";
-import { CustomerLogin } from "./login/customerLogin";
 
 const Index = () => {
   const classes = useStyles();
@@ -18,7 +17,6 @@ const Index = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login />} />
-      <Route path="customerLogin" element={<CustomerLogin />} />
       <Route
         path="equifx"
         element={
