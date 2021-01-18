@@ -750,6 +750,54 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const uploadFile = async (
+    files: File[],
+    docID: string,
+    refID: string,
+    progressHandler: any = () => {},
+    completeHandler: any = () => {}
+  ) => {
+    await sessionToken;
+    await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
+    const newURL = new URL("./users/testDoc", sessionObj.baseURL).href;
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("file", files[i]);
+    }
+    formData.append("refID", refID);
+    formData.append("docID", docID);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", newURL, true);
+    xhr.setRequestHeader(
+      "Authorization",
+      `Bearer ${sessionObj?.token?.access_token}`
+    );
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        var precentage = Math.round((e.loaded / e.total) * 100);
+        progressHandler(precentage);
+      } else {
+        progressHandler(Infinity);
+      }
+    };
+    xhr.onload = (e) => {
+      try {
+        const result = JSON.parse(xhr.responseText);
+        if (result.status === "0") {
+          completeHandler({ status: "success", data: result?.response_data });
+        } else {
+          completeHandler({ status: "failure", data: result?.error_data });
+        }
+      } catch (e) {
+        completeHandler({
+          status: "failure",
+          data: { message: "unknown error occured" },
+        });
+      }
+    };
+    xhr.send(formData);
+  };
+
   return {
     createSession,
     loginStatus,
@@ -793,6 +841,7 @@ const RaatnaFinAPI = () => {
     inquiryAssignToLead,
 
     getHealthCheckScore,
+    uploadFile,
   };
 };
 
