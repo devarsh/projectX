@@ -1,4 +1,4 @@
-import { FC, useState, Fragment } from "react";
+import { FC, useState, Fragment, useMemo } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -8,7 +8,7 @@ import Dialog from "@material-ui/core/Dialog";
 import FolderOpenRoundedIcon from "@material-ui/icons/FolderOpenRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
-import { FileListingControlType, FileListType } from "./type";
+import { FileListingControlType, FileListType, FileListItemType } from "./type";
 import { computeSize, downloadFile } from "./utils";
 import { PdfViewer, ImageViewer, NoPreview } from "./preView";
 
@@ -17,11 +17,14 @@ export const FileListing: FC<FileListingControlType> = ({
   dense,
   handleDeleteFile = () => false,
   disabled,
+  disableDelete = false,
+  disablePreview = false,
 }) => {
   const [currentView, setCurrentView] = useState<FileListType | null>(null);
   const handleDialogClose = () => {
     setCurrentView(null);
   };
+  const noop = useMemo(() => null, []);
   if (Array.isArray(files) && files.length > 0) {
     let renderedFiles = files.map((one) => (
       <FileListItem
@@ -30,7 +33,8 @@ export const FileListing: FC<FileListingControlType> = ({
         fileObj={one}
         disabled={disabled}
         handleDeleteFile={handleDeleteFile}
-        setCurrentView={setCurrentView}
+        setCurrentView={disablePreview ? noop : setCurrentView}
+        disableDelete={disableDelete}
       />
     ));
     return (
@@ -40,6 +44,9 @@ export const FileListing: FC<FileListingControlType> = ({
           open={currentView !== null}
           onClose={handleDialogClose}
           maxWidth="md"
+          PaperProps={{
+            style: { height: "100%", width: "100%" },
+          }}
         >
           {currentView !== null ? (
             currentView?.mimeType.indexOf("pdf") > -1 ? (
@@ -63,13 +70,14 @@ export const FileListing: FC<FileListingControlType> = ({
   return null;
 };
 
-const FileListItem: FC<{
-  fileObj: FileListType;
-  disabled: boolean | undefined;
-  dense: boolean | undefined;
-  handleDeleteFile: any;
-  setCurrentView: any;
-}> = ({ fileObj, disabled, dense, handleDeleteFile, setCurrentView }) => {
+const FileListItem: FC<FileListItemType> = ({
+  fileObj,
+  disabled,
+  dense,
+  handleDeleteFile,
+  setCurrentView,
+  disableDelete,
+}) => {
   return (
     <ListItem
       key={fileObj.fingerprint}
@@ -115,13 +123,15 @@ const FileListItem: FC<{
           }}
           onClick={() => downloadFile(fileObj)}
         />
-        <DeleteRoundedIcon
-          style={{
-            opacity: Boolean(disabled) ? 0.5 : 1,
-            pointerEvents: Boolean(disabled) ? "none" : "all",
-          }}
-          onClick={() => handleDeleteFile(fileObj.fingerprint)}
-        />
+        {!disableDelete ? (
+          <DeleteRoundedIcon
+            style={{
+              opacity: Boolean(disabled) ? 0.5 : 1,
+              pointerEvents: Boolean(disabled) ? "none" : "all",
+            }}
+            onClick={() => handleDeleteFile(fileObj.fingerprint)}
+          />
+        ) : null}
       </ListItemSecondaryAction>
     </ListItem>
   );

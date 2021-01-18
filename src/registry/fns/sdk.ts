@@ -798,6 +798,23 @@ const RaatnaFinAPI = () => {
     xhr.send(formData);
   };
 
+  const getDocumentList = async (refID: string) => {
+    const { data, status } = await internalFetcher("./users/getDocumentList", {
+      body: JSON.stringify({
+        action: "get_document_list",
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -842,6 +859,7 @@ const RaatnaFinAPI = () => {
 
     getHealthCheckScore,
     uploadFile,
+    getDocumentList,
   };
 };
 

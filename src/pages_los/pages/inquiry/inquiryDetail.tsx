@@ -10,6 +10,7 @@ import { AssignInquiryToEmployee } from "./convertInquirytolead";
 import { queryClient } from "./cache";
 import { ViewEditCompositeComponent } from "./viewEditCompositeComponent";
 import { InquiryDetailsTab } from "./inquiryDetailsTab";
+import { Documents } from "./documents";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -38,8 +39,9 @@ export const InquiryDetails: FC<{
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
-        <Tab label="Customer" id="2" />
-        <Tab label="Assign Inquiry" id="3" />
+        <Tab label="Documents" id="2" />
+        <Tab label="Customer" id="3" />
+        <Tab label="Assign Inquiry" id="4" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
@@ -59,9 +61,12 @@ export const InquiryDetails: FC<{
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <CustomerDetails inquiryID={inquiryID} inquiryType="inquiry" />
+          <Documents />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
+          <CustomerDetails inquiryID={inquiryID} inquiryType="inquiry" />
+        </TabPanel>
+        <TabPanel value={currentTab} index="4" key={4}>
           <AssignInquiryToEmployee inquiryID={inquiryID} key={3} />
         </TabPanel>
       </Box>

@@ -30,4 +30,15 @@ export interface FileListingControlType {
   handleDeleteFile: any;
   dense: boolean;
   disabled?: boolean;
+  disableDelete?: boolean;
+  disablePreview?: boolean;
+}
+
+export interface FileListItemType {
+  fileObj: FileListType;
+  disabled: boolean | undefined;
+  dense: boolean | undefined;
+  handleDeleteFile: any;
+  setCurrentView: any;
+  disableDelete: boolean;
 }

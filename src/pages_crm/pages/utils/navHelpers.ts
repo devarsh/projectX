@@ -14,7 +14,6 @@ export const navigationFlowDecisionMaker = (
   fallbackPath: string
 ) => {
   const result = flow.find((one) => one.sequence === currentSequence);
-  console.log(flow);
   if (result !== undefined) {
     let myResult = flowComponentPathMapping[result?.componentName ?? ""] ?? {};
     const finalResult = {
@@ -61,6 +60,7 @@ export const useNavigationFlow = (location, fallbackPath) => {
     refID,
     nextFlow.url,
     {
+      replace: true, //not to push routes but replace them
       state: {
         ...navigationState,
         prevSeq: currentSeq,

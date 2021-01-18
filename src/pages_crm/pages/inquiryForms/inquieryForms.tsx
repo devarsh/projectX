@@ -9,7 +9,7 @@ import {
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, usePrompt } from "react-router-dom";
 import { APISDK } from "registry/fns/sdk";
 import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import loaderGif from "assets/images/loader.gif";
@@ -86,6 +86,7 @@ export const InquiryFormWrapper = () => {
         "/thankyou"
       );
       navigate(nextFlow.url, {
+        replace: true,
         state: {
           flow: metaData.current?.form?.flow ?? [],
           refID:
