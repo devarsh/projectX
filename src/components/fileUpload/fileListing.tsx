@@ -26,9 +26,9 @@ export const FileListing: FC<FileListingControlType> = ({
   };
   const noop = useMemo(() => null, []);
   if (Array.isArray(files) && files.length > 0) {
-    let renderedFiles = files.map((one) => (
+    let renderedFiles = files.map((one, index) => (
       <FileListItem
-        key={one.fingerprint}
+        key={one.fingerprint ?? index}
         dense={dense}
         fileObj={one}
         disabled={disabled}

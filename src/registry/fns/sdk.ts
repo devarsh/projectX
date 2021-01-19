@@ -750,7 +750,7 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const uploadFile = async (
+  const uploadDocuments = async (
     files: File[],
     docID: string,
     refID: string,
@@ -759,13 +759,15 @@ const RaatnaFinAPI = () => {
   ) => {
     await sessionToken;
     await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
-    const newURL = new URL("./users/testDoc", sessionObj.baseURL).href;
+    const newURL = new URL("./users/crm/document/upload", sessionObj.baseURL)
+      .href;
     let formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append("file", files[i]);
     }
     formData.append("refID", refID);
     formData.append("docID", docID);
+    formData.append("action", "upload");
     let xhr = new XMLHttpRequest();
     xhr.open("POST", newURL, true);
     xhr.setRequestHeader(
@@ -798,16 +800,19 @@ const RaatnaFinAPI = () => {
     xhr.send(formData);
   };
 
-  const getDocumentList = async (refID: string) => {
-    const { data, status } = await internalFetcher("./users/getDocumentList", {
-      body: JSON.stringify({
-        action: "get_document_list",
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
+  const getDocumentTemplate = async (refID: string) => {
+    const { data, status } = await internalFetcher(
+      "./users/crm/document/template",
+      {
+        body: JSON.stringify({
+          action: "document_template",
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
     if (status === "success") {
       return { status, data: data?.response_data };
     } else {
@@ -815,6 +820,46 @@ const RaatnaFinAPI = () => {
     }
   };
 
+  const getDocuments = async (refID: string) => {
+    const { data, status } = await internalFetcher(
+      "./users/crm/document/template",
+      {
+        body: JSON.stringify({
+          action: "view_document",
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const verifyDocuments = async (refID: string, flag: string) => {
+    const { data, status } = await internalFetcher(
+      "./users/crm/document/vefiy",
+      {
+        body: JSON.stringify({
+          action: "verify_document",
+          request_data: {
+            refID: refID,
+            docStatus: flag,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
   return {
     createSession,
     loginStatus,
@@ -858,8 +903,10 @@ const RaatnaFinAPI = () => {
     inquiryAssignToLead,
 
     getHealthCheckScore,
-    uploadFile,
-    getDocumentList,
+    uploadDocuments,
+    getDocumentTemplate,
+    getDocuments,
+    verifyDocuments,
   };
 };
 

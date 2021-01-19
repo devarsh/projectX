@@ -3,7 +3,7 @@ import { DropTargetMonitor } from "react-dnd";
 export interface FileListType {
   file: File | string;
   name: string;
-  size: string | number;
+  size?: string | number;
   mimeType: string;
   fingerprint?: string | number;
   ext?: string;
@@ -20,9 +20,7 @@ export interface FileUploadControlType {
   allowedExtensions?: string[] | string;
   maxAllowedSize?: number;
   maxAllowedFiles?: number;
-  docType: string;
-  docLabel: string;
-  docDescription?: string;
+  onSubmitHandler?: any;
 }
 
 export interface FileListingControlType {

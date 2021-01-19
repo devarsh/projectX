@@ -1,4 +1,4 @@
-import { useState, FC, Fragment } from "react";
+import { useState, FC } from "react";
 import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";

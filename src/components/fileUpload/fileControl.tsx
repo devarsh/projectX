@@ -11,15 +11,14 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Collapse from "@material-ui/core/Collapse";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { APISDK } from "registry/fns/sdk";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 export const FileUploadControl: FC<FileUploadControlType> = ({
   allowedExtensions = ["jpg", "png", "pdf"],
   maxAllowedSize = 1024 * 1024 * 3,
   maxAllowedFiles = 10,
-  docLabel = "Pan Number",
-  docType = "pan",
-  docDescription,
+  onSubmitHandler,
 }) => {
   const [droppedFiles, setDroppedFiles] = useState<FileListType[]>([]);
   const [userMessage, setUserMessage] = useState<{
@@ -98,29 +97,7 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
     }
     setLoading(true);
     const files = droppedFiles.map((one) => one.file);
-    APISDK.uploadFile(
-      files as File[],
-      docType,
-      "1583",
-      (precentage) => {
-        setProgress(precentage);
-      },
-      (result) => {
-        setLoading(false);
-        console.log(result);
-        if (result.status === "success") {
-          setUserMessage({
-            severity: "info",
-            message: result?.data?.message ?? "",
-          });
-        } else {
-          setUserMessage({
-            severity: "error",
-            message: result?.data?.message ?? "",
-          });
-        }
-      }
-    );
+    onSubmitHandler(files, setLoading, setUserMessage, setProgress);
   };
 
   return (
@@ -132,15 +109,9 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
         />
       ) : null}
       <CardContent>
-        <Typography color="textPrimary" variant="h6" gutterBottom>
-          {docLabel}
-        </Typography>
-        {Boolean(docDescription) ? (
-          <Typography color="textPrimary" variant="body1" gutterBottom>
-            {docDescription}
-          </Typography>
-        ) : null}
-        <UploadTarget onDrop={handleFileDrop} disabled={loading} />
+        <DndProvider backend={HTML5Backend}>
+          <UploadTarget onDrop={handleFileDrop} disabled={loading} />
+        </DndProvider>
         {userMessage !== null ? (
           <Alert
             severity={userMessage?.severity ?? undefined}
