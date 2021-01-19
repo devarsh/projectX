@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import { useStyles } from "./style";
 import Home from "./home";
-import Login from "./login";
+
 import ThankYouPage from "./thankyou";
 import NotFoundPage from "./notFound";
 import InquiryForms from "./inquiryForms";
@@ -16,7 +16,6 @@ const Index = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="login" element={<Login />} />
       <Route
         path="equifx"
         element={
