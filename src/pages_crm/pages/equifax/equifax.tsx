@@ -9,6 +9,7 @@ import ReactSpeedometer from "react-d3-speedometer";
 import { useEffect, useState } from "react";
 import { APISDK } from "registry/fns/sdk";
 import loaderGif from "assets/images/loader.gif";
+import Alert from "@material-ui/lab/Alert";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -26,7 +27,7 @@ export const Equifax = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [equifaxScore, setEquifaxScore] = useState(0);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [retailAccountsDetails, setRetailAccountsDetails] = useState<any[]>([]);
 
   const [
@@ -35,7 +36,7 @@ export const Equifax = () => {
     nextURL,
     nextFlowNavigationProps,
   ] = useNavigationFlow(location, "/thankyou");
-  let refID = "0";
+  let refID = "0"; // for successfull response and to test error use 1044
 
   useEffect(() => {
     setLoading(true);
@@ -44,21 +45,25 @@ export const Equifax = () => {
         const result = await APISDK.getHealthCheckScore(refID);
         if (result.status === "success") {
           setLoading(false);
-          let temp =
-            result.data.CIRReportDataLst[0].CIRReportData.RetailAccountDetails;
-          let score =
-            result.data.CIRReportDataLst[0].CIRReportData.ScoreDetails[0].Value;
-          let newData = temp.map((data) => {
-            return (
-              <Grid item sm={4}>
-                <LoansDetailsDisplay data={data} />
-              </Grid>
-            );
-          });
-          setEquifaxScore(score);
-          setRetailAccountsDetails(newData);
+          let resultData = result?.data?.CIRReportDataLst[0] ?? "N/A";
+          if (resultData?.Error) {
+            setError(resultData.Error.ErrorDesc);
+          } else {
+            let retailAccDtls = resultData.CIRReportData.RetailAccountDetails;
+            let score = resultData.CIRReportData.ScoreDetails[0].Value;
+            let renderRetailAccDetails = retailAccDtls.map((data) => {
+              return (
+                <Grid item sm={4}>
+                  <LoansDetailsDisplay data={data} />
+                </Grid>
+              );
+            });
+            setEquifaxScore(score);
+            setRetailAccountsDetails(renderRetailAccDetails);
+          }
         } else {
-          setError(result.data.Error.ErrorMessage);
+          setLoading(false);
+          setError(result?.data?.error_msg ?? "No data found");
         }
       } catch (err) {
         setLoading(false);
@@ -71,7 +76,7 @@ export const Equifax = () => {
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />
   ) : error ? (
-    <span>{error}</span>
+    <Alert severity={"error"}>{error}</Alert>
   ) : (
     <>
       <h3 className="theme-color2">
