@@ -41,7 +41,6 @@ const DashbordPages = () => {
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />
-            <Route path="customerLogin" element={<CustomerLogin />} />
           </Routes>
         </Content>
       </div>
@@ -53,7 +52,7 @@ const EntryPoint = () => (
   <Fragment>
     <Routes>
       <Route path="/*" element={<DashbordPages />} />
-      <Route path="/auth" element={<Login />} />
+      <Route path="/auth/:type" element={<CustomerLogin />} />
     </Routes>
   </Fragment>
 );
