@@ -77,7 +77,7 @@ export const Login = () => {
     if (password.length !== 0 || password !== "") {
       try {
         setLoading(true);
-        const result = await APISDK.handleverifyPwd(password, phoneNumber);
+        const result = await APISDK.verifyPwd(password, phoneNumber);
         // console.log("result for password", result);
         if (result.status === "success") {
           setLoading(false);

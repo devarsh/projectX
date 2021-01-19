@@ -18,6 +18,7 @@ export const MyStepper = ({
   handlePrev,
   handleNext,
   handleSubmit,
+  handleCancel,
   fieldGroupsActiveStatus,
   isLastActiveStep,
 }) => (

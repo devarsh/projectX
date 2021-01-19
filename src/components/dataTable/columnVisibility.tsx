@@ -1,6 +1,6 @@
 import React from "react";
 import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
+import { StyledMenuItem } from "./styledComponents";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Paper from "@material-ui/core/Paper";
@@ -26,7 +26,7 @@ export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
     const { checked, style, onChange } = column.getToggleHiddenProps();
     if (defaultHiddenColumns.indexOf(column.id) === -1) {
       accum.push(
-        <MenuItem dense={true} key={column.id} onChange={onChange}>
+        <StyledMenuItem dense={true} key={column.id} onChange={onChange}>
           <FormControlLabel
             control={
               <Checkbox
@@ -39,7 +39,7 @@ export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
             label={column.columnName}
             style={style}
           />
-        </MenuItem>
+        </StyledMenuItem>
       );
     }
     return accum;

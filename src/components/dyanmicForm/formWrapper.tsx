@@ -2,7 +2,7 @@ import { FC } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import Container from "@material-ui/core/Container";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { FormContext, InitialValuesType, SubmitFnType } from "packages/form";
+import { FormContext } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
 import { constructInitialValue } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
@@ -10,22 +10,16 @@ import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
 import { extendFieldTypes } from "./utils/extendedFieldTypes";
 import { MoveSequenceToRender } from "./utils/fixSequenceInMetaData";
-import { MetaDataType } from "./types";
+import { MetaDataType, FormWrapperProps } from "./types";
 import { GroupedForm } from "./groupedForms";
 import { SimpleForm } from "./simpleForm";
 import { extendedMetaData } from "./extendedTypes";
-
-interface FormWrapperProps {
-  metaData: MetaDataType;
-  initialValues?: InitialValuesType;
-  onSubmitHandler: SubmitFnType;
-  hidden?: boolean;
-}
 
 export const FormWrapper: FC<FormWrapperProps> = ({
   metaData: freshMetaData,
   initialValues,
   onSubmitHandler,
+  onCancleHandler,
   hidden = false,
 }) => {
   //this line is very important to preserve our metaData across render - deep clone hack
@@ -67,6 +61,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
               formDisplayName={metaData.form.label}
               formName={metaData.form.name}
               submitFn={onSubmitHandler}
+              cancelFn={onCancleHandler}
             />
           ) : formRenderType === "simple" ? (
             <SimpleForm
@@ -76,6 +71,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
               formDisplayName={metaData.form.label}
               formName={metaData.form.name}
               submitFn={onSubmitHandler}
+              cancelFn={onCancleHandler}
             />
           ) : (
             <div>RenderType {formRenderType} not available</div>

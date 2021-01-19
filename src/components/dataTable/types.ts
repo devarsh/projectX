@@ -53,12 +53,33 @@ export interface GridMetaDataType {
   headerFilters?: HeaderFilterType[];
   actions?: ActionTypes[];
   setAction?: any;
+  multipleActions: ActionTypes[];
+  singleActions: ActionTypes[];
+  doubleClickAction: ActionTypes | boolean;
 }
 
 export interface ActionTypes {
   actionName: string;
   actionLabel: string;
+  multiple: boolean;
   actionIcon?: any;
   tooltip?: string;
-  multiple: boolean;
+  rowDoubleClick?: boolean;
+}
+
+export interface RenderActionType {
+  actions: ActionTypes[];
+  setAction: any;
+  selectedRows: any;
+}
+
+export interface TableActionType {
+  selectedFlatRows: any;
+  singleActions: ActionTypes[];
+  multipleActions?: ActionTypes[];
+  setGridAction: any;
+  mouseX?: any;
+  mouseY?: any;
+  dense?: boolean;
+  handleClose?: any;
 }

@@ -1,24 +1,14 @@
 import { useState } from "react";
 import Box from "@material-ui/core/Box";
-import { StyledTextField } from "./styledComponents";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { StyledSlider } from "./styledComponents";
+import { StyledSlider, StyledTextField } from "../../styledComponents";
 import { FilterContainer } from "./filterContainer";
 
-export const RangeFilterFn = (rows) => {
-  return rows;
-};
-RangeFilterFn.autoRemove = (val) => {
-  console.log(!val?.value ?? "");
-  return !val?.value ?? "";
-};
-
 export const RangeFilterWrapper = (props) => {
-  console.log(props);
   const type = props?.column?.filterComponentProps?.type ?? "slider";
   if (type === "slider") {
     return <RangeSliderColumnFilter {...props} />;
@@ -27,8 +17,10 @@ export const RangeFilterWrapper = (props) => {
 };
 
 const RangeSliderColumnFilter = ({
-  column: { filterValue, preFilteredRows, setFilter },
+  column: { filterValue, setFilter },
   handleClose,
+  setSortBy,
+  gotoPage,
 }) => {
   const [value, setValue] = useState<number[]>(filterValue.value ?? [0, 100]);
   const handleChange = (event: any, newValue: number | number[]) => {
@@ -39,17 +31,23 @@ const RangeSliderColumnFilter = ({
       condition: "between",
       value: value,
     });
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
   const clearFilter = () => {
-    setFilter({
-      options: [],
-    });
+    setFilter("");
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
 
   return (
-    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
+    <FilterContainer
+      value={filterValue}
+      applyFilter={applyFilter}
+      clearFilter={clearFilter}
+    >
       <Box
         display="flex"
         justifyContent="space-between"
@@ -70,29 +68,41 @@ const RangeSliderColumnFilter = ({
 };
 
 const RangeColumnFilter = ({
-  column: { filterValue, preFilteredRows, filterComponentProps, setFilter },
+  column: { filterValue, filterComponentProps, setFilter },
   handleClose,
+  setSortBy,
+  gotoPage,
 }) => {
   const componentType = filterComponentProps?.type ?? "minMax";
-  const [minValue, setMinValue] = useState(filterValue?.value[0] ?? 0);
-  const [maxValue, setMaxValue] = useState(filterValue?.value[1] ?? 100);
+  const [minValue, setMinValue] = useState(
+    filterValue?.value[0] ?? componentType === "minMax" ? 0 : new Date()
+  );
+  const [maxValue, setMaxValue] = useState(
+    filterValue?.value[1] ?? componentType === "minMax" ? 100 : new Date()
+  );
 
   const applyFilter = () => {
     setFilter({
       condition: "between",
       value: [minValue, maxValue],
     });
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
   const clearFilter = () => {
-    setFilter({
-      options: [],
-    });
+    setFilter("");
+    setSortBy([]);
+    gotoPage(0);
     handleClose();
   };
 
   return (
-    <FilterContainer applyFilter={applyFilter} clearFilter={clearFilter}>
+    <FilterContainer
+      value={filterValue}
+      applyFilter={applyFilter}
+      clearFilter={clearFilter}
+    >
       {(classes) => (
         <Box
           display="flex"
@@ -157,40 +167,42 @@ const DateRangeRenderer = ({
   maxValue,
   setMaxValue,
   classes,
-}) => (
-  <>
-    <Box width="45%">
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          fullWidth
-          placeholder="Start Date"
-          format="dd/MM/yyyy"
-          value={minValue}
-          onChange={setMinValue}
-          KeyboardButtonProps={{
-            "aria-label": "Select Date",
-          }}
-          className={classes.datePicker}
-        />
-      </MuiPickersUtilsProvider>
-    </Box>
-    <Box width="10%" textAlign="center">
-      to
-    </Box>
-    <Box width="45%">
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          fullWidth
-          placeholder="End Date"
-          format="dd/MM/yyyy"
-          value={maxValue}
-          onChange={setMaxValue}
-          KeyboardButtonProps={{
-            "aria-label": "Select Date",
-          }}
-          className={classes.datePicker}
-        />
-      </MuiPickersUtilsProvider>
-    </Box>
-  </>
-);
+}) => {
+  return (
+    <>
+      <Box width="45%">
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            fullWidth
+            placeholder="Start Date"
+            format="dd/MM/yyyy"
+            value={minValue}
+            onChange={setMinValue}
+            KeyboardButtonProps={{
+              "aria-label": "Select Date",
+            }}
+            className={classes.datePicker}
+          />
+        </MuiPickersUtilsProvider>
+      </Box>
+      <Box width="10%" textAlign="center">
+        to
+      </Box>
+      <Box width="45%">
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            fullWidth
+            placeholder="End Date"
+            format="dd/MM/yyyy"
+            value={maxValue}
+            onChange={setMaxValue}
+            KeyboardButtonProps={{
+              "aria-label": "Select Date",
+            }}
+            className={classes.datePicker}
+          />
+        </MuiPickersUtilsProvider>
+      </Box>
+    </>
+  );
+};

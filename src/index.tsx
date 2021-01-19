@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -19,7 +19,7 @@ const Redirect = () => {
 };
 
 const App = () => (
-  <Fragment>
+  <StrictMode>
     <RecoilRoot>
       <CssBaseline />
       <BrowserRouter>
@@ -30,7 +30,7 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
-  </Fragment>
+  </StrictMode>
 );
 
 ReactDOM.render(<App />, document.getElementById("root"));

@@ -5,17 +5,18 @@ import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
 import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
-import Lead from "./pages/lead";
 import { Profile } from "./pages/profile";
-import GridWrapper from "components/dataTable";
-import { APITest } from "./pages/api";
-import Login from "./pages/login";
-import DynamicLead from "./pages/leads";
+import { Inquiry } from "./pages/inquiry";
+import Login from "./auth";
 import LeadAction from "./pages/leadaction";
 import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
+import { Documents } from "pages_los/pages/inquiry/documents";
+
 import "react-perfect-scrollbar/dist/css/styles.css";
+
+import { CustomerLogin } from "./auth/customerLogin";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -33,16 +34,14 @@ const DashbordPages = () => {
           <Routes>
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/leads" element={<Lead />} />
+            <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/dgrid" element={<GridWrapper />} />
             <Route path="/cam" element={<CC_ODFormWrapper />} />
-            <Route path="/api" element={<APITest />} />
-            <Route path="/cam" element={<DynamicLead />} />
+            <Route path="/docs" element={<Documents />} />
+            {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/leadAction" element={<LeadAction />} />
             <Route path="/view" element={<View />} />
-            <Route path="/auth" element={<Login />} />
           </Routes>
         </Content>
       </div>
@@ -50,7 +49,16 @@ const DashbordPages = () => {
   );
 };
 
-export default DashbordPages;
+const EntryPoint = () => (
+  <Fragment>
+    <Routes>
+      <Route path="/*" element={<DashbordPages />} />
+      <Route path="/auth/:type" element={<CustomerLogin />} />
+    </Routes>
+  </Fragment>
+);
+
+export default EntryPoint;
 
 const RedirectComponent = () => {
   const navigate = useNavigate();
@@ -59,10 +67,7 @@ const RedirectComponent = () => {
 };
 
 function Dummy() {
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
   let { id } = useParams();
-
   return (
     <div>
       <h3>ID: {id}</h3>

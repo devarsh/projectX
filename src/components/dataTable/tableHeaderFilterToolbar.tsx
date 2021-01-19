@@ -2,6 +2,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 import {
   GroupByExclusiveFilter,
   GroupByMultipleFilter,
@@ -52,9 +53,14 @@ export const TableHeaderFilterToolbar = ({ dense, gridCode, filters }) => {
     }
     if (component !== null) {
       return (
-        <Grid key={key} item xs={12} sm={12} md={12}>
+        <Box
+          key={key}
+          p={1}
+          mx={1}
+          style={{ display: "flex", alignItems: "center" }}
+        >
           {component}
-        </Grid>
+        </Box>
       );
     } else {
       return component;

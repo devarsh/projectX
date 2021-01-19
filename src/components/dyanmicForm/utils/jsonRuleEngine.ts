@@ -13,7 +13,6 @@ export const ruleEngine = (rule: CustomRuleType) => async (
   fieldData: FormFieldAtomType,
   dependentFields: DependentValuesType
 ) => {
-  console.log("fromRulesEngine", fieldData, dependentFields);
   const { success, failure, conditions } = rule;
   let engine = new Engine();
   engine.addOperator("greaterThanString", greaterThanString);

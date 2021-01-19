@@ -100,7 +100,6 @@ export const DisplayData = ({ onClose, open, row }) => {
   const [temp, setTemp] = useState({});
 
   let inquiryCode = row;
-  //   console.log("inquiryCode", inquiryCode);
 
   const data = [
     {
@@ -162,14 +161,11 @@ export const DisplayData = ({ onClose, open, row }) => {
 
   useEffect(() => {
     const fetcher = async () => {
-      // ;
-      const result = await APISDK.getDashdoardDisplayEmpDetails(inquiryCode);
-      // console.log("result", result.data);
+      const result = await APISDK.getInquiryDataToConvertIntoLead(inquiryCode);
       try {
         if (result.status === "success") {
           let editableData = result.data;
           setInquiryDetailsData(editableData);
-          // console.log("InquiryDetailsData", InquiryDetailsData);
           setTemp({
             productType: InquiryDetailsData[0].product_type,
             name: InquiryDetailsData[0].customer_name,

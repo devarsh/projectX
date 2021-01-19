@@ -19,10 +19,7 @@ const BecomePartnerForm: FC<BecomePartnerFormProps> = ({
   const navigate = useNavigate();
 
   const onSubmitHandler = async (values, _, submitEnd) => {
-    const data = await APISDK.submitBecomePartnerData(
-      metaData.form.submitAction ?? "",
-      values
-    );
+    const data = await APISDK.submitBecomePartnerData(values);
     if (data.status === "success") {
       submitEnd(true);
       navigate("./thankyou");

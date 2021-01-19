@@ -20,15 +20,15 @@ export const MyDrawer = ({ open, handleDrawerClose, children }) => {
       open={open}
     >
       <div className={classes.toolbarIcon}>
-        <a
-          href="#"
+        <img
+          src={Logo}
+          alt="Ratnaafin"
+          className={classes.logo}
           onClick={(e) => {
             e.preventDefault();
             navigate("./");
           }}
-        >
-          <img src={Logo} alt="Ratnaafin" className={classes.logo} />
-        </a>
+        />
         <IconButton onClick={handleDrawerClose}>
           <ChevronLeftIcon />
         </IconButton>

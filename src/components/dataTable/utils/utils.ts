@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 export const formatSortBy = (sortBy = []) => {
   const formatted = sortBy.map((one: any, index) => ({
@@ -18,7 +18,7 @@ export const formatFilterBy = (filterBy = []) => {
 
 export const useLocalFilterState = () => {
   const filterState = useRef<object>({});
-  const addFilterState = (accessor, state) => {
+  const addFilterState = useCallback((accessor, state) => {
     let currentState;
     currentState = { [accessor]: state };
 
@@ -30,21 +30,21 @@ export const useLocalFilterState = () => {
         ...currentState,
       };
     }
-  };
-  const getFilterState = (accessor) => {
+  }, []);
+  const getFilterState = useCallback((accessor) => {
     if (typeof filterState.current === "object") {
       return filterState.current[accessor];
     }
     return;
-  };
-  const removeFilterState = (accessor) => {
+  }, []);
+  const removeFilterState = useCallback((accessor) => {
     if (typeof filterState.current === "object") {
       delete filterState.current[accessor];
     }
-  };
-  const clearFilterState = () => {
+  }, []);
+  const clearFilterState = useCallback(() => {
     filterState.current = {};
-  };
+  }, []);
 
   return {
     addFilterState,

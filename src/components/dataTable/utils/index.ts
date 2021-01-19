@@ -6,3 +6,4 @@ export * from "./attachGlobalFilterProps";
 export * from "./extractHiddenColumns";
 export * from "./sortColumnBySequence";
 export * from "./utils";
+export * from "./splitActions";

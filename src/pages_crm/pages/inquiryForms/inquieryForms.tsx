@@ -67,7 +67,7 @@ export const InquiryFormWrapper = () => {
       return;
     }
     setIsSubmitting(true);
-    const result = await APISDK.pushFormData(
+    const result = await APISDK.sumibtInquiryData(
       metaData?.current?.form.submitAction ?? "NO_ACTION_FOUND",
       {
         ...formData,
@@ -86,6 +86,7 @@ export const InquiryFormWrapper = () => {
         "/thankyou"
       );
       navigate(nextFlow.url, {
+        replace: true,
         state: {
           flow: metaData.current?.form?.flow ?? [],
           refID:
@@ -114,7 +115,7 @@ export const InquiryFormWrapper = () => {
     setLoading(true);
     metaData.current = null;
     //@ts-ignore need to find how to set router loaction state type (react-router-dom)
-    APISDK.getMetaData(navigationState?.metaProps ?? {})
+    APISDK.getInquiryMetaData(navigationState?.metaProps ?? {})
       .then((result) => {
         metaData.current = result;
         setLoading(false);

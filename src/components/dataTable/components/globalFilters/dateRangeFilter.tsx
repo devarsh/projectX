@@ -3,6 +3,8 @@ import { useSetRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   filterAtom,
   filtersAtom,
@@ -11,7 +13,26 @@ import {
 } from "../../atoms";
 import { subDays } from "date-fns";
 
+const useStyles = makeStyles((theme) => ({
+  filterType: {
+    color: theme.palette.secondary.main,
+    fontSize: "11px",
+    paddingRight: "4px",
+    fontWeight: 500,
+    display: "inline-flex",
+  },
+  paper: {
+    display: "inline-flex",
+    border: `1px solid ${theme.palette.divider}`,
+    flexWrap: "wrap",
+  },
+  divider: {
+    margin: theme.spacing(1, 0.5),
+  },
+}));
+
 export const DaysFilter = (props) => {
+  const classes = useStyles();
   const { accessor, columnName, dependencies, last, gridCode } = props;
 
   //set indivial filter state
@@ -28,10 +49,10 @@ export const DaysFilter = (props) => {
   const resetFilter = useResetRecoilState(
     filterAtom(`${gridCode}/${accessor}`)
   );
-
+  //reset the filter when component unmounts
   useEffect(() => {
     return resetFilter;
-  }, []);
+  }, [resetFilter]);
 
   useEffect(() => {
     setFilterCondition(condition);
@@ -42,73 +63,75 @@ export const DaysFilter = (props) => {
         setFiltersCondition([...dependentFilters]);
       }
     }
-  }, [condition]);
+  }, [condition, last, setFilterCondition, setFiltersCondition]);
 
   useEffect(() => {
     setCondition(null);
     if (last) {
       setFiltersCondition(dependentFilters);
     }
-  }, [last, dependentFilters]);
+  }, [last, dependentFilters, setFilterCondition, setFiltersCondition]);
 
   return (
     <Fragment>
-      <Typography style={{ display: "inline-flex" }}>{columnName}</Typography>
-      <ToggleButtonGroup
-        size="small"
-        value={toggleState}
-        onChange={(event, value) => {
-          setToggleState(value);
-        }}
-        exclusive={true}
-      >
-        <ToggleButton
-          key={"todays"}
-          value={"todays"}
-          onClick={() =>
-            setCondition({
-              condition: "equal",
-              value: new Date(),
-              accessor: accessor,
-            })
-          }
+      <Typography className={classes.filterType}>{columnName}</Typography>
+      <Paper elevation={0} className={classes.paper}>
+        <ToggleButtonGroup
+          size="small"
+          value={toggleState}
+          onChange={(event, value) => {
+            setToggleState(value);
+          }}
+          exclusive={true}
         >
-          Todays
-        </ToggleButton>
-        <ToggleButton
-          key={"last week"}
-          value={"last week"}
-          onClick={() =>
-            setCondition({
-              condition: "between",
-              value: [subDays(new Date(), 7), new Date()],
-              accessor: accessor,
-            })
-          }
-        >
-          Last Week
-        </ToggleButton>
-        <ToggleButton
-          key={"last month"}
-          value={"last month"}
-          onClick={() =>
-            setCondition({
-              condition: "between",
-              value: [subDays(new Date(), 30), new Date()],
-              accessor: accessor,
-            })
-          }
-        >
-          Last Month
-        </ToggleButton>
-        <ToggleButton
-          key={"all"}
-          value={"all"}
-          onClick={() => setCondition(null)}
-        >
-          All
-        </ToggleButton>
-      </ToggleButtonGroup>
+          <ToggleButton
+            key={"todays"}
+            value={"todays"}
+            onClick={() =>
+              setCondition({
+                condition: "equal",
+                value: new Date(),
+                accessor: accessor,
+              })
+            }
+          >
+            Todays
+          </ToggleButton>
+          <ToggleButton
+            key={"last week"}
+            value={"last week"}
+            onClick={() =>
+              setCondition({
+                condition: "between",
+                value: [subDays(new Date(), 7), new Date()],
+                accessor: accessor,
+              })
+            }
+          >
+            Last Week
+          </ToggleButton>
+          <ToggleButton
+            key={"last month"}
+            value={"last month"}
+            onClick={() =>
+              setCondition({
+                condition: "between",
+                value: [subDays(new Date(), 30), new Date()],
+                accessor: accessor,
+              })
+            }
+          >
+            Last Month
+          </ToggleButton>
+          <ToggleButton
+            key={"all"}
+            value={"all"}
+            onClick={() => setCondition(null)}
+          >
+            All
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Paper>
     </Fragment>
   );
 };

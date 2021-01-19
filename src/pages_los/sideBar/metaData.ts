@@ -13,11 +13,29 @@ export const metaData: NavBarMetaDataType = {
       icon: "hashtag",
     },
     {
+      label: "Inquiry Management",
+      icon: "question",
+      children: [
+        {
+          label: "Inquiries",
+          href: "./inquiries",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Inquiry Details",
+          href: "./inquiryDetails",
+          isRouterLink: true,
+          icon: "circle",
+        },
+      ],
+    },
+    {
       label: "Lead Management",
       icon: "tasks",
       children: [
         {
-          label: "Inquiries",
+          label: "Leads",
           href: "./leads",
           isRouterLink: true,
           icon: "circle",
@@ -97,7 +115,6 @@ export const metaData: NavBarMetaDataType = {
         {
           label: "Interest Subsidy",
           icon: "circle",
-          href: "http://www.google.com",
         },
         {
           label: "Central Govt. Subsidy",

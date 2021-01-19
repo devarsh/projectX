@@ -69,7 +69,10 @@ export const useOptionsFetcher = (
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value, options } = incomingMessage;
-      handleChangeInterceptor(value);
+      //this a patch to not change current value we have as default value
+      if (value !== "DEFAULT_VALUE") {
+        handleChangeInterceptor(value);
+      }
       if (whenToRunValidation === "onBlur") {
         runValidation({ value: value }, true);
       }
