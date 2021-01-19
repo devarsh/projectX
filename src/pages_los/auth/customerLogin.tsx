@@ -8,7 +8,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
 import { useStyles } from "./style";
 
-import { LoginWithOTPOrPwd } from "./LoginWithOTPOrPwd";
+import { LoginWithOTPOrPwd } from "./loginOtpPassword";
 
 export const CustomerLogin = () => {
   const classes = useStyles();
