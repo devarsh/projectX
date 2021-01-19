@@ -16,6 +16,8 @@ import { Documents } from "pages_los/pages/inquiry/documents";
 
 import "react-perfect-scrollbar/dist/css/styles.css";
 
+import { CustomerLogin } from "./auth/customerLogin";
+
 const DashbordPages = () => {
   const classes = useStyles();
   const [drawerOpen, setDrawerState] = useState(true);
@@ -51,7 +53,7 @@ const EntryPoint = () => (
   <Fragment>
     <Routes>
       <Route path="/*" element={<DashbordPages />} />
-      <Route path="/auth" element={<Login />} />
+      <Route path="/auth/:type" element={<CustomerLogin />} />
     </Routes>
   </Fragment>
 );

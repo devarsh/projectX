@@ -96,7 +96,7 @@ export const siteNav: NavBarMetaDataType = {
       children: [
         {
           label: "Customer",
-          href: "/crm/login",
+          href: "/los/auth/customer",
           isRouterLink: true,
         },
         {
@@ -106,7 +106,7 @@ export const siteNav: NavBarMetaDataType = {
         },
         {
           label: "Employee",
-          href: "/crm/auth",
+          href: "/los/auth/employee",
           isRouterLink: true,
         },
       ],

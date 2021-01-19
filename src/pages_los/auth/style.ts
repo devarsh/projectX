@@ -60,4 +60,28 @@ export const useStyles = makeStyles((theme) => ({
   logo: {
     marginBottom: theme.spacing(1),
   },
+  loginLeft: {
+    display: "flex",
+    justifyContent: "center",
+    background:
+      "linear-gradient(0deg, rgba(94,231,131,1) 0%, rgba(70,199,165,1) 44%, rgba(33,150,218,1) 100%)",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+  loginRight: {
+    background: "#fff",
+    padding: theme.spacing(2, 4),
+    display: "flex",
+    maxWidth: "400px",
+    margin: "auto",
+    boxShadow: "0 0 20px rgba(0,0,0,0.06)",
+    borderRadius: "8px",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+  },
+  loginImg: {
+    // maxHeight: "40vh",
+  },
 }));
