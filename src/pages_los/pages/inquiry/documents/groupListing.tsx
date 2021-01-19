@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { GroupType } from "./types";
-import { GroupItem } from "./groupItem";
+import { GroupItem } from "./groupItem1";
 import Typography from "@material-ui/core/Typography";
 
 export const GroupListing: FC<{ oneGroup: GroupType }> = ({ oneGroup }) => {
