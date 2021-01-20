@@ -860,6 +860,54 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.error_data };
     }
   };
+
+  const authCustomerPartnerOtpRequest = async (
+    userName: any,
+    loginType: string
+  ) => {
+    // http://10.55.6.63:8081/users/los/auth/customer/login
+    const { data, status } = await internalFetcher(
+      `./users/los/auth/${loginType}/login`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            userId: userName,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const authCustomerPartnerOtpVerify = async (
+    transactionId,
+    passwordOrOTP,
+    loginType
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./users/los/auth/${loginType}/verify`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            transactionId: transactionId,
+            otp: passwordOrOTP,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
   return {
     createSession,
     loginStatus,
@@ -907,6 +955,10 @@ const RaatnaFinAPI = () => {
     getDocumentTemplate,
     getDocuments,
     verifyDocuments,
+
+    //login API's for customer and employee
+    authCustomerPartnerOtpRequest,
+    authCustomerPartnerOtpVerify,
   };
 };
 
