@@ -4,21 +4,29 @@ import { useNavigate } from "react-router";
 const inititalState = {
   username: "",
   lastLoggedIn: "",
-  loginBranch: "",
+  userBranch: "",
 };
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case "setUserDetails": {
       return {
-        ...state,
         username: action?.payload?.username,
         lastLoggedIn: action?.payload?.lastLoggedIn,
-        loginBranch: action?.payload?.loginBranch,
+        userBranch: action?.payload?.loginBranch,
+        userType: action?.payload?.userType,
       };
     }
     case "removeUserDetails": {
-      return inititalState;
+      return {
+        username: "",
+        lastLoggedIn: "",
+        userBranch: "",
+        userType: "",
+      };
+    }
+    default: {
+      return state;
     }
   }
 };
@@ -30,31 +38,41 @@ export const AuthContext = createContext<{
   userState: {
     username: string;
     lastLoggedIn: string;
-    loginBranch: string;
+    userBranch: string;
+    userType: string;
   };
 } | null>(null);
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, inititalState);
   const navigate = useNavigate();
+  console.log(state);
 
-  const loginUser = ({ username, lastLoggedIn, loginBranch, loginToken }) => {
+  const loginUser = ({
+    username,
+    userType,
+    lastLoggedIn,
+    loginBranch,
+    loginToken,
+  }) => {
     dispatch({
-      action: "setUserDetails",
+      type: "setUserDetails",
       payload: {
         username,
         lastLoggedIn,
         loginBranch,
+        userType,
       },
     });
     localStorage.setItem("authToken", `${loginToken}`);
     localStorage.setItem("losLoggedIn", "true");
+    navigate("/los");
   };
   const logoutUser = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("losLoggedIn");
     dispatch({
-      action: "removeUserDetails",
+      type: "removeUserDetails",
     });
     navigate("/los");
   };

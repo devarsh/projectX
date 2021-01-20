@@ -50,6 +50,9 @@ const reducer = (state, action) => {
     case "passwordVerificationSuccessful": {
       return { ...state, loading: false };
     }
+    default: {
+      return state;
+    }
   }
 };
 
@@ -127,10 +130,11 @@ export const AuthLoginController = () => {
       if (result.status === "success") {
         dispath({ type: "passwordVerificationSuccessful" });
         authContext?.loginUser({
-          username: "",
-          lastLoggedIn: "",
-          loginBranch: "",
+          username: result.data?.userDetails?.userName ?? "",
+          lastLoggedIn: result.data?.userDetails?.lastLoginData ?? "",
+          loginBranch: result.data?.userDetails?.baseBranch ?? "",
           loginToken: "",
+          userType: result.data?.userDetails?.userFlag ?? "",
         });
       } else {
         dispath({
