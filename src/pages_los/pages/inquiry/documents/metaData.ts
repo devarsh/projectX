@@ -1,9 +1,11 @@
 import { GroupType } from "./types";
 
+//status N-Not Verified P-Pending V-Verified R-Rejected
+
 export const docMeta: GroupType[] = [
   {
-    groupName: "Pii",
-    groupLabel: "Personal Information",
+    groupCode: "Pii",
+    groupName: "Personal Information",
     items: [
       {
         docID: "1",
@@ -46,8 +48,8 @@ export const docMeta: GroupType[] = [
     ],
   },
   {
-    groupName: "Bank",
-    groupLabel: "Bank Details",
+    groupCode: "Bank",
+    groupName: "Bank Details",
     items: [
       {
         docID: "1",

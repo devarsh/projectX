@@ -1,19 +1,15 @@
 import React from "react";
 import { TextField } from "components/styledComponent/textfield";
 import Button from "@material-ui/core/Button";
-import { useStyles } from "./style";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export const LoginWithOTPOrPwd = ({
-  verifyOTPMethod,
-  verifyPasswordMethod,
-  handleChange,
-  value,
+export const PasswordControl = ({
   loginType,
-  errorMessage,
-  loading,
+  classes,
+  loginState,
+  verifyPassword,
+  handlePassword,
 }) => {
-  const classes = useStyles();
   return (
     <>
       <div className={classes.formWrap}>
@@ -26,17 +22,15 @@ export const LoginWithOTPOrPwd = ({
           fullWidth
           type={loginType === "customer" ? "number" : "password"}
           name="otp"
-          value={value}
-          onChange={handleChange}
-          error={Boolean(errorMessage)}
-          helperText={errorMessage}
+          value={loginState?.password ?? ""}
+          onChange={handlePassword}
+          error={loginState.isError}
+          helperText={loginState.isError ? loginState.userMessage : ""}
         />
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
           <Button
-            endIcon={loading ? <CircularProgress size={20} /> : null}
-            onClick={
-              loginType === "customer" ? verifyOTPMethod : verifyPasswordMethod
-            }
+            endIcon={loginState.loading ? <CircularProgress size={20} /> : null}
+            onClick={verifyPassword}
           >
             Login
           </Button>

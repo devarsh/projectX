@@ -861,11 +861,7 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const authCustomerPartnerOtpRequest = async (
-    userName: any,
-    loginType: string
-  ) => {
-    // http://10.55.6.63:8081/users/los/auth/customer/login
+  const authVeirfyUsername = async (userName: any, loginType: string) => {
     const { data, status } = await internalFetcher(
       `./users/los/auth/${loginType}/login`,
       {
@@ -884,18 +880,14 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const authCustomerPartnerOtpVerify = async (
-    transactionId,
-    passwordOrOTP,
-    loginType
-  ) => {
+  const authVerifyPassword = async (transactionId, password, loginType) => {
     const { data, status } = await internalFetcher(
       `./users/los/auth/${loginType}/verify`,
       {
         body: JSON.stringify({
           request_data: {
             transactionId: transactionId,
-            otp: passwordOrOTP,
+            password: password,
           },
           channel: "W",
         }),
@@ -957,8 +949,8 @@ const RaatnaFinAPI = () => {
     verifyDocuments,
 
     //login API's for customer and employee
-    authCustomerPartnerOtpRequest,
-    authCustomerPartnerOtpVerify,
+    authVeirfyUsername,
+    authVerifyPassword,
   };
 };
 

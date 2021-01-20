@@ -7,11 +7,9 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
-import LeadAction from "./pages/leadaction";
-import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { Documents } from "pages_los/pages/inquiry/documents";
-import { CustomerLogin } from "./auth/customerLogin";
+import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "./auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
 const DashbordPages = () => {
@@ -35,8 +33,6 @@ const DashbordPages = () => {
             <Route path="/docs" element={<Documents />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
-            <Route path="/leadAction" element={<LeadAction />} />
-            <Route path="/view" element={<View />} />
           </Routes>
         </Content>
       </div>
@@ -46,10 +42,19 @@ const DashbordPages = () => {
 
 const EntryPoint = () => (
   <Fragment>
-    <Routes>
-      <Route path="/*" element={<DashbordPages />} />
-      <Route path="/auth/:type" element={<CustomerLogin />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route
+          path="/*"
+          element={
+            <AuthenticatedRoutes unauthenticatedRoute="./auth/login/customer">
+              <DashbordPages />
+            </AuthenticatedRoutes>
+          }
+        />
+        <Route path="/auth/login/:type" element={<AuthLoginController />} />
+      </Routes>
+    </AuthProvider>
   </Fragment>
 );
 

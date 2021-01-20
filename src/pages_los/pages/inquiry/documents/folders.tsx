@@ -47,13 +47,7 @@ export const Folder: FC<GroupItemType> = ({
           </IconButton>
         ) : null}
       </Box>
-      <CardActionArea
-        onClick={() =>
-          docContext.setCurrentView(
-            currentStatus === "empty" ? "upload" : "filesView"
-          )
-        }
-      >
+      <CardActionArea onClick={() => docContext.setViewPath()}>
         <CardContent className={classes.cardContent}>
           <Typography gutterBottom variant="h5" component="h2">
             {docLabel}
@@ -73,13 +67,10 @@ const FoldersGroup: FC<{ oneGroup: GroupType }> = ({ oneGroup }) => {
   let renderedFolders = oneGroup.items.map((one) => (
     <Folder key={one.docID} {...one} />
   ));
-  console.log(oneGroup);
   return (
     <div>
       <Typography variant="h6">
-        {Boolean(oneGroup.groupLabel)
-          ? oneGroup.groupLabel
-          : oneGroup.groupName}
+        {Boolean(oneGroup.groupName) ? oneGroup.groupName : oneGroup.groupCode}
       </Typography>
       <div style={{ display: "flex", margin: "8px", flexWrap: "wrap" }}>
         {renderedFolders}

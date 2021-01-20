@@ -1,6 +1,6 @@
 import { APITemplateData } from "./types";
 
-export const denormalizeTemplateData = (data: APITemplateData[]) => {
+export const normalizeTemplateData = (data: APITemplateData[]) => {
   if (Array.isArray(data)) {
     const map = new Map();
     data.forEach((item) => {
