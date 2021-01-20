@@ -7,7 +7,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams, useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
 import { useStyles } from "./style";
-
 import { LoginWithOTPOrPwd } from "./loginOtpPassword";
 
 export const CustomerLogin = () => {
@@ -23,12 +22,14 @@ export const CustomerLogin = () => {
   const [loading, setLoading] = useState(false);
 
   const loginType = params["type"];
-  const refID = "1043";
 
   const requestOtp = async () => {
     try {
       setLoading(true);
-      const result = await APISDK.requestOTP(refID);
+      const result = await APISDK.authCustomerPartnerOtpRequest(
+        userName,
+        loginType
+      );
       if (result.status === "success") {
         setLoading(false);
         setShowOTPPage(true);
@@ -48,10 +49,10 @@ export const CustomerLogin = () => {
     if (passwordOrOTP.length === 6 && passwordOrOTP !== "") {
       try {
         setLoading(true);
-        const result = await APISDK.verifyOTP(
-          refID,
+        const result = await APISDK.authCustomerPartnerOtpVerify(
           transactionId,
-          passwordOrOTP
+          passwordOrOTP,
+          loginType
         );
         if (result.status === "success") {
           setLoading(false);
