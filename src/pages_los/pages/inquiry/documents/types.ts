@@ -10,3 +10,12 @@ export interface GroupType {
   groupLabel: string;
   items: GroupItemType[];
 }
+
+export interface APITemplateData {
+  docDescription: string;
+  docID: string;
+  docTitle: string;
+  doc_type: string; //groupName
+  groupLabel: string;
+  status: string;
+}

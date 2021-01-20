@@ -39,7 +39,7 @@ export const docMeta: GroupType[] = [
         status: "R",
       },
       {
-        docID: "6",
+        docID: "7",
         docLabel: "Gas Bill",
         status: "P",
       },

@@ -7,16 +7,13 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
-import Login from "./auth";
 import LeadAction from "./pages/leadaction";
 import View from "./pages/tabView";
 import { useStyles } from "./style";
 import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
 import { Documents } from "pages_los/pages/inquiry/documents";
-
-import "react-perfect-scrollbar/dist/css/styles.css";
-
 import { CustomerLogin } from "./auth/customerLogin";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 const DashbordPages = () => {
   const classes = useStyles();

@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import { FileListing } from "components/fileUpload/fileListing";
 import { DocumentContext } from "./context";
 
-export const FileListingWithConfirmation = ({ docType }) => {
+export const FileListingWithConfirmation = ({ docType, docMeta }) => {
   const docContext: any = useContext(DocumentContext);
   return (
     <Fragment>
@@ -25,7 +25,8 @@ export const FileListingWithConfirmation = ({ docType }) => {
       <FileListing
         files={[
           {
-            file: "http://www.google.com",
+            file:
+              "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
             name: "Devarsh",
             mimeType: "application/pdf",
             size: 3242334,

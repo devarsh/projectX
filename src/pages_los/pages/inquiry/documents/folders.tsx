@@ -3,58 +3,23 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { GroupItemType } from "./types";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Box from "@material-ui/core/Box";
 import Chip from "@material-ui/core/Chip";
+
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import clsx from "clsx";
+import { useFolderStyles } from "./styles";
 import { DocumentContext } from "./context";
+import { GroupItemType, GroupType } from "./types";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 250,
-    margin: theme.spacing(1),
-  },
-  iconMargin: {
-    padding: theme.spacing(1),
-  },
-  typoMargin: {
-    padding: theme.spacing(1),
-    paddingLeft: 0,
-  },
-  fullHeight: {
-    height: "100%",
-  },
-  chip: {
-    borderRadius: 0,
-    border: "0px",
-    fontWeight: "bold",
-  },
-  rejected: {
-    color: "#dc3545",
-  },
-  pending: {
-    color: "#007bff",
-  },
-  verified: {
-    color: "#26a456",
-  },
-  cardContent: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-end",
-  },
-}));
-
-export const GroupItem: FC<GroupItemType> = ({
+export const Folder: FC<GroupItemType> = ({
   docLabel,
   docDescription,
   status,
   docID,
 }) => {
-  const classes = useStyles();
+  const classes = useFolderStyles();
   const docContext: any = useContext(DocumentContext);
   let currentStatus = "empty";
 
@@ -100,4 +65,32 @@ export const GroupItem: FC<GroupItemType> = ({
       </CardActionArea>
     </Card>
   );
+};
+
+//Rendering folders
+
+const FoldersGroup: FC<{ oneGroup: GroupType }> = ({ oneGroup }) => {
+  let renderedFolders = oneGroup.items.map((one) => (
+    <Folder key={one.docID} {...one} />
+  ));
+  console.log(oneGroup);
+  return (
+    <div>
+      <Typography variant="h6">
+        {Boolean(oneGroup.groupLabel)
+          ? oneGroup.groupLabel
+          : oneGroup.groupName}
+      </Typography>
+      <div style={{ display: "flex", margin: "8px", flexWrap: "wrap" }}>
+        {renderedFolders}
+      </div>
+    </div>
+  );
+};
+
+export const AllFolders: FC<{ metaData: GroupType[] }> = ({ metaData }) => {
+  const groups = metaData.map((one, index) => (
+    <FoldersGroup oneGroup={one} key={index} />
+  ));
+  return <div>{groups}</div>;
 };
