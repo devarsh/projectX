@@ -13,11 +13,12 @@ import { useFolderStyles } from "./styles";
 import { DocumentContext } from "./context";
 import { GroupItemType, GroupType } from "./types";
 
-export const Folder: FC<GroupItemType> = ({
+export const Folder: FC<GroupItemType & { groupLabel: string }> = ({
   docLabel,
   docDescription,
   status,
   docID,
+  groupLabel,
 }) => {
   const classes = useFolderStyles();
   const docContext: any = useContext(DocumentContext);
@@ -47,7 +48,21 @@ export const Folder: FC<GroupItemType> = ({
           </IconButton>
         ) : null}
       </Box>
-      <CardActionArea onClick={() => docContext.setViewPath()}>
+      <CardActionArea
+        onClick={
+          currentStatus === "empty"
+            ? () =>
+                docContext.setUploadPath({
+                  path: [groupLabel, docLabel],
+                  docID: docID,
+                })
+            : () =>
+                docContext.setViewPath({
+                  path: [groupLabel, docLabel],
+                  docID: docID,
+                })
+        }
+      >
         <CardContent className={classes.cardContent}>
           <Typography gutterBottom variant="h5" component="h2">
             {docLabel}
@@ -61,11 +76,11 @@ export const Folder: FC<GroupItemType> = ({
   );
 };
 
-//Rendering folders
+//Rendering folders under a group
 
 const FoldersGroup: FC<{ oneGroup: GroupType }> = ({ oneGroup }) => {
   let renderedFolders = oneGroup.items.map((one) => (
-    <Folder key={one.docID} {...one} />
+    <Folder key={one.docID} {...one} groupLabel={oneGroup.groupName} />
   ));
   return (
     <div>
@@ -79,7 +94,14 @@ const FoldersGroup: FC<{ oneGroup: GroupType }> = ({ oneGroup }) => {
   );
 };
 
-export const AllFolders: FC<{ metaData: GroupType[] }> = ({ metaData }) => {
+//rendering all folders with groups
+export const Folders: FC<{ metaData: GroupType[]; isFetching: boolean }> = ({
+  metaData,
+  isFetching,
+}) => {
+  if (isFetching) {
+    return <div>loading...</div>;
+  }
   const groups = metaData.map((one, index) => (
     <FoldersGroup oneGroup={one} key={index} />
   ));

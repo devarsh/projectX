@@ -1,12 +1,23 @@
 import { Fragment, useContext } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
 import { FileListing } from "components/fileUpload/fileListing";
 import { DocumentContext } from "./context";
+import { breadcrumbPathRenderer } from "./utils";
 
-export const FileListingWithConfirmation = ({ docType, docMeta }) => {
+export const FileListingWithConfirmation = ({ refID, docs, isFetching }) => {
   const docContext: any = useContext(DocumentContext);
+  const currentViewDocs = docs.reduce((accum, current) => {
+    if (String(current.docID) === String(docContext.docID)) {
+      accum.push({
+        file: current.docUUID,
+        name: current.docName,
+        mimeType: current.docContenttype,
+      });
+    }
+    return accum;
+  }, []);
+
   return (
     <Fragment>
       <Breadcrumbs aria-label="breadcrumb">
@@ -15,29 +26,25 @@ export const FileListingWithConfirmation = ({ docType, docMeta }) => {
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            docContext.setCurrentView("folders");
+            docContext.setFoldersPath();
           }}
         >
           Documents
         </Link>
-        <Typography color="textPrimary">PanCard</Typography>
+        {breadcrumbPathRenderer(docContext.path)}
       </Breadcrumbs>
-      <FileListing
-        files={[
-          {
-            file:
-              "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-            name: "Devarsh",
-            mimeType: "application/pdf",
-            size: 3242334,
-          },
-        ]}
-        dense={true}
-        disableDelete={true}
-        disablePreview={false}
-        handleDeleteFile={() => {}}
-        disabled={false}
-      />
+      {isFetching ? (
+        <div>loading...</div>
+      ) : (
+        <FileListing
+          files={currentViewDocs}
+          dense={true}
+          disableDelete={true}
+          disablePreview={false}
+          handleDeleteFile={() => {}}
+          disabled={false}
+        />
+      )}
     </Fragment>
   );
 };

@@ -1,17 +1,18 @@
 import { Fragment, useContext } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
 import { FileUploadControl } from "components/fileUpload/fileControl";
 import { APISDK } from "registry/fns/sdk";
 import { DocumentContext } from "./context";
+import { breadcrumbPathRenderer } from "./utils";
+import { queryClient } from "../cache";
 
-export const FileUpload = ({ docType, refID }) => {
-  const docContext: any = useContext(DocumentContext);
+export const FileUpload = ({ refID }) => {
+  const docContext = useContext(DocumentContext);
   const onSubmitHandler = (files, setLoading, setUserMessage, setProgress) => {
     APISDK.uploadDocuments(
       files as File[],
-      docType,
+      docContext?.docID,
       refID,
       (precentage) => {
         setProgress(precentage);
@@ -19,9 +20,15 @@ export const FileUpload = ({ docType, refID }) => {
       (result) => {
         setLoading(false);
         if (result.status === "success") {
+          queryClient.refetchQueries(["docTemplate", refID]);
+          queryClient.refetchQueries(["docs", refID]);
           setUserMessage({
             severity: "info",
             message: result?.data?.message ?? "",
+          });
+          docContext?.setViewPath({
+            path: docContext.path,
+            docID: docContext.docID,
           });
         } else {
           setUserMessage({
@@ -41,12 +48,12 @@ export const FileUpload = ({ docType, refID }) => {
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            docContext.setCurrentView("folders");
+            docContext?.setFoldersPath();
           }}
         >
           Documents
         </Link>
-        <Typography color="textPrimary">PanCard</Typography>
+        {breadcrumbPathRenderer(docContext?.path)}
       </Breadcrumbs>
       <FileUploadControl
         allowedExtensions={["pdf", "jpg", "jpeg", "png"]}

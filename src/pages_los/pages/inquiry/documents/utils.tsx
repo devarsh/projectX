@@ -1,3 +1,4 @@
+import Typography from "@material-ui/core/Typography";
 import { APITemplateData } from "./types";
 
 export const normalizeTemplateData = (data: APITemplateData[]) => {
@@ -38,4 +39,13 @@ export const normalizeTemplateData = (data: APITemplateData[]) => {
     return result as any[];
   }
   return [] as any[];
+};
+
+export const breadcrumbPathRenderer = (path) => {
+  if (Array.isArray(path)) {
+    return path.map((one) => (
+      <Typography color="textPrimary">{one}</Typography>
+    ));
+  }
+  return null;
 };
