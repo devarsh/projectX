@@ -1,71 +1,9 @@
-import { OptionsProps } from "components/common/types";
+//import { OptionsProps } from "components/common/types";
+import { CommonFetcherResponse, sessionObjType } from "./type";
 
-interface CommonFetcherResponse {
-  data: any;
-  status: "success" | "failure";
-}
-type ExternalResponse = any;
-
-interface sessionObjType {
-  baseURL?: URL;
-  loginStatus: boolean;
-  token?: any;
-}
-
-const isBroswer = new Function(
-  "try {return this===window;}catch(e){ return false;}"
-);
+import { isBroswer } from "./utils";
 
 const RaatnaFinAPI = () => {
-  const externalFetcher = async (
-    url: string,
-    payload: any
-  ): Promise<ExternalResponse> => {
-    try {
-      let response = await fetch(url, payload);
-      let data = await response.json();
-      return data;
-    } catch (e) {
-      return new Error(`Error fetching data-${e.message}`);
-    }
-  };
-  const getPincode = async (
-    pincode: string
-  ): Promise<{ options: OptionsProps[]; others: any }> => {
-    const data = await externalFetcher(
-      `https://api.postalpincode.in/pincode/${pincode}`,
-      {
-        method: "GET",
-        redirect: "follow",
-      }
-    );
-    if (Array.isArray(data) && data.length === 1) {
-      let result = data[0];
-      if (String(result.Status).toLowerCase() === "success") {
-        let areaArray = result.PostOffice.map((dtl) => ({
-          value: dtl?.Name,
-          label: dtl?.Name,
-        }));
-        areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
-        const otherValues = result.PostOffice.reduce((accumlator, current) => {
-          const val = {
-            city: current.Block,
-            district: current.District,
-            state: current.State,
-            country: current.Country,
-          };
-          accumlator[current.Name] = val;
-          return accumlator;
-        }, {});
-        return { options: areaArray, others: otherValues };
-      }
-    }
-    return {
-      options: [{ label: "Error fetching pincode", value: "0" }],
-      others: null,
-    };
-  };
-  //Internal fetcher code
   let sessionObj: sessionObjType = {
     loginStatus: false,
     token: {},
@@ -155,128 +93,6 @@ const RaatnaFinAPI = () => {
         data: e,
       };
     }
-  };
-  const getProductType = async (
-    _: any,
-    formState: any
-  ): Promise<OptionsProps[]> => {
-    const { status, data } = await internalFetcher("./users/get_sub_product", {
-      body: JSON.stringify({
-        action: "get_sub_product",
-        request_data: {
-          code: formState?.formCode,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success" && Array.isArray(data.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.sub_prod_code,
-        label: one?.sub_prod_desc,
-      }));
-      return newArray;
-    }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
-  };
-  const getsubProductDtl = async (fieldData) => {
-    if (fieldData.value.length !== 0) {
-      let codes = await getProductType(null, fieldData.value);
-      return {
-        subProductType: {
-          options: codes,
-          value: "00",
-        },
-      };
-    } else if (fieldData.value === "") {
-      return {
-        subProductType: {
-          options: [],
-          value: "",
-        },
-      };
-    }
-  };
-  const getPropertyCity = async (): Promise<OptionsProps[]> => {
-    const { status, data } = await internalFetcher(
-      "./users/get_property_city",
-      {
-        body: JSON.stringify({
-          action: "get_property_city",
-          request_data: {
-            property_city: "",
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success" && Array.isArray(data.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.data_val,
-        label: one?.display_val,
-      }));
-      return newArray;
-    }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
-  };
-  const getBankList = async (): Promise<OptionsProps[]> => {
-    const { status, data } = await internalFetcher("./users/getBankList", {
-      body: JSON.stringify({
-        action: "get_bank_list",
-        request_data: {
-          get_bank_list: "",
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success" && Array.isArray(data.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.bank_cd,
-        label: one?.bank_name,
-      }));
-      return newArray;
-    }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
-  };
-  const getMiscVal = (categCode: string) => async (): Promise<
-    OptionsProps[]
-  > => {
-    const { status, data } = await internalFetcher("./users/getmiscval", {
-      body: JSON.stringify({
-        action: "get_misc_val",
-        request_data: {
-          category_nm: categCode,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success" && Array.isArray(data.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.data_val,
-        label: one?.display_val,
-      }));
-      return newArray;
-    }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
   };
   const validatePanNumber = async (currentField) => {
     const { status } = await internalFetcher("./users/panvalidator", {
@@ -385,6 +201,7 @@ const RaatnaFinAPI = () => {
     }
   };
   const getInquiryMetaData = async (state) => {
+    console.log(state);
     const { action, ...others } = state;
 
     const { data, status } = await internalFetcher("./users/getMetaData", {
@@ -903,13 +720,6 @@ const RaatnaFinAPI = () => {
   return {
     createSession,
     loginStatus,
-    getPincode,
-    getProductType,
-    getsubProductDtl,
-    getPropertyCity,
-    getBankList,
-    getMiscVal,
-    //Need to fix this API -to allow pass api result
     validatePanNumber,
     requestOTP,
     verifyOTP,
