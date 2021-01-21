@@ -40,6 +40,8 @@ const MiscAPI = () => {
       };
     }
   };
+
+  //dropdown value - dynamic form
   const getMiscVal = (categCode: string) => async (): Promise<
     OptionsProps[]
   > => {
@@ -58,6 +60,8 @@ const MiscAPI = () => {
       },
     ];
   };
+
+  //dropdown value - dynamic form
   const getProductType = async (
     _: any,
     formState: any
@@ -80,6 +84,8 @@ const MiscAPI = () => {
       },
     ];
   };
+
+  //dropdown value - dynamic form
   const getSubProductDtl = async (fieldData) => {
     console.log(fieldData.value);
     if (fieldData.value.length !== 0) {
@@ -99,6 +105,8 @@ const MiscAPI = () => {
       };
     }
   };
+
+  //dropdown value - dynamic form
   const getPropertyCity = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./propertyCityList", {});
     if (status === "success" && Array.isArray(data.response_data)) {
@@ -115,6 +123,8 @@ const MiscAPI = () => {
       },
     ];
   };
+
+  //dropdown value - dynamic form
   const getBankList = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./bankList", {});
     if (status === "success" && Array.isArray(data.response_data)) {
@@ -131,6 +141,8 @@ const MiscAPI = () => {
       },
     ];
   };
+
+  //dropdown value - dynamic form
   const getPincodeExternal = async (
     pincode: string
   ): Promise<{ options: OptionsProps[]; others: any }> => {

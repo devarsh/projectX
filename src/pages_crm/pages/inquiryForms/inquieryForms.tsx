@@ -10,7 +10,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
-import { APISDK } from "registry/fns/sdk";
+import { CRMSDK } from "registry/fns/crm";
 import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
@@ -67,7 +67,7 @@ export const InquiryFormWrapper = () => {
       return;
     }
     setIsSubmitting(true);
-    const result = await APISDK.sumibtInquiryData(
+    const result = await CRMSDK.submitInquiryQuestionData(
       metaData?.current?.form.submitAction ?? "NO_ACTION_FOUND",
       {
         ...formData,
@@ -115,7 +115,7 @@ export const InquiryFormWrapper = () => {
     setLoading(true);
     metaData.current = null;
     //@ts-ignore need to find how to set router loaction state type (react-router-dom)
-    APISDK.getInquiryMetaData(navigationState?.metaProps ?? {})
+    CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {})
       .then((result) => {
         metaData.current = result;
         setLoading(false);

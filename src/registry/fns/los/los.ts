@@ -1,9 +1,7 @@
-//import { OptionsProps } from "components/common/types";
-import { CommonFetcherResponse, sessionObjType } from "./type";
-
+import { CommonFetcherResponse, sessionObjType } from "../type";
 import { isBroswer } from "./utils";
 
-const RaatnaFinAPI = () => {
+const LOSAPI = () => {
   let sessionObj: sessionObjType = {
     loginStatus: false,
     token: {},
@@ -684,7 +682,7 @@ const RaatnaFinAPI = () => {
   };
 };
 
-export const APISDK = RaatnaFinAPI();
+export const LOSSDK = LOSAPI();
 
 export const wait = () => {
   return new Promise((res) => {

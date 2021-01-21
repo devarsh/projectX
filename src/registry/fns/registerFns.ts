@@ -1,11 +1,7 @@
 import { others, pincode, MiscSDK as miscSDK } from "./misc";
 import { singletonFunctionRegisrationFactory } from "components/dyanmicForm";
 
-//move to proper place
-import { APISDK as api } from "./sdk";
-
 const { registerFn } = singletonFunctionRegisrationFactory;
-registerFn("validatePanNumber", api.validatePanNumber);
 
 registerFn("getOtherSourceIncome", miscSDK.getMiscVal("INCOME_SOURCE"));
 registerFn("getResidentialStatus", miscSDK.getMiscVal("RESI_STATUS"));

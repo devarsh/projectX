@@ -2,9 +2,10 @@ const initializeFunctionRegistry = () => {
   const fns = new Map<string, Function>();
   const registerFn = (fnName: string, fn: Function) => {
     if (typeof fn === "function") {
-      if (fns.has(fnName)) {
-        return false;
-      }
+      //commented this code so we can replace function
+      // if (fns.has(fnName)) {
+      //   return false;
+      // }
       fns.set(fnName, fn);
       return true;
     }
