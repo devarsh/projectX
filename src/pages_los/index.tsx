@@ -7,6 +7,7 @@ import { Content } from "./content";
 import Dashboard from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
+import NewInquiry from "./pages/newInquiry";
 import { useStyles } from "./style";
 import { Documents } from "pages_los/pages/inquiry/documents";
 import CAM from "./pages/cam";
@@ -29,6 +30,14 @@ const DashbordPages = () => {
           <Routes>
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/newInquiry/*"
+              element={<NewInquiry key="inquiryx" />}
+            />
+            <Route
+              path="/newInquiryQuestion"
+              element={<NewInquiry key="question" />}
+            />
             <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/docs" element={<Documents />} />
