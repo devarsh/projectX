@@ -40,7 +40,6 @@ const CRMAPI = () => {
     }
   };
   const getInquiryQuestionMetaData = async (state) => {
-    console.log(state);
     const { action, ...others } = state;
     if (action === "crm_inquiry_metaData") {
       const { data, status } = await internalFetcher(
@@ -52,9 +51,9 @@ const CRMAPI = () => {
         }
       );
       if (status === "success") {
-        return data?.response_data ?? {};
+        return data?.response_data;
       } else {
-        return {};
+        throw data?.error_data;
       }
     } else if (action === "crm_questionnaire_metaData") {
       const { data, status } = await internalFetcher(
@@ -66,12 +65,12 @@ const CRMAPI = () => {
         }
       );
       if (status === "success") {
-        return data?.response_data ?? {};
+        return data?.response_data;
       } else {
-        return {};
+        throw data?.error_data;
       }
     } else {
-      return {};
+      throw "Invalid Metadata type";
     }
   };
 
