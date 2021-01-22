@@ -4,8 +4,8 @@ import { APISDK } from "registry/fns/sdk";
 import { useParams, useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
 import { useStyles } from "./style";
-import { UsernameControl } from "./username";
-import { PasswordControl } from "./password";
+import { UsernameField } from "./username";
+import { PasswordField } from "./password";
 import { AuthContext } from "./authContext";
 
 const inititalState = {
@@ -184,7 +184,7 @@ export const AuthLoginController = () => {
         className={classes.loginRight}
       >
         {loginState.currentFlow === "username" ? (
-          <UsernameControl
+          <UsernameField
             loginType={loginType}
             classes={classes}
             loginState={loginState}
@@ -192,7 +192,7 @@ export const AuthLoginController = () => {
             handleUsername={handleUsername}
           />
         ) : (
-          <PasswordControl
+          <PasswordField
             loginType={loginType}
             classes={classes}
             loginState={loginState}

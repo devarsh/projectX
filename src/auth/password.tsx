@@ -3,7 +3,7 @@ import { TextField } from "components/styledComponent/textfield";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export const PasswordControl = ({
+export const PasswordField = ({
   loginType,
   classes,
   loginState,
