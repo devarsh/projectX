@@ -4,13 +4,16 @@ import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
 import { Content } from "./content";
-import Dashboard from "./pages/dashboard";
+import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
 import NewInquiry from "./pages/newInquiry";
-import { useStyles } from "./style";
-import { Documents } from "pages_los/pages/inquiry/documents";
 import CAM from "./pages/cam";
+import { useStyles } from "./style";
+
+//This is temparoary
+import { Documents } from "./pages/inquiry/documents";
+
 import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
