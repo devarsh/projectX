@@ -72,7 +72,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
         >
           LOS: Loan Origination System
           <Typography variant="caption" display="block" color="secondary">
-            Branch: {authController?.userState?.userBranch ?? ""}
+            Branch: {authController?.authState?.user?.branch ?? ""}
           </Typography>
           <Typography
             variant="caption"
@@ -81,7 +81,9 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             gutterBottom
           >
             Last Login:{" "}
-            {checkDateAndDisplay(authController?.userState.lastLoggedIn ?? "")}
+            {checkDateAndDisplay(
+              authController?.authState?.user?.lastLogin ?? ""
+            )}
           </Typography>
         </Typography>
 
@@ -119,7 +121,9 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             className={classes.nameClass}
           >
             <span className={classes.userName}>
-              {authController?.userState?.username ?? ""}
+              {`${authController?.authState?.user?.firstName ?? ""} ${
+                authController?.authState?.user?.lastName
+              }`}
             </span>
             <ArrowDropDownIcon />
           </Button>
@@ -158,7 +162,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                authController?.logoutUser();
+                authController?.logout();
                 handleClose();
               }}
             >

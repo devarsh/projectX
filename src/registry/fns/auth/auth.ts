@@ -39,9 +39,9 @@ const authAPI = () => {
       };
     }
   };
-  const authVeirfyUsername = async (userName: any, loginType: string) => {
+  const veirfyUsername = async (userName: any, loginType: string) => {
     const { data, status } = await internalFetcher(
-      `./users/los/auth/${loginType}/login`,
+      `./los/${loginType}/verify`,
       {
         body: JSON.stringify({
           request_data: {
@@ -58,14 +58,43 @@ const authAPI = () => {
     }
   };
 
-  const authVerifyPassword = async (transactionId, password, loginType) => {
+  const verifyPasswordAndLogin = async (transactionId, password, loginType) => {
+    const { data, status } = await internalFetcher(`./los/${loginType}/login`, {
+      body: JSON.stringify({
+        request_data: {
+          transactionId: transactionId,
+          password: password,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return {
+        status,
+        data: {
+          token: data?.response_data?.token?.access_token,
+          tokenType: data?.response_data?.token?.token_type,
+          user: {
+            branch: data?.response_data?.user?.baseBranch,
+            lastLogin: data?.response_data?.user?.lastLoginDate,
+            type: data?.response_data?.user?.flag,
+            firstName: data?.response_data?.user?.firstName,
+            lastName: data?.response_data?.user?.lastName,
+          },
+        },
+      };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const verifyToken = async (loginType, token) => {
     const { data, status } = await internalFetcher(
-      `./users/los/auth/${loginType}/verify`,
+      `./los/${loginType}/token/verify`,
       {
         body: JSON.stringify({
           request_data: {
-            transactionId: transactionId,
-            password: password,
+            tokenID: token,
           },
           channel: "W",
         }),
@@ -80,8 +109,9 @@ const authAPI = () => {
 
   return {
     inititateAPI,
-    authVeirfyUsername,
-    authVerifyPassword,
+    veirfyUsername,
+    verifyPasswordAndLogin,
+    verifyToken,
   };
 };
 

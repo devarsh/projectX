@@ -1,28 +1,47 @@
-import { createContext, useContext, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { useNavigate } from "react-router";
+import { AuthContextType, AuthStateType, ActionType } from "./type";
+import { AuthSDK } from "registry/fns/auth";
 
-const inititalState = {
-  username: "",
-  lastLoggedIn: "",
-  userBranch: "",
+const inititalState: AuthStateType = {
+  token: "",
+  tokenType: "",
+  isLoggedIn: false,
+  user: {
+    lastName: "",
+    firstName: "",
+    lastLogin: "",
+    branch: "",
+    type: "",
+  },
 };
 
-const authReducer = (state, action) => {
+const authReducer = (
+  state: AuthStateType,
+  action: ActionType
+): AuthStateType => {
   switch (action.type) {
-    case "setUserDetails": {
-      return {
-        username: action?.payload?.username,
-        lastLoggedIn: action?.payload?.lastLoggedIn,
-        userBranch: action?.payload?.loginBranch,
-        userType: action?.payload?.userType,
-      };
+    case "login": {
+      return action.payload;
     }
-    case "removeUserDetails": {
+    case "logout": {
       return {
-        username: "",
-        lastLoggedIn: "",
-        userBranch: "",
-        userType: "",
+        token: "",
+        tokenType: "",
+        isLoggedIn: false,
+        user: {
+          lastName: "",
+          firstName: "",
+          lastLogin: "",
+          branch: "",
+          type: "",
+        },
       };
     }
     default: {
@@ -31,62 +50,80 @@ const authReducer = (state, action) => {
   }
 };
 
-export const AuthContext = createContext<{
-  loginUser: any;
-  logoutUser: any;
-  isLoggedIn: any;
-  userState: {
-    username: string;
-    lastLoggedIn: string;
-    userBranch: string;
-    userType: string;
-  };
-} | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, inititalState);
+  const [authenticating, setAuthenticating] = useState(true);
   const navigate = useNavigate();
 
-  const loginUser = ({
-    username,
-    userType,
-    lastLoggedIn,
-    loginBranch,
-    loginToken,
-  }) => {
+  const login = (payload) => {
     dispatch({
-      type: "setUserDetails",
-      payload: {
-        username,
-        lastLoggedIn,
-        loginBranch,
-        userType,
-      },
+      type: "login",
+      payload: { ...payload, isLoggedIn: true },
     });
-    localStorage.setItem("authToken", `${loginToken}`);
-    localStorage.setItem("losLoggedIn", "true");
+    console.log(payload);
+    localStorage.setItem("authDetails", JSON.stringify(payload));
     navigate("/los");
   };
-  const logoutUser = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("losLoggedIn");
+  const logout = () => {
+    localStorage.removeItem("authDetails");
     dispatch({
-      type: "removeUserDetails",
+      type: "logout",
+      payload: {},
     });
     navigate("/los");
   };
+
   const isLoggedIn = () => {
-    if (localStorage.getItem("losLoggedIn") === "true") {
-      return true;
-    }
+    return state.isLoggedIn;
   };
-  return (
+
+  window.addEventListener("storage", () => {
+    let result = localStorage.getItem("authDetails");
+    if (result === null) {
+      logout();
+    }
+  });
+
+  useEffect(() => {
+    let result = localStorage.getItem("authDetails");
+    if (result !== null) {
+      let localStorageAuthState: AuthStateType = JSON.parse(result);
+      if (
+        Boolean(localStorageAuthState?.token ?? "") &&
+        Boolean(localStorageAuthState?.user.type ?? "")
+      ) {
+        AuthSDK.verifyToken(
+          localStorageAuthState.user.type,
+          localStorageAuthState.token
+        ).then((result) => {
+          if (result.status === "success") {
+            login(localStorageAuthState);
+          } else {
+            logout();
+          }
+          setAuthenticating(false);
+        });
+      } else {
+        logout();
+        setAuthenticating(false);
+      }
+    } else {
+      logout();
+      setAuthenticating(false);
+    }
+  }, []);
+
+  return authenticating ? (
+    <div>loading...</div>
+  ) : (
     <AuthContext.Provider
       value={{
-        loginUser,
-        logoutUser,
+        login,
+        logout,
         isLoggedIn,
-        userState: state,
+        authState: state,
       }}
     >
       {children}

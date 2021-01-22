@@ -1,6 +1,6 @@
 import { useReducer, useContext } from "react";
 import Box from "@material-ui/core/Box";
-import { APISDK } from "registry/fns/sdk";
+import { AuthSDK } from "registry/fns/auth";
 import { useParams, useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
 import { useStyles } from "./style";
@@ -85,7 +85,7 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititateUserNameVerification" });
     try {
-      const result = await APISDK.authVeirfyUsername(
+      const result = await AuthSDK.veirfyUsername(
         loginState.username,
         loginType
       );
@@ -122,20 +122,14 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititatePasswordVerification" });
     try {
-      const result = await APISDK.authVerifyPassword(
+      const result = await AuthSDK.verifyPasswordAndLogin(
         loginState.transactionID,
         loginState.password,
         loginType
       );
       if (result.status === "success") {
         dispath({ type: "passwordVerificationSuccessful" });
-        authContext?.loginUser({
-          username: result.data?.userDetails?.userName ?? "",
-          lastLoggedIn: result.data?.userDetails?.lastLoginData ?? "",
-          loginBranch: result.data?.userDetails?.baseBranch ?? "",
-          loginToken: "",
-          userType: result.data?.userDetails?.userFlag ?? "",
-        });
+        authContext?.login(result.data);
       } else {
         dispath({
           type: "passwordVerificationFailure",
