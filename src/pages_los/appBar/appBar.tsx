@@ -20,7 +20,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Logo from "assets/images/logo.svg";
 import { useStyles } from "./style";
-import { AuthContext } from "../auth";
+import { AuthContext } from "auth";
 
 export const MyAppBar = ({ handleDrawerOpen, open }) => {
   const authController = useContext(AuthContext);

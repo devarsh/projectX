@@ -11,7 +11,7 @@ import NewInquiry from "./pages/newInquiry";
 import { useStyles } from "./style";
 import { Documents } from "pages_los/pages/inquiry/documents";
 import CAM from "./pages/cam";
-import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "./auth";
+import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
 const DashbordPages = () => {

@@ -601,7 +601,7 @@ const RaatnaFinAPI = () => {
 
   const authVeirfyUsername = async (userName: any, loginType: string) => {
     const { data, status } = await internalFetcher(
-      `./users/los/auth/${loginType}/login`,
+      `./crm/auth/${loginType}/login`,
       {
         body: JSON.stringify({
           request_data: {
@@ -620,7 +620,7 @@ const RaatnaFinAPI = () => {
 
   const authVerifyPassword = async (transactionId, password, loginType) => {
     const { data, status } = await internalFetcher(
-      `./users/los/auth/${loginType}/verify`,
+      `./crm/auth/${loginType}/verify`,
       {
         body: JSON.stringify({
           request_data: {
