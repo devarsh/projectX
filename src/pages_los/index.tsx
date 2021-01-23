@@ -17,8 +17,6 @@ import { Documents } from "./pages/inquiry/documents";
 import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
-// import { CCOD } from "./pages/cam/sme";
-
 const DashbordPages = () => {
   const classes = useStyles();
   const [drawerOpen, setDrawerState] = useState(true);
@@ -49,7 +47,6 @@ const DashbordPages = () => {
             <Route path="/cam" element={<CAM />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
-            {/* <Route path="/camPreview" element={<CCOD />} /> */}
           </Routes>
         </Content>
       </div>
