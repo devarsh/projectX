@@ -1,81 +1,46 @@
-import { useEffect, useState } from "react";
-import { useQuery, useMutation } from "react-query";
+import { useReducer } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import Alert from "@material-ui/lab/Alert";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { APISDK } from "registry/fns/sdk";
 import { useStyles } from "./style";
 
-interface AssignLeadType {
-  inquiryID: string;
-  employeeID: string;
-  inquiryStatus: string;
-}
-
-const assignLead = async ({
-  inquiryID,
-  employeeID,
-  inquiryStatus,
-}: AssignLeadType) => {
-  return await APISDK.inquiryAssignToLead(inquiryID, employeeID, inquiryStatus);
+const inititalState = {
+  assignLeadRemarks: "",
+  assignEmployee: "",
 };
 
-export const AssignInquiryToEmployee = ({ inquiryID }) => {
-  let branchCode = "0";
-  let inquiryStatus = "C";
-  const classes = useStyles();
-  const [employeeID, setEmployeeID] = useState("");
-  const [userMessage, setUserMessage] = useState<null | any>(null);
-
-  useEffect(() => {
-    if (userMessage !== null) {
-      setTimeout(() => {
-        setUserMessage(null);
-      }, 4000);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setAssignEmployee": {
+      return { ...state, assignEmployee: action.payload };
     }
-  }, [userMessage]);
-
-  const employeeListQuery = useQuery(
-    ["employeeList", branchCode],
-    () => APISDK.getEmployeeListToAssignLead(branchCode),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
+    case "setAssignLeadRemarks": {
+      return { ...state, assignLeadRemarks: action.payload };
     }
-  );
-  let employeeListOptions: any = [];
-  if (
-    employeeListQuery.isLoading === false &&
-    employeeListQuery.isError === false
-  ) {
-    employeeListOptions = transformOptions(employeeListQuery.data);
+    default: {
+      return state;
+    }
   }
+};
 
-  const mutation = useMutation(assignLead, {
-    onError: (error: any) => {
-      if (typeof error === "object") {
-        setUserMessage({ type: "error", message: error?.error_msg });
-      }
-    },
-    onSuccess: () => {
-      setUserMessage({ type: "success", message: "Data Successfully saved" });
-    },
-  });
+// interface AssignLeadType {
+//   inquiryID: string;
+//   employeeID: string;
+//   inquiryStatus: string;
+// }
+
+export const AssignInquiryToEmployee = ({ inquiryID }) => {
+  const classes = useStyles();
+  const [assignToLeadStates, dispatch] = useReducer(reducer, inititalState);
 
   return (
     <div>
-      {userMessage !== null && (
-        <Alert severity={userMessage.type}>{userMessage?.message}</Alert>
-      )}
       <h3>Assign Lead</h3>
-      <Grid container spacing={2}>
-        <Grid item xs={6} sm={6} md={6}>
+      <Grid container spacing={3}>
+        <Grid item xs={6} sm={4}>
           <TextField
             select
             label="Lead Assign to Employee"
@@ -84,59 +49,53 @@ export const AssignInquiryToEmployee = ({ inquiryID }) => {
             required
             name="leadAssign"
             autoComplete="off"
-            onChange={(e) => setEmployeeID(e.target.value)}
+            value={assignToLeadStates.assignEmployee}
+            onChange={(e) =>
+              dispatch({ type: "setAssignEmployee", payload: e.target.value })
+            }
             InputLabelProps={{
               shrink: true,
             }}
-            value={employeeID}
-            InputProps={{
-              endAdornment: employeeListQuery.isLoading ? (
-                <InputAdornment position="end">
-                  <CircularProgress color="primary" variant="indeterminate" />
-                </InputAdornment>
-              ) : null,
-            }}
-            error={employeeListQuery.isError}
-            helperText={
-              employeeListQuery.isError ? "error loading options" : ""
-            }
           >
             <MenuItem value={0}>Select Employee</MenuItem>
-            {employeeListOptions.map((data) => {
-              return (
-                <MenuItem key={data.value} value={data.value}>
-                  {data.label}
-                </MenuItem>
-              );
-            })}
+            <MenuItem value="1">Sanjay</MenuItem>
+            <MenuItem value="2">Milan</MenuItem>
+            <MenuItem value="3">Krupa</MenuItem>
+            <MenuItem value="4">Devarsh</MenuItem>
+            <MenuItem value="5">Raveena</MenuItem>
           </TextField>
+        </Grid>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={6} sm={4}>
+          <Box mt={2}>
+            <TextField
+              required
+              label="Remarks"
+              placeholder="Remarks"
+              fullWidth
+              name="leadAssignRemarks"
+              value={assignToLeadStates.assignLeadRemarks}
+              autoComplete="off"
+              onChange={(e) =>
+                dispatch({
+                  type: "setAssignLeadRemarks",
+                  payload: e.target.value,
+                })
+              }
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Box>
         </Grid>
       </Grid>
       <Button color="primary" className={classes.backBtn}>
         Reject
       </Button>
-      <Button
-        color="primary"
-        autoFocus
-        className={classes.submit}
-        onClick={() =>
-          mutation.mutate({ inquiryID, employeeID, inquiryStatus })
-        }
-        endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
-      >
+      <Button color="primary" autoFocus className={classes.submit}>
         Assign
       </Button>
     </div>
   );
-};
-
-const transformOptions = (options) => {
-  if (Array.isArray(options)) {
-    let result = options.map((one) => ({
-      label: one.fullname,
-      value: one.empID,
-    }));
-    return result;
-  }
-  return [];
 };
