@@ -94,98 +94,59 @@ const RaatnaFinAPI = () => {
       };
     }
   };
-  const validatePanNumber = async (currentField) => {
-    const { status } = await internalFetcher("./users/panvalidator", {
-      body: JSON.stringify({
-        action: "panvalidator",
-        request_data: { doc_number: currentField?.value ?? "INVALID_PAN" },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return "";
-    } else {
-      return "invalid pan number";
-    }
-  };
+  // const validatePanNumber = async (currentField) => {
+  //   const { status } = await internalFetcher("./users/panvalidator", {
+  //     body: JSON.stringify({
+  //       action: "panvalidator",
+  //       request_data: { doc_number: currentField?.value ?? "INVALID_PAN" },
+  //       channel: "W",
+  //     }),
+  //   });
+  //   if (status === "success") {
+  //     return "";
+  //   } else {
+  //     return "invalid pan number";
+  //   }
+  // };
 
-  const requestOTP = async (refID: number | string) => {
-    const { data, status } = await internalFetcher("./users/OTPRequest", {
-      body: JSON.stringify({
-        action: "OTPRequest",
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
-  const verifyOTP = async (
-    refID: string,
-    transactionID: string,
-    otp: string
-  ) => {
-    const { data, status } = await internalFetcher("./users/OTPVerify", {
-      body: JSON.stringify({
-        action: "OTPVerify",
-        request_data: {
-          refID: refID,
-          transaction_id: transactionID,
-          otp: otp,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-  const initiateAadharValidation = async (refID) => {
-    const { data, status } = await internalFetcher(
-      "./users/initiateaadharreq",
-      {
-        body: JSON.stringify({
-          action: "initiateaadharreq",
-          request_data: { refID: refID, sms: "0" },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-  const fetchAadharRequestStatus = async (aadharRequestID) => {
-    //console.log(refIdForAadhar);
-    const { data, status } = await internalFetcher(
-      "./users/fetchaadharstatus",
-      {
-        body: JSON.stringify({
-          action: "aadharstatus",
-          request_data: {
-            transactionID: aadharRequestID,
-            updateStatus: "",
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
+  // const initiateAadharValidation = async (refID) => {
+  //   const { data, status } = await internalFetcher(
+  //     "./users/initiateaadharreq",
+  //     {
+  //       body: JSON.stringify({
+  //         action: "initiateaadharreq",
+  //         request_data: { refID: refID, sms: "0" },
+  //         channel: "W",
+  //       }),
+  //     }
+  //   );
+  //   if (status === "success") {
+  //     return { status, data: data?.response_data };
+  //   } else {
+  //     return { status, data: data?.error_data };
+  //   }
+  // };
+  // const fetchAadharRequestStatus = async (aadharRequestID) => {
+  //   //console.log(refIdForAadhar);
+  //   const { data, status } = await internalFetcher(
+  //     "./users/fetchaadharstatus",
+  //     {
+  //       body: JSON.stringify({
+  //         action: "aadharstatus",
+  //         request_data: {
+  //           transactionID: aadharRequestID,
+  //           updateStatus: "",
+  //         },
+  //         channel: "W",
+  //       }),
+  //     }
+  //   );
+  //   if (status === "success") {
+  //     return { status, data: data?.response_data };
+  //   } else {
+  //     return { status, data: data?.error_data };
+  //   }
+  // };
   const submitBecomePartnerData = async (formData?: any) => {
     const { data, status } = await internalFetcher("./users/become_partner", {
       body: JSON.stringify({
@@ -200,43 +161,28 @@ const RaatnaFinAPI = () => {
       return { status, data: data?.response_data };
     }
   };
-  const getInquiryMetaData = async (state) => {
-    console.log(state);
-    const { action, ...others } = state;
 
-    const { data, status } = await internalFetcher("./users/getMetaData", {
-      body: JSON.stringify({
-        action: action,
-        request_data: others,
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data ?? {};
-    } else {
-      return {};
-    }
-  };
-  const sumibtInquiryData = async (
-    submitAction?: string,
-    formData?: any,
-    navigationProps?: any,
-    refID?: any
-  ) => {
-    //rename prodCode to formCode since backend uses prodCode as FormCode
+  // const sumibtInquiryData = async (
+  //   submitAction?: string,
+  //   formData?: any,
+  //   navigationProps?: any,
+  //   refID?: any
+  // ) => {
+  //   //rename prodCode to formCode since backend uses prodCode as FormCode
 
-    const { data, status } = await internalFetcher("./users/inquiry", {
-      body: JSON.stringify({
-        action: submitAction,
-        request_data: { refID: refID, ...formData, ...navigationProps },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.response_data };
-    }
-  };
+  //   const { data, status } = await internalFetcher("./users/inquiry", {
+  //     body: JSON.stringify({
+  //       action: submitAction,
+  //       request_data: { refID: refID, ...formData, ...navigationProps },
+  //       channel: "W",
+  //     }),
+  //   });
+  //   if (status === "success") {
+  //     return { status, data: data?.response_data };
+  //   } else {
+  //     return { status, data: data?.response_data };
+  //   }
+  // };
 
   const getInquiryFormData = async (inquiryID: string, type: string) => {
     const { data, status } = await internalFetcher("./users/inquiry", {
@@ -395,31 +341,6 @@ const RaatnaFinAPI = () => {
     } else {
       return { status, data: data?.error_data };
     }
-  };
-
-  const fetchAadharRequestStatusEventSource = async (
-    aadharRequestID
-  ): Promise<CommonFetcherResponse> => {
-    var urlEndPoint = `https://digix.aiplsolution.in/ratnaafin/users/getaadharstatus?transactionId=${aadharRequestID}`;
-    var eventSource = new EventSource(urlEndPoint);
-    return new Promise((res) => {
-      //@ts-ignore
-      eventSource.addEventListener("transactionId", ({ data: eventData }) => {
-        eventData = JSON.parse(eventData);
-        console.log(eventData);
-        let response: CommonFetcherResponse = { status: "failure", data: "" };
-        if (eventData.status === "0") {
-          response.status = "success";
-          response.data = eventData?.response_data ?? {};
-          res(response);
-        } else {
-          response.status = "failure";
-          response.data = eventData?.response_data ?? {};
-          res(response);
-        }
-        eventSource.close();
-      });
-    });
   };
 
   const updateUserPassword = async (
@@ -680,7 +601,7 @@ const RaatnaFinAPI = () => {
 
   const authVeirfyUsername = async (userName: any, loginType: string) => {
     const { data, status } = await internalFetcher(
-      `./users/los/auth/${loginType}/login`,
+      `./crm/auth/${loginType}/login`,
       {
         body: JSON.stringify({
           request_data: {
@@ -699,7 +620,7 @@ const RaatnaFinAPI = () => {
 
   const authVerifyPassword = async (transactionId, password, loginType) => {
     const { data, status } = await internalFetcher(
-      `./users/los/auth/${loginType}/verify`,
+      `./crm/auth/${loginType}/verify`,
       {
         body: JSON.stringify({
           request_data: {
@@ -720,15 +641,14 @@ const RaatnaFinAPI = () => {
   return {
     createSession,
     loginStatus,
-    validatePanNumber,
-    requestOTP,
-    verifyOTP,
-    initiateAadharValidation,
-    fetchAadharRequestStatus,
+    //validatePanNumber,
+    //requestOTP,
+    //verifyOTP,
+    //initiateAadharValidation,
+    //fetchAadharRequestStatus,
     submitBecomePartnerData,
 
-    getInquiryMetaData,
-    sumibtInquiryData,
+    //sumibtInquiryData,
 
     getInquiryFormData,
     getInquiryFormDisplayData,
@@ -741,7 +661,7 @@ const RaatnaFinAPI = () => {
     fetchGridData,
 
     //Need to fix these APIS
-    fetchAadharRequestStatusEventSource,
+    //fetchAadharRequestStatusEventSource,
     updateUserPassword,
     verifyPwd,
     getDashboardEmployeeDataList,

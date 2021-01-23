@@ -134,7 +134,7 @@ export const formsNav: NavBarMetaDataType = {
                 metaProps: {
                   categoryID: "12000001",
                   productID: "12300001",
-                  action: "crm_inquiry_metaData",
+                  action: "crm_inquiry_metaData", //this action is used to determine which api to call Question or Inquiry
                 },
               },
             },

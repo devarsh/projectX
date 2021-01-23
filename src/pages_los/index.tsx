@@ -4,13 +4,17 @@ import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
 import { Content } from "./content";
-import Dashboard from "./pages/dashboard";
+import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
-import { useStyles } from "./style";
-import { Documents } from "pages_los/pages/inquiry/documents";
+import NewInquiry from "./pages/newInquiry";
 import CAM from "./pages/cam";
-import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "./auth";
+import { useStyles } from "./style";
+
+//This is temparoary
+import { Documents } from "./pages/inquiry/documents";
+
+import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
 import { CAMPreviewPage } from "./pages/previewCAM/camPreviewPage";
@@ -31,6 +35,14 @@ const DashbordPages = () => {
           <Routes>
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/newInquiry/*"
+              element={<NewInquiry key="inquiryx" />}
+            />
+            <Route
+              path="/newInquiryQuestion"
+              element={<NewInquiry key="question" />}
+            />
             <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/docs" element={<Documents />} />

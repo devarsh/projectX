@@ -1,10 +1,16 @@
-import { useState, useRef, memo, Fragment, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  memo,
+  Fragment,
+  useCallback,
+} from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CRMSDK } from "registry/fns/crm";
-import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
 import FormWrapper, {
@@ -12,14 +18,13 @@ import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
-import { ConfirmationBox } from "./confirmationBox";
-import { useQuery } from "react-query";
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
 export const InquiryFormWrapper = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [formDisplayValues, setFormDisplayValues] = useState({});
@@ -27,14 +32,11 @@ export const InquiryFormWrapper = () => {
   const submitEndRef = useRef<any>(() => {});
   let metaData = useRef<MetaDataType | null>(null);
 
-  const [confirmation, setConfirmation] = useState(false);
-  const [confirmationError, setConfirmationError] = useState("");
-
   const { state: navigationState } = location;
   const classes = useStyleFormWrapper();
   //passed as NOOP attach it if api returns the same
   let initialValues = {};
-  let currentSeq = 0;
+
   const onSubmitHandlerNew = useCallback((values, displayValues, submitEnd) => {
     setFormDisplayValues(displayValues);
     setFormData(values);
@@ -43,8 +45,6 @@ export const InquiryFormWrapper = () => {
   }, []);
 
   const rejectSubmission = (submissionError) => {
-    setConfirmation(false);
-    setConfirmationError("");
     setIsSubmitting(false);
     setShowDialog(false);
     setFormData({});
@@ -55,17 +55,11 @@ export const InquiryFormWrapper = () => {
   };
 
   const postFormData = async () => {
-    if (confirmation === false) {
-      setConfirmationError("This is a required field");
-      return;
-    }
     setIsSubmitting(true);
     const result = await CRMSDK.submitInquiryQuestionData(
       metaData?.current?.form.submitAction ?? "NO_ACTION_FOUND",
       {
         ...formData,
-        [metaData.current?.form?.confirmationBox?.name ??
-        "confirmation_value_not_found"]: confirmation,
       },
       //@ts-ignore
       navigationState?.metaProps ?? {},
@@ -73,70 +67,59 @@ export const InquiryFormWrapper = () => {
     );
     if (result.status === "success") {
       submitEndRef.current(true);
-      let nextFlow = navigationFlowDecisionMaker(
-        metaData.current?.form?.flow,
-        ++currentSeq,
-        "/thankyou"
-      );
-      navigate(nextFlow.url, {
-        replace: true,
-        state: {
-          flow: metaData.current?.form?.flow ?? [],
-          refID:
-            metaData.current?.form?.refID ??
-            //@ts-ignore
-            navigationState?.metaProps?.refID ??
-            "",
-          prevSeq: currentSeq,
-          metaProps: {
-            action: result.data.questionnaireAction,
-            refID:
-              metaData.current?.form?.refID ??
-              //@ts-ignore
-              navigationState?.metaProps?.refID ??
-              "",
+      //@ts-ignore
+      if (navigationState?.metaProps?.action === "crm_inquiry_metaData") {
+        navigate("/los/newInquiryQuestion", {
+          replace: true,
+          state: {
+            metaProps: {
+              action: result.data.questionnaireAction,
+              refID:
+                metaData.current?.form?.refID ??
+                //@ts-ignore
+                navigationState?.metaProps?.refID ??
+                "",
+            },
           },
-        },
-      });
+        });
+      } else {
+        navigate("/los");
+      }
     } else {
       rejectSubmission("Error submitting form");
     }
   };
 
-  const result = useQuery(
+  //@ts-ignore
+  useEffect(() => {
+    setLoading(true);
+    metaData.current = null;
+    //@ts-ignore need to find how to set router loaction state type (react-router-dom)
+    CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {})
+      .then((result) => {
+        if (Boolean(result?.form?.render?.renderType)) {
+          result.form.render.renderType = "tabs";
+        }
+        metaData.current = result;
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
+    /*eslint-disable react-hooks/exhaustive-deps*/
     //@ts-ignore
-    ["inquiryOrQuestion", "new", navigationState?.metaProps],
-    //@ts-ignore
-    () => CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
-  );
+  }, Object.values(navigationState ?? []));
 
-  const loading = result.isLoading;
-  let isError = result.isError;
-  let errorMsg =
-    typeof result.error === "string"
-      ? result.error
-      : "cannot read error,unknown error";
-  metaData.current = result.data;
-  if (!isError) {
-    if (!isMetaDataValid(metaData.current as MetaDataType)) {
-      isError = true;
-      errorMsg = "Error loading form";
-    }
-  }
-
-  const renderResult = loading ? (
+  const result = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />
-  ) : isError ? (
-    <span>{errorMsg}</span>
+  ) : !isMetaDataValid(metaData.current as MetaDataType) ? (
+    <span>"Error loading form"</span>
   ) : (
     <Fragment>
       <MemoizedFormWrapper
-        key={"dataForm"}
+        //@ts-ignore
+        key={`dataForm`}
         metaData={metaData.current as MetaDataType}
         initialValues={initialValues}
         onSubmitHandler={onSubmitHandlerNew}
@@ -144,7 +127,8 @@ export const InquiryFormWrapper = () => {
       />
       {showDialog ? (
         <ViewFormWrapper
-          key={"viewForm"}
+          //@ts-ignore
+          key={`viewForm`}
           metaData={metaData.current as MetaDataType}
           formDisplayValues={formDisplayValues}
           isSubmitting={isSubmitting}
@@ -153,18 +137,6 @@ export const InquiryFormWrapper = () => {
         >
           {({ classes, isSubmitting, formMetaData, onAccept, onReject }) => (
             <Fragment>
-              <Box width={1} display="flex" justifyContent="flex-start">
-                <ConfirmationBox
-                  name={formMetaData?.confirmationBox?.name}
-                  label={formMetaData?.confirmationBox?.label}
-                  value={confirmation}
-                  error={confirmationError}
-                  handleChange={(e) => {
-                    setConfirmation(e.target.checked);
-                  }}
-                  isSubmitting={isSubmitting}
-                />
-              </Box>
               <Box width={1} display="flex" justifyContent="flex-end">
                 <Button
                   type="button"
@@ -197,5 +169,5 @@ export const InquiryFormWrapper = () => {
       ) : null}
     </Fragment>
   );
-  return renderResult;
+  return result;
 };

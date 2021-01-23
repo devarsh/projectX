@@ -3,7 +3,7 @@ import { TextField } from "components/styledComponent/textfield";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 
-export const UsernameControl = ({
+export const UsernameField = ({
   loginType,
   classes,
   loginState,

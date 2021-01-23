@@ -46,7 +46,6 @@ export const AuthContext = createContext<{
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, inititalState);
   const navigate = useNavigate();
-  console.log(state);
 
   const loginUser = ({
     username,
