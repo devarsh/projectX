@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useRef } from "react";
+import { Fragment, useEffect, useState, useRef, useContext } from "react";
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
@@ -6,7 +6,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { makeStyles } from "@material-ui/core/styles";
-import { APISDK } from "registry/fns/sdk";
+import { GridContext } from "../../context";
 import { filterAtom, filtersAtom, subscribeToFilterChange } from "../../atoms";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,16 +27,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const GroupByExclusiveFilter = (props) => {
+export const GroupByExclusiveFilter = ({
+  accessor,
+  result_type,
+  columnName,
+  dependencies,
+  last,
+}) => {
   const classes = useStyles();
-  const {
-    accessor,
-    result_type,
-    columnName,
-    dependencies,
-    last,
-    gridCode,
-  } = props;
+  //@ts-ignore
+  const { gridCode, getGridColumnFilterData } = useContext(GridContext);
 
   //set indivial filter state
   const setFilterCondition = useSetRecoilState(
@@ -86,7 +86,7 @@ export const GroupByExclusiveFilter = (props) => {
       setFiltersCondition(dependentFilters);
     }
     let currentCount = ++apiCount.current;
-    let promise = APISDK.fetchGridColumnFilterProps(gridCode, {
+    let promise = getGridColumnFilterData({
       accessor,
       result_type,
       filter_conditions: dependentFilters,

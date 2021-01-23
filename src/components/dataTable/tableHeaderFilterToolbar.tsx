@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TableHeaderFilterToolbar = ({ dense, gridCode, filters }) => {
+export const TableHeaderFilterToolbar = ({ dense, filters }) => {
   const classes = useStyles();
   const renderFilters = filters.map((one, index) => {
     const { filterComponentType, filterComponentProps, key } = one;
@@ -24,26 +24,14 @@ export const TableHeaderFilterToolbar = ({ dense, gridCode, filters }) => {
     switch (filterComponentType) {
       case "groupByFilter": {
         if (filterComponentProps.selectType === "multiple") {
-          component = (
-            <GroupByMultipleFilter
-              gridCode={gridCode}
-              {...filterComponentProps}
-            />
-          );
+          component = <GroupByMultipleFilter {...filterComponentProps} />;
         } else {
-          component = (
-            <GroupByExclusiveFilter
-              gridCode={gridCode}
-              {...filterComponentProps}
-            />
-          );
+          component = <GroupByExclusiveFilter {...filterComponentProps} />;
         }
         break;
       }
       case "daysFilter": {
-        component = (
-          <DaysFilter gridCode={gridCode} {...filterComponentProps} />
-        );
+        component = <DaysFilter {...filterComponentProps} />;
         break;
       }
       default: {

@@ -214,61 +214,6 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const fetchGridMetaData = async (gridCode) => {
-    const { data, status } = await internalFetcher("./users/getInquiryData", {
-      body: JSON.stringify({
-        action: "grid_form_data",
-        request_data: {
-          grid_code: gridCode,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-  const fetchGridData = async (gridCode, fromNo, toNo, sortBy, filterBy) => {
-    const { data, status } = await internalFetcher("./users/getInquiryData", {
-      body: JSON.stringify({
-        action: "inquiry_data_pagewise",
-        request_data: {
-          grid_code: gridCode,
-          from_row: fromNo,
-          to_row: toNo,
-          orderby_columns: sortBy,
-          filter_conditions: filterBy,
-        },
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-  const fetchGridColumnFilterProps = async (gridCode, options) => {
-    /*
-    options = {accessor:'column_id',result_type:'getGroups|getRange',filter_conditions:[]}
-    */
-    const { data, status } = await internalFetcher("./users/getInquiryData", {
-      body: JSON.stringify({
-        action: "grid_column_options",
-        request_data: {
-          grid_code: gridCode,
-          ...options,
-        },
-      }),
-    });
-    if (status === "success") {
-      return { status, data: data?.response_data };
-    } else {
-      return { status, data: data?.error_data };
-    }
-  };
-
   const updateUserPassword = async (
     confirmPassword: string,
     phoneNumber: string
@@ -536,10 +481,6 @@ const RaatnaFinAPI = () => {
     getInquiryFormDisplayMetaData,
     getInquiryFormEditMetaData,
     updateInquiryFormData,
-
-    fetchGridMetaData,
-    fetchGridColumnFilterProps,
-    fetchGridData,
 
     //Need to fix these APIS
 

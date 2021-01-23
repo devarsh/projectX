@@ -1,10 +1,11 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import { useSetRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import { GridContext } from "../../context";
 import {
   filterAtom,
   filtersAtom,
@@ -31,9 +32,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const DaysFilter = (props) => {
+export const DaysFilter = ({ accessor, columnName, dependencies, last }) => {
   const classes = useStyles();
-  const { accessor, columnName, dependencies, last, gridCode } = props;
+  //@ts-ignore
+  const { gridCode } = useContext(GridContext);
 
   //set indivial filter state
   const setFilterCondition = useSetRecoilState(

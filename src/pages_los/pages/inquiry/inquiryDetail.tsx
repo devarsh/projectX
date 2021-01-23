@@ -1,13 +1,11 @@
-import { useState, FC } from "react";
+import { useState, FC, Fragment } from "react";
 import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useStyles } from "./style";
-import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { CustomerDetails } from "./customerDetails";
 import { AssignInquiryToEmployee } from "./convertInquirytolead";
-import { queryClient } from "./cache";
+
 import { ViewEditCompositeComponent } from "./viewEditCompositeComponent";
 import { InquiryDetailsTab } from "./inquiryDetailsTab";
 import { Documents } from "./documents";
@@ -34,7 +32,7 @@ export const InquiryDetails: FC<{
   const classes = useStyles();
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <Fragment>
       <InquiryDetailsTab inquiryData={inquiryData} />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
@@ -70,7 +68,6 @@ export const InquiryDetails: FC<{
           <AssignInquiryToEmployee inquiryID={inquiryID} key={3} />
         </TabPanel>
       </Box>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    </Fragment>
   );
 };

@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
 import { AuthSDK } from "registry/fns/auth";
+import { LOSSDK } from "registry/fns/los";
 
 const inititalState: AuthStateType = {
   token: "",
@@ -57,12 +58,12 @@ export const AuthProvider = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
   const navigate = useNavigate();
 
-  const login = (payload) => {
+  const login = (payload: AuthStateType) => {
     dispatch({
       type: "login",
       payload: { ...payload, isLoggedIn: true },
     });
-    console.log(payload);
+    LOSSDK.setToken(payload.token);
     localStorage.setItem("authDetails", JSON.stringify(payload));
     navigate("/los");
   };
@@ -72,6 +73,7 @@ export const AuthProvider = ({ children }) => {
       type: "logout",
       payload: {},
     });
+    LOSSDK.removeToken();
     navigate("/los");
   };
 

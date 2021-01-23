@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import {
   useTable,
   usePagination,
@@ -33,9 +33,9 @@ import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
+import { GridContext } from "./context";
 
 export const DataGrid = ({
-  gridCode,
   label,
   dense,
   localFilterManager,
@@ -63,6 +63,7 @@ export const DataGrid = ({
   gridRefresh,
   setGridRefresh,
 }) => {
+  //@ts-ignore
   const {
     getTableProps,
     getTableBodyProps,
@@ -87,7 +88,6 @@ export const DataGrid = ({
         pageSize: defaultPageSize,
         hiddenColumns: defaultHiddenColumns,
       },
-      gridCode,
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: false,
@@ -239,11 +239,7 @@ export const DataGrid = ({
         handleClose={handleContextMenuClose}
       />
       {allowGlobalFilter ? (
-        <TableHeaderFilterToolbar
-          dense={dense}
-          filters={globalFilterMeta}
-          gridCode={gridCode}
-        />
+        <TableHeaderFilterToolbar dense={dense} filters={globalFilterMeta} />
       ) : null}
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer
