@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   useTable,
   usePagination,
@@ -20,7 +20,6 @@ import { StickyTableHead } from "./stickyTableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import { MyTableRow } from "./focusableTableRow";
-import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import { TablePaginationActions } from "./tablePaginationToolbar";
 import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
@@ -33,7 +32,6 @@ import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
-import { GridContext } from "./context";
 
 export const DataGrid = ({
   label,
@@ -107,7 +105,6 @@ export const DataGrid = ({
     useResizeColumns,
     useBlockLayout,
     useCheckboxColumn
-    //useSequenceColumn
   );
 
   const { pageIndex, pageSize, sortBy, filters } = tableState;
@@ -222,6 +219,7 @@ export const DataGrid = ({
         visibleColumns={availableColumns}
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
+        setGridRefresh={setGridRefresh}
       />
       <TableActionToolbar
         dense={dense}
@@ -247,7 +245,8 @@ export const DataGrid = ({
           position: "relative",
           display: "inline-block",
           overflow: "auto",
-          height: "calc(100vh - 35*8px)",
+          maxHeight: "calc(100vh - 35*8px)",
+          minHeight: "40vh",
         }}
       >
         <Table

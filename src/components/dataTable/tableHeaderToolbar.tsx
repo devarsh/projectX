@@ -1,5 +1,7 @@
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { ColumnVisibility } from "./columnVisibility";
 
@@ -22,6 +24,7 @@ export const TableHeaderToolbar = ({
   visibleColumns,
   defaultHiddenColumns,
   allowColumnHiding,
+  setGridRefresh,
 }) => {
   const classes = useStyles();
   return (
@@ -34,6 +37,15 @@ export const TableHeaderToolbar = ({
       >
         {label}
       </Typography>
+      <IconButton
+        aria-label="more"
+        aria-controls="long-menu"
+        aria-haspopup="true"
+        onClick={() => setGridRefresh(true)}
+      >
+        <RefreshIcon />
+      </IconButton>
+
       {allowColumnHiding ? (
         <ColumnVisibility
           visibleColumns={visibleColumns}
