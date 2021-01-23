@@ -15,7 +15,7 @@ AuthSDK.inititateAPI(
   `${new URL("./auth/", process.env.REACT_APP_API_URL).href}` ?? ""
 );
 LOSSDK.inititateAPI(
-  `${new URL("./users/los/", process.env.REACT_APP_API_URL).href}` ?? ""
+  `${new URL("./los/", process.env.REACT_APP_API_URL).href}` ?? ""
 );
 
 APISDK.createSession(process.env.REACT_APP_API_URL ?? "");

@@ -71,7 +71,7 @@ export const GirdController: FC<{
           }
         });
     },
-    [setTotalRecords, setLoading, setData, globalFiltersState]
+    [setTotalRecords, setLoading, setData, globalFiltersState, context]
   );
 
   return (

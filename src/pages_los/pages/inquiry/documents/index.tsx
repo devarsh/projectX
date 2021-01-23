@@ -6,11 +6,8 @@ import { DocumentContext } from "./context";
 import { FileListingWithConfirmation } from "./fileListing";
 import { APISDK } from "registry/fns/sdk";
 import { useQueries } from "react-query";
-import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { queryClient } from "../cache";
 
-export const Documents1 = () => {
+export const Documents = () => {
   const refID = "1590";
   const [currentView, setCurrentView] = useState<{
     viewName: "folders" | "filesView" | "upload";
@@ -89,14 +86,5 @@ export const Documents1 = () => {
         </Box>
       )}
     </DocumentContext.Provider>
-  );
-};
-
-export const Documents = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Documents1 />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
   );
 };

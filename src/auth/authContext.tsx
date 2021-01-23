@@ -1,4 +1,10 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { useNavigate } from "react-router";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
 import { AuthSDK } from "registry/fns/auth";
@@ -52,18 +58,21 @@ export const AuthProvider = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
   const navigate = useNavigate();
 
-  const login = (payload: AuthStateType, stopNavigation?: boolean) => {
-    dispatch({
-      type: "login",
-      payload: { ...payload, isLoggedIn: true },
-    });
-    LOSSDK.setToken(payload.token);
-    localStorage.setItem("authDetails", JSON.stringify(payload));
-    if (!Boolean(stopNavigation)) {
-      navigate("/los");
-    }
-  };
-  const logout = () => {
+  const login = useCallback(
+    (payload: AuthStateType, stopNavigation?: boolean) => {
+      dispatch({
+        type: "login",
+        payload: { ...payload, isLoggedIn: true },
+      });
+      LOSSDK.setToken(payload.token);
+      localStorage.setItem("authDetails", JSON.stringify(payload));
+      if (!Boolean(stopNavigation)) {
+        navigate("/los");
+      }
+    },
+    [dispatch, navigate]
+  );
+  const logout = useCallback(() => {
     localStorage.removeItem("authDetails");
     dispatch({
       type: "logout",
@@ -71,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     });
     LOSSDK.removeToken();
     navigate("/los");
-  };
+  }, [dispatch, navigate]);
 
   const isLoggedIn = () => {
     return state.isLoggedIn;
@@ -111,7 +120,7 @@ export const AuthProvider = ({ children }) => {
       logout();
       setAuthenticating(false);
     }
-  }, []);
+  }, [login, logout, setAuthenticating]);
 
   return authenticating ? (
     <div>loading...</div>

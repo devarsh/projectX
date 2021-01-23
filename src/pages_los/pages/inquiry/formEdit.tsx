@@ -8,7 +8,7 @@ import FormWrapper, {
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
 import { transformMetaDataForEdit } from "pages_los/utils/transformMetaDataForEdit";
-import { queryClient } from "./cache";
+import { queryClient } from "cache";
 
 interface updateFormDataType {
   data: object;
