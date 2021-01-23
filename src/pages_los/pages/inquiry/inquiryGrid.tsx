@@ -2,7 +2,6 @@ import { useCallback, useEffect } from "react";
 import DataGrid from "components/dataTable";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
-import { queryClient } from "./cache";
 
 export const InquiryGrid = ({
   gridCode,
@@ -17,7 +16,7 @@ export const InquiryGrid = ({
   );
   const getGridData = useCallback(LOSSDK.getGridData(gridCode), [gridCode]);
   const result = useQuery(
-    ["inquiry", "gridMetaData", gridCode],
+    ["gridMetaData", gridCode],
     () => LOSSDK.getGridMetaData(gridCode),
     {
       cacheTime: 100000000,
@@ -25,11 +24,6 @@ export const InquiryGrid = ({
       refetchOnMount: false,
     }
   );
-  useEffect(() => {
-    return () => {
-      queryClient.removeQueries(["gridMetaData", gridCode]);
-    };
-  }, []);
 
   const loading = result.isLoading;
   let isError = result.isError;

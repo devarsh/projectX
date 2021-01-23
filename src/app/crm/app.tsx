@@ -5,14 +5,14 @@ import "registry/fns/registerFnsCRM";
 import IndexPage from "pages_crm";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import cache from "cache";
+import { queryClient } from "cache";
 
 const themeObj = createMuiTheme(theme);
 
 export const App = () => {
   return (
     <ThemeProvider theme={themeObj}>
-      <QueryClientProvider client={cache}>
+      <QueryClientProvider client={queryClient}>
         <IndexPage />
         <ReactQueryDevtools />
       </QueryClientProvider>

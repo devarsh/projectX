@@ -1,11 +1,9 @@
-import { useState, useRef, forwardRef } from "react";
+import { useState, useRef, forwardRef, useEffect, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { InquiryDetails } from "./inquiryDetail";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
-import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { queryClient } from "./cache";
+import { queryClient } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { InquiryGrid } from "./inquiryGrid";
 
@@ -42,9 +40,14 @@ export const Inquiry = () => {
       setSnackBarOpen(true);
     }
   };
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries(["gridMetaData", gridCode]);
+    };
+  }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <Fragment>
       <InquiryGrid
         gridCode={gridCode}
         actions={actions}
@@ -73,7 +76,6 @@ export const Inquiry = () => {
           key={"bottomcenter"}
         />
       </Dialog>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    </Fragment>
   );
 };
