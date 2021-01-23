@@ -23,7 +23,10 @@ table td {
 
 table tr th:first-child,
 table tr td:first-child {
-  width: 40px;
-  min-width: 40px;
   background-color: #fff;
+}
+
+.form-heading {
+  text-align: center;
+  padding: 5px;
 }
