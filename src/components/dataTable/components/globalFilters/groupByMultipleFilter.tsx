@@ -76,6 +76,9 @@ export const GroupByMultipleFilter = ({
       }
     } else {
       setFilterCondition(null);
+      if (last) {
+        setFiltersCondition([...dependentFilters]);
+      }
     }
   }, [value, last, accessor, setFilterCondition, setFiltersCondition]);
 

@@ -75,6 +75,9 @@ export const GroupByExclusiveFilter = ({
       }
     } else {
       setFilterCondition(null);
+      if (last) {
+        setFiltersCondition([...dependentFilters]);
+      }
     }
   }, [value, last, accessor, setFilterCondition, setFiltersCondition]);
 

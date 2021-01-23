@@ -7,7 +7,7 @@ import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "./cache";
 import { ActionTypes } from "components/dataTable";
-import { InquiryGrid } from "./listing";
+import { InquiryGrid } from "./inquiryGrid";
 
 const actions: ActionTypes[] = [
   {

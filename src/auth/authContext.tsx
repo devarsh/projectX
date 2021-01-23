@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
 import { AuthSDK } from "registry/fns/auth";
@@ -58,14 +52,16 @@ export const AuthProvider = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
   const navigate = useNavigate();
 
-  const login = (payload: AuthStateType) => {
+  const login = (payload: AuthStateType, stopNavigation?: boolean) => {
     dispatch({
       type: "login",
       payload: { ...payload, isLoggedIn: true },
     });
     LOSSDK.setToken(payload.token);
     localStorage.setItem("authDetails", JSON.stringify(payload));
-    navigate("/los");
+    if (!Boolean(stopNavigation)) {
+      navigate("/los");
+    }
   };
   const logout = () => {
     localStorage.removeItem("authDetails");
@@ -101,7 +97,7 @@ export const AuthProvider = ({ children }) => {
           localStorageAuthState.token
         ).then((result) => {
           if (result.status === "success") {
-            login(localStorageAuthState);
+            login(localStorageAuthState, true);
           } else {
             logout();
           }
@@ -131,17 +127,4 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const AuthenticatedRoutes = ({ children, unauthenticatedRoute }) => {
-  const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
-  if (authContext !== null && authContext.isLoggedIn()) {
-    return children;
-  } else {
-    setTimeout(() =>
-      navigate(unauthenticatedRoute ?? "/los/auth/login/customer")
-    );
-    return null;
-  }
 };

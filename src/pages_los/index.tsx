@@ -14,7 +14,7 @@ import { useStyles } from "./style";
 //This is temparoary
 import { Documents } from "./pages/inquiry/documents";
 
-import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "auth";
+import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
 const DashbordPages = () => {
@@ -61,9 +61,9 @@ const EntryPoint = () => (
         <Route
           path="/*"
           element={
-            <AuthenticatedRoutes unauthenticatedRoute="./auth/login/customer">
+            <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
               <DashbordPages />
-            </AuthenticatedRoutes>
+            </ProtectedRoutes>
           }
         />
         <Route path="/auth/login/:type" element={<AuthLoginController />} />

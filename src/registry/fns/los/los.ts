@@ -51,7 +51,7 @@ const LOSAPI = () => {
     }
   };
 
-  const getGridMetaData = async (gridType, gridCode) => {
+  const getGridMetaData = async (gridCode) => {
     const { data, status } = await internalFetcher("./grid/metaData", {
       body: JSON.stringify({
         request_data: {
@@ -67,12 +67,7 @@ const LOSAPI = () => {
     }
   };
 
-  const getGridData = (gridType, gridCode) => async (
-    fromNo,
-    toNo,
-    sortBy,
-    filterBy
-  ) => {
+  const getGridData = (gridCode) => async (fromNo, toNo, sortBy, filterBy) => {
     const { data, status } = await internalFetcher("./grid/data", {
       body: JSON.stringify({
         request_data: {
@@ -91,7 +86,7 @@ const LOSAPI = () => {
     }
   };
 
-  const getGridColumnFilterData = (gridType, gridCode) => async (options) => {
+  const getGridColumnFilterData = (gridCode) => async (options) => {
     /*
     options = {accessor:'column_id',result_type:'getGroups|getRange',filter_conditions:[]}
     */
