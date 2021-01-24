@@ -2,15 +2,16 @@ import { Fragment, useContext } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 import { FileUploadControl } from "components/fileUpload/fileControl";
-import { APISDK } from "registry/fns/sdk";
+import { LOSSDK } from "registry/fns/los";
 import { DocumentContext } from "./context";
 import { breadcrumbPathRenderer } from "./utils";
 import { queryClient } from "cache";
 
-export const FileUpload = ({ refID }) => {
+export const FileUpload = ({ type, refID }) => {
   const docContext = useContext(DocumentContext);
   const onSubmitHandler = (files, setLoading, setUserMessage, setProgress) => {
-    APISDK.uploadDocuments(
+    LOSSDK.uploadDocuments(
+      type,
       files as File[],
       docContext?.docID,
       refID,

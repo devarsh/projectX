@@ -15,7 +15,10 @@ export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
       : fileObj?.file
   );
   useEffect(() => {
-    return () => URL.revokeObjectURL(urlObj.current);
+    return () => {
+      const toRemoveURL = urlObj.current;
+      URL.revokeObjectURL(toRemoveURL);
+    };
   }, []);
   return (
     <Fragment>
@@ -35,6 +38,7 @@ export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
           type="application/pdf"
           height="100%"
           width="100%"
+          aria-label="PDF Preview"
         />
       </DialogContent>
     </Fragment>

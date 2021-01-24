@@ -4,11 +4,12 @@ import { FileUpload } from "./fileUpload";
 import Box from "@material-ui/core/Box";
 import { DocumentContext } from "./context";
 import { FileListingWithConfirmation } from "./fileListing";
-import { APISDK } from "registry/fns/sdk";
+import { LOSSDK } from "registry/fns/los";
 import { useQueries } from "react-query";
 
 export const Documents = () => {
   const refID = "1590";
+  const type = "inquiry";
   const [currentView, setCurrentView] = useState<{
     viewName: "folders" | "filesView" | "upload";
     docID: any;
@@ -27,23 +28,27 @@ export const Documents = () => {
 
   const result = useQueries([
     {
-      queryKey: ["docTemplate", refID],
-      queryFn: () => APISDK.getDocumentTemplate(refID),
+      queryKey: ["getDocumentListingTemplate", type, refID],
+      queryFn: () => LOSSDK.getDocumentListingTemplate(type, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     },
     {
-      queryKey: ["docs", refID],
-      queryFn: () => APISDK.getDocuments(refID),
+      queryKey: ["getDocumentsList", type, refID],
+      queryFn: () => LOSSDK.getDocumentsList(type, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     },
   ]);
 
-  const loading = result[0].isLoading || result[1].isLoading;
-  let isError = result[0].isError; // || result[1].isError;
+  const loading =
+    result[0].isLoading ||
+    result[1].isLoading ||
+    result[0].isFetching ||
+    result[1].isFetching;
+  let isError = result[0].isError || result[1].isError;
   //@ts-ignore
   let errorMsg = `${result[0]?.error?.error_msg ?? ""} ${
     //@ts-ignore
@@ -74,9 +79,10 @@ export const Documents = () => {
               isFetching={result[0].isFetching}
             />
           ) : currentView.viewName === "upload" ? (
-            <FileUpload refID={refID} />
+            <FileUpload type={type} refID={refID} />
           ) : currentView.viewName === "filesView" ? (
             <FileListingWithConfirmation
+              type={type}
               key={result[0].dataUpdatedAt}
               refID={refID}
               docs={docs}

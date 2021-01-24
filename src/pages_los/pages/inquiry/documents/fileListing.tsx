@@ -5,7 +5,12 @@ import { FileListing } from "components/fileUpload/fileListing";
 import { DocumentContext } from "./context";
 import { breadcrumbPathRenderer } from "./utils";
 
-export const FileListingWithConfirmation = ({ refID, docs, isFetching }) => {
+export const FileListingWithConfirmation = ({
+  type,
+  refID,
+  docs,
+  isFetching,
+}) => {
   const docContext: any = useContext(DocumentContext);
   const currentViewDocs = docs.reduce((accum, current) => {
     if (String(current.docID) === String(docContext.docID)) {

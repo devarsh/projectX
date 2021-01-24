@@ -4,75 +4,40 @@ import { CommonFetcherResponse, sessionObjType } from "./type";
 import { isBroswer } from "./utils";
 
 const RaatnaFinAPI = () => {
-  let sessionObj: sessionObjType = {
-    loginStatus: false,
-    token: {},
+  let baseURL: URL | null = null;
+  let token: string | null = null;
+  const inititateAPI = (APIURL: string) => {
+    baseURL = new URL(APIURL);
   };
-  let sessionToken;
-  const createSession = async (APIURL: string) => {
-    sessionObj.baseURL = new URL(APIURL);
-    var formdata = new FormData();
-    let existingSession = "";
-    if (isBroswer()) {
-      existingSession = localStorage.getItem("currentAccessToken") ?? "";
+  const setToken = (accessToken: string) => {
+    token = accessToken;
+  };
+  const removeToken = () => {
+    token = null;
+  };
+  const isAPIInitialized = () => {
+    if (token === null && baseURL === null) {
+      return false;
     }
-    formdata.append("tokenId", existingSession);
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
-    const url = new URL("./Login", sessionObj.baseURL);
-    sessionToken = fetch(
-      url.href,
-      //@ts-ignore
-      requestOptions
-    );
-    sessionToken
-      .then((response) => response.json())
-      .then((result) => {
-        verifyRequest(result);
-      });
-    sessionToken.catch((error) => {
-      verifyRequest(error);
-    });
-  };
-  const verifyRequest = (data) => {
-    if (data["access_token"] && data["refresh_token"]) {
-      sessionObj.loginStatus = true;
-      sessionObj.token = data;
-      if (isBroswer()) {
-        localStorage.setItem(
-          "currentAccessToken",
-          sessionObj?.token?.access_token ?? ""
-        );
-      }
-    } else {
-      sessionObj.loginStatus = false;
-    }
-  };
-  const loginStatus = () => {
-    return sessionObj.loginStatus;
+    return true;
   };
 
   const internalFetcher = async (
     url: string,
     payload: any
   ): Promise<CommonFetcherResponse> => {
+    if (!isAPIInitialized()) {
+      return {
+        status: "failure",
+        data: "Invalid token or API not initialized",
+      };
+    }
     try {
-      await sessionToken;
-      await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
-      if (sessionObj.loginStatus === false) {
-        return {
-          status: "failure",
-          data: new Error("session expired"),
-        };
-      }
-      let response = await fetch(new URL(url, sessionObj.baseURL).href, {
+      let response = await fetch(new URL(url, baseURL as URL).href, {
         method: "POST",
         ...payload,
         headers: new Headers({
-          Authorization: `Bearer ${sessionObj?.token?.access_token}`,
+          Authorization: `Bearer ${token}`,
         }),
       });
       if (String(response.status) === "200") {
@@ -257,121 +222,7 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const uploadDocuments = async (
-    files: File[],
-    docID: string,
-    refID: string,
-    progressHandler: any = () => {},
-    completeHandler: any = () => {}
-  ) => {
-    await sessionToken;
-    await wait(); //wait of 1ms to execute code in next event loop cycle to make sure sessionToken has time to update sessionObj
-    const newURL = new URL("./users/crm/document/upload", sessionObj.baseURL)
-      .href;
-    let formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("file", files[i]);
-    }
-    formData.append("refID", refID);
-    formData.append("docID", docID);
-    formData.append("action", "upload");
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", newURL, true);
-    xhr.setRequestHeader(
-      "Authorization",
-      `Bearer ${sessionObj?.token?.access_token}`
-    );
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) {
-        var precentage = Math.round((e.loaded / e.total) * 100);
-        progressHandler(precentage);
-      } else {
-        progressHandler(Infinity);
-      }
-    };
-    xhr.onload = (e) => {
-      try {
-        const result = JSON.parse(xhr.responseText);
-        if (result.status === "0") {
-          completeHandler({ status: "success", data: result?.response_data });
-        } else {
-          completeHandler({ status: "failure", data: result?.error_data });
-        }
-      } catch (e) {
-        completeHandler({
-          status: "failure",
-          data: { message: "unknown error occured" },
-        });
-      }
-    };
-    xhr.send(formData);
-  };
-
-  const getDocumentTemplate = async (refID: string) => {
-    const { data, status } = await internalFetcher(
-      "./users/crm/document/template",
-      {
-        body: JSON.stringify({
-          action: "document_template",
-          request_data: {
-            refID: refID,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getDocuments = async (refID: string) => {
-    const { data, status } = await internalFetcher(
-      "./users/crm/document/template",
-      {
-        body: JSON.stringify({
-          action: "view_document",
-          request_data: {
-            refID: refID,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const verifyDocuments = async (refID: string, flag: string) => {
-    const { data, status } = await internalFetcher(
-      "./users/crm/document/vefiy",
-      {
-        body: JSON.stringify({
-          action: "verify_document",
-          request_data: {
-            refID: refID,
-            docStatus: flag,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   return {
-    createSession,
-    loginStatus,
-
     submitBecomePartnerData,
 
     //Need to fix these APIS
@@ -387,10 +238,6 @@ const RaatnaFinAPI = () => {
     inquiryAssignToLead,
 
     getHealthCheckScore,
-    uploadDocuments,
-    getDocumentTemplate,
-    getDocuments,
-    verifyDocuments,
 
     //login API's for customer and employee
   };
