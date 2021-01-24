@@ -180,30 +180,40 @@ export const DataGrid = ({
     onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
   }, [onFetchDataDebounced, pageIndex, pageSize, sortBy, filters]);
 
+  //remove dependencies other than gridRefresh if it causes issues -not checked code
   useEffect(() => {
     if (gridRefresh === true) {
       onFetchDataDebounced({ pageIndex, pageSize, sortBy, filters });
       setGridRefresh(false);
     }
-  }, [gridRefresh]);
+  }, [
+    gridRefresh,
+    setGridRefresh,
+    onFetchDataDebounced,
+    pageIndex,
+    pageSize,
+    sortBy,
+    filters,
+  ]);
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_, newPage) => {
     gotoPage(newPage);
   };
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
 
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     setAllFilters([]);
     setSortBy([]);
     gotoPage(0);
     localFilterManager.clearFilterState();
   }, [
+    globalFiltersState, //this is important do not remove
     setAllFilters,
     setSortBy,
     gotoPage,
-    globalFiltersState,
     localFilterManager.clearFilterState,
   ]);
 

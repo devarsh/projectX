@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { GridMetaDataType, ActionTypes } from "./types";
@@ -38,6 +38,9 @@ export const GridWrapper: FC<{
     actions,
     setAction,
   });
+  //We dont know if setGridRefresh is memozied or not
+  /*eslint-disable react-hooks/exhaustive-deps*/
+  setGridRefresh = useCallback(setGridRefresh, []);
   return (
     <DndProvider backend={HTML5Backend}>
       <GridProvider

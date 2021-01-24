@@ -15,8 +15,8 @@ export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
       : fileObj?.file
   );
   useEffect(() => {
+    let toRemoveURL = urlObj.current;
     return () => {
-      const toRemoveURL = urlObj.current;
       URL.revokeObjectURL(toRemoveURL);
     };
   }, []);
@@ -52,7 +52,8 @@ export const ImageViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
       : fileObj?.file
   );
   useEffect(() => {
-    return () => URL.revokeObjectURL(urlObj.current);
+    let toRemoveURL = urlObj.current;
+    return () => URL.revokeObjectURL(toRemoveURL);
   }, []);
   return (
     <Fragment>
@@ -67,7 +68,7 @@ export const ImageViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
         </IconButton>
       </DialogActions>
       <DialogContent>
-        <img width="60%" src={urlObj.current} />
+        <img width="60%" src={urlObj.current} alt="Preview of document" />
       </DialogContent>
     </Fragment>
   );

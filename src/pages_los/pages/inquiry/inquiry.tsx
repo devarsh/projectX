@@ -1,4 +1,4 @@
-import { useState, useRef, forwardRef, useEffect, Fragment } from "react";
+import { useState, useRef, forwardRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { InquiryTabs } from "./inquiryTabs";
 import Slide from "@material-ui/core/Slide";

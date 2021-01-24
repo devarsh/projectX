@@ -284,7 +284,6 @@ const LoansDetailsDisplay = ({ data }) => {
 };
 
 const LoanHistoryDetails = ({ history, expanded, handleChange }) => {
-  const classes = useStyles();
   return (
     <div>
       <Accordion expanded={expanded} onChange={handleChange}>

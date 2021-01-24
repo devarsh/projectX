@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { APISDK } from "registry/fns/sdk";
 import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, {

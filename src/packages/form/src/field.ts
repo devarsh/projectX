@@ -92,6 +92,9 @@ export const useField = ({
   //This effect will register and unregister fields when they mount and unmount
   //set initial value of the field, if initial value is provided.
   //If an option is set not resetField on unmount unregister will not be called.
+
+  //Cannot add postValidationSetCrossFieldValues and handleBlur so have to disable esliting*/
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const currentfield = fieldKeyRef.current;
     //Since our keys are prepended with formName, remove the formName and get the filedValue from

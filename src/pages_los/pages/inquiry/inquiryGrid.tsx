@@ -11,10 +11,12 @@ export const InquiryGrid = ({
   gridRefresh,
   setGridRefresh,
 }) => {
+  /* eslint-disable react-hooks/exhaustive-deps */
   const getGridColumnFilterData = useCallback(
     LOSSDK.getGridColumnFilterData(gridCode),
     [gridCode]
   );
+  /* eslint-disable react-hooks/exhaustive-deps */
   const getGridData = useCallback(LOSSDK.getGridData(gridCode), [gridCode]);
   const result = useQuery(
     ["gridMetaData", gridCode],
@@ -29,7 +31,7 @@ export const InquiryGrid = ({
     return () => {
       queryClient.removeQueries(["gridMetaData", gridCode]);
     };
-  }, []);
+  }, [gridCode]);
 
   const loading = result.isLoading;
   let isError = result.isError;

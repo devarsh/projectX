@@ -1,37 +1,13 @@
-//import { OptionsProps } from "components/common/types";
-import { CommonFetcherResponse, sessionObjType } from "./type";
-
-import { isBroswer } from "./utils";
+import { CommonFetcherResponse } from "./type";
 
 const RaatnaFinAPI = () => {
   let baseURL: URL | null = null;
   let token: string | null = null;
-  const inititateAPI = (APIURL: string) => {
-    baseURL = new URL(APIURL);
-  };
-  const setToken = (accessToken: string) => {
-    token = accessToken;
-  };
-  const removeToken = () => {
-    token = null;
-  };
-  const isAPIInitialized = () => {
-    if (token === null && baseURL === null) {
-      return false;
-    }
-    return true;
-  };
 
   const internalFetcher = async (
     url: string,
     payload: any
   ): Promise<CommonFetcherResponse> => {
-    if (!isAPIInitialized()) {
-      return {
-        status: "failure",
-        data: "Invalid token or API not initialized",
-      };
-    }
     try {
       let response = await fetch(new URL(url, baseURL as URL).href, {
         method: "POST",
