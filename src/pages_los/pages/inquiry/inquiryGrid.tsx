@@ -1,7 +1,8 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import DataGrid from "components/dataTable";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
+import { queryClient } from "cache";
 
 export const InquiryGrid = ({
   gridCode,
@@ -24,6 +25,11 @@ export const InquiryGrid = ({
       refetchOnMount: false,
     }
   );
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries(["gridMetaData", gridCode]);
+    };
+  }, []);
 
   const loading = result.isLoading;
   let isError = result.isError;

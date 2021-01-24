@@ -3,7 +3,6 @@ import Dialog from "@material-ui/core/Dialog";
 import { InquiryTabs } from "./inquiryTabs";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
-import { queryClient } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { InquiryGrid } from "./inquiryGrid";
 
@@ -40,11 +39,6 @@ export const Inquiry = () => {
       setSnackBarOpen(true);
     }
   };
-  useEffect(() => {
-    return () => {
-      queryClient.removeQueries(["gridMetaData", gridCode]);
-    };
-  }, []);
 
   return (
     <Fragment>

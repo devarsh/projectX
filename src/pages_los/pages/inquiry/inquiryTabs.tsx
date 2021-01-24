@@ -7,7 +7,7 @@ import { CustomerDetails } from "./customerDetails";
 import { AssignInquiryToEmployee } from "./convertInquirytolead";
 
 import { ViewEditCompositeComponent } from "./viewEdit";
-import { InquiryDetailsTab } from "./inquiryDetailsTab";
+import { HeaderDetailsTab } from "./headerDetailsTab";
 import { Documents } from "./documents";
 
 const TabPanel = ({ value, index, children }) => {
@@ -33,7 +33,7 @@ export const InquiryTabs: FC<{
 
   return (
     <Fragment>
-      <InquiryDetailsTab inquiryData={inquiryData} />
+      <HeaderDetailsTab inquiryData={inquiryData} />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
