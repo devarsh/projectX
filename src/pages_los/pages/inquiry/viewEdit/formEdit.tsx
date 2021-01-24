@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { APISDK } from "registry/fns/sdk";
+import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, {
   isMetaDataValid,
@@ -24,7 +25,7 @@ const updateFormData = async ({
   inquiryID,
   inquiryType,
 }: updateFormDataType) => {
-  return APISDK.updateInquiryFormData(inquiryID, inquiryType, data);
+  return LOSSDK.updateData(inquiryType, inquiryID, data);
 };
 
 export const InquiryEditFormWrapper: FC<{
@@ -59,8 +60,8 @@ export const InquiryEditFormWrapper: FC<{
       });
     },
     onSuccess: (data, { endSubmit }) => {
-      queryClient.refetchQueries(["viewFormData", inquiryType, inquiryID]);
-      queryClient.refetchQueries(["editFormData", inquiryType, inquiryID]);
+      queryClient.refetchQueries(["getViewData", inquiryType, inquiryID]);
+      queryClient.refetchQueries(["getEditData", inquiryType, inquiryID]);
       endSubmit(true, "");
       setUserMessage({
         type: "success",
@@ -89,15 +90,15 @@ export const InquiryEditFormWrapper: FC<{
 
   const result = useQueries([
     {
-      queryKey: ["editMetaData", inquiryType, inquiryID],
-      queryFn: () => APISDK.getInquiryFormEditMetaData(inquiryID, inquiryType),
+      queryKey: ["getEditMetaData", inquiryType, inquiryID],
+      queryFn: () => LOSSDK.getEditMetaData(inquiryType, inquiryID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     },
     {
-      queryKey: ["editFormData", inquiryType, inquiryID],
-      queryFn: () => APISDK.getInquiryFormData(inquiryID, inquiryType),
+      queryKey: ["getEditData", inquiryType, inquiryID],
+      queryFn: () => LOSSDK.getEditData(inquiryType, inquiryID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,

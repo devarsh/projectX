@@ -1,6 +1,6 @@
 import { useState, useRef, forwardRef, useEffect, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { InquiryDetails } from "./inquiryDetail";
+import { InquiryTabs } from "./inquiryTabs";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
 import { queryClient } from "cache";
@@ -62,7 +62,7 @@ export const Inquiry = () => {
         TransitionComponent={Transition}
         onClose={handleDialogClose}
       >
-        <InquiryDetails
+        <InquiryTabs
           inquiryData={action?.rows[0]}
           inquiryID={action?.rows[0].id}
           setDisableDialogClose={setDisableDialogClose}

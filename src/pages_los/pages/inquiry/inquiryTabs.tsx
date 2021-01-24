@@ -6,7 +6,7 @@ import { useStyles } from "./style";
 import { CustomerDetails } from "./customerDetails";
 import { AssignInquiryToEmployee } from "./convertInquirytolead";
 
-import { ViewEditCompositeComponent } from "./viewEditCompositeComponent";
+import { ViewEditCompositeComponent } from "./viewEdit";
 import { InquiryDetailsTab } from "./inquiryDetailsTab";
 import { Documents } from "./documents";
 
@@ -14,7 +14,7 @@ const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
 
-export const InquiryDetails: FC<{
+export const InquiryTabs: FC<{
   inquiryData: any;
   inquiryID: string;
   setDisableDialogClose: any;

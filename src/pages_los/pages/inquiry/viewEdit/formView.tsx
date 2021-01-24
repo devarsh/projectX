@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { APISDK } from "registry/fns/sdk";
+import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
 import {
   ViewFormWrapper,
@@ -18,19 +18,20 @@ export const InquiryViewFormWrapper: FC<{
 }> = ({ inquiryID, inquiryType, moveToEditForm }) => {
   const result = useQueries([
     {
-      queryKey: ["viewMetaData", inquiryType, inquiryID],
-      queryFn: () =>
-        APISDK.getInquiryFormDisplayMetaData(inquiryID, inquiryType),
+      queryKey: ["getViewMetaData", inquiryType, inquiryID],
+      queryFn: () => LOSSDK.getViewMetaData(inquiryType, inquiryID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      retry: 0,
     },
     {
-      queryKey: ["viewFormData", inquiryType, inquiryID],
-      queryFn: () => APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
+      queryKey: ["getViewData", inquiryType, inquiryID],
+      queryFn: () => LOSSDK.getViewData(inquiryType, inquiryID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      retry: 0,
     },
   ]);
   const dataUniqueKey = result[1].dataUpdatedAt;

@@ -105,6 +105,112 @@ const LOSAPI = () => {
     }
   };
 
+  const getViewMetaData = async (type: string, refID: string) => {
+    if (
+      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
+    ) {
+      throw { error_msg: "invalid data requested" };
+    }
+    const { data, status } = await internalFetcher(
+      `./${type}/metaData/get/view`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getViewData = async (type: string, refID: string) => {
+    if (
+      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
+    ) {
+      throw { error_msg: "invalid data requested" };
+    }
+    const { data, status } = await internalFetcher(`./${type}/data/view`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getEditMetaData = async (type: string, refID: string) => {
+    if (
+      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
+    ) {
+      throw { error_msg: "invalid data requested" };
+    }
+    const { data, status } = await internalFetcher(
+      `./${type}/metaData/get/edit`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getEditData = async (type: string, refID: string) => {
+    if (
+      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
+    ) {
+      throw { error_msg: "invalid data requested" };
+    }
+    const { data, status } = await internalFetcher(`./${type}/data/get`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const updateData = async (type: string, refID: string, formData: any) => {
+    const { data, status } = await internalFetcher(`./${type}/data/put`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -112,6 +218,11 @@ const LOSAPI = () => {
     getGridMetaData,
     getGridData,
     getGridColumnFilterData,
+    getViewMetaData,
+    getViewData,
+    getEditMetaData,
+    getEditData,
+    updateData,
   };
 };
 

@@ -110,109 +110,7 @@ const RaatnaFinAPI = () => {
     }
   };
 
-  const getInquiryFormData = async (inquiryID: string, type: string) => {
-    const { data, status } = await internalFetcher("./users/inquiry", {
-      body: JSON.stringify({
-        action:
-          type === "inquiry"
-            ? "crm_inquiry_edit_data"
-            : "crm_questionnaire_edit_data",
-        request_data: {
-          refID: inquiryID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-  const getInquiryFormDisplayData = async (inquiryID: string, type: string) => {
-    const { data, status } = await internalFetcher("./users/inquiry", {
-      body: JSON.stringify({
-        action:
-          type === "inquiry"
-            ? "crm_inquiry_view_data"
-            : "crm_questionnaire_view_data",
-        request_data: {
-          refID: inquiryID,
-        },
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
   //change this API to fetch against refID
-  const getInquiryFormDisplayMetaData = async (
-    inquiryID: string,
-    type: string
-  ) => {
-    const { data, status } = await internalFetcher("./users/getMetaData", {
-      body: JSON.stringify({
-        action:
-          type === "inquiry"
-            ? "crm_inquiry_view_metaData"
-            : "crm_questionnaire_view_metaData",
-        request_data: {
-          refID: inquiryID,
-        },
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getInquiryFormEditMetaData = async (
-    inquiryID: string,
-    type: string
-  ) => {
-    const { data, status } = await internalFetcher("./users/getMetaData", {
-      body: JSON.stringify({
-        action:
-          type === "inquiry"
-            ? "crm_inquiry_edit_metaData"
-            : "crm_questionnaire_edit_metaData",
-        request_data: {
-          refID: inquiryID,
-        },
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const updateInquiryFormData = async (
-    InquiryID: string,
-    type: string,
-    fromData: any
-  ) => {
-    const { data, status } = await internalFetcher("./users/inquiry", {
-      body: JSON.stringify({
-        action: type === "inquiry" ? "inquiry_update" : "questionnaire_update",
-        request_data: {
-          refID: InquiryID,
-          ...fromData,
-        },
-      }),
-    });
-    console.log(data, status);
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
 
   const updateUserPassword = async (
     confirmPassword: string,
@@ -475,12 +373,6 @@ const RaatnaFinAPI = () => {
     loginStatus,
 
     submitBecomePartnerData,
-
-    getInquiryFormData,
-    getInquiryFormDisplayData,
-    getInquiryFormDisplayMetaData,
-    getInquiryFormEditMetaData,
-    updateInquiryFormData,
 
     //Need to fix these APIS
 

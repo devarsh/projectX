@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import DataGrid from "components/dataTable";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
