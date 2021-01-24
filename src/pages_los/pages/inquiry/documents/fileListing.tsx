@@ -4,6 +4,7 @@ import Link from "@material-ui/core/Link";
 import { FileListing } from "components/fileUpload/fileListing";
 import { DocumentContext } from "./context";
 import { breadcrumbPathRenderer } from "./utils";
+import { LOSSDK } from "registry/fns/los";
 
 export const FileListingWithConfirmation = ({
   type,
@@ -15,9 +16,9 @@ export const FileListingWithConfirmation = ({
   const currentViewDocs = docs.reduce((accum, current) => {
     if (String(current.docID) === String(docContext.docID)) {
       accum.push({
-        file: current.docUUID,
-        name: current.docName,
-        mimeType: current.docContenttype,
+        file: LOSSDK.constructDocumentDownloadURL(type, current.file),
+        name: current.name,
+        mimeType: current.mimeType,
       });
     }
     return accum;

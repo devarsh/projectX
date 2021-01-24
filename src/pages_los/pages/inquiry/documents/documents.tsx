@@ -7,9 +7,7 @@ import { FileListingWithConfirmation } from "./fileListing";
 import { LOSSDK } from "registry/fns/los";
 import { useQueries } from "react-query";
 
-export const Documents = () => {
-  const refID = "1590";
-  const type = "inquiry";
+export const Documents = ({ inquiryID, inquiryType }) => {
   const [currentView, setCurrentView] = useState<{
     viewName: "folders" | "filesView" | "upload";
     docID: any;
@@ -28,15 +26,15 @@ export const Documents = () => {
 
   const result = useQueries([
     {
-      queryKey: ["getDocumentListingTemplate", type, refID],
-      queryFn: () => LOSSDK.getDocumentListingTemplate(type, refID),
+      queryKey: ["getDocumentListingTemplate", inquiryType, inquiryID],
+      queryFn: () => LOSSDK.getDocumentListingTemplate(inquiryType, inquiryID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     },
     {
-      queryKey: ["getDocumentsList", type, refID],
-      queryFn: () => LOSSDK.getDocumentsList(type, refID),
+      queryKey: ["getDocumentsList", inquiryType, inquiryID],
+      queryFn: () => LOSSDK.getDocumentsList(inquiryType, inquiryID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
@@ -79,12 +77,12 @@ export const Documents = () => {
               isFetching={result[0].isFetching}
             />
           ) : currentView.viewName === "upload" ? (
-            <FileUpload type={type} refID={refID} />
+            <FileUpload type={inquiryType} refID={inquiryID} />
           ) : currentView.viewName === "filesView" ? (
             <FileListingWithConfirmation
-              type={type}
+              type={inquiryType}
               key={result[0].dataUpdatedAt}
-              refID={refID}
+              refID={inquiryID}
               docs={docs}
               isFetching={result[0].isFetching}
             />

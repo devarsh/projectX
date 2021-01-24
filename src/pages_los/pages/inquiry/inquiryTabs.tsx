@@ -53,13 +53,13 @@ export const InquiryTabs: FC<{
         <TabPanel value={currentTab} index="1" key={1}>
           <ViewEditCompositeComponent
             inquiryID={inquiryID}
-            inquiryType="questionnaire"
+            inquiryType="inquiryQuestion"
             setDisableDialogClose={setDisableDialogClose}
             isInquiryEditedRef={isInquiryEditedRef}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <Documents />
+          <Documents inquiryID={inquiryID} inquiryType="inquiry" />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
           <CustomerDetails inquiryID={inquiryID} inquiryType="inquiry" />

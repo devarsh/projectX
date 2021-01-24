@@ -231,14 +231,13 @@ const LOSAPI = () => {
         data: "Invalid token or API not initialized",
       };
     }
-    const newURL = new URL(`./${type}/documents/upload`, baseURL as URL).href;
+    const newURL = new URL(`./${type}/document/upload`, baseURL as URL).href;
     let formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append("file", files[i]);
     }
     formData.append("refID", refID);
     formData.append("docID", docID);
-    formData.append("action", "upload");
     let xhr = new XMLHttpRequest();
     xhr.open("POST", newURL, true);
     xhr.setRequestHeader("Authorization", `Bearer ${token}`);
@@ -380,7 +379,7 @@ const LOSAPI = () => {
     }
     let downloadURL = new URL(`./${type}/document/download`, baseURL as URL)
       .href;
-    return `${downloadURL}?docUUD=${documentID}&token=${token}`;
+    return `${downloadURL}?docUUID=${documentID}&token=${token}`;
   };
 
   return {

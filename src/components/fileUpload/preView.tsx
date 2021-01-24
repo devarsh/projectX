@@ -20,6 +20,7 @@ export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
       URL.revokeObjectURL(toRemoveURL);
     };
   }, []);
+  console.log(urlObj);
   return (
     <Fragment>
       <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
@@ -33,11 +34,9 @@ export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
         </IconButton>
       </DialogActions>
       <DialogContent>
-        <object
-          data={`${urlObj.current}#zoom=100&toolbar=0&statusbar=0&navpanes=0`}
-          type="application/pdf"
-          height="100%"
-          width="100%"
+        <iframe
+          src={`${urlObj.current}`}
+          style={{ height: "100%", width: "100%" }}
           aria-label="PDF Preview"
         />
       </DialogContent>

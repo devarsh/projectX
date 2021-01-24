@@ -12,7 +12,6 @@ import CAM from "./pages/cam";
 import { useStyles } from "./style";
 
 //This is temparoary
-import { Documents } from "./pages/inquiry/documents";
 
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -43,7 +42,6 @@ const DashbordPages = () => {
             />
             <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/docs" element={<Documents />} />
             <Route path="/cam" element={<CAM />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
