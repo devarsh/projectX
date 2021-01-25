@@ -80,11 +80,12 @@ export const Documents: FC<DocumentType> = ({ inquiryID, inquiryType }) => {
       ) : (
         <Box style={{ maxHeight: "80vh", overflowY: "scroll" }}>
           {currentView.viewName === "folders" ? (
-            <Folders metaData={metaData} />
+            <Folders metaData={metaData} key={result[0].dataUpdatedAt} />
           ) : currentView.viewName === "upload" ? (
             <FileUpload type={inquiryType} refID={inquiryID} />
           ) : currentView.viewName === "filesView" ? (
             <FileListingWithConfirmation
+              key={`${result[0].dataUpdatedAt}-${result[1].dataUpdatedAt}`}
               type={inquiryType}
               refID={inquiryID}
               docs={docs}

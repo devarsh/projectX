@@ -32,8 +32,9 @@ export const FileUpload = ({ type, refID }) => {
             message: result?.data?.message ?? "",
           });
           docContext?.setViewPath({
-            path: docContext.path,
+            groupID: docContext.groupID,
             docID: docContext.docID,
+            path: docContext.path,
           });
         } else {
           setUserMessage({

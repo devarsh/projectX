@@ -1,10 +1,10 @@
 import { useState, useRef, forwardRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { InquiryTabs } from "./inquiryTabs";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
+import { DetailsView } from "./detailsView";
+import { ListingGrid } from "./listingGrid";
 import { ActionTypes } from "components/dataTable";
-import { InquiryGrid } from "./inquiryGrid";
 
 const actions: ActionTypes[] = [
   {
@@ -20,7 +20,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const Inquiry = () => {
+export const Product = () => {
   let gridCode = "TRN/001";
   const [action, setAction] = useState<null | any>(null);
   const [disableDialogClose, setDisableDialogClose] = useState(false);
@@ -42,7 +42,7 @@ export const Inquiry = () => {
 
   return (
     <Fragment>
-      <InquiryGrid
+      <ListingGrid
         gridCode={gridCode}
         actions={actions}
         setAction={setAction}
@@ -56,7 +56,7 @@ export const Inquiry = () => {
         TransitionComponent={Transition}
         onClose={handleDialogClose}
       >
-        <InquiryTabs
+        <DetailsView
           inquiryData={action?.rows[0]}
           inquiryID={action?.rows[0].id}
           setDisableDialogClose={setDisableDialogClose}

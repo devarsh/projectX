@@ -4,7 +4,7 @@ import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 import { queryClient } from "cache";
 
-export const InquiryGrid = ({
+export const ListingGrid = ({
   gridCode,
   actions,
   setAction,

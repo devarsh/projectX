@@ -2,7 +2,7 @@ import Box from "@material-ui/core/Box";
 import { useStyles } from "./style";
 import { format } from "date-fns";
 
-export const HeaderDetailsTab = ({ inquiryData }) => {
+export const HeaderDetails = ({ inquiryData }) => {
   const classes = useStyles();
   let dateValue;
   try {

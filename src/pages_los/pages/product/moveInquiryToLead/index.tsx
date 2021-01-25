@@ -1,1 +1,1 @@
-export * from "./inquiryToLead";
+export * from "./moveInquiryToLead";

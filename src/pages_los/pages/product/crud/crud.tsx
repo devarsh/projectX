@@ -3,7 +3,7 @@ import Alert from "@material-ui/lab/Alert";
 import { InquiryEditFormWrapper } from "./formEdit";
 import { InquiryViewFormWrapper } from "./formView";
 
-export const ViewEditCompositeComponent = ({
+export const CRUD = ({
   inquiryID,
   inquiryType,
   setDisableDialogClose,

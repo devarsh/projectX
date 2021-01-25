@@ -1,1 +1,1 @@
-export * from "./headerDetailsTab";
+export * from "./headerDetails";

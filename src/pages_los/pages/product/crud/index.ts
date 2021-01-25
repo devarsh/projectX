@@ -1,1 +1,1 @@
-export * from "./viewEditCompositeComponent";
+export * from "./crud";

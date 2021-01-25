@@ -25,7 +25,7 @@ const assignLead = async ({
   return await APISDK.inquiryAssignToLead(inquiryID, employeeID, inquiryStatus);
 };
 
-export const AssignInquiryToEmployee = ({ inquiryID }) => {
+export const MoveInquiryToLead = ({ inquiryID }) => {
   let branchCode = "0";
   let inquiryStatus = "C";
   const classes = useStyles();
