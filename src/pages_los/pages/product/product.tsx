@@ -26,14 +26,14 @@ export const Product = () => {
   const [disableDialogClose, setDisableDialogClose] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [gridRefresh, setGridRefresh] = useState(false);
-  const isInquiryEditedRef = useRef(false);
+  const isProductEditedRef = useRef(false);
 
   const handleDialogClose = () => {
     if (!disableDialogClose) {
       setAction(null);
-      if (isInquiryEditedRef.current) {
+      if (isProductEditedRef.current) {
         setGridRefresh(true);
-        isInquiryEditedRef.current = false;
+        isProductEditedRef.current = false;
       }
     } else {
       setSnackBarOpen(true);
@@ -57,10 +57,10 @@ export const Product = () => {
         onClose={handleDialogClose}
       >
         <DetailsView
-          inquiryData={action?.rows[0]}
-          inquiryID={action?.rows[0].id}
+          productGridData={action?.rows[0]}
+          refID={action?.rows[0].id}
           setDisableDialogClose={setDisableDialogClose}
-          isInquiryEditedRef={isInquiryEditedRef}
+          isProductEditedRef={isProductEditedRef}
         />
         <Snackbar
           open={snackBarOpen}

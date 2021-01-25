@@ -15,30 +15,30 @@ interface updateFormDataType {
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
-  inquiryID: string;
-  inquiryType: "questionnaire" | "inquiry";
+  productType: string;
+  refID: string;
 }
 
 const updateFormData = async ({
   data,
-  inquiryID,
-  inquiryType,
+  productType,
+  refID,
 }: updateFormDataType) => {
-  return LOSSDK.updateData(inquiryType, inquiryID, data);
+  return LOSSDK.updateData(productType, refID, data);
 };
 
-export const InquiryEditFormWrapper: FC<{
-  inquiryID: string;
-  inquiryType: "questionnaire" | "inquiry";
+export const EditForm: FC<{
+  refID: string;
+  productType: string;
   moveToViewForm: any;
   setUserMessage: any;
-  isInquiryEditedRef: any;
+  isProductEditedRef: any;
 }> = ({
-  inquiryID,
-  inquiryType,
+  refID,
+  productType,
   moveToViewForm,
   setUserMessage,
-  isInquiryEditedRef,
+  isProductEditedRef,
 }) => {
   if (typeof setUserMessage !== "function") {
     setUserMessage = () => alert("userMessage function not set");
@@ -59,14 +59,14 @@ export const InquiryEditFormWrapper: FC<{
       });
     },
     onSuccess: (data, { endSubmit }) => {
-      queryClient.refetchQueries(["getViewData", inquiryType, inquiryID]);
-      queryClient.refetchQueries(["getEditData", inquiryType, inquiryID]);
+      queryClient.refetchQueries(["getViewData", productType, refID]);
+      queryClient.refetchQueries(["getEditData", productType, refID]);
       endSubmit(true, "");
       setUserMessage({
         type: "success",
         message: data?.msg ?? "Changes successfully saved",
       });
-      isInquiryEditedRef.current = true;
+      isProductEditedRef.current = true;
       moveToViewForm();
     },
   });
@@ -82,22 +82,22 @@ export const InquiryEditFormWrapper: FC<{
       displayData,
       endSubmit,
       setFieldError,
-      inquiryID,
-      inquiryType,
+      refID,
+      productType,
     });
   };
 
   const result = useQueries([
     {
-      queryKey: ["getEditMetaData", inquiryType, inquiryID],
-      queryFn: () => LOSSDK.getEditMetaData(inquiryType, inquiryID),
+      queryKey: ["getEditMetaData", productType, refID],
+      queryFn: () => LOSSDK.getEditMetaData(productType, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     },
     {
-      queryKey: ["getEditData", inquiryType, inquiryID],
-      queryFn: () => LOSSDK.getEditData(inquiryType, inquiryID),
+      queryKey: ["getEditData", productType, refID],
+      queryFn: () => LOSSDK.getEditData(productType, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
@@ -105,7 +105,11 @@ export const InquiryEditFormWrapper: FC<{
   ]);
   const dataUniqueKey = result[1].dataUpdatedAt;
 
-  const loading = result[0].isLoading || result[1].isLoading;
+  const loading =
+    result[0].isLoading ||
+    result[1].isLoading ||
+    result[0].isFetched ||
+    result[1].isFetching;
   let isError = result[0].isError || result[1].isError;
   //@ts-ignore
   let errorMsg = `${result[0].error?.error_msg ?? ""} ${
@@ -133,7 +137,7 @@ export const InquiryEditFormWrapper: FC<{
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${inquiryID}-${inquiryType}-${dataUniqueKey}-editMode`}
+      key={`${productType}-${refID}-${dataUniqueKey}-editMode`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}

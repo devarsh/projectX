@@ -15,7 +15,7 @@ interface DocumentState {
   path: string[];
 }
 
-export const Documents: FC<DocumentType> = ({ inquiryID, inquiryType }) => {
+export const Documents: FC<DocumentType> = ({ refID, productType }) => {
   const [currentView, setCurrentView] = useState<DocumentState>({
     viewName: "folders",
     groupID: "",
@@ -35,15 +35,15 @@ export const Documents: FC<DocumentType> = ({ inquiryID, inquiryType }) => {
 
   const result = useQueries([
     {
-      queryKey: ["getDocumentListingTemplate", inquiryType, inquiryID],
-      queryFn: () => LOSSDK.getDocumentListingTemplate(inquiryType, inquiryID),
+      queryKey: ["getDocumentListingTemplate", productType, refID],
+      queryFn: () => LOSSDK.getDocumentListingTemplate(productType, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     },
     {
-      queryKey: ["getDocumentsList", inquiryType, inquiryID],
-      queryFn: () => LOSSDK.getDocumentsList(inquiryType, inquiryID),
+      queryKey: ["getDocumentsList", productType, refID],
+      queryFn: () => LOSSDK.getDocumentsList(productType, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
@@ -82,12 +82,12 @@ export const Documents: FC<DocumentType> = ({ inquiryID, inquiryType }) => {
           {currentView.viewName === "folders" ? (
             <Folders metaData={metaData} key={result[0].dataUpdatedAt} />
           ) : currentView.viewName === "upload" ? (
-            <FileUpload type={inquiryType} refID={inquiryID} />
+            <FileUpload type={productType} refID={refID} />
           ) : currentView.viewName === "filesView" ? (
             <FileListingWithConfirmation
               key={`${result[0].dataUpdatedAt}-${result[1].dataUpdatedAt}`}
-              type={inquiryType}
-              refID={inquiryID}
+              type={productType}
+              refID={refID}
               docs={docs}
               metaData={metaData}
             />

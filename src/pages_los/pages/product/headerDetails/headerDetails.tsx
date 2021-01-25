@@ -2,11 +2,11 @@ import Box from "@material-ui/core/Box";
 import { useStyles } from "./style";
 import { format } from "date-fns";
 
-export const HeaderDetails = ({ inquiryData }) => {
+export const HeaderDetails = ({ productData }) => {
   const classes = useStyles();
   let dateValue;
   try {
-    dateValue = format(new Date(inquiryData?.original?.tran_dt), "dd/MM/yyyy");
+    dateValue = format(new Date(productData?.original?.tran_dt), "dd/MM/yyyy");
   } catch (e) {
     dateValue = "Invalid Date";
   }
@@ -23,12 +23,12 @@ export const HeaderDetails = ({ inquiryData }) => {
       <Box display="flex" flexDirection="row" width={1} mb={2}>
         <Box pr={3}>
           <div className={classes.labelText}>Inquiry No.</div>
-          <div className={classes.valueText}>{inquiryData?.id}</div>
+          <div className={classes.valueText}>{productData?.id}</div>
         </Box>
         <Box px={3}>
           <div className={classes.labelText}>Product</div>
           <div className={classes.valueText}>
-            {inquiryData?.original?.product_cd}
+            {productData?.original?.product_cd}
           </div>
         </Box>
         <Box px={3}>
@@ -38,7 +38,7 @@ export const HeaderDetails = ({ inquiryData }) => {
         <Box px={3}>
           <div className={classes.labelText}>Current Status</div>
           <div className={classes.valueText}>
-            {inquiryData?.original?.status}
+            {productData?.original?.status}
           </div>
         </Box>
       </Box>

@@ -33,7 +33,7 @@ export const ListingGrid = ({
     };
   }, [gridCode]);
 
-  const loading = result.isLoading;
+  const loading = result.isLoading || result.isFetching;
   let isError = result.isError;
   let errorMsg =
     typeof result.error === "string"

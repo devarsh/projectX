@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Alert from "@material-ui/lab/Alert";
-import { InquiryEditFormWrapper } from "./formEdit";
-import { InquiryViewFormWrapper } from "./formView";
+import { EditForm } from "./formEdit";
+import { ViewForm } from "./formView";
 
 export const CRUD = ({
-  inquiryID,
-  inquiryType,
+  refID,
+  productType,
   setDisableDialogClose,
-  isInquiryEditedRef,
+  isProductEditedRef,
 }) => {
   const [currentView, setCurrentView] = useState("viewMode");
   const [userMessage, setUserMessage] = useState<any>(null);
@@ -33,18 +33,18 @@ export const CRUD = ({
         <Alert severity={userMessage.type}>{userMessage?.message}</Alert>
       )}
       {currentView === "viewMode" ? (
-        <InquiryViewFormWrapper
-          inquiryID={inquiryID}
-          inquiryType={inquiryType}
+        <ViewForm
+          refID={refID}
+          productType={productType}
           moveToEditForm={moveToEditForm}
         />
       ) : (
-        <InquiryEditFormWrapper
-          inquiryID={inquiryID}
-          inquiryType={inquiryType}
+        <EditForm
+          refID={refID}
+          productType={productType}
           moveToViewForm={moveToViewForm}
           setUserMessage={setUserMessage}
-          isInquiryEditedRef={isInquiryEditedRef}
+          isProductEditedRef={isProductEditedRef}
         />
       )}
     </>

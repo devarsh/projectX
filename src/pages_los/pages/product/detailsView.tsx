@@ -9,68 +9,61 @@ import { MoveInquiryToLead } from "./moveInquiryToLead";
 import { CRUD } from "./crud";
 import { HeaderDetails } from "./headerDetails";
 import { Documents } from "./documents";
+import { ref } from "yup";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
 
 export const DetailsView: FC<{
-  inquiryData: any;
-  inquiryID: string;
+  productGridData: any;
+  refID: string;
   setDisableDialogClose: any;
-  isInquiryEditedRef: any;
+  isProductEditedRef: any;
 }> = ({
-  inquiryID,
+  refID,
   setDisableDialogClose,
-  isInquiryEditedRef,
-  inquiryData,
+  isProductEditedRef,
+  productGridData,
 }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
     setCurrentTab(currentTab);
   };
   const classes = useStyles();
-  const inquiryType = "inquiry";
-  const inquiryQuestionType = "inquiryQuestion";
+  const productInquiry = "inquiry";
+  const productInquiryQuestion = "inquiryQuestion";
   //Remove all the cached queries of all tabs when this component unmounts
   useEffect(() => {
     return () => {
       queryClient.removeQueries([
         "getDocumentListingTemplate",
-        inquiryType,
-        inquiryID,
+        productInquiry,
+        refID,
       ]);
-      queryClient.removeQueries(["getDocumentsList", inquiryType, inquiryID]);
-      queryClient.removeQueries(["getEditMetaData", inquiryType, inquiryID]);
-      queryClient.removeQueries(["getEditData", inquiryType, inquiryID]);
-      queryClient.removeQueries(["getViewMetaData", inquiryType, inquiryID]);
-      queryClient.removeQueries(["getViewData", inquiryType, inquiryID]);
+      queryClient.removeQueries(["getDocumentsList", productInquiry, refID]);
+      queryClient.removeQueries(["getEditMetaData", productInquiry, refID]);
+      queryClient.removeQueries(["getEditData", productInquiry, refID]);
+      queryClient.removeQueries(["getViewMetaData", productInquiry, refID]);
+      queryClient.removeQueries(["getViewData", productInquiry, refID]);
       queryClient.removeQueries([
         "getEditMetaData",
-        inquiryQuestionType,
-        inquiryID,
+        productInquiryQuestion,
+        refID,
       ]);
-      queryClient.removeQueries([
-        "getEditData",
-        inquiryQuestionType,
-        inquiryID,
-      ]);
+      queryClient.removeQueries(["getEditData", productInquiryQuestion, refID]);
       queryClient.removeQueries([
         "getViewMetaData",
-        inquiryQuestionType,
-        inquiryID,
+        productInquiryQuestion,
+        refID,
       ]);
-      queryClient.removeQueries([
-        "getViewData",
-        inquiryQuestionType,
-        inquiryID,
-      ]);
+      queryClient.removeQueries(["getViewData", productInquiryQuestion, refID]);
     };
   }, []);
 
   return (
     <Fragment>
-      <HeaderDetails inquiryData={inquiryData} />
+      <HeaderDetails productData={productGridData} />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
@@ -81,28 +74,28 @@ export const DetailsView: FC<{
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
           <CRUD
-            inquiryID={inquiryID}
-            inquiryType={inquiryType}
+            refID={refID}
+            productType={productInquiry}
             setDisableDialogClose={setDisableDialogClose}
-            isInquiryEditedRef={isInquiryEditedRef}
+            isProductEditedRef={isProductEditedRef}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUD
-            inquiryID={inquiryID}
-            inquiryType={inquiryQuestionType}
+            refID={refID}
+            productType={productInquiryQuestion}
             setDisableDialogClose={setDisableDialogClose}
-            isInquiryEditedRef={isInquiryEditedRef}
+            isProductEditedRef={isProductEditedRef}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <Documents inquiryID={inquiryID} inquiryType={inquiryType} />
+          <Documents refID={refID} productType={productInquiry} />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
-          <CustomerDetails inquiryID={inquiryID} inquiryType={inquiryType} />
+          <CustomerDetails refID={refID} productType={productInquiry} />
         </TabPanel>
         <TabPanel value={currentTab} index="4" key={4}>
-          <MoveInquiryToLead inquiryID={inquiryID} key={3} />
+          <MoveInquiryToLead refID={refID} />
         </TabPanel>
       </Box>
     </Fragment>

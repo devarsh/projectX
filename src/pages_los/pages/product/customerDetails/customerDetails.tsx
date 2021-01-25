@@ -9,12 +9,12 @@ import { useStyles } from "./style";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 
-export const CustomerDetails = ({ inquiryID, inquiryType }) => {
+export const CustomerDetails = ({ refID, productType }) => {
   const classes = useStyles();
 
   const result = useQuery(
-    ["getViewData", inquiryType, inquiryID],
-    () => LOSSDK.getViewData(inquiryType, inquiryID),
+    ["getViewData", productType, refID],
+    () => LOSSDK.getViewData(productType, refID),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,

@@ -12,20 +12,20 @@ import { APISDK } from "registry/fns/sdk";
 import { useStyles } from "./style";
 
 interface AssignLeadType {
-  inquiryID: string;
+  refID: string;
   employeeID: string;
   inquiryStatus: string;
 }
 
 const assignLead = async ({
-  inquiryID,
+  refID,
   employeeID,
   inquiryStatus,
 }: AssignLeadType) => {
-  return await APISDK.inquiryAssignToLead(inquiryID, employeeID, inquiryStatus);
+  return await APISDK.inquiryAssignToLead(refID, employeeID, inquiryStatus);
 };
 
-export const MoveInquiryToLead = ({ inquiryID }) => {
+export const MoveInquiryToLead = ({ refID }) => {
   let branchCode = "0";
   let inquiryStatus = "C";
   const classes = useStyles();
@@ -119,9 +119,7 @@ export const MoveInquiryToLead = ({ inquiryID }) => {
         color="primary"
         autoFocus
         className={classes.submit}
-        onClick={() =>
-          mutation.mutate({ inquiryID, employeeID, inquiryStatus })
-        }
+        onClick={() => mutation.mutate({ refID, employeeID, inquiryStatus })}
         endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
       >
         Assign

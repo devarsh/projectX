@@ -21,6 +21,6 @@ export interface APITemplateData {
 }
 
 export interface DocumentType {
-  inquiryID: string;
-  inquiryType: string;
+  refID: string;
+  productType: string;
 }

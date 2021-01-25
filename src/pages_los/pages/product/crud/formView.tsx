@@ -11,23 +11,23 @@ import Button from "@material-ui/core/Button";
 
 import { useQueries } from "react-query";
 
-export const InquiryViewFormWrapper: FC<{
-  inquiryID: string;
-  inquiryType: "questionnaire" | "inquiry";
+export const ViewForm: FC<{
+  refID: string;
+  productType: string;
   moveToEditForm: any;
-}> = ({ inquiryID, inquiryType, moveToEditForm }) => {
+}> = ({ refID, productType, moveToEditForm }) => {
   const result = useQueries([
     {
-      queryKey: ["getViewMetaData", inquiryType, inquiryID],
-      queryFn: () => LOSSDK.getViewMetaData(inquiryType, inquiryID),
+      queryKey: ["getViewMetaData", productType, refID],
+      queryFn: () => LOSSDK.getViewMetaData(productType, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       retry: 0,
     },
     {
-      queryKey: ["getViewData", inquiryType, inquiryID],
-      queryFn: () => LOSSDK.getViewData(inquiryType, inquiryID),
+      queryKey: ["getViewData", productType, refID],
+      queryFn: () => LOSSDK.getViewData(productType, refID),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
@@ -35,7 +35,11 @@ export const InquiryViewFormWrapper: FC<{
     },
   ]);
   const dataUniqueKey = result[1].dataUpdatedAt;
-  const loading = result[0].isLoading || result[1].isLoading;
+  const loading =
+    result[0].isLoading ||
+    result[1].isLoading ||
+    result[0].isFetching ||
+    result[1].isFetching;
   let isError = result[0].isError || result[1].isError;
   //@ts-ignore
   let errorMsg = `${result[0].error?.error_msg ?? ""} ${
@@ -57,7 +61,7 @@ export const InquiryViewFormWrapper: FC<{
     <span>{errorMsg}</span>
   ) : (
     <ViewFormWrapper
-      key={`${inquiryID}-${inquiryType}-${dataUniqueKey}-viewMode`}
+      key={`${productType}-${refID}-${dataUniqueKey}-viewMode`}
       metaData={metaData as MetaDataType}
       //@ts-ignore
       formDisplayValues={formDisplayValues}
