@@ -1,22 +1,20 @@
-import { useState, FC } from "react";
+import { useState, FC, Fragment } from "react";
 import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useStyles } from "./style";
-import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { CustomerDetails } from "./customerDetails";
 import { AssignInquiryToEmployee } from "./convertInquirytolead";
-import { queryClient } from "./cache";
-import { ViewEditCompositeComponent } from "./viewEditCompositeComponent";
-import { InquiryDetailsTab } from "./inquiryDetailsTab";
+
+import { ViewEditCompositeComponent } from "./viewEdit";
+import { HeaderDetailsTab } from "./headerDetailsTab";
 import { Documents } from "./documents";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
 
-export const InquiryDetails: FC<{
+export const InquiryTabs: FC<{
   inquiryData: any;
   inquiryID: string;
   setDisableDialogClose: any;
@@ -34,8 +32,8 @@ export const InquiryDetails: FC<{
   const classes = useStyles();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <InquiryDetailsTab inquiryData={inquiryData} />
+    <Fragment>
+      <HeaderDetailsTab inquiryData={inquiryData} />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
@@ -70,7 +68,6 @@ export const InquiryDetails: FC<{
           <AssignInquiryToEmployee inquiryID={inquiryID} key={3} />
         </TabPanel>
       </Box>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    </Fragment>
   );
 };

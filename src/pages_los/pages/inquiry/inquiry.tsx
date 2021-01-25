@@ -1,9 +1,10 @@
-import { useState, useRef, forwardRef } from "react";
+import { useState, useRef, forwardRef, useEffect, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import DataGrid, { ActionTypes } from "components/dataTable";
-import { InquiryDetails } from "./inquiryDetail";
+import { InquiryTabs } from "./inquiryTabs";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
+import { ActionTypes } from "components/dataTable";
+import { InquiryGrid } from "./inquiryGrid";
 
 const actions: ActionTypes[] = [
   {
@@ -20,6 +21,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 export const Inquiry = () => {
+  let gridCode = "TRN/001";
   const [action, setAction] = useState<null | any>(null);
   const [disableDialogClose, setDisableDialogClose] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -39,9 +41,9 @@ export const Inquiry = () => {
   };
 
   return (
-    <>
-      <DataGrid
-        gridCode="trn/001"
+    <Fragment>
+      <InquiryGrid
+        gridCode={gridCode}
         actions={actions}
         setAction={setAction}
         gridRefresh={gridRefresh}
@@ -54,7 +56,7 @@ export const Inquiry = () => {
         TransitionComponent={Transition}
         onClose={handleDialogClose}
       >
-        <InquiryDetails
+        <InquiryTabs
           inquiryData={action?.rows[0]}
           inquiryID={action?.rows[0].id}
           setDisableDialogClose={setDisableDialogClose}
@@ -68,6 +70,6 @@ export const Inquiry = () => {
           key={"bottomcenter"}
         />
       </Dialog>
-    </>
+    </Fragment>
   );
 };

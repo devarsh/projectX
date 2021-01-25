@@ -5,7 +5,7 @@ import { FileUploadControl } from "components/fileUpload/fileControl";
 import { APISDK } from "registry/fns/sdk";
 import { DocumentContext } from "./context";
 import { breadcrumbPathRenderer } from "./utils";
-import { queryClient } from "../cache";
+import { queryClient } from "cache";
 
 export const FileUpload = ({ refID }) => {
   const docContext = useContext(DocumentContext);

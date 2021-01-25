@@ -20,7 +20,6 @@ import { StickyTableHead } from "./stickyTableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import { MyTableRow } from "./focusableTableRow";
-import TableCell from "@material-ui/core/TableCell";
 import TablePagination from "@material-ui/core/TablePagination";
 import { TablePaginationActions } from "./tablePaginationToolbar";
 import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
@@ -35,7 +34,6 @@ import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
 
 export const DataGrid = ({
-  gridCode,
   label,
   dense,
   localFilterManager,
@@ -63,6 +61,7 @@ export const DataGrid = ({
   gridRefresh,
   setGridRefresh,
 }) => {
+  //@ts-ignore
   const {
     getTableProps,
     getTableBodyProps,
@@ -87,7 +86,6 @@ export const DataGrid = ({
         pageSize: defaultPageSize,
         hiddenColumns: defaultHiddenColumns,
       },
-      gridCode,
       manualPagination: true,
       pageCount: controlledPageCount,
       autoResetPage: false,
@@ -107,7 +105,6 @@ export const DataGrid = ({
     useResizeColumns,
     useBlockLayout,
     useCheckboxColumn
-    //useSequenceColumn
   );
 
   const { pageIndex, pageSize, sortBy, filters } = tableState;
@@ -222,6 +219,7 @@ export const DataGrid = ({
         visibleColumns={availableColumns}
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
+        setGridRefresh={setGridRefresh}
       />
       <TableActionToolbar
         dense={dense}
@@ -239,11 +237,7 @@ export const DataGrid = ({
         handleClose={handleContextMenuClose}
       />
       {allowGlobalFilter ? (
-        <TableHeaderFilterToolbar
-          dense={dense}
-          filters={globalFilterMeta}
-          gridCode={gridCode}
-        />
+        <TableHeaderFilterToolbar dense={dense} filters={globalFilterMeta} />
       ) : null}
       {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer
@@ -251,7 +245,8 @@ export const DataGrid = ({
           position: "relative",
           display: "inline-block",
           overflow: "auto",
-          height: "calc(100vh - 35*8px)",
+          maxHeight: "calc(100vh - 35*8px)",
+          minHeight: "40vh",
         }}
       >
         <Table

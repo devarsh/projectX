@@ -6,15 +6,15 @@ import TableContainer from "@material-ui/core/TableContainer";
 import loaderGif from "assets/images/loader.gif";
 import TableRow from "@material-ui/core/TableRow";
 import { useStyles } from "./style";
-import { APISDK } from "registry/fns/sdk";
+import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 
 export const CustomerDetails = ({ inquiryID, inquiryType }) => {
   const classes = useStyles();
 
   const result = useQuery(
-    ["viewFormData", inquiryType, inquiryID],
-    () => APISDK.getInquiryFormDisplayData(inquiryID, inquiryType),
+    ["getViewData", inquiryType, inquiryID],
+    () => LOSSDK.getViewData(inquiryType, inquiryID),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,

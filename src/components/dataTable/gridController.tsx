@@ -1,19 +1,19 @@
-import { FC, useState, useMemo, useCallback, useRef } from "react";
+import { FC, useState, useMemo, useCallback, useRef, useContext } from "react";
 import { GridMetaDataType } from "./types";
 import { formatSortBy, formatFilterBy, useLocalFilterState } from "./utils";
-import { APISDK } from "registry/fns/sdk";
 import { useRecoilValue } from "recoil";
 import { filtersAtom } from "./atoms";
+import { GridContext } from "./context";
 
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
 
 export const GirdController: FC<{
   metaData: GridMetaDataType;
-  gridCode: string;
   gridRefresh: boolean;
   setGridRefresh: any;
-}> = ({ metaData, gridCode, gridRefresh, setGridRefresh }) => {
+}> = ({ metaData, gridRefresh, setGridRefresh }) => {
+  const context = useContext(GridContext);
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(
     () => ({
@@ -35,7 +35,9 @@ export const GirdController: FC<{
   const [pageCount, setPageCount] = useState(0);
   const fetchIdCounterRef = useRef(0);
   const localFilterManager = useLocalFilterState();
-  const globalFiltersState = useRecoilValue(filtersAtom(gridCode));
+  const globalFiltersState = useRecoilValue(
+    filtersAtom(context?.gridCode ?? "noCode")
+  );
 
   const fetchData = useCallback(
     ({ pageSize, pageIndex, sortBy, filters }) => {
@@ -50,35 +52,30 @@ export const GirdController: FC<{
       }
       let combinedFilters = [...headerFilters, ...localFilters];
 
-      APISDK.fetchGridData(
-        gridCode,
-        startRow,
-        endRow,
-        formatSortBy(sortBy),
-        combinedFilters
-      ).then((result) => {
-        if (currentFetchId === fetchIdCounterRef.current) {
-          if (result.status === "success") {
-            setData(result?.data?.rows ?? []);
-            setPageCount(
-              Math.ceil(
-                Number(result?.data?.total_count ?? 1) / Number(pageSize)
-              )
-            );
-            setTotalRecords(Number(result?.data?.total_count ?? 1));
-            setLoading(false);
-          } else {
-            setLoading(false);
+      context
+        ?.getGridData(startRow, endRow, formatSortBy(sortBy), combinedFilters)
+        .then((result) => {
+          if (currentFetchId === fetchIdCounterRef.current) {
+            if (result.status === "success") {
+              setData(result?.data?.rows ?? []);
+              setPageCount(
+                Math.ceil(
+                  Number(result?.data?.total_count ?? 1) / Number(pageSize)
+                )
+              );
+              setTotalRecords(Number(result?.data?.total_count ?? 1));
+              setLoading(false);
+            } else {
+              setLoading(false);
+            }
           }
-        }
-      });
+        });
     },
-    [setTotalRecords, setLoading, setData, globalFiltersState, gridCode]
+    [setTotalRecords, setLoading, setData, globalFiltersState, context]
   );
 
   return (
     <DataGrid
-      gridCode={gridCode}
       label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
       globalFilterMeta={metaData?.headerFilters}
       multipleActions={metaData?.multipleActions}

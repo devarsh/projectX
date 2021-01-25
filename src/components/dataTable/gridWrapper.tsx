@@ -1,4 +1,6 @@
-import { useEffect, useState, FC } from "react";
+import { FC } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { GridMetaDataType, ActionTypes } from "./types";
 import {
   attachCellComponentsToMetaData,
@@ -9,65 +11,46 @@ import {
   transformHeaderFilters,
   SplitActions,
 } from "./utils";
-import { APISDK } from "registry/fns/sdk";
 import { GirdController } from "./gridController";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { GridProvider } from "./context";
 
 export const GridWrapper: FC<{
-  gridCode: string;
+  gridCode: any;
+  getGridData: any;
+  getGridColumnFilterData: any;
+  metaData: GridMetaDataType;
   actions?: ActionTypes[];
   setAction: any;
   gridRefresh?: boolean;
   setGridRefresh?: any;
 }> = ({
   gridCode,
+  getGridColumnFilterData,
+  getGridData,
+  metaData,
   actions,
   setAction,
   gridRefresh = false,
   setGridRefresh = () => false,
 }) => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [metaData, setMetaData] = useState<GridMetaDataType | null>();
-
-  useEffect(() => {
-    APISDK.fetchGridMetaData(gridCode)
-      .then((result) => {
-        if (result.status === "success") {
-          let finalData = transformMetaData({
-            metaData: result.data,
-            actions,
-            setAction,
-          });
-          setMetaData(finalData);
-          setError(false);
-          setLoading(false);
-        } else {
-          setMetaData(result.data);
-          setError(true);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(true);
-        setMetaData(err);
-      });
-  }, [gridCode, actions, setAction, setLoading, setError, setMetaData]);
-
-  return loading ? (
-    <span>{"loading..."}</span>
-  ) : error ? (
-    <span>{"error loading grid"}</span>
-  ) : (
+  let finalData = transformMetaData({
+    metaData,
+    actions,
+    setAction,
+  });
+  return (
     <DndProvider backend={HTML5Backend}>
-      <GirdController
-        metaData={metaData as GridMetaDataType}
+      <GridProvider
         gridCode={gridCode}
-        gridRefresh={gridRefresh}
-        setGridRefresh={setGridRefresh}
-      />
+        getGridData={getGridData}
+        getGridColumnFilterData={getGridColumnFilterData}
+      >
+        <GirdController
+          metaData={finalData as GridMetaDataType}
+          gridRefresh={gridRefresh}
+          setGridRefresh={setGridRefresh}
+        />
+      </GridProvider>
     </DndProvider>
   );
 };
