@@ -7,7 +7,7 @@ export interface GroupItemType {
 
 export interface GroupType {
   groupCode: string;
-  groupName: string;
+  groupLabel: string;
   items: GroupItemType[];
 }
 
@@ -18,4 +18,9 @@ export interface APITemplateData {
   doc_type: string;
   groupLabel: string;
   status: string;
+}
+
+export interface DocumentType {
+  inquiryID: string;
+  inquiryType: string;
 }

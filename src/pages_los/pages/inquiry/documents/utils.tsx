@@ -8,3 +8,15 @@ export const breadcrumbPathRenderer = (path) => {
   }
   return null;
 };
+
+export const retriveFileStatus = (status: string) => {
+  let currentStatus = "empty";
+  if (status === "P") {
+    currentStatus = "pending";
+  } else if (status === "R") {
+    currentStatus = "rejected";
+  } else if (status === "V") {
+    currentStatus = "verified";
+  }
+  return currentStatus;
+};

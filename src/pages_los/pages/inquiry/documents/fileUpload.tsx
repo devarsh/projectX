@@ -21,8 +21,12 @@ export const FileUpload = ({ type, refID }) => {
       (result) => {
         setLoading(false);
         if (result.status === "success") {
-          queryClient.refetchQueries(["docTemplate", refID]);
-          queryClient.refetchQueries(["docs", refID]);
+          queryClient.refetchQueries([
+            "getDocumentListingTemplate",
+            type,
+            refID,
+          ]);
+          queryClient.refetchQueries(["getDocumentsList", type, refID]);
           setUserMessage({
             severity: "info",
             message: result?.data?.message ?? "",

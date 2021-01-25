@@ -352,8 +352,7 @@ const LOSAPI = () => {
   const deleteDocuments = async (
     type: string,
     refID: string,
-    docID: string,
-    userComments: string
+    docID: string
   ) => {
     const { data, status } = await internalFetcher(
       `./${type}/document/delete`,
@@ -399,6 +398,7 @@ const LOSAPI = () => {
     getDocumentsList,
     verifyDocuments,
     rejectDocuments,
+    deleteDocuments,
     constructDocumentDownloadURL,
   };
 };

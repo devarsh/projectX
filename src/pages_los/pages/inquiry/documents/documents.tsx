@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FC } from "react";
 import { Folders } from "./folders";
 import { FileUpload } from "./fileUpload";
 import Box from "@material-ui/core/Box";
@@ -6,22 +6,31 @@ import { DocumentContext } from "./context";
 import { FileListingWithConfirmation } from "./fileListing";
 import { LOSSDK } from "registry/fns/los";
 import { useQueries } from "react-query";
+import { DocumentType } from "./types";
 
-export const Documents = ({ inquiryID, inquiryType }) => {
-  const [currentView, setCurrentView] = useState<{
-    viewName: "folders" | "filesView" | "upload";
-    docID: any;
-    path: string[];
-  }>({ viewName: "folders", path: [], docID: "" });
+interface DocumentState {
+  viewName: "folders" | "filesView" | "upload";
+  docID: any;
+  groupID: any;
+  path: string[];
+}
 
-  const setUploadPath = ({ path, docID }) => {
-    setCurrentView({ viewName: "upload", docID, path });
+export const Documents: FC<DocumentType> = ({ inquiryID, inquiryType }) => {
+  const [currentView, setCurrentView] = useState<DocumentState>({
+    viewName: "folders",
+    groupID: "",
+    docID: "",
+    path: [],
+  });
+
+  const setUploadPath = ({ path, groupID, docID }) => {
+    setCurrentView({ viewName: "upload", groupID, docID, path });
   };
-  const setViewPath = ({ path, docID }) => {
-    setCurrentView({ viewName: "filesView", docID, path });
+  const setViewPath = ({ path, groupID, docID }) => {
+    setCurrentView({ viewName: "filesView", groupID, docID, path });
   };
   const setFoldersPath = () => {
-    setCurrentView({ viewName: "folders", path: [], docID: "" });
+    setCurrentView({ viewName: "folders", groupID: "", docID: "", path: [] });
   };
 
   const result = useQueries([
@@ -71,20 +80,15 @@ export const Documents = ({ inquiryID, inquiryType }) => {
       ) : (
         <Box style={{ maxHeight: "80vh", overflowY: "scroll" }}>
           {currentView.viewName === "folders" ? (
-            <Folders
-              key={result[0].dataUpdatedAt}
-              metaData={metaData}
-              isFetching={result[0].isFetching}
-            />
+            <Folders metaData={metaData} />
           ) : currentView.viewName === "upload" ? (
             <FileUpload type={inquiryType} refID={inquiryID} />
           ) : currentView.viewName === "filesView" ? (
             <FileListingWithConfirmation
               type={inquiryType}
-              key={result[0].dataUpdatedAt}
               refID={inquiryID}
               docs={docs}
-              isFetching={result[0].isFetching}
+              metaData={metaData}
             />
           ) : null}
         </Box>
