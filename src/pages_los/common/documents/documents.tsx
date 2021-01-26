@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { useState, FC, useContext, useEffect } from "react";
 import { Folders } from "./folders";
 import { FileUpload } from "./fileUpload";
 import Box from "@material-ui/core/Box";
@@ -7,6 +7,7 @@ import { FileListingWithConfirmation } from "./fileListing";
 import { LOSSDK } from "registry/fns/los";
 import { useQueries } from "react-query";
 import { DocumentType } from "./types";
+import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
 
 interface DocumentState {
   viewName: "folders" | "filesView" | "upload";
@@ -16,6 +17,7 @@ interface DocumentState {
 }
 
 export const Documents: FC<DocumentType> = ({ refID, productType }) => {
+  const removeCache = useContext(RemoveCacheRegisterContext);
   const [currentView, setCurrentView] = useState<DocumentState>({
     viewName: "folders",
     groupID: "",
@@ -49,6 +51,11 @@ export const Documents: FC<DocumentType> = ({ refID, productType }) => {
       refetchOnMount: false,
     },
   ]);
+
+  useEffect(() => {
+    removeCache?.addEntry(["getDocumentListingTemplate", productType, refID]);
+    removeCache?.addEntry(["getDocumentsList", productType, refID]);
+  }, []);
 
   const loading =
     result[0].isLoading ||

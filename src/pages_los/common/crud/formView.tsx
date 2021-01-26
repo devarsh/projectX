@@ -1,21 +1,22 @@
-import { FC } from "react";
-import { LOSSDK } from "registry/fns/los";
-import loaderGif from "assets/images/loader.gif";
+import { FC, useContext, useEffect } from "react";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import { useQueries } from "react-query";
 import {
   ViewFormWrapper,
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-
-import { useQueries } from "react-query";
+import { LOSSDK } from "registry/fns/los";
+import loaderGif from "assets/images/loader.gif";
+import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
 
 export const ViewForm: FC<{
   refID: string;
   productType: string;
   moveToEditForm: any;
 }> = ({ refID, productType, moveToEditForm }) => {
+  const removeCache = useContext(RemoveCacheRegisterContext);
   const result = useQueries([
     {
       queryKey: ["getViewMetaData", productType, refID],
@@ -34,6 +35,10 @@ export const ViewForm: FC<{
       retry: 0,
     },
   ]);
+  useEffect(() => {
+    removeCache?.addEntry(["getViewMetaData", productType, refID]);
+    removeCache?.addEntry(["getViewData", productType, refID]);
+  }, []);
   const dataUniqueKey = result[1].dataUpdatedAt;
   const loading =
     result[0].isLoading ||

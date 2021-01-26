@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useContext, useEffect } from "react";
 import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, {
@@ -9,6 +9,7 @@ import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
 import { transformMetaDataForEdit } from "pages_los/utils/transformMetaDataForEdit";
 import { queryClient } from "cache";
+import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
 
 interface updateFormDataType {
   data: object;
@@ -40,6 +41,7 @@ export const EditForm: FC<{
   setUserMessage,
   isProductEditedRef,
 }) => {
+  const removeCache = useContext(RemoveCacheRegisterContext);
   if (typeof setUserMessage !== "function") {
     setUserMessage = () => alert("userMessage function not set");
   }
@@ -87,6 +89,11 @@ export const EditForm: FC<{
     });
   };
 
+  useEffect(() => {
+    removeCache?.addEntry(["getEditMetaData", productType, refID]);
+    removeCache?.addEntry(["getEditData", productType, refID]);
+  }, []);
+
   const result = useQueries([
     {
       queryKey: ["getEditMetaData", productType, refID],
@@ -103,6 +110,7 @@ export const EditForm: FC<{
       refetchOnMount: false,
     },
   ]);
+
   const dataUniqueKey = result[1].dataUpdatedAt;
 
   const loading =
