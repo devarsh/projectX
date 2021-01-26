@@ -5,11 +5,12 @@ import { Tabs } from "components/styledComponent/tabs";
 import { queryClient } from "cache";
 import { CRUD } from "pages_los/common/crud";
 import { Documents } from "pages_los/common/documents";
-import { CustomerDetails } from "./customerDetails";
-import { MoveInquiryToLead } from "./moveInquiryToLead";
-import { HeaderDetails } from "./headerDetails";
-import { useStyles } from "./style";
 import { RemoveCacheRegisterContext } from "pages_los/common/removeCacheRegisterContext";
+import { CustomerDetails } from "./customerDetails";
+import { AssignInquiry } from "./assignInquiry";
+import { HeaderDetails } from "./headerDetails";
+import { MoveInquiryToLead } from "./moveInquiryToLead";
+import { useStyles } from "./style";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -18,13 +19,17 @@ const TabPanel = ({ value, index, children }) => {
 export const DetailsView: FC<{
   productGridData: any;
   refID: string;
-  setDisableDialogClose: any;
+  disableDialogCloseRef: any;
   isProductEditedRef: any;
+  handleDialogClose: any;
+  setSnackBarMessage: any;
 }> = ({
   refID,
-  setDisableDialogClose,
+  disableDialogCloseRef,
   isProductEditedRef,
   productGridData,
+  handleDialogClose,
+  setSnackBarMessage,
 }) => {
   const removeCache = useContext(RemoveCacheRegisterContext);
   const [currentTab, setCurrentTab] = useState(0);
@@ -52,23 +57,28 @@ export const DetailsView: FC<{
         <Tab label="Questionnaire" id="1" />
         <Tab label="Documents" id="2" />
         <Tab label="Customer" id="3" />
-        <Tab label="Move To Lead" id="4" />
+        <Tab label="Assign Inquiry" id="4" />
+        <Tab label="Move To Lead" id="5" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
           <CRUD
             refID={refID}
             productType={productInquiry}
-            setDisableDialogClose={setDisableDialogClose}
+            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
+            setSnackBarMessage={setSnackBarMessage}
+            dataAlwaysExists={true}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUD
             refID={refID}
             productType={productInquiryQuestion}
-            setDisableDialogClose={setDisableDialogClose}
+            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
+            setSnackBarMessage={setSnackBarMessage}
+            dataAlwaysExists={false}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
@@ -78,7 +88,17 @@ export const DetailsView: FC<{
           <CustomerDetails refID={refID} productType={productInquiry} />
         </TabPanel>
         <TabPanel value={currentTab} index="4" key={4}>
-          <MoveInquiryToLead refID={refID} />
+          <AssignInquiry refID={refID} />
+        </TabPanel>
+        <TabPanel value={currentTab} index="5" key={5}>
+          <MoveInquiryToLead
+            key={refID}
+            refID={refID}
+            isProductEditedRef={isProductEditedRef}
+            disableDialogCloseRef={disableDialogCloseRef}
+            handleDialogClose={handleDialogClose}
+            setSnackBarMessage={setSnackBarMessage}
+          />
         </TabPanel>
       </Box>
     </Fragment>

@@ -1,37 +1,36 @@
 import { useEffect, useState } from "react";
-import Alert from "@material-ui/lab/Alert";
 import { EditForm } from "./formEdit";
 import { ViewForm } from "./formView";
+import { NewForm } from "./formNew";
 
 export const CRUD = ({
   refID,
   productType,
-  setDisableDialogClose,
+  disableDialogCloseRef,
   isProductEditedRef,
+  setSnackBarMessage,
+  dataAlwaysExists,
 }) => {
   const [currentView, setCurrentView] = useState("viewMode");
-  const [userMessage, setUserMessage] = useState<any>(null);
+  const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
 
   useEffect(() => {
-    if (userMessage !== null) {
-      setTimeout(() => setUserMessage(null), 2000);
-    }
-  }, [userMessage, setUserMessage]);
+    return () => {
+      disableDialogCloseRef.current = false;
+    };
+  }, []);
 
   const moveToEditForm = () => {
     setCurrentView("editMode");
-    setDisableDialogClose(true);
+    disableDialogCloseRef.current = true;
   };
   const moveToViewForm = () => {
     setCurrentView("viewMode");
-    setDisableDialogClose(false);
+    disableDialogCloseRef.current = false;
   };
 
-  return (
+  return dataExist ? (
     <>
-      {userMessage !== null && (
-        <Alert severity={userMessage.type}>{userMessage?.message}</Alert>
-      )}
       {currentView === "viewMode" ? (
         <ViewForm
           refID={refID}
@@ -43,10 +42,19 @@ export const CRUD = ({
           refID={refID}
           productType={productType}
           moveToViewForm={moveToViewForm}
-          setUserMessage={setUserMessage}
+          setSnackBarMessage={setSnackBarMessage}
           isProductEditedRef={isProductEditedRef}
         />
       )}
     </>
+  ) : (
+    <NewForm
+      refID={refID}
+      productType={productType}
+      moveToViewForm={moveToViewForm}
+      setSnackBarMessage={setSnackBarMessage}
+      isProductEditedRef={isProductEditedRef}
+      setDataExist={setDataExist}
+    />
   );
 };

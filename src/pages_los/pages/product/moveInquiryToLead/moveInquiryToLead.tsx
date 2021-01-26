@@ -1,140 +1,157 @@
-import { useEffect, useState } from "react";
-import { useQuery, useMutation } from "react-query";
-import Grid from "@material-ui/core/Grid";
+import { Fragment, useCallback, useEffect } from "react";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import Alert from "@material-ui/lab/Alert";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-import { APISDK } from "registry/fns/sdk";
+import Grid from "@material-ui/core/Grid";
 import { useStyles } from "./style";
+import { FormContext, useForm } from "packages/form";
+import * as yup from "yup";
+import { TextField, Select } from "components/common";
+import { MiscSDK } from "registry/fns/misc";
+import { LOSSDK } from "registry/fns/los";
+import { useMutation } from "react-query";
 
-interface AssignLeadType {
+interface moveToLeadFnType {
   refID: string;
-  employeeID: string;
-  inquiryStatus: string;
+  data: object;
+  endSubmit?: any;
 }
 
-const assignLead = async ({
-  refID,
-  employeeID,
-  inquiryStatus,
-}: AssignLeadType) => {
-  return await APISDK.inquiryAssignToLead(refID, employeeID, inquiryStatus);
+const moveToLead = async ({ data, refID }: moveToLeadFnType) => {
+  return LOSSDK.moveInquiryToLead(refID, data);
 };
 
-export const MoveInquiryToLead = ({ refID }) => {
-  let branchCode = "0";
-  let inquiryStatus = "C";
+export const MoveInquiryToLead = ({
+  refID,
+  isProductEditedRef,
+  disableDialogCloseRef,
+  handleDialogClose,
+  setSnackBarMessage,
+}) => {
   const classes = useStyles();
-  const [employeeID, setEmployeeID] = useState("");
-  const [userMessage, setUserMessage] = useState<null | any>(null);
-
-  useEffect(() => {
-    if (userMessage !== null) {
-      setTimeout(() => {
-        setUserMessage(null);
-      }, 4000);
-    }
-  }, [userMessage]);
-
-  const employeeListQuery = useQuery(
-    ["employeeList", branchCode],
-    () => APISDK.getEmployeeListToAssignLead(branchCode),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  return (
+    <FormContext.Provider
+      value={{
+        formName: "moveInquiryToLead",
+        resetFieldOnUnmount: true,
+        validationRun: "onBlur",
+        initialValues: {},
+        formState: {},
+        validationSchema: yup.object().shape({
+          leadPriority: yup.string().required("This is a required field"),
+          remarks: yup.string().required("This is a required field"),
+        }),
+      }}
+    >
+      <MoveInquiryToLeadForm
+        classes={classes}
+        refID={refID}
+        handleDialogClose={handleDialogClose}
+        disableDialogCloseRef={disableDialogCloseRef}
+        isProductEditedRef={isProductEditedRef}
+        setSnackBarMessage={setSnackBarMessage}
+      />
+    </FormContext.Provider>
   );
-  let employeeListOptions: any = [];
-  if (
-    employeeListQuery.isLoading === false &&
-    employeeListQuery.isError === false
-  ) {
-    employeeListOptions = transformOptions(employeeListQuery.data);
-  }
+};
 
-  const mutation = useMutation(assignLead, {
-    onError: (error: any) => {
-      if (typeof error === "object") {
-        setUserMessage({ type: "error", message: error?.error_msg });
-      }
+const MoveInquiryToLeadForm = ({
+  classes,
+  refID,
+  handleDialogClose,
+  disableDialogCloseRef,
+  isProductEditedRef,
+  setSnackBarMessage,
+}) => {
+  const moveInquiryToLead = useMutation(moveToLead, {
+    onMutate: () => {
+      disableDialogCloseRef.current = true;
     },
-    onSuccess: () => {
-      setUserMessage({ type: "success", message: "Data Successfully saved" });
+    onError: (error: any, { endSubmit }) => {
+      let errorMsg = "Unknown Error occured";
+      if (typeof error === "object") {
+        errorMsg = error?.error_msg ?? errorMsg;
+      }
+      endSubmit(false, errorMsg);
+      disableDialogCloseRef.current = false;
+      setSnackBarMessage({
+        type: "error",
+        message: errorMsg,
+      });
+    },
+    onSuccess: (data, { endSubmit }) => {
+      endSubmit(true, "");
+      disableDialogCloseRef.current = false;
+      isProductEditedRef.current = true;
+      setSnackBarMessage({
+        type: "success",
+        message: "Inquiry successfully moved to lead",
+      });
+      setTimeout(() => handleDialogClose(), 1);
     },
   });
 
-  return (
-    <div>
-      {userMessage !== null && (
-        <Alert severity={userMessage.type}>{userMessage?.message}</Alert>
-      )}
-      <h3>Assign Lead</h3>
-      <Grid container spacing={2}>
-        <Grid item xs={6} sm={6} md={6}>
-          <TextField
-            select
-            label="Lead Assign to Employee"
-            placeholder="Select Employee"
-            fullWidth
-            required
-            name="leadAssign"
-            autoComplete="off"
-            onChange={(e) => setEmployeeID(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={employeeID}
-            InputProps={{
-              endAdornment: employeeListQuery.isLoading ? (
-                <InputAdornment position="end">
-                  <CircularProgress color="primary" variant="indeterminate" />
-                </InputAdornment>
-              ) : null,
-            }}
-            error={employeeListQuery.isError}
-            helperText={
-              employeeListQuery.isError ? "error loading options" : ""
-            }
-          >
-            <MenuItem value={0}>Select Employee</MenuItem>
-            {employeeListOptions.map((data) => {
-              return (
-                <MenuItem key={data.value} value={data.value}>
-                  {data.label}
-                </MenuItem>
-              );
-            })}
-          </TextField>
-        </Grid>
-      </Grid>
-      <Button color="primary" className={classes.backBtn}>
-        Reject
-      </Button>
-      <Button
-        color="primary"
-        autoFocus
-        className={classes.submit}
-        onClick={() => mutation.mutate({ refID, employeeID, inquiryStatus })}
-        endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
-      >
-        Assign
-      </Button>
-    </div>
-  );
-};
+  const onSubmitHandler = useCallback((values, displayValues, endSubmit) => {
+    moveInquiryToLead.mutate({ refID, data: values, endSubmit });
+  }, []);
 
-const transformOptions = (options) => {
-  if (Array.isArray(options)) {
-    let result = options.map((one) => ({
-      label: one.fullname,
-      value: one.empID,
-    }));
-    return result;
-  }
-  return [];
+  const { handleSubmit, isSubmitting } = useForm({
+    onSubmit: onSubmitHandler,
+  });
+  const leadOptions = useCallback(MiscSDK.getMiscVal("LEAD_PRIORITY"), []);
+  return (
+    <Fragment>
+      <Typography>Move To Lead</Typography>
+      <Box display="flex" flexDirection="column" width={1}>
+        <Grid container={true} spacing={3}>
+          <Select
+            name="priority"
+            fieldKey="priority"
+            variant="outlined"
+            size="small"
+            margin="normal"
+            required
+            fullWidth
+            label="Lead Priority"
+            options={leadOptions}
+            enableGrid={true}
+            autoComplete="off"
+            GridProps={{
+              xs: 6,
+              sm: 4,
+              spacing: 3,
+            }}
+          />
+          <TextField
+            name="remarks"
+            fieldKey="remarks"
+            type="text"
+            variant="outlined"
+            margin="normal"
+            size="small"
+            required
+            fullWidth
+            label="Remarks"
+            enableGrid={true}
+            autoComplete="off"
+            GridProps={{
+              xs: 6,
+              sm: 4,
+            }}
+          />
+        </Grid>
+        <Box display="flex" flexDirection="row" width={1 / 2} mt={4}>
+          <Button
+            color="primary"
+            autoFocus
+            className={classes.submitBtn}
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            Move To Lead
+          </Button>
+        </Box>
+      </Box>
+    </Fragment>
+  );
 };

@@ -27,6 +27,7 @@ export const transformMetaDataForEdit = (metaData: MetaDataType) => {
     return one;
   });
   metaData.form.label = `${metaData.form.label} Edit Mode`;
+  metaData.form.render.renderType = "tabs";
   return {
     form: metaData.form,
     fields: newFields,

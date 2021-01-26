@@ -217,6 +217,22 @@ const LOSAPI = () => {
     }
   };
 
+  const checkDataExist = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./${type}/data/exists`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   const uploadDocuments = async (
     type: string,
     files: File[],
@@ -381,10 +397,28 @@ const LOSAPI = () => {
     return `${downloadURL}?docUUID=${documentID}&token=${token}`;
   };
 
+  const moveInquiryToLead = async (refID: string, formData: any) => {
+    const { data, status } = await internalFetcher(`./inquiry/moveToLead`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
     removeToken,
+    checkDataExist,
     getGridMetaData,
     getGridData,
     getGridColumnFilterData,
@@ -400,6 +434,7 @@ const LOSAPI = () => {
     rejectDocuments,
     deleteDocuments,
     constructDocumentDownloadURL,
+    moveInquiryToLead,
   };
 };
 

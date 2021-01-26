@@ -7,8 +7,8 @@ import FormWrapper, {
 } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
-import { transformMetaDataForEdit } from "pages_los/utils/transformMetaDataForEdit";
 import { queryClient } from "cache";
+import { transformMetaDataForEdit } from "./utils";
 import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
 
 interface updateFormDataType {
@@ -32,18 +32,18 @@ export const EditForm: FC<{
   refID: string;
   productType: string;
   moveToViewForm: any;
-  setUserMessage: any;
+  setSnackBarMessage: any;
   isProductEditedRef: any;
 }> = ({
   refID,
   productType,
   moveToViewForm,
-  setUserMessage,
+  setSnackBarMessage,
   isProductEditedRef,
 }) => {
   const removeCache = useContext(RemoveCacheRegisterContext);
-  if (typeof setUserMessage !== "function") {
-    setUserMessage = () => alert("userMessage function not set");
+  if (typeof setSnackBarMessage !== "function") {
+    setSnackBarMessage = () => alert("userMessage function not set");
   }
   if (typeof moveToViewForm !== "function") {
     moveToViewForm = () => alert("move to view form function not set");
@@ -55,7 +55,7 @@ export const EditForm: FC<{
         errorMsg = error?.error_msg ?? errorMsg;
       }
       endSubmit(false, errorMsg);
-      setUserMessage({
+      setSnackBarMessage({
         type: "error",
         message: errorMsg,
       });
@@ -64,7 +64,7 @@ export const EditForm: FC<{
       queryClient.refetchQueries(["getViewData", productType, refID]);
       queryClient.refetchQueries(["getEditData", productType, refID]);
       endSubmit(true, "");
-      setUserMessage({
+      setSnackBarMessage({
         type: "success",
         message: data?.msg ?? "Changes successfully saved",
       });
@@ -116,7 +116,7 @@ export const EditForm: FC<{
   const loading =
     result[0].isLoading ||
     result[1].isLoading ||
-    result[0].isFetched ||
+    result[0].isFetching ||
     result[1].isFetching;
   let isError = result[0].isError || result[1].isError;
   //@ts-ignore
