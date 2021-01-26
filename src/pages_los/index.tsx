@@ -6,7 +6,8 @@ import { Drawer } from "./drawer";
 import { Content } from "./content";
 import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
-import { Product } from "./pages/product";
+import { Inquiry } from "./pages/inquiry";
+import { Lead } from "./pages/lead";
 import NewInquiry from "./pages/newInquiry";
 import CAM from "./pages/cam";
 import { useStyles } from "./style";
@@ -40,7 +41,8 @@ const DashbordPages = () => {
               path="/newInquiryQuestion"
               element={<NewInquiry key="question" />}
             />
-            <Route path="/inquiries" element={<Product />} />
+            <Route path="/inquiries" element={<Inquiry />} />
+            <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CAM />} />
             {/*dummy routes*/}

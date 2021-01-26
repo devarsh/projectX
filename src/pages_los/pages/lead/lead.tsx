@@ -32,8 +32,8 @@ interface SnackBarType {
   onClose: any;
 }
 
-export const Inquiry = () => {
-  let gridCode = "TRN/001";
+export const Lead = () => {
+  let gridCode = "TRN/002";
   const [action, setAction] = useState<null | any>(null);
   const disableDialogCloseRef = useRef(false);
   const isProductEditedRef = useRef(false);
