@@ -2,9 +2,10 @@ import { useState, useRef, forwardRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
+import { ListingGrid } from "pages_los/common/listingGrid";
 import { DetailsView } from "./detailsView";
-import { ListingGrid } from "./listingGrid";
 import { ActionTypes } from "components/dataTable";
+import { RemoveCacheRegisterProvider } from "pages_los/common/removeCacheRegisterContext";
 
 const actions: ActionTypes[] = [
   {
@@ -56,12 +57,14 @@ export const Product = () => {
         TransitionComponent={Transition}
         onClose={handleDialogClose}
       >
-        <DetailsView
-          productGridData={action?.rows[0]}
-          refID={action?.rows[0].id}
-          setDisableDialogClose={setDisableDialogClose}
-          isProductEditedRef={isProductEditedRef}
-        />
+        <RemoveCacheRegisterProvider>
+          <DetailsView
+            productGridData={action?.rows[0]}
+            refID={action?.rows[0].id}
+            setDisableDialogClose={setDisableDialogClose}
+            isProductEditedRef={isProductEditedRef}
+          />
+        </RemoveCacheRegisterProvider>
         <Snackbar
           open={snackBarOpen}
           autoHideDuration={2000}
