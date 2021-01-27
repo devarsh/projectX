@@ -124,6 +124,7 @@ export const AuthLoginController = () => {
     try {
       const result = await AuthSDK.verifyPasswordAndLogin(
         loginState.transactionID,
+        loginState.username,
         loginState.password,
         loginType
       );

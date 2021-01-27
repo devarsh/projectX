@@ -33,7 +33,7 @@ interface SnackBarType {
 }
 
 export const Lead = () => {
-  let gridCode = "TRN/002";
+  let gridCode = "TRN/003";
   const [action, setAction] = useState<null | any>(null);
   const disableDialogCloseRef = useRef(false);
   const isProductEditedRef = useRef(false);

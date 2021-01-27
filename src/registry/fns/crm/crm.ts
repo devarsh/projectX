@@ -247,7 +247,9 @@ const CRMAPI = () => {
       `./${productType}/metaData/get/new`,
       {
         body: JSON.stringify({
-          refID: refID,
+          request_data: {
+            refID: refID,
+          },
         }),
       }
     );
