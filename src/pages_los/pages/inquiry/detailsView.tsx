@@ -82,7 +82,13 @@ export const DetailsView: FC<{
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <Documents refID={refID} productType={productInquiry} />
+          <Documents
+            refID={refID}
+            productType={productInquiry}
+            disableDialogCloseRef={disableDialogCloseRef}
+            isProductEditedRef={isProductEditedRef}
+            setSnackBarMessage={setSnackBarMessage}
+          />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
           <CustomerDetails refID={refID} productType={productInquiry} />

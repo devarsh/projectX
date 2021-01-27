@@ -23,4 +23,20 @@ export interface APITemplateData {
 export interface DocumentType {
   refID: string;
   productType: string;
+  disableDialogCloseRef: any;
+  isProductEditedRef: any;
+  setSnackBarMessage: any;
+}
+
+export interface DocumentContextType {
+  viewName: "folders" | "filesView" | "upload";
+  docID: any;
+  groupID: any;
+  path: string[];
+  setUploadPath: any;
+  setViewPath: any;
+  setFoldersPath: any;
+  disableDialogCloseRef: any;
+  isProductEditedRef: any;
+  setSnackBarMessage: any;
 }

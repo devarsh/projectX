@@ -27,9 +27,9 @@ export const FileUpload = ({ type, refID }) => {
             refID,
           ]);
           queryClient.refetchQueries(["getDocumentsList", type, refID]);
-          setUserMessage({
-            severity: "info",
-            message: result?.data?.message ?? "",
+          docContext?.setSnackBarMessage({
+            message: result?.data?.message ?? "documents uploaded successfully",
+            type: "info",
           });
           docContext?.setViewPath({
             groupID: docContext.groupID,
@@ -37,9 +37,9 @@ export const FileUpload = ({ type, refID }) => {
             path: docContext.path,
           });
         } else {
-          setUserMessage({
-            severity: "error",
+          docContext?.setSnackBarMessage({
             message: result?.data?.message ?? "",
+            type: "error",
           });
         }
       }

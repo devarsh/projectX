@@ -25,7 +25,7 @@ const insertFormData = async ({
   productType,
   refID,
 }: InsertFormDataFnType) => {
-  return LOSSDK.updateData(productType, refID, data);
+  return LOSSDK.insertData(productType, refID, data);
 };
 
 export const NewForm = ({

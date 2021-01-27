@@ -216,6 +216,23 @@ const LOSAPI = () => {
     }
   };
 
+  const insertData = async (type: string, refID: string, formData: any) => {
+    const { data, status } = await internalFetcher(`./${type}/data/post`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   const checkDataExist = async (type: string, refID: string) => {
     const { data, status } = await internalFetcher(`./${type}/data/exists`, {
       body: JSON.stringify({
@@ -426,6 +443,7 @@ const LOSAPI = () => {
     getViewData,
     getEditMetaData,
     getEditData,
+    insertData,
     updateData,
     uploadDocuments,
     getDocumentListingTemplate,
