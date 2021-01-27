@@ -111,12 +111,26 @@ const LOSAPI = () => {
     }
   };
 
-  const getViewMetaData = async (type: string, refID: string) => {
-    if (
-      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
-    ) {
-      throw { error_msg: "invalid data requested" };
+  const getNewMetaData = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(
+      `./${type}/metaData/get/new`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
     }
+  };
+
+  const getViewMetaData = async (type: string, refID: string) => {
     const { data, status } = await internalFetcher(
       `./${type}/metaData/get/view`,
       {
@@ -136,11 +150,6 @@ const LOSAPI = () => {
   };
 
   const getViewData = async (type: string, refID: string) => {
-    if (
-      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
-    ) {
-      throw { error_msg: "invalid data requested" };
-    }
     const { data, status } = await internalFetcher(`./${type}/data/view`, {
       body: JSON.stringify({
         request_data: {
@@ -157,11 +166,6 @@ const LOSAPI = () => {
   };
 
   const getEditMetaData = async (type: string, refID: string) => {
-    if (
-      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
-    ) {
-      throw { error_msg: "invalid data requested" };
-    }
     const { data, status } = await internalFetcher(
       `./${type}/metaData/get/edit`,
       {
@@ -181,11 +185,6 @@ const LOSAPI = () => {
   };
 
   const getEditData = async (type: string, refID: string) => {
-    if (
-      ["inquiry", "inquiryQuestion", "lead", "leadQuestion"].indexOf(type) < 0
-    ) {
-      throw { error_msg: "invalid data requested" };
-    }
     const { data, status } = await internalFetcher(`./${type}/data/get`, {
       body: JSON.stringify({
         request_data: {
@@ -422,6 +421,7 @@ const LOSAPI = () => {
     getGridMetaData,
     getGridData,
     getGridColumnFilterData,
+    getNewMetaData,
     getViewMetaData,
     getViewData,
     getEditMetaData,

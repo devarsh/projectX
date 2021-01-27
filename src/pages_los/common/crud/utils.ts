@@ -1,4 +1,5 @@
 import { MetaDataType } from "components/dyanmicForm";
+import { metaData } from "pages_los/sideBar/metaData";
 
 const oldToNew = {
   getPincodeDtl: "getPincodeDtlEdit",
@@ -31,5 +32,14 @@ export const transformMetaDataForEdit = (metaData: MetaDataType) => {
   return {
     form: metaData.form,
     fields: newFields,
+  };
+};
+
+export const transformMetaDataForNew = (metaData: MetaDataType) => {
+  metaData.form.label = `${metaData.form.label} New Entry`;
+  metaData.form.render.renderType = "tabs";
+  return {
+    form: metaData.form,
+    fields: metaData.fields,
   };
 };
