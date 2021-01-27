@@ -7,12 +7,12 @@ import { Content } from "./content";
 import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
+import { Lead } from "./pages/lead";
 import NewInquiry from "./pages/newInquiry";
 import CAM from "./pages/cam";
 import { useStyles } from "./style";
 
 //This is temparoary
-import { Documents } from "./pages/inquiry/documents";
 
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -42,8 +42,8 @@ const DashbordPages = () => {
               element={<NewInquiry key="question" />}
             />
             <Route path="/inquiries" element={<Inquiry />} />
+            <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/docs" element={<Documents />} />
             <Route path="/cam" element={<CAM />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />

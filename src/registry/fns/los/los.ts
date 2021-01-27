@@ -12,12 +12,18 @@ const LOSAPI = () => {
   const removeToken = () => {
     token = null;
   };
+  const isAPIInitialized = () => {
+    if (token === null && baseURL === null) {
+      return false;
+    }
+    return true;
+  };
 
   const internalFetcher = async (
     url: string,
     payload: any
   ): Promise<CommonFetcherResponse> => {
-    if (token === null && baseURL === null) {
+    if (!isAPIInitialized()) {
       return {
         status: "failure",
         data: "Invalid token or API not initialized",
@@ -211,10 +217,208 @@ const LOSAPI = () => {
     }
   };
 
+  const checkDataExist = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./${type}/data/exists`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const uploadDocuments = async (
+    type: string,
+    files: File[],
+    docID: string,
+    refID: string,
+    progressHandler: any = () => {},
+    completeHandler: any = () => {}
+  ) => {
+    if (!isAPIInitialized()) {
+      return {
+        status: "failure",
+        data: "Invalid token or API not initialized",
+      };
+    }
+    const newURL = new URL(`./${type}/document/upload`, baseURL as URL).href;
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("file", files[i]);
+    }
+    formData.append("refID", refID);
+    formData.append("docID", docID);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", newURL, true);
+    xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        var precentage = Math.round((e.loaded / e.total) * 100);
+        progressHandler(precentage);
+      } else {
+        progressHandler(Infinity);
+      }
+    };
+    xhr.onload = (e) => {
+      try {
+        const result = JSON.parse(xhr.responseText);
+        if (result.status === "0") {
+          completeHandler({ status: "success", data: result?.response_data });
+        } else {
+          completeHandler({ status: "failure", data: result?.error_data });
+        }
+      } catch (e) {
+        completeHandler({
+          status: "failure",
+          data: { message: "unknown error occured" },
+        });
+      }
+    };
+    xhr.send(formData);
+  };
+  const getDocumentListingTemplate = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(
+      `./${type}/document/template`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const getDocumentsList = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./${type}/document/get`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const verifyDocuments = async (
+    type: string,
+    refID: string,
+    docID: string,
+    userComments: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${type}/document/verify`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            docID: docID,
+            comment: userComments,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const rejectDocuments = async (
+    type: string,
+    refID: string,
+    docID: string,
+    userComments: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${type}/document/reject`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            docID: docID,
+            comment: userComments,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const deleteDocuments = async (
+    type: string,
+    refID: string,
+    docID: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${type}/document/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            docID: docID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const constructDocumentDownloadURL = (type, documentID) => {
+    if (!isAPIInitialized()) {
+      return "";
+    }
+    let downloadURL = new URL(`./${type}/document/download`, baseURL as URL)
+      .href;
+    return `${downloadURL}?docUUID=${documentID}&token=${token}`;
+  };
+
+  const moveInquiryToLead = async (refID: string, formData: any) => {
+    const { data, status } = await internalFetcher(`./inquiry/moveToLead`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
     removeToken,
+    checkDataExist,
     getGridMetaData,
     getGridData,
     getGridColumnFilterData,
@@ -223,6 +427,14 @@ const LOSAPI = () => {
     getEditMetaData,
     getEditData,
     updateData,
+    uploadDocuments,
+    getDocumentListingTemplate,
+    getDocumentsList,
+    verifyDocuments,
+    rejectDocuments,
+    deleteDocuments,
+    constructDocumentDownloadURL,
+    moveInquiryToLead,
   };
 };
 

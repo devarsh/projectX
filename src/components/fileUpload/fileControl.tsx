@@ -28,37 +28,53 @@ export const FileUploadControl: FC<FileUploadControlType> = ({
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(Infinity);
 
-  const transformAndSetDroppedFiles = (files: File[]) => {
-    let result = files.map((one) => isMimeTypeValid(one, allowedExtensions));
-    Promise.all(result).then((data) => {
-      let filteredFiles = data.map((one) => {
-        if (one.rejected === false) {
-          if (one.size > maxAllowedSize) {
-            one.rejected = true;
-            one.rejectReason = "file size excedded max allowed limit";
+  const transformAndSetDroppedFiles = useCallback(
+    (files: File[]) => {
+      let result = files.map((one) => isMimeTypeValid(one, allowedExtensions));
+      Promise.all(result).then((data) => {
+        let filteredFiles = data.map((one) => {
+          if (one.rejected === false) {
+            if (one.size > maxAllowedSize) {
+              one.rejected = true;
+              one.rejectReason = "file size excedded max allowed limit";
+            }
           }
-        }
-        return { ...one, fingerprint: fingerprint(one.file) };
+          return { ...one, fingerprint: fingerprint(one.file) };
+        });
+        setDroppedFiles((oldFiles) => {
+          let finalFiles = removeDuplicateFiles([
+            ...filteredFiles,
+            ...oldFiles,
+          ]);
+          if (finalFiles.length > maxAllowedFiles) {
+            setUserMessage({
+              severity: "error",
+              message: `Only Maximum upto ${maxAllowedFiles} files you can upload`,
+            });
+            return oldFiles;
+          } else {
+            setUserMessage(null);
+            return finalFiles;
+          }
+        });
       });
-      setDroppedFiles((oldFiles) => {
-        let finalFiles = removeDuplicateFiles([...filteredFiles, ...oldFiles]);
-        if (finalFiles.length > maxAllowedFiles) {
-          setUserMessage({
-            severity: "error",
-            message: `Only Maximum upto ${maxAllowedFiles} files you can upload`,
-          });
-          return oldFiles;
-        } else {
-          setUserMessage(null);
-          return finalFiles;
-        }
-      });
-    });
-  };
+    },
+    [
+      isMimeTypeValid,
+      setUserMessage,
+      removeDuplicateFiles,
+      maxAllowedFiles,
+      maxAllowedSize,
+      allowedExtensions,
+    ]
+  );
 
-  const handleFileDrop = useCallback<TargetBoxType["onDrop"]>((item, files) => {
-    transformAndSetDroppedFiles(files);
-  }, []);
+  const handleFileDrop = useCallback<TargetBoxType["onDrop"]>(
+    (item, files) => {
+      transformAndSetDroppedFiles(files);
+    },
+    [transformAndSetDroppedFiles]
+  );
 
   const handleDeleteFile = useCallback(
     (fingerprint: number) => {

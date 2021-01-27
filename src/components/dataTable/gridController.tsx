@@ -14,6 +14,7 @@ export const GirdController: FC<{
   setGridRefresh: any;
 }> = ({ metaData, gridRefresh, setGridRefresh }) => {
   const context = useContext(GridContext);
+  /* eslint-disable react-hooks/exhaustive-deps */
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(
     () => ({
