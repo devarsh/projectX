@@ -7,7 +7,7 @@ import { CRUD } from "pages_los/common/crud";
 import { Documents } from "pages_los/common/documents";
 import { RemoveCacheRegisterContext } from "pages_los/common/removeCacheRegisterContext";
 import { CustomerDetails } from "./customerDetails";
-import { AssignInquiry } from "./assignInquiry";
+//import { AssignInquiry } from "./assignInquiry";
 import { HeaderDetails } from "./headerDetails";
 import { MoveInquiryToLead } from "./moveInquiryToLead";
 import { useStyles } from "./style";
@@ -57,8 +57,8 @@ export const DetailsView: FC<{
         <Tab label="Questionnaire" id="1" />
         <Tab label="Documents" id="2" />
         <Tab label="Customer" id="3" />
-        <Tab label="Assign Inquiry" id="4" />
-        <Tab label="Move To Lead" id="5" />
+        {/*<Tab label="Assign Inquiry" id="4" />*/}
+        <Tab label="Move To Lead" id="4" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
@@ -82,15 +82,21 @@ export const DetailsView: FC<{
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <Documents refID={refID} productType={productInquiry} />
+          <Documents
+            refID={refID}
+            productType={productInquiry}
+            disableDialogCloseRef={disableDialogCloseRef}
+            isProductEditedRef={isProductEditedRef}
+            setSnackBarMessage={setSnackBarMessage}
+          />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
           <CustomerDetails refID={refID} productType={productInquiry} />
         </TabPanel>
-        <TabPanel value={currentTab} index="4" key={4}>
+        {/*<TabPanel value={currentTab} index="4" key={4}>
           <AssignInquiry refID={refID} />
-        </TabPanel>
-        <TabPanel value={currentTab} index="5" key={5}>
+  </TabPanel>*/}
+        <TabPanel value={currentTab} index="4" key={4}>
           <MoveInquiryToLead
             key={refID}
             refID={refID}

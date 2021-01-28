@@ -1,14 +1,14 @@
 import { useCallback, useContext, useEffect } from "react";
 import { LOSSDK } from "registry/fns/los";
-import { CRMSDK } from "registry/fns/crm";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "cache";
-import { RemoveCacheRegisterContext } from "../../removeCacheRegisterContext";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import { RemoveCacheRegisterContext } from "../../removeCacheRegisterContext";
+import { transformMetaDataForNew } from "../utils";
 import loaderGif from "assets/images/loader.gif";
 
 interface InsertFormDataFnType {
@@ -25,7 +25,7 @@ const insertFormData = async ({
   productType,
   refID,
 }: InsertFormDataFnType) => {
-  return LOSSDK.updateData(productType, refID, data);
+  return LOSSDK.insertData(productType, refID, data);
 };
 
 export const NewForm = ({
@@ -85,7 +85,7 @@ export const NewForm = ({
 
   const result = useQuery(
     ["getNewMetaData", productType, refID],
-    () => CRMSDK.getMetaData(productType, refID),
+    () => LOSSDK.getNewMetaData(productType, refID),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -101,7 +101,9 @@ export const NewForm = ({
 
   if (loading === false && isError === false) {
     isError = !isMetaDataValid(metaData);
-    if (isError !== false) {
+    if (isError === false) {
+      metaData = transformMetaDataForNew(metaData as MetaDataType);
+    } else {
       errorMsg = "Error loading form";
     }
   }

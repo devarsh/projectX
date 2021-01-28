@@ -1,3 +1,4 @@
+import { UsernameField } from "auth/username";
 import { CommonFetcherResponse } from "../type";
 
 const authAPI = () => {
@@ -39,13 +40,13 @@ const authAPI = () => {
       };
     }
   };
-  const veirfyUsername = async (userName: any, loginType: string) => {
+  const veirfyUsername = async (username: any, loginType: string) => {
     const { data, status } = await internalFetcher(
       `./los/${loginType}/verify`,
       {
         body: JSON.stringify({
           request_data: {
-            userId: userName,
+            userId: username,
           },
           channel: "W",
         }),
@@ -58,12 +59,18 @@ const authAPI = () => {
     }
   };
 
-  const verifyPasswordAndLogin = async (transactionId, password, loginType) => {
+  const verifyPasswordAndLogin = async (
+    transactionId,
+    username,
+    password,
+    loginType
+  ) => {
     const { data, status } = await internalFetcher(`./los/${loginType}/login`, {
       body: JSON.stringify({
         request_data: {
           transactionId: transactionId,
           password: password,
+          userId: username,
         },
         channel: "W",
       }),

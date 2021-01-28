@@ -39,7 +39,6 @@ export const FileListingWithConfirmation = ({
     docContext.groupID,
     docContext.docID
   );
-  console.log(result);
   const status = retriveFileStatus(result?.status);
   const comment = result?.comments ?? "";
   const severity =
@@ -77,7 +76,7 @@ export const FileListingWithConfirmation = ({
         />
       </div>
       {status === "pending" ? (
-        <ConfirmationBox type={type} refID={refID} docID={docContext.docID} />
+        <ConfirmationBox type={type} refID={refID} docContext={docContext} />
       ) : null}
     </Fragment>
   );
@@ -127,40 +126,61 @@ const rejectDocs = ({
   return LOSSDK.rejectDocuments(type, refID, docID, confirmMessage);
 };
 
-const ConfirmationBox = ({ type, refID, docID }) => {
+const ConfirmationBox = ({ type, refID, docContext }) => {
+  const docID = docContext.docID;
   const [confirmMessage, setConfirmMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const maxLength = 200;
   const verifyDocsFn = useMutation(verifyDocs, {
+    onMutate: () => {
+      setIsSubmitting(true);
+    },
     onError: (error: any) => {
       let errorMsg = "Unknown Error occured";
       if (typeof error === "object") {
         errorMsg = error?.error_msg ?? errorMsg;
       }
-      setError(errorMsg);
       setIsSubmitting(false);
+      docContext?.setSnackBarMessage({
+        message: "error confirming documents",
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       queryClient.refetchQueries(["getDocumentListingTemplate", type, refID]);
       queryClient.refetchQueries(["getDocumentsList", type, refID]);
       setError("");
+      docContext?.setSnackBarMessage({
+        message: "document status updated",
+        type: "successs",
+      });
       setIsSubmitting(false);
     },
   });
   const rejectDocsFn = useMutation(rejectDocs, {
+    onMutate: () => {
+      setIsSubmitting(true);
+    },
     onError: (error: any) => {
       let errorMsg = "Unknown Error occured";
       if (typeof error === "object") {
         errorMsg = error?.error_msg ?? errorMsg;
       }
-      setError(errorMsg);
       setIsSubmitting(false);
+      docContext?.setSnackBarMessage({
+        message: "error confirming documents",
+        type: "error",
+      });
     },
     onSuccess: (data) => {
       queryClient.refetchQueries(["getDocumentListingTemplate", type, refID]);
       queryClient.refetchQueries(["getDocumentsList", type, refID]);
       setError("");
+      docContext?.setSnackBarMessage({
+        message: "document status updated",
+        type: "successs",
+      });
       setIsSubmitting(false);
     },
   });
@@ -206,7 +226,6 @@ const ConfirmationBox = ({ type, refID, docID }) => {
             disabled={isSubmitting}
             onClick={() => {
               if (Boolean(confirmMessage)) {
-                setIsSubmitting(true);
                 verifyDocsFn.mutate({ type, refID, docID, confirmMessage });
               } else {
                 setError("This is a required Field");
@@ -219,7 +238,6 @@ const ConfirmationBox = ({ type, refID, docID }) => {
             color="primary"
             disabled={isSubmitting}
             onClick={() => {
-              setIsSubmitting(true);
               if (Boolean(confirmMessage)) {
                 rejectDocsFn.mutate({ type, refID, docID, confirmMessage });
               } else {

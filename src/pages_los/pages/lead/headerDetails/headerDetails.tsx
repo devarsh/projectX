@@ -22,7 +22,7 @@ export const HeaderDetails = ({ productData }) => {
     >
       <Box display="flex" flexDirection="row" width={1} mb={2}>
         <Box pr={3}>
-          <div className={classes.labelText}>Inquiry No.</div>
+          <div className={classes.labelText}>Lead No.</div>
           <div className={classes.valueText}>{productData?.id}</div>
         </Box>
         <Box px={3}>

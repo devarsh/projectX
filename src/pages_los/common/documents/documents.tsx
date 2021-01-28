@@ -16,7 +16,13 @@ interface DocumentState {
   path: string[];
 }
 
-export const Documents: FC<DocumentType> = ({ refID, productType }) => {
+export const Documents: FC<DocumentType> = ({
+  refID,
+  productType,
+  setSnackBarMessage,
+  isProductEditedRef,
+  disableDialogCloseRef,
+}) => {
   const removeCache = useContext(RemoveCacheRegisterContext);
   const [currentView, setCurrentView] = useState<DocumentState>({
     viewName: "folders",
@@ -77,6 +83,9 @@ export const Documents: FC<DocumentType> = ({ refID, productType }) => {
         setUploadPath,
         setViewPath,
         setFoldersPath,
+        setSnackBarMessage,
+        isProductEditedRef,
+        disableDialogCloseRef,
         ...currentView,
       }}
     >

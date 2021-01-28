@@ -1,11 +1,4 @@
 import { createContext } from "react";
+import { DocumentContextType } from "./types";
 
-export const DocumentContext = createContext<{
-  viewName: "folders" | "filesView" | "upload";
-  docID: any;
-  groupID: any;
-  path: string[];
-  setUploadPath: any;
-  setViewPath: any;
-  setFoldersPath: any;
-} | null>(null);
+export const DocumentContext = createContext<DocumentContextType | null>(null);

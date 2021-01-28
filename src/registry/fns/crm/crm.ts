@@ -197,7 +197,7 @@ const CRMAPI = () => {
         body: JSON.stringify({
           request_data: {
             refID: refID,
-            transaction_id: transactionID,
+            transactionId: transactionID,
             otp: otp,
           },
           channel: "W",
@@ -241,23 +241,6 @@ const CRMAPI = () => {
     });
   };
 
-  //Dummy function for metaData
-  const getMetaData = async (productType, refID) => {
-    const { data, status } = await internalFetcher(
-      `./${productType}/metaData/get/new`,
-      {
-        body: JSON.stringify({
-          refID: refID,
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   return {
     inititateAPI,
     getInquiryQuestionMetaData,
@@ -268,7 +251,6 @@ const CRMAPI = () => {
     verifyOTP,
     requestOTP,
     getAadharRequestStatusEventSource,
-    getMetaData,
   };
 };
 
