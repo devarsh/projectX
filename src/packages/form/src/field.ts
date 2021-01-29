@@ -70,6 +70,12 @@ export const useField = ({
         ...currVal,
         name: name,
       }));
+    } else {
+      //remove else if any issue comes up in form - we are putting it here to fix array field issue
+      setFieldData((currVal) => ({
+        ...currVal,
+        name: `${formContext.formName}/${name}`,
+      }));
     }
   }, [name, setFieldData, formContext.formName]);
 

@@ -20,6 +20,7 @@ import { PasswordFieldProps } from "components/derived/passwordField";
 import { InputMaskProps } from "components/derived/inputMask";
 import { ValidateFnType, shouldExcludeFnType } from "packages/form";
 import { TopLevelCondition } from "json-rules-engine";
+import { ArrayField2Props } from "components/common/arrayField";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
@@ -150,3 +151,8 @@ export type AllTextFieldProps = Merge<
   FieldMetaData<"textField">
 >;
 export type TextFieldPropsOptional = Optional<AllTextFieldProps>;
+
+export type ArrayFieldProps = Merge<
+  ArrayField2Props,
+  FieldMetaData<"arrayField">
+>;

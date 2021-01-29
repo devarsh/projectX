@@ -12,10 +12,13 @@ import NewInquiry from "./pages/newInquiry";
 import CAM from "./pages/cam";
 import { useStyles } from "./style";
 
+import ArrayForm from "packages/form/examples/01-basic";
+
 //This is temparoary
 
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -45,6 +48,8 @@ const DashbordPages = () => {
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CAM />} />
+            <Route path="/array" element={<ArrayForm />} />
+            <Route path="/test" element={<TestForm />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>

@@ -54,6 +54,11 @@ const PasswordField = lazy(() => import("components/derived/passwordField"));
 const InputMask = lazy(() => import("components/derived/inputMask"));
 const AutoComplete = lazy(() => import("components/common/autocomplete"));
 
+const ArrayField = lazy(() =>
+  import("components/common/arrayField").then((module) => ({
+    default: module.ArrayField2,
+  }))
+);
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
 };
@@ -67,6 +72,9 @@ export const renderField: RenderFunctionType = (
   const { render, schemaValidation, defaultValue, ...others } = fieldObj;
   let Component: any = null;
   switch (render.componentType) {
+    case "arrayField":
+      //@ts-ignore
+      return <ArrayField key={`${formName}/${others.name}`} {...others} />;
     case "textField":
       Component = TextField;
       break;

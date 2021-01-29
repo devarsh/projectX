@@ -18,6 +18,7 @@ import {
   AllToggleButtonGroupProps,
   AllInputMaskProps,
   AllAutocompleteProps,
+  ArrayFieldProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -110,6 +111,8 @@ export interface MetaDataType {
   fields: FieldMetaDataType[];
 }
 
+//when you change a type _fields here also change it in common ArrayFields component
+
 export type FieldMetaDataTypeX =
   | AllTextFieldProps
   | AllSelectFieldProps
@@ -128,7 +131,8 @@ export type FieldMetaDataTypeX =
   | AllToggleButtonGroupProps
   | AllSpacerProps
   | AllInputMaskProps
-  | AllAutocompleteProps;
+  | AllAutocompleteProps
+  | ArrayFieldProps;
 
 export type FieldMetaDataType = Merge<
   FieldMetaDataTypeX,

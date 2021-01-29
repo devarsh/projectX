@@ -9,7 +9,7 @@ const metaData: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "stepper",
+      renderType: "tabs",
       groups: { 0: "Personal Details", 1: "Contact Details" },
       gridConfig: {
         item: {
@@ -72,7 +72,7 @@ const metaData: MetaDataType = {
           ],
         },
         success: "is required salutation",
-        failure: null,
+        failure: "",
       },
     },
 
@@ -477,33 +477,21 @@ const metaData: MetaDataType = {
       _fields: [
         {
           render: {
-            componentType: "checkbox",
-            group: 1,
+            componentType: "select",
+            group: 0,
           },
-          name: "agreed",
+          name: "product_type",
+          label: "Product Type",
+          placeholder: "Product Type",
           required: true,
-          label:
-            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
+          defaultValue: "X",
           GridProps: {
             xs: 12,
-            md: 12,
-            sm: 12,
+            md: 3,
+            sm: 3,
           },
-        },
-        {
-          render: {
-            componentType: "checkbox",
-            group: 1,
-          },
-          name: "agreedOk",
-          required: true,
-          label:
-            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
-          GridProps: {
-            xs: 12,
-            md: 12,
-            sm: 12,
-          },
+          //@ts-ignore
+          options: "getProductType",
         },
       ],
     },

@@ -48,7 +48,13 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.MaskProps.prepare$/, inputMaskPrepareNotFound],
 ];
 
-const SkipWalkingForKeys = ["validate", "isReadOnly", "shouldExclude"];
+//do not walk for arrayFields _fields as well we will run it seperately
+const SkipWalkingForKeys = [
+  "validate",
+  "isReadOnly",
+  "shouldExclude",
+  "_fields",
+];
 
 const patternMatch = (patters: AttachMethodArrayType[], value: string) => {
   for (const currentPattern of patters) {
@@ -167,10 +173,12 @@ export const attachMethodsToMetaData = (
 ) => {
   const accumKeys: AccumulatorType[] = [];
   JSONWalker(metaData, interestedFields, accumKeys);
+
   let newMetaData = { ...metaData };
   for (const one of accumKeys) {
     const retVal = registrationFnInstance.getFn(one[1], one[3]);
     newMetaData = setIn(newMetaData, one[0], retVal);
   }
+
   return newMetaData;
 };
