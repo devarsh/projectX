@@ -477,8 +477,22 @@ const metaData: MetaDataType = {
       _fields: [
         {
           render: {
-            componentType: "select",
+            componentType: "textField",
             group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
           },
           name: "product_type",
           label: "Product Type",
@@ -490,8 +504,49 @@ const metaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          //@ts-ignore
-          options: "getProductType",
+        },
+        {
+          render: {
+            componentType: "arrayField",
+            group: 0,
+          },
+          name: "nested",
+          label: "Demo God",
+          _fields: [
+            {
+              render: {
+                componentType: "textField",
+                group: 0,
+              },
+              schemaValidation: {
+                type: "string",
+                rules: [
+                  {
+                    name: "required",
+                    params: ["Residence Pincode is required."],
+                  },
+                  {
+                    name: "min",
+                    params: [6, "Residence Pincode should be 6 digit."],
+                  },
+                  {
+                    name: "max",
+                    params: [6, "Residence Pincode should be 6 digit."],
+                  },
+                ],
+              },
+              name: "demo",
+              label: "Demo Inner",
+              placeholder: "Demo Inner",
+              required: true,
+              defaultValue: "X",
+              GridProps: {
+                xs: 12,
+                md: 3,
+                sm: 3,
+              },
+            },
+          ],
         },
       ],
     },

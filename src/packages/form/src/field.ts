@@ -105,6 +105,22 @@ export const useField = ({
     const currentfield = fieldKeyRef.current;
     //Since our keys are prepended with formName, remove the formName and get the filedValue from
     //initialValues object
+
+    //here we are getting default Value for arrayFields since they will be in object and applicalbe for each new added fielc
+    //cannot be satisfied with initial values so defaultArrayFieldValue is used and it will be only set if there is no
+    //initialValue avaible for this field
+    const defaultValueForArrayField =
+      typeof formContext.defaultArrayFieldValues === "object"
+        ? getIn(
+            formContext.defaultArrayFieldValues,
+            currentfield
+              .replace(`${formContext.formName}/`, "")
+              .replace(/\[\d\]/g, ""),
+            null
+          )
+        : null;
+    console.log(defaultValueForArrayField);
+
     let defaultValue: any = null;
     const value =
       typeof formContext.initialValues === "object"
@@ -116,6 +132,8 @@ export const useField = ({
         : null;
     if (Boolean(value)) {
       defaultValue = { value: value };
+    } else if (Boolean(defaultValueForArrayField)) {
+      defaultValue = { value: defaultValueForArrayField };
     }
 
     const registrationValue: FormFieldRegisterSelectorAttributes = {

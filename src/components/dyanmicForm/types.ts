@@ -142,7 +142,6 @@ export type FieldMetaDataType = Merge<
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {
   type: "string" | "number" | "boolean" | "date" | "array";
-  arrayType?: "string" | "number" | "boolean" | "date";
   rules?: YupRulesType[];
 }
 

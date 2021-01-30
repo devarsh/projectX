@@ -4,7 +4,10 @@ import Container from "@material-ui/core/Container";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
-import { constructInitialValue } from "./utils/constructINITValues";
+import {
+  constructInitialValue,
+  constructInitialValuesForArrayFields,
+} from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
 import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
@@ -32,6 +35,9 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   metaData = MoveSequenceToRender(metaData);
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);
+  const defaultArrayFieldInitValues = constructInitialValuesForArrayFields(
+    metaData.fields
+  );
   const yupValidationSchema = constructYupSchema(metaData.fields);
   const formRenderType = metaData.form.render.renderType ?? "simple";
   return (
@@ -42,6 +48,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
           resetFieldOnUnmount: Boolean(metaData.form.resetFieldOnUmnount),
           validationRun: metaData.form.validationRun,
           initialValues: initValues,
+          defaultArrayFieldValues: defaultArrayFieldInitValues,
           validationSchema: yupValidationSchema,
           formState: {
             refID: metaData.form.refID,
