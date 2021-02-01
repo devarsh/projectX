@@ -13,7 +13,7 @@ export const metaData: NavBarMetaDataType = {
       icon: "hashtag",
     },
     {
-      label: "New Lead",
+      label: "New Inquiry",
       icon: "plus",
       isRouterLink: true,
       href: "./newInquiry",

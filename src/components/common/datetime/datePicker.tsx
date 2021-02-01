@@ -4,6 +4,7 @@ import { KeyboardDatePickerProps } from "@material-ui/pickers";
 import { KeyboardDatePicker } from "components/styledComponent/datetime";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Omit, Merge } from "../types";
+import { parseJSON } from "date-fns";
 
 type KeyboardDatePickerPropsSubset = Omit<
   KeyboardDatePickerProps,
@@ -63,6 +64,20 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
+
+  useEffect(() => {
+    if (typeof value === "string") {
+      let result = parseJSON(value);
+      //@ts-ignore
+      if (isNaN(result)) {
+        result = new Date(value);
+      }
+      //@ts-ignore
+      if (!isNaN(result)) {
+        handleChange(result);
+      }
+    }
+  }, [value]);
 
   const focusRef = useRef();
   useEffect(() => {

@@ -7,15 +7,18 @@ import { Content } from "./content";
 import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
+import { Lead } from "./pages/lead";
 import NewInquiry from "./pages/newInquiry";
 import CAM from "./pages/cam";
 import { useStyles } from "./style";
 
-//This is temparoary
-import { Documents } from "./pages/inquiry/documents";
+import ArrayForm from "packages/form/examples/01-basic";
 
-import { AuthProvider, AuthLoginController, AuthenticatedRoutes } from "auth";
+//This is temparoary
+
+import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -42,9 +45,11 @@ const DashbordPages = () => {
               element={<NewInquiry key="question" />}
             />
             <Route path="/inquiries" element={<Inquiry />} />
+            <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/docs" element={<Documents />} />
             <Route path="/cam" element={<CAM />} />
+            <Route path="/array" element={<ArrayForm />} />
+            <Route path="/test" element={<TestForm />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
@@ -61,9 +66,9 @@ const EntryPoint = () => (
         <Route
           path="/*"
           element={
-            <AuthenticatedRoutes unauthenticatedRoute="./auth/login/customer">
+            <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
               <DashbordPages />
-            </AuthenticatedRoutes>
+            </ProtectedRoutes>
           }
         />
         <Route path="/auth/login/:type" element={<AuthLoginController />} />

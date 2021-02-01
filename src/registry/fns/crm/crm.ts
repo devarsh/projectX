@@ -197,7 +197,7 @@ const CRMAPI = () => {
         body: JSON.stringify({
           request_data: {
             refID: refID,
-            transaction_id: transactionID,
+            transactionId: transactionID,
             otp: otp,
           },
           channel: "W",

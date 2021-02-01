@@ -1,6 +1,6 @@
 import {
   createContext,
-  useContext,
+  useCallback,
   useEffect,
   useReducer,
   useState,
@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
 import { AuthSDK } from "registry/fns/auth";
+import { LOSSDK } from "registry/fns/los";
 
 const inititalState: AuthStateType = {
   token: "",
@@ -57,23 +58,29 @@ export const AuthProvider = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
   const navigate = useNavigate();
 
-  const login = (payload) => {
-    dispatch({
-      type: "login",
-      payload: { ...payload, isLoggedIn: true },
-    });
-    console.log(payload);
-    localStorage.setItem("authDetails", JSON.stringify(payload));
-    navigate("/los");
-  };
-  const logout = () => {
+  const login = useCallback(
+    (payload: AuthStateType, stopNavigation?: boolean) => {
+      dispatch({
+        type: "login",
+        payload: { ...payload, isLoggedIn: true },
+      });
+      LOSSDK.setToken(payload.token);
+      localStorage.setItem("authDetails", JSON.stringify(payload));
+      if (!Boolean(stopNavigation)) {
+        navigate("/los");
+      }
+    },
+    [dispatch, navigate]
+  );
+  const logout = useCallback(() => {
     localStorage.removeItem("authDetails");
     dispatch({
       type: "logout",
       payload: {},
     });
+    LOSSDK.removeToken();
     navigate("/los");
-  };
+  }, [dispatch, navigate]);
 
   const isLoggedIn = () => {
     return state.isLoggedIn;
@@ -99,7 +106,7 @@ export const AuthProvider = ({ children }) => {
           localStorageAuthState.token
         ).then((result) => {
           if (result.status === "success") {
-            login(localStorageAuthState);
+            login(localStorageAuthState, true);
           } else {
             logout();
           }
@@ -113,7 +120,7 @@ export const AuthProvider = ({ children }) => {
       logout();
       setAuthenticating(false);
     }
-  }, []);
+  }, [login, logout, setAuthenticating]);
 
   return authenticating ? (
     <div>loading...</div>
@@ -129,17 +136,4 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const AuthenticatedRoutes = ({ children, unauthenticatedRoute }) => {
-  const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
-  if (authContext !== null && authContext.isLoggedIn()) {
-    return children;
-  } else {
-    setTimeout(() =>
-      navigate(unauthenticatedRoute ?? "/los/auth/login/customer")
-    );
-    return null;
-  }
 };

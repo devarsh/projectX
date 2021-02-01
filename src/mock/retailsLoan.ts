@@ -467,7 +467,75 @@ const metaData: MetaDataType = {
         sm: 12,
       },
     },
+    {
+      render: {
+        componentType: "arrayField",
+        group: 1,
+      },
+      name: "contactDetails",
+      label: "Contact Details",
+      _fields: [
+        {
+          render: {
+            componentType: "checkbox",
+            group: 1,
+          },
+          name: "agreed",
+          required: true,
+          label:
+            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
+          GridProps: {
+            xs: 12,
+            md: 12,
+            sm: 12,
+          },
+        },
+        {
+          render: {
+            componentType: "checkbox",
+            group: 1,
+          },
+          name: "agreedOk",
+          required: true,
+          label:
+            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
+          GridProps: {
+            xs: 12,
+            md: 12,
+            sm: 12,
+          },
+        },
+      ],
+    },
   ],
 };
 
 export default metaData;
+
+/*
+{
+      render: {
+        componentType: "arrayField2",
+        group: 1,
+      },
+      name: "address",
+      template: { street1: "1", street2: "2", stree3: "3" },
+      fieldMeta: {
+        street1: {
+          render: {
+            componentType: "checkbox",
+            group: 1,
+          },
+          name: "agreed",
+          required: true,
+          label:
+            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
+          GridProps: {
+            xs: 12,
+            md: 12,
+            sm: 12,
+          },
+        },
+      },
+    },
+*/

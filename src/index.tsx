@@ -13,7 +13,6 @@ require("dotenv").config();
 require("mock");
 
 const Redirect = () => {
-  console.log("redirecting...");
   const navigate = useNavigate();
   setTimeout(() => navigate("crm/"), 1);
   return null;

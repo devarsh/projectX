@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import { FilterContainer } from "./filterContainer";
@@ -6,8 +6,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { APISDK } from "registry/fns/sdk";
 import { ListItemIcon } from "@material-ui/core";
+import { GridContext } from "../../context";
 
 export const OptionsFilter = (props) => {
   const {
@@ -19,11 +19,11 @@ export const OptionsFilter = (props) => {
     },
     globalFiltersState,
     localFilterManager,
-    gridCode,
     handleClose,
     setSortBy,
     gotoPage,
   } = props;
+  const context = useContext(GridContext);
   const isMultiple = selectType === "multiple" ? true : false;
   const [loading, setLoading] = useState(false);
   const [_options, setOptions] = useState(
@@ -43,24 +43,26 @@ export const OptionsFilter = (props) => {
         typeof globalFiltersState === "object" && globalFiltersState !== null
           ? Object.values(globalFiltersState)
           : [];
-      APISDK.fetchGridColumnFilterProps(gridCode, {
-        accessor: id,
-        result_type: "getGroups",
-        filter_conditions: verifiedGlobalFilter,
-      }).then((result) => {
-        if (result.status === "success") {
-          localFilterManager.addFilterState(id, {
-            options: result.data?.groups,
-          });
-          setOptions(result.data?.groups ?? []);
-          setLoading(false);
-        } else {
-          setLoading(false);
-          setOptions([{ label: "Couldnt load data", value: "" }]);
-        }
-      });
+      context
+        ?.getGridColumnFilterData({
+          accessor: id,
+          result_type: "getGroups",
+          filter_conditions: verifiedGlobalFilter,
+        })
+        .then((result) => {
+          if (result.status === "success") {
+            localFilterManager.addFilterState(id, {
+              options: result.data?.groups,
+            });
+            setOptions(result.data?.groups ?? []);
+            setLoading(false);
+          } else {
+            setLoading(false);
+            setOptions([{ label: "Couldnt load data", value: "" }]);
+          }
+        });
     }
-  }, [gridCode, id, setLoading, setOptions]);
+  }, [id, setLoading, setOptions]);
 
   const handleSingleChange = (currentValue) => () => {
     setValue([currentValue]);

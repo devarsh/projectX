@@ -8,6 +8,9 @@ import {
   Select,
   DatePicker,
   ToggleButtonGroup,
+  ArrayField,
+  ArrayField2,
+  AutoComplete,
 } from "components/common";
 import { InputMask } from "components/derived";
 
@@ -22,6 +25,15 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { parse, isDate } from "date-fns";
+
+function parseDateString(value, originalValue) {
+  const parsedDate = isDate(originalValue)
+    ? originalValue
+    : parse(originalValue, "yyyy-MM-dd", new Date());
+
+  return parsedDate;
+}
 
 //@ts-ignore
 const useStyles = makeStyles<any>((theme) => ({
@@ -65,16 +77,19 @@ const App = () => {
             initialValues: {
               firstName: "deva@gmail.com",
               password: "dsfdssddfgdfs",
+              dob: new Date().toJSON(),
               contact: [
                 { tel: 34353445, tag: 12 },
                 { tel: 3335, tag: 13 },
               ],
+              checking: [{ one: "devarsh", tow: "ivy" }],
             },
             validationSchema: yup.object().shape({
               email: yup
                 .string()
                 .required("required field")
                 .email("should be valid email"),
+              dob: yup.date().transform(parseDateString),
             }),
             formState: {},
           }}
@@ -96,12 +111,17 @@ const App = () => {
 };
 
 const MainApp = () => {
-  const onSubmitHandler = (values, submitEnd, setFieldsError) => {
+  const onSubmitHandler = (
+    values,
+    displayValues,
+    submitEnd,
+    setFieldsError
+  ) => {
     setTimeout(() => {
       console.log(values);
       submitEnd(false, "Invalid request");
       setFieldsError({ firstName: "errr email taken" });
-    }, 3000);
+    }, 500);
   };
 
   const { handleSubmit, handleReset, handleClear } = useForm({
@@ -117,7 +137,164 @@ const MainApp = () => {
   return (
     <Fragment>
       <Grid container={true} spacing={3}>
-        <ToggleButtonGroup
+        <TextField
+          name="email"
+          fieldKey="email"
+          type="email"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Email Address"
+          autoComplete="username email"
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+        {/*@ts-ignore*/}
+        <AutoComplete
+          name="city"
+          fieldKey="city"
+          fullWidth
+          label="City"
+          enableGrid={true}
+          showCheckbox={true}
+          runValidationOnDependentFieldsChange={false}
+          options={[
+            { label: "Dubia", value: 1 },
+            { label: "AbuDabhi", value: 2 },
+            { label: "Dublin", value: 3 },
+            { label: "Django", value: 4 },
+            { label: "America", value: 5 },
+            { label: "Panama", value: 6 },
+          ]}
+        />
+      </Grid>
+      <br />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+      >
+        Submit Full
+      </Button>
+      <Button
+        component="button"
+        variant="contained"
+        color="primary"
+        onClick={handleReset}
+      >
+        Reset
+      </Button>
+      <Button variant="contained" color="primary" onClick={handleClear}>
+        Clear
+      </Button>
+    </Fragment>
+  );
+};
+
+export default App;
+
+/*
+ <DatePicker
+          name="dob"
+          fieldKey="dob"
+          label="Date Of Birth"
+          placeholder="dd/mm/yyyy"
+          format="dd/MM/yyyy"
+          enableGrid={true}
+          GridProps={girdConfig}
+        />
+ <ArrayField
+          arrayFieldName="contact"
+          template={{ tel: "", tag: "" }}
+          renderRowsFn={(props) => {
+            const { row, removeFn, fields, rowIndex } = props;
+            const oneRow = fields.map((field) => {
+              return (
+                <TextField
+                  name={row.cells[field].name}
+                  fieldKey={row.cells[field].key}
+                  key={row.cells[field].key}
+                  type="text"
+                  variant="outlined"
+                  margin="normal"
+                  label={field}
+                  enableGrid={true}
+                />
+              );
+            });
+            return (
+              <div key={row.fieldIndexKey}>
+                {oneRow}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    removeFn(rowIndex);
+                  }}
+                >
+                  Remove Key
+                </button>
+              </div>
+            );
+          }}
+          renderParentFn={({ rows, key, push }) => {
+            return (
+              <div key={key}>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    push();
+                  }}
+                >
+                  Add
+                </button>
+                {rows}
+              </div>
+            );
+          }}
+        />
+
+        <ArrayField2
+          arrayFieldName="checking"
+          template={{ one: "", tow: "" }}
+          fieldsMeta={{
+            one: {
+              render: {
+                componentType: "textField",
+                group: 0,
+              },
+              name: "one",
+              type: "text",
+              label: "One",
+              required: true,
+              placeholder: "One wala",
+              GridProps: {
+                xs: 12,
+                md: 3,
+                sm: 3,
+              },
+            },
+            tow: {
+              render: {
+                componentType: "textField",
+                group: 0,
+              },
+              name: "tow",
+              type: "text",
+              label: "Two",
+              required: true,
+              placeholder: "Tow wala",
+
+              GridProps: {
+                xs: 12,
+                md: 3,
+                sm: 3,
+              },
+            },
+          }}
+        />
+ <ToggleButtonGroup
           name="formType"
           fieldKey="formType"
           label="Form Type"
@@ -157,9 +334,6 @@ const MainApp = () => {
           fullWidth
           label="Email Address"
           autoComplete="username email"
-          validate={async (data) => {
-            return data.value === "devarsh@gmail.com" ? "" : "invalid email";
-          }}
           enableGrid={true}
           GridProps={girdConfig}
         />
@@ -224,16 +398,7 @@ const MainApp = () => {
             return true;
           }}
         />
-        <DatePicker
-          name="dob"
-          fieldKey="dob"
-          label="Date Of Birth"
-          placeholder="dd/mm/yyyy"
-          format="dd/MM/yyyy"
-          enableGrid={true}
-          GridProps={girdConfig}
-        />
-        <Select
+         <Select
           fieldKey="country"
           name="country"
           label="country"
@@ -289,6 +454,21 @@ const MainApp = () => {
               }, 3000);
             });
           }}
+        />
+        <Select
+          fieldKey="city"
+          name="city"
+          label="City"
+          fullWidth
+          enableGrid={true}
+          GridProps={girdConfig}
+          options={[
+            { label: "Ahmedabad", value: 1 },
+            { label: "Baroda", value: 2 },
+            { label: "Rajkot", value: 3 },
+            { label: "Surat", value: 4 },
+            { label: "Nadiad", value: 5 },
+          ]}
         />
         <TextField
           name="pincode"
@@ -357,88 +537,6 @@ const MainApp = () => {
           enableGrid={true}
           GridProps={girdConfig}
         />
-
-        <Select
-          fieldKey="city"
-          name="city"
-          label="City"
-          fullWidth
-          enableGrid={true}
-          GridProps={girdConfig}
-          options={[
-            { label: "Ahmedabad", value: 1 },
-            { label: "Baroda", value: 2 },
-            { label: "Rajkot", value: 3 },
-            { label: "Surat", value: 4 },
-            { label: "Nadiad", value: 5 },
-          ]}
-        />
-      </Grid>
-      <br />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-      >
-        Submit Full
-      </Button>
-      <Button
-        component="button"
-        variant="contained"
-        color="primary"
-        onClick={handleReset}
-      >
-        Reset
-      </Button>
-      <Button variant="contained" color="primary" onClick={handleClear}>
-        Clear
-      </Button>
-    </Fragment>
-  );
-};
-
-export default App;
-
-/*
-<ArrayField
-        arrayFieldName="contact"
-        template={{ tel: "", tag: "" }}
-        renderRowsFn={(props) => {
-          const { row, removeFn, fields, rowIndex } = props;
-          const oneRow = fields.map((field) => {
-            return (
-              <TextField
-                name={row.cells[field].name}
-                fieldKey={row.cells[field].key}
-                key={row.cells[field].key}
-                type="text"
-                variant="outlined"
-                margin="normal"
-                label={field}
-                validate={yupValidationHelper(
-                  yup.string().required("this is required field")
-                )}
-                enableGrid={false}
-              />
-            );
-          });
-          return (
-            <div key={row.fieldIndexKey}>
-              {oneRow}
-              <button onClick={() => removeFn(rowIndex)}>Remove Key</button>
-            </div>
-          );
-        }}
-        renderParentFn={({ rows, key, push }) => {
-          return (
-            <div key={key}>
-              <button onClick={() => push()}>Add</button>
-              {rows}
-            </div>
-          );
-        }}
-      />
 <ArrayField
         arrayFieldName="address"
         template={{ street1: "", city: "", state: "" }}
