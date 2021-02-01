@@ -73,8 +73,8 @@ export const renderField: RenderFunctionType = (
   let Component: any = null;
   switch (render.componentType) {
     case "arrayField":
-      //@ts-ignore
-      return <ArrayField key={`${formName}/${others.name}`} {...others} />;
+      Component = ArrayField;
+      break;
     case "textField":
       Component = TextField;
       break;

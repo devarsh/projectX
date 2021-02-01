@@ -150,6 +150,8 @@ const MainApp = () => {
           GridProps={girdConfig}
         />
         <ArrayField2
+          fieldKey="checking"
+          enableGrid={true}
           name="checking"
           label="Checking"
           _fields={[
@@ -189,6 +191,8 @@ const MainApp = () => {
           ]}
         />
         <ArrayField2
+          fieldKey="checking2"
+          enableGrid={true}
           name="checking2"
           label="Checking"
           _fields={[

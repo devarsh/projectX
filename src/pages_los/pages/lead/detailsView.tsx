@@ -35,9 +35,9 @@ export const DetailsView: FC<{
     setCurrentTab(currentTab);
   };
   const classes = useStyles();
-  const productInquiry = "inquiry";
-  const productInquiryQuestion = "inquiryQuestion";
-  const productAdditionalQuestion = "additionalQuestion";
+  const productInquiry = "lead";
+  const productInquiryQuestion = "leadQuestion";
+  const productAdditionalQuestion = "leadadditional";
   //Remove all the cached queries of all tabs when this component unmounts
   useEffect(() => {
     return () => {

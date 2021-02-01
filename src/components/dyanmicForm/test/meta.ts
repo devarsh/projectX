@@ -474,6 +474,11 @@ const metaData: MetaDataType = {
       },
       name: "contactDetails",
       label: "Contact Details",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
       _fields: [
         {
           render: {
@@ -512,6 +517,11 @@ const metaData: MetaDataType = {
           },
           name: "nested",
           label: "Demo God",
+          GridProps: {
+            xs: 12,
+            md: 12,
+            sm: 12,
+          },
           _fields: [
             {
               render: {

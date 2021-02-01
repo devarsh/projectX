@@ -153,6 +153,6 @@ export type AllTextFieldProps = Merge<
 export type TextFieldPropsOptional = Optional<AllTextFieldProps>;
 
 export type ArrayFieldProps = Merge<
-  ArrayField2Props,
+  Omitted<ArrayField2Props>,
   FieldMetaData<"arrayField">
 >;
