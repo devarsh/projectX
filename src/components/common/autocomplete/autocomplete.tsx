@@ -46,6 +46,7 @@ export type MyAllAutocompleteProps = Merge<
 >;
 
 const getOptionLabel = (option: OptionsProps) => option?.label ?? "";
+const getOptionValue = (option: OptionsProps) => option?.value ?? "";
 
 const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   name: fieldName,
@@ -149,11 +150,20 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
         }
         value = value.map((one) => {
           if (typeof one === "object") {
+            if (!Boolean(freeSolo)) {
+              return getOptionValue(one);
+            }
             return getOptionLabel(one);
           }
           return one;
         });
-        handleChange(value);
+
+        if (!Boolean(multiple) && Array.isArray(value)) {
+          //@ts-ignore
+          handleChange(value[0]);
+        } else {
+          handleChange(value);
+        }
       }}
       onBlur={handleBlur}
       disabled={isSubmitting}

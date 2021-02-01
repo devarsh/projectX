@@ -119,7 +119,6 @@ export const useField = ({
             null
           )
         : null;
-    console.log(defaultValueForArrayField);
 
     let defaultValue: any = null;
     const value =

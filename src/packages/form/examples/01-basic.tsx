@@ -10,6 +10,7 @@ import {
   ToggleButtonGroup,
   ArrayField,
   ArrayField2,
+  AutoComplete,
 } from "components/common";
 import { InputMask } from "components/derived";
 
@@ -149,86 +150,22 @@ const MainApp = () => {
           enableGrid={true}
           GridProps={girdConfig}
         />
-        <ArrayField2
-          fieldKey="checking"
+        {/*@ts-ignore*/}
+        <AutoComplete
+          name="city"
+          fieldKey="city"
+          fullWidth
+          label="City"
           enableGrid={true}
-          name="checking"
-          label="Checking"
-          _fields={[
-            {
-              render: {
-                componentType: "textField",
-                group: 0,
-              },
-              name: "one",
-              type: "text",
-              label: "One",
-              required: true,
-              placeholder: "One wala",
-              GridProps: {
-                xs: 12,
-                md: 3,
-                sm: 3,
-              },
-            },
-            {
-              render: {
-                componentType: "textField",
-                group: 0,
-              },
-              name: "tow",
-              type: "text",
-              label: "Two",
-              required: true,
-              placeholder: "Tow wala",
-
-              GridProps: {
-                xs: 12,
-                md: 3,
-                sm: 3,
-              },
-            },
-          ]}
-        />
-        <ArrayField2
-          fieldKey="checking2"
-          enableGrid={true}
-          name="checking2"
-          label="Checking"
-          _fields={[
-            {
-              render: {
-                componentType: "textField",
-                group: 0,
-              },
-              name: "one",
-              type: "text",
-              label: "One",
-              required: true,
-              placeholder: "One wala",
-              GridProps: {
-                xs: 12,
-                md: 3,
-                sm: 3,
-              },
-            },
-            {
-              render: {
-                componentType: "textField",
-                group: 0,
-              },
-              name: "tow",
-              type: "text",
-              label: "Two",
-              required: true,
-              placeholder: "Tow wala",
-
-              GridProps: {
-                xs: 12,
-                md: 3,
-                sm: 3,
-              },
-            },
+          showCheckbox={true}
+          runValidationOnDependentFieldsChange={false}
+          options={[
+            { label: "Dubia", value: 1 },
+            { label: "AbuDabhi", value: 2 },
+            { label: "Dublin", value: 3 },
+            { label: "Django", value: 4 },
+            { label: "America", value: 5 },
+            { label: "Panama", value: 6 },
           ]}
         />
       </Grid>

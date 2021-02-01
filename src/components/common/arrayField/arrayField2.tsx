@@ -65,6 +65,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     arrayFieldName: name,
     template: template.current,
   });
+
   let rows = renderRows(({ row, removeFn, rowIndex, fields }) => {
     const oneRow = fields.map((field) => {
       const currentFieldMetaData = currentMetaToObj.current[field];
@@ -92,9 +93,15 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     );
   });
   let result = [
-    <Typography variant="h6">{label}</Typography>,
-    <Button onClick={() => push()}>Add Field</Button>,
-    <Grid container>{rows}</Grid>,
+    <Typography variant="h6" key="typo">
+      {label}
+    </Typography>,
+    <Button onClick={push} key="addBTN">
+      Add Field
+    </Button>,
+    <Grid container key="arrayFields">
+      {rows}
+    </Grid>,
   ];
   if (Boolean(enableGrid)) {
     return (
