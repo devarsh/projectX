@@ -59,6 +59,9 @@ const ArrayField = lazy(() =>
     default: module.ArrayField2,
   }))
 );
+
+const TextareaField = lazy(() => import("components/common/textarea"));
+
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
 };
@@ -74,6 +77,9 @@ export const renderField: RenderFunctionType = (
   switch (render.componentType) {
     case "arrayField":
       Component = ArrayField;
+      break;
+    case "textarea":
+      Component = TextareaField;
       break;
     case "textField":
       Component = TextField;
@@ -144,6 +150,9 @@ export const renderField: RenderFunctionType = (
       ...formRenderConfig?.gridConfig?.item,
       ...others?.GridProps,
     };
+    if (render.componentType === "arrayField") {
+      allProps["componentProps"] = componentProps;
+    }
     return (
       <Component
         {...allProps}

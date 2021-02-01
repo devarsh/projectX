@@ -19,6 +19,7 @@ import {
   AllInputMaskProps,
   AllAutocompleteProps,
   ArrayFieldProps,
+  AllTextareaAutosizeFieldProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -38,6 +39,7 @@ import {
   ToggleButtonGroupPropsOptional,
   InputMaskPropsOptional,
   AutocompletePropsOptional,
+  TextareaAutosizeFieldPropsOptional,
 } from "./typesFields";
 import { Merge } from "components/common/types";
 import { InitialValuesType, SubmitFnType } from "packages/form";
@@ -104,6 +106,7 @@ export interface ComponentTypeProps {
   toggleButtonGroup?: ToggleButtonGroupPropsOptional;
   inputMask?: InputMaskPropsOptional;
   autocomplete?: AutocompletePropsOptional;
+  textarea?: TextareaAutosizeFieldPropsOptional;
 }
 
 export interface MetaDataType {
@@ -132,6 +135,7 @@ export type FieldMetaDataTypeX =
   | AllSpacerProps
   | AllInputMaskProps
   | AllAutocompleteProps
+  | AllTextareaAutosizeFieldProps
   | ArrayFieldProps;
 
 export type FieldMetaDataType = Merge<
@@ -185,7 +189,8 @@ export type FieldMetaDataTypeOptional =
   | PasswordFieldPropsOptional
   | ToggleButtonGroupPropsOptional
   | InputMaskPropsOptional
-  | AutocompletePropsOptional;
+  | AutocompletePropsOptional
+  | TextareaAutosizeFieldPropsOptional;
 
 export type ExtendedFieldMetaDataTypeOptional = {
   [key: string]: FieldMetaDataTypeOptional;

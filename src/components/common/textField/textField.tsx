@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useCallback } from "react";
+import { FC, useEffect, useRef, useCallback, Fragment } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
@@ -9,6 +9,7 @@ import CircularProgress, {
 } from "@material-ui/core/CircularProgress";
 import { Merge } from "../types";
 import numWords from "num-words";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 interface MyGridExtendedProps {
   enableNumWords?: boolean;
@@ -134,8 +135,28 @@ const MyTextField: FC<MyTextFieldProps> = ({
       name={name}
       value={value}
       error={isError}
-      //can keep error field enabled at all times by replacing null with " " so UI wont shift when error occurs
-      helperText={isError ? myError : numWordsVar}
+      helperText={
+        <div style={{ display: "flex" }}>
+          <FormHelperText>{isError ? myError : numWordsVar}</FormHelperText>
+          {maxLength > 0 && (
+            <FormHelperText
+              error={false}
+              style={{
+                flex: 1,
+                textAlign: "right",
+                margin: "5px 15px 0 0",
+                color: "black",
+              }}
+            >
+              {value.length}/{maxLength}
+            </FormHelperText>
+          )}
+        </div>
+      }
+      FormHelperTextProps={{
+        //@ts-ignore
+        component: Fragment,
+      }}
       //@ts-ignore
       InputProps={{
         endAdornment: validationRunning ? (

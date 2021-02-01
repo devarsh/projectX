@@ -166,7 +166,7 @@ export const Dashboard = () => {
         </Paper>
       </Grid>
 
-      <DashLet />
+      <DashLet key="dashlet" />
     </Grid>
   );
 };

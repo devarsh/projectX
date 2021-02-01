@@ -363,7 +363,10 @@ const metaData: MetaDataType = {
           { name: "max", params: [6, "Residence Pincode should be 6 digit."] },
           {
             name: "matches",
-            params: [/^\d{6}/, "Please enter valid Pincode."],
+            params: [
+              /^\d{6}/,
+              "Please enter valid Pincode. ldskjfdgkljgdfkl dslfjdsfkljfdgkl ldsfjdklsjdfgkl",
+            ],
           },
         ],
       },
@@ -375,6 +378,7 @@ const metaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      maxLength: 6,
     },
     {
       render: {
@@ -457,7 +461,7 @@ const metaData: MetaDataType = {
         componentType: "checkbox",
         group: 1,
       },
-      name: "agreed",
+      name: "dutyrgf",
       required: true,
       label:
         "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
@@ -469,6 +473,158 @@ const metaData: MetaDataType = {
     },
     {
       render: {
+        componentType: "textField",
+        group: 1,
+      },
+      name: "agreed",
+      required: true,
+      label: "Wow",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+      multiline: true,
+      rowsMax: 4,
+      rows: 4,
+    },
+    {
+      render: {
+        componentType: "arrayField",
+        group: 1,
+      },
+      name: "contactDetails2",
+      label: "Other details",
+      GridProps: {
+        xs: 12,
+        md: 6,
+        sm: 6,
+      },
+      _fields: [
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type",
+          label: "Other Type",
+          placeholder: "Other Type",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type3",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type4",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type5",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+      ],
+    },
+    {
+      render: {
         componentType: "arrayField",
         group: 1,
       },
@@ -476,8 +632,8 @@ const metaData: MetaDataType = {
       label: "Contact Details",
       GridProps: {
         xs: 12,
-        md: 12,
-        sm: 12,
+        md: 6,
+        sm: 6,
       },
       _fields: [
         {
@@ -511,6 +667,161 @@ const metaData: MetaDataType = {
           },
         },
         {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type2",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type3",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type4",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
+            group: 0,
+          },
+          schemaValidation: {
+            type: "string",
+            rules: [
+              { name: "required", params: ["Residence Pincode is required."] },
+              {
+                name: "min",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+              {
+                name: "max",
+                params: [6, "Residence Pincode should be 6 digit."],
+              },
+            ],
+          },
+          name: "product_type5",
+          label: "Product Name",
+          placeholder: "Product Name",
+          required: true,
+          defaultValue: "X",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+      ],
+    },
+  ],
+};
+
+export default metaData;
+
+/*
+{
+      render: {
+        componentType: "arrayField2",
+        group: 1,
+      },
+      name: "address",
+      template: { street1: "1", street2: "2", stree3: "3" },
+      fieldMeta: {
+        street1: {
+          render: {
+            componentType: "checkbox",
+            group: 1,
+          },
+          name: "agreed",
+          required: true,
+          label:
+            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
+          GridProps: {
+            xs: 12,
+            md: 12,
+            sm: 12,
+          },
+        },
+      },
+    },
+*/
+/*
+{
           render: {
             componentType: "arrayField",
             group: 0,
@@ -558,37 +869,4 @@ const metaData: MetaDataType = {
             },
           ],
         },
-      ],
-    },
-  ],
-};
-
-export default metaData;
-
-/*
-{
-      render: {
-        componentType: "arrayField2",
-        group: 1,
-      },
-      name: "address",
-      template: { street1: "1", street2: "2", stree3: "3" },
-      fieldMeta: {
-        street1: {
-          render: {
-            componentType: "checkbox",
-            group: 1,
-          },
-          name: "agreed",
-          required: true,
-          label:
-            "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
-          GridProps: {
-            xs: 12,
-            md: 12,
-            sm: 12,
-          },
-        },
-      },
-    },
 */

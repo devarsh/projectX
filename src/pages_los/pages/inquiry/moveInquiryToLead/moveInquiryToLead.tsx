@@ -107,7 +107,6 @@ const MoveInquiryToLeadForm = ({
           <Select
             name="priority"
             fieldKey="priority"
-            variant="outlined"
             size="small"
             margin="normal"
             required
@@ -117,16 +116,16 @@ const MoveInquiryToLeadForm = ({
             enableGrid={true}
             autoComplete="off"
             GridProps={{
-              xs: 6,
-              sm: 4,
-              spacing: 3,
+              item: true,
+              xs: 12,
+              sm: 3,
+              md: 3,
             }}
           />
           <TextField
             name="remarks"
             fieldKey="remarks"
             type="text"
-            variant="outlined"
             margin="normal"
             size="small"
             required
@@ -135,8 +134,10 @@ const MoveInquiryToLeadForm = ({
             enableGrid={true}
             autoComplete="off"
             GridProps={{
-              xs: 6,
-              sm: 4,
+              item: true,
+              xs: 12,
+              sm: 3,
+              md: 3,
             }}
           />
         </Grid>

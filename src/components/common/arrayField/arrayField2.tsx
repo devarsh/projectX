@@ -1,7 +1,11 @@
-import { FC, cloneElement, Fragment, Suspense, useRef } from "react";
+import { FC, cloneElement, Fragment, useRef } from "react";
 import Grid, { GridProps } from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import IconButton from "@material-ui/core/IconButton";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { renderField } from "components/dyanmicForm/utils/fieldRenderer";
 import { FieldMetaDataType } from "components/dyanmicForm/";
 import { useFieldArray } from "packages/form";
@@ -11,7 +15,7 @@ import { attachMethodsToMetaData } from "components/dyanmicForm/utils/attachMeth
 import { singletonFunctionRegisrationFactory } from "components/dyanmicForm/utils/functionRegistry";
 import { MoveSequenceToRender } from "components/dyanmicForm/utils/fixSequenceInMetaData";
 import { MetaDataType } from "components/dyanmicForm";
-
+import { useStyles } from "./style";
 export interface ArrayField2Props {
   fieldKey: string;
   name: string;
@@ -20,6 +24,7 @@ export interface ArrayField2Props {
   enableGrid: boolean;
   GridProps?: GridProps;
   _fields: FieldMetaDataType[];
+  componentProps?: any;
 }
 
 const metaDataTransform = (metaData: MetaDataType): MetaDataType => {
@@ -38,10 +43,12 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   _fields,
   GridProps,
   enableGrid,
+  componentProps = {},
 }) => {
   let currentFieldsMeta = JSON.parse(
     JSON.stringify(_fields)
   ) as FieldMetaDataType[];
+  const classes = useStyles();
   let metaData = { form: {}, fields: currentFieldsMeta } as MetaDataType;
   const transformedMetaData = useRef<MetaDataType | null>(null);
   if (transformedMetaData.current === null) {
@@ -77,7 +84,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         //@ts-ignore
         {},
         name,
-        {}
+        componentProps
       );
       const clonedComponent = cloneElement(component, {
         fieldKey: row.cells[field].key,
@@ -86,26 +93,47 @@ export const ArrayField2: FC<ArrayField2Props> = ({
       return <Fragment key={row.cells[field].key}>{clonedComponent}</Fragment>;
     });
     return (
-      <Grid container item key={row.fieldIndexKey}>
-        {oneRow}
-        <Button onClick={() => removeFn(rowIndex)}>Remove Key</Button>
-      </Grid>
+      <Fragment key={row.fieldIndexKey}>
+        <Grid
+          container
+          item
+          xs={12}
+          md={12}
+          sm={12}
+          spacing={2}
+          className={classes.arrayRowContainer}
+        >
+          {oneRow}
+          <IconButton
+            onClick={() => removeFn(rowIndex)}
+            className={classes.arrayRowRemoveBtn}
+          >
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+        </Grid>
+      </Fragment>
     );
   });
-  let result = [
-    <Typography variant="h6" key="typo">
-      {label}
-    </Typography>,
-    <Button onClick={push} key="addBTN">
-      Add Field
-    </Button>,
-    <Grid container key="arrayFields">
-      {rows}
-    </Grid>,
-  ];
+  let result = (
+    <Card className={classes.arrayRowCard}>
+      <CardHeader
+        title={label}
+        action={
+          <IconButton onClick={push}>
+            <AddCircleOutlineIcon />
+          </IconButton>
+        }
+      />
+      <CardContent className={classes.arrayRowCardContent}>
+        <Grid container spacing={1} xs={12} md={12} sm={12}>
+          {rows}
+        </Grid>
+      </CardContent>
+    </Card>
+  );
   if (Boolean(enableGrid)) {
     return (
-      <Grid {...GridProps} key={name}>
+      <Grid container {...GridProps} key={name}>
         {result}
       </Grid>
     );

@@ -87,7 +87,6 @@ const MiscAPI = () => {
 
   //dropdown value - dynamic form
   const getSubProductDtl = async (fieldData) => {
-    console.log(fieldData.value);
     if (fieldData.value.length !== 0) {
       let codes = await getProductType(null, { formCode: fieldData.value });
       return {

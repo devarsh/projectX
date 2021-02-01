@@ -21,6 +21,7 @@ import { InputMaskProps } from "components/derived/inputMask";
 import { ValidateFnType, shouldExcludeFnType } from "packages/form";
 import { TopLevelCondition } from "json-rules-engine";
 import { ArrayField2Props } from "components/common/arrayField";
+import { TextareaAutosizeFieldProps } from "components/common/textarea";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
@@ -156,3 +157,10 @@ export type ArrayFieldProps = Merge<
   Omitted<ArrayField2Props>,
   FieldMetaData<"arrayField">
 >;
+
+export type AllTextareaAutosizeFieldProps = Merge<
+  Omitted<TextareaAutosizeFieldProps>,
+  FieldMetaData<"textarea">
+>;
+
+export type TextareaAutosizeFieldPropsOptional = Optional<AllTextFieldProps>;
