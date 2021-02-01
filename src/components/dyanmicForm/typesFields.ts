@@ -70,9 +70,7 @@ export type AllToggleButtonGroupProps = Merge<
   Omitted<ToggleButtonGroupProps>,
   FieldMetaData<"toggleButtonGroup">
 >;
-export type ToggleButtonGroupPropsOptional = Optional<
-  AllToggleButtonGroupProps
->;
+export type ToggleButtonGroupPropsOptional = Optional<AllToggleButtonGroupProps>;
 
 export type AllNumberFormatProps = Merge<
   Omitted<NumberFormatProps>,

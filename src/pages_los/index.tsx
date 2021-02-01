@@ -9,8 +9,9 @@ import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
 import { Lead } from "./pages/lead";
 import NewInquiry from "./pages/newInquiry";
-import CAM from "./pages/cam";
+// import CAM from "./pages/cam";
 import { useStyles } from "./style";
+import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
 
 import ArrayForm from "packages/form/examples/01-basic";
 
@@ -47,7 +48,8 @@ const DashbordPages = () => {
             <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cam" element={<CAM />} />
+            <Route path="/cam" element={<CAMIFrame />} />
+            {/* <Route path="/cam" element={<CAM />} /> */}
             <Route path="/array" element={<ArrayForm />} />
             <Route path="/test" element={<TestForm />} />
             {/*dummy routes*/}
