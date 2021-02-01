@@ -1,2 +1,1 @@
-export * from "./listing";
-export * from "./inquiryDetail";
+export * from "./inquiry";

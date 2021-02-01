@@ -1,0 +1,32 @@
+table {
+  color: #333;
+  background: white;
+  font-size: 12px;
+  border-collapse: collapse;
+  margin: 0px auto;
+  max-width: calc(100% - 2rem);
+}
+table th,
+table tfoot th {
+  color: var(--theme-color1) !important;
+  background: rgba(0, 0, 0, 0.1);
+  font-weight: 700 !important;
+  font-size: 12px !important;
+}
+table th,
+table td {
+  padding: 0 8px !important;
+  border: 1px solid lightgrey !important;
+  min-width: 180px;
+  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
+}
+
+table tr th:first-child,
+table tr td:first-child {
+  background-color: #fff;
+}
+
+.form-heading {
+  text-align: center;
+  padding: 5px;
+}

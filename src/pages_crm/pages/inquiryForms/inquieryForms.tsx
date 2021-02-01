@@ -1,16 +1,9 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  memo,
-  Fragment,
-  useCallback,
-} from "react";
+import { useState, useRef, memo, Fragment, useCallback } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
-import { APISDK } from "registry/fns/sdk";
+import { CRMSDK } from "registry/fns/crm";
 import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
@@ -20,13 +13,13 @@ import FormWrapper, {
   MetaDataType,
 } from "components/dyanmicForm";
 import { ConfirmationBox } from "./confirmationBox";
+import { useQuery } from "react-query";
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
 export const InquiryFormWrapper = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [formDisplayValues, setFormDisplayValues] = useState({});
@@ -67,7 +60,7 @@ export const InquiryFormWrapper = () => {
       return;
     }
     setIsSubmitting(true);
-    const result = await APISDK.sumibtInquiryData(
+    const result = await CRMSDK.submitInquiryQuestionData(
       metaData?.current?.form.submitAction ?? "NO_ACTION_FOUND",
       {
         ...formData,
@@ -110,28 +103,36 @@ export const InquiryFormWrapper = () => {
     }
   };
 
-  //@ts-ignore
-  useEffect(() => {
-    setLoading(true);
-    metaData.current = null;
-    //@ts-ignore need to find how to set router loaction state type (react-router-dom)
-    APISDK.getInquiryMetaData(navigationState?.metaProps ?? {})
-      .then((result) => {
-        metaData.current = result;
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoading(false);
-      });
-    /*eslint-disable react-hooks/exhaustive-deps*/
+  const result = useQuery(
     //@ts-ignore
-  }, Object.values(navigationState ?? []));
+    ["inquiryOrQuestion", "new", navigationState?.metaProps],
+    //@ts-ignore
+    () => CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
+    {
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
 
-  const result = loading ? (
+  const loading = result.isLoading;
+  let isError = result.isError;
+  let errorMsg =
+    typeof result.error === "string"
+      ? result.error
+      : "cannot read error,unknown error";
+  metaData.current = result.data;
+  if (!isError) {
+    if (!isMetaDataValid(metaData.current as MetaDataType)) {
+      isError = true;
+      errorMsg = "Error loading form";
+    }
+  }
+
+  const renderResult = loading ? (
     <img src={loaderGif} className={classes.loader} alt="loader" />
-  ) : !isMetaDataValid(metaData.current as MetaDataType) ? (
-    <span>"Error loading form"</span>
+  ) : isError ? (
+    <span>{errorMsg}</span>
   ) : (
     <Fragment>
       <MemoizedFormWrapper
@@ -196,5 +197,5 @@ export const InquiryFormWrapper = () => {
       ) : null}
     </Fragment>
   );
-  return result;
+  return renderResult;
 };

@@ -4,19 +4,22 @@ import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
 import { Content } from "./content";
-import Dashboard from "./pages/dashboard";
+import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
-import Login from "./auth";
-import LeadAction from "./pages/leadaction";
-import View from "./pages/tabView";
+import { Lead } from "./pages/lead";
+import NewInquiry from "./pages/newInquiry";
+// import CAM from "./pages/cam";
 import { useStyles } from "./style";
-import { CC_ODFormWrapper } from "./pages/CAM/SMELoans/CC_OD/CC_ODFormWrapper";
-import { Documents } from "pages_los/pages/inquiry/documents";
+import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
 
+import ArrayForm from "packages/form/examples/01-basic";
+
+//This is temparoary
+
+import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
-
-import { CustomerLogin } from "./auth/customerLogin";
+import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -34,14 +37,23 @@ const DashbordPages = () => {
           <Routes>
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/newInquiry/*"
+              element={<NewInquiry key="inquiryx" />}
+            />
+            <Route
+              path="/newInquiryQuestion"
+              element={<NewInquiry key="question" />}
+            />
             <Route path="/inquiries" element={<Inquiry />} />
+            <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cam" element={<CC_ODFormWrapper />} />
-            <Route path="/docs" element={<Documents />} />
+            <Route path="/cam" element={<CAMIFrame />} />
+            {/* <Route path="/cam" element={<CAM />} /> */}
+            <Route path="/array" element={<ArrayForm />} />
+            <Route path="/test" element={<TestForm />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
-            <Route path="/leadAction" element={<LeadAction />} />
-            <Route path="/view" element={<View />} />
           </Routes>
         </Content>
       </div>
@@ -51,10 +63,19 @@ const DashbordPages = () => {
 
 const EntryPoint = () => (
   <Fragment>
-    <Routes>
-      <Route path="/*" element={<DashbordPages />} />
-      <Route path="/auth/:type" element={<CustomerLogin />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
+              <DashbordPages />
+            </ProtectedRoutes>
+          }
+        />
+        <Route path="/auth/login/:type" element={<AuthLoginController />} />
+      </Routes>
+    </AuthProvider>
   </Fragment>
 );
 

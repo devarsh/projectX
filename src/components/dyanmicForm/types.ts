@@ -18,6 +18,8 @@ import {
   AllToggleButtonGroupProps,
   AllInputMaskProps,
   AllAutocompleteProps,
+  ArrayFieldProps,
+  AllTextareaAutosizeFieldProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -37,6 +39,7 @@ import {
   ToggleButtonGroupPropsOptional,
   InputMaskPropsOptional,
   AutocompletePropsOptional,
+  TextareaAutosizeFieldPropsOptional,
 } from "./typesFields";
 import { Merge } from "components/common/types";
 import { InitialValuesType, SubmitFnType } from "packages/form";
@@ -103,12 +106,15 @@ export interface ComponentTypeProps {
   toggleButtonGroup?: ToggleButtonGroupPropsOptional;
   inputMask?: InputMaskPropsOptional;
   autocomplete?: AutocompletePropsOptional;
+  textarea?: TextareaAutosizeFieldPropsOptional;
 }
 
 export interface MetaDataType {
   form: FormMetaDataType;
   fields: FieldMetaDataType[];
 }
+
+//when you change a type _fields here also change it in common ArrayFields component
 
 export type FieldMetaDataTypeX =
   | AllTextFieldProps
@@ -128,7 +134,9 @@ export type FieldMetaDataTypeX =
   | AllToggleButtonGroupProps
   | AllSpacerProps
   | AllInputMaskProps
-  | AllAutocompleteProps;
+  | AllAutocompleteProps
+  | AllTextareaAutosizeFieldProps
+  | ArrayFieldProps;
 
 export type FieldMetaDataType = Merge<
   FieldMetaDataTypeX,
@@ -138,7 +146,6 @@ export type FieldMetaDataType = Merge<
 /* Yup Rules Types*/
 export interface YupSchemaMetaDataType {
   type: "string" | "number" | "boolean" | "date" | "array";
-  arrayType?: "string" | "number" | "boolean" | "date";
   rules?: YupRulesType[];
 }
 
@@ -182,7 +189,8 @@ export type FieldMetaDataTypeOptional =
   | PasswordFieldPropsOptional
   | ToggleButtonGroupPropsOptional
   | InputMaskPropsOptional
-  | AutocompletePropsOptional;
+  | AutocompletePropsOptional
+  | TextareaAutosizeFieldPropsOptional;
 
 export type ExtendedFieldMetaDataTypeOptional = {
   [key: string]: FieldMetaDataTypeOptional;

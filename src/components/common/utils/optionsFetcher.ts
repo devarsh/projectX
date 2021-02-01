@@ -56,12 +56,12 @@ export const useOptionsFetcher = (
     },
     [setOptions]
   );
-  const values = useRef({
-    options,
-    dependentValues,
-    syncAsyncSetOptions,
-    formState,
-  });
+  // const values = useRef({
+  //   options,
+  //   dependentValues,
+  //   syncAsyncSetOptions,
+  //   formState,
+  // });
   useEffect(() => {
     syncAsyncSetOptions(options, dependentValues);
   }, [options, dependentValues, syncAsyncSetOptions]);

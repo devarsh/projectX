@@ -96,9 +96,9 @@ const DashLet = () => {
   const classes = useStyles();
   return (
     <Fragment>
-      {data.map((val) => {
+      {data.map((val, index) => {
         return (
-          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3} key={index}>
             <Card>
               <CardContent className={classes.cardContent}>
                 <div className={classes.content}>
@@ -166,7 +166,7 @@ export const Dashboard = () => {
         </Paper>
       </Grid>
 
-      <DashLet />
+      <DashLet key="dashlet" />
     </Grid>
   );
 };

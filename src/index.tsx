@@ -2,17 +2,17 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import CRM from "app/crm";
 import LOS from "app/los";
+import "typeface-roboto";
+import "registry"; //register functions to be used across application
 
 require("dotenv").config();
 require("mock");
 
 const Redirect = () => {
-  console.log("redirecting...");
   const navigate = useNavigate();
   setTimeout(() => navigate("crm/"), 1);
   return null;

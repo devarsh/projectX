@@ -87,6 +87,7 @@ export function downloadFile(fileObj: FileListType) {
       : fileObj.file;
   const a = document.createElement("a");
   a.href = url;
+
   a.download = fileObj.name ?? `download-${new Date().getUTCMilliseconds()}`;
   const clickHandler = () => {
     setTimeout(() => {
@@ -94,6 +95,7 @@ export function downloadFile(fileObj: FileListType) {
       a.removeEventListener("click", clickHandler);
     }, 150);
   };
+  a.target = "_blank";
   a.addEventListener("click", clickHandler, false);
   a.click();
 }

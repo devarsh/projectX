@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import loaderGif from "assets/images/loader.gif";
 import { TextField } from "components/styledComponent/textfield";
 import { InputMaskCustom } from "components/derived/inputMask";
-import { APISDK } from "registry/fns/sdk";
+import { CRMSDK } from "registry/fns/crm";
 import { useStyles } from "./style";
 import { useNavigationFlow } from "../utils/navHelpers";
 
@@ -97,7 +97,7 @@ export const OtpVerificationPage = () => {
       type: "startOTPRequest",
     });
     if (flowExist) {
-      APISDK.requestOTP(refID).then((result) => {
+      CRMSDK.requestOTP(refID).then((result) => {
         if (result.status === "success") {
           const { mobileNo, transactionId } = result.data;
           dispatch({
@@ -146,7 +146,7 @@ export const OtpVerificationPage = () => {
     dispatch({
       type: "startOTPVerification",
     });
-    APISDK.verifyOTP(refID, state.transactionID, trimmedOTP).then((result) => {
+    CRMSDK.verifyOTP(refID, state.transactionID, trimmedOTP).then((result) => {
       if (result.status === "success") {
         dispatch({
           type: "endOTPVerificationSuccess",

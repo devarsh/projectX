@@ -83,3 +83,9 @@ export interface TableActionType {
   dense?: boolean;
   handleClose?: any;
 }
+
+export interface GridContextType {
+  gridCode: any;
+  getGridData: any;
+  getGridColumnFilterData: any;
+}

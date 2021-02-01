@@ -14,17 +14,44 @@ export const constructYupSchema = (fields: FieldMetaDataType[]) => {
 };
 
 const parseSchema = (schema, fieldObj: FieldMetaDataType) => {
-  const { name, schemaValidation } = fieldObj;
+  const { name, schemaValidation, render } = fieldObj;
+  //for ArrayField support
+  if (render.componentType === "arrayField") {
+    //@ts-ignore
+    let result = constructYupSchema(fieldObj._fields);
+    let validator = yup.array().of(result);
+    schema[name] = validator;
+    return schema;
+  }
+
   if (schemaValidation === undefined) {
     return schema;
   }
-  const { type, arrayType, rules } = schemaValidation;
+  const { type, rules } = schemaValidation;
   //check if type exist in yup
   if (!yup[type]) {
     return schema;
   }
-  //if fieldType is array pass template object to makeSchemaFromTemplate and attached it to nested array obj
-  if (type === "array") {
+
+  if (!Array.isArray(rules)) {
+    return schema;
+  }
+  //@ts-ignore
+  let validator = yup[type]();
+  rules.forEach((rule) => {
+    const { params, name } = rule;
+    if (!validator[name]) {
+      return;
+    }
+    validator = validator[name](...params);
+  });
+  schema[name] = validator;
+  return schema;
+};
+
+/*
+//if fieldType is array pass template object to makeSchemaFromTemplate and attached it to nested array obj
+if (type === "array") {
     if (["string", "number", "boolean", "date"].indexOf(arrayType ?? "") > -1) {
       //@ts-ignore
       let arrayOFTypeSchema = yup[type]()["of"](arrayType);
@@ -48,19 +75,4 @@ const parseSchema = (schema, fieldObj: FieldMetaDataType) => {
       return schema;
     }
   } else {
-    if (!Array.isArray(rules)) {
-      return schema;
-    }
-    //@ts-ignore
-    let validator = yup[type]();
-    rules.forEach((rule) => {
-      const { params, name } = rule;
-      if (!validator[name]) {
-        return;
-      }
-      validator = validator[name](...params);
-    });
-    schema[name] = validator;
-    return schema;
-  }
-};
+*/

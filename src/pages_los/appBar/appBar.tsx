@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useTheme } from "@material-ui/core/styles";
@@ -12,19 +12,18 @@ import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-
 import Logo from "assets/images/logo.svg";
-
 import { useStyles } from "./style";
+import { AuthContext } from "auth";
 
 export const MyAppBar = ({ handleDrawerOpen, open }) => {
+  const authController = useContext(AuthContext);
   const navigate = useNavigate();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -73,7 +72,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
         >
           LOS: Loan Origination System
           <Typography variant="caption" display="block" color="secondary">
-            Branch: Rajkot
+            Branch: {authController?.authState?.user?.branch ?? ""}
           </Typography>
           <Typography
             variant="caption"
@@ -81,7 +80,10 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             color="secondary"
             gutterBottom
           >
-            Last Login: 21/11/2020 05:00 PM
+            Last Login:{" "}
+            {checkDateAndDisplay(
+              authController?.authState?.user?.lastLogin ?? ""
+            )}
           </Typography>
         </Typography>
 
@@ -118,7 +120,11 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             onClick={handleClick}
             className={classes.nameClass}
           >
-            <span className={classes.userName}>Employee Name</span>
+            <span className={classes.userName}>
+              {`${authController?.authState?.user?.firstName ?? ""} ${
+                authController?.authState?.user?.lastName
+              }`}
+            </span>
             <ArrowDropDownIcon />
           </Button>
           <Menu
@@ -154,7 +160,12 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
               <AccountCircleIcon color="primary" />
               <span className={classes.vTop}>Iframe</span>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                authController?.logout();
+                handleClose();
+              }}
+            >
               <PowerSettingsNewIcon color="primary" />
               <span className={classes.vTop}>Logout</span>
             </MenuItem>
@@ -163,4 +174,13 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
       </Toolbar>
     </AppBar>
   );
+};
+
+const checkDateAndDisplay = (dateStr: string) => {
+  const dt = new Date(dateStr);
+  //@ts-ignore
+  if (dt instanceof Date && !isNaN(dt)) {
+    return dt.toDateString();
+  }
+  return "N/A";
 };

@@ -7,5 +7,6 @@ export const FormContext = createContext<FormContextType>({
   resetFieldOnUnmount: true,
   initialValues: {},
   formState: {},
+  defaultArrayFieldValues: {},
 });
 FormContext.displayName = "FormContext";

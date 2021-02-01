@@ -20,6 +20,8 @@ import { PasswordFieldProps } from "components/derived/passwordField";
 import { InputMaskProps } from "components/derived/inputMask";
 import { ValidateFnType, shouldExcludeFnType } from "packages/form";
 import { TopLevelCondition } from "json-rules-engine";
+import { ArrayField2Props } from "components/common/arrayField";
+import { TextareaAutosizeFieldProps } from "components/common/textarea";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
@@ -68,9 +70,7 @@ export type AllToggleButtonGroupProps = Merge<
   Omitted<ToggleButtonGroupProps>,
   FieldMetaData<"toggleButtonGroup">
 >;
-export type ToggleButtonGroupPropsOptional = Optional<
-  AllToggleButtonGroupProps
->;
+export type ToggleButtonGroupPropsOptional = Optional<AllToggleButtonGroupProps>;
 
 export type AllNumberFormatProps = Merge<
   Omitted<NumberFormatProps>,
@@ -150,3 +150,15 @@ export type AllTextFieldProps = Merge<
   FieldMetaData<"textField">
 >;
 export type TextFieldPropsOptional = Optional<AllTextFieldProps>;
+
+export type ArrayFieldProps = Merge<
+  Omitted<ArrayField2Props>,
+  FieldMetaData<"arrayField">
+>;
+
+export type AllTextareaAutosizeFieldProps = Merge<
+  Omitted<TextareaAutosizeFieldProps>,
+  FieldMetaData<"textarea">
+>;
+
+export type TextareaAutosizeFieldPropsOptional = Optional<AllTextFieldProps>;

@@ -10,11 +10,7 @@ import { useStyles } from "./style";
 
 export const ChangePassword = () => {
   const classes = useStyles();
-  const [OpenDialog, setOpenDialog] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpenDialog(true);
-  };
+  const [, setOpenDialog] = React.useState(false);
 
   const handleCloseDialog = () => {
     setOpenDialog(false);

@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import {
   KeyboardTimePicker,
@@ -6,6 +6,7 @@ import {
 } from "@material-ui/pickers";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import { Omit, Merge } from "../types";
+import { parseJSON } from "date-fns";
 
 type KeyboardTimePickerPropsSubset = Omit<
   KeyboardTimePickerProps,
@@ -35,6 +36,8 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   type,
   GridProps,
   enableGrid,
+  //@ts-ignore
+  isFieldFocused,
   InputProps,
   inputProps,
   runValidationOnDependentFieldsChange,
@@ -63,6 +66,29 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
+  useEffect(() => {
+    if (typeof value === "string") {
+      let result = parseJSON(value);
+      //@ts-ignore
+      if (isNaN(result)) {
+        result = new Date(value);
+      }
+      //@ts-ignore
+      if (!isNaN(result)) {
+        handleChange(result);
+      }
+    }
+  }, [value]);
+  const focusRef = useRef();
+  useEffect(() => {
+    if (isFieldFocused) {
+      //@ts-ignore
+      setTimeout(() => {
+        //@ts-ignore
+        focusRef?.current?.focus?.();
+      }, 1);
+    }
+  }, [isFieldFocused]);
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = useCallback(
     (date) => {
