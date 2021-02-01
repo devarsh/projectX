@@ -1,46 +1,81 @@
-import { useReducer } from "react";
+import { useEffect, useState } from "react";
+import { useQuery, useMutation } from "react-query";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
+import { APISDK } from "registry/fns/sdk";
 import { useStyles } from "./style";
 
-const inititalState = {
-  assignLeadRemarks: "",
-  assignEmployee: "",
+interface AssignLeadType {
+  refID: string;
+  employeeID: string;
+  inquiryStatus: string;
+}
+
+const assignLead = async ({
+  refID,
+  employeeID,
+  inquiryStatus,
+}: AssignLeadType) => {
+  return await APISDK.inquiryAssignToLead(refID, employeeID, inquiryStatus);
 };
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "setAssignEmployee": {
-      return { ...state, assignEmployee: action.payload };
-    }
-    case "setAssignLeadRemarks": {
-      return { ...state, assignLeadRemarks: action.payload };
-    }
-    default: {
-      return state;
-    }
-  }
-};
-
-// interface AssignLeadType {
-//   inquiryID: string;
-//   employeeID: string;
-//   inquiryStatus: string;
-// }
-
-export const AssignInquiryToEmployee = ({ inquiryID }) => {
+export const AssignInquiry = ({ refID }) => {
+  let branchCode = "0";
+  let inquiryStatus = "C";
   const classes = useStyles();
-  const [assignToLeadStates, dispatch] = useReducer(reducer, inititalState);
+  const [employeeID, setEmployeeID] = useState("");
+  const [userMessage, setUserMessage] = useState<null | any>(null);
+
+  useEffect(() => {
+    if (userMessage !== null) {
+      setTimeout(() => {
+        setUserMessage(null);
+      }, 4000);
+    }
+  }, [userMessage]);
+
+  const employeeListQuery = useQuery(
+    ["employeeList", branchCode],
+    () => APISDK.getEmployeeListToAssignLead(branchCode),
+    {
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+  let employeeListOptions: any = [];
+  if (
+    employeeListQuery.isLoading === false &&
+    employeeListQuery.isError === false
+  ) {
+    employeeListOptions = transformOptions(employeeListQuery.data);
+  }
+
+  const mutation = useMutation(assignLead, {
+    onError: (error: any) => {
+      if (typeof error === "object") {
+        setUserMessage({ type: "error", message: error?.error_msg });
+      }
+    },
+    onSuccess: () => {
+      setUserMessage({ type: "success", message: "Data Successfully saved" });
+    },
+  });
 
   return (
     <div>
+      {userMessage !== null && (
+        <Alert severity={userMessage.type}>{userMessage?.message}</Alert>
+      )}
       <h3>Assign Lead</h3>
-      <Grid container spacing={3}>
-        <Grid item xs={6} sm={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={6} sm={6} md={6}>
           <TextField
             select
             label="Lead Assign to Employee"
@@ -49,53 +84,57 @@ export const AssignInquiryToEmployee = ({ inquiryID }) => {
             required
             name="leadAssign"
             autoComplete="off"
-            value={assignToLeadStates.assignEmployee}
-            onChange={(e) =>
-              dispatch({ type: "setAssignEmployee", payload: e.target.value })
-            }
+            onChange={(e) => setEmployeeID(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
+            value={employeeID}
+            InputProps={{
+              endAdornment: employeeListQuery.isLoading ? (
+                <InputAdornment position="end">
+                  <CircularProgress color="primary" variant="indeterminate" />
+                </InputAdornment>
+              ) : null,
+            }}
+            error={employeeListQuery.isError}
+            helperText={
+              employeeListQuery.isError ? "error loading options" : ""
+            }
           >
             <MenuItem value={0}>Select Employee</MenuItem>
-            <MenuItem value="1">Sanjay</MenuItem>
-            <MenuItem value="2">Milan</MenuItem>
-            <MenuItem value="3">Krupa</MenuItem>
-            <MenuItem value="4">Devarsh</MenuItem>
-            <MenuItem value="5">Raveena</MenuItem>
+            {employeeListOptions.map((data) => {
+              return (
+                <MenuItem key={data.value} value={data.value}>
+                  {data.label}
+                </MenuItem>
+              );
+            })}
           </TextField>
-        </Grid>
-      </Grid>
-      <Grid container spacing={3}>
-        <Grid item xs={6} sm={4}>
-          <Box mt={2}>
-            <TextField
-              required
-              label="Remarks"
-              placeholder="Remarks"
-              fullWidth
-              name="leadAssignRemarks"
-              value={assignToLeadStates.assignLeadRemarks}
-              autoComplete="off"
-              onChange={(e) =>
-                dispatch({
-                  type: "setAssignLeadRemarks",
-                  payload: e.target.value,
-                })
-              }
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Box>
         </Grid>
       </Grid>
       <Button color="primary" className={classes.backBtn}>
         Reject
       </Button>
-      <Button color="primary" autoFocus className={classes.submit}>
+      <Button
+        color="primary"
+        autoFocus
+        className={classes.submit}
+        onClick={() => mutation.mutate({ refID, employeeID, inquiryStatus })}
+        endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
+      >
         Assign
       </Button>
     </div>
   );
+};
+
+const transformOptions = (options) => {
+  if (Array.isArray(options)) {
+    let result = options.map((one) => ({
+      label: one.fullname,
+      value: one.empID,
+    }));
+    return result;
+  }
+  return [];
 };
