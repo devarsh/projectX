@@ -1,4 +1,11 @@
-import { FC, cloneElement, Fragment, useRef } from "react";
+import {
+  FC,
+  cloneElement,
+  Fragment,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -6,6 +13,10 @@ import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 import { renderField } from "components/dyanmicForm/utils/fieldRenderer";
 import { FieldMetaDataType } from "components/dyanmicForm/";
 import { useFieldArray } from "packages/form";
@@ -16,6 +27,8 @@ import { singletonFunctionRegisrationFactory } from "components/dyanmicForm/util
 import { MoveSequenceToRender } from "components/dyanmicForm/utils/fixSequenceInMetaData";
 import { MetaDataType } from "components/dyanmicForm";
 import { useStyles } from "./style";
+import { useRecoilCallback } from "recoil";
+import { formFieldAtom } from "packages/form";
 export interface ArrayField2Props {
   fieldKey: string;
   name: string;
@@ -25,6 +38,8 @@ export interface ArrayField2Props {
   GridProps?: GridProps;
   _fields: FieldMetaDataType[];
   componentProps?: any;
+  removeRowFn?: any;
+  arrayFieldIDName?: string;
 }
 
 const metaDataTransform = (metaData: MetaDataType): MetaDataType => {
@@ -44,6 +59,8 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   GridProps,
   enableGrid,
   componentProps = {},
+  removeRowFn,
+  arrayFieldIDName,
 }) => {
   let currentFieldsMeta = JSON.parse(
     JSON.stringify(_fields)
@@ -68,7 +85,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     }, {})
   );
 
-  const { renderRows, push } = useFieldArray({
+  const { renderRows, push, disableForm } = useFieldArray({
     arrayFieldName: name,
     template: template.current,
   });
@@ -93,43 +110,37 @@ export const ArrayField2: FC<ArrayField2Props> = ({
       return <Fragment key={row.cells[field].key}>{clonedComponent}</Fragment>;
     });
     return (
-      <Fragment key={row.fieldIndexKey}>
-        <Grid
-          container
-          item
-          xs={12}
-          md={12}
-          sm={12}
-          spacing={2}
-          className={classes.arrayRowContainer}
-        >
-          {oneRow}
-          <IconButton
-            onClick={() => removeFn(rowIndex)}
-            className={classes.arrayRowRemoveBtn}
-          >
-            <RemoveCircleOutlineIcon />
-          </IconButton>
-        </Grid>
-      </Fragment>
+      <ArrayFieldRow
+        key={row.fieldIndexKey}
+        fieldKey={row.cells[arrayFieldIDName ?? ""]?.key ?? ""}
+        oneRow={oneRow}
+        classes={classes}
+        removeFn={removeFn}
+        rowIndex={rowIndex}
+        disableForm={disableForm}
+        removeRowFn={removeRowFn}
+        row={row}
+      />
     );
   });
   let result = (
-    <Card className={classes.arrayRowCard}>
-      <CardHeader
-        title={label}
-        action={
-          <IconButton onClick={push}>
-            <AddCircleOutlineIcon />
-          </IconButton>
-        }
-      />
-      <CardContent className={classes.arrayRowCardContent}>
-        <Grid container spacing={1} xs={12} md={12} sm={12}>
-          {rows}
-        </Grid>
-      </CardContent>
-    </Card>
+    <Fragment>
+      <Card className={classes.arrayRowCard}>
+        <CardHeader
+          title={label}
+          action={
+            <IconButton onClick={push}>
+              <AddCircleOutlineIcon />
+            </IconButton>
+          }
+        />
+        <CardContent className={classes.arrayRowCardContent}>
+          <Grid container spacing={1} xs={12} md={12} sm={12}>
+            {rows}
+          </Grid>
+        </CardContent>
+      </Card>
+    </Fragment>
   );
   if (Boolean(enableGrid)) {
     return (
@@ -140,4 +151,92 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   } else {
     return <Fragment key={name}>{result}</Fragment>;
   }
+};
+
+export const ArrayFieldRow = ({
+  row,
+  fieldKey,
+  oneRow,
+  classes,
+  removeFn,
+  rowIndex,
+  disableForm,
+  removeRowFn,
+}) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dialogAccept = useRecoilCallback(
+    ({ snapshot }) => async () => {
+      const loader = snapshot.getLoadable(formFieldAtom(fieldKey));
+      if (loader.state === "hasValue") {
+        const field = loader.contents;
+        if (Boolean(field.value)) {
+          try {
+            if (typeof removeRowFn === "function") {
+              let result = await Promise.resolve(removeRowFn(field));
+              removeFn(rowIndex);
+            } else {
+              removeFn(rowIndex);
+            }
+          } catch (e) {}
+        } else {
+          removeFn(rowIndex);
+        }
+      }
+      disableForm(false);
+      setIsDialogOpen(false);
+      setLoading(false);
+    },
+    [disableForm, setIsDialogOpen]
+  );
+  const dialogReject = useCallback(() => {
+    disableForm(false);
+    setIsDialogOpen(false);
+    setLoading(false);
+  }, [disableForm, setIsDialogOpen]);
+  const dialogOpen = useCallback(() => {
+    disableForm(true);
+    setIsDialogOpen(true);
+    setLoading(true);
+  }, [disableForm, setIsDialogOpen]);
+
+  return (
+    <Fragment key={row.fieldIndexKey}>
+      <Grid
+        container
+        item
+        xs={12}
+        md={12}
+        sm={12}
+        spacing={2}
+        className={classes.arrayRowContainer}
+      >
+        {oneRow}
+        <IconButton
+          onClick={dialogOpen}
+          className={classes.arrayRowRemoveBtn}
+          disabled={loading}
+        >
+          <RemoveCircleOutlineIcon />
+        </IconButton>
+      </Grid>
+      <Dialog
+        open={isDialogOpen}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle>
+          {"Are you Sure you want to delete this record ?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={dialogReject} color="primary">
+            Disagree
+          </Button>
+          <Button onClick={dialogAccept} color="primary" autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
+  );
 };

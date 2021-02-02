@@ -500,6 +500,7 @@ const metaData: MetaDataType = {
         md: 6,
         sm: 6,
       },
+      removeRowFn: "demp",
       _fields: [
         {
           render: {

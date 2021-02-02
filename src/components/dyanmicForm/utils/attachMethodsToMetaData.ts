@@ -33,6 +33,10 @@ const inputMaskPrepareNotFound = (fieldKey) => (value) => {
   console.log(`no method for inputMask.prepare found at ${fieldKey}`);
   return value;
 };
+const removeRowFnNotFound = (fieldKey) => (value) => {
+  console.log(`no method for inputMask.prepare found at ${fieldKey}`);
+  return false;
+};
 
 const defaultBooleanFunction = (value) => () => value;
 
@@ -46,6 +50,7 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.isReadOnly$/, isReadOnlyMethodNotFound],
   [/^fields.*.shouldExclude$/, shouldExcludeNotFound],
   [/^fields.*.MaskProps.prepare$/, inputMaskPrepareNotFound],
+  [/^fields.*.removeRowFn$/, removeRowFnNotFound],
 ];
 
 //do not walk for arrayFields _fields as well we will run it seperately

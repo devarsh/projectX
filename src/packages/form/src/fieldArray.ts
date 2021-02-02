@@ -6,6 +6,7 @@ import {
   InitialValuesType,
 } from "./types";
 import {
+  formAtom,
   formArrayFieldRowsAtom,
   formArrayFieldRegisterSelector,
   formArrayFieldUnregisterSelector,
@@ -64,6 +65,16 @@ export const useFieldArray = ({
       }
     },
     [formContext.formName, formArrayFieldRegisterSelector]
+  );
+
+  const disableForm = useRecoilCallback(
+    ({ set }) => (disable: boolean) => {
+      set(formAtom(formContext.formName), (currVal) => ({
+        ...currVal,
+        isSubmitting: disable,
+      }));
+    },
+    []
   );
 
   //_insert adds a new field to the fieldArray with a new key
@@ -421,5 +432,6 @@ export const useFieldArray = ({
     swap,
     move,
     renderRows,
+    disableForm,
   };
 };
