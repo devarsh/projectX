@@ -183,19 +183,16 @@ export const ArrayFieldRow = ({
           removeFn(rowIndex);
         }
       }
-      disableForm(false);
       setIsDialogOpen(false);
       setLoading(false);
     },
     [disableForm, setIsDialogOpen]
   );
   const dialogReject = useCallback(() => {
-    disableForm(false);
     setIsDialogOpen(false);
     setLoading(false);
   }, [disableForm, setIsDialogOpen]);
   const dialogOpen = useCallback(() => {
-    disableForm(true);
     setIsDialogOpen(true);
     setLoading(true);
   }, [disableForm, setIsDialogOpen]);
