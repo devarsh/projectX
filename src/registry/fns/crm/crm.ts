@@ -241,6 +241,72 @@ const CRMAPI = () => {
     });
   };
 
+  const requestEmailOTP = async (refID: number | string) => {
+    const { data, status } = await internalFetcher(
+      "./inquiry/external/email/validateRequest",
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const verifyEmailOTP = async (
+    refID: number,
+    emailTransactionID: string,
+    emailOTP: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      "./inquiry/external/email/validateresponse",
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            transactionID: emailTransactionID,
+            OTP: emailOTP,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return { status, data: data?.response_data };
+    } else {
+      return { status, data: data?.error_data };
+    }
+  };
+
+  const getCompanyNameFromGST = async (currentField, partnerInquiryID) => {
+    const { status, data } = await internalFetcher(
+      "./partnerinquiry/external/gst/fetchcompanyname",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          request_data: {
+            gstNumber: currentField ?? "INVALID_GST",
+            partnerInquiryID: 10,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      let ComapnyName = data?.response_data?.companyName;
+      return ComapnyName;
+    } else {
+      return "Invalid GST";
+    }
+  };
+
   return {
     inititateAPI,
     getInquiryQuestionMetaData,
@@ -251,6 +317,10 @@ const CRMAPI = () => {
     verifyOTP,
     requestOTP,
     getAadharRequestStatusEventSource,
+
+    requestEmailOTP,
+    verifyEmailOTP,
+    getCompanyNameFromGST,
   };
 };
 

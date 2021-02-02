@@ -160,8 +160,12 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "GST No",
       placeholder: "Enter GST number",
       required: true,
+      defaultValue: "",
       //@ts-ignore
       validate: "getValidateValue",
+      runPostValidationHookAlways: true,
+      //@ts-ignore
+      postValidationSetCrossFieldValues: "getCompanyNameFromGST",
       GridProps: {
         xs: 12,
         md: 3,
