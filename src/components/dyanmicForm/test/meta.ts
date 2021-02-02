@@ -110,6 +110,7 @@ const metaData: MetaDataType = {
       },
       //@ts-ignore
       options: "getPropertyCity",
+      enableVirtualized: true,
     },
     {
       render: {

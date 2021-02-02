@@ -1,4 +1,14 @@
-import { FC, useEffect, useRef, useState, Fragment } from "react";
+import {
+  FC,
+  useEffect,
+  useRef,
+  useState,
+  Fragment,
+  ComponentType,
+  HTMLAttributes,
+  lazy,
+  Suspense,
+} from "react";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import CircularProgress, {
@@ -18,6 +28,11 @@ import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { useOptionsFetcher } from "../utils";
 
+const ListBoxComponentVirtualized = lazy(() =>
+  import("./virtualized").then((module) => ({
+    default: module.ListBoxComponent,
+  }))
+);
 //will use it if there is a neeed for advance sorter
 //import matchSorter from "match-sorter";
 
@@ -33,6 +48,7 @@ interface AutoCompleteExtendedProps {
   label?: string;
   placeholder?: string;
   required?: boolean;
+  enableVirtualized?: boolean;
 }
 
 type MyAutocompleteProps = Merge<
@@ -76,6 +92,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   placeholder,
   limitTags,
   required,
+  enableVirtualized,
   ...others
 }) => {
   const {
@@ -135,123 +152,135 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   }
   const isError = touched && (error ?? "") !== "";
   const result = (
-    <Autocomplete
-      {...others}
-      limitTags={limitTags ?? 2}
-      key={fieldKey}
-      multiple={multiple}
-      disableClearable={disableClearable}
-      freeSolo={freeSolo}
-      options={_options}
-      getOptionLabel={getOptionLabel}
-      onChange={(_, value) => {
-        if (!Array.isArray(value)) {
-          value = [value];
+    <Suspense fallback={"loading..."}>
+      <Autocomplete
+        {...others}
+        limitTags={limitTags ?? 2}
+        key={fieldKey}
+        multiple={multiple}
+        disableClearable={disableClearable}
+        freeSolo={freeSolo}
+        options={_options}
+        getOptionLabel={getOptionLabel}
+        ListboxComponent={
+          Boolean(enableVirtualized)
+            ? (ListBoxComponentVirtualized as ComponentType<
+                HTMLAttributes<HTMLElement>
+              >)
+            : undefined
         }
-        value = value.map((one) => {
-          if (typeof one === "object") {
-            if (!Boolean(freeSolo)) {
-              return getOptionValue(one);
-            }
-            return getOptionLabel(one);
+        onChange={(_, value) => {
+          if (!Array.isArray(value)) {
+            value = [value];
           }
-          return one;
-        });
+          value = value.map((one) => {
+            if (typeof one === "object") {
+              if (!Boolean(freeSolo)) {
+                return getOptionValue(one);
+              }
+              return getOptionLabel(one);
+            }
+            return one;
+          });
 
-        if (!Boolean(multiple) && Array.isArray(value)) {
-          //@ts-ignore
-          handleChange(value[0]);
-        } else {
-          handleChange(value);
+          if (!Boolean(multiple) && Array.isArray(value)) {
+            //@ts-ignore
+            handleChange(value[0]);
+          } else {
+            handleChange(value);
+          }
+        }}
+        onBlur={handleBlur}
+        disabled={isSubmitting}
+        filterOptions={
+          Boolean(CreateFilterOptionsConfig) &&
+          typeof CreateFilterOptionsConfig === "object"
+            ? createFilterOptions(CreateFilterOptionsConfig)
+            : undefined
         }
-      }}
-      onBlur={handleBlur}
-      disabled={isSubmitting}
-      filterOptions={
-        Boolean(CreateFilterOptionsConfig) &&
-        typeof CreateFilterOptionsConfig === "object"
-          ? createFilterOptions(CreateFilterOptionsConfig)
-          : undefined
-      }
-      renderTags={(value, getTagProps) => {
-        return value.map((option, index) => {
-          if (typeof option === "string") {
+        renderTags={(value, getTagProps) => {
+          return value.map((option, index) => {
+            if (typeof option === "string") {
+              return (
+                <Chip
+                  key={option}
+                  variant="outlined"
+                  {...ChipProps}
+                  label={option}
+                  {...getTagProps({ index })}
+                />
+              );
+            }
             return (
               <Chip
-                key={option}
+                key={`${option.label}-${index}`}
                 variant="outlined"
                 {...ChipProps}
-                label={option}
+                label={option.label}
                 {...getTagProps({ index })}
               />
             );
-          }
+          });
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...TextFieldProps}
+            {...params}
+            name={name}
+            label={label}
+            placeholder={placeholder}
+            value={inputValue}
+            autoComplete="disabled"
+            onChange={(e) => setInputValue(e.target.value)}
+            type="text"
+            error={isError}
+            required={required}
+            helperText={isError ? error : null}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <Fragment>
+                  {validationRunning || loadingOptions ? (
+                    <CircularProgress
+                      color="primary"
+                      variant="indeterminate"
+                      {...CircularProgressProps}
+                    />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </Fragment>
+              ),
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: "new-user-street-address",
+            }}
+          />
+        )}
+        renderOption={(option, { selected }) => {
+          let label = getOptionLabel(option);
+          const matches = match(label, inputValue);
+          const parts = parse(label, matches);
+          const labelJSX = parts.map((part, index) => (
+            <span
+              key={index}
+              style={{ fontWeight: part.highlight ? 700 : 400 }}
+            >
+              {part.text}
+            </span>
+          ));
           return (
-            <Chip
-              key={`${option.label}-${index}`}
-              variant="outlined"
-              {...ChipProps}
-              label={option.label}
-              {...getTagProps({ index })}
-            />
+            <Fragment>
+              {showCheckbox ? <Checkbox checked={selected} /> : null}
+              {labelJSX}
+            </Fragment>
           );
-        });
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...TextFieldProps}
-          {...params}
-          name={name}
-          label={label}
-          placeholder={placeholder}
-          value={inputValue}
-          autoComplete="disabled"
-          onChange={(e) => setInputValue(e.target.value)}
-          type="text"
-          error={isError}
-          required={required}
-          helperText={isError ? error : null}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <Fragment>
-                {validationRunning || loadingOptions ? (
-                  <CircularProgress
-                    color="primary"
-                    variant="indeterminate"
-                    {...CircularProgressProps}
-                  />
-                ) : null}
-                {params.InputProps.endAdornment}
-              </Fragment>
-            ),
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-user-street-address",
-          }}
-        />
-      )}
-      renderOption={(option, { selected }) => {
-        let label = getOptionLabel(option);
-        const matches = match(label, inputValue);
-        const parts = parse(label, matches);
-        const labelJSX = parts.map((part, index) => (
-          <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-            {part.text}
-          </span>
-        ));
-        return (
-          <Fragment>
-            {showCheckbox ? <Checkbox checked={selected} /> : null}
-            {labelJSX}
-          </Fragment>
-        );
-      }}
-    />
+        }}
+      />
+    </Suspense>
   );
   if (Boolean(enableGrid)) {
     return <Grid {...GridProps}>{result}</Grid>;
