@@ -7,6 +7,7 @@ export const becomePartnerMetaData: MetaDataType = {
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "",
+    refID: "3434",
     render: {
       ordering: "auto",
       renderType: "simple",
@@ -257,7 +258,6 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
     },
-
     {
       render: {
         componentType: "select",
@@ -271,7 +271,6 @@ export const becomePartnerMetaData: MetaDataType = {
       validate: "getValidateValue",
       //@ts-ignore
       postValidationSetCrossFieldValues: "getLocationDtl",
-
       GridProps: {
         xs: 12,
         md: 3,

@@ -47,6 +47,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   //@ts-ignore
   isFieldFocused,
   maxLength = -1,
+
   ...others
 }) => {
   const {
@@ -64,6 +65,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     incomingMessage,
     whenToRunValidation,
     runValidation,
+    validationAPIResult,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -137,7 +139,13 @@ const MyTextField: FC<MyTextFieldProps> = ({
       error={isError}
       helperText={
         <div style={{ display: "flex" }}>
-          <FormHelperText>{isError ? myError : numWordsVar}</FormHelperText>
+          <FormHelperText>
+            {isError
+              ? myError
+              : Boolean(validationAPIResult)
+              ? validationAPIResult
+              : numWordsVar}
+          </FormHelperText>
           {maxLength > 0 && (
             <FormHelperText
               error={false}
@@ -155,7 +163,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
       }
       FormHelperTextProps={{
         //@ts-ignore
-        component: Fragment,
+        component: "div",
       }}
       //@ts-ignore
       InputProps={{

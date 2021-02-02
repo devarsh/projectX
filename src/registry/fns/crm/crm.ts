@@ -114,18 +114,23 @@ const CRMAPI = () => {
   };
 
   //External API - called from dynamic form
-  const validatePanNumber = async (currentField) => {
-    const { status } = await internalFetcher(
+  const validatePanNumber = async (currentField, _, formState) => {
+    const { status, data } = await internalFetcher(
       "./inquiry/external/pan/validate",
       {
         body: JSON.stringify({
-          request_data: { doc_number: currentField?.value ?? "INVALID_PAN" },
+          request_data: {
+            doc_number: currentField?.value ?? "INVALID_PAN",
+            refID: formState?.refID,
+          },
           channel: "W",
         }),
       }
     );
+
     if (status === "success") {
-      return "";
+      let result = { error: "", apiResult: data?.response_data?.name };
+      return result;
     } else {
       return "invalid pan number";
     }
@@ -285,23 +290,23 @@ const CRMAPI = () => {
     }
   };
 
-  const getCompanyNameFromGST = async (currentField, partnerInquiryID) => {
+  const getCompanyNameFromGST = async (currentField, formState) => {
     const { status, data } = await internalFetcher(
       "./partnerinquiry/external/gst/fetchcompanyname",
       {
         method: "POST",
         body: JSON.stringify({
           request_data: {
-            gstNumber: currentField ?? "INVALID_GST",
-            partnerInquiryID: 10,
+            gstNumber: currentField?.value ?? "INVALID_GST",
+            partnerInquiryID: formState?.refID,
           },
           channel: "W",
         }),
       }
     );
     if (status === "success") {
-      let ComapnyName = data?.response_data?.companyName;
-      return ComapnyName;
+      let comapanyName = data?.response_data?.companyName;
+      return comapanyName;
     } else {
       return "Invalid GST";
     }
@@ -317,7 +322,6 @@ const CRMAPI = () => {
     verifyOTP,
     requestOTP,
     getAadharRequestStatusEventSource,
-
     requestEmailOTP,
     verifyEmailOTP,
     getCompanyNameFromGST,

@@ -695,7 +695,7 @@ function wrapValidationMethod(
         );
         if (typeof errorMsgObj === "object") {
           errorMsg = errorMsgObj.error;
-          apiResult = errorMsg.apiResult;
+          apiResult = errorMsgObj.apiResult;
         } else {
           errorMsg = errorMsgObj;
         }
