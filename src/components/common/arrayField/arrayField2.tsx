@@ -85,7 +85,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     }, {})
   );
 
-  const { renderRows, push, disableForm } = useFieldArray({
+  const { renderRows, push } = useFieldArray({
     arrayFieldName: name,
     template: template.current,
   });
@@ -117,7 +117,6 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         classes={classes}
         removeFn={removeFn}
         rowIndex={rowIndex}
-        disableForm={disableForm}
         removeRowFn={removeRowFn}
         row={row}
       />
@@ -160,7 +159,6 @@ export const ArrayFieldRow = ({
   classes,
   removeFn,
   rowIndex,
-  disableForm,
   removeRowFn,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -186,16 +184,16 @@ export const ArrayFieldRow = ({
       setIsDialogOpen(false);
       setLoading(false);
     },
-    [disableForm, setIsDialogOpen]
+    [setLoading, setIsDialogOpen]
   );
   const dialogReject = useCallback(() => {
     setIsDialogOpen(false);
     setLoading(false);
-  }, [disableForm, setIsDialogOpen]);
+  }, [setLoading, setIsDialogOpen]);
   const dialogOpen = useCallback(() => {
     setIsDialogOpen(true);
     setLoading(true);
-  }, [disableForm, setIsDialogOpen]);
+  }, [setLoading, setIsDialogOpen]);
 
   return (
     <Fragment key={row.fieldIndexKey}>

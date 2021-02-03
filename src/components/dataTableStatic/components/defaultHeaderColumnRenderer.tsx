@@ -8,7 +8,6 @@ export const DefaultHeaderColumnRenderer = ({
   setColumnOrder,
   allowColumnReordering,
 }) => {
-  console.log(visibleColumns, setColumnOrder, allowColumnReordering);
   //Column change order using drag and drop
   const [{ isDragging }, drag] = useDrag({
     item: { type: "Column" },

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -19,6 +19,11 @@ import { StickyTableHead } from "components/dataTable/stickyTableHead";
 import { MyTableRow } from "components/dataTable/focusableTableRow";
 import { HeaderCellWrapper } from "components/dataTable/headerCellWrapper";
 import { RowCellWrapper } from "components/dataTable/rowCellWrapper";
+import {
+  TableActionToolbar,
+  ActionContextMenu,
+} from "components/dataTable/tableActionToolbar";
+import { useCheckboxColumn } from "./components/useCheckbox";
 
 export const DataGrid = ({
   label,
@@ -29,6 +34,10 @@ export const DataGrid = ({
   defaultColumn,
   allowColumnReordering,
   defaultHiddenColumns,
+  multipleActions,
+  singleActions,
+  doubleClickAction,
+  setGridAction,
 }) => {
   //@ts-ignore
   const {
@@ -36,6 +45,7 @@ export const DataGrid = ({
     getTableBodyProps,
     headerGroups,
     prepareRow,
+    selectedFlatRows,
     rows,
     state,
     setGlobalFilter,
@@ -50,16 +60,49 @@ export const DataGrid = ({
         hiddenColumns: defaultHiddenColumns,
       },
       allowColumnReordering: allowColumnReordering,
+      autoResetSortBy: false,
     },
     useGlobalFilter,
     useSortBy,
     useRowSelect,
     useColumnOrder,
     useResizeColumns,
-    useBlockLayout
+    useBlockLayout,
+    useCheckboxColumn
   );
 
   const tbodyRef = useRef(null);
+
+  const [contextMenuPosition, setContextMenuPosition] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+  const [contextMenuRow, setContextMenuRow] = useState<null | any>(null);
+  const [contextMenuSelectedRowId, setContextMenuSelectedRowId] = useState<
+    string | null
+  >(null);
+  const handleContextMenuClose = () => {
+    setContextMenuRow(null);
+    setContextMenuPosition(null);
+    setContextMenuSelectedRowId(null);
+  };
+  const handleContextMenuOpen = (row) => (e) => {
+    e.preventDefault();
+    setContextMenuRow(row);
+    setContextMenuSelectedRowId(row?.id);
+    setContextMenuPosition(
+      contextMenuPosition === null
+        ? { mouseX: e.clientX - 2, mouseY: e.clientY - 4 }
+        : null
+    );
+  };
+  const handleRowDoubleClickAction = (row) => (e) => {
+    e.preventDefault();
+    setGridAction({
+      name: doubleClickAction.actionName,
+      rows: [row],
+    });
+  };
 
   return (
     <Paper
@@ -73,6 +116,21 @@ export const DataGrid = ({
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
+      />
+      <TableActionToolbar
+        dense={dense}
+        selectedFlatRows={selectedFlatRows}
+        multipleActions={multipleActions}
+        singleActions={singleActions}
+        setGridAction={setGridAction}
+      />
+      <ActionContextMenu
+        selectedFlatRows={contextMenuRow}
+        singleActions={singleActions}
+        setGridAction={setGridAction}
+        mouseX={contextMenuPosition?.mouseX ?? null}
+        mouseY={contextMenuPosition?.mouseY ?? null}
+        handleClose={handleContextMenuClose}
       />
       <TableContainer
         style={{
@@ -136,12 +194,23 @@ export const DataGrid = ({
             ) : null}
             {rows.map((row, index) => {
               prepareRow(row);
+              const rightClickHandler = handleContextMenuOpen(row);
+              const thisRowDblClickHandler = handleRowDoubleClickAction(row);
               return (
                 <MyTableRow
                   {...row.getRowProps()}
                   id={row.id}
                   tabIndex={0}
                   component="div"
+                  selected={
+                    row.isSelected || contextMenuSelectedRowId === row.id
+                  }
+                  onContextMenu={rightClickHandler}
+                  onDoubleClick={
+                    Boolean(doubleClickAction)
+                      ? thisRowDblClickHandler
+                      : undefined
+                  }
                 >
                   {row.cells.map((cell) => {
                     return (

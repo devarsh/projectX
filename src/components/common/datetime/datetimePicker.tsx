@@ -78,7 +78,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
         handleChange(result);
       }
     }
-  }, [value]);
+  }, [value, handleChange]);
   const focusRef = useRef();
   useEffect(() => {
     if (isFieldFocused) {

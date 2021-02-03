@@ -78,7 +78,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
         handleChange(result);
       }
     }
-  }, [value]);
+  }, [value, handleChange]);
   const focusRef = useRef();
   useEffect(() => {
     if (isFieldFocused) {

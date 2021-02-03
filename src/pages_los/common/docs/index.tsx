@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { Fragment, useState } from "react";
+import Button from "@material-ui/core/Button";
 import Grid, { GridMetaDataType } from "components/dataTableStatic";
 import makeData from "./makeData";
 
@@ -63,7 +64,18 @@ const metaData: GridMetaDataType = {
 };
 
 export const GridTable = () => {
-  const data = useMemo(() => makeData(20), []);
+  //const data = useMemo(() => makeData(20), []);
+  const [data, setData] = useState<any>([]);
 
-  return <Grid finalMetaData={metaData} data={data} />;
+  const addData = () => {
+    let result = makeData(1);
+    setData((old) => [...old, ...result]);
+  };
+
+  return (
+    <Fragment>
+      <Button onClick={addData}>AddData</Button>
+      <Grid finalMetaData={metaData} data={data} />
+    </Fragment>
+  );
 };

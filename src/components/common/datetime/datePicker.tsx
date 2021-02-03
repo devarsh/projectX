@@ -77,7 +77,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
         handleChange(result);
       }
     }
-  }, [value]);
+  }, [value, handleChange]);
 
   const focusRef = useRef();
   useEffect(() => {

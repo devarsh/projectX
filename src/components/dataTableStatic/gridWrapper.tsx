@@ -6,19 +6,24 @@ import {
   attachAlignmentProps,
   sortColumnsBySequence,
   extractHiddenColumns,
+  SplitActions,
 } from "components/dataTable/utils";
-import { GridMetaDataType } from "./types";
+import { GridMetaDataType, GridWrapperPropTypes } from "./types";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
 
-export const GridWrapper: FC<{
-  finalMetaData: GridMetaDataType;
-  data: any;
-}> = ({ finalMetaData, data }) => {
+export const GridWrapper: FC<GridWrapperPropTypes> = ({
+  finalMetaData,
+  data,
+  actions,
+  setAction,
+}) => {
   const metaDataRef = useRef<any>(null);
   if (metaDataRef.current === null) {
     metaDataRef.current = transformMetaData({
       metaData: finalMetaData,
+      actions,
+      setAction,
     });
   }
   let metaData = metaDataRef.current;
@@ -50,12 +55,20 @@ export const GridWrapper: FC<{
         data={data}
         allowColumnReordering={metaData.gridConfig?.allowColumnReordering}
         defaultHiddenColumns={metaData.hiddenColumns}
+        multipleActions={metaData?.multipleActions}
+        singleActions={metaData?.singleActions}
+        doubleClickAction={metaData?.doubleClickAction}
+        setGridAction={metaData?.setAction}
       />
     </DndProvider>
   );
 };
 
-const transformMetaData = ({ metaData: freshMetaData }): GridMetaDataType => {
+const transformMetaData = ({
+  metaData: freshMetaData,
+  actions,
+  setAction,
+}): GridMetaDataType => {
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
   let columns = metaData.columns as any;
   const hiddenColumns = extractHiddenColumns(columns);
@@ -63,10 +76,12 @@ const transformMetaData = ({ metaData: freshMetaData }): GridMetaDataType => {
   columns = attachCellComponentsToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
-
+  const splittedActions = SplitActions(actions ?? null);
   return {
     hiddenColumns: hiddenColumns,
     columns: columns,
     gridConfig: metaData.gridConfig,
+    setAction: setAction,
+    ...splittedActions,
   };
 };

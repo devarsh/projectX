@@ -67,16 +67,6 @@ export const useFieldArray = ({
     [formContext.formName, formArrayFieldRegisterSelector]
   );
 
-  const disableForm = useRecoilCallback(
-    ({ set }) => (disable: boolean) => {
-      set(formAtom(formContext.formName), (currVal) => ({
-        ...currVal,
-        isSubmitting: disable,
-      }));
-    },
-    []
-  );
-
   //_insert adds a new field to the fieldArray with a new key
   const _insert = useCallback(
     (
@@ -432,6 +422,5 @@ export const useFieldArray = ({
     swap,
     move,
     renderRows,
-    disableForm,
   };
 };

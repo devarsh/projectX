@@ -1,3 +1,5 @@
+import { ActionTypes } from "components/dataTable/types";
+
 export interface GridColumnType {
   columnName: string;
   accessor: string;
@@ -30,4 +32,13 @@ export interface GridMetaDataType {
   columns: GridColumnType[];
   hiddenColumns?: string[];
   gridConfig: GridConfigType;
+  actions?: ActionTypes[];
+  setAction?: any;
+}
+
+export interface GridWrapperPropTypes {
+  finalMetaData: GridMetaDataType;
+  actions?: ActionTypes[];
+  setAction?: any;
+  data: any;
 }
