@@ -10,24 +10,23 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Logo from "assets/images/logo.svg";
 import { useStyles } from "./style";
 import { AuthContext } from "auth";
+import { SearchBar } from "components/derived";
 
 export const MyAppBar = ({ handleDrawerOpen, open }) => {
   const authController = useContext(AuthContext);
   const navigate = useNavigate();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const inputRef = useRef(null);
+
   const theme = useTheme();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -86,27 +85,7 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             )}
           </Typography>
         </Typography>
-
-        <div
-          className={classes.searchRoot}
-          style={{ display: desktop ? "flex" : "none" }}
-        >
-          <Input
-            disableUnderline
-            placeholder="Search.."
-            type="search"
-            id="docsearch-input"
-            inputRef={inputRef}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-          />
-          <div className={classes.search}>
-            <SearchIcon />
-          </div>
-        </div>
-
+        <SearchBar />
         <IconButton color="inherit" className="ml-2">
           <Badge badgeContent={4} color="primary">
             <NotificationsIcon />

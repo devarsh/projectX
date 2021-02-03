@@ -9,17 +9,16 @@ import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
 import { Lead } from "./pages/lead";
 import NewInquiry from "./pages/newInquiry";
-// import CAM from "./pages/cam";
-import { useStyles } from "./style";
-import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
-
-import ArrayForm from "packages/form/examples/01-basic";
-
-//This is temparoary
-
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import { useStyles } from "./style";
+
+//This is temparoary
+// import CAM from "./pages/cam";
+import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
 import TestForm from "components/dyanmicForm/test";
+import ArrayForm from "packages/form/examples/01-basic";
+import { GridTable } from "pages_los/common/docs";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -52,6 +51,7 @@ const DashbordPages = () => {
             {/* <Route path="/cam" element={<CAM />} /> */}
             <Route path="/array" element={<ArrayForm />} />
             <Route path="/test" element={<TestForm />} />
+            <Route path="/grid" element={<GridTable />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
