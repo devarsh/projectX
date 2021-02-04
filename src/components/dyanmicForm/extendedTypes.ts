@@ -23,6 +23,27 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     },
     enableNumWords: true,
   },
+  currencyWithoutWords: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      thousandSeparator: true,
+      prefix: "₹",
+      thousandsGroupStyle: "lakh",
+      allowNegative: false,
+      allowLeadingZeros: false,
+      decimalScale: 0,
+      maxLength: 13,
+      isAllowed: (values) => {
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
+    },
+    enableNumWords: false,
+  },
   dob: {
     render: {
       componentType: "datePicker",
@@ -88,7 +109,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       rules: [
         { name: "required", params: ["This Field is required"] },
         {
-          name: "pan_no",
+          name: "pancard",
           params: ["Please enter valid Pan Card Number"],
         },
       ],
@@ -104,15 +125,6 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
         return str.toUpperCase();
       },
       lazy: true,
-    },
-    schemaValidation: {
-      type: "string",
-      rules: [
-        {
-          name: "pancard",
-          params: ["Please enter valid Pan Card Number"],
-        },
-      ],
     },
   },
   aadharCard: {

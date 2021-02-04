@@ -190,6 +190,48 @@ const MiscAPI = () => {
     }
   };
 
+  const getIndustryType = async (
+    _: any,
+    formState: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(`./industryType`, {});
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.industryType,
+        label: one?.industryTypeName,
+      }));
+      return newArray;
+    }
+    return [
+      {
+        label: "oops error loading..",
+        value: 1,
+      },
+    ];
+  };
+
+  const getIndustrySubType = async (
+    dependentFields: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(
+      `./industrysubType/${dependentFields?.typeOfIndustry?.value}`,
+      {}
+    );
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.subType,
+        label: one?.subTypeName,
+      }));
+      return newArray;
+    }
+    return [
+      {
+        label: "oops error loading..",
+        value: 1,
+      },
+    ];
+  };
+
   return {
     inititateAPI,
     getMiscVal,
@@ -198,6 +240,8 @@ const MiscAPI = () => {
     getPropertyCity,
     getBankList,
     getPincodeExternal,
+    getIndustryType,
+    getIndustrySubType,
   };
 };
 

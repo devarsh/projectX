@@ -8,7 +8,6 @@ registerFn("getResidentialStatus", miscSDK.getMiscVal("RESI_STATUS"));
 registerFn("getSalutation", miscSDK.getMiscVal("SALUTATION_TYPE"));
 registerFn("getProfessionalYears", miscSDK.getMiscVal("PROF_YEARS"));
 registerFn("getBusinessNature", miscSDK.getMiscVal("BUSINESS_NATURE"));
-registerFn("getIndustryType", miscSDK.getMiscVal("INDUSTRY_TYPE"));
 registerFn("getFirmType", miscSDK.getMiscVal("FIRM_TYPE"));
 registerFn("getProfession", miscSDK.getMiscVal("PROFESSION"));
 registerFn("getProfessionYears", miscSDK.getMiscVal("PROF_YEARS"));
@@ -37,6 +36,8 @@ registerFn("getProductType", miscSDK.getProductType);
 registerFn("getsubProductDtl", miscSDK.getSubProductDtl);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
+registerFn("getIndustryType", miscSDK.getIndustryType);
+registerFn("getIndustrySubType", miscSDK.getIndustrySubType);
 
 /*register others*/
 

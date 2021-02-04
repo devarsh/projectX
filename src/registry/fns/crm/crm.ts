@@ -115,6 +115,15 @@ const CRMAPI = () => {
 
   //External API - called from dynamic form
   const validatePanNumber = async (currentField, _, formState) => {
+    if (!Boolean(currentField?.value)) {
+      return "";
+    }
+    if (
+      /^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$/.test(currentField?.value) ===
+      false
+    ) {
+      return "Please enter valid format for Pan Card Number.";
+    }
     const { status, data } = await internalFetcher(
       "./inquiry/external/pan/validate",
       {
@@ -132,7 +141,7 @@ const CRMAPI = () => {
       let result = { error: "", apiResult: data?.response_data?.name };
       return result;
     } else {
-      return "invalid pan number";
+      return "Please enter valid Pan Card Number.";
     }
   };
 
