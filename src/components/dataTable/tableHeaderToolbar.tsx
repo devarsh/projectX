@@ -4,6 +4,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { ColumnVisibility } from "./columnVisibility";
+import { RenderActions } from "./tableActionToolbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,9 @@ export const TableHeaderToolbar = ({
   defaultHiddenColumns,
   allowColumnHiding,
   setGridRefresh,
+  setGridAction,
+  selectedFlatRows,
+  alwaysAvailableAction,
 }) => {
   const classes = useStyles();
   return (
@@ -37,6 +41,12 @@ export const TableHeaderToolbar = ({
       >
         {label}
       </Typography>
+      <RenderActions
+        key="multipleFilters"
+        actions={alwaysAvailableAction ?? []}
+        setAction={setGridAction}
+        selectedRows={selectedFlatRows}
+      />
       <IconButton
         aria-label="more"
         aria-controls="long-menu"

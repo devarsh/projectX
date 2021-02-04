@@ -56,15 +56,17 @@ export interface GridMetaDataType {
   multipleActions: ActionTypes[];
   singleActions: ActionTypes[];
   doubleClickAction: ActionTypes | boolean;
+  alwaysAvailableAction: ActionTypes[];
 }
 
 export interface ActionTypes {
   actionName: string;
   actionLabel: string;
-  multiple: boolean;
+  multiple: boolean | undefined;
   actionIcon?: any;
   tooltip?: string;
   rowDoubleClick?: boolean;
+  alwaysAvailable?: boolean;
 }
 
 export interface RenderActionType {
@@ -77,6 +79,7 @@ export interface TableActionType {
   selectedFlatRows: any;
   singleActions: ActionTypes[];
   multipleActions?: ActionTypes[];
+  alwaysAvailableAction?: ActionTypes[];
   setGridAction: any;
   mouseX?: any;
   mouseY?: any;

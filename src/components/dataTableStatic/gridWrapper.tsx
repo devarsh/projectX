@@ -58,6 +58,7 @@ export const GridWrapper: FC<GridWrapperPropTypes> = ({
         multipleActions={metaData?.multipleActions}
         singleActions={metaData?.singleActions}
         doubleClickAction={metaData?.doubleClickAction}
+        alwaysAvailableAction={metaData?.alwaysAvailableAction}
         setGridAction={metaData?.setAction}
       />
     </DndProvider>

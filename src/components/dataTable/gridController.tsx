@@ -82,6 +82,7 @@ export const GirdController: FC<{
       multipleActions={metaData?.multipleActions}
       singleActions={metaData?.singleActions}
       doubleClickAction={metaData?.doubleClickAction}
+      alwaysAvailableAction={metaData?.alwaysAvailableAction}
       setGridAction={metaData?.setAction}
       dense={true}
       localFilterManager={localFilterManager}

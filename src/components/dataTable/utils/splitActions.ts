@@ -7,15 +7,20 @@ export const SplitActions = (actions: ActionTypes[] | null) => {
     const doubleClickAction = actions.filter(
       (one) => one.rowDoubleClick === true
     );
+    const alwaysAvailableAction = actions.filter(
+      (one) => one.alwaysAvailable === true
+    );
     return {
       multipleActions: multipleActions,
       singleActions: singleActions,
       doubleClickAction: doubleClickAction[0] ?? false,
+      alwaysAvailableAction: alwaysAvailableAction,
     };
   } else {
     return {
       multipleActions: [] as ActionTypes[],
       singleActions: [] as ActionTypes[],
+      alwaysAvailableAction: [] as ActionTypes[],
       doubleClickAction: false as boolean,
     };
   }

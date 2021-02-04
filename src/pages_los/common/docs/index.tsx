@@ -1,81 +1,48 @@
 import { Fragment, useState } from "react";
 import Button from "@material-ui/core/Button";
-import Grid, { GridMetaDataType } from "components/dataTableStatic";
+import Grid from "components/dataTableStatic";
+import metaData from "./metaData";
+import { ActionTypes } from "components/dataTable/types";
 import makeData from "./makeData";
+import { Dialog } from "@material-ui/core";
 
-const metaData: GridMetaDataType = {
-  columns: [
-    {
-      columnName: "First Name",
-      componentType: "default",
-      accessor: "firstName",
-      sequence: 0,
-      alignment: "left",
-      width: 300,
-      minWidth: 100,
-    },
-    {
-      columnName: "Last Name",
-      componentType: "default",
-      accessor: "lastName",
-      sequence: 0,
-      alignment: "left",
-    },
-    {
-      columnName: "Age",
-      componentType: "default",
-      accessor: "age",
-      sequence: 0,
-      alignment: "left",
-    },
-    {
-      columnName: "Visits",
-      componentType: "default",
-      accessor: "visits",
-      sequence: 0,
-      alignment: "left",
-    },
-    {
-      columnName: "Progress",
-      componentType: "default",
-      accessor: "progress",
-      sequence: 0,
-      alignment: "left",
-    },
-    {
-      columnName: "Status",
-      componentType: "default",
-      accessor: "status",
-      sequence: 0,
-      alignment: "left",
-    },
-  ],
-  gridConfig: {
-    dense: true,
-    gridLabel: "File Listing",
-    rowIdColumn: "firstName",
-    defaultColumnConfig: {
-      width: 150,
-      maxWidth: 250,
-      minWidth: 100,
-    },
-    allowColumnReordering: true,
+const actions: ActionTypes[] = [
+  {
+    actionName: "uploadDocs",
+    actionLabel: "Add Documents",
+    multiple: undefined,
+    rowDoubleClick: false,
+    alwaysAvailable: true,
   },
-};
+];
 
 export const GridTable = () => {
   //const data = useMemo(() => makeData(20), []);
   const [data, setData] = useState<any>([]);
+  const [action, setAction] = useState<any>(null);
 
   const addData = () => {
     let result = makeData(1);
     setData((old) => [...old, ...result]);
   };
+  const handleDialogClose = () => {
+    setAction(null);
+  };
 
   return (
     <Fragment>
       <Button onClick={addData}>AddData</Button>
-      <Grid finalMetaData={metaData} data={data} />
+      <Grid
+        finalMetaData={metaData}
+        data={data}
+        actions={actions}
+        setAction={setAction}
+      />
+      <Dialog
+        open={action !== null}
+        onClose={handleDialogClose}
+        key={"dialog"}
+      ></Dialog>
     </Fragment>
   );
 };

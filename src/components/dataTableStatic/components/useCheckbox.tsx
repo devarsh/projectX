@@ -1,7 +1,6 @@
 import Checkbox from "@material-ui/core/Checkbox";
 
 export const useCheckboxColumn = (hooks) => {
-  console.log(hooks);
   hooks.visibleColumns.push((columns) => [
     {
       id: "selectionCheckbox",

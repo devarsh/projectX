@@ -58,6 +58,7 @@ export const DataGrid = ({
   multipleActions,
   singleActions,
   doubleClickAction,
+  alwaysAvailableAction,
   gridRefresh,
   setGridRefresh,
 }) => {
@@ -230,12 +231,16 @@ export const DataGrid = ({
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
         setGridRefresh={setGridRefresh}
+        alwaysAvailableAction={alwaysAvailableAction}
+        setGridAction={setGridAction}
+        selectedFlatRows={selectedFlatRows}
       />
       <TableActionToolbar
         dense={dense}
         selectedFlatRows={selectedFlatRows}
         multipleActions={multipleActions}
         singleActions={singleActions}
+        alwaysAvailableAction={alwaysAvailableAction}
         setGridAction={setGridAction}
       />
       <ActionContextMenu

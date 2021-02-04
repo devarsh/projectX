@@ -2,6 +2,7 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import { GlobalFilter } from "./components/filters";
+import { RenderActions } from "components/dataTable/tableActionToolbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +23,9 @@ export const TableHeaderToolbar = ({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
+  alwaysAvailableAction,
+  setGridAction,
+  selectedFlatRows,
 }) => {
   const classes = useStyles();
   return (
@@ -38,6 +42,12 @@ export const TableHeaderToolbar = ({
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
+      />
+      <RenderActions
+        key="alwaysRender"
+        selectedRows={selectedFlatRows}
+        setAction={setGridAction}
+        actions={alwaysAvailableAction ?? []}
       />
     </Toolbar>
   );

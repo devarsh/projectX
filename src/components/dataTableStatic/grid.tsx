@@ -37,6 +37,7 @@ export const DataGrid = ({
   multipleActions,
   singleActions,
   doubleClickAction,
+  alwaysAvailableAction,
   setGridAction,
 }) => {
   //@ts-ignore
@@ -116,6 +117,9 @@ export const DataGrid = ({
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
+        alwaysAvailableAction={alwaysAvailableAction}
+        setGridAction={setGridAction}
+        selectedFlatRows={selectedFlatRows}
       />
       <TableActionToolbar
         dense={dense}
