@@ -90,3 +90,56 @@ export const useOptionsFetcher = (
 
   return { loadingOptions };
 };
+
+export const useOptionsFetcherSimple = (options, setOptions) => {
+  const lastOptionsPromise = useRef<Promise<any> | null>(null);
+  const [loadingOptions, setLoadingOptions] = useState(false);
+
+  //formState value mutates causing this component to rerender, need to fix
+  //for now we wont pass form state as depedency and fix it but needs investigation why this
+  //is happening
+  const syncAsyncSetOptions = useCallback(
+    (options) => {
+      if (Array.isArray(options)) {
+        setOptions(options);
+      } else if (typeof options === "function") {
+        try {
+          setLoadingOptions(true);
+          setOptions([{ label: "loading...", value: null }]);
+          let currentPromise = Promise.resolve(options());
+          lastOptionsPromise.current = currentPromise;
+          currentPromise
+            .then((result) => {
+              setLoadingOptions(false);
+              if (lastOptionsPromise.current === currentPromise) {
+                if (Array.isArray(result)) {
+                  setOptions(result);
+                } else {
+                  setOptions([{ label: "Couldn't fetch", value: null }]);
+                  console.log(
+                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
+                  );
+                }
+              }
+            })
+            .catch((e) => {
+              setLoadingOptions(false);
+              setOptions([{ label: "Couldn't fetch", value: null }]);
+              console.log(`error occured while fetching options`, e?.message);
+            });
+        } catch (e) {
+          setLoadingOptions(false);
+          setOptions([{ label: "Couldn't fetch", value: null }]);
+          console.log(`error occured while fetching options`, e?.message);
+        }
+      }
+    },
+    [setOptions]
+  );
+
+  useEffect(() => {
+    syncAsyncSetOptions(options);
+  }, [options, syncAsyncSetOptions]);
+
+  return { loadingOptions };
+};
