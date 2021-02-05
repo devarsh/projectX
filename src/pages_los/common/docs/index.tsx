@@ -35,6 +35,7 @@ export const GridTable = () => {
       <Grid
         finalMetaData={metaData}
         data={data}
+        setData={setData}
         actions={actions}
         setAction={setAction}
       />

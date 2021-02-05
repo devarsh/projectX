@@ -4,7 +4,7 @@ const metaData: GridMetaDataType = {
   columns: [
     {
       columnName: "First Name",
-      componentType: "default",
+      componentType: "editableTextField",
       accessor: "firstName",
       sequence: 0,
       alignment: "left",

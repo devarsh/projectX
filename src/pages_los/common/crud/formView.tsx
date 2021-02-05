@@ -9,14 +9,14 @@ import {
 } from "components/dyanmicForm";
 import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
-import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
+import { ClearCacheContext } from "cache";
 
 export const ViewForm: FC<{
   refID: string;
   productType: string;
   moveToEditForm: any;
 }> = ({ refID, productType, moveToEditForm }) => {
-  const removeCache = useContext(RemoveCacheRegisterContext);
+  const removeCache = useContext(ClearCacheContext);
   const result = useQueries([
     {
       queryKey: ["getViewMetaData", productType, refID],

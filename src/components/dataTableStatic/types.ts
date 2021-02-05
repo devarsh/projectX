@@ -4,7 +4,7 @@ export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default" | "date" | "currency";
+  componentType: "default" | "date" | "currency" | "editableTextField";
   Cell?: any;
   alignment?: string;
   TableCellProps?: any;
@@ -41,4 +41,5 @@ export interface GridWrapperPropTypes {
   actions?: ActionTypes[];
   setAction?: any;
   data: any;
+  setData: any;
 }

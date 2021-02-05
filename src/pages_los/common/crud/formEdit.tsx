@@ -9,7 +9,7 @@ import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
 import { queryClient } from "cache";
 import { transformMetaDataForEdit } from "./utils";
-import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
+import { ClearCacheContext } from "cache";
 
 interface updateFormDataType {
   data: object;
@@ -41,7 +41,7 @@ export const EditForm: FC<{
   setSnackBarMessage,
   isProductEditedRef,
 }) => {
-  const removeCache = useContext(RemoveCacheRegisterContext);
+  const removeCache = useContext(ClearCacheContext);
   if (typeof setSnackBarMessage !== "function") {
     setSnackBarMessage = () => alert("userMessage function not set");
   }

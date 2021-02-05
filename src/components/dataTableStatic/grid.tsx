@@ -39,6 +39,8 @@ export const DataGrid = ({
   doubleClickAction,
   alwaysAvailableAction,
   setGridAction,
+  updateGridData,
+  deleteGridRow,
 }) => {
   //@ts-ignore
   const {
@@ -62,6 +64,8 @@ export const DataGrid = ({
       },
       allowColumnReordering: allowColumnReordering,
       autoResetSortBy: false,
+      updateGridData,
+      deleteGridRow,
     },
     useGlobalFilter,
     useSortBy,

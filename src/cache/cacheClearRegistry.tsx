@@ -6,11 +6,11 @@ interface RemoveCacheRegisterType {
   getEntries: any;
 }
 
-export const RemoveCacheRegisterContext = createContext<RemoveCacheRegisterType | null>(
+export const ClearCacheContext = createContext<RemoveCacheRegisterType | null>(
   null
 );
 
-export const RemoveCacheRegisterProvider = ({ children }) => {
+export const ClearCacheProvider = ({ children }) => {
   const entiresCache = useRef<any[]>([]);
 
   const addEntry = (value: any[]) => {
@@ -35,7 +35,7 @@ export const RemoveCacheRegisterProvider = ({ children }) => {
     return entiresCache.current.map((one) => JSON.parse(one));
   };
   return (
-    <RemoveCacheRegisterContext.Provider
+    <ClearCacheContext.Provider
       value={
         {
           addEntry,
@@ -45,6 +45,6 @@ export const RemoveCacheRegisterProvider = ({ children }) => {
       }
     >
       {children}
-    </RemoveCacheRegisterContext.Provider>
+    </ClearCacheContext.Provider>
   );
 };

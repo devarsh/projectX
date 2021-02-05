@@ -2,12 +2,12 @@ import { FC, useMemo, useCallback, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {
-  attachCellComponentsToMetaData,
   attachAlignmentProps,
   sortColumnsBySequence,
   extractHiddenColumns,
   SplitActions,
 } from "components/dataTable/utils";
+import { attachCellComponentsToMetaData } from "./utils/attachCellComponentsToMetaData";
 import { GridMetaDataType, GridWrapperPropTypes } from "./types";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
@@ -15,6 +15,7 @@ import { DataGrid } from "./grid";
 export const GridWrapper: FC<GridWrapperPropTypes> = ({
   finalMetaData,
   data,
+  setData,
   actions,
   setAction,
 }) => {
@@ -44,6 +45,47 @@ export const GridWrapper: FC<GridWrapperPropTypes> = ({
     [metaData?.gridConfig?.rowIdColumn]
   );
 
+  const updateGridData = (rowIndex, columnID, value, touched, error) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnID]: value,
+            _touched: {
+              ...old?.[rowIndex]?.["_touched"],
+              [columnID]: touched,
+            },
+            _error: {
+              ...old?.[rowIndex]?.["_error"],
+              [columnID]: error,
+            },
+          };
+        }
+        return row;
+      })
+    );
+  };
+  const deleteGridRow = (rowIndex) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index !== rowIndex) {
+          return row;
+        }
+      })
+    );
+  };
+  // const validateAllData = () => {
+  //   setData((old) =>
+  //     old.map((row, index) => {
+  //       return {
+  //         ...row,
+  //         _validate: true,
+  //       };
+  //     })
+  //   );
+  // };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <DataGrid
@@ -60,6 +102,8 @@ export const GridWrapper: FC<GridWrapperPropTypes> = ({
         doubleClickAction={metaData?.doubleClickAction}
         alwaysAvailableAction={metaData?.alwaysAvailableAction}
         setGridAction={metaData?.setAction}
+        updateGridData={updateGridData}
+        deleteGridRow={deleteGridRow}
       />
     </DndProvider>
   );

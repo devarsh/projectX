@@ -7,7 +7,7 @@ import FormWrapper, {
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
-import { RemoveCacheRegisterContext } from "../../removeCacheRegisterContext";
+import { ClearCacheContext } from "cache";
 import { transformMetaDataForNew } from "../utils";
 import loaderGif from "assets/images/loader.gif";
 
@@ -36,7 +36,7 @@ export const NewForm = ({
   isProductEditedRef,
   setShowAsk,
 }) => {
-  const removeCache = useContext(RemoveCacheRegisterContext);
+  const removeCache = useContext(ClearCacheContext);
   const returnToAsk = useCallback(() => setShowAsk(true), [setShowAsk]);
 
   const mutation = useMutation(insertFormData, {

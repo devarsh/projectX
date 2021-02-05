@@ -34,7 +34,12 @@ const ListBoxComponentVirtualized = lazy(() =>
 
 interface AutoCompleteExtendedProps {
   label?: string;
-  showCheckbox: boolean;
+  options: OptionsProps[] | OptionsFn;
+  error: string;
+  loading: boolean;
+  handleBlur?: any;
+  handleChange?: any;
+  showCheckbox?: boolean;
   CircularProgressProps?: CircularProgressProps;
   TextFieldProps?: TextFieldProps;
   ChipProps?: ChipProps;
@@ -42,11 +47,6 @@ interface AutoCompleteExtendedProps {
   placeholder?: string;
   required?: boolean;
   enableVirtualized?: boolean;
-  handleBlur?: any;
-  handleChange?: any;
-  options: OptionsProps[] | OptionsFn;
-  error: string;
-  loading: boolean;
 }
 
 const getOptionLabel = (option: OptionsProps) => option?.label ?? "";
@@ -200,7 +200,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
           ));
           return (
             <Fragment>
-              {showCheckbox ? <Checkbox checked={selected} /> : null}
+              {Boolean(showCheckbox) ? <Checkbox checked={selected} /> : null}
               {labelJSX}
             </Fragment>
           );
