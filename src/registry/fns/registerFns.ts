@@ -32,6 +32,7 @@ registerFn("getAccountType", miscSDK.getMiscVal("ACCT_TYPE"));
 registerFn("getChannelType", miscSDK.getMiscVal("CHANNEL_TYPE"));
 registerFn("getBusinessInterest", miscSDK.getMiscVal("BUSI_INTREST"));
 registerFn("getLeadPriority", miscSDK.getMiscVal("LEAD_PRIORITY"));
+registerFn("getIndividualAddType", miscSDK.getMiscVal("IND_ADD_TYPE"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getsubProductDtl", miscSDK.getSubProductDtl);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);

@@ -1,8 +1,9 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-export const BussinessDetailsMetadata: MetaDataType = {
+
+const metaData: MetaDataType = {
   form: {
-    name: "leadBusinessDetails",
-    label: "Lead Business Details",
+    name: "12300001",
+    label: "Personally Identifiable Information",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
@@ -42,79 +43,36 @@ export const BussinessDetailsMetadata: MetaDataType = {
   fields: [
     {
       render: {
-        componentType: "textField",
-      },
-      name: "companyHistory",
-      label: "Company Brief History",
-      placeholder: "Company Brief History",
-      defaultValue: "",
-      maxLength: 250,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "companyService",
-      label: "Company Services",
-      placeholder: "Company Services",
-      defaultValue: "",
-      maxLength: 250,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "companyService",
-      label: "Company Services",
-      placeholder: "Company Services",
-      defaultValue: "",
-      maxLength: 250,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "companyService",
-      label: "End Use of the Products",
-      placeholder: "End Use of the Products",
-      defaultValue: "",
-      maxLength: 250,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
         componentType: "select",
       },
-      name: "constitutionOfBusiness",
-      label: "Constitution of Business",
-      placeholder: "Constitution of Business",
-      //@ts-ignore
-      option: "getFirmType",
-      validate: "getValidateValue",
+      name: "salutation",
+      label: "Salutation",
+      placeholder: "Select Salutation",
       required: true,
+      defaultValue: "0",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      //@ts-ignore
+      options: "getSalutation",
+      runPostValidationHookAlways: true,
+      validate: "getValidateValue",
+    },
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "firstName",
+      type: "text",
+      label: "First Name",
+      placeholder: "First Name",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["First Name is required."] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -124,15 +82,37 @@ export const BussinessDetailsMetadata: MetaDataType = {
 
     {
       render: {
-        componentType: "select",
+        componentType: "textField",
       },
-      name: "businessPremises",
-      label: "Ownership of Factory / Business Premises",
-      placeholder: "Ownership of Factory / Business Premises",
+      name: "middleName",
+      type: "text",
+      label: "Middle Name",
+      placeholder: "Middle Name",
       required: true,
-      //@ts-ignore
-      options: "getBusinessPremise",
-      validate: "getValidateValue",
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Middle Name is required."] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "lastName",
+      type: "text",
+      label: "Last Name",
+      placeholder: "Last Name",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Last Name is required."] }],
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -144,8 +124,8 @@ export const BussinessDetailsMetadata: MetaDataType = {
       render: {
         componentType: "datePicker",
       },
-      name: "incorporationDate",
-      label: "Date of incorporation",
+      name: "dob",
+      label: "Birth Date",
       placeholder: "dd/mm/yyyy",
       format: "dd/MM/yyyy",
       GridProps: {
@@ -157,70 +137,25 @@ export const BussinessDetailsMetadata: MetaDataType = {
 
     {
       render: {
-        componentType: "select",
+        componentType: "numberFormat",
       },
-      name: "typeOfIndustry",
-      label: "Existing Type of Industry",
-      placeholder: "Existing Type of Industry",
+      name: "mobileNo",
+      type: "text",
+      label: "Mobile No",
+      placeholder: "Mobile No",
       required: true,
-      //@ts-ignore
-      options: "getIndustryType",
-      validate: "getValidateValue",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "required", params: ["Mobile No is required."] },
+          { name: "min", params: [10, "Mobile No should be 10 digit."] },
+          { name: "max", params: [10, "Mobile No should be 10 digit."] },
+        ],
       },
-    },
-
-    {
-      render: {
-        componentType: "select",
+      FormatProps: {
+        format: "##########",
       },
-      name: "typeOfSubIndustry",
-      label: "Existing Type of Sub Industry",
-      placeholder: "Existing Type of Sub Industry",
-      required: true,
-      //@ts-ignore
-      options: "getIndustrySubType",
-      dependentFields: "typeOfIndustry",
-      validate: "getValidateValue",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "existingBusinessNature",
-      label: "Nature of Existing Business",
-      placeholder: "Nature of Existing Business",
-      required: true,
-      //@ts-ignore
-      options: "getBusinessNature",
-      validate: "getValidateValue",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "existingBusinessOtherNature",
-      label: "Nature of Existing Other Business",
-      placeholder: "Nature of Existing Other Business",
-      required: true,
-      //@ts-ignore
-      options: "getBusinessNature",
-      validate: "getValidateValue",
+      StartAdornment: "+91",
       GridProps: {
         xs: 12,
         md: 3,
@@ -232,27 +167,18 @@ export const BussinessDetailsMetadata: MetaDataType = {
       render: {
         componentType: "textField",
       },
-      name: "proposedBusiness",
-      label: "Proposed business",
-      placeholder: "Proposed business",
+      name: "email",
+      type: "text",
+      label: "Email",
+      placeholder: "Email",
       required: true,
-      //@ts-ignore
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
+      schemaValidation: {
+        type: "string",
+        rules: [
+          { name: "required", params: ["Email is required."] },
+          { name: "email", params: ["Please enter Email ID."] },
+        ],
       },
-    },
-
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "creditRating",
-      label: " External credit rating",
-      placeholder: " External credit rating",
-      required: true,
-      //@ts-ignore
       GridProps: {
         xs: 12,
         md: 3,
@@ -270,23 +196,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
       label: "Pan Card Number",
       placeholder: "PAN Card number",
       required: true,
-      validate: "validatePanNumber",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        //@ts-ignore
-        componentType: "aadharCard",
-      },
-      name: "udhyamNumber",
-      type: "text",
-      label: "Udhyam No",
-      required: true,
+      //validate: "validatePanNumber",
       GridProps: {
         xs: 12,
         md: 3,
@@ -299,16 +209,181 @@ export const BussinessDetailsMetadata: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "cmrRanking",
+      name: "passportNumber",
       type: "text",
-      label: "CMR Ranking",
-      placeholder: "CMR Ranking",
-      required: true,
+      label: "Passport Number",
+      placeholder: "Passport Number",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "textField",
+      },
+      name: "drivingLicence",
+      type: "text",
+      label: "Driving License Number",
+      placeholder: "Driving License Number",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "textField",
+      },
+      name: "dinLlpinNo",
+      type: "text",
+      label: "Din LLPIN Number",
+      placeholder: "Din LLPIN Number",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "select",
+        group: 1,
+      },
+      name: "educationQualification",
+      label: "Education Qualification",
+      placeholder: "Education Qualification",
+      required: true,
+      defaultValue: "X",
+      //@ts-ignore
+      options: "getEducationDtl",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "select",
+        group: 1,
+      },
+      name: "experience",
+      label: "Experience",
+      placeholder: "How many years of Experience you have ?",
+      required: true,
+      defaultValue: "X",
+      //@ts-ignore
+      options: "getExperianceyears",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "textField",
+      },
+      name: "associatedCompany",
+      type: "text",
+      label: "Associate Company",
+      placeholder: "Associate Company",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: 1,
+      },
+      name: "landmark",
+      type: "text",
+      label: "Landmark",
+      placeholder: "Landmark",
+      required: true,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["Landmark is required."] }],
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 1,
+      },
+      name: "profitSharing",
+      label: "Profit Sharing",
+      placeholder: "Profit Sharing",
+      required: true,
+      defaultValue: "",
+
+      FormatProps: {
+        format: "################",
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 1,
+      },
+      name: "netWorth",
+      label: "Net Worth",
+      placeholder: "Net Worth",
+      required: false,
+      defaultValue: "",
+
+      FormatProps: {
+        format: "################",
+      },
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 1,
+      },
+      name: "responsibility",
+      required: true,
+      label: "Responsibility",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+      multiline: true,
+      rowsMax: 4,
+      rows: 4,
     },
 
     {
@@ -335,7 +410,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
           required: true,
           defaultValue: "X",
           //@ts-ignore
-          options: "getAddressType",
+          options: "getIndividualAddType",
           GridProps: {
             xs: 12,
             md: 3,
@@ -391,7 +466,6 @@ export const BussinessDetailsMetadata: MetaDataType = {
             sm: 3,
           },
         },
-
         {
           render: {
             //@ts-ignore
@@ -422,7 +496,6 @@ export const BussinessDetailsMetadata: MetaDataType = {
           required: true,
           defaultValue: "0",
           runPostValidationHookAlways: true,
-
           validate: "getValidateValue",
           //@ts-ignore
           postValidationSetCrossFieldValues: "getLocationDtl",
@@ -545,22 +618,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
         },
       ],
     },
-    {
-      render: {
-        componentType: "checkbox",
-        group: 1,
-      },
-      name: "dutyrgf",
-      required: true,
-      label:
-        "I have read and agreed to the Terms of Use and hereby appoint Ratnaafin as my authorised representative to receive my credit information from Cibil/ Equifax/ Experian/ Highmark (bureau).",
-      GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
-      },
-    },
   ],
 };
 
-export default BussinessDetailsMetadata;
+export default metaData;
