@@ -132,7 +132,6 @@ export const useFieldArray = ({
           templateFieldRows: [...beginningRows, ...endingRows],
           lastInsertIndex: oldValues.lastInsertIndex,
         }));
-
         for (const oneField of Object.values(deleteRow.cells)) {
           unregisterField(oneField.key);
         }

@@ -111,7 +111,6 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     });
     return (
       <ArrayFieldRow
-        key={row.fieldIndexKey}
         fieldKey={row.cells[arrayFieldIDName ?? ""]?.key ?? ""}
         oneRow={oneRow}
         classes={classes}
