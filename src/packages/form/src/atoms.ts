@@ -184,7 +184,6 @@ export const formFieldUnregisterSelector = selectorFamily<string, string>({
   set: (formName) => ({ set, get, reset }, newValue) => {
     if (!(newValue instanceof DefaultValue)) {
       const fields = get(formFieldRegistryAtom(formName));
-      console.log(fields, newValue);
       const index = fields.indexOf(newValue);
       if (index > -1) {
         reset(formFieldAtom(newValue));
@@ -193,16 +192,6 @@ export const formFieldUnregisterSelector = selectorFamily<string, string>({
           ...fields.slice(index + 1),
         ];
         set(formFieldRegistryAtom(formName), newFields);
-      } else {
-        const retryIndex = fields.indexOf(`${formName}/${newValue}`);
-        if (retryIndex > -1) {
-          reset(formFieldAtom(`${formName}/${newValue}`));
-          const newFields = [
-            ...fields.slice(0, index),
-            ...fields.slice(index + 1),
-          ];
-          set(formFieldRegistryAtom(formName), newFields);
-        }
       }
     }
   },

@@ -133,7 +133,11 @@ export const useFieldArray = ({
           lastInsertIndex: oldValues.lastInsertIndex,
         }));
         for (const oneField of Object.values(deleteRow.cells)) {
-          unregisterField(oneField.key);
+          if (oneField.key.indexOf(`${formContext.formName}/`) > -1) {
+            unregisterField(oneField.key);
+          } else {
+            unregisterField(`${formContext.formName}/${oneField.key}`);
+          }
         }
       }
     },
