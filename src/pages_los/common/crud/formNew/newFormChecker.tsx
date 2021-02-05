@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
-import { RemoveCacheRegisterContext } from "../../removeCacheRegisterContext";
+import { ClearCacheContext } from "cache";
 import { CreateFormConfirmation } from "./createFormConfirmation";
 import loaderGif from "assets/images/loader.gif";
 
@@ -13,7 +13,7 @@ export const NewFormChecker = ({
   isProductEditedRef,
   setDataExist,
 }) => {
-  const removeCache = useContext(RemoveCacheRegisterContext);
+  const removeCache = useContext(ClearCacheContext);
   useEffect(() => {
     removeCache?.addEntry(["checkDataExist", productType, refID]);
   }, []);

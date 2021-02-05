@@ -7,7 +7,7 @@ import { FileListingWithConfirmation } from "./fileListing";
 import { LOSSDK } from "registry/fns/los";
 import { useQueries } from "react-query";
 import { DocumentType } from "./types";
-import { RemoveCacheRegisterContext } from "../removeCacheRegisterContext";
+import { ClearCacheContext } from "cache";
 
 interface DocumentState {
   viewName: "folders" | "filesView" | "upload";
@@ -23,7 +23,7 @@ export const Documents: FC<DocumentType> = ({
   isProductEditedRef,
   disableDialogCloseRef,
 }) => {
-  const removeCache = useContext(RemoveCacheRegisterContext);
+  const removeCache = useContext(ClearCacheContext);
   const [currentView, setCurrentView] = useState<DocumentState>({
     viewName: "folders",
     groupID: "",

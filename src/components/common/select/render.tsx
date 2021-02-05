@@ -1,10 +1,8 @@
-import { FC, useEffect, useState, useRef, useCallback } from "react";
-import { useField, UseFieldHookProps } from "packages/form";
+import { FC, useState } from "react";
 import { SelectProps } from "@material-ui/core/Select";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
-import Grid, { GridProps } from "@material-ui/core/Grid";
 import CircularProgress, {
   CircularProgressProps,
 } from "@material-ui/core/CircularProgress";
@@ -17,7 +15,6 @@ interface MySelectExtendedProps {
   MenuItemProps?: MenuItemProps;
   SelectProps?: SelectProps;
   CircularProgressProps?: CircularProgressProps;
-  GridProps?: GridProps;
   enableGrid: boolean;
   options?: OptionsProps[] | OptionsFn;
   multiple?: boolean;
@@ -35,12 +32,9 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   options,
   MenuItemProps,
   SelectProps,
-  GridProps,
   enableGrid,
   multiple,
   showCheckbox,
-  //@ts-ignore
-  isFieldFocused,
   InputProps,
   inputProps,
   CircularProgressProps,

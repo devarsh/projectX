@@ -5,7 +5,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { ListingGrid } from "pages_los/common/listingGrid";
 import { DetailsView } from "./detailsView";
 import { ActionTypes } from "components/dataTable";
-import { RemoveCacheRegisterProvider } from "pages_los/common/removeCacheRegisterContext";
+import { ClearCacheProvider } from "cache";
 import Alert from "@material-ui/lab/Alert";
 
 const actions: ActionTypes[] = [
@@ -82,7 +82,7 @@ export const Inquiry = () => {
         onClose={handleDialogClose}
         key={action?.rows[0].id}
       >
-        <RemoveCacheRegisterProvider key={action?.rows[0].id}>
+        <ClearCacheProvider key={action?.rows[0].id}>
           <DetailsView
             key={action?.rows[0].id}
             productGridData={action?.rows[0]}
@@ -92,7 +92,7 @@ export const Inquiry = () => {
             handleDialogClose={handleDialogClose}
             setSnackBarMessage={setSnackBarMessage}
           />
-        </RemoveCacheRegisterProvider>
+        </ClearCacheProvider>
       </Dialog>
       <SnackbarMessage
         open={snackBarOpen}

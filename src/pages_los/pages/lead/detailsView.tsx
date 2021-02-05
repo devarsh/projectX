@@ -5,7 +5,7 @@ import { Tabs } from "components/styledComponent/tabs";
 import { queryClient } from "cache";
 import { CRUD } from "pages_los/common/crud";
 import { Documents } from "pages_los/common/documents";
-import { RemoveCacheRegisterContext } from "pages_los/common/removeCacheRegisterContext";
+import { ClearCacheContext } from "cache";
 import { HeaderDetails } from "./headerDetails";
 
 import { useStyles } from "./style";
@@ -29,7 +29,7 @@ export const DetailsView: FC<{
   handleDialogClose,
   setSnackBarMessage,
 }) => {
-  const removeCache = useContext(RemoveCacheRegisterContext);
+  const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
     setCurrentTab(currentTab);
