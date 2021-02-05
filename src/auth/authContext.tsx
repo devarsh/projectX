@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       LOSSDK.setToken(payload.token);
       localStorage.setItem("authDetails", JSON.stringify(payload));
       if (!Boolean(stopNavigation)) {
-        navigate("/los");
+        //navigate("/los");
       }
     },
     [dispatch, navigate]
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       payload: {},
     });
     LOSSDK.removeToken();
-    navigate("/los");
+    //navigate("/los");
   }, [dispatch, navigate]);
 
   const isLoggedIn = () => {

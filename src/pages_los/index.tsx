@@ -67,11 +67,12 @@ const EntryPoint = () => (
       <Routes>
         <Route
           path="/*"
-          element={
-            <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
-              <DashbordPages />
-            </ProtectedRoutes>
-          }
+          element={<DashbordPages />}
+          // {
+          //   <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
+          //     <DashbordPages />
+          //   </ProtectedRoutes>
+          // }
         />
         <Route path="/auth/login/:type" element={<AuthLoginController />} />
       </Routes>

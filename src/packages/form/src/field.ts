@@ -55,6 +55,23 @@ export const useField = ({
       ? `${formContext.formName}/${fieldKey}`
       : `${formContext.formName}/${name}`
   );
+  //dependent fields change transform for array values
+
+  const dependentFieldsRef = useRef<string | string[] | undefined>(
+    "DO_NOT_CHANGE_THIS_VALUE_I_WILL_FIRE_YOU"
+  );
+  if (
+    dependentFieldsRef.current === "DO_NOT_CHANGE_THIS_VALUE_I_WILL_FIRE_YOU"
+  ) {
+    //@ts-ignore
+    dependentFieldsRef.current = transformDependentFields(
+      fieldKey,
+      dependentFields
+    );
+  }
+  if (dependentFieldsRef.current !== undefined) {
+    console.log(dependentFieldsRef.current);
+  }
 
   //fieldData atom stores current field state
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtomType>(
@@ -181,12 +198,12 @@ export const useField = ({
       setFieldData((currVal) => ({
         ...currVal,
         validate: wrappedValidation,
-        dependentFields: dependentFields,
+        dependentFields: dependentFieldsRef.current,
       }));
     } else {
       setFieldData((currVal) => ({
         ...currVal,
-        dependentFields: dependentFields,
+        dependentFields: dependentFieldsRef.current,
       }));
     }
   }, [
@@ -225,7 +242,7 @@ export const useField = ({
   const dependentFieldsState = useRecoilValue(
     subscribeToFormFieldsSelector({
       formName: formContext.formName,
-      fields: dependentFields,
+      fields: dependentFieldsRef.current,
     })
   );
   const dependentFieldsStateRef = useRef(dependentFieldsState);
@@ -301,6 +318,7 @@ export const useField = ({
   });
   const passCrossFieldMessage = useRecoilCallback(
     ({ snapshot, set }) => (fieldsObj: InitialValuesType) => {
+      const key = getFieldKeyForArray(fieldKey);
       const fieldsLoadable = snapshot.getLoadable(
         formFieldRegistryAtom(formContext.formName)
       );
@@ -309,11 +327,14 @@ export const useField = ({
         fields = fieldsLoadable.contents;
       }
       for (const field of Object.entries(fieldsObj)) {
-        if (fields.indexOf(`${formContext.formName}/${field[0]}`) >= 0) {
-          set(formFieldAtom(`${formContext.formName}/${field[0]}`), (old) => ({
-            ...old,
-            incomingMessage: field[1],
-          }));
+        if (fields.indexOf(`${formContext.formName}/${key}${field[0]}`) >= 0) {
+          set(
+            formFieldAtom(`${formContext.formName}/${key}${field[0]}`),
+            (old) => ({
+              ...old,
+              incomingMessage: field[1],
+            })
+          );
         }
       }
     },
@@ -767,3 +788,29 @@ function wrapValidationMethod(
     return wrapperFunctionAlways;
   }
 }
+
+const transformDependentFields = (
+  fieldKey: string,
+  dependentFields: string[] | string | undefined
+) => {
+  if (!Array.isArray(dependentFields) && typeof dependentFields === "string") {
+    if (fieldKey.split(".").length > 1) {
+      const fieldKeys = fieldKey.split(".");
+      const prevKey = fieldKeys.slice(0, fieldKeys.length - 1).join(".");
+      dependentFields = [dependentFields];
+      dependentFields = dependentFields.map((one) => {
+        return `${prevKey}.${one}`;
+      });
+    }
+  }
+  return dependentFields;
+};
+
+const getFieldKeyForArray = (fieldKey: string) => {
+  if (fieldKey.split(".").length > 1) {
+    const fieldKeys = fieldKey.split(".");
+    const prevKey = fieldKeys.slice(0, fieldKeys.length - 1).join(".");
+    return `${prevKey}.`;
+  }
+  return "";
+};
