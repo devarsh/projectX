@@ -150,11 +150,17 @@ export const attachMethodsToMetaData = (
 ) => {
   const accumKeys: AccumulatorType[] = [];
   JSONWalker(metaData, interestedFields, accumKeys, skipWalkingForKeys);
-
   let newMetaData = { ...metaData };
   for (const one of accumKeys) {
     const retVal = registrationFnInstance.getFn(one[1], one[3]);
     newMetaData = setIn(newMetaData, one[0], retVal);
+    //to get options registered function name to be used in react-query for caching options
+    if (one[2] === "options") {
+      const pathSplit = one[0].split(".");
+      const prev = pathSplit.slice(0, pathSplit.length - 1);
+      const newPath = [...prev, "_optionsKey"].join(".");
+      newMetaData = setIn(newMetaData, newPath, one[1]);
+    }
   }
   return newMetaData;
 };

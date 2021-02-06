@@ -49,6 +49,7 @@ interface AutoCompleteExtendedProps {
   placeholder?: string;
   required?: boolean;
   enableVirtualized?: boolean;
+  _optionsKey?: string;
 }
 
 type MyAutocompleteProps = Merge<
@@ -83,8 +84,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   TextFieldProps,
   CircularProgressProps,
   ChipProps,
-  //@ts-ignore
-  isFieldFocused,
   showCheckbox,
   CreateFilterOptionsConfig,
   runValidationOnDependentFieldsChange,
@@ -93,6 +92,9 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   limitTags,
   required,
   enableVirtualized,
+  //@ts-ignore
+  isFieldFocused,
+  _optionsKey,
   ...others
 }) => {
   const {
@@ -143,7 +145,8 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey
   );
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls

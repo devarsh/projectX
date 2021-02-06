@@ -254,9 +254,12 @@ export const useField = ({
   const lastIsReadOnlyPromise = useRef<Promise<any> | null>(null);
   useEffect(() => {
     if (typeof shouldExclude === "function") {
-      console.log("i will run");
       const currentShouldExcludePromise = Promise.resolve(
-        shouldExclude(fieldData, dependentFieldsState, formContext.formState)
+        shouldExclude(
+          fieldData,
+          transformDependentFieldsState(dependentFieldsState),
+          formContext.formState
+        )
       );
       lastShouldExcludePromise.current = currentShouldExcludePromise;
       currentShouldExcludePromise.then((result) => {
@@ -282,7 +285,11 @@ export const useField = ({
     }
     if (typeof isReadOnly === "function") {
       const currentIsReadOnlyPromise = Promise.resolve(
-        isReadOnly(fieldData, dependentFieldsState, formContext.formState)
+        isReadOnly(
+          fieldData,
+          transformDependentFieldsState(dependentFieldsState),
+          formContext.formState
+        )
       );
       lastIsReadOnlyPromise.current = currentIsReadOnlyPromise;
       currentIsReadOnlyPromise.then((result) => {
@@ -374,7 +381,7 @@ export const useField = ({
       const currentPromise = Promise.resolve(
         fieldDataRef.current.validate(
           data,
-          dependentFieldsState,
+          transformDependentFieldsState(dependentFieldsState),
           formContext.formState
         )
       );
@@ -790,11 +797,16 @@ const transformDependentFields = (
   fieldKey: string,
   dependentFields: string[] | string | undefined
 ) => {
-  if (!Array.isArray(dependentFields) && typeof dependentFields === "string") {
+  if (dependentFields === undefined) {
+    return dependentFields;
+  }
+  if (typeof dependentFields === "string") {
+    dependentFields = [dependentFields];
+  }
+  if (Array.isArray(dependentFields)) {
     if (fieldKey.split(".").length > 1) {
       const fieldKeys = fieldKey.split(".");
       const prevKey = fieldKeys.slice(0, fieldKeys.length - 1).join(".");
-      dependentFields = [dependentFields];
       dependentFields = dependentFields.map((one) => {
         return `${prevKey}.${one}`;
       });
@@ -810,4 +822,17 @@ const getFieldKeyForArray = (fieldKey: string) => {
     return `${prevKey}.`;
   }
   return "";
+};
+
+const transformDependentFieldsState = (
+  dependentValues: DependentValuesType
+) => {
+  const values = Object.keys(dependentValues);
+  let newDependentValues = values.reduce((accum, fieldKey) => {
+    let currentValue = dependentValues[fieldKey];
+    const newFieldKeyFlattend = fieldKey.replace(/(\[\d+\])/g, "");
+    accum[newFieldKeyFlattend] = currentValue;
+    return accum;
+  }, {});
+  return newDependentValues;
 };

@@ -8,11 +8,11 @@ export const useOptionsFetcher = (
   dependentValues,
   incomingMessage,
   runValidation,
-  whenToRunValidation
+  whenToRunValidation,
+  _optionsKey
 ) => {
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
   const [loadingOptions, setLoadingOptions] = useState(false);
-
   //formState value mutates causing this component to rerender, need to fix
   //for now we wont pass form state as depedency and fix it but needs investigation why this
   //is happening
@@ -91,7 +91,7 @@ export const useOptionsFetcher = (
   return { loadingOptions };
 };
 
-export const useOptionsFetcherSimple = (options, setOptions) => {
+export const useOptionsFetcherSimple = (options, setOptions, _optionsKey) => {
   const lastOptionsPromise = useRef<Promise<any> | null>(null);
   const [loadingOptions, setLoadingOptions] = useState(false);
 

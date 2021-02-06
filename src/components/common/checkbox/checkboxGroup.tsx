@@ -21,6 +21,7 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[] | dependentOptionsFn;
+  _optionsKey?: string;
   label: string;
 }
 
@@ -67,6 +68,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   enableGrid,
   runValidationOnDependentFieldsChange,
   CircularProgressProps,
+  _optionsKey,
   ...others
 }) => {
   const {
@@ -120,7 +122,8 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey
   );
 
   if (excluded) {

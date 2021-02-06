@@ -17,6 +17,7 @@ interface MySelectExtendedProps {
   CircularProgressProps?: CircularProgressProps;
   enableGrid: boolean;
   options?: OptionsProps[] | OptionsFn;
+  _optionsKey?: string;
   multiple?: boolean;
   showCheckbox?: boolean;
   handleChange?: any;
@@ -44,11 +45,16 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   value,
   loading,
   readOnly,
+  _optionsKey,
   ...others
 }) => {
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const isError = Boolean(error);
-  const { loadingOptions } = useOptionsFetcherSimple(options, setOptions);
+  const { loadingOptions } = useOptionsFetcherSimple(
+    options,
+    setOptions,
+    _optionsKey
+  );
   const menuItems = _options.map((menuItem, index) => {
     return (
       <MenuItem

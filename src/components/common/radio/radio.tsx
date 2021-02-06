@@ -21,6 +21,7 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[];
+  _optionsKey?: string;
   label: string;
 }
 
@@ -60,6 +61,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
   enableGrid,
   runValidationOnDependentFieldsChange,
   CircularProgressProps,
+  _optionsKey,
   ...others
 }) => {
   const {
@@ -113,7 +115,8 @@ const MyRadio: FC<MyRadioAllProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey
   );
 
   if (excluded) {

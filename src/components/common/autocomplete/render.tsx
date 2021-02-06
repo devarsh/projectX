@@ -35,6 +35,7 @@ const ListBoxComponentVirtualized = lazy(() =>
 interface AutoCompleteExtendedProps {
   label?: string;
   options: OptionsProps[] | OptionsFn;
+  _optionsKey?: string;
   error: string;
   handleBlur?: any;
   handleChange?: any;
@@ -74,12 +75,17 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   error,
   disableClearable,
   value,
+  _optionsKey,
   ...others
 }) => {
   const [inputValue, setInputValue] = useState("");
   const isError = Boolean(error);
   const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const { loadingOptions } = useOptionsFetcherSimple(options, setOptions);
+  const { loadingOptions } = useOptionsFetcherSimple(
+    options,
+    setOptions,
+    _optionsKey
+  );
   return (
     <Suspense fallback={"loading..."}>
       <Autocomplete
