@@ -1,20 +1,21 @@
-import TextField from "@material-ui/core/TextField";
+import { AutocompleteRenderOnly } from "components/common/autocomplete/render";
 import { useState, useEffect } from "react";
 
-export const EditableTextField = ({
+export const EditableAutocomplete = ({
   value: initialValue,
   row: { index, original },
-  column: { id },
+  column: { id, options, validation },
   updateGridData,
 }) => {
+  console.log(id, options, validation);
   const externalTouched = Boolean(original?._touched?.id);
   const externalError = original?._error?.id ?? "";
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState(externalError);
 
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const onChange = (value) => {
+    setValue(value);
   };
 
   // We'll only update the external data when the input is blurred
@@ -30,16 +31,18 @@ export const EditableTextField = ({
   }, [initialValue, externalTouched]);
 
   return (
-    <TextField
-      name={id}
+    <AutocompleteRenderOnly
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      InputLabelProps={{ shrink: true }}
       size="small"
       fullWidth
-      margin="none"
-      InputProps={{ style: { marginTop: "0px" } }}
+      error={error}
+      handleChange={onChange}
+      handleBlur={onBlur}
+      options={() => [{ label: "home", value: "X" }]}
+      loading={false}
+      renderInput={() => null}
     />
   );
 };

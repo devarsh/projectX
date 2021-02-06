@@ -6,6 +6,7 @@ import {
   HTMLAttributes,
   lazy,
   Suspense,
+  useEffect,
 } from "react";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import CircularProgress, {
@@ -75,6 +76,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   error,
   loading,
   disableClearable,
+  value,
   ...others
 }) => {
   const [inputValue, setInputValue] = useState("");

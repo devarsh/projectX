@@ -10,7 +10,7 @@ import {
 } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
-import { singletonFunctionRegisrationFactory } from "./utils/functionRegistry";
+import { singletonFunctionRegisrationFactory } from "components/utils";
 import { extendFieldTypes } from "./utils/extendedFieldTypes";
 import { MoveSequenceToRender } from "./utils/fixSequenceInMetaData";
 import { MetaDataType, FormWrapperProps } from "./types";

@@ -20,6 +20,7 @@ export const GridWrapper: FC<GridWrapperPropTypes> = ({
   setAction,
 }) => {
   const metaDataRef = useRef<any>(null);
+  console.log(finalMetaData);
   if (metaDataRef.current === null) {
     metaDataRef.current = transformMetaData({
       metaData: finalMetaData,
@@ -28,6 +29,7 @@ export const GridWrapper: FC<GridWrapperPropTypes> = ({
     });
   }
   let metaData = metaDataRef.current;
+  console.log(metaData);
   /* eslint-disable react-hooks/exhaustive-deps */
   const columns = useMemo(() => metaData.columns, []);
   const defaultColumn = useMemo(

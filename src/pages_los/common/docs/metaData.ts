@@ -1,4 +1,5 @@
 import { GridMetaDataType } from "components/dataTableStatic";
+import { MiscSDK } from "registry/fns/misc";
 
 const metaData: GridMetaDataType = {
   columns: [
@@ -8,13 +9,18 @@ const metaData: GridMetaDataType = {
       accessor: "firstName",
       sequence: 0,
       alignment: "left",
+      validation: (fieldData) => {
+        console.log(fieldData);
+        return "";
+      },
     },
     {
       columnName: "Last Name",
-      componentType: "default",
+      componentType: "editableAutocomplete",
       accessor: "lastName",
       sequence: 0,
       alignment: "left",
+      options: MiscSDK.getBankList(),
     },
     {
       columnName: "Age",

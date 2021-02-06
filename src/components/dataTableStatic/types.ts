@@ -4,7 +4,12 @@ export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default" | "date" | "currency" | "editableTextField";
+  componentType:
+    | "default"
+    | "date"
+    | "currency"
+    | "editableTextField"
+    | "editableAutocomplete";
   Cell?: any;
   alignment?: string;
   TableCellProps?: any;
@@ -14,6 +19,8 @@ export interface GridColumnType {
   sortDescFirst?: boolean;
   dateFormat?: string;
   isVisible?: boolean;
+  validation?: any;
+  options?: any;
 }
 
 export interface GridConfigType {

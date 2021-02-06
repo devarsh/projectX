@@ -1,5 +1,4 @@
 import { setIn } from "packages/form";
-import { MetaDataType } from "../types";
 import {
   singletonFunctionRegisrationFactoryType,
   ruleEngine,
@@ -17,51 +16,16 @@ const validateMethodNotFound = (fieldKey) => () => {
   console.log(`no method found for validation at ${fieldKey}`);
   return "";
 };
-const postValidationSetCrossFieldValuesMethodNotFound = (fieldKey) => () => {
-  console.log(
-    `no method for postValidationSetCrossFieldValues found at ${fieldKey}`
-  );
-  return undefined;
-};
-const isReadOnlyMethodNotFound = (fieldKey) => () => {
-  console.log(`no method for isReadOnly found at ${fieldKey}`);
-  return false;
-};
-const shouldExcludeNotFound = (fieldKey) => () => {
-  console.log(`no method for shouldExclude found at ${fieldKey}`);
-  return false;
-};
-const inputMaskPrepareNotFound = (fieldKey) => (value) => {
-  console.log(`no method for inputMask.prepare found at ${fieldKey}`);
-  return value;
-};
-const removeRowFnNotFound = (fieldKey) => (value) => {
-  console.log(`no method for inputMask.prepare found at ${fieldKey}`);
-  return false;
-};
 
 const defaultBooleanFunction = (value) => () => value;
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
-  [/^fields.*.options$/, optionsMethodNotFound],
-  [/^fields.*.validate$/, validateMethodNotFound],
-  [
-    /^fields.*.postValidationSetCrossFieldValues$/,
-    postValidationSetCrossFieldValuesMethodNotFound,
-  ],
-  [/^fields.*.isReadOnly$/, isReadOnlyMethodNotFound],
-  [/^fields.*.shouldExclude$/, shouldExcludeNotFound],
-  [/^fields.*.MaskProps.prepare$/, inputMaskPrepareNotFound],
-  [/^fields.*.removeRowFn$/, removeRowFnNotFound],
+  [/^options$/, optionsMethodNotFound],
+  [/^validate$/, validateMethodNotFound],
 ];
 
 //do not walk for arrayFields _fields as well we will run it seperately
-const SkipWalkingForKeys = [
-  "validate",
-  "isReadOnly",
-  "shouldExclude",
-  "_fields",
-];
+const SkipWalkingForKeys = ["validate"];
 
 const patternMatch = (patters: AttachMethodArrayType[], value: string) => {
   for (const currentPattern of patters) {
