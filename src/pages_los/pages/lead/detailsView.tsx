@@ -46,7 +46,7 @@ export const DetailsView: FC<{
         queryClient.removeQueries(one);
       });
     };
-  }, []);
+  }, [removeCache]);
 
   return (
     <Fragment>

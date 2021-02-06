@@ -1,6 +1,6 @@
 import { Engine } from "json-rules-engine";
 import { FormFieldAtomType, DependentValuesType } from "packages/form";
-import { CustomRuleType } from "../typesFields";
+import { CustomRuleType } from "./types";
 import {
   greaterThanString,
   greaterThanInclusiveString,

@@ -1,5 +1,5 @@
 import { others, pincode, MiscSDK as miscSDK } from "./misc";
-import { singletonFunctionRegisrationFactory } from "components/dyanmicForm";
+import { singletonFunctionRegisrationFactory } from "components/utils";
 
 const { registerFn } = singletonFunctionRegisrationFactory;
 

@@ -54,7 +54,7 @@ export const useOptionsFetcher = (
         }
       }
     },
-    [setOptions]
+    [setOptions, formState]
   );
   // const values = useRef({
   //   options,

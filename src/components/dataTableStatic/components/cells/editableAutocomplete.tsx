@@ -26,9 +26,8 @@ export const EditableAutocomplete = ({
   // If the initialValue is changed external, sync it up with our state
   useEffect(() => {
     setValue(initialValue);
-
     setError(externalError);
-  }, [initialValue, externalTouched]);
+  }, [initialValue, externalError]);
 
   return (
     <AutocompleteRenderOnly

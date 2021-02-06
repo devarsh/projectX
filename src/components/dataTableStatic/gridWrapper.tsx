@@ -72,8 +72,9 @@ export const GridWrapper: FC<GridWrapperPropTypes> = ({
     setData((old) =>
       old.map((row, index) => {
         if (index !== rowIndex) {
-          return row;
+          return true;
         }
+        return false;
       })
     );
   };

@@ -6,7 +6,6 @@ import {
   InitialValuesType,
 } from "./types";
 import {
-  formAtom,
   formArrayFieldRowsAtom,
   formArrayFieldRegisterSelector,
   formArrayFieldUnregisterSelector,
@@ -141,7 +140,7 @@ export const useFieldArray = ({
         }
       }
     },
-    [setFieldRows, unregisterField, arrayFieldName]
+    [setFieldRows, unregisterField, arrayFieldName, formContext.formName]
   );
   //Initialize the form array with default rows
   const setDefaultValue = useCallback(

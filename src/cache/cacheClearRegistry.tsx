@@ -1,4 +1,4 @@
-import { useRef, createContext } from "react";
+import { useRef, createContext, useCallback } from "react";
 
 interface RemoveCacheRegisterType {
   addEntry: any;
@@ -13,15 +13,15 @@ export const ClearCacheContext = createContext<RemoveCacheRegisterType | null>(
 export const ClearCacheProvider = ({ children }) => {
   const entiresCache = useRef<any[]>([]);
 
-  const addEntry = (value: any[]) => {
+  const addEntry = useCallback((value: any[]) => {
     let foundIndex = entiresCache.current.findIndex(
       (one) => one === JSON.stringify(value)
     );
     if (foundIndex < 0) {
       entiresCache.current.push(JSON.stringify(value));
     }
-  };
-  const removeEntry = (value: any[]) => {
+  }, []);
+  const removeEntry = useCallback((value: any[]) => {
     let foundIndex = entiresCache.current.findIndex(
       (one) => one === JSON.stringify(value)
     );
@@ -30,10 +30,10 @@ export const ClearCacheProvider = ({ children }) => {
       const next = entiresCache.current.slice(foundIndex + 1);
       entiresCache.current = [...prev, ...next];
     }
-  };
-  const getEntries = () => {
+  }, []);
+  const getEntries = useCallback(() => {
     return entiresCache.current.map((one) => JSON.parse(one));
-  };
+  }, []);
   return (
     <ClearCacheContext.Provider
       value={

@@ -27,7 +27,7 @@ export const EditableTextField = ({
     setValue(initialValue);
 
     setError(externalError);
-  }, [initialValue, externalTouched]);
+  }, [initialValue, externalError]);
 
   return (
     <TextField
