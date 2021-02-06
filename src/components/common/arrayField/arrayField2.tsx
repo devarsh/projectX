@@ -23,7 +23,6 @@ import { useFieldArray } from "packages/form";
 import { extendFieldTypes } from "components/dyanmicForm/utils/extendedFieldTypes";
 import { extendedMetaData } from "components/dyanmicForm/extendedTypes";
 import { attachMethodsToMetaData } from "components/dyanmicForm/utils/attachMethodsToMetaData";
-import { singletonFunctionRegisrationFactory } from "components/utils";
 import { MoveSequenceToRender } from "components/dyanmicForm/utils/fixSequenceInMetaData";
 import { MetaDataType } from "components/dyanmicForm";
 import { useStyles } from "./style";
@@ -44,10 +43,7 @@ export interface ArrayField2Props {
 
 const metaDataTransform = (metaData: MetaDataType): MetaDataType => {
   metaData = extendFieldTypes(metaData, extendedMetaData);
-  metaData = attachMethodsToMetaData(
-    metaData,
-    singletonFunctionRegisrationFactory
-  );
+  metaData = attachMethodsToMetaData(metaData);
   metaData = MoveSequenceToRender(metaData);
   return metaData;
 };

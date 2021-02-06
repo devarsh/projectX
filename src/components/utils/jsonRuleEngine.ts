@@ -1,13 +1,18 @@
 import { Engine } from "json-rules-engine";
+import { TopLevelCondition } from "json-rules-engine";
 import { FormFieldAtomType, DependentValuesType } from "packages/form";
-import { CustomRuleType } from "./types";
 import {
   greaterThanString,
   greaterThanInclusiveString,
   lessThanInclusiveString,
   lessThanString,
 } from "registry/rulesEngine";
-//localStorage.debug = "json-rules-engine";
+
+export interface CustomRuleType {
+  conditions: TopLevelCondition;
+  success: any;
+  failure: any;
+}
 
 export const ruleEngine = (rule: CustomRuleType) => async (
   fieldData: FormFieldAtomType,

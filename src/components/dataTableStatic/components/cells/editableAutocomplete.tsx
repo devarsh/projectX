@@ -39,7 +39,7 @@ export const EditableAutocomplete = ({
       error={error}
       handleChange={onChange}
       handleBlur={onBlur}
-      options={() => [{ label: "home", value: "X" }]}
+      options={options}
       loading={false}
       renderInput={() => null}
     />

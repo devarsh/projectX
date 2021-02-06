@@ -1,3 +1,3 @@
 export * from "./functionRegistry";
 export * from "./jsonRuleEngine";
-export * from "./types";
+export * from "./attachMethodsToMetaData";

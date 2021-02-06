@@ -7,7 +7,10 @@ import {
   extractHiddenColumns,
   SplitActions,
 } from "components/dataTable/utils";
-import { attachCellComponentsToMetaData } from "./utils/attachCellComponentsToMetaData";
+import {
+  attachCellComponentsToMetaData,
+  attachMethodsToMetaData,
+} from "./utils";
 import { GridMetaDataType, GridWrapperPropTypes } from "./types";
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
@@ -118,7 +121,8 @@ const transformMetaData = ({
   setAction,
 }): GridMetaDataType => {
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
-  let columns = metaData.columns as any;
+  let newMetaData = attachMethodsToMetaData(metaData as GridMetaDataType);
+  let columns = newMetaData.columns as any;
   const hiddenColumns = extractHiddenColumns(columns);
   //make sure extract functions are called before attach and lastly sort
   columns = attachCellComponentsToMetaData(columns);

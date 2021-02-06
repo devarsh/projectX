@@ -10,7 +10,6 @@ import {
 } from "./utils/constructINITValues";
 import { constructYupSchema } from "./utils/constructYupSchema";
 import { attachMethodsToMetaData } from "./utils/attachMethodsToMetaData";
-import { singletonFunctionRegisrationFactory } from "components/utils";
 import { extendFieldTypes } from "./utils/extendedFieldTypes";
 import { MoveSequenceToRender } from "./utils/fixSequenceInMetaData";
 import { MetaDataType, FormWrapperProps } from "./types";
@@ -28,10 +27,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   //this line is very important to preserve our metaData across render - deep clone hack
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
   metaData = extendFieldTypes(metaData, extendedMetaData);
-  metaData = attachMethodsToMetaData(
-    metaData,
-    singletonFunctionRegisrationFactory
-  );
+  metaData = attachMethodsToMetaData(metaData);
   metaData = MoveSequenceToRender(metaData);
   const groupWiseFields = renderFieldsByGroup(metaData);
   const initValues = constructInitialValue(metaData.fields, initialValues);

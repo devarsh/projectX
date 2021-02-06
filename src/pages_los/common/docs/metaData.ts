@@ -9,10 +9,6 @@ const metaData: GridMetaDataType = {
       accessor: "firstName",
       sequence: 0,
       alignment: "left",
-      validation: (fieldData) => {
-        console.log(fieldData);
-        return "";
-      },
     },
     {
       columnName: "Last Name",
@@ -20,7 +16,7 @@ const metaData: GridMetaDataType = {
       accessor: "lastName",
       sequence: 0,
       alignment: "left",
-      options: MiscSDK.getBankList(),
+      options: "getBankList",
     },
     {
       columnName: "Age",

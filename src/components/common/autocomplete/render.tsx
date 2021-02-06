@@ -36,7 +36,6 @@ interface AutoCompleteExtendedProps {
   label?: string;
   options: OptionsProps[] | OptionsFn;
   error: string;
-  loading: boolean;
   handleBlur?: any;
   handleChange?: any;
   showCheckbox?: boolean;
@@ -73,7 +72,6 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   multiple,
   options,
   error,
-  loading,
   disableClearable,
   value,
   ...others
@@ -167,7 +165,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
               ...params.InputProps,
               endAdornment: (
                 <Fragment>
-                  {loading || loadingOptions ? (
+                  {loadingOptions ? (
                     <CircularProgress
                       color="primary"
                       variant="indeterminate"
