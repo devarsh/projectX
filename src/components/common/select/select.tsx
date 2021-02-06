@@ -16,6 +16,7 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 interface extendedFieldProps extends UseFieldHookProps {
   options?: OptionsProps[] | dependentOptionsFn;
   _optionsKey?: string;
+  disableCaching?: boolean;
   multiple?: boolean;
   showCheckbox?: boolean;
 }
@@ -55,6 +56,7 @@ const MySelect: FC<MySelectAllProps> = ({
   CircularProgressProps,
   runValidationOnDependentFieldsChange,
   _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -119,7 +121,8 @@ const MySelect: FC<MySelectAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
-    _optionsKey
+    _optionsKey,
+    disableCaching
   );
 
   //dont move it to top it can mess up with hooks calling mechanism, if there is another

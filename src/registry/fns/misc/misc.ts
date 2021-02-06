@@ -46,19 +46,15 @@ const MiscAPI = () => {
     OptionsProps[]
   > => {
     const { status, data } = await internalFetcher(`./data/${categCode}`, {});
-    if (status === "success" && Array.isArray(data.response_data)) {
+    if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
         value: one?.data_val,
         label: one?.display_val,
       }));
       return newArray;
+    } else {
+      throw data?.error_data;
     }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
   };
 
   //dropdown value - dynamic form
@@ -70,75 +66,43 @@ const MiscAPI = () => {
       `./productType/${formState?.formCode}`,
       {}
     );
-    if (status === "success" && Array.isArray(data.response_data)) {
+    if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
         value: one?.sub_prod_code,
         label: one?.sub_prod_desc,
       }));
       return newArray;
-    }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
-  };
-
-  //dropdown value - dynamic form
-  const getSubProductDtl = async (fieldData) => {
-    if (fieldData.value.length !== 0) {
-      let codes = await getProductType(null, { formCode: fieldData.value });
-      return {
-        subProductType: {
-          options: codes,
-          value: "00",
-        },
-      };
-    } else if (fieldData.value === "") {
-      return {
-        subProductType: {
-          options: [],
-          value: "",
-        },
-      };
+    } else {
+      throw data?.error_data;
     }
   };
 
   //dropdown value - dynamic form
   const getPropertyCity = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./propertyCityList", {});
-    if (status === "success" && Array.isArray(data.response_data)) {
+    if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
         value: one?.data_val,
         label: one?.display_val,
       }));
       return newArray;
+    } else {
+      throw data?.error_data;
     }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
   };
 
   //dropdown value - dynamic form
   const getBankList = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./bankList", {});
-    if (status === "success" && Array.isArray(data.response_data)) {
+    if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
         value: one?.bank_cd,
         label: one?.bank_name,
       }));
       return newArray;
+    } else {
+      throw data?.error_data;
     }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
   };
 
   //dropdown value - dynamic form
@@ -201,13 +165,9 @@ const MiscAPI = () => {
         label: one?.industryTypeName,
       }));
       return newArray;
+    } else {
+      throw data?.error_data;
     }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
   };
 
   const getIndustrySubType = async (
@@ -223,20 +183,15 @@ const MiscAPI = () => {
         label: one?.subTypeName,
       }));
       return newArray;
+    } else {
+      throw data?.error_data;
     }
-    return [
-      {
-        label: "oops error loading..",
-        value: 1,
-      },
-    ];
   };
 
   return {
     inititateAPI,
     getMiscVal,
     getProductType,
-    getSubProductDtl,
     getPropertyCity,
     getBankList,
     getPincodeExternal,

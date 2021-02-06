@@ -36,6 +36,7 @@ interface MyCheckboxExtendedProps {
   GridProps?: GridProps;
   enableGrid: boolean;
   CircularProgressProps?: CircularProgressProps;
+  disableCaching?: boolean;
 }
 
 export type MyCheckboxGroupAllProps = Merge<
@@ -69,6 +70,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   runValidationOnDependentFieldsChange,
   CircularProgressProps,
   _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -123,7 +125,8 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
-    _optionsKey
+    _optionsKey,
+    disableCaching
   );
 
   if (excluded) {

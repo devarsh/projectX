@@ -93,3 +93,32 @@ export const getValidateValue = async (fieldData) => {
   } else {
   }
 };
+
+//dropdown value - dynamic form
+export const getSubProductDtl = (getProductType) => async (fieldData) => {
+  if (fieldData.value.length !== 0) {
+    try {
+      let codes = await getProductType(null, { formCode: fieldData.value });
+      return {
+        subProductType: {
+          options: codes,
+          value: "00",
+        },
+      };
+    } catch (e) {
+      return {
+        subProductType: {
+          options: [],
+          value: "",
+        },
+      };
+    }
+  } else if (fieldData.value === "") {
+    return {
+      subProductType: {
+        options: [],
+        value: "",
+      },
+    };
+  }
+};

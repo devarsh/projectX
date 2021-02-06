@@ -50,6 +50,7 @@ interface AutoCompleteExtendedProps {
   required?: boolean;
   enableVirtualized?: boolean;
   _optionsKey?: string;
+  disableCaching?: boolean;
 }
 
 type MyAutocompleteProps = Merge<
@@ -95,6 +96,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   //@ts-ignore
   isFieldFocused,
   _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -146,7 +148,8 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
-    _optionsKey
+    _optionsKey,
+    disableCaching
   );
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
