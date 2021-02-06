@@ -216,4 +216,20 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       },
     },
   },
+  futureDateNotAllowed: {
+    render: {
+      componentType: "datePicker",
+    },
+    //@ts-ignore
+    schemaValidation: {
+      type: "date",
+      rules: [
+        { name: "typeError", params: ["Must be a valid date"] },
+        {
+          name: "max",
+          params: [new Date(), "Future Date not allowed."],
+        },
+      ],
+    },
+  },
 };

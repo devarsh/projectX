@@ -69,10 +69,6 @@ export const useField = ({
       dependentFields
     );
   }
-  if (dependentFieldsRef.current !== undefined) {
-    console.log(dependentFieldsRef.current);
-  }
-
   //fieldData atom stores current field state
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtomType>(
     formFieldAtom(fieldKeyRef.current)
@@ -258,6 +254,7 @@ export const useField = ({
   const lastIsReadOnlyPromise = useRef<Promise<any> | null>(null);
   useEffect(() => {
     if (typeof shouldExclude === "function") {
+      console.log("i will run");
       const currentShouldExcludePromise = Promise.resolve(
         shouldExclude(fieldData, dependentFieldsState, formContext.formState)
       );

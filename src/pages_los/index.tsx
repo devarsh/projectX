@@ -20,6 +20,7 @@ import TestForm from "components/dyanmicForm/test";
 import ArrayForm from "packages/form/examples/01-basic";
 import { GridTable } from "pages_los/common/docs";
 import PIIData from "./pages/piiData";
+import Business from "./pages/leadDetails";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -51,6 +52,7 @@ const DashbordPages = () => {
             <Route path="/cam" element={<CAMIFrame />} />
             {/* <Route path="/cam" element={<CAM />} /> */}
             <Route path="/pii" element={<PIIData />} />
+            <Route path="/business" element={<Business />} />
             <Route path="/array" element={<ArrayForm />} />
             <Route path="/test" element={<TestForm />} />
             <Route path="/grid" element={<GridTable />} />

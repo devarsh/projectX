@@ -1,0 +1,311 @@
+import { MetaDataType } from "components/dyanmicForm/types";
+export const BussinessDetailsMetadata: MetaDataType = {
+  form: {
+    name: "leadBusinessDetails",
+    label: "Lead Business Details",
+    resetFieldOnUmnount: false,
+    validationRun: "onBlur",
+    submitAction: "home",
+    render: {
+      ordering: "auto",
+      renderType: "simple",
+      gridConfig: {
+        item: {
+          xs: 12,
+          sm: 4,
+          md: 4,
+        },
+        container: {
+          direction: "row",
+          spacing: 2,
+        },
+      },
+    },
+    componentProps: {
+      textField: {
+        fullWidth: true,
+      },
+      select: {
+        fullWidth: true,
+      },
+      datePicker: {
+        fullWidth: true,
+      },
+      numberFormat: {
+        fullWidth: true,
+      },
+      inputMask: {
+        fullWidth: true,
+      },
+    },
+  },
+  fields: [
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyHistory",
+      label: "Company Brief History",
+      placeholder: "Company Brief History",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 2,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyService",
+      label: "Company Services",
+      placeholder: "Company Services",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyEndUseProducts",
+      label: "End Use of the Products",
+      placeholder: "End Use of the Products",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyMaterialsName",
+      label: "Name of Raw Materials",
+      placeholder: "Name of Raw Materials",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companySuppliersName",
+      label: "Name of Major Suppliers",
+      placeholder: "Name of Major Suppliers",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyPaymentTermSuppliers",
+      label: "Payment Terms with Suppliers",
+      placeholder: "Payment Terms with Suppliers",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyCustomersName",
+      label: "Name of Major Customers",
+      placeholder: "Name of Major Customers",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyPaymentTerm",
+      label: "Payment terms with Customers",
+      placeholder: "Payment terms with Customers",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyOrderBookPosition",
+      label: "Current Order Book Position",
+      placeholder: "Current Order Book Position",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyPolicy",
+      label: "Marketing & Distribution Policy/Strategy",
+      placeholder: "Marketing & Distribution Policy/Strategy",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyCompetitors",
+      label: "Name of Competitors",
+      placeholder: "Name of Competitors",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyExportCountry",
+      label: "Name of Major Countries where Exporting",
+      placeholder: "Name of Major Countries where Exporting",
+      defaultValue: "",
+      maxLength: 250,
+      rowsMax: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyExportRatio",
+      label: "Domestic and export sales ratio",
+      placeholder: "Domestic and export sales ratio",
+      defaultValue: "",
+      maxLength: 10,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "numberFormat",
+      },
+      name: "companyEmployeeCount",
+      label: "No. of Employees",
+      placeholder: "No. of Employees",
+      defaultValue: "",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      FormatProps: {
+        format: "##########",
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyLicence",
+      label: "Other Industry specific approvals/license",
+      placeholder: "Other Industry specific approvals/license",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "companyAwards",
+      label: "Any awards/Recognition received",
+      placeholder: "Any awards/Recognition received",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+  ],
+};
