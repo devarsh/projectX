@@ -1,4 +1,5 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
 
 export const useOptionsFetcher = (
   formState,
@@ -9,62 +10,58 @@ export const useOptionsFetcher = (
   incomingMessage,
   runValidation,
   whenToRunValidation,
-  _optionsKey
+  _optionsKey,
+  disableCaching
 ) => {
-  const lastOptionsPromise = useRef<Promise<any> | null>(null);
-  const [loadingOptions, setLoadingOptions] = useState(false);
-  //formState value mutates causing this component to rerender, need to fix
-  //for now we wont pass form state as depedency and fix it but needs investigation why this
-  //is happening
-  const syncAsyncSetOptions = useCallback(
-    (options, dependentValues) => {
-      if (Array.isArray(options)) {
-        setOptions(options);
-      } else if (typeof options === "function") {
-        try {
-          setLoadingOptions(true);
-          setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(
-            options(dependentValues, formState)
-          );
-          lastOptionsPromise.current = currentPromise;
-          currentPromise
-            .then((result) => {
-              setLoadingOptions(false);
-              if (lastOptionsPromise.current === currentPromise) {
-                if (Array.isArray(result)) {
-                  setOptions(result);
-                } else {
-                  setOptions([{ label: "Couldn't fetch", value: null }]);
-                  console.log(
-                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-                  );
-                }
-              }
-            })
-            .catch((e) => {
-              setLoadingOptions(false);
-              setOptions([{ label: "Couldn't fetch", value: null }]);
-              console.log(`error occured while fetching options`, e?.message);
-            });
-        } catch (e) {
-          setLoadingOptions(false);
-          setOptions([{ label: "Couldn't fetch", value: null }]);
-          console.log(`error occured while fetching options`, e?.message);
-        }
-      }
-    },
-    [setOptions, formState]
+  let loadingOptions = false;
+
+  let queryKey: any[] = [];
+  if (Boolean(disableCaching)) {
+    queryKey = [_optionsKey, formState, dependentValues];
+  } else {
+    queryKey = [_optionsKey, formState];
+  }
+  const queryOptions = useQuery(
+    queryKey,
+    () => options(dependentValues, formState),
+    {
+      enabled: typeof options === "function",
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
   );
-  // const values = useRef({
-  //   options,
-  //   dependentValues,
-  //   syncAsyncSetOptions,
-  //   formState,
-  // });
+  loadingOptions = queryOptions.isLoading;
   useEffect(() => {
-    syncAsyncSetOptions(options, dependentValues);
-  }, [options, dependentValues, syncAsyncSetOptions]);
+    console.log(queryOptions);
+    if (options === undefined) {
+      setOptions([{ label: "No Data", value: null }]);
+      loadingOptions = false;
+    } else if (Array.isArray(options)) {
+      setOptions(options);
+      loadingOptions = false;
+    } else if (queryOptions.isLoading) {
+      setOptions([{ label: "loading...", value: null }]);
+      loadingOptions = true;
+    } else if (queryOptions.isError) {
+      setOptions([{ label: "Couldn't fetch", value: null }]);
+      console.log(
+        `error occured while fetching data for ${_optionsKey}`,
+        queryOptions.error
+      );
+      loadingOptions = false;
+    } else {
+      if (Array.isArray(queryOptions.data)) {
+        setOptions(queryOptions.data);
+      } else {
+        setOptions([{ label: "Couldn't fetch", value: null }]);
+        console.log(
+          `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
+        );
+      }
+      loadingOptions = false;
+    }
+  }, [loadingOptions]);
 
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
@@ -91,55 +88,57 @@ export const useOptionsFetcher = (
   return { loadingOptions };
 };
 
-export const useOptionsFetcherSimple = (options, setOptions, _optionsKey) => {
-  const lastOptionsPromise = useRef<Promise<any> | null>(null);
-  const [loadingOptions, setLoadingOptions] = useState(false);
+export const useOptionsFetcherSimple = (
+  options,
+  setOptions,
+  _optionsKey,
+  disableCaching
+) => {
+  let loadingOptions = false;
 
-  //formState value mutates causing this component to rerender, need to fix
-  //for now we wont pass form state as depedency and fix it but needs investigation why this
-  //is happening
-  const syncAsyncSetOptions = useCallback(
-    (options) => {
-      if (Array.isArray(options)) {
-        setOptions(options);
-      } else if (typeof options === "function") {
-        try {
-          setLoadingOptions(true);
-          setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(options());
-          lastOptionsPromise.current = currentPromise;
-          currentPromise
-            .then((result) => {
-              setLoadingOptions(false);
-              if (lastOptionsPromise.current === currentPromise) {
-                if (Array.isArray(result)) {
-                  setOptions(result);
-                } else {
-                  setOptions([{ label: "Couldn't fetch", value: null }]);
-                  console.log(
-                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-                  );
-                }
-              }
-            })
-            .catch((e) => {
-              setLoadingOptions(false);
-              setOptions([{ label: "Couldn't fetch", value: null }]);
-              console.log(`error occured while fetching options`, e?.message);
-            });
-        } catch (e) {
-          setLoadingOptions(false);
-          setOptions([{ label: "Couldn't fetch", value: null }]);
-          console.log(`error occured while fetching options`, e?.message);
-        }
-      }
-    },
-    [setOptions]
-  );
-
+  let queryKey: any[] = [];
+  if (Boolean(disableCaching)) {
+    queryKey = [_optionsKey];
+  } else {
+    queryKey = [_optionsKey];
+  }
+  const queryOptions = useQuery(queryKey, () => options(), {
+    enabled: typeof options === "function",
+    cacheTime: 100000000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+  loadingOptions = queryOptions.isLoading;
   useEffect(() => {
-    syncAsyncSetOptions(options);
-  }, [options, syncAsyncSetOptions]);
+    console.log(queryOptions);
+    if (options === undefined) {
+      setOptions([{ label: "No Data", value: null }]);
+      loadingOptions = false;
+    } else if (Array.isArray(options)) {
+      setOptions(options);
+      loadingOptions = false;
+    } else if (queryOptions.isLoading) {
+      setOptions([{ label: "loading...", value: null }]);
+      loadingOptions = true;
+    } else if (queryOptions.isError) {
+      setOptions([{ label: "Couldn't fetch", value: null }]);
+      console.log(
+        `error occured while fetching data for ${_optionsKey}`,
+        queryOptions.error
+      );
+      loadingOptions = false;
+    } else {
+      if (Array.isArray(queryOptions.data)) {
+        setOptions(queryOptions.data);
+      } else {
+        setOptions([{ label: "Couldn't fetch", value: null }]);
+        console.log(
+          `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
+        );
+      }
+      loadingOptions = false;
+    }
+  }, [loadingOptions]);
 
   return { loadingOptions };
 };

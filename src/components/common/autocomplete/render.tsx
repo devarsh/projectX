@@ -47,6 +47,7 @@ interface AutoCompleteExtendedProps {
   placeholder?: string;
   required?: boolean;
   enableVirtualized?: boolean;
+  disableCaching?: boolean;
 }
 
 const getOptionLabel = (option: OptionsProps) => option?.label ?? "";
@@ -76,6 +77,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   disableClearable,
   value,
   _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -84,7 +86,8 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   const { loadingOptions } = useOptionsFetcherSimple(
     options,
     setOptions,
-    _optionsKey
+    _optionsKey,
+    disableCaching
   );
   return (
     <Suspense fallback={"loading..."}>
