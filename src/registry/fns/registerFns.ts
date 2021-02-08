@@ -34,6 +34,8 @@ registerFn("getBusinessInterest", miscSDK.getMiscVal("BUSI_INTREST"));
 registerFn("getLeadPriority", miscSDK.getMiscVal("LEAD_PRIORITY"));
 registerFn("getIndividualAddType", miscSDK.getMiscVal("IND_ADD_TYPE"));
 registerFn("businessAddType", miscSDK.getMiscVal("BUSSIN_ADD_TYPE"));
+registerFn("facilityType", miscSDK.getMiscVal("FACILITY_TYPE"));
+registerFn("securityType", miscSDK.getMiscVal("SECURITY_TYPE"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
