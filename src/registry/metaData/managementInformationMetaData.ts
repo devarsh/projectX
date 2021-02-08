@@ -1,6 +1,6 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 
-export const PersonalInformationMetaData: MetaDataType = {
+export const ManagementInformationMetaData: MetaDataType = {
   form: {
     refID: 1667,
     name: "12300001",
@@ -439,7 +439,7 @@ export const PersonalInformationMetaData: MetaDataType = {
           required: true,
           defaultValue: "X",
           //@ts-ignore
-          options: "getIndividualAddType",
+          options: "getIndividualAddressType",
           GridProps: {
             xs: 12,
             md: 3,

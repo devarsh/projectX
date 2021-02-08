@@ -149,22 +149,6 @@ const LOSAPI = () => {
     }
   };
 
-  const getViewData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./${type}/data/view`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   const getEditMetaData = async (type: string, refID: string) => {
     const { data, status } = await internalFetcher(
       `./${type}/metaData/get/edit`,
@@ -177,6 +161,22 @@ const LOSAPI = () => {
         }),
       }
     );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getViewData = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./${type}/data/view`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
     if (status === "success") {
       return data?.response_data;
     } else {
@@ -429,6 +429,91 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+  //for Lead
+
+  const getLeadDataForView = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./lead/${type}/data/view`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getLeadDataForEdit = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./lead/${type}/data/get`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const updateLeadData = async (type: string, refID: string, formData: any) => {
+    const { data, status } = await internalFetcher(`./lead/${type}/data/put`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const insertLeadData = async (type: string, refID: string, formData: any) => {
+    const { data, status } = await internalFetcher(`./lead/${type}/data/post`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const checkLeadDataExist = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(
+      `./lead/${type}/data/exists`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
 
   return {
     inititateAPI,
@@ -453,6 +538,11 @@ const LOSAPI = () => {
     deleteDocuments,
     constructDocumentDownloadURL,
     moveInquiryToLead,
+    getLeadDataForView,
+    getLeadDataForEdit,
+    updateLeadData,
+    insertLeadData,
+    checkLeadDataExist,
   };
 };
 

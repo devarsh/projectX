@@ -1,5 +1,8 @@
 export const generalDetailNatureofFacilityProposed = (_, dependentValues) => {
-  if (dependentValues["generalDetailNatureofFacilityProposed"].value === "01") {
+  if (
+    dependentValues["natureOfFacilityDetails.natureFacilityType"]?.value ===
+    "01"
+  ) {
     return false;
   }
   return true;
@@ -7,7 +10,8 @@ export const generalDetailNatureofFacilityProposed = (_, dependentValues) => {
 
 export const generalDetailNatureofFacilityPresent = (_, dependentValues) => {
   if (
-    dependentValues["natureOfFacilityDetails.natureFacilityType"].value === "02"
+    dependentValues["natureOfFacilityDetails.natureFacilityType"]?.value ===
+    "02"
   ) {
     return false;
   }
@@ -23,9 +27,9 @@ export const generalDetailBusinessNature = (_, dependentValues) => {
 
 export const collateralPrimarySecurity = (_, dependentValues) => {
   if (
-    dependentValues["collateralDetails.collateralSecurityType"].value ===
+    dependentValues["collateralDetails.collateralSecurityType"]?.value ===
       "01" ||
-    dependentValues["collateralDetails.collateralSecurityType"].value === "02"
+    dependentValues["collateralDetails.collateralSecurityType"]?.value === "02"
   ) {
     return false;
   }
@@ -34,7 +38,7 @@ export const collateralPrimarySecurity = (_, dependentValues) => {
 
 export const collateralSecurity = (_, dependentValues) => {
   if (
-    dependentValues["collateralDetails.collateralSecurityType"].value === "02"
+    dependentValues["collateralDetails.collateralSecurityType"]?.value === "02"
   ) {
     return false;
   }
@@ -43,7 +47,7 @@ export const collateralSecurity = (_, dependentValues) => {
 
 export const collateralPersonalGuarantee = (_, dependentValues) => {
   if (
-    dependentValues["collateralDetails.collateralSecurityType"].value === "03"
+    dependentValues["collateralDetails.collateralSecurityType"]?.value === "03"
   ) {
     return false;
   }

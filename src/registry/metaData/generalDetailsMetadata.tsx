@@ -139,6 +139,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       //@ts-ignore
       options: "getIndustrySubType",
       dependentFields: ["businessType"],
+      disableCaching: true,
       // validate: "getValidateValue",
       GridProps: {
         xs: 12,
@@ -316,7 +317,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
 
           defaultValue: "X",
           //@ts-ignore
-          options: "businessAddType",
+          options: "businessAddressType",
           GridProps: {
             xs: 12,
             md: 3,
