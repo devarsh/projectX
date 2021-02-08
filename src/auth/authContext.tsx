@@ -5,7 +5,7 @@ import {
   useReducer,
   useState,
 } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
 import { AuthSDK } from "registry/fns/auth";
 import { LOSSDK } from "registry/fns/los";
@@ -56,6 +56,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, inititalState);
   const [authenticating, setAuthenticating] = useState(true);
+  const location = useLocation();
   const navigate = useNavigate();
 
   const login = useCallback(
@@ -67,7 +68,7 @@ export const AuthProvider = ({ children }) => {
       LOSSDK.setToken(payload.token);
       localStorage.setItem("authDetails", JSON.stringify(payload));
       if (!Boolean(stopNavigation)) {
-        //navigate("/los");
+        navigate(location.pathname);
       }
     },
     [dispatch, navigate]
@@ -79,7 +80,7 @@ export const AuthProvider = ({ children }) => {
       payload: {},
     });
     LOSSDK.removeToken();
-    //navigate("/los");
+    navigate("/los");
   }, [dispatch, navigate]);
 
   const isLoggedIn = () => {

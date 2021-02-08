@@ -9,7 +9,8 @@ export interface GridColumnType {
     | "date"
     | "currency"
     | "editableTextField"
-    | "editableAutocomplete";
+    | "editableAutocomplete"
+    | "editableSelect";
   Cell?: any;
   alignment?: string;
   TableCellProps?: any;
@@ -20,6 +21,7 @@ export interface GridColumnType {
   dateFormat?: string;
   isVisible?: boolean;
   validation?: any;
+  schemaValidation?: YupSchemaMetaDataType;
   options?: any;
 }
 
@@ -49,4 +51,14 @@ export interface GridWrapperPropTypes {
   setAction?: any;
   data: any;
   setData: any;
+}
+
+export interface YupSchemaMetaDataType {
+  type: "string" | "number" | "boolean" | "date";
+  rules?: YupRulesType[];
+}
+
+interface YupRulesType {
+  name: string;
+  params: any[];
 }

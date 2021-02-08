@@ -21,11 +21,3 @@ registerFn(
   "validateSamePanNumber",
   others.validateSamePanNumber(CRMSDK.validatePanNumber)
 );
-registerFn(
-  "shouldExcludeGeneralDetailProposed",
-  shouldExclude.generalDetailNatureofFacilityProposed
-);
-registerFn(
-  "shouldExcludeGeneralDetailPresent",
-  shouldExclude.generalDetailNatureofFacilityPresent
-);
