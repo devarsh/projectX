@@ -8,7 +8,6 @@ export const GeneralDetailsData = () => {
       metaData={GeneralDetailsMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={(values, displayValues, endSubmit) => {
-        console.log("meta value", values);
         endSubmit(true);
       }}
     />
