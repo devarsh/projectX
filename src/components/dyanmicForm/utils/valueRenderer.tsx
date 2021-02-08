@@ -3,6 +3,11 @@ import { RenderFunctionType } from "../types";
 
 const ValueField = lazy(() => import("components/common/valueField"));
 const Spacer = lazy(() => import("components/common/spacer"));
+const ArrayFieldValue = lazy(() =>
+  import("components/common/arrayField").then((module) => ({
+    default: module.ArrayFieldValues,
+  }))
+);
 
 export const renderValue: RenderFunctionType = (
   fieldObj,
@@ -13,6 +18,9 @@ export const renderValue: RenderFunctionType = (
   const { render, schemaValidation, ...others } = fieldObj;
   let Component: any = null;
   switch (render.componentType) {
+    case "arrayField":
+      Component = ArrayFieldValue;
+      break;
     case "spacer":
       Component = Spacer;
       break;

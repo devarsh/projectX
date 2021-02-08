@@ -1,4 +1,4 @@
-import { FC, cloneElement, Fragment, useRef } from "react";
+import { FC, Fragment, useRef } from "react";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,19 +22,23 @@ export interface ArrayField2Props {
   arrayFieldIDName?: string;
 }
 
-const metaDataTransform = (
-  metaData: MetaDataType,
-  formDisplayValues: any
-): MetaDataType => {
-  metaData = MoveSequenceToRender(metaData);
-  const transformedFields = attachValuesToMetaData(
-    metaData.fields,
-    formDisplayValues ?? {}
-  );
-  return { form: metaData.form, fields: transformedFields };
+const sortMetaData = (metaData: MetaDataType) => {
+  if (Array.isArray(metaData.fields) && metaData?.fields.length > 0) {
+    let sortedFields = metaData.fields.sort((prev, next) => {
+      if ((prev?.render?.sequence ?? -1) > (next?.render?.sequence ?? -1)) {
+        return 1;
+      } else if (
+        prev?.render?.sequence ??
+        -1 < (next?.render?.sequence ?? -1)
+      ) {
+        return -1;
+      }
+      return 0;
+    });
+    return { form: metaData.form, fields: sortedFields };
+  }
+  return metaData;
 };
-
-const renderRows = ({ rows, fields }) => null;
 
 export const ArrayFieldValues: FC<ArrayField2Props & { defaultValue: any }> = ({
   name,
@@ -50,45 +54,34 @@ export const ArrayFieldValues: FC<ArrayField2Props & { defaultValue: any }> = ({
   ) as FieldMetaDataType[];
   const classes = useStyles();
   let metaData = { form: {}, fields: currentFieldsMeta } as MetaDataType;
-  const transformedMetaData = useRef<MetaDataType | null>(null);
-  if (transformedMetaData.current === null) {
-    transformedMetaData.current = metaDataTransform(metaData, defaultValue);
-  }
-  const template = useRef(
-    transformedMetaData?.current?.fields?.reduce((accum, one) => {
-      accum[one.name] = "";
-      return accum;
-    }, {})
-  );
+  metaData = MoveSequenceToRender(metaData);
+  metaData = sortMetaData(metaData);
 
-  const currentMetaToObj = useRef(
-    transformedMetaData?.current?.fields?.reduce((accum, one) => {
-      accum[one.name] = one;
-      return accum;
-    }, {})
-  );
-  //@ts-ignore
-  let rows = renderRows(({ row, fields }) => {
-    const oneRow = fields.map((field) => {
-      const currentFieldMetaData = currentMetaToObj.current[field];
-      if (!Boolean(currentFieldMetaData)) {
-        return null;
+  if (!Array.isArray(defaultValue)) {
+    return <div>Invalid data for arrayField</div>;
+  }
+  const rows = defaultValue.map((oneRowDefaultValues, RowIndex) => {
+    const metaDataWithDefaultValuesForRow = attachValuesToMetaData(
+      currentFieldsMeta,
+      oneRowDefaultValues
+    );
+    const oneRow = metaDataWithDefaultValuesForRow.map(
+      (oneColumnMeta, Columnindex) => {
+        const component = renderValue(
+          oneColumnMeta,
+          {} as any,
+          name,
+          componentProps
+        );
+        return (
+          <Fragment key={`${oneColumnMeta.name}-${Columnindex}`}>
+            {component}
+          </Fragment>
+        );
       }
-      const component = renderValue(
-        currentFieldMetaData,
-        //@ts-ignore
-        {},
-        name,
-        componentProps
-      );
-      const clonedComponent = cloneElement(component, {
-        fieldKey: row.cells[field].key,
-        name: row.cells[field].name,
-      });
-      return <Fragment key={row.cells[field].key}>{clonedComponent}</Fragment>;
-    });
+    );
     return (
-      <Fragment key={row.fieldIndexKey}>
+      <Fragment key={RowIndex}>
         <Grid
           container
           item
@@ -103,6 +96,7 @@ export const ArrayFieldValues: FC<ArrayField2Props & { defaultValue: any }> = ({
       </Fragment>
     );
   });
+
   let result = (
     <Fragment>
       <Card className={classes.arrayRowCard}>
