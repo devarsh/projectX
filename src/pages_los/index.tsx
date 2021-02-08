@@ -25,10 +25,7 @@ import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
 import TestForm from "components/dyanmicForm/test";
 import ArrayForm from "packages/form/examples/01-basic";
 import { GridTable } from "pages_los/common/docs";
-import PIIData from "./pages/piiData";
-import Business from "./pages/leadDetails";
-import GeneralDetailsData from "./pages/camGeneralDetails";
-import CollateralDetailsData from "./pages/camCollateralDetails";
+import { Form } from "registry/metaData/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -58,15 +55,7 @@ const DashbordPages = () => {
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CAMIFrame />} />
-            {/* <Route path="/cam" element={<CAM />} /> */}
-            <Route path="/pii" element={<PIIData />} />
-            {/* CAM forms */}
-            <Route path="/business" element={<Business />} />
-            <Route path="/generalDetails" element={<GeneralDetailsData />} />
-            <Route
-              path="/collateralDetails"
-              element={<CollateralDetailsData />}
-            />
+            <Route path="/leadForm" element={<Form />} />
 
             {/* ------------ */}
 
