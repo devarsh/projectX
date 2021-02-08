@@ -4,7 +4,11 @@ import {
   DateRowCellRenderer,
   CurrencyRowCellRenderer,
 } from "components/dataTable/components/cells";
-import { EditableTextField, EditableAutocomplete } from "../components/cells";
+import {
+  EditableTextField,
+  EditableAutocomplete,
+  EditableSelect,
+} from "../components/cells";
 
 export const attachCellComponentsToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
@@ -30,6 +34,11 @@ export const attachCellComponentsToMetaData = (columns: GridColumnType[]) => {
           return {
             ...others,
             Cell: EditableAutocomplete,
+          };
+        case "editableSelect":
+          return {
+            ...others,
+            Cell: EditableSelect,
           };
         default:
           return {

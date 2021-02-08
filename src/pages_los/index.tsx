@@ -1,5 +1,11 @@
-import { useState, Fragment } from "react";
-import { Routes, Route, useParams, useNavigate } from "react-router-dom";
+import { useState, Fragment, useEffect } from "react";
+import {
+  Routes,
+  Route,
+  useParams,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { AppBar } from "./appBar";
 import { MySideBar } from "./sideBar";
 import { Drawer } from "./drawer";
@@ -71,12 +77,11 @@ const EntryPoint = () => (
       <Routes>
         <Route
           path="/*"
-          element={<DashbordPages />}
-          // {
-          //   <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
-          //     <DashbordPages />
-          //   </ProtectedRoutes>
-          // }
+          element={
+            <ProtectedRoutes unauthenticatedRoute="./auth/login/customer">
+              <DashbordPages />
+            </ProtectedRoutes>
+          }
         />
         <Route path="/auth/login/:type" element={<AuthLoginController />} />
       </Routes>
@@ -88,7 +93,14 @@ export default EntryPoint;
 
 const RedirectComponent = () => {
   const navigate = useNavigate();
-  setTimeout(() => navigate("./dashboard"), 1);
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/los") {
+      navigate("/los/dashboard");
+    } else {
+      navigate(location.pathname);
+    }
+  }, []);
   return null;
 };
 

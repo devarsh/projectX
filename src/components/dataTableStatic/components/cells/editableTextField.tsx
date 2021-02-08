@@ -1,12 +1,17 @@
 import TextField from "@material-ui/core/TextField";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { combineAndRunValidation } from "./utils";
 
 export const EditableTextField = ({
   value: initialValue,
   row: { index, original },
-  column: { id },
+  column: { id, validation, schemaValidation },
   updateGridData,
 }) => {
+  const validationFn = useCallback(
+    (value) => combineAndRunValidation(validation, schemaValidation),
+    [validation, schemaValidation]
+  );
   const externalTouched = Boolean(original?._touched?.id);
   const externalError = original?._error?.id ?? "";
   // We need to keep and update the state of the cell normally
@@ -40,6 +45,8 @@ export const EditableTextField = ({
       fullWidth
       margin="none"
       InputProps={{ style: { marginTop: "0px" } }}
+      error={Boolean(externalTouched) && Boolean(error)}
+      helperText={Boolean(externalTouched) && Boolean(error) ? error : null}
     />
   );
 };

@@ -20,10 +20,11 @@ const metaData: GridMetaDataType = {
     },
     {
       columnName: "Age",
-      componentType: "default",
+      componentType: "editableSelect",
       accessor: "age",
       sequence: 0,
       alignment: "left",
+      options: "getAccountType",
     },
     {
       columnName: "Visits",

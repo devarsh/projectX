@@ -37,6 +37,7 @@ interface AutoCompleteExtendedProps {
   options: OptionsProps[] | OptionsFn;
   _optionsKey?: string;
   error: string;
+  touched: boolean;
   handleBlur?: any;
   handleChange?: any;
   showCheckbox?: boolean;
@@ -74,6 +75,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   multiple,
   options,
   error,
+  touched,
   disableClearable,
   value,
   _optionsKey,
@@ -81,7 +83,9 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   ...others
 }) => {
   const [inputValue, setInputValue] = useState("");
-  const isError = Boolean(error);
+  const isTouched = Boolean(touched);
+  const isError = isTouched && Boolean(error);
+
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const { loadingOptions } = useOptionsFetcherSimple(
     options,

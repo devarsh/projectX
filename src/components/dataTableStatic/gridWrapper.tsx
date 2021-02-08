@@ -10,6 +10,7 @@ import {
 import {
   attachCellComponentsToMetaData,
   attachMethodsToMetaData,
+  attachYupSchemaValidator,
 } from "./utils";
 import { GridMetaDataType, GridWrapperPropTypes } from "./types";
 import { DefaultHeaderColumnRenderer } from "./components";
@@ -125,6 +126,7 @@ const transformMetaData = ({
   let columns = newMetaData.columns as any;
   const hiddenColumns = extractHiddenColumns(columns);
   //make sure extract functions are called before attach and lastly sort
+  columns = attachYupSchemaValidator(columns);
   columns = attachCellComponentsToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);

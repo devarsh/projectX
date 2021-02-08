@@ -15,7 +15,6 @@ interface MySelectExtendedProps {
   MenuItemProps?: MenuItemProps;
   SelectProps?: SelectProps;
   CircularProgressProps?: CircularProgressProps;
-  enableGrid: boolean;
   options?: OptionsProps[] | OptionsFn;
   _optionsKey?: string;
   multiple?: boolean;
@@ -23,6 +22,7 @@ interface MySelectExtendedProps {
   handleChange?: any;
   handleBlur?: any;
   error?: any;
+  touched?: any;
   loading?: boolean;
   readOnly?: boolean;
   value?: any;
@@ -34,7 +34,6 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   options,
   MenuItemProps,
   SelectProps,
-  enableGrid,
   multiple,
   showCheckbox,
   InputProps,
@@ -43,6 +42,7 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   handleBlur,
   handleChange,
   error,
+  touched,
   value,
   loading,
   readOnly,
@@ -51,7 +51,8 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   ...others
 }) => {
   const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const isError = Boolean(error);
+  const isTouched = Boolean(touched);
+  const isError = isTouched && Boolean(error);
   const { loadingOptions } = useOptionsFetcherSimple(
     options,
     setOptions,
