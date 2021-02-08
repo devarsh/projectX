@@ -19,17 +19,3 @@ export const becomePartnerNominee = (_, dependentValues) => {
   }
   return true;
 };
-
-export const generalDetailNatureofFacilityProposed = (_, dependentValues) => {
-  if (dependentValues["natureFacility.loanType"].value === "01") {
-    return false;
-  }
-  return true;
-};
-
-export const generalDetailNatureofFacilityPresent = (_, dependentValues) => {
-  if (dependentValues["natureFacility.loanType"].value === "02") {
-    return false;
-  }
-  return true;
-};
