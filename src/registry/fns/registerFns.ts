@@ -38,6 +38,7 @@ registerFn("facilityType", miscSDK.getMiscVal("FACILITY_TYPE"));
 registerFn("securityType", miscSDK.getMiscVal("SECURITY_TYPE"));
 registerFn("businessSize", miscSDK.getMiscVal("BUSINESS_SIZE"));
 registerFn("getNatureOfFacility", miscSDK.getMiscVal("NATURE_FACILITY"));
+registerFn("projectParticularType", miscSDK.getMiscVal("PARTICULAR_TYPE"));
 
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);

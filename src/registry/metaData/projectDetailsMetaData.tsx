@@ -315,13 +315,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
           label: "Project Particular Details Type",
           defaultValue: "01",
           //@ts-ignore
-          options: [
-            {
-              label: "Total Cost of Project",
-              value: "01",
-            },
-            { label: "Total Means of Finance", value: "02" },
-          ],
+          options: "projectParticularType",
           GridProps: {
             xs: 12,
             md: 3,
