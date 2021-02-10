@@ -46,6 +46,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
           initialValues: initValues,
           defaultArrayFieldValues: defaultArrayFieldInitValues,
           validationSchema: yupValidationSchema,
+          disableForm: false,
           formState: {
             refID: metaData.form.refID,
             formCode: metaData.form.name,

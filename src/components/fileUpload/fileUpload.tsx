@@ -89,7 +89,7 @@ export const FileUploadControl = () => {
         setOpenDialog(true);
       }
     },
-    []
+    [setFiles, setFailedFailes, setOpenDialog]
   );
 
   return (

@@ -56,6 +56,22 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     [formContext.formName]
   );
 
+  const disableForm = useRecoilCallback(
+    ({ set }) => (flag: boolean) => {
+      set(formAtom(formContext.formName), (currVal) => ({
+        ...currVal,
+        isSubmitting: flag,
+      }));
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (Boolean(formState.isSubmitting) !== Boolean(formContext.disableForm)) {
+      disableForm(Boolean(formContext.disableForm));
+    }
+  }, [formContext.disableForm]);
+
   //clear form Atoms on unmount
   useEffect(() => {
     return () => removeFormInstance();
