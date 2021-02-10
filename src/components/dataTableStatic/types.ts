@@ -55,6 +55,7 @@ export interface GridWrapperPropTypes {
   setData: any;
   actions?: ActionTypes[];
   setAction?: any;
+  loading?: any;
 }
 
 export interface YupSchemaMetaDataType {

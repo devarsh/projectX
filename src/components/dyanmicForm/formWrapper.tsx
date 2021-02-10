@@ -23,6 +23,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   onSubmitHandler,
   onCancleHandler,
   hidden = false,
+  viewMode = false,
 }) => {
   //this line is very important to preserve our metaData across render - deep clone hack
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
@@ -46,7 +47,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
           initialValues: initValues,
           defaultArrayFieldValues: defaultArrayFieldInitValues,
           validationSchema: yupValidationSchema,
-          disableForm: false,
+          disableForm: viewMode,
           formState: {
             refID: metaData.form.refID,
             formCode: metaData.form.name,

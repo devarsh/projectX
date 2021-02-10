@@ -462,12 +462,34 @@ const LOSAPI = () => {
     }
   };
 
-  const updateLeadData = async (type: string, refID: string, formData: any) => {
+  const updateLeadData = async (
+    type: string,
+    refID: string,
+    formData: any,
+    serialNo?: any
+  ) => {
     const { data, status } = await internalFetcher(`./lead/${type}/data/put`, {
       body: JSON.stringify({
         request_data: {
           refID: refID,
+          serialNo: serialNo,
           ...formData,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const deleteLeadData = async (type: string, refID: string, serialNo: any) => {
+    const { data, status } = await internalFetcher(`./lead/${type}/data/put`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          serialNo: serialNo,
         },
         channel: "W",
       }),
@@ -515,6 +537,22 @@ const LOSAPI = () => {
     }
   };
 
+  const getLeadDetailsGridData = async (type: string, refID: string) => {
+    const { data, status } = await internalFetcher(`./lead/${type}/grid/data`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -543,6 +581,8 @@ const LOSAPI = () => {
     updateLeadData,
     insertLeadData,
     checkLeadDataExist,
+    getLeadDetailsGridData,
+    deleteLeadData,
   };
 };
 

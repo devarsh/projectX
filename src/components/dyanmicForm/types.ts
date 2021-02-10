@@ -215,4 +215,5 @@ export interface FormWrapperProps {
   onSubmitHandler: SubmitFnType;
   onCancleHandler?: any;
   hidden?: boolean;
+  viewMode?: boolean;
 }
