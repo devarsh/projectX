@@ -31,6 +31,8 @@ export const GroupedForm: FC<FormProps> = ({
 }) => {
   const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
+  //Need to remove this code it defeats the purpose of the library maybe move it to an invididual component that
+  //wont have the whole form rerender
   const errorWatcherFields = useRecoilValue(
     formFieldsErrorWatcherAtom(formName)
   );
@@ -196,7 +198,15 @@ const isGroupHavingError = (
 ) => {
   const remaningFields = currentGroupFields.filter((fieldName) => {
     const fullFieldName = `${formName}/${fieldName}`;
-    return errorFields.indexOf(fullFieldName) >= 0 ? true : false;
+    let result = errorFields.indexOf(fullFieldName) >= 0 ? true : false;
+    if (result === false) {
+      result = Boolean(
+        errorFields.find((one) => one.indexOf(fullFieldName) > -1)
+      )
+        ? true
+        : false;
+    }
+    return result;
   });
   if (remaningFields.length > 0) {
     return true;

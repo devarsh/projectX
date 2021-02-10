@@ -19,9 +19,28 @@ export const MyTabs = ({
   handleCancel,
 }) => (
   <Fragment>
-    <Typography component="h3" className={classes.title}>
-      {formDisplayName}
-    </Typography>
+    <Box display="flex">
+      <Typography component="h3" className={classes.title}>
+        {formDisplayName}
+      </Typography>
+      <Box flexGrow={1} />
+      <Button
+        type="button"
+        className={classes.tabsSubmitBtn}
+        onClick={handleSubmit}
+      >
+        {formRenderConfig?.labels?.complete ?? "Submit"}
+      </Button>
+      {typeof handleCancel === "function" ? (
+        <Button
+          type="button"
+          className={classes.tabsSubmitBtn}
+          onClick={handleCancel}
+        >
+          cancel
+        </Button>
+      ) : null}
+    </Box>
     <div className={classes.form}>
       <Tabs value={Number(activeStep)}>
         {filteredFieldGroups.map((field) => {
@@ -36,28 +55,17 @@ export const MyTabs = ({
           );
         })}
       </Tabs>
-      <Box width={1} display="flex" justifyContent="flex-start">
+      {/* <Box width={1} display="flex" justifyContent="flex-start">
         <Typography component="h4" className={classes.subTitle}>
           {typeof formRenderConfig.groups === "object"
             ? formRenderConfig.groups[fieldGroups.current[activeStep]]
             : defaultGroupName}
         </Typography>
-      </Box>
-      <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
-      <Box width={1} display="flex" justifyContent="flex-end">
-        <Button type="button" className={classes.submit} onClick={handleSubmit}>
-          {formRenderConfig?.labels?.complete ?? "Submit"}
-        </Button>
-        {typeof handleCancel === "function" ? (
-          <Button
-            type="button"
-            className={classes.submit}
-            onClick={handleCancel}
-          >
-            cancel
-          </Button>
-        ) : null}
-      </Box>
+      </Box> */}
+      <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
+        <br />
+        <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+      </div>
     </div>
   </Fragment>
 );

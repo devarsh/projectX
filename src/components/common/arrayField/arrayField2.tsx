@@ -17,6 +17,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import { renderField } from "components/dyanmicForm/utils/fieldRenderer";
 import { FieldMetaDataType } from "components/dyanmicForm/";
 import { useFieldArray } from "packages/form";
@@ -86,7 +87,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     template: template.current,
   });
 
-  let rows = renderRows(({ row, removeFn, rowIndex, fields }) => {
+  let rows = renderRows(({ row, removeFn, rowIndex, fields, totalRows }) => {
     const oneRow = fields.map((field) => {
       const currentFieldMetaData = currentMetaToObj.current[field];
       if (!Boolean(currentFieldMetaData)) {
@@ -114,6 +115,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         rowIndex={rowIndex}
         removeRowFn={removeRowFn}
         row={row}
+        totalRows={totalRows}
       />
     );
   });
@@ -131,6 +133,11 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         <CardContent className={classes.arrayRowCardContent}>
           <Grid container spacing={1} xs={12} md={12} sm={12}>
             {rows}
+            {rows.length <= 0 ? (
+              <Typography>
+                No Records Found, click the add button to add one
+              </Typography>
+            ) : null}
           </Grid>
         </CardContent>
       </Card>
@@ -155,6 +162,7 @@ export const ArrayFieldRow = ({
   removeFn,
   rowIndex,
   removeRowFn,
+  totalRows,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -192,6 +200,9 @@ export const ArrayFieldRow = ({
 
   return (
     <Fragment key={row.fieldIndexKey}>
+      <Typography gutterBottom>
+        {rowIndex + 1} of {totalRows}
+      </Typography>
       <Grid
         container
         item

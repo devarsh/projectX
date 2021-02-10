@@ -447,11 +447,17 @@ const LOSAPI = () => {
     }
   };
 
-  const getLeadDataForEdit = async (type: string, refID: string) => {
+  const getLeadDataForEdit = async (
+    type: string,
+    refID: string,
+    serialNo?: string
+  ) => {
     const { data, status } = await internalFetcher(`./lead/${type}/data/get`, {
       body: JSON.stringify({
         request_data: {
           refID: refID,
+          serialNo: serialNo,
+          srCD: serialNo,
         },
       }),
     });
