@@ -9,7 +9,8 @@ export const CollateralDetailsMetaData: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: { 0: "Basic Details" },
       gridConfig: {
         item: {
           xs: 12,

@@ -62,6 +62,11 @@ export const UploadTarget: FC<TargetBoxType> = (props) => {
             style={{ display: "none" }}
             ref={fileUploadControl}
             onChange={handleFileSelect}
+            onClick={(e) => {
+              //to clear the file uploaded state to reupload the same file (AKA allow our handler to handle duplicate file)
+              //@ts-ignore
+              e.target.value = "";
+            }}
           />
         </>
       )}

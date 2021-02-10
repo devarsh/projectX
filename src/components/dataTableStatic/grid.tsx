@@ -24,12 +24,15 @@ import {
   ActionContextMenu,
 } from "components/dataTable/tableActionToolbar";
 import { useCheckboxColumn } from "./components/useCheckbox";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { LinearProgressBarSpacer } from "components/dataTable/linerProgressBarSpacer";
 
 export const DataGrid = ({
   label,
   dense,
   columns,
   data,
+  loading,
   getRowId,
   defaultColumn,
   allowColumnReordering,
@@ -151,6 +154,7 @@ export const DataGrid = ({
         mouseY={contextMenuPosition?.mouseY ?? null}
         handleClose={handleContextMenuClose}
       />
+      {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
       <TableContainer
         style={{
           position: "relative",
