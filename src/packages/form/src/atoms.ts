@@ -89,7 +89,6 @@ export const formFieldsErrorWatcherRemoveSelector = selectorFamily<
   set: (formName) => ({ set, get }, fieldName) => {
     if (!(fieldName instanceof DefaultValue)) {
       const fields = get(formFieldsErrorWatcherAtom(formName));
-      console.log(fieldName, fields);
       const index = fields.indexOf(fieldName);
       if (index > -1) {
         const newFields = [
