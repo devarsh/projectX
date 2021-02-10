@@ -1,5 +1,5 @@
-import fileTypeDetect from "file-type/browser";
-import { FileListType } from "./type";
+import fileTypeDetect, { FileTypeResult } from "file-type/browser";
+import { FileObjectType } from "./type";
 
 export function hashCode(str) {
   // from https://stackoverflow.com/a/8831937/151666
@@ -15,7 +15,7 @@ export function hashCode(str) {
   return hash;
 }
 
-export function fingerprint(file) {
+export function computeFileFingerprint(file) {
   return hashCode(
     [file.name, file.type, file.size, file.lastModified].join("-")
   );
@@ -38,60 +38,32 @@ export const computeSize = (sizeInBytes) => {
   }
 };
 
-export const isMimeTypeValid = async (
-  file: File,
-  whiteListExtension: string[] | string
-) => {
-  const result = { rejected: false, rejectReason: "", ext: "" };
-  const mime = await fileTypeDetect.fromBlob(file);
-  result.ext = mime?.ext ?? "";
-  if (mime === undefined) {
-    result.rejected = true;
-    result.rejectReason = "file type is not allowed";
-  } else if (
-    whiteListExtension !== "all" &&
-    Array.isArray(whiteListExtension) &&
-    whiteListExtension.indexOf(mime?.ext) === -1
-  ) {
-    result.rejected = true;
-    result.rejectReason = "file type is not allowed";
-  }
-  return {
-    ...result,
-    file: file,
-    size: file.size,
-    name: file.name,
-    mimeType: file.type,
-  };
+export const detectMimeType = async (
+  fileBlob
+): Promise<FileTypeResult | undefined> => {
+  const mime = await fileTypeDetect.fromBlob(fileBlob);
+  return mime;
 };
 
-export const removeDuplicateFiles = (files: FileListType[]) => {
-  if (Array.isArray(files) && files.length > 0) {
-    const visitedSignature: string[] = [];
-    let uniqueFiles = files.reduce<FileListType[]>((accum, current) => {
-      if (visitedSignature.indexOf(String(current.fingerprint ?? "")) === -1) {
-        visitedSignature.push(String(current.fingerprint ?? ""));
-        accum.push(current);
-      }
-      return accum;
-    }, []);
-    return uniqueFiles;
-  }
-  return [];
+export const isMimeTypeValid = (ext, whiteListExtension: string[] | string) =>
+  whiteListExtension === "all" ||
+  (Array.isArray(whiteListExtension) && whiteListExtension.indexOf(ext) > -1);
+
+export const isDuplicate = (file: FileObjectType, fileIDs: string[]) => {
+  return Array.isArray(fileIDs) && fileIDs.indexOf(file.id) > -1;
 };
 
-export function downloadFile(fileObj: FileListType) {
+export function downloadFile(fileObj: FileObjectType) {
   const url =
-    typeof fileObj.file === "object"
-      ? URL.createObjectURL(fileObj.file)
-      : fileObj.file;
+    typeof fileObj.file === "object" && URL.createObjectURL(fileObj.blob);
+
   const a = document.createElement("a");
-  a.href = url;
+  a.href = String(url);
 
   a.download = fileObj.name ?? `download-${new Date().getUTCMilliseconds()}`;
   const clickHandler = () => {
     setTimeout(() => {
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(String(url));
       a.removeEventListener("click", clickHandler);
     }, 150);
   };

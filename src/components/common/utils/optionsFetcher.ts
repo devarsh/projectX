@@ -109,7 +109,6 @@ export const useOptionsFetcherSimple = (
   });
   loadingOptions = queryOptions.isLoading;
   useEffect(() => {
-    console.log(queryOptions);
     if (options === undefined) {
       setOptions([{ label: "No Data", value: null }]);
       loadingOptions = false;

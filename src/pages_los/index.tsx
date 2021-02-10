@@ -24,7 +24,7 @@ import { useStyles } from "./style";
 import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
 import TestForm from "components/dyanmicForm/test";
 import ArrayForm from "packages/form/examples/01-basic";
-import { GridTable } from "pages_los/common/docs";
+import { FileUploadControl } from "components/fileUpload";
 import { Form } from "registry/metaData/test";
 
 const DashbordPages = () => {
@@ -61,7 +61,7 @@ const DashbordPages = () => {
 
             <Route path="/array" element={<ArrayForm />} />
             <Route path="/test" element={<TestForm />} />
-            <Route path="/grid" element={<GridTable />} />
+            <Route path="/upload" element={<FileUploadControl />} />
             {/*dummy routes*/}
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>

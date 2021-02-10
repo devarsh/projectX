@@ -29,3 +29,5 @@ export const singletonFunctionRegisrationFactory = initializeFunctionRegistry();
 export type singletonFunctionRegisrationFactoryType = ReturnType<
   typeof initializeFunctionRegistry
 >;
+
+export const singletonFunctionRegisrationFactoryForTableCells = initializeFunctionRegistry();

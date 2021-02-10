@@ -4,7 +4,6 @@ import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { queryClient } from "cache";
 import { CRUD2 } from "pages_los/common/crud2";
-import { Documents } from "pages_los/common/documents";
 import { ClearCacheContext } from "cache";
 import { HeaderDetails } from "./headerDetails";
 import {

@@ -22,6 +22,8 @@ import { ValidateFnType, shouldExcludeFnType } from "packages/form";
 import { CustomRuleType } from "components/utils";
 import { ArrayField2Props } from "components/common/arrayField";
 import { TextareaAutosizeFieldProps } from "components/common/textarea";
+import { TypographyProps } from "components/common/typograhpy";
+import { HiddenFieldProps } from "components/common/hidden";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
@@ -156,3 +158,13 @@ export type AllTextareaAutosizeFieldProps = Merge<
 >;
 
 export type TextareaAutosizeFieldPropsOptional = Optional<AllTextFieldProps>;
+
+export type AllHiddenFieldProps = Merge<
+  Omitted<HiddenFieldProps>,
+  FieldMetaData<"hidden">
+>;
+
+export type AllTypographyFieldProps = Merge<
+  Omitted<TypographyProps>,
+  FieldMetaData<"typography">
+>;

@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useState, FC } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 import Alert from "@material-ui/lab/Alert";
@@ -9,13 +9,15 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import { FileListing } from "components/fileUpload/fileListing";
+//import { FileListing } from "components/fileUpload/fileListing";
 import { useMutation } from "react-query";
 import { queryClient } from "cache";
 import { DocumentContext } from "./context";
 import { breadcrumbPathRenderer } from "./utils";
 import { LOSSDK } from "registry/fns/los";
 import { retriveFileStatus } from "./utils";
+
+const FileListing: FC<any> = ({}) => null;
 
 export const FileListingWithConfirmation = ({
   type,
