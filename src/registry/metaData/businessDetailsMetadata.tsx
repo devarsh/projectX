@@ -8,7 +8,10 @@ export const BussinessDetailsMetadata: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: {
+        0: "Business Details",
+      },
       gridConfig: {
         item: {
           xs: 12,
@@ -43,6 +46,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyHistory",
       label: "Company Brief History",
@@ -62,6 +66,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyService",
       label: "Company Services",
@@ -81,6 +86,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyEndUseProducts",
       label: "End Use of the Products",
@@ -100,6 +106,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyMaterialsName",
       label: "Name of Raw Materials",
@@ -119,6 +126,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companySuppliersName",
       label: "Name of Major Suppliers",
@@ -138,6 +146,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyPaymentTermSuppliers",
       label: "Payment Terms with Suppliers",
@@ -157,6 +166,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyCustomersName",
       label: "Name of Major Customers",
@@ -176,6 +186,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyPaymentTerm",
       label: "Payment terms with Customers",
@@ -195,6 +206,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyOrderBookPosition",
       label: "Current Order Book Position",
@@ -214,6 +226,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyPolicy",
       label: "Marketing & Distribution Policy/Strategy",
@@ -233,6 +246,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyCompetitors",
       label: "Name of Competitors",
@@ -252,6 +266,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyExportCountry",
       label: "Name of Major Countries where Exporting",
@@ -271,6 +286,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyExportRatio",
       label: "Domestic and export sales ratio",
@@ -287,6 +303,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "numberFormat",
+        group: 0,
       },
       name: "companyEmployeeCount",
       label: "No. of Employees",
@@ -305,6 +322,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyLicence",
       label: "Other Industry specific approvals/license",
@@ -321,6 +339,7 @@ export const BussinessDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "companyAwards",
       label: "Any awards/Recognition received",

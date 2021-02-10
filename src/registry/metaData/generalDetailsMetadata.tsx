@@ -1,10 +1,5 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 
-const getLoanType = [
-  { label: "Select option", value: "00" },
-  { label: "Proposed", value: "01" },
-  { label: "Present", value: "02" },
-];
 export const GeneralDetailsMetaData: MetaDataType = {
   form: {
     name: "123456",
@@ -14,7 +9,13 @@ export const GeneralDetailsMetaData: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: {
+        0: "Basic Details",
+        1: "Address Details",
+        2: "Banking Arrangements",
+        3: "Nature of Facility",
+      },
       gridConfig: {
         item: {
           xs: 12,
@@ -49,11 +50,13 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "entityName",
       label: "Name of the Unit",
       placeholder: "Name of the Unit",
       defaultValue: "",
+      maxLength: 250,
       GridProps: {
         xs: 12,
         md: 3,
@@ -64,6 +67,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
+        group: 0,
       },
       name: "entityType",
       label: "Constitution of Business",
@@ -82,6 +86,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
+        group: 0,
       },
       name: "ownershipType",
       label: "Ownership of Factory / Business Premises",
@@ -99,6 +104,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "datePicker",
+        group: 0,
         // componentType: "futureDateNotAllowed",
       },
       name: "inceptionDate",
@@ -115,6 +121,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
+        group: 0,
       },
       name: "businessType",
       label: "Existing Type of Industry",
@@ -132,6 +139,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
+        group: 0,
       },
       name: "businessSubType",
       label: "Existing Type of Sub Industry",
@@ -151,6 +159,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
+        group: 0,
       },
       name: "businessNature",
       label: "Nature of Existing Business",
@@ -168,6 +177,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "otherBusinessNature",
       label: "Nature of Existing Other Business",
@@ -185,11 +195,12 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "businessProposed",
       label: "Proposed business",
       placeholder: "Proposed business",
-
+      maxLength: 200,
       //@ts-ignore
       GridProps: {
         xs: 12,
@@ -201,10 +212,12 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "rankExternal",
       label: " External credit rating",
       placeholder: " External credit rating",
+      maxLength: 2,
 
       //@ts-ignore
       GridProps: {
@@ -216,11 +229,14 @@ export const GeneralDetailsMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "select",
+        group: 0,
       },
       name: "businessSize",
       label: " Micro, Small or Medium",
       placeholder: " Micro, Small or Medium",
+      //@ts-ignore
+      options: "businessSize",
 
       //@ts-ignore
       GridProps: {
@@ -234,6 +250,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "panCard",
+        group: 0,
       },
       name: "panNumber",
       type: "text",
@@ -251,11 +268,13 @@ export const GeneralDetailsMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "udhyogNumber",
       type: "text",
       label: "Udhyam No",
       placeholder: "Udhyam No",
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -267,10 +286,12 @@ export const GeneralDetailsMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "crmRank",
       label: "CMR Ranking",
       placeholder: "CMR Ranking",
+      maxLength: 10,
       GridProps: {
         xs: 12,
         md: 3,
@@ -282,10 +303,99 @@ export const GeneralDetailsMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "rfRank",
       label: "RF Rating",
       placeholder: "RF Rating",
+      maxLength: 10,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 0,
+      },
+      name: "purposeLoan",
+      label: "Purpose of loan",
+      placeholder: "Purpose of loan",
+      // validate: "getValidateValue",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+        group: 0,
+      },
+      name: "turnOverAmount",
+      label: "Turnover in current financial year",
+      placeholder: "Turnover in current financial year",
+
+      defaultValue: "",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+        group: 0,
+      },
+      name: "averageBankBal",
+      label: "Last 12 Months average Bank Balance",
+      placeholder: "Last 12 Months average Bank Balance",
+      defaultValue: "",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+        group: 0,
+      },
+      name: "chequeBounces",
+      label: "Credit Summation in Bank in Last 12 months",
+      placeholder: "Credit Summation in Bank in Last 12 months",
+
+      defaultValue: "",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "rateOfInt",
+        group: 0,
+      },
+      name: "chequeBouncesPer",
+      label: "Inward cheque bounces(% of total Cheque bounce)",
+      placeholder: "Inward cheque bounces(% of total Cheque bounce)",
+
+      defaultValue: "",
       GridProps: {
         xs: 12,
         md: 3,
@@ -299,7 +409,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
         group: 1,
       },
       name: "addressDetails",
-      label: "Address Details",
       GridProps: {
         xs: 12,
         md: 12,
@@ -308,8 +417,15 @@ export const GeneralDetailsMetaData: MetaDataType = {
       _fields: [
         {
           render: {
+            //@ts-ignore
+            componentType: "hidden",
+          },
+          name: "serialNo",
+        },
+
+        {
+          render: {
             componentType: "select",
-            group: 1,
           },
           name: "addressType",
           label: "Address Type",
@@ -328,7 +444,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 0,
           },
 
           name: "address1",
@@ -345,7 +460,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 0,
           },
 
           name: "address2",
@@ -497,10 +611,9 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "arrayField",
-        group: 1,
+        group: 2,
       },
       name: "bankingArrangement",
-      label: "Banking Arrangements",
       GridProps: {
         xs: 12,
         md: 12,
@@ -510,7 +623,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 0,
+            group: 2,
           },
           name: "bankName",
           label: "Name of Bank",
@@ -525,7 +638,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 0,
+            group: 2,
           },
           name: "branchName",
           label: "Address",
@@ -540,6 +653,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
+            group: 2,
           },
           name: "accountNo",
           label: "Current A/C No",
@@ -556,6 +670,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "currencyWithoutWords",
+            group: 2,
           },
           name: "balance",
           label: "Average Bank Balance",
@@ -573,27 +688,34 @@ export const GeneralDetailsMetaData: MetaDataType = {
     {
       render: {
         componentType: "arrayField",
-        group: 0,
+        group: 3,
       },
-      name: "natureOfFacilityDetails",
-      label: "Nature of Facility",
       GridProps: {
         xs: 12,
         md: 12,
         sm: 12,
       },
+      name: "natureOfFacilityDetails",
       _fields: [
         {
           render: {
+            //@ts-ignore
+            componentType: "hidden",
+            group: 3,
+          },
+          name: "serialNo",
+        },
+        {
+          render: {
             componentType: "select",
-            group: 0,
+            group: 3,
             sequence: 1,
           },
-          name: "natureFacilityType",
+          name: "facilityType",
           label: "Select Nature of Facility Type",
-          defaultValue: "01",
+          defaultValue: "00",
           //@ts-ignore
-          options: getLoanType,
+          options: "getNatureOfFacility",
           GridProps: {
             xs: 12,
             md: 3,
@@ -604,11 +726,11 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 0,
+            group: 3,
             sequence: 2,
           },
 
-          name: "natureOfFacility",
+          name: "facilityName",
           label: "Nature of Facility",
           placeholder: "Nature of Facility",
           GridProps: {
@@ -621,10 +743,9 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 0,
-            sequence: 3,
+            group: 3,
           },
-          name: "newOrTakeover",
+          name: "takeOverBalance",
           label: "New / Takeover",
           placeholder: "New / Takeover",
           GridProps: {
@@ -632,7 +753,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailProposed",
         },
 
@@ -640,10 +761,9 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "rateOfInt",
-            group: 0,
-            sequence: 4,
+            group: 3,
           },
-          name: "requstedROI",
+          name: "requestedRateOfInterest",
           label: "Requested ROI",
           placeholder: "Requested ROI",
           type: "text",
@@ -652,7 +772,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailProposed",
         },
 
@@ -660,7 +780,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "currency",
-            group: 0,
+            group: 3,
             sequence: 5,
           },
           name: "amount",
@@ -672,14 +792,14 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailProposed",
         },
 
         {
           render: {
             componentType: "select",
-            group: 0,
+            group: 3,
             sequence: 6,
           },
 
@@ -694,7 +814,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
@@ -702,10 +822,10 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "currency",
-            group: 0,
+            group: 3,
             sequence: 7,
           },
-          name: "outstandingAmount",
+          name: "outstandingOn",
           label: "O/s Amount as on",
           placeholder: "O/s Amount as on",
           GridProps: {
@@ -713,7 +833,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
@@ -721,8 +841,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "currency",
-            group: 0,
-            sequence: 8,
+            group: 3,
           },
           name: "outstandingBalance",
           label: "O/s Amount as Balance",
@@ -732,7 +851,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
@@ -740,10 +859,9 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "rateOfInt",
-            group: 0,
-            sequence: 9,
+            group: 3,
           },
-          name: "interestRate",
+          name: "rateOfInterest",
           label: "Rate of Interest",
           placeholder: "Rate of Interest",
           GridProps: {
@@ -751,97 +869,10 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
       ],
-    },
-
-    {
-      render: {
-        componentType: "textField",
-        group: 1,
-      },
-      name: "purposeLoan",
-      label: "Purpose of loan",
-      placeholder: "Purpose of loan",
-      // validate: "getValidateValue",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-        group: 1,
-      },
-      name: "turnOverAmount",
-      label: "Turnover in current financial year",
-      placeholder: "Turnover in current financial year",
-
-      defaultValue: "",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-        group: 1,
-      },
-      name: "averageBankBal",
-      label: "Last 12 Months average Bank Balance",
-      placeholder: "Last 12 Months average Bank Balance",
-      defaultValue: "",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-        group: 1,
-      },
-      name: "chequeBounces",
-      label: "Credit Summation in Bank in Last 12 months",
-      placeholder: "Credit Summation in Bank in Last 12 months",
-
-      defaultValue: "",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-
-    {
-      render: {
-        //@ts-ignore
-        componentType: "rateOfInt",
-        group: 1,
-      },
-      name: "chequeBouncesPer",
-      label: "Inward cheque bounces(% of total Cheque bounce)",
-      placeholder: "Inward cheque bounces(% of total Cheque bounce)",
-
-      defaultValue: "",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
     },
   ],
 };

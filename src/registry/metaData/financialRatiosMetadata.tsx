@@ -10,6 +10,7 @@ export const FinancialRatiosMetaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "simple",
+      // groups: { 0: "Financial Details" },
       gridConfig: {
         item: {
           xs: 12,
@@ -43,10 +44,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
   fields: [
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "profitLossDetails",
       label: "PROFIT & LOSS DETAILS",
+      TypographyProps: {
+        style: { font: "bold" },
+        variant: "h5",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -69,10 +74,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "ebitda",
       label: "EBITDA",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -95,10 +104,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "ebit",
       label: "EBIT",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -121,10 +134,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "ebt",
       label: "EBT",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -147,10 +164,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "pat",
       label: "PAT",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -160,11 +181,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        //@ts-ignore
-        componentType: "currency",
+        componentType: "typography",
       },
       name: "cashProfit",
       label: "Cash Profit",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -258,10 +282,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "adjustedPAT",
       label: "Adjusted PAT",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -272,10 +300,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
     {
       render: {
         //@ts-ignore
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "adjustedCashProfit",
       label: "Adjusted Cash Profit",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -327,10 +359,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "balanceSheetDetails",
       label: "BALANCE SHEET DETAILS",
+      TypographyProps: {
+        style: { font: "bold" },
+        variant: "h5",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -396,10 +432,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "longTermDebtOrEquity",
       label: "Long Term Debt / Equity",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -409,10 +449,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "tolOrTnw",
       label: "TOL / TNW",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -450,10 +494,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "currentRatio",
       label: "Current Ratio",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,
@@ -463,10 +511,14 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "typography",
       },
       name: "operatingCycleDays",
       label: "Operating cycle days",
+      TypographyProps: {
+        style: { font: "initial" },
+        variant: "body1",
+      },
       GridProps: {
         xs: 12,
         md: 12,

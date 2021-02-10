@@ -8,7 +8,8 @@ export const ProjectDetailsMetadata: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: { 0: "Basic Details", 1: "Project Particular Details" },
       gridConfig: {
         item: {
           xs: 12,
@@ -43,6 +44,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "projectLocation",
       label: "Location of the project",
@@ -58,6 +60,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "landDetails",
       label: "Land Details",
@@ -73,6 +76,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "areaOfTheProjetLand",
       label: "Area of the Project Land and approx valuation",
@@ -88,6 +92,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "datePicker",
+        group: 0,
       },
       name: "dateOfCommencement",
       label: "Expected Date of Commencement (DCCO)",
@@ -104,6 +109,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "projectCurrentStage",
       label: "Current Stage of Project",
@@ -119,6 +125,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "moratorium",
       label: "Moratorium",
@@ -133,6 +140,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "installmentOrBalloonig",
       label: "Equal Installments or Balloonig",
@@ -148,6 +156,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "machineriesLift",
       label: "List of Machineries",
@@ -163,6 +172,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "installedCapacity",
       label: "Installed Capacity",
@@ -178,6 +188,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "manufacturedProducts",
       label: "Products to be manufactured",
@@ -193,6 +204,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "manufacturingProcess",
       label: "Manufacturing Process",
@@ -208,6 +220,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "powerRequirementOrArrangement",
       label: "Requirement and arrangement of Power",
@@ -223,6 +236,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "waterRequirementOrArrangement",
       label: "Requirement and arrangement of Water",
@@ -238,6 +252,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "employeeRequirementOrArrangements",
       label: "Requirement and arrangement of Employees",
@@ -253,6 +268,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "aboutTechnicalPersonOrPlantManager",
       label: "Brief about Technical Person / Plant manager",
@@ -268,6 +284,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "unitMatrix",
       label: "Unit Matrix",
@@ -283,6 +300,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "projectedTurnoverAndProfit",
       label: "Projected Turnover & Profit",
@@ -298,9 +316,9 @@ export const ProjectDetailsMetadata: MetaDataType = {
     {
       render: {
         componentType: "arrayField",
+        group: 1,
       },
       name: "projectDetails",
-      label: "Project Particular Details",
       GridProps: {
         xs: 12,
         md: 12,
@@ -315,13 +333,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
           label: "Project Particular Details Type",
           defaultValue: "01",
           //@ts-ignore
-          options: [
-            {
-              label: "Total Cost of Project",
-              value: "01",
-            },
-            { label: "Total Means of Finance", value: "02" },
-          ],
+          options: "projectParticularType",
           GridProps: {
             xs: 12,
             md: 3,

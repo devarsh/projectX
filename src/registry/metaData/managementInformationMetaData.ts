@@ -50,16 +50,36 @@ export const ManagementInformationMetaData: MetaDataType = {
       label: "Salutation",
       placeholder: "Select Salutation",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
+      //@ts-ignore
+      options: "getSalutation",
+      //@ts-ignore
+      postValidationSetCrossFieldValues: "getGenderValue",
+      validate: "getValidateValue",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
+    },
+
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "gender",
+      label: "Gender",
+      placeholder: "placeholder",
+      defaultValue: "00",
+      isReadOnly: true,
       //@ts-ignore
-      options: "getSalutation",
-      runPostValidationHookAlways: true,
-      validate: "getValidateValue",
+      options: "getGenderList",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
     {
       render: {
@@ -428,6 +448,15 @@ export const ManagementInformationMetaData: MetaDataType = {
         sm: 12,
       },
       _fields: [
+        {
+          render: {
+            //@ts-ignore
+            componentType: "hidden",
+            group: 1,
+          },
+          name: "serialNo",
+        },
+
         {
           render: {
             componentType: "select",

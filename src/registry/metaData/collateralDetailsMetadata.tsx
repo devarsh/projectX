@@ -9,7 +9,8 @@ export const CollateralDetailsMetaData: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: { 0: "Basic Details" },
       gridConfig: {
         item: {
           xs: 12,
@@ -46,7 +47,7 @@ export const CollateralDetailsMetaData: MetaDataType = {
         componentType: "arrayField",
         group: 0,
       },
-      name: "collateralDetails",
+      name: "collateralSecurityDetails",
       label: "Collateral Details",
       GridProps: {
         xs: 12,
