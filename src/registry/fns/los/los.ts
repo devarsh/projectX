@@ -462,11 +462,17 @@ const LOSAPI = () => {
     }
   };
 
-  const updateLeadData = async (type: string, refID: string, formData: any) => {
+  const updateLeadData = async (
+    type: string,
+    refID: string,
+    formData: any,
+    formState: any
+  ) => {
     const { data, status } = await internalFetcher(`./lead/${type}/data/put`, {
       body: JSON.stringify({
         request_data: {
           refID: refID,
+          serialNo: formState?.serialNo,
           ...formData,
         },
         channel: "W",

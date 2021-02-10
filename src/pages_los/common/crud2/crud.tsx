@@ -13,6 +13,7 @@ export const CRUD2 = ({
   newMetaData,
   editMetaData,
   viewMetaData,
+  formState,
 }) => {
   const [currentView, setCurrentView] = useState("viewMode");
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
@@ -45,6 +46,7 @@ export const CRUD2 = ({
         <EditForm
           refID={refID}
           productType={productType}
+          formState={formState}
           moveToViewForm={moveToViewForm}
           setSnackBarMessage={setSnackBarMessage}
           isProductEditedRef={isProductEditedRef}

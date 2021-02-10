@@ -27,6 +27,7 @@ export const DetailsView: FC<{
   isProductEditedRef: any;
   handleDialogClose: any;
   setSnackBarMessage: any;
+  formState: any;
 }> = ({
   refID,
   disableDialogCloseRef,
@@ -34,6 +35,7 @@ export const DetailsView: FC<{
   productGridData,
   handleDialogClose,
   setSnackBarMessage,
+  formState,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
@@ -77,6 +79,7 @@ export const DetailsView: FC<{
             newMetaData={GeneralDetailsMetaData}
             editMetaData={GeneralDetailsMetaData}
             viewMetaData={GeneralDetailsMetaData}
+            formState={formState}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
@@ -90,6 +93,7 @@ export const DetailsView: FC<{
             newMetaData={BussinessDetailsMetadata}
             editMetaData={BussinessDetailsMetadata}
             viewMetaData={BussinessDetailsMetadata}
+            formState={formState}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
@@ -103,6 +107,7 @@ export const DetailsView: FC<{
             newMetaData={ManagementInformationMetaData}
             editMetaData={ManagementInformationMetaData}
             viewMetaData={ManagementInformationMetaData}
+            formState={formState}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
@@ -116,6 +121,7 @@ export const DetailsView: FC<{
             newMetaData={CollateralDetailsMetaData}
             editMetaData={CollateralDetailsMetaData}
             viewMetaData={CollateralDetailsMetaData}
+            formState={formState}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="4" key={4}>
@@ -129,6 +135,7 @@ export const DetailsView: FC<{
             newMetaData={CollateralDetailsMetaData}
             editMetaData={CollateralDetailsMetaData}
             viewMetaData={CollateralDetailsMetaData}
+            formState={formState}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="5" key={5}>
@@ -142,6 +149,7 @@ export const DetailsView: FC<{
             newMetaData={CollateralDetailsMetaData}
             editMetaData={CollateralDetailsMetaData}
             viewMetaData={CollateralDetailsMetaData}
+            formState={formState}
           />
         </TabPanel>
       </Box>

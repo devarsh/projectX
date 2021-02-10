@@ -1,10 +1,5 @@
 import { MetaDataType } from "components/dyanmicForm/types";
 
-const getLoanType = [
-  { label: "Select option", value: "00" },
-  { label: "Proposed", value: "01" },
-  { label: "Present", value: "02" },
-];
 export const GeneralDetailsMetaData: MetaDataType = {
   form: {
     name: "123456",
@@ -54,6 +49,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       label: "Name of the Unit",
       placeholder: "Name of the Unit",
       defaultValue: "",
+      maxLength: 250,
       GridProps: {
         xs: 12,
         md: 3,
@@ -189,7 +185,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       name: "businessProposed",
       label: "Proposed business",
       placeholder: "Proposed business",
-
+      maxLength: 200,
       //@ts-ignore
       GridProps: {
         xs: 12,
@@ -205,6 +201,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       name: "rankExternal",
       label: " External credit rating",
       placeholder: " External credit rating",
+      maxLength: 2,
 
       //@ts-ignore
       GridProps: {
@@ -216,11 +213,13 @@ export const GeneralDetailsMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "textField",
+        componentType: "select",
       },
       name: "businessSize",
       label: " Micro, Small or Medium",
       placeholder: " Micro, Small or Medium",
+      //@ts-ignore
+      options: "businessSize",
 
       //@ts-ignore
       GridProps: {
@@ -256,6 +255,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       type: "text",
       label: "Udhyam No",
       placeholder: "Udhyam No",
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -271,6 +271,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       name: "crmRank",
       label: "CMR Ranking",
       placeholder: "CMR Ranking",
+      maxLength: 10,
       GridProps: {
         xs: 12,
         md: 3,
@@ -286,6 +287,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
       name: "rfRank",
       label: "RF Rating",
       placeholder: "RF Rating",
+      maxLength: 10,
       GridProps: {
         xs: 12,
         md: 3,
@@ -589,11 +591,11 @@ export const GeneralDetailsMetaData: MetaDataType = {
             group: 0,
             sequence: 1,
           },
-          name: "natureFacilityType",
+          name: "facilityType",
           label: "Select Nature of Facility Type",
-          defaultValue: "01",
+          defaultValue: "00",
           //@ts-ignore
-          options: getLoanType,
+          options: "getNatureOfFacility",
           GridProps: {
             xs: 12,
             md: 3,
@@ -608,7 +610,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             sequence: 2,
           },
 
-          name: "natureOfFacility",
+          name: "facilityName",
           label: "Nature of Facility",
           placeholder: "Nature of Facility",
           GridProps: {
@@ -622,9 +624,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             componentType: "textField",
             group: 0,
-            sequence: 3,
           },
-          name: "newOrTakeover",
+          name: "takeOverBalance",
           label: "New / Takeover",
           placeholder: "New / Takeover",
           GridProps: {
@@ -632,7 +633,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailProposed",
         },
 
@@ -641,9 +642,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "rateOfInt",
             group: 0,
-            sequence: 4,
           },
-          name: "requstedROI",
+          name: "requestedRateOfInterest",
           label: "Requested ROI",
           placeholder: "Requested ROI",
           type: "text",
@@ -652,7 +652,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailProposed",
         },
 
@@ -672,7 +672,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailProposed",
         },
 
@@ -694,7 +694,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
@@ -705,7 +705,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             group: 0,
             sequence: 7,
           },
-          name: "outstandingAmount",
+          name: "outstandingOn",
           label: "O/s Amount as on",
           placeholder: "O/s Amount as on",
           GridProps: {
@@ -713,7 +713,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
@@ -722,7 +722,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "currency",
             group: 0,
-            sequence: 8,
           },
           name: "outstandingBalance",
           label: "O/s Amount as Balance",
@@ -732,7 +731,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
@@ -741,9 +740,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "rateOfInt",
             group: 0,
-            sequence: 9,
           },
-          name: "interestRate",
+          name: "rateOfInterest",
           label: "Rate of Interest",
           placeholder: "Rate of Interest",
           GridProps: {
@@ -751,7 +749,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["natureFacilityType"],
+          dependentFields: ["facilityType"],
           shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
       ],

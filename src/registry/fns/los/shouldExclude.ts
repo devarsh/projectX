@@ -1,18 +1,12 @@
 export const generalDetailNatureofFacilityProposed = (_, dependentValues) => {
-  if (
-    dependentValues["natureOfFacilityDetails.natureFacilityType"]?.value ===
-    "01"
-  ) {
+  if (dependentValues["natureOfFacilityDetails.facilityType"]?.value === "02") {
     return false;
   }
   return true;
 };
 
 export const generalDetailNatureofFacilityPresent = (_, dependentValues) => {
-  if (
-    dependentValues["natureOfFacilityDetails.natureFacilityType"]?.value ===
-    "02"
-  ) {
+  if (dependentValues["natureOfFacilityDetails.facilityType"]?.value === "01") {
     return false;
   }
   return true;

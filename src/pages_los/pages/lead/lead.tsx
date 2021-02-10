@@ -31,7 +31,6 @@ interface SnackBarType {
   message: SnackbarMessageType;
   onClose: any;
 }
-
 export const Lead = () => {
   let gridCode = "TRN/003";
   const [action, setAction] = useState<null | any>(null);
@@ -40,6 +39,10 @@ export const Lead = () => {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [gridRefresh, setGridRefresh] = useState(false);
   const [userMessage, setUserMessage] = useState<SnackbarMessageType>("");
+
+  const formState = {
+    serialNo: 1,
+  };
 
   const onCloseSnackBar = useCallback(() => {
     setSnackBarOpen(false);
@@ -87,6 +90,7 @@ export const Lead = () => {
             key={action?.rows[0].id}
             productGridData={action?.rows[0]}
             refID={action?.rows[0].id}
+            formState={formState}
             disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
             handleDialogClose={handleDialogClose}

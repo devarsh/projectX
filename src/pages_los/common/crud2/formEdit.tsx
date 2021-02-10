@@ -18,14 +18,16 @@ interface updateFormDataType {
   setFieldError?: any;
   productType: string;
   refID: string;
+  formState: any;
 }
 
 const updateFormData = async ({
   data,
   productType,
   refID,
+  formState,
 }: updateFormDataType) => {
-  return LOSSDK.updateLeadData(productType, refID, data);
+  return LOSSDK.updateLeadData(productType, refID, data, formState);
 };
 
 export const EditForm: FC<{
@@ -35,6 +37,7 @@ export const EditForm: FC<{
   setSnackBarMessage: any;
   isProductEditedRef: any;
   metaData: MetaDataType;
+  formState: any;
 }> = ({
   refID,
   productType,
@@ -42,6 +45,7 @@ export const EditForm: FC<{
   setSnackBarMessage,
   isProductEditedRef,
   metaData,
+  formState,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   if (typeof setSnackBarMessage !== "function") {
@@ -64,7 +68,12 @@ export const EditForm: FC<{
     },
     onSuccess: (data, { endSubmit }) => {
       queryClient.refetchQueries(["getViewData", productType, refID]);
-      queryClient.refetchQueries(["getEditData", productType, refID]);
+      queryClient.refetchQueries([
+        "getEditData",
+        productType,
+        refID,
+        formState,
+      ]);
       endSubmit(true, "");
       setSnackBarMessage({
         type: "success",
@@ -88,6 +97,7 @@ export const EditForm: FC<{
       setFieldError,
       refID,
       productType,
+      formState,
     });
   };
 
@@ -96,7 +106,7 @@ export const EditForm: FC<{
   }, []);
 
   const result = useQuery(
-    ["getEditData", productType, refID],
+    ["getEditData", productType, refID, formState],
     () => LOSSDK.getLeadDataForEdit(productType, refID),
     {
       cacheTime: 100000000,
