@@ -1,16 +1,11 @@
 import { ActionTypes } from "components/dataTable/types";
+import { CellComponentType } from "components/tableCellComponents";
 
 export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType:
-    | "default"
-    | "date"
-    | "currency"
-    | "editableTextField"
-    | "editableAutocomplete"
-    | "editableSelect";
+  componentType: CellComponentType;
   Cell?: any;
   alignment?: string;
   TableCellProps?: any;
@@ -34,7 +29,16 @@ export interface GridConfigType {
     maxWidth?: number;
     minWidth?: number;
   };
+  disableSorting?: boolean;
   allowColumnReordering?: boolean;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+  containerHeight?: {
+    min: string;
+    max: string;
+  };
+  disableRowSelect?: boolean;
+  disableGlobalFilter?: boolean;
 }
 
 export interface GridMetaDataType {
@@ -47,10 +51,10 @@ export interface GridMetaDataType {
 
 export interface GridWrapperPropTypes {
   finalMetaData: GridMetaDataType;
-  actions?: ActionTypes[];
-  setAction?: any;
   data: any;
   setData: any;
+  actions?: ActionTypes[];
+  setAction?: any;
 }
 
 export interface YupSchemaMetaDataType {

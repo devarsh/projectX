@@ -1,8 +1,10 @@
+import { CellComponentType } from "components/tableCellComponents";
+
 export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default" | "date" | "currency";
+  componentType: CellComponentType;
   Cell?: any;
   Filter?: any;
   filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";

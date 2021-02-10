@@ -59,8 +59,9 @@ const ArrayField = lazy(() =>
     default: module.ArrayField2,
   }))
 );
-
 const TextareaField = lazy(() => import("components/common/textarea"));
+const HiddenField = lazy(() => import("components/common/hidden"));
+const Typography = lazy(() => import("components/common/typograhpy"));
 
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
@@ -135,13 +136,19 @@ export const renderField: RenderFunctionType = (
     case "spacer":
       Component = Spacer;
       break;
+    case "typography":
+      Component = Typography;
+      break;
+    case "hidden":
+      Component = HiddenField;
+      break;
     default:
       Component = EmptyComponent;
       break;
   }
   if (Component === EmptyComponent) {
     return <Component componentType={render.componentType} />;
-  } else if (Component === Spacer) {
+  } else if (Component === Spacer || Component === Typography) {
     return <Component key={`${formName}/${others.name}`} {...others} />;
   } else {
     const currentComponentTypeProps = componentProps[render.componentType];

@@ -1,5 +1,5 @@
 import { Fragment, FC, useEffect, useRef } from "react";
-import { FileListType } from "./type";
+import { FileObjectType } from "./type";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Typography from "@material-ui/core/Typography";
@@ -8,7 +8,7 @@ import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
 import { downloadFile } from "./utils";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
+export const PdfViewer: FC<{ fileObj: FileObjectType }> = ({ fileObj }) => {
   const urlObj = useRef(
     typeof fileObj?.file === "object"
       ? URL.createObjectURL(fileObj?.file)
@@ -44,7 +44,7 @@ export const PdfViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
   );
 };
 
-export const ImageViewer: FC<{ fileObj: FileListType }> = ({ fileObj }) => {
+export const ImageViewer: FC<{ fileObj: FileObjectType }> = ({ fileObj }) => {
   const urlObj = useRef(
     typeof fileObj?.file === "object"
       ? URL.createObjectURL(fileObj?.file)

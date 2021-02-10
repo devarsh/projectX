@@ -8,6 +8,8 @@ const ArrayFieldValue = lazy(() =>
     default: module.ArrayFieldValues,
   }))
 );
+const HiddenField = lazy(() => import("components/common/hidden"));
+const Typography = lazy(() => import("components/common/typograhpy"));
 
 export const renderValue: RenderFunctionType = (
   fieldObj,
@@ -24,11 +26,17 @@ export const renderValue: RenderFunctionType = (
     case "spacer":
       Component = Spacer;
       break;
+    case "typography":
+      Component = Typography;
+      break;
+    case "hidden":
+      Component = HiddenField;
+      break;
     default:
       Component = ValueField;
       break;
   }
-  if (Component === Spacer) {
+  if (Component === Spacer || Component === Typography) {
     return <Component key={`${formName}/${others.name}`} {...others} />;
   } else {
     const currentComponentTypeProps = componentProps[render.componentType];

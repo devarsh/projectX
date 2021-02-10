@@ -33,6 +33,7 @@ export const DataGrid = ({
   getRowId,
   defaultColumn,
   allowColumnReordering,
+  disableSorting,
   defaultHiddenColumns,
   multipleActions,
   singleActions,
@@ -41,6 +42,11 @@ export const DataGrid = ({
   setGridAction,
   updateGridData,
   deleteGridRow,
+  hideFooter,
+  hideHeader,
+  disableGlobalFilter,
+  disableRowSelect,
+  containerHeight,
 }) => {
   //@ts-ignore
   const {
@@ -66,6 +72,8 @@ export const DataGrid = ({
       autoResetSortBy: false,
       updateGridData,
       deleteGridRow,
+      disableSortBy: Boolean(disableSorting),
+      disableGlobalFilter: Boolean(disableGlobalFilter),
     },
     useGlobalFilter,
     useSortBy,
@@ -73,7 +81,7 @@ export const DataGrid = ({
     useColumnOrder,
     useResizeColumns,
     useBlockLayout,
-    useCheckboxColumn
+    !disableRowSelect && useCheckboxColumn
   );
 
   const tbodyRef = useRef(null);
@@ -115,16 +123,19 @@ export const DataGrid = ({
         width: "100%",
       }}
     >
-      <TableHeaderToolbar
-        label={label}
-        dense={dense}
-        preGlobalFilteredRows={preGlobalFilteredRows}
-        globalFilter={state.globalFilter}
-        setGlobalFilter={setGlobalFilter}
-        alwaysAvailableAction={alwaysAvailableAction}
-        setGridAction={setGridAction}
-        selectedFlatRows={selectedFlatRows}
-      />
+      {Boolean(hideHeader) ? null : (
+        <TableHeaderToolbar
+          label={label}
+          dense={dense}
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          globalFilter={state.globalFilter}
+          setGlobalFilter={setGlobalFilter}
+          alwaysAvailableAction={alwaysAvailableAction}
+          setGridAction={setGridAction}
+          selectedFlatRows={selectedFlatRows}
+          disableGlobalFilter={Boolean(disableGlobalFilter)}
+        />
+      )}
       <TableActionToolbar
         dense={dense}
         selectedFlatRows={selectedFlatRows}
@@ -145,8 +156,8 @@ export const DataGrid = ({
           position: "relative",
           display: "inline-block",
           overflow: "auto",
-          maxHeight: "calc(100vh - 35*8px)",
-          minHeight: "40vh",
+          maxHeight: containerHeight?.max ?? "calc(100vh - 35*8px)",
+          minHeight: containerHeight?.min ?? "40vh",
         }}
       >
         <Table
@@ -237,10 +248,11 @@ export const DataGrid = ({
           </TableBody>
         </Table>
       </TableContainer>
-      {/*@ts-ignore */}
-      <TableCell style={{ display: "flex" }}>
-        Total No of Records: {rows.length}
-      </TableCell>
+      {hideFooter ? null : (
+        <TableCell style={{ display: "flex" }}>
+          Total No of Records: {rows.length}
+        </TableCell>
+      )}
     </Paper>
   );
 };

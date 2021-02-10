@@ -4,6 +4,7 @@ import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "cache";
 import "registry/fns/registerFnsLOS";
+import "components/tableCellComponents";
 import IndexPage from "pages_los";
 import { theme } from "./theme";
 import "./index.css";

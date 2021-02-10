@@ -4,10 +4,8 @@ import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { queryClient } from "cache";
 import { CRUD } from "pages_los/common/crud";
-import { Documents } from "pages_los/common/documents";
 import { ClearCacheContext } from "cache";
 import { CustomerDetails } from "./customerDetails";
-//import { AssignInquiry } from "./assignInquiry";
 import { HeaderDetails } from "./headerDetails";
 import { MoveInquiryToLead } from "./moveInquiryToLead";
 import { useStyles } from "./style";
@@ -82,21 +80,12 @@ export const DetailsView: FC<{
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <Documents
-            refID={refID}
-            productType={productInquiry}
-            disableDialogCloseRef={disableDialogCloseRef}
-            isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
-          />
-        </TabPanel>
-        <TabPanel value={currentTab} index="3" key={3}>
           <CustomerDetails refID={refID} productType={productInquiry} />
         </TabPanel>
         {/*<TabPanel value={currentTab} index="4" key={4}>
           <AssignInquiry refID={refID} />
   </TabPanel>*/}
-        <TabPanel value={currentTab} index="4" key={4}>
+        <TabPanel value={currentTab} index="3" key={3}>
           <MoveInquiryToLead
             key={refID}
             refID={refID}

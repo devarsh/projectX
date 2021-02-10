@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { GridColumnType } from "../types";
 
 export const combineAndRunValidation = (schemaValidation, validation) => async (
   value
@@ -17,4 +17,17 @@ export const combineAndRunValidation = (schemaValidation, validation) => async (
     }
   }
   return "";
+};
+
+export const attachcombinedValidationFns = (columns: GridColumnType[]) => {
+  if (Array.isArray(columns)) {
+    return columns.map((column) => {
+      const { schemaValidation, validation, ...others } = column;
+      return {
+        ...others,
+        validation: combineAndRunValidation(schemaValidation, validation),
+      };
+    });
+  }
+  return [];
 };

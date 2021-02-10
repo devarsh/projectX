@@ -26,6 +26,7 @@ export const TableHeaderToolbar = ({
   alwaysAvailableAction,
   setGridAction,
   selectedFlatRows,
+  disableGlobalFilter,
 }) => {
   const classes = useStyles();
   return (
@@ -38,11 +39,13 @@ export const TableHeaderToolbar = ({
       >
         {label}
       </Typography>
-      <GlobalFilter
-        preGlobalFilteredRows={preGlobalFilteredRows}
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-      />
+      {disableGlobalFilter ? null : (
+        <GlobalFilter
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
+      )}
       <RenderActions
         key="alwaysRender"
         selectedRows={selectedFlatRows}

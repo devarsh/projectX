@@ -20,6 +20,8 @@ import {
   AllAutocompleteProps,
   ArrayFieldProps,
   AllTextareaAutosizeFieldProps,
+  AllHiddenFieldProps,
+  AllTypographyFieldProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -136,6 +138,8 @@ export type FieldMetaDataTypeX =
   | AllInputMaskProps
   | AllAutocompleteProps
   | AllTextareaAutosizeFieldProps
+  | AllTypographyFieldProps
+  | AllHiddenFieldProps
   | ArrayFieldProps;
 
 export type FieldMetaDataType = Merge<
