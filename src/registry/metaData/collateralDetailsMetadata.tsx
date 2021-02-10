@@ -46,7 +46,7 @@ export const CollateralDetailsMetaData: MetaDataType = {
         componentType: "arrayField",
         group: 0,
       },
-      name: "collateralDetails",
+      name: "collateralSecurityDetails",
       label: "Collateral Details",
       GridProps: {
         xs: 12,

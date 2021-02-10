@@ -21,9 +21,10 @@ export const generalDetailBusinessNature = (_, dependentValues) => {
 
 export const collateralPrimarySecurity = (_, dependentValues) => {
   if (
-    dependentValues["collateralDetails.collateralSecurityType"]?.value ===
-      "01" ||
-    dependentValues["collateralDetails.collateralSecurityType"]?.value === "02"
+    dependentValues["collateralSecurityDetails.collateralSecurityType"]
+      ?.value === "01" ||
+    dependentValues["collateralSecurityDetails.collateralSecurityType"]
+      ?.value === "02"
   ) {
     return false;
   }
@@ -32,7 +33,8 @@ export const collateralPrimarySecurity = (_, dependentValues) => {
 
 export const collateralSecurity = (_, dependentValues) => {
   if (
-    dependentValues["collateralDetails.collateralSecurityType"]?.value === "02"
+    dependentValues["collateralSecurityDetails.collateralSecurityType"]
+      ?.value === "02"
   ) {
     return false;
   }
@@ -41,7 +43,8 @@ export const collateralSecurity = (_, dependentValues) => {
 
 export const collateralPersonalGuarantee = (_, dependentValues) => {
   if (
-    dependentValues["collateralDetails.collateralSecurityType"]?.value === "03"
+    dependentValues["collateralSecurityDetails.collateralSecurityType"]
+      ?.value === "03"
   ) {
     return false;
   }
