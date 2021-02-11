@@ -85,7 +85,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
     >
       <FormControlLabel
@@ -103,7 +103,7 @@ const MyCheckbox: FC<MyCheckboxAllProps> = ({
         checked={Boolean(value)}
       />
 
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

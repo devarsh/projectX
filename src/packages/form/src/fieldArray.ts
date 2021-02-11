@@ -11,8 +11,15 @@ import {
   formArrayFieldUnregisterSelector,
   formFieldUnregisterSelector,
   formArrayFieldRegistryAtom,
+  formFieldsErrorWatcherRemoveSelector,
+  formAtom,
 } from "./atoms";
-import { useRecoilState, useSetRecoilState, useRecoilCallback } from "recoil";
+import {
+  useRecoilState,
+  useSetRecoilState,
+  useRecoilCallback,
+  useRecoilValue,
+} from "recoil";
 import { getIn } from "./util";
 import { FormContext } from "./context";
 
@@ -24,6 +31,7 @@ export const useFieldArray = ({
   const formContext = useContext(FormContext);
   //caching template keys passed as object which are fields per row in the fieldArray
   let templateFieldNamesRef = useRef<string[]>(Object.keys(template));
+  const formState = useRecoilValue(formAtom(formContext.formName));
   //fieldRows keeps track of fields in the field array,
   //also will keep track of last inserted field index which forms the
   //basis of fieldKey to uniquely identify field in the formFieldAtom
@@ -47,6 +55,15 @@ export const useFieldArray = ({
 
   const unregisterField = useSetRecoilState(
     formFieldUnregisterSelector(formContext.formName)
+  );
+
+  const RemoveFieldsFromErrorWatcher = useRecoilCallback(
+    ({ set }) => ({ fieldName }) => {
+      set(
+        formFieldsErrorWatcherRemoveSelector(formContext.formName),
+        fieldName
+      );
+    }
   );
 
   const isFieldRegistered = useRecoilCallback(
@@ -134,8 +151,12 @@ export const useFieldArray = ({
         for (const oneField of Object.values(deleteRow.cells)) {
           if (oneField.key.indexOf(`${formContext.formName}/`) > -1) {
             unregisterField(oneField.key);
+            RemoveFieldsFromErrorWatcher({ fieldName: oneField.key });
           } else {
             unregisterField(`${formContext.formName}/${oneField.key}`);
+            RemoveFieldsFromErrorWatcher({
+              fieldName: `${formContext.formName}/${oneField.key}`,
+            });
           }
         }
       }
@@ -228,6 +249,7 @@ export const useFieldArray = ({
           fields: templateFieldNamesRef.current?.slice?.() ?? [],
           rowIndex: idx,
           removeFn: remove,
+          totalRows: fieldRowsRef.current.templateFieldRows.length,
         });
       });
     },
@@ -424,5 +446,6 @@ export const useFieldArray = ({
     swap,
     move,
     renderRows,
+    isSubmitting: formState.isSubmitting,
   };
 };

@@ -22,10 +22,9 @@ import { useStyles } from "./style";
 //This is temparoary
 // import CAM from "./pages/cam";
 import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
-import TestForm from "components/dyanmicForm/test";
-import ArrayForm from "packages/form/examples/01-basic";
 import { FileUploadControl } from "components/fileUpload";
 import { Form } from "registry/metaData/test";
+import GridDataDisplay from "pages_los/common/crud2WithGrid";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -55,14 +54,11 @@ const DashbordPages = () => {
             <Route path="/leads" element={<Lead />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CAMIFrame />} />
-            <Route path="/leadForm" element={<Form />} />
-
-            {/* ------------ */}
-
-            <Route path="/array" element={<ArrayForm />} />
-            <Route path="/test" element={<TestForm />} />
-            <Route path="/upload" element={<FileUploadControl />} />
             {/*dummy routes*/}
+            <Route path="/leadForm" element={<Form />} />
+            <Route path="/crud" element={<GridDataDisplay />} />
+            <Route path="/upload" element={<FileUploadControl />} />
+
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

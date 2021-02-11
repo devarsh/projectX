@@ -96,13 +96,20 @@ const MyTextField: FC<MyTextFieldProps> = ({
       }, 1);
     }
   }, [isFieldFocused]);
-
+  const componentMountedTime = useRef<any>(null);
   useEffect(() => {
-    if (incomingMessage !== null && typeof incomingMessage === "object") {
+    componentMountedTime.current = new Date().getTime();
+  }, []);
+  useEffect(() => {
+    const hookCalledTime = new Date().getTime();
+    const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
+    if (
+      timeDiff > 5000 &&
+      incomingMessage !== null &&
+      typeof incomingMessage === "object"
+    ) {
       const { value } = incomingMessage;
-      if (value !== "DEFAULT_VALUE") {
-        handleChange(value);
-      }
+      handleChange(value);
       if (whenToRunValidation === "onBlur") {
         runValidation({ value: value }, true);
       }
@@ -136,11 +143,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
       id={fieldKey}
       name={name}
       value={value}
-      error={isError}
+      error={!isSubmitting && isError}
       helperText={
         <div style={{ display: "flex" }}>
           <FormHelperText>
-            {isError
+            {!isSubmitting && isError
               ? myError
               : Boolean(validationAPIResult)
               ? validationAPIResult

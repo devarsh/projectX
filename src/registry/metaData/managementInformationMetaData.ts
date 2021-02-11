@@ -450,6 +450,15 @@ export const ManagementInformationMetaData: MetaDataType = {
       _fields: [
         {
           render: {
+            //@ts-ignore
+            componentType: "hidden",
+            group: 1,
+          },
+          name: "serialNo",
+        },
+
+        {
+          render: {
             componentType: "select",
             group: 1,
           },

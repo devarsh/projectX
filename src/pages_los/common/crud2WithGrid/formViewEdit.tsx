@@ -1,65 +1,60 @@
-import { useCallback, useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import { LOSSDK } from "registry/fns/los";
+import loaderGif from "assets/images/loader.gif";
+import FormWrapper, { MetaDataType } from "components/dyanmicForm";
+import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "cache";
-import { SubmitFnType } from "packages/form";
-import FormWrapper, {
-  isMetaDataValid,
-  MetaDataType,
-} from "components/dyanmicForm";
 import { ClearCacheContext } from "cache";
-import { transformMetaData } from "../utils";
-import loaderGif from "assets/images/loader.gif";
 
-interface InsertFormDataFnType {
+interface updateFormDataType {
   data: object;
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
   productType: string;
   refID: string;
+  serialNo?: string;
 }
 
-const insertFormData = async ({
+const updateFormData = async ({
   data,
   productType,
   refID,
-}: InsertFormDataFnType) => {
-  return LOSSDK.insertData(productType, refID, data);
+  serialNo,
+}: updateFormDataType) => {
+  return LOSSDK.updateLeadData(productType, refID, data, serialNo);
 };
 
-export const NewForm = ({
+export const FormViewEdit: FC<{
+  refID: string;
+  productType: string;
+  isProductEditedRef: any;
+  metaData: MetaDataType;
+  serialNo?: string;
+  closeDialog?: any;
+}> = ({
   refID,
   productType,
-  moveToViewForm,
-  setSnackBarMessage,
+  serialNo,
   isProductEditedRef,
-  setShowAsk,
+  metaData,
+  closeDialog,
 }) => {
   const removeCache = useContext(ClearCacheContext);
-  const returnToAsk = useCallback(() => setShowAsk(true), [setShowAsk]);
-
-  const mutation = useMutation(insertFormData, {
+  const mutation = useMutation(updateFormData, {
     onError: (error: any, { endSubmit }) => {
       let errorMsg = "Unknown Error occured";
       if (typeof error === "object") {
         errorMsg = error?.error_msg ?? errorMsg;
       }
       endSubmit(false, errorMsg);
-      setSnackBarMessage({
-        type: "error",
-        message: errorMsg,
-      });
     },
     onSuccess: (data, { endSubmit }) => {
-      queryClient.refetchQueries(["checkDataExist", productType, refID]);
+      queryClient.refetchQueries(["getLeadDataForEdit", productType, refID]);
       endSubmit(true, "");
-      setSnackBarMessage({
-        type: "success",
-        message: data?.msg ?? "Changes successfully saved",
-      });
       isProductEditedRef.current = true;
-      //moveToViewForm();
+      closeDialog();
     },
   });
 
@@ -76,16 +71,17 @@ export const NewForm = ({
       setFieldError,
       refID,
       productType,
+      serialNo,
     });
   };
 
   useEffect(() => {
-    removeCache?.addEntry(["getNewMetaData", productType, refID]);
+    removeCache?.addEntry(["getLeadDataForEdit", productType, refID]);
   }, []);
 
   const result = useQuery(
-    ["getNewMetaData", productType, refID],
-    () => LOSSDK.getNewMetaData(productType, refID),
+    ["getLeadDataForEdit", productType, refID, serialNo],
+    () => LOSSDK.getLeadDataForEdit(productType, refID, serialNo),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -94,19 +90,10 @@ export const NewForm = ({
   );
 
   const loading = result.isLoading || result.isFetching;
+  let isError = result.isError;
   //@ts-ignore
   let errorMsg = `${result.error?.error_msg ?? ""}`;
-  let isError = result.isError;
-  let metaData = JSON.parse(JSON.stringify(result.data ?? {})) as MetaDataType;
-
-  if (loading === false && isError === false) {
-    isError = !isMetaDataValid(metaData);
-    if (isError === false) {
-      metaData = transformMetaData(metaData as MetaDataType);
-    } else {
-      errorMsg = "Error loading form";
-    }
-  }
+  let formEditData = result.data;
 
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />
@@ -114,12 +101,12 @@ export const NewForm = ({
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${productType}-${refID}-NewMode`}
+      key={`${productType}-${refID}-ViewEditMode`}
       metaData={metaData as MetaDataType}
-      initialValues={{}}
+      initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
-      onCancleHandler={returnToAsk}
-      defaultMode="edit"
+      defaultMode={"view"}
+      onCancleHandler={closeDialog}
     />
   );
   return renderResult;

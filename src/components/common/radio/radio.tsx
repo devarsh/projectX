@@ -148,7 +148,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
     >
       <FormLabel {...FormLabelProps} component="label">
@@ -172,7 +172,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
           radios
         )}
       </RadioGroup>
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

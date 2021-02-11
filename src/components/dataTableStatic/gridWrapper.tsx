@@ -6,8 +6,6 @@ import {
   useImperativeHandle,
   forwardRef,
 } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import {
   attachAlignmentProps,
   sortColumnsBySequence,
@@ -25,7 +23,7 @@ import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
 
 export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
-  ({ finalMetaData, data, setData, actions, setAction }, ref) => {
+  ({ finalMetaData, data, setData, actions, setAction, loading }, ref) => {
     const metaDataRef = useRef<any>(null);
     if (metaDataRef.current === null) {
       metaDataRef.current = transformMetaData({
@@ -133,33 +131,34 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
       validate: (data) => validateAllData(data),
       columns: columnsObj,
     }));
-
+    if (!Array.isArray(data)) {
+      return <div>Invalid data received</div>;
+    }
     return (
-      <DndProvider backend={HTML5Backend}>
-        <DataGrid
-          label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
-          dense={true}
-          getRowId={getRowId}
-          columns={columns}
-          defaultColumn={defaultColumn}
-          data={data}
-          allowColumnReordering={metaData.gridConfig?.allowColumnReordering}
-          disableSorting={metaData?.gridConfig?.disableSorting}
-          defaultHiddenColumns={metaData.hiddenColumns}
-          multipleActions={metaData?.multipleActions}
-          singleActions={metaData?.singleActions}
-          doubleClickAction={metaData?.doubleClickAction}
-          alwaysAvailableAction={metaData?.alwaysAvailableAction}
-          setGridAction={metaData?.setAction}
-          updateGridData={updateGridData}
-          deleteGridRow={deleteGridRow}
-          hideFooter={metaData?.gridConfig?.hideFooter}
-          hideHeader={metaData?.gridConfig?.hideHeader}
-          containerHeight={metaData?.gridConfig?.containerHeight}
-          disableRowSelect={metaData?.gridConfig?.disableRowSelect}
-          disableGlobalFilter={metaData?.gridConfig?.disableGlobalFilter}
-        />
-      </DndProvider>
+      <DataGrid
+        label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
+        dense={true}
+        getRowId={getRowId}
+        columns={columns}
+        defaultColumn={defaultColumn}
+        data={data}
+        loading={loading}
+        allowColumnReordering={metaData.gridConfig?.allowColumnReordering}
+        disableSorting={metaData?.gridConfig?.disableSorting}
+        defaultHiddenColumns={metaData.hiddenColumns}
+        multipleActions={metaData?.multipleActions}
+        singleActions={metaData?.singleActions}
+        doubleClickAction={metaData?.doubleClickAction}
+        alwaysAvailableAction={metaData?.alwaysAvailableAction}
+        setGridAction={metaData?.setAction}
+        updateGridData={updateGridData}
+        deleteGridRow={deleteGridRow}
+        hideFooter={metaData?.gridConfig?.hideFooter}
+        hideHeader={metaData?.gridConfig?.hideHeader}
+        containerHeight={metaData?.gridConfig?.containerHeight}
+        disableRowSelect={metaData?.gridConfig?.disableRowSelect}
+        disableGlobalFilter={metaData?.gridConfig?.disableGlobalFilter}
+      />
     );
   }
 );

@@ -9,7 +9,12 @@ export const CollateralDetailsMetaData: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: {
+        0: "PRIMARY SECURITY",
+        1: "COLLATERAL SECURITY ",
+        2: "PERSONAL GUARANTE",
+      },
       gridConfig: {
         item: {
           xs: 12,
@@ -56,26 +61,13 @@ export const CollateralDetailsMetaData: MetaDataType = {
       _fields: [
         {
           render: {
-            componentType: "select",
-            group: 0,
-            sequence: 1,
+            componentType: "hidden",
           },
-          name: "collateralSecurityType",
-          label: "Select Collateral Security Type",
-          defaultValue: "00",
-          //@ts-ignore
-          options: "securityType",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
+          name: "serialNo",
         },
-
         {
           render: {
             componentType: "textField",
-            group: 0,
             sequence: 2,
           },
 
@@ -87,14 +79,11 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPrimarySecurity",
         },
 
         {
           render: {
             componentType: "textField",
-            group: 0,
             sequence: 3,
           },
           name: "propertyArea",
@@ -105,15 +94,12 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPrimarySecurity",
         },
 
         {
           render: {
             //@ts-ignore
             componentType: "textField",
-            group: 0,
             sequence: 4,
           },
           name: "owner",
@@ -125,15 +111,12 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPrimarySecurity",
         },
 
         {
           render: {
             //@ts-ignore
             componentType: "currency",
-            group: 0,
             sequence: 5,
           },
           name: "marketValue",
@@ -145,14 +128,95 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPrimarySecurity",
+        },
+      ],
+    },
+
+    {
+      render: {
+        componentType: "arrayField",
+        group: 1,
+      },
+      name: "collateralSecurityDetails",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+      _fields: [
+        {
+          render: {
+            componentType: "hidden",
+          },
+          name: "serialNo",
+        },
+        {
+          render: {
+            componentType: "textField",
+            sequence: 2,
+          },
+
+          name: "propertyAddress",
+          label: "Address of the Property ",
+          placeholder: "Address of the Property ",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
         },
 
         {
           render: {
             componentType: "textField",
-            group: 0,
+            sequence: 3,
+          },
+          name: "propertyArea",
+          label: "Area of the Property ",
+          placeholder: "Area of the Property ",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "textField",
+            sequence: 4,
+          },
+          name: "owner",
+          label: "Owner",
+          placeholder: "Owner",
+          type: "text",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "currency",
+            sequence: 5,
+          },
+          name: "marketValue",
+          label: "Market Value (Rs. In Crore)",
+          placeholder: "Market Value (Rs. In Crore)",
+          type: "text",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+        {
+          render: {
+            componentType: "textField",
             sequence: 6,
           },
           name: "collateralCoverage",
@@ -163,14 +227,10 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralSecurity",
         },
-
         {
           render: {
             componentType: "textField",
-            group: 0,
             sequence: 7,
           },
           name: "facr",
@@ -181,14 +241,10 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralSecurity",
         },
-
         {
           render: {
             componentType: "textField",
-            group: 0,
             sequence: 8,
           },
           name: "acr",
@@ -199,14 +255,31 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralSecurity",
         },
+      ],
+    },
 
+    {
+      render: {
+        componentType: "arrayField",
+        group: 2,
+      },
+      name: "personalGuaranteDetails",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+      _fields: [
+        {
+          render: {
+            componentType: "hidden",
+          },
+          name: "serialNo",
+        },
         {
           render: {
             componentType: "textField",
-            group: 0,
             sequence: 9,
           },
           name: "guarantorName",
@@ -217,15 +290,12 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPersonalGuarantee",
         },
 
         {
           render: {
             //@ts-ignore
             componentType: "panCard",
-            group: 0,
             sequence: 10,
           },
           name: "panNumber",
@@ -236,15 +306,12 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPersonalGuarantee",
         },
 
         {
           render: {
             //@ts-ignore
             componentType: "currency",
-            group: 0,
             sequence: 11,
           },
           name: "netWorth",
@@ -255,8 +322,6 @@ export const CollateralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: "collateralSecurityType",
-          shouldExclude: "shouldExcludeCollateralPersonalGuarantee",
         },
       ],
     },

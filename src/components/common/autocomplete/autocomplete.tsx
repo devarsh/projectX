@@ -239,9 +239,9 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
             autoComplete="disabled"
             onChange={(e) => setInputValue(e.target.value)}
             type="text"
-            error={isError}
+            error={!isSubmitting && isError}
             required={required}
-            helperText={isError ? error : null}
+            helperText={!isSubmitting && isError ? error : null}
             InputProps={{
               ...params.InputProps,
               endAdornment: (

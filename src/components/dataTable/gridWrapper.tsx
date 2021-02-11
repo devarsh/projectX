@@ -1,6 +1,4 @@
 import { FC, useCallback } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { GridMetaDataType, ActionTypes } from "./types";
 import {
   attachCellComponentsToMetaData,
@@ -42,19 +40,17 @@ export const GridWrapper: FC<{
   /*eslint-disable react-hooks/exhaustive-deps*/
   setGridRefresh = useCallback(setGridRefresh, []);
   return (
-    <DndProvider backend={HTML5Backend}>
-      <GridProvider
-        gridCode={gridCode}
-        getGridData={getGridData}
-        getGridColumnFilterData={getGridColumnFilterData}
-      >
-        <GirdController
-          metaData={finalData as GridMetaDataType}
-          gridRefresh={gridRefresh}
-          setGridRefresh={setGridRefresh}
-        />
-      </GridProvider>
-    </DndProvider>
+    <GridProvider
+      gridCode={gridCode}
+      getGridData={getGridData}
+      getGridColumnFilterData={getGridColumnFilterData}
+    >
+      <GirdController
+        metaData={finalData as GridMetaDataType}
+        gridRefresh={gridRefresh}
+        setGridRefresh={setGridRefresh}
+      />
+    </GridProvider>
   );
 };
 

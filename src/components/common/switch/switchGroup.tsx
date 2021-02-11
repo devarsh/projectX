@@ -156,7 +156,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
     >
       <FormLabel {...FormLabelProps} component="label">
@@ -175,7 +175,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
           switches
         )}
       </FormGroup>
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

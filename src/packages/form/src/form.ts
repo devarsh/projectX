@@ -12,6 +12,7 @@ import {
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
   formFieldsExcludedAtom,
+  formFieldsErrorWatcherAtom,
   subscribeToFormFieldsSelector,
 } from "./atoms";
 import { setIn, getIn } from "./util";
@@ -48,12 +49,32 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
           reset(formArrayFieldRowsAtom(arrayField));
         }
       }
+      reset(formArrayFieldRegistryAtom(formContext.formName));
       reset(formFieldRegistryAtom(formContext.formName));
-      reset(formArrayFieldRowsAtom(formContext.formName));
       reset(formFieldsExcludedAtom(formContext.formName));
+      reset(formFieldsErrorWatcherAtom(formContext.formName));
       reset(formAtom(formContext.formName));
     },
     [formContext.formName]
+  );
+
+  const enableForm = useRecoilCallback(
+    ({ set }) => () => {
+      set(formAtom(formContext.formName), (currVal) => ({
+        ...currVal,
+        isSubmitting: false,
+      }));
+    },
+    []
+  );
+  const disableForm = useRecoilCallback(
+    ({ set }) => () => {
+      set(formAtom(formContext.formName), (currVal) => ({
+        ...currVal,
+        isSubmitting: true,
+      }));
+    },
+    []
   );
 
   //clear form Atoms on unmount
@@ -410,6 +431,8 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     handleResetPartial,
     handleClear,
     handleClearPartial,
+    enableForm,
+    disableForm,
     ...formState,
   };
 };
