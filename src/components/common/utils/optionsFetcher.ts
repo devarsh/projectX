@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 
 export const useOptionsFetcher = (
@@ -14,7 +14,7 @@ export const useOptionsFetcher = (
   disableCaching
 ) => {
   let loadingOptions = false;
-
+  let componentMountedTime = useRef<any>(null);
   let queryKey: any[] = [];
   if (Boolean(disableCaching)) {
     queryKey = [_optionsKey, formState, dependentValues];
@@ -63,12 +63,25 @@ export const useOptionsFetcher = (
   }, [loadingOptions]);
 
   useEffect(() => {
-    if (incomingMessage !== null && typeof incomingMessage === "object") {
-      const { value, options } = incomingMessage;
-      //this a patch to not change current value we have as default value
-      if (value !== "DEFAULT_VALUE") {
-        handleChangeInterceptor(value);
+    componentMountedTime.current = new Date().getTime();
+  }, []);
+
+  useEffect(() => {
+    const hookCalledTime = new Date().getTime();
+    const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
+    if (timeDiff < 5000) {
+      if (incomingMessage !== null && typeof incomingMessage === "object") {
+        const { options } = incomingMessage;
+        if (Array.isArray(options)) {
+          setOptions(options);
+        }
       }
+    } else if (
+      incomingMessage !== null &&
+      typeof incomingMessage === "object"
+    ) {
+      const { value, options } = incomingMessage;
+      handleChangeInterceptor(value);
       if (whenToRunValidation === "onBlur") {
         runValidation({ value: value }, true);
       }
