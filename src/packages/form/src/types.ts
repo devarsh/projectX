@@ -140,6 +140,7 @@ export interface RenderFnOptionsType {
   fields: string[];
   rowIndex: number;
   removeFn: (index: number) => void;
+  totalRows: number;
 }
 
 export type RenderFn = (options: RenderFnOptionsType) => JSX.Element;

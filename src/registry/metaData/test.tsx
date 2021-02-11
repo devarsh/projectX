@@ -1,11 +1,11 @@
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
-import { BussinessDetailsMetadata } from "./businessDetailsMetadata";
+import { GeneralDetailsMetaData } from "./generalDetailsMetadata";
 
 export const Form = () => {
   return (
     <FormWrapper
       key={`collateralDetails`}
-      metaData={BussinessDetailsMetadata as MetaDataType}
+      metaData={GeneralDetailsMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={(values, displayValues, endSubmit) => {
         endSubmit(true);

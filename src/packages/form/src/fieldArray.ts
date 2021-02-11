@@ -11,6 +11,7 @@ import {
   formArrayFieldUnregisterSelector,
   formFieldUnregisterSelector,
   formArrayFieldRegistryAtom,
+  formFieldsErrorWatcherRemoveSelector,
 } from "./atoms";
 import { useRecoilState, useSetRecoilState, useRecoilCallback } from "recoil";
 import { getIn } from "./util";
@@ -47,6 +48,15 @@ export const useFieldArray = ({
 
   const unregisterField = useSetRecoilState(
     formFieldUnregisterSelector(formContext.formName)
+  );
+
+  const RemoveFieldsFromErrorWatcher = useRecoilCallback(
+    ({ set }) => ({ fieldName }) => {
+      set(
+        formFieldsErrorWatcherRemoveSelector(formContext.formName),
+        fieldName
+      );
+    }
   );
 
   const isFieldRegistered = useRecoilCallback(
@@ -134,8 +144,12 @@ export const useFieldArray = ({
         for (const oneField of Object.values(deleteRow.cells)) {
           if (oneField.key.indexOf(`${formContext.formName}/`) > -1) {
             unregisterField(oneField.key);
+            RemoveFieldsFromErrorWatcher({ fieldName: oneField.key });
           } else {
             unregisterField(`${formContext.formName}/${oneField.key}`);
+            RemoveFieldsFromErrorWatcher({
+              fieldName: `${formContext.formName}/${oneField.key}`,
+            });
           }
         }
       }
@@ -228,6 +242,7 @@ export const useFieldArray = ({
           fields: templateFieldNamesRef.current?.slice?.() ?? [],
           rowIndex: idx,
           removeFn: remove,
+          totalRows: fieldRowsRef.current.templateFieldRows.length,
         });
       });
     },

@@ -14,6 +14,8 @@ export const useStyles = makeStyles((theme) => ({
   },
   arrayRowCard: {
     width: "100%",
+    position: "relative",
+    overflow: "auto",
   },
   arrayRowCardContent: {
     paddingLeft: "32px",

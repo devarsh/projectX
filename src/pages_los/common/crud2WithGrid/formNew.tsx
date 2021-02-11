@@ -24,7 +24,7 @@ const insertFormData = async ({
   return LOSSDK.insertLeadData(productType, refID, data);
 };
 
-export const NewForm: FC<{
+export const FormNew: FC<{
   refID: string;
   productType: string;
   isProductEditedRef: any;
@@ -67,7 +67,7 @@ export const NewForm: FC<{
   const renderResult = (
     <FormWrapper
       key={`${productType}-${refID}-NewMode`}
-      metaData={metaData as MetaDataType}
+      metaData={newMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}
     />

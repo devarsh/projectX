@@ -4,7 +4,8 @@ import gridMetaData from "./gridMetadata";
 import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
 import { ManagementInformationMetaData } from "registry/metaData/managementInformationMetaData";
-import { NewForm } from "./formNew";
+import { FormNew } from "./formNew";
+import { FormViewEdit } from "./formViewEdit";
 
 const actions: ActionTypes[] = [
   {
@@ -54,12 +55,23 @@ export const Grid = () => {
       />
       <Dialog open={Boolean(currentAction)} onClose={closeDialog} maxWidth="md">
         {(currentAction?.name ?? "") === "Add" ? (
-          <NewForm
+          <FormNew
+            key="new"
             refID={refID}
             productType={productType}
             metaData={ManagementInformationMetaData}
             closeDialog={closeDialog}
             isProductEditedRef={dataChanged}
+          />
+        ) : (currentAction?.name ?? "") === "View" ? (
+          <FormViewEdit
+            key="viewEdit"
+            refID={refID}
+            productType={productType}
+            metaData={ManagementInformationMetaData}
+            isProductEditedRef={dataChanged}
+            closeDialog={closeDialog}
+            serialNo={currentAction?.rows[0]?.id}
           />
         ) : null}
       </Dialog>
