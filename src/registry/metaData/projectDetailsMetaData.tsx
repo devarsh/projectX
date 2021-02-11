@@ -46,7 +46,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "projectLocation",
+      name: "landLocation",
       label: "Location of the project",
       placeholder: "Location of the project",
       defaultValue: "",
@@ -78,7 +78,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "areaOfTheProjetLand",
+      name: "landAreaApproxValuation",
       label: "Area of the Project Land and approx valuation",
       placeholder: "Area of the Project Land and approx valuation",
       defaultValue: "",
@@ -94,7 +94,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "datePicker",
         group: 0,
       },
-      name: "dateOfCommencement",
+      name: "commencementDate",
       label: "Expected Date of Commencement (DCCO)",
       placeholder: "dd/mm/yyyy",
       format: "dd/MM/yyyy",
@@ -111,7 +111,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "projectCurrentStage",
+      name: "currentLandStage",
       label: "Current Stage of Project",
       placeholder: "Current Stage of Project",
       defaultValue: "",
@@ -127,7 +127,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "moratorium",
+      name: "maratorium",
       label: "Moratorium",
       placeholder: "Moratorium",
       GridProps: {
@@ -142,7 +142,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "installmentOrBalloonig",
+      name: "installmentBallooning",
       label: "Equal Installments or Balloonig",
       placeholder: "Equal Installments or Balloonig",
       defaultValue: "",
@@ -158,7 +158,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "machineriesLift",
+      name: "machineryList",
       label: "List of Machineries",
       placeholder: "List of Machineries",
       defaultValue: "",
@@ -190,7 +190,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "manufacturedProducts",
+      name: "productManufactured",
       label: "Products to be manufactured",
       placeholder: "Products to be manufactured",
       defaultValue: "",
@@ -222,7 +222,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "powerRequirementOrArrangement",
+      name: "reqArranPower",
       label: "Requirement and arrangement of Power",
       placeholder: "Requirement and arrangement of Power",
       defaultValue: "",
@@ -238,7 +238,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "waterRequirementOrArrangement",
+      name: "reqArranWater",
       label: "Requirement and arrangement of Water",
       placeholder: "Requirement and arrangement of Water",
       defaultValue: "",
@@ -254,7 +254,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "employeeRequirementOrArrangements",
+      name: "reqArranEmployee",
       label: "Requirement and arrangement of Employees",
       placeholder: "Requirement and arrangement of Employees",
       defaultValue: "",
@@ -270,7 +270,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "aboutTechnicalPersonOrPlantManager",
+      name: "brifTechPerson",
       label: "Brief about Technical Person / Plant manager",
       placeholder: "Brief about Technical Person / Plant manager",
       defaultValue: "",
@@ -302,7 +302,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "projectedTurnoverAndProfit",
+      name: "projectTurnover",
       label: "Projected Turnover & Profit",
       placeholder: "Projected Turnover & Profit",
       defaultValue: "",
@@ -318,7 +318,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
         componentType: "arrayField",
         group: 1,
       },
-      name: "projectDetails",
+      name: "projectParticularDetails",
       GridProps: {
         xs: 12,
         md: 12,
@@ -329,7 +329,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
           render: {
             componentType: "select",
           },
-          name: "projectParticularDetailsType",
+          name: "particularType",
           label: "Project Particular Details Type",
           defaultValue: "01",
           //@ts-ignore
@@ -346,7 +346,7 @@ export const ProjectDetailsMetadata: MetaDataType = {
             //@ts-ignore
             componentType: "textField",
           },
-          name: "Particulars",
+          name: "particularOfCostOfProject",
           label: "Particulars",
           placeholder: "Particulars",
           defaultValue: "",
@@ -355,14 +355,16 @@ export const ProjectDetailsMetadata: MetaDataType = {
             md: 3,
             sm: 3,
           },
+          dependentFields: ["particularType"],
+          shouldExclude: "shouldExcludeProjectDetailsTypeCostOfProject",
         },
 
         {
           render: {
             //@ts-ignore
-            componentType: "currency",
+            componentType: "currencyWithoutWords",
           },
-          name: "totalAmount",
+          name: "amountOfCostOfProject",
           label: "Total Amount (In Lacs)",
           placeholder: "Total Amount (In Lacs)",
           GridProps: {
@@ -370,14 +372,16 @@ export const ProjectDetailsMetadata: MetaDataType = {
             md: 3,
             sm: 3,
           },
+          dependentFields: ["particularType"],
+          shouldExclude: "shouldExcludeProjectDetailsTypeCostOfProject",
         },
 
         {
           render: {
             //@ts-ignore
-            componentType: "currency",
+            componentType: "currencyWithoutWords",
           },
-          name: "amountIncurred",
+          name: "incurredAmountOfCostOfProject",
           label: "Amount Incurred(In Lacs)",
           placeholder: "Amount Incurred(In Lacs)",
           GridProps: {
@@ -385,6 +389,60 @@ export const ProjectDetailsMetadata: MetaDataType = {
             md: 3,
             sm: 3,
           },
+          dependentFields: ["particularType"],
+          shouldExclude: "shouldExcludeProjectDetailsTypeCostOfProject",
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "textField",
+          },
+          name: "particularOfMeansOfFinance",
+          label: "Particulars",
+          placeholder: "Particulars",
+          defaultValue: "",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["particularType"],
+          shouldExclude: "shouldExcludeProjectDetailsTypeMeansOFFinance",
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "currencyWithoutWords",
+          },
+          name: "amountOfMeansOfFinance",
+          label: "Total Amount (In Lacs)",
+          placeholder: "Total Amount (In Lacs)",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["particularType"],
+          shouldExclude: "shouldExcludeProjectDetailsTypeMeansOFFinance",
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "currencyWithoutWords",
+          },
+          name: "incurredAmountOfMeansOfFinance",
+          label: "Amount Incurred(In Lacs)",
+          placeholder: "Amount Incurred(In Lacs)",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["particularType"],
+          shouldExclude: "shouldExcludeProjectDetailsTypeMeansOFFinance",
         },
       ],
     },

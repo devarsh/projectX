@@ -65,6 +65,15 @@ export const ManagementInformationMetaData: MetaDataType = {
 
     {
       render: {
+        //@ts-ignore
+        componentType: "hidden",
+        group: 1,
+      },
+      name: "serialNo",
+    },
+
+    {
+      render: {
         componentType: "select",
       },
       name: "gender",
@@ -134,7 +143,8 @@ export const ManagementInformationMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "datePicker",
+        //@ts-ignore
+        componentType: "dob",
       },
       name: "dob",
       label: "Birth Date",
@@ -454,7 +464,7 @@ export const ManagementInformationMetaData: MetaDataType = {
             componentType: "hidden",
             group: 1,
           },
-          name: "serialNo",
+          name: "lineNo",
         },
 
         {
@@ -638,6 +648,14 @@ export const ManagementInformationMetaData: MetaDataType = {
       },
       removeRowFn: "demp",
       _fields: [
+        {
+          render: {
+            //@ts-ignore
+            componentType: "hidden",
+            group: 1,
+          },
+          name: "lineNo",
+        },
         {
           render: {
             componentType: "textField",
