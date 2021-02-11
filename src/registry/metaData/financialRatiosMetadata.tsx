@@ -74,6 +74,19 @@ export const FinancialRatiosMetaData: MetaDataType = {
 
     {
       render: {
+        componentType: "textField",
+      },
+      name: "financialYear",
+      label: "Financial Year",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
         componentType: "typography",
       },
       name: "ebitda",
@@ -201,7 +214,7 @@ export const FinancialRatiosMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "rateOfInt",
       },
-      name: "cashProfitEBITDA",
+      name: "ebitDaPercentage",
       label: "EBITDA (%)",
       GridProps: {
         xs: 12,
@@ -215,7 +228,7 @@ export const FinancialRatiosMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "rateOfInt",
       },
-      name: "cashProfitEBT",
+      name: "ebtPercentage",
       label: "EBT (%)",
       GridProps: {
         xs: 12,
@@ -229,7 +242,7 @@ export const FinancialRatiosMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "rateOfInt",
       },
-      name: "cashProfitPAT",
+      name: "patPercentage",
       label: "PAT (%)",
       GridProps: {
         xs: 12,
@@ -243,7 +256,7 @@ export const FinancialRatiosMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "rateOfInt",
       },
-      name: "cashProfitCashProfit",
+      name: "cashProfitPercentage",
       label: "Cash Profit (%)",
       GridProps: {
         xs: 12,
