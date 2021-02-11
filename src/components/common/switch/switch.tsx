@@ -81,7 +81,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
       tabIndex={readOnly ? -1 : undefined}
     >
@@ -100,7 +100,7 @@ const MySwitch: FC<MySwitchAllProps> = ({
         checked={Boolean(value)}
       />
 
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

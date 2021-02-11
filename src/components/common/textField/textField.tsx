@@ -143,11 +143,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
       id={fieldKey}
       name={name}
       value={value}
-      error={isError}
+      error={!isSubmitting && isError}
       helperText={
         <div style={{ display: "flex" }}>
           <FormHelperText>
-            {isError
+            {!isSubmitting && isError
               ? myError
               : Boolean(validationAPIResult)
               ? validationAPIResult

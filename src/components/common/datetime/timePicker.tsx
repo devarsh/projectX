@@ -106,8 +106,8 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
       id={fieldKey}
       name={name}
       value={value === "" ? null : value} //make sure to pass null when input is empty string
-      error={isError}
-      helperText={isError ? error : null}
+      error={!isSubmitting && isError}
+      helperText={!isSubmitting && isError ? error : null}
       onChange={customDateChangeHandler}
       onBlur={handleBlur}
       disabled={isSubmitting}

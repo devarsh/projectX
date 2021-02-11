@@ -70,6 +70,7 @@ export const FormNew: FC<{
       metaData={newMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}
+      defaultMode={"new"}
     />
   );
   return renderResult;
