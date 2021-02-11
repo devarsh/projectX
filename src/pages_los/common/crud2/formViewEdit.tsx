@@ -1,14 +1,10 @@
 import { FC, useContext, useEffect } from "react";
 import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
-import FormWrapper, {
-  isMetaDataValid,
-  MetaDataType,
-} from "components/dyanmicForm";
+import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "cache";
-import { transformMetaDataForEdit } from "./utils";
 import { ClearCacheContext } from "cache";
 
 interface updateFormDataType {
@@ -16,40 +12,41 @@ interface updateFormDataType {
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
+  changeFormMode?: any;
+  enableForm?: any;
+  disableForm?: any;
   productType: string;
   refID: string;
+  serialNo?: string;
 }
 
 const updateFormData = async ({
   data,
   productType,
   refID,
+  serialNo,
 }: updateFormDataType) => {
-  return LOSSDK.updateLeadData(productType, refID, data);
+  return LOSSDK.updateLeadData(productType, refID, data, serialNo);
 };
 
-export const EditForm: FC<{
+export const FormViewEdit: FC<{
   refID: string;
   productType: string;
-  moveToViewForm: any;
-  setSnackBarMessage: any;
   isProductEditedRef: any;
   metaData: MetaDataType;
+  serialNo?: string;
+  closeDialog?: any;
+  defaultView?: "view" | "edit";
 }> = ({
   refID,
   productType,
-  moveToViewForm,
-  setSnackBarMessage,
+  serialNo,
   isProductEditedRef,
   metaData,
+  closeDialog,
+  defaultView,
 }) => {
   const removeCache = useContext(ClearCacheContext);
-  if (typeof setSnackBarMessage !== "function") {
-    setSnackBarMessage = () => alert("userMessage function not set");
-  }
-  if (typeof moveToViewForm !== "function") {
-    moveToViewForm = () => alert("move to view form function not set");
-  }
   const mutation = useMutation(updateFormData, {
     onError: (error: any, { endSubmit }) => {
       let errorMsg = "Unknown Error occured";
@@ -57,21 +54,13 @@ export const EditForm: FC<{
         errorMsg = error?.error_msg ?? errorMsg;
       }
       endSubmit(false, errorMsg);
-      // setSnackBarMessage({
-      //   type: "error",
-      //   message: errorMsg,
-      // });
     },
-    onSuccess: (data, { endSubmit }) => {
-      queryClient.refetchQueries(["getViewData", productType, refID]);
-      queryClient.refetchQueries(["getEditData", productType, refID]);
-      endSubmit(true, "");
-      setSnackBarMessage({
-        type: "success",
-        message: data?.msg ?? "Changes successfully saved",
-      });
+    onSuccess: (data, { changeFormMode, disableForm }) => {
+      queryClient.refetchQueries(["getLeadDataForEdit", productType, refID]);
+      changeFormMode("view");
+      disableForm();
       isProductEditedRef.current = true;
-      moveToViewForm();
+      closeDialog();
     },
   });
 
@@ -79,25 +68,32 @@ export const EditForm: FC<{
     data,
     displayData,
     endSubmit,
-    setFieldError
+    setFieldError,
+    changeFormMode,
+    enableForm,
+    disableForm
   ) => {
     mutation.mutate({
       data,
       displayData,
       endSubmit,
       setFieldError,
+      changeFormMode,
+      enableForm,
+      disableForm,
       refID,
       productType,
+      serialNo,
     });
   };
 
   useEffect(() => {
-    removeCache?.addEntry(["getEditData", productType, refID]);
+    removeCache?.addEntry(["getLeadDataForEdit", productType, refID]);
   }, []);
 
   const result = useQuery(
-    ["getEditData", productType, refID],
-    () => LOSSDK.getLeadDataForEdit(productType, refID),
+    ["getLeadDataForEdit", productType, refID, serialNo],
+    () => LOSSDK.getLeadDataForEdit(productType, refID, serialNo),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -110,14 +106,6 @@ export const EditForm: FC<{
   //@ts-ignore
   let errorMsg = `${result.error?.error_msg ?? ""}`;
   let formEditData = result.data;
-  // if (loading === false && isError === false) {
-  //   isError = !isMetaDataValid(metaData);
-  //   if (isError === false) {
-  //     metaData = transformMetaDataForEdit(metaData as MetaDataType);
-  //   } else {
-  //     errorMsg = "Error loading form";
-  //   }
-  // }
 
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />
@@ -125,12 +113,12 @@ export const EditForm: FC<{
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${productType}-${refID}-editMode`}
+      key={`${productType}-${refID}-${result.dataUpdatedAt}`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
-      onCancleHandler={moveToViewForm}
-      defaultMode="edit"
+      defaultMode={defaultView ?? "view"}
+      onCancleHandler={closeDialog}
     />
   );
   return renderResult;

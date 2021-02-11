@@ -35,7 +35,6 @@ interface SnackBarType {
 export const Lead = () => {
   let gridCode = "TRN/003";
   const [action, setAction] = useState<null | any>(null);
-  const disableDialogCloseRef = useRef(false);
   const isProductEditedRef = useRef(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [gridRefresh, setGridRefresh] = useState(false);
@@ -54,14 +53,10 @@ export const Lead = () => {
   );
 
   const handleDialogClose = () => {
-    if (!disableDialogCloseRef.current) {
-      setAction(null);
-      if (isProductEditedRef.current) {
-        setGridRefresh(true);
-        isProductEditedRef.current = false;
-      }
-    } else {
-      setSnackBarMessage("complete the current action before closing");
+    setAction(null);
+    if (isProductEditedRef.current) {
+      setGridRefresh(true);
+      isProductEditedRef.current = false;
     }
   };
 
@@ -79,15 +74,13 @@ export const Lead = () => {
         open={action !== null}
         //@ts-ignore
         TransitionComponent={Transition}
-        onClose={handleDialogClose}
         key={action?.rows[0].id}
       >
-        <ClearCacheProvider key={action?.rows[0].id}>
+        <ClearCacheProvider>
           <DetailsView
             key={action?.rows[0].id}
             productGridData={action?.rows[0]}
             refID={action?.rows[0].id}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
             handleDialogClose={handleDialogClose}
             setSnackBarMessage={setSnackBarMessage}

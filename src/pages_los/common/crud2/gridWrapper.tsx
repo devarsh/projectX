@@ -4,7 +4,8 @@ import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
-type GridDataDisplayType = {
+
+type GridWrapperType = {
   metaData: any;
   refID: any;
   productType: string;
@@ -12,7 +13,7 @@ type GridDataDisplayType = {
   setAction: any;
 };
 
-export const GridDataDisplay = forwardRef<any, GridDataDisplayType>(
+export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   ({ metaData, productType, refID, actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
     const result = useQuery(
@@ -52,4 +53,4 @@ export const GridDataDisplay = forwardRef<any, GridDataDisplayType>(
     return renderResult;
   }
 );
-GridDataDisplay.displayName = "GridDataDisplay";
+MyGridWrapper.displayName = "MyGridWrapper";

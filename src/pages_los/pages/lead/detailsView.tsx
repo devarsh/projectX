@@ -3,7 +3,6 @@ import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { queryClient } from "cache";
-import { CRUD2 } from "pages_los/common/crud2";
 import { ClearCacheContext } from "cache";
 import { HeaderDetails } from "./headerDetails";
 import {
@@ -12,6 +11,12 @@ import {
   ManagementInformationMetaData,
   CollateralDetailsMetaData,
 } from "registry/metaData";
+import {
+  FinancialGridMetaData,
+  ManagementDetailsGridMetaData,
+  ProjectDetailsGridMetaData,
+} from "registry/metaData/grid";
+import { GridCRUD, SimpleCRUD } from "pages_los/common/crud2";
 
 import { useStyles } from "./style";
 
@@ -22,13 +27,11 @@ const TabPanel = ({ value, index, children }) => {
 export const DetailsView: FC<{
   productGridData: any;
   refID: string;
-  disableDialogCloseRef: any;
   isProductEditedRef: any;
   handleDialogClose: any;
   setSnackBarMessage: any;
 }> = ({
   refID,
-  disableDialogCloseRef,
   isProductEditedRef,
   productGridData,
   handleDialogClose,
@@ -40,9 +43,6 @@ export const DetailsView: FC<{
     setCurrentTab(currentTab);
   };
   const classes = useStyles();
-  const productInquiry = "lead";
-  const productInquiryQuestion = "leadQuestion";
-  const productAdditionalQuestion = "leadadditional";
   //Remove all the cached queries of all tabs when this component unmounts
   useEffect(() => {
     return () => {
@@ -66,81 +66,60 @@ export const DetailsView: FC<{
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
-          <CRUD2
+          <SimpleCRUD
             refID={refID}
             productType={"general"}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
+            formMetaData={GeneralDetailsMetaData}
             dataAlwaysExists={true}
-            newMetaData={GeneralDetailsMetaData}
-            editMetaData={GeneralDetailsMetaData}
-            viewMetaData={GeneralDetailsMetaData}
+            closeDialog={undefined}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
-          <CRUD2
+          <SimpleCRUD
             refID={refID}
             productType={"business"}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
+            formMetaData={BussinessDetailsMetadata}
             dataAlwaysExists={true}
-            newMetaData={BussinessDetailsMetadata}
-            editMetaData={BussinessDetailsMetadata}
-            viewMetaData={BussinessDetailsMetadata}
+            closeDialog={undefined}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <CRUD2
+          <GridCRUD
             refID={refID}
             productType={"management"}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
-            dataAlwaysExists={true}
-            newMetaData={ManagementInformationMetaData}
-            editMetaData={ManagementInformationMetaData}
-            viewMetaData={ManagementInformationMetaData}
+            formMetaData={ManagementInformationMetaData}
+            gridMetaData={ManagementDetailsGridMetaData}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
-          <CRUD2
+          <SimpleCRUD
             refID={refID}
             productType={"collateral"}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
+            formMetaData={CollateralDetailsMetaData}
             dataAlwaysExists={true}
-            newMetaData={CollateralDetailsMetaData}
-            editMetaData={CollateralDetailsMetaData}
-            viewMetaData={CollateralDetailsMetaData}
+            closeDialog={undefined}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="4" key={4}>
-          <CRUD2
+          <GridCRUD
             refID={refID}
             productType={"project"}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
-            dataAlwaysExists={true}
-            newMetaData={CollateralDetailsMetaData}
-            editMetaData={CollateralDetailsMetaData}
-            viewMetaData={CollateralDetailsMetaData}
+            formMetaData={CollateralDetailsMetaData}
+            gridMetaData={ProjectDetailsGridMetaData}
           />
         </TabPanel>
         <TabPanel value={currentTab} index="5" key={5}>
-          <CRUD2
+          <GridCRUD
             refID={refID}
             productType={"financial"}
-            disableDialogCloseRef={disableDialogCloseRef}
             isProductEditedRef={isProductEditedRef}
-            setSnackBarMessage={setSnackBarMessage}
-            dataAlwaysExists={true}
-            newMetaData={CollateralDetailsMetaData}
-            editMetaData={CollateralDetailsMetaData}
-            viewMetaData={CollateralDetailsMetaData}
+            formMetaData={CollateralDetailsMetaData}
+            gridMetaData={FinancialGridMetaData}
           />
         </TabPanel>
       </Box>

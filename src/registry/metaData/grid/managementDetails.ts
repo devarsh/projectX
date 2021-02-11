@@ -1,6 +1,6 @@
 import { GridMetaDataType } from "components/dataTableStatic";
 
-const metaData: GridMetaDataType = {
+export const ManagementDetailsGridMetaData: GridMetaDataType = {
   columns: [
     {
       columnName: "Lead ID",
@@ -76,5 +76,3 @@ const metaData: GridMetaDataType = {
     },
   },
 };
-
-export default metaData;

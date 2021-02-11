@@ -1,12 +1,10 @@
 import { useState, Fragment, useRef } from "react";
-import { GridDataDisplay } from "./grid";
-import gridMetaData from "./gridMetadata";
-import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
-import { ManagementInformationMetaData } from "registry/metaData/managementInformationMetaData";
+import { ActionTypes } from "components/dataTable";
 import { FormNew } from "./formNew";
 import { FormViewEdit } from "./formViewEdit";
 import { DeleteAction } from "./delete";
+import { MyGridWrapper } from "./gridWrapper";
 
 const actions: ActionTypes[] = [
   {
@@ -29,22 +27,27 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const Grid = () => {
+export const GridCRUD = ({
+  refID,
+  productType,
+  isProductEditedRef,
+  formMetaData,
+  gridMetaData,
+}) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChanged = useRef(false);
-  const closeDialog = () => {
+  const closeMyDialog = () => {
     setCurrentAction(null);
     if (dataChanged.current === true) {
+      isProductEditedRef.current = true;
       gridRef.current?.refetch?.();
       dataChanged.current = false;
     }
   };
-  const refID = "89";
-  const productType = "management";
   return (
     <Fragment>
-      <GridDataDisplay
+      <MyGridWrapper
         key="grid"
         ref={gridRef}
         metaData={gridMetaData}
@@ -58,17 +61,18 @@ export const Grid = () => {
           <FormNew
             refID={refID}
             productType={productType}
-            metaData={ManagementInformationMetaData}
-            closeDialog={closeDialog}
+            metaData={formMetaData}
+            successAction={closeMyDialog}
+            cancelAction={closeMyDialog}
             isProductEditedRef={dataChanged}
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
             refID={refID}
             productType={productType}
-            metaData={ManagementInformationMetaData}
+            metaData={formMetaData}
             isProductEditedRef={dataChanged}
-            closeDialog={closeDialog}
+            closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
@@ -76,7 +80,7 @@ export const Grid = () => {
             refID={refID}
             productType={productType}
             serialNo={currentAction?.rows.map((one) => one.id)}
-            closeDialog={closeDialog}
+            closeDialog={closeMyDialog}
             isProductEditedRef={dataChanged}
           />
         ) : null}
