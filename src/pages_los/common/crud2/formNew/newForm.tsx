@@ -105,6 +105,7 @@ export const NewForm: FC<{
         initialValues={{}}
         onSubmitHandler={onSubmitHandler}
         onCancleHandler={returnToAsk}
+        defaultMode="edit"
       />
     );
   return renderResult;

@@ -215,5 +215,15 @@ export interface FormWrapperProps {
   onSubmitHandler: SubmitFnType;
   onCancleHandler?: any;
   hidden?: boolean;
-  viewMode?: boolean;
+  defaultMode?: "view" | "edit" | "new";
+}
+
+export interface FormProps {
+  fields: GroupWiseRenderedFieldsType;
+  formRenderConfig: FormRenderConfigType;
+  formDisplayName: string;
+  formName: string;
+  submitFn: SubmitFnType;
+  cancelFn: any;
+  defaultMode: "view" | "edit" | "new";
 }

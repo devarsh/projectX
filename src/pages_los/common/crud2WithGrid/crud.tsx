@@ -52,7 +52,7 @@ export const Grid = () => {
         actions={actions}
         setAction={setCurrentAction}
       />
-      <Dialog open={Boolean(currentAction)} onClose={closeDialog} maxWidth="md">
+      <Dialog open={Boolean(currentAction)} maxWidth="md">
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
             refID={refID}

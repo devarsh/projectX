@@ -22,7 +22,6 @@ export interface FormContextType {
   validationSchema?: ObjectSchema;
   formState: any;
   defaultArrayFieldValues?: InitialValuesType;
-  disableForm?: boolean;
 }
 
 export type FormFieldRegistryAtomType = string[];

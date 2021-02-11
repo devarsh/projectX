@@ -17,27 +17,43 @@ export const MyTabs = ({
   setActiveStep,
   handleSubmit,
   handleCancel,
+  setFormModeState,
+  currentFormMode,
 }) => (
   <Fragment>
     <Box display="flex">
       <Typography component="h3" className={classes.title}>
-        {formDisplayName}
+        {formDisplayName} - {currentFormMode}
       </Typography>
       <Box flexGrow={1} />
-      <Button
-        type="button"
-        className={classes.tabsSubmitBtn}
-        onClick={handleSubmit}
-      >
-        {formRenderConfig?.labels?.complete ?? "Submit"}
-      </Button>
-      {typeof handleCancel === "function" ? (
+      {currentFormMode === "view" ? (
         <Button
           type="button"
           className={classes.tabsSubmitBtn}
-          onClick={handleCancel}
+          onClick={() => setFormModeState("edit")}
         >
-          cancel
+          Edit Form
+        </Button>
+      ) : (
+        <Button
+          type="button"
+          className={classes.tabsSubmitBtn}
+          onClick={handleSubmit}
+        >
+          {formRenderConfig?.labels?.complete ?? "Submit"}
+        </Button>
+      )}
+      {typeof handleCancel === "function" || currentFormMode === "edit" ? (
+        <Button
+          type="button"
+          className={classes.tabsSubmitBtn}
+          onClick={
+            currentFormMode === "edit"
+              ? () => setFormModeState("view")
+              : handleCancel
+          }
+        >
+          Cancel
         </Button>
       ) : null}
     </Box>

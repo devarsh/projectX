@@ -82,7 +82,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     }, {})
   );
 
-  const { renderRows, push } = useFieldArray({
+  const { renderRows, push, isSubmitting } = useFieldArray({
     arrayFieldName: name,
     template: template.current,
   });
@@ -116,6 +116,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         removeRowFn={removeRowFn}
         row={row}
         totalRows={totalRows}
+        isSubmitting={isSubmitting}
       />
     );
   });
@@ -125,7 +126,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         <CardHeader
           title={label}
           action={
-            <IconButton onClick={push}>
+            <IconButton onClick={push} disabled={isSubmitting}>
               <AddCircleOutlineIcon />
             </IconButton>
           }
@@ -163,6 +164,7 @@ export const ArrayFieldRow = ({
   rowIndex,
   removeRowFn,
   totalRows,
+  isSubmitting,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -216,7 +218,7 @@ export const ArrayFieldRow = ({
         <IconButton
           onClick={dialogOpen}
           className={classes.arrayRowRemoveBtn}
-          disabled={loading}
+          disabled={isSubmitting}
         >
           <RemoveCircleOutlineIcon />
         </IconButton>
@@ -230,10 +232,10 @@ export const ArrayFieldRow = ({
           {"Are you Sure you want to delete this record ?"}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={dialogReject} color="primary">
+          <Button onClick={dialogReject} color="primary" disabled={loading}>
             Disagree
           </Button>
-          <Button onClick={dialogAccept} color="primary" autoFocus>
+          <Button onClick={dialogAccept} color="primary" disabled={loading}>
             Agree
           </Button>
         </DialogActions>

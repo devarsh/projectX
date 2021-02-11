@@ -1,4 +1,12 @@
-import { FC, useState, useRef, cloneElement } from "react";
+import {
+  FC,
+  useState,
+  useRef,
+  cloneElement,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import { useRecoilValue } from "recoil";
 import {
   useForm,
@@ -7,19 +15,14 @@ import {
   formFieldsErrorWatcherAtom,
 } from "packages/form";
 import Grid from "@material-ui/core/Grid";
-import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
+import {
+  GroupWiseRenderedFieldsType,
+  FormRenderConfigType,
+  FormProps,
+} from "./types";
 import { useStyles } from "./style";
 import { MyStepper } from "./stepperForm";
 import { MyTabs } from "./tabsForm";
-
-interface FormProps {
-  fields: GroupWiseRenderedFieldsType;
-  formRenderConfig: FormRenderConfigType;
-  formDisplayName: string;
-  formName: string;
-  submitFn: SubmitFnType;
-  cancelFn: any;
-}
 
 export const GroupedForm: FC<FormProps> = ({
   fields,
@@ -28,6 +31,7 @@ export const GroupedForm: FC<FormProps> = ({
   formName,
   submitFn,
   cancelFn,
+  defaultMode,
 }) => {
   const defaultGroupName = "DefaultGroup";
   const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
@@ -37,10 +41,31 @@ export const GroupedForm: FC<FormProps> = ({
     formFieldsErrorWatcherAtom(formName)
   );
   const classes = useStyles();
+  const [formMode, setFormMode] = useState(defaultMode);
   const [activeStep, setActiveStep] = useState(0);
-  const { handleSubmit, handleSubmitPartial } = useForm({
+  const {
+    handleSubmit,
+    handleSubmitPartial,
+    disableForm,
+    enableForm,
+  } = useForm({
     onSubmit: submitFn,
   });
+  const setFormModeState = useCallback(
+    (mode: "view" | "edit" | "new") => {
+      if (mode === "view") {
+        disableForm();
+        setFormMode(mode);
+      } else if (mode === "edit" || mode === "new") {
+        enableForm();
+        setFormMode(mode);
+      }
+    },
+    [setFormMode, disableForm, enableForm]
+  );
+  useEffect(() => {
+    setFormModeState(defaultMode);
+  }, [defaultMode]);
   const fieldGroups = useRef<string[]>(Object.keys(fields).sort());
   const fieldGroupsActiveStatus = fieldGroups.current.map((one) => {
     let groupName = defaultGroupName;
@@ -123,6 +148,8 @@ export const GroupedForm: FC<FormProps> = ({
       handleCancel={cancelFn}
       isLastActiveStep={isLastActiveStep}
       setActiveStep={setActiveStep}
+      setFormModeState={setFormModeState}
+      currentFormMode={formMode}
     />
   );
 };

@@ -23,7 +23,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
   onSubmitHandler,
   onCancleHandler,
   hidden = false,
-  viewMode = false,
+  defaultMode = "view",
 }) => {
   //this line is very important to preserve our metaData across render - deep clone hack
   let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
@@ -47,7 +47,6 @@ export const FormWrapper: FC<FormWrapperProps> = ({
           initialValues: initValues,
           defaultArrayFieldValues: defaultArrayFieldInitValues,
           validationSchema: yupValidationSchema,
-          disableForm: viewMode,
           formState: {
             refID: metaData.form.refID,
             formCode: metaData.form.name,
@@ -67,6 +66,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
               formName={metaData.form.name}
               submitFn={onSubmitHandler}
               cancelFn={onCancleHandler}
+              defaultMode={defaultMode}
             />
           ) : formRenderType === "simple" ? (
             <SimpleForm
@@ -77,6 +77,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
               formName={metaData.form.name}
               submitFn={onSubmitHandler}
               cancelFn={onCancleHandler}
+              defaultMode={defaultMode}
             />
           ) : (
             <div>RenderType {formRenderType} not available</div>

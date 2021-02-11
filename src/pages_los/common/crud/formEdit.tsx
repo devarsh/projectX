@@ -8,7 +8,7 @@ import FormWrapper, {
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
 import { queryClient } from "cache";
-import { transformMetaDataForEdit } from "./utils";
+import { transformMetaData } from "./utils";
 import { ClearCacheContext } from "cache";
 
 interface updateFormDataType {
@@ -131,7 +131,7 @@ export const EditForm: FC<{
   if (loading === false && isError === false) {
     isError = !isMetaDataValid(metaData);
     if (isError === false) {
-      metaData = transformMetaDataForEdit(metaData as MetaDataType);
+      metaData = transformMetaData(metaData as MetaDataType);
     } else {
       errorMsg = "Error loading form";
     }
@@ -150,6 +150,7 @@ export const EditForm: FC<{
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       onCancleHandler={moveToViewForm}
+      defaultMode="edit"
     />
   );
   return renderResult;

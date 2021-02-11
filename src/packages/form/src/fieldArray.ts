@@ -12,8 +12,14 @@ import {
   formFieldUnregisterSelector,
   formArrayFieldRegistryAtom,
   formFieldsErrorWatcherRemoveSelector,
+  formAtom,
 } from "./atoms";
-import { useRecoilState, useSetRecoilState, useRecoilCallback } from "recoil";
+import {
+  useRecoilState,
+  useSetRecoilState,
+  useRecoilCallback,
+  useRecoilValue,
+} from "recoil";
 import { getIn } from "./util";
 import { FormContext } from "./context";
 
@@ -25,6 +31,7 @@ export const useFieldArray = ({
   const formContext = useContext(FormContext);
   //caching template keys passed as object which are fields per row in the fieldArray
   let templateFieldNamesRef = useRef<string[]>(Object.keys(template));
+  const formState = useRecoilValue(formAtom(formContext.formName));
   //fieldRows keeps track of fields in the field array,
   //also will keep track of last inserted field index which forms the
   //basis of fieldKey to uniquely identify field in the formFieldAtom
@@ -439,5 +446,6 @@ export const useFieldArray = ({
     swap,
     move,
     renderRows,
+    isSubmitting: formState.isSubmitting,
   };
 };

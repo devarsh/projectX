@@ -105,6 +105,8 @@ export const FormViewEdit: FC<{
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
+      viewMode={true}
+      onCancleHandler={closeDialog}
     />
   );
   return renderResult;

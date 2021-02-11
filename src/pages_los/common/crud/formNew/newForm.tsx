@@ -8,7 +8,7 @@ import FormWrapper, {
   MetaDataType,
 } from "components/dyanmicForm";
 import { ClearCacheContext } from "cache";
-import { transformMetaDataForNew } from "../utils";
+import { transformMetaData } from "../utils";
 import loaderGif from "assets/images/loader.gif";
 
 interface InsertFormDataFnType {
@@ -102,7 +102,7 @@ export const NewForm = ({
   if (loading === false && isError === false) {
     isError = !isMetaDataValid(metaData);
     if (isError === false) {
-      metaData = transformMetaDataForNew(metaData as MetaDataType);
+      metaData = transformMetaData(metaData as MetaDataType);
     } else {
       errorMsg = "Error loading form";
     }
@@ -119,6 +119,7 @@ export const NewForm = ({
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}
       onCancleHandler={returnToAsk}
+      defaultMode="edit"
     />
   );
   return renderResult;

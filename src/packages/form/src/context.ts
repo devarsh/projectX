@@ -8,6 +8,5 @@ export const FormContext = createContext<FormContextType>({
   initialValues: {},
   formState: {},
   defaultArrayFieldValues: {},
-  disableForm: false,
 });
 FormContext.displayName = "FormContext";

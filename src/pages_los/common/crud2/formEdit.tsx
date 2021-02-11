@@ -130,6 +130,7 @@ export const EditForm: FC<{
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       onCancleHandler={moveToViewForm}
+      defaultMode="edit"
     />
   );
   return renderResult;
