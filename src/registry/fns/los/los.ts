@@ -491,15 +491,18 @@ const LOSAPI = () => {
     }
   };
   const deleteLeadData = async (type: string, refID: string, serialNo: any) => {
-    const { data, status } = await internalFetcher(`./lead/${type}/data/put`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          serialNo: serialNo,
-        },
-        channel: "W",
-      }),
-    });
+    const { data, status } = await internalFetcher(
+      `./lead/${type}/data/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+          },
+          channel: "W",
+        }),
+      }
+    );
     if (status === "success") {
       return data?.response_data;
     } else {

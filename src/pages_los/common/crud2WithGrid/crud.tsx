@@ -6,6 +6,7 @@ import Dialog from "@material-ui/core/Dialog";
 import { ManagementInformationMetaData } from "registry/metaData/managementInformationMetaData";
 import { FormNew } from "./formNew";
 import { FormViewEdit } from "./formViewEdit";
+import { DeleteAction } from "./delete";
 
 const actions: ActionTypes[] = [
   {
@@ -69,6 +70,14 @@ export const Grid = () => {
             isProductEditedRef={dataChanged}
             closeDialog={closeDialog}
             serialNo={currentAction?.rows[0]?.id}
+          />
+        ) : (currentAction?.name ?? "") === "Delete" ? (
+          <DeleteAction
+            refID={refID}
+            productType={productType}
+            serialNo={currentAction?.rows.map((one) => one.id)}
+            closeDialog={closeDialog}
+            isProductEditedRef={dataChanged}
           />
         ) : null}
       </Dialog>

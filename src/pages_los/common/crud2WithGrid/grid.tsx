@@ -1,10 +1,4 @@
-import {
-  FC,
-  useContext,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import { useContext, useEffect, forwardRef, useImperativeHandle } from "react";
 import GridWrapper from "components/dataTableStatic";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
