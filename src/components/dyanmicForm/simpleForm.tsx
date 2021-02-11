@@ -40,33 +40,44 @@ export const SimpleForm: FC<FormProps> = ({
 
   return (
     <div>
-      <Typography component="h3" className={classes.title}>
-        {formDisplayName}
-      </Typography>
-      <div className={classes.form}>
-        <Grid
-          container={true}
-          spacing={formRenderConfig?.gridConfig?.container?.spacing ?? 2}
-          direction={
-            formRenderConfig?.gridConfig?.container?.direction ?? "row"
-          }
+      <Box display="flex">
+        <Typography component="h3" className={classes.title}>
+          {formDisplayName}
+        </Typography>
+        <Box flexGrow={1} />
+        <Button
+          type="button"
+          className={classes.tabsSubmitBtn}
+          onClick={handleSubmit}
         >
-          <Suspense fallback={<div>Loading...</div>}>{FormComponent}</Suspense>
-        </Grid>
-        <Box width={1} display="flex" justifyContent="flex-end">
+          {formRenderConfig?.labels?.complete ?? "Submit"}
+        </Button>
+        {typeof cancelFn === "function" ? (
           <Button
             type="button"
-            className={classes.submit}
-            onClick={handleSubmit}
+            className={classes.tabsSubmitBtn}
+            onClick={cancelFn}
           >
-            {formRenderConfig?.labels?.complete ?? "Submit"}
+            Cancel
           </Button>
-          {typeof cancelFn === "function" ? (
-            <Button type="button" className={classes.submit} onClick={cancelFn}>
-              Cancel
-            </Button>
-          ) : null}
-        </Box>
+        ) : null}
+      </Box>
+      <div className={classes.form}>
+        <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
+          <br />
+          <br />
+          <Grid
+            container={true}
+            spacing={formRenderConfig?.gridConfig?.container?.spacing ?? 2}
+            direction={
+              formRenderConfig?.gridConfig?.container?.direction ?? "row"
+            }
+          >
+            <Suspense fallback={<div>Loading...</div>}>
+              {FormComponent}
+            </Suspense>
+          </Grid>
+        </div>
       </div>
     </div>
   );

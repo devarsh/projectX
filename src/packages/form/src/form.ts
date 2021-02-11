@@ -12,6 +12,7 @@ import {
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
   formFieldsExcludedAtom,
+  formFieldsErrorWatcherAtom,
   subscribeToFormFieldsSelector,
 } from "./atoms";
 import { setIn, getIn } from "./util";
@@ -48,9 +49,10 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
           reset(formArrayFieldRowsAtom(arrayField));
         }
       }
+      reset(formArrayFieldRegistryAtom(formContext.formName));
       reset(formFieldRegistryAtom(formContext.formName));
-      reset(formArrayFieldRowsAtom(formContext.formName));
       reset(formFieldsExcludedAtom(formContext.formName));
+      reset(formFieldsErrorWatcherAtom(formContext.formName));
       reset(formAtom(formContext.formName));
     },
     [formContext.formName]
