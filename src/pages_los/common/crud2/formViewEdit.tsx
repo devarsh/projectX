@@ -119,6 +119,8 @@ export const FormViewEdit: FC<{
       onSubmitHandler={onSubmitHandler}
       defaultMode={defaultView ?? "view"}
       onCancleHandler={closeDialog}
+      disableGroupErrorDetection={true}
+      disableGroupExclude={true}
     />
   );
   return renderResult;

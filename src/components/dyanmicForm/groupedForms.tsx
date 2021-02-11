@@ -32,13 +32,24 @@ export const GroupedForm: FC<FormProps> = ({
   submitFn,
   cancelFn,
   defaultMode,
+  disableGroupErrorDetection,
+  disableGroupExclude,
 }) => {
   const defaultGroupName = "DefaultGroup";
-  const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
-  //Need to remove this code it defeats the purpose of the library maybe move it to an invididual component that
-  //wont have the whole form rerender
+  const disableGroupErrorDetectionStr = Boolean(disableGroupErrorDetection)
+    ? `${formName}-disableGroupErrorDetection`
+    : formName;
+  const disableGroupExcludeStr = Boolean(disableGroupExclude)
+    ? `${formName}-disableGroupExclude`
+    : formName;
+
+  // Need to remove this code it defeats the purpose of the library maybe move it to an invididual component that
+  // wont have the whole form rerender
+  const excludedFields = useRecoilValue(
+    formFieldsExcludedAtom(disableGroupErrorDetectionStr)
+  );
   const errorWatcherFields = useRecoilValue(
-    formFieldsErrorWatcherAtom(formName)
+    formFieldsErrorWatcherAtom(disableGroupErrorDetectionStr)
   );
   const classes = useStyles();
   const [formMode, setFormMode] = useState(defaultMode);

@@ -216,6 +216,8 @@ export interface FormWrapperProps {
   onCancleHandler?: any;
   hidden?: boolean;
   defaultMode?: "view" | "edit" | "new";
+  disableGroupExclude?: boolean;
+  disableGroupErrorDetection?: boolean;
 }
 
 export interface FormProps {
@@ -226,4 +228,6 @@ export interface FormProps {
   submitFn: SubmitFnType;
   cancelFn: any;
   defaultMode: "view" | "edit" | "new";
+  disableGroupExclude?: boolean;
+  disableGroupErrorDetection?: boolean;
 }

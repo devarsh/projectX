@@ -56,7 +56,7 @@ export const GridCRUD = ({
         actions={actions}
         setAction={setCurrentAction}
       />
-      <Dialog open={Boolean(currentAction)} maxWidth="md">
+      <Dialog open={Boolean(currentAction)} maxWidth="xl">
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
             refID={refID}

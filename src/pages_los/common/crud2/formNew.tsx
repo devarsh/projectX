@@ -81,6 +81,8 @@ export const FormNew: FC<{
       onCancleHandler={
         typeof cancelAction === "function" ? () => cancelAction(true) : null
       }
+      disableGroupErrorDetection={true}
+      disableGroupExclude={true}
     />
   );
   return renderResult;

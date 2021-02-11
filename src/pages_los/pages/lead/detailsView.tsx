@@ -55,7 +55,10 @@ export const DetailsView: FC<{
 
   return (
     <Fragment>
-      <HeaderDetails productData={productGridData} />
+      <HeaderDetails
+        productData={productGridData}
+        handleDialogClose={handleDialogClose}
+      />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="General Details" id="0" />
         <Tab label="Business Details" id="1" />
