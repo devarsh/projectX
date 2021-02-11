@@ -39,7 +39,6 @@ export const Grid = () => {
       dataChanged.current = false;
     }
   };
-  console.log(currentAction);
   const refID = "89";
   const productType = "management";
   return (
@@ -56,7 +55,6 @@ export const Grid = () => {
       <Dialog open={Boolean(currentAction)} onClose={closeDialog} maxWidth="md">
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
-            key="new"
             refID={refID}
             productType={productType}
             metaData={ManagementInformationMetaData}
@@ -65,7 +63,6 @@ export const Grid = () => {
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
-            key="viewEdit"
             refID={refID}
             productType={productType}
             metaData={ManagementInformationMetaData}
