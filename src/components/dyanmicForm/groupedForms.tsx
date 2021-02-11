@@ -47,8 +47,10 @@ export const GroupedForm: FC<FormProps> = ({
     handleSubmit,
     handleSubmitPartial,
     serverSentError,
+    isSubmitting,
     disableForm,
     enableForm,
+    clearError,
   } = useForm({
     onSubmit: submitFn,
     changeFormMode: setFormMode,
@@ -59,6 +61,7 @@ export const GroupedForm: FC<FormProps> = ({
         disableForm();
         setFormMode(mode);
       } else if (mode === "edit" || mode === "new") {
+        clearError();
         enableForm();
         setFormMode(mode);
       }
@@ -152,6 +155,8 @@ export const GroupedForm: FC<FormProps> = ({
       setActiveStep={setActiveStep}
       setFormModeState={setFormModeState}
       currentFormMode={formMode}
+      serverSentError={serverSentError}
+      isSubmitting={isSubmitting}
     />
   );
 };

@@ -76,6 +76,15 @@ export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
     },
     []
   );
+  const clearError = useRecoilCallback(
+    ({ set }) => () => {
+      set(formAtom(formContext.formName), (currVal) => ({
+        ...currVal,
+        serverSentError: "",
+      }));
+    },
+    []
+  );
 
   //clear form Atoms on unmount
   useEffect(() => {
@@ -436,6 +445,7 @@ export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
     handleClearPartial,
     enableForm,
     disableForm,
+    clearError,
     ...formState,
   };
 };

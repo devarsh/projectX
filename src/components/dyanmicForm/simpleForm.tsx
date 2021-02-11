@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { FormProps } from "./types";
 import { useStyles } from "./style";
+import Alert from "@material-ui/lab/Alert";
 
 export const SimpleForm: FC<FormProps> = ({
   fields,
@@ -17,7 +18,14 @@ export const SimpleForm: FC<FormProps> = ({
 }) => {
   const classes = useStyles();
   const [formMode, setFormMode] = useState(defaultMode);
-  const { handleSubmit, disableForm, enableForm } = useForm({
+  const {
+    handleSubmit,
+    serverSentError,
+    isSubmitting,
+    disableForm,
+    enableForm,
+    clearError,
+  } = useForm({
     onSubmit: submitFn,
     changeFormMode: setFormMode,
   });
@@ -27,6 +35,7 @@ export const SimpleForm: FC<FormProps> = ({
         setFormMode(mode);
         disableForm();
       } else if (mode === "edit" || mode === "new") {
+        clearError();
         setFormMode(mode);
         enableForm();
       }
@@ -83,6 +92,9 @@ export const SimpleForm: FC<FormProps> = ({
           </Button>
         ) : null}
       </Box>
+      {!isSubmitting && Boolean(serverSentError) ? (
+        <Alert severity="error">{serverSentError}</Alert>
+      ) : null}
       <div className={classes.form}>
         <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
           <br />

@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import Alert from "@material-ui/lab/Alert";
 
 export const MyTabs = ({
   classes,
@@ -19,6 +20,8 @@ export const MyTabs = ({
   handleCancel,
   setFormModeState,
   currentFormMode,
+  isSubmitting,
+  serverSentError,
 }) => (
   <Fragment>
     <Box display="flex">
@@ -57,6 +60,9 @@ export const MyTabs = ({
         </Button>
       ) : null}
     </Box>
+    {!isSubmitting && Boolean(serverSentError) ? (
+      <Alert severity="error">{serverSentError}</Alert>
+    ) : null}
     <div className={classes.form}>
       <Tabs value={Number(activeStep)}>
         {filteredFieldGroups.map((field) => {

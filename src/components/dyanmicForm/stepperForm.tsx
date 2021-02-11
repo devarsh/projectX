@@ -23,6 +23,8 @@ export const MyStepper = ({
   currentFormMode,
   fieldGroupsActiveStatus,
   isLastActiveStep,
+  isSubmitting,
+  serverSentError,
 }) => (
   <Fragment>
     <Typography component="h3" className={classes.title}>
