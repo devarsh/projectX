@@ -12,6 +12,9 @@ interface updateFormDataType {
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
+  changeFormMode?: any;
+  enableForm?: any;
+  disableForm?: any;
   productType: string;
   refID: string;
   serialNo?: string;
@@ -50,9 +53,14 @@ export const FormViewEdit: FC<{
       }
       endSubmit(false, errorMsg);
     },
-    onSuccess: (data, { endSubmit }) => {
+    onSuccess: (
+      data,
+      { endSubmit, changeFormMode, enableForm, disableForm }
+    ) => {
       queryClient.refetchQueries(["getLeadDataForEdit", productType, refID]);
-      endSubmit(true, "");
+      //endSubmit(true, "");
+      changeFormMode("view");
+      disableForm();
       isProductEditedRef.current = true;
       closeDialog();
     },
@@ -62,13 +70,19 @@ export const FormViewEdit: FC<{
     data,
     displayData,
     endSubmit,
-    setFieldError
+    setFieldError,
+    changeFormMode,
+    enableForm,
+    disableForm
   ) => {
     mutation.mutate({
       data,
       displayData,
       endSubmit,
       setFieldError,
+      changeFormMode,
+      enableForm,
+      disableForm,
       refID,
       productType,
       serialNo,

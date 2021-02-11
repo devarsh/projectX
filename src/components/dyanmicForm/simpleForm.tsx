@@ -19,6 +19,7 @@ export const SimpleForm: FC<FormProps> = ({
   const [formMode, setFormMode] = useState(defaultMode);
   const { handleSubmit, disableForm, enableForm } = useForm({
     onSubmit: submitFn,
+    changeFormMode: setFormMode,
   });
   const setFormModeState = useCallback(
     (mode: "view" | "edit" | "new") => {

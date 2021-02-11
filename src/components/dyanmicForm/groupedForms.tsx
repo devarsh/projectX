@@ -46,10 +46,12 @@ export const GroupedForm: FC<FormProps> = ({
   const {
     handleSubmit,
     handleSubmitPartial,
+    serverSentError,
     disableForm,
     enableForm,
   } = useForm({
     onSubmit: submitFn,
+    changeFormMode: setFormMode,
   });
   const setFormModeState = useCallback(
     (mode: "view" | "edit" | "new") => {

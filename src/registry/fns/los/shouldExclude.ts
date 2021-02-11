@@ -50,3 +50,21 @@ export const collateralPersonalGuarantee = (_, dependentValues) => {
   }
   return true;
 };
+
+export const projectDetailsTypeCostOfProject = (_, dependentValues) => {
+  if (
+    dependentValues["projectParticularDetails.particularType"]?.value === "01"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const projectDetailsTypeMeansOFFinance = (_, dependentValues) => {
+  if (
+    dependentValues["projectParticularDetails.particularType"]?.value === "02"
+  ) {
+    return false;
+  }
+  return true;
+};

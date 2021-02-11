@@ -71,6 +71,7 @@ export const FormNew: FC<{
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}
       defaultMode={"new"}
+      onCancleHandler={closeDialog}
     />
   );
   return renderResult;

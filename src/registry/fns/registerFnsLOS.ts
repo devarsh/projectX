@@ -27,3 +27,13 @@ registerFn(
   "shouldExcludeCollateralPrimarySecurity",
   shouldExclude.collateralPrimarySecurity
 );
+
+registerFn(
+  "shouldExcludeProjectDetailsTypeCostOfProject",
+  shouldExclude.projectDetailsTypeCostOfProject
+);
+
+registerFn(
+  "shouldExcludeProjectDetailsTypeMeansOFFinance",
+  shouldExclude.projectDetailsTypeMeansOFFinance
+);

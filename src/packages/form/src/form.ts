@@ -24,7 +24,7 @@ import {
 } from "./types";
 import { FormContext } from "./context";
 
-export const useForm = ({ onSubmit }: UseFormHookProps) => {
+export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
   const formContext = useContext(FormContext);
 
   const formState = useRecoilValue(formAtom(formContext.formName));
@@ -409,7 +409,10 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
                 resultValueObj,
                 resultDisplayValueObj,
                 endSubmit,
-                setFieldErrors
+                setFieldErrors,
+                changeFormMode,
+                enableForm,
+                disableForm
               );
             }
           } else {
