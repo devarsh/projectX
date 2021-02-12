@@ -623,6 +623,13 @@ export const GeneralDetailsMetaData: MetaDataType = {
       _fields: [
         {
           render: {
+            //@ts-ignore
+            componentType: "hidden",
+          },
+          name: "lineNo",
+        },
+        {
+          render: {
             componentType: "textField",
             group: 2,
           },

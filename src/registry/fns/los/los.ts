@@ -562,9 +562,21 @@ const LOSAPI = () => {
     }
   };
 
-  const deleteArrayFieldData = async (formState) => {
-    console.log(formState);
-    throw new Error("method not implimented");
+  const deleteGeneralDetailsArrayFieldData = async (formState) => {
+    // const { data, status } = await internalFetcher(`./lead/${type}/grid/data`, {
+    //   body: JSON.stringify({
+    //     request_data: {
+    //       ...formState,
+    //     },
+    //     channel: "W",
+    //   }),
+    // });
+    // if (status === "success") {
+    //   return data?.response_data;
+    // } else {
+    //   throw data?.error_data;
+    // }
+    throw new Error("method not impliemented");
   };
 
   return {
@@ -597,7 +609,7 @@ const LOSAPI = () => {
     checkLeadDataExist,
     getLeadDetailsGridData,
     deleteLeadData,
-    deleteArrayFieldData,
+    deleteGeneralDetailsArrayFieldData,
   };
 };
 

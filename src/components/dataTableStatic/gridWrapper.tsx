@@ -182,6 +182,7 @@ const transformMetaData = ({
   columns = attachcombinedValidationFns(columns);
   columns = sortColumnsBySequence(columns);
   const splittedActions = SplitActions(actions ?? null);
+  console.log(columns);
   return {
     hiddenColumns: hiddenColumns,
     columns: columns,

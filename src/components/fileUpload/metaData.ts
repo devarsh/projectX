@@ -40,10 +40,19 @@ const metaData: GridMetaDataType = {
     },
     {
       columnName: "Bank",
-      componentType: "default",
+      componentType: "editableAutocomplete",
       accessor: "bank",
-      sequence: 3,
+      sequence: 4,
       alignment: "left",
+      options: "getFirmType",
+    },
+    {
+      columnName: "Gender",
+      componentType: "editableSelect",
+      accessor: "gender",
+      sequence: 5,
+      alignment: "left",
+      options: "getBankList",
     },
   ],
   gridConfig: {
