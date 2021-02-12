@@ -7,6 +7,8 @@ import {
   useRowSelect,
   useColumnOrder,
   useGlobalFilter,
+  useGroupBy,
+  useExpanded,
 } from "react-table";
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -26,6 +28,9 @@ import {
 import { useCheckboxColumn } from "./components/useCheckbox";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { LinearProgressBarSpacer } from "components/dataTable/linerProgressBarSpacer";
+import ArrowRightSharpIcon from "@material-ui/icons/ArrowRightSharp";
+import ArrowDropDownSharpIcon from "@material-ui/icons/ArrowDropDownSharp";
+import IconButton from "@material-ui/core/IconButton";
 
 export const DataGrid = ({
   label,
@@ -49,6 +54,7 @@ export const DataGrid = ({
   hideHeader,
   disableGlobalFilter,
   disableRowSelect,
+  disableGroupBy,
   containerHeight,
 }) => {
   //@ts-ignore
@@ -77,11 +83,14 @@ export const DataGrid = ({
       deleteGridRow,
       disableSortBy: Boolean(disableSorting),
       disableGlobalFilter: Boolean(disableGlobalFilter),
+      disableGroupBy: Boolean(disableGroupBy),
     },
     useGlobalFilter,
-    useSortBy,
-    useRowSelect,
     useColumnOrder,
+    useGroupBy,
+    useSortBy,
+    useExpanded,
+    useRowSelect,
     useResizeColumns,
     useBlockLayout,
     !disableRowSelect && useCheckboxColumn
@@ -242,7 +251,26 @@ export const DataGrid = ({
                         cell={cell}
                         index={index}
                       >
-                        {cell.render("Cell", { index: index })}
+                        {cell.isGrouped ? (
+                          <>
+                            <IconButton
+                              {...row.getToggleRowExpandedProps([
+                                { style: { padding: 0 } },
+                              ])}
+                            >
+                              {row.isExpanded ? (
+                                <ArrowDropDownSharpIcon />
+                              ) : (
+                                <ArrowRightSharpIcon />
+                              )}
+                            </IconButton>
+                            {cell.render("Cell")} ({row.subRows.length})
+                          </>
+                        ) : cell.isAggregated ? (
+                          cell.render("Aggregated")
+                        ) : cell.isPlaceholder ? null : (
+                          cell.render("Cell", { index: index })
+                        )}
                       </RowCellWrapper>
                     );
                   })}

@@ -80,6 +80,11 @@ export const DefaultHeaderColumnRenderer = ({
           {column.columnName}
         </span>
       </TableSortLabel>
+      {column.canGroupBy ? (
+        <span {...column.getGroupByToggleProps()}>
+          {column.isGrouped ? "🛑 " : "👊 "}
+        </span>
+      ) : null}
       <div
         {...column.getResizerProps([
           {

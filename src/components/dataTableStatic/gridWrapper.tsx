@@ -158,6 +158,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         containerHeight={metaData?.gridConfig?.containerHeight}
         disableRowSelect={metaData?.gridConfig?.disableRowSelect}
         disableGlobalFilter={metaData?.gridConfig?.disableGlobalFilter}
+        disableGroupBy={metaData?.gridConfig?.disableGroupBy}
       />
     );
   }
