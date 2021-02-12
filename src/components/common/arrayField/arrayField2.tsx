@@ -82,10 +82,12 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     }, {})
   );
 
-  const { renderRows, push, isSubmitting } = useFieldArray({
-    arrayFieldName: name,
-    template: template.current,
-  });
+  const { renderRows, push, isSubmitting, formState, formName } = useFieldArray(
+    {
+      arrayFieldName: name,
+      template: template.current,
+    }
+  );
 
   let rows = renderRows(({ row, removeFn, rowIndex, fields, totalRows }) => {
     const oneRow = fields.map((field) => {
@@ -117,6 +119,9 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         row={row}
         totalRows={totalRows}
         isSubmitting={isSubmitting}
+        formState={formState}
+        formName={formName}
+        arrayFieldIDName={arrayFieldIDName}
       />
     );
   });
@@ -165,40 +170,63 @@ export const ArrayFieldRow = ({
   removeRowFn,
   totalRows,
   isSubmitting,
+  formState,
+  formName,
+  arrayFieldIDName,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const dialogAccept = useRecoilCallback(
     ({ snapshot }) => async () => {
-      const loader = snapshot.getLoadable(formFieldAtom(fieldKey));
+      const loader = snapshot.getLoadable(
+        formFieldAtom(`${formName}/${fieldKey}`)
+      );
       if (loader.state === "hasValue") {
         const field = loader.contents;
         if (Boolean(field.value)) {
           try {
-            if (typeof removeRowFn === "function") {
-              let result = await Promise.resolve(removeRowFn(field));
-              removeFn(rowIndex);
-            } else {
-              removeFn(rowIndex);
-            }
-          } catch (e) {}
-        } else {
-          removeFn(rowIndex);
+            setLoading(true);
+            await Promise.resolve(
+              removeRowFn({ ...formState, [arrayFieldIDName]: field.value })
+            );
+            setLoading(false);
+            setError("");
+            setSuccess(true);
+          } catch (e) {
+            console.log(e);
+            setLoading(false);
+            setError("unknown error occured");
+          }
         }
       }
-      setIsDialogOpen(false);
-      setLoading(false);
     },
-    [setLoading, setIsDialogOpen]
+    [setError, setSuccess, setLoading]
   );
   const dialogReject = useCallback(() => {
-    setIsDialogOpen(false);
-    setLoading(false);
-  }, [setLoading, setIsDialogOpen]);
+    if (success) {
+      removeFn(rowIndex);
+    } else {
+      setIsDialogOpen(false);
+      setTimeout(() => {
+        setLoading(false);
+        setError("");
+        setSuccess(false);
+      }, 1);
+    }
+  }, [
+    setIsDialogOpen,
+    setLoading,
+    setError,
+    setSuccess,
+    success,
+    removeFn,
+    rowIndex,
+  ]);
   const dialogOpen = useCallback(() => {
     setIsDialogOpen(true);
-    setLoading(true);
-  }, [setLoading, setIsDialogOpen]);
+  }, [setIsDialogOpen]);
 
   return (
     <Fragment key={row.fieldIndexKey}>
@@ -215,13 +243,15 @@ export const ArrayFieldRow = ({
         className={classes.arrayRowContainer}
       >
         {oneRow}
-        <IconButton
-          onClick={dialogOpen}
-          className={classes.arrayRowRemoveBtn}
-          disabled={isSubmitting}
-        >
-          <RemoveCircleOutlineIcon />
-        </IconButton>
+        {typeof removeFn === "function" ? (
+          <IconButton
+            onClick={dialogOpen}
+            className={classes.arrayRowRemoveBtn}
+            disabled={isSubmitting}
+          >
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+        ) : null}
       </Grid>
       <Dialog
         open={isDialogOpen}
@@ -229,16 +259,30 @@ export const ArrayFieldRow = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle>
-          {"Are you Sure you want to delete this record ?"}
+          {success
+            ? "Record successfully deleted"
+            : loading
+            ? "Please wait deleting record"
+            : Boolean(error)
+            ? error
+            : "Are you Sure you want to delete this record?"}
         </DialogTitle>
-        <DialogActions>
-          <Button onClick={dialogReject} color="primary" disabled={loading}>
-            Disagree
-          </Button>
-          <Button onClick={dialogAccept} color="primary" disabled={loading}>
-            Agree
-          </Button>
-        </DialogActions>
+        {success || error ? (
+          <DialogActions>
+            <Button onClick={dialogReject} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        ) : loading ? null : (
+          <DialogActions>
+            <Button onClick={dialogReject} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={dialogAccept} color="primary">
+              Agree
+            </Button>
+          </DialogActions>
+        )}
       </Dialog>
     </Fragment>
   );

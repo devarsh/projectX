@@ -1,4 +1,5 @@
-import { shouldExclude } from "./los";
+import { shouldExclude, LOSSDK } from "./los";
+
 import { singletonFunctionRegisrationFactory } from "components/utils";
 const { registerFn } = singletonFunctionRegisrationFactory;
 
@@ -37,3 +38,4 @@ registerFn(
   "shouldExcludeProjectDetailsTypeMeansOFFinance",
   shouldExclude.projectDetailsTypeMeansOFFinance
 );
+registerFn("deleteArrayFieldData", LOSSDK.deleteArrayFieldData);

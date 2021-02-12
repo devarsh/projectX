@@ -14,7 +14,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
         0: "Basic Details",
         1: "Address Details",
         2: "Banking Arrangements",
-        3: "Nature of Facility",
+        3: "Nature of Facility Present",
+        4: "Nature of Facility Proposed",
       },
       gridConfig: {
         item: {
@@ -420,7 +421,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "hidden",
           },
-          name: "serialNo",
+          name: "lineNo",
         },
 
         {
@@ -695,38 +696,18 @@ export const GeneralDetailsMetaData: MetaDataType = {
         md: 12,
         sm: 12,
       },
-      name: "natureOfFacilityDetails",
+      name: "presentNatureOfFacilityDetails",
       _fields: [
         {
           render: {
             //@ts-ignore
             componentType: "hidden",
-            group: 3,
           },
-          name: "serialNo",
+          name: "lineNo",
         },
-        {
-          render: {
-            componentType: "select",
-            group: 3,
-            sequence: 1,
-          },
-          name: "facilityType",
-          label: "Select Nature of Facility Type",
-          defaultValue: "00",
-          //@ts-ignore
-          options: "getNatureOfFacility",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-
         {
           render: {
             componentType: "textField",
-            group: 3,
             sequence: 2,
           },
 
@@ -739,63 +720,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
             sm: 3,
           },
         },
-
-        {
-          render: {
-            componentType: "textField",
-            group: 3,
-          },
-          name: "takeOverBalance",
-          label: "New / Takeover",
-          placeholder: "New / Takeover",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailProposed",
-        },
-
-        {
-          render: {
-            //@ts-ignore
-            componentType: "rateOfInt",
-            group: 3,
-          },
-          name: "requestedRateOfInterest",
-          label: "Requested ROI",
-          placeholder: "Requested ROI",
-          type: "text",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailProposed",
-        },
-
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-            group: 3,
-            sequence: 5,
-          },
-          name: "amount",
-          label: "Amount",
-          placeholder: "Amount",
-          type: "text",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailProposed",
-        },
-
         {
           render: {
             componentType: "select",
@@ -814,8 +738,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
         {
@@ -833,8 +755,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
         {
@@ -851,8 +771,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailPresent",
         },
 
         {
@@ -869,8 +787,95 @@ export const GeneralDetailsMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["facilityType"],
-          shouldExclude: "shouldExcludeGeneralDetailPresent",
+        },
+      ],
+    },
+
+    {
+      render: {
+        componentType: "arrayField",
+        group: 4,
+      },
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+      name: "proposedNatureOfFacilityDetails",
+      removeRowFn: "deleteArrayFieldData",
+      arrayFieldIDName: "serialNo",
+      _fields: [
+        {
+          render: {
+            //@ts-ignore
+            componentType: "hidden",
+          },
+          name: "lineNo",
+        },
+        {
+          render: {
+            componentType: "textField",
+
+            sequence: 2,
+          },
+          name: "facilityName",
+          label: "Nature of Facility",
+          placeholder: "Nature of Facility",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            componentType: "textField",
+            group: 3,
+          },
+          name: "outstandingBalance",
+          label: "New / Takeover",
+          placeholder: "New / Takeover",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "rateOfInt",
+            group: 3,
+          },
+          name: "rateOfInterest",
+          label: "Requested ROI",
+          placeholder: "Requested ROI",
+          type: "text",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "currency",
+            group: 3,
+            sequence: 5,
+          },
+          name: "amount",
+          label: "Amount",
+          placeholder: "Amount",
+          type: "text",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
         },
       ],
     },

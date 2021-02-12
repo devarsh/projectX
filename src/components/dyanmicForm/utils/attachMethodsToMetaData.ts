@@ -33,7 +33,7 @@ const inputMaskPrepareNotFound = (fieldKey) => (value) => {
 };
 const removeRowFnNotFound = (fieldKey) => (value) => {
   console.log(`no method for inputMask.prepare found at ${fieldKey}`);
-  return false;
+  throw new Error("method not implemeneted");
 };
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [

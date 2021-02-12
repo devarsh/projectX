@@ -4,7 +4,7 @@ export const ManagementInformationMetaData: MetaDataType = {
   form: {
     refID: 1667,
     name: "12300001",
-    label: "Personally Identifiable Information",
+    label: "Management Information",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
@@ -44,6 +44,14 @@ export const ManagementInformationMetaData: MetaDataType = {
   fields: [
     {
       render: {
+        //@ts-ignore
+        componentType: "hidden",
+        group: 1,
+      },
+      name: "serialNo",
+    },
+    {
+      render: {
         componentType: "select",
       },
       name: "salutation",
@@ -61,15 +69,6 @@ export const ManagementInformationMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
-    },
-
-    {
-      render: {
-        //@ts-ignore
-        componentType: "hidden",
-        group: 1,
-      },
-      name: "serialNo",
     },
 
     {
@@ -100,6 +99,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       placeholder: "First Name",
       required: true,
       validate: "getValidateValue",
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -116,7 +116,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       label: "Middle Name",
       placeholder: "Middle Name",
       required: false,
-
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -133,6 +133,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       label: "Last Name",
       placeholder: "Last Name",
       required: true,
+      maxLength: 50,
       validate: "getValidateValue",
       GridProps: {
         xs: 12,
@@ -160,25 +161,14 @@ export const ManagementInformationMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "numberFormat",
+        //@ts-ignore
+        componentType: "phoneNumber",
       },
       name: "mobileNo",
       type: "text",
       label: "Mobile No",
       placeholder: "Mobile No",
       required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [
-          { name: "required", params: ["Mobile No is required."] },
-          { name: "min", params: [10, "Mobile No should be 10 digit."] },
-          { name: "max", params: [10, "Mobile No should be 10 digit."] },
-        ],
-      },
-      FormatProps: {
-        format: "##########",
-      },
-      StartAdornment: "+91",
       GridProps: {
         xs: 12,
         md: 3,
@@ -188,17 +178,14 @@ export const ManagementInformationMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "numberFormat",
+        //@ts-ignore
+        componentType: "phoneNumber",
       },
       name: "alternateMobileNo",
       type: "text",
       label: "Alternate Mobile No",
       placeholder: "Alternate Mobile No",
       required: false,
-      FormatProps: {
-        format: "##########",
-      },
-      StartAdornment: "+91",
       GridProps: {
         xs: 12,
         md: 3,
@@ -229,10 +216,10 @@ export const ManagementInformationMetaData: MetaDataType = {
         componentType: "textField",
       },
       name: "email",
-      type: "text",
       label: "Email",
       placeholder: "Email",
       required: true,
+      maxLength: 50,
       schemaValidation: {
         type: "string",
         rules: [
@@ -252,7 +239,7 @@ export const ManagementInformationMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "panCard",
       },
-      name: "pan_no",
+      name: "panNumber",
       type: "text",
       label: "Pan Card Number",
       placeholder: "PAN Card number",
@@ -274,6 +261,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       type: "text",
       label: "Passport Number",
       placeholder: "Passport Number",
+      maxLength: 20,
       GridProps: {
         xs: 12,
         md: 3,
@@ -286,9 +274,10 @@ export const ManagementInformationMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "drivingLicence",
+      name: "drivingLicenceNo",
       type: "text",
       label: "Driving License Number",
+      maxLength: 20,
       placeholder: "Driving License Number",
       GridProps: {
         xs: 12,
@@ -302,9 +291,10 @@ export const ManagementInformationMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "dinLlpinNo",
+      name: "dinLlPinNo",
       type: "text",
       label: "Din LLPIN Number",
+      maxLength: 20,
       placeholder: "Din LLPIN Number",
       GridProps: {
         xs: 12,
@@ -318,7 +308,7 @@ export const ManagementInformationMetaData: MetaDataType = {
         componentType: "select",
         group: 1,
       },
-      name: "educationQualification",
+      name: "educationQalification",
       label: "Education Qualification",
       placeholder: "Education Qualification",
       required: true,
@@ -360,26 +350,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       type: "text",
       label: "Associate Company",
       placeholder: "Associate Company",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-        group: 1,
-      },
-      name: "landmark",
-      type: "text",
-      label: "Landmark",
-      placeholder: "Landmark",
-      required: true,
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["Landmark is required."] }],
-      },
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -389,7 +360,8 @@ export const ManagementInformationMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "numberFormat",
+        //@ts-ignore
+        componentType: "rateOfInt",
         group: 1,
       },
       name: "profitSharing",
@@ -397,10 +369,6 @@ export const ManagementInformationMetaData: MetaDataType = {
       placeholder: "Profit Sharing",
       required: true,
       defaultValue: "",
-
-      FormatProps: {
-        format: "################",
-      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -435,6 +403,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       name: "responsibility",
       required: true,
       label: "Responsibility",
+      maxLength: 500,
       GridProps: {
         xs: 12,
         md: 12,
@@ -646,7 +615,8 @@ export const ManagementInformationMetaData: MetaDataType = {
         md: 6,
         sm: 6,
       },
-      removeRowFn: "demp",
+      removeRowFn: "deleteArrayFieldData",
+      arrayFieldIDName: "lineNo",
       _fields: [
         {
           render: {
@@ -678,7 +648,7 @@ export const ManagementInformationMetaData: MetaDataType = {
             componentType: "currency",
             group: 1,
           },
-          name: "income",
+          name: "incomeAmount",
           label: "Income Amount",
           placeholder: "Income Amount",
           required: true,

@@ -562,6 +562,11 @@ const LOSAPI = () => {
     }
   };
 
+  const deleteArrayFieldData = async (formState) => {
+    console.log(formState);
+    throw new Error("method not implimented");
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -592,6 +597,7 @@ const LOSAPI = () => {
     checkLeadDataExist,
     getLeadDetailsGridData,
     deleteLeadData,
+    deleteArrayFieldData,
   };
 };
 

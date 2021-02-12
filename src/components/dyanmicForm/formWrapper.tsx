@@ -52,6 +52,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
           formState: {
             refID: metaData.form.refID,
             formCode: metaData.form.name,
+            ...metaData.form?.formState,
           },
         }}
       >

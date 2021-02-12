@@ -37,6 +37,7 @@ export const FormViewEdit: FC<{
   serialNo?: string;
   closeDialog?: any;
   defaultView?: "view" | "edit";
+  formState?: any;
 }> = ({
   refID,
   productType,
@@ -106,6 +107,10 @@ export const FormViewEdit: FC<{
   //@ts-ignore
   let errorMsg = `${result.error?.error_msg ?? ""}`;
   let formEditData = result.data;
+  metaData.form.formState = {
+    refID: refID,
+    serialNo: serialNo,
+  };
 
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />

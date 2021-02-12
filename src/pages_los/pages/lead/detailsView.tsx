@@ -10,6 +10,7 @@ import {
   GeneralDetailsMetaData,
   ManagementInformationMetaData,
   CollateralDetailsMetaData,
+  FinancialRatiosMetaData,
 } from "registry/metaData";
 import {
   FinancialGridMetaData,
@@ -121,7 +122,7 @@ export const DetailsView: FC<{
             refID={refID}
             productType={"financial"}
             isProductEditedRef={isProductEditedRef}
-            formMetaData={CollateralDetailsMetaData}
+            formMetaData={FinancialRatiosMetaData}
             gridMetaData={FinancialGridMetaData}
           />
         </TabPanel>

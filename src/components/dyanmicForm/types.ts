@@ -88,6 +88,7 @@ export interface FormMetaDataType {
     name: string;
     label: string;
   };
+  formState?: any;
 }
 
 export interface ComponentTypeProps {

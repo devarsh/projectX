@@ -91,6 +91,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
         return true;
       },
     },
+    StartAdornment: "+91",
   },
   panCard: {
     render: {

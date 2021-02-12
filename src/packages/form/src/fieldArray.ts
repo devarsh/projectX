@@ -447,5 +447,7 @@ export const useFieldArray = ({
     move,
     renderRows,
     isSubmitting: formState.isSubmitting,
+    formState: formContext.formState,
+    formName: formContext.formName,
   };
 };

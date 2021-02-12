@@ -327,6 +327,12 @@ export const ProjectDetailsMetadata: MetaDataType = {
       _fields: [
         {
           render: {
+            componentType: "hidden",
+          },
+          name: "lineNo",
+        },
+        {
+          render: {
             componentType: "select",
           },
           name: "particularType",

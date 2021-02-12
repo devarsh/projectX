@@ -62,7 +62,7 @@ export const CollateralDetailsMetaData: MetaDataType = {
           render: {
             componentType: "hidden",
           },
-          name: "serialNo",
+          name: "lineNo",
         },
         {
           render: {
@@ -147,7 +147,7 @@ export const CollateralDetailsMetaData: MetaDataType = {
           render: {
             componentType: "hidden",
           },
-          name: "serialNo",
+          name: "lineNo",
         },
         {
           render: {
@@ -274,7 +274,7 @@ export const CollateralDetailsMetaData: MetaDataType = {
           render: {
             componentType: "hidden",
           },
-          name: "serialNo",
+          name: "lineNo",
         },
         {
           render: {
