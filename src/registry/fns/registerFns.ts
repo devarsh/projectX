@@ -39,12 +39,15 @@ registerFn("securityType", miscSDK.getMiscVal("SECURITY_TYPE"));
 registerFn("businessSize", miscSDK.getMiscVal("BUSINESS_SIZE"));
 registerFn("getNatureOfFacility", miscSDK.getMiscVal("NATURE_FACILITY"));
 registerFn("projectParticularType", miscSDK.getMiscVal("PARTICULAR_TYPE"));
+registerFn("bankFacilityType", miscSDK.getMiscVal("ACCOUNT_TYPE"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
 registerFn("getIndustryType", miscSDK.getIndustryType);
 registerFn("getIndustrySubType", miscSDK.getIndustrySubType);
 registerFn("getsubProductDtl", others.getSubProductDtl(miscSDK.getProductType));
+
+registerFn("getPerfiosBankList", miscSDK.getPerfiosBankList);
 
 /*register others*/
 
