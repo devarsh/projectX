@@ -62,7 +62,7 @@ export const DetailsView: FC<{
       />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="General Details" id="0" />
-        <Tab label="Business Details" id="1" />
+        <Tab label="Bank Details" id="1" />
         <Tab label="Management Details" id="2" />
         <Tab label="Collateral Details" id="3" />
         <Tab label="Project Details" id="4" />
@@ -82,7 +82,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="1" key={1}>
           <SimpleCRUD
             refID={refID}
-            productType={"business"}
+            productType={"bank"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={BankDetailsMetadata}
             dataAlwaysExists={true}
