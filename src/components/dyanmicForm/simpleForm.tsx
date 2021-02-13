@@ -1,12 +1,22 @@
-import { FC, useRef, Suspense, useState, useEffect, useCallback } from "react";
-import { useForm, SubmitFnType } from "packages/form";
+import {
+  FC,
+  useRef,
+  Suspense,
+  useState,
+  useEffect,
+  useCallback,
+  Fragment,
+} from "react";
+import { useForm } from "packages/form";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { FormProps } from "./types";
-import { useStyles } from "./style";
 import Alert from "@material-ui/lab/Alert";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Container from "@material-ui/core/Container";
 
 export const SimpleForm: FC<FormProps> = ({
   fields,
@@ -16,7 +26,6 @@ export const SimpleForm: FC<FormProps> = ({
   cancelFn,
   defaultMode,
 }) => {
-  const classes = useStyles();
   const [formMode, setFormMode] = useState(defaultMode);
   const {
     handleSubmit,
@@ -57,48 +66,41 @@ export const SimpleForm: FC<FormProps> = ({
   }, []);
 
   return (
-    <div>
-      <Box display="flex">
-        <Typography component="h3" className={classes.title}>
-          {formDisplayName} - {formMode}
-        </Typography>
-        <Box flexGrow={1} />
-        {formMode === "view" ? (
-          <Button
-            type="button"
-            className={classes.tabsSubmitBtn}
-            onClick={() => setFormModeState("edit")}
-          >
-            Edit Form
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            className={classes.tabsSubmitBtn}
-            onClick={handleSubmit}
-          >
-            {formRenderConfig?.labels?.complete ?? "Submit"}
-          </Button>
-        )}
-        {typeof cancelFn === "function" || formMode === "edit" ? (
-          <Button
-            type="button"
-            className={classes.tabsSubmitBtn}
-            onClick={
-              formMode === "edit" ? () => setFormModeState("view") : cancelFn
-            }
-          >
-            Cancel
-          </Button>
+    <Fragment>
+      <AppBar position="relative" color="secondary">
+        <Toolbar>
+          <Typography component="div" variant="h6">
+            {formDisplayName} - {formMode}
+          </Typography>
+          <Box flexGrow={1} />
+          {formMode === "view" ? (
+            <Button type="button" onClick={() => setFormModeState("edit")}>
+              Edit Form
+            </Button>
+          ) : (
+            <Button type="button" onClick={handleSubmit}>
+              {formRenderConfig?.labels?.complete ?? "Submit"}
+            </Button>
+          )}
+          {typeof cancelFn === "function" || formMode === "edit" ? (
+            <Button
+              type="button"
+              onClick={
+                formMode === "edit" ? () => setFormModeState("view") : cancelFn
+              }
+            >
+              Cancel
+            </Button>
+          ) : null}
+        </Toolbar>
+        {!isSubmitting && Boolean(serverSentError) ? (
+          <Alert severity="error">{serverSentError}</Alert>
         ) : null}
-      </Box>
-      {!isSubmitting && Boolean(serverSentError) ? (
-        <Alert severity="error">{serverSentError}</Alert>
-      ) : null}
-      <div className={classes.form}>
+      </AppBar>
+      <Container maxWidth="lg" style={{ background: "white" }}>
+        <br />
+        <br />
         <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
-          <br />
-          <br />
           <Grid
             container={true}
             spacing={formRenderConfig?.gridConfig?.container?.spacing ?? 2}
@@ -111,7 +113,7 @@ export const SimpleForm: FC<FormProps> = ({
             </Suspense>
           </Grid>
         </div>
-      </div>
-    </div>
+      </Container>
+    </Fragment>
   );
 };

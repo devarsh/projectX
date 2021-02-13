@@ -5,15 +5,15 @@ import Button from "@material-ui/core/Button";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Alert from "@material-ui/lab/Alert";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Container from "@material-ui/core/Container";
 
 export const MyTabs = ({
-  classes,
   formDisplayName,
   activeStep,
   filteredFieldGroups,
   formRenderConfig,
-  defaultGroupName,
-  fieldGroups,
   steps,
   setActiveStep,
   handleSubmit,
@@ -22,48 +22,49 @@ export const MyTabs = ({
   currentFormMode,
   isSubmitting,
   serverSentError,
+  defaultGroupName,
+  fieldGroups,
+  classes,
 }) => (
   <Fragment>
-    <Box display="flex">
-      <Typography component="h3" className={classes.title}>
-        {formDisplayName} - {currentFormMode}
-      </Typography>
-      <Box flexGrow={1} />
-      {currentFormMode === "view" ? (
-        <Button
-          type="button"
-          className={classes.tabsSubmitBtn}
-          onClick={() => setFormModeState("edit")}
-        >
-          Edit Form
-        </Button>
-      ) : (
-        <Button
-          type="button"
-          className={classes.tabsSubmitBtn}
-          onClick={handleSubmit}
-        >
-          {formRenderConfig?.labels?.complete ?? "Submit"}
-        </Button>
-      )}
-      {typeof handleCancel === "function" || currentFormMode === "edit" ? (
-        <Button
-          type="button"
-          className={classes.tabsSubmitBtn}
-          onClick={
-            currentFormMode === "edit"
-              ? () => setFormModeState("view")
-              : handleCancel
-          }
-        >
-          Cancel
-        </Button>
+    <AppBar position="relative" color="secondary">
+      <Toolbar>
+        <Typography component="div" variant="h6">
+          {formDisplayName} - {currentFormMode}
+        </Typography>
+        <Box flexGrow={1} />
+        {currentFormMode === "view" ? (
+          <Button
+            color="primary"
+            type="button"
+            onClick={() => setFormModeState("edit")}
+          >
+            Edit Form
+          </Button>
+        ) : (
+          <Button type="button" color="primary" onClick={handleSubmit}>
+            {formRenderConfig?.labels?.complete ?? "Submit"}
+          </Button>
+        )}
+        {typeof handleCancel === "function" || currentFormMode === "edit" ? (
+          <Button
+            type="button"
+            color="primary"
+            onClick={
+              currentFormMode === "edit"
+                ? () => setFormModeState("view")
+                : handleCancel
+            }
+          >
+            Cancel
+          </Button>
+        ) : null}
+      </Toolbar>
+      {!isSubmitting && Boolean(serverSentError) ? (
+        <Alert severity="error">{serverSentError}</Alert>
       ) : null}
-    </Box>
-    {!isSubmitting && Boolean(serverSentError) ? (
-      <Alert severity="error">{serverSentError}</Alert>
-    ) : null}
-    <div className={classes.form}>
+    </AppBar>
+    <Container maxWidth="lg" style={{ background: "white" }}>
       <Tabs value={Number(activeStep)}>
         {filteredFieldGroups.map((field) => {
           return (
@@ -77,17 +78,10 @@ export const MyTabs = ({
           );
         })}
       </Tabs>
-      {/* <Box width={1} display="flex" justifyContent="flex-start">
-        <Typography component="h4" className={classes.subTitle}>
-          {typeof formRenderConfig.groups === "object"
-            ? formRenderConfig.groups[fieldGroups.current[activeStep]]
-            : defaultGroupName}
-        </Typography>
-      </Box> */}
       <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
         <br />
         <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
       </div>
-    </div>
+    </Container>
   </Fragment>
 );
