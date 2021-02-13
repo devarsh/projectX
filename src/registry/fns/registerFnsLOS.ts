@@ -8,25 +8,18 @@ registerFn(
   shouldExclude.generalDetailNatureofFacilityProposed
 );
 registerFn(
-  "shouldExcludeGeneralDetailPresent",
-  shouldExclude.generalDetailNatureofFacilityPresent
+  "shouldExcludeBankDetailNatureofFacilityPresent",
+  shouldExclude.bankDetailNatureofFacilityPresent
+);
+
+registerFn(
+  "shouldExcludeBankDetailArrangements",
+  shouldExclude.bankDetailBankingArrangements
 );
 
 registerFn(
   "shouldExcludeGeneralDetailBusinessNature",
   shouldExclude.generalDetailBusinessNature
-);
-
-registerFn("shouldExcludeCollateralSecurity", shouldExclude.collateralSecurity);
-
-registerFn(
-  "shouldExcludeCollateralPersonalGuarantee",
-  shouldExclude.collateralPersonalGuarantee
-);
-
-registerFn(
-  "shouldExcludeCollateralPrimarySecurity",
-  shouldExclude.collateralPrimarySecurity
 );
 
 registerFn(
