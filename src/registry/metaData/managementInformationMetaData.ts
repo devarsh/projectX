@@ -10,7 +10,13 @@ export const ManagementInformationMetaData: MetaDataType = {
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "simple",
+      renderType: "tabs",
+      groups: {
+        0: "Management Basic Details",
+        1: "Contact Details",
+        2: "Income Details",
+        3: "Bank Details",
+      },
       gridConfig: {
         item: {
           xs: 12,
@@ -44,15 +50,8 @@ export const ManagementInformationMetaData: MetaDataType = {
   fields: [
     {
       render: {
-        //@ts-ignore
-        componentType: "hidden",
-        group: 1,
-      },
-      name: "serialNo",
-    },
-    {
-      render: {
         componentType: "select",
+        group: 0,
       },
       name: "salutation",
       label: "Salutation",
@@ -74,6 +73,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
+        group: 0,
       },
       name: "gender",
       label: "Gender",
@@ -89,9 +89,11 @@ export const ManagementInformationMetaData: MetaDataType = {
         sm: 3,
       },
     },
+
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "firstName",
       type: "text",
@@ -110,6 +112,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "middleName",
       type: "text",
@@ -127,6 +130,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "lastName",
       type: "text",
@@ -146,6 +150,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "dob",
+        group: 0,
       },
       name: "dob",
       label: "Birth Date",
@@ -163,6 +168,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "phoneNumber",
+        group: 0,
       },
       name: "mobileNo",
       type: "text",
@@ -180,6 +186,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "phoneNumber",
+        group: 0,
       },
       name: "alternateMobileNo",
       type: "text",
@@ -192,9 +199,11 @@ export const ManagementInformationMetaData: MetaDataType = {
         sm: 3,
       },
     },
+
     {
       render: {
         componentType: "numberFormat",
+        group: 0,
       },
       name: "officeContactNo",
       type: "text",
@@ -214,6 +223,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
+        group: 0,
       },
       name: "email",
       label: "Email",
@@ -238,6 +248,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "panCard",
+        group: 0,
       },
       name: "panNumber",
       type: "text",
@@ -256,6 +267,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "passportNumber",
       type: "text",
@@ -273,6 +285,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "drivingLicenceNo",
       type: "text",
@@ -290,6 +303,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "dinLlPinNo",
       type: "text",
@@ -306,7 +320,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 1,
+        group: 0,
       },
       name: "educationQalification",
       label: "Education Qualification",
@@ -325,7 +339,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 1,
+        group: 0,
       },
       name: "experience",
       label: "Experience",
@@ -345,6 +359,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "textField",
+        group: 0,
       },
       name: "associatedCompany",
       type: "text",
@@ -362,7 +377,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "rateOfInt",
-        group: 1,
+        group: 0,
       },
       name: "profitSharing",
       label: "Profit Sharing",
@@ -380,7 +395,7 @@ export const ManagementInformationMetaData: MetaDataType = {
       render: {
         //@ts-ignore
         componentType: "currency",
-        group: 1,
+        group: 0,
       },
       name: "netWorth",
       label: "Net Worth",
@@ -398,7 +413,7 @@ export const ManagementInformationMetaData: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
+        group: 0,
       },
       name: "responsibility",
       required: true,
@@ -603,10 +618,11 @@ export const ManagementInformationMetaData: MetaDataType = {
         },
       ],
     },
+
     {
       render: {
         componentType: "arrayField",
-        group: 1,
+        group: 2,
       },
       name: "incomeDetails",
       label: "Income Details",
@@ -658,6 +674,163 @@ export const ManagementInformationMetaData: MetaDataType = {
             md: 6,
             sm: 6,
           },
+        },
+      ],
+    },
+
+    {
+      render: {
+        componentType: "arrayField",
+        group: 3,
+      },
+      name: "bankDetails",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+      _fields: [
+        {
+          render: {
+            //@ts-ignore
+            componentType: "hidden",
+          },
+          name: "lineNo",
+        },
+
+        {
+          render: {
+            componentType: "select",
+          },
+          name: "accoutType",
+          label: "Account Type",
+          defaultValue: "01",
+          //@ts-ignore
+          options: [
+            { label: "Saving", value: "01" },
+            { label: "Current", value: "02" },
+            { label: "Term Loan", value: "03" },
+            { label: "Overdraft", value: "04" },
+            { label: "Cash Credit", value: "05" },
+          ],
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            componentType: "textField",
+          },
+          name: "bankName",
+          label: "Name of Bank",
+          placeholder: "Name of Bank",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            componentType: "textField",
+            group: 2,
+          },
+          name: "branchName",
+          label: "Address",
+          placeholder: "Address",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            componentType: "textField",
+          },
+          name: "accountNo",
+          label: "Current A/C No",
+          placeholder: "Current A/C No",
+          type: "text",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "currencyWithoutWords",
+          },
+          name: "balance",
+          label: "Average Bank Balance",
+          placeholder: "Average Bank Balance",
+          type: "text",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["accoutType"],
+          shouldExclude: "shouldExcludeBankDetailArrangements",
+        },
+
+        {
+          render: {
+            componentType: "textField",
+          },
+
+          name: "facilityName",
+          label: "Nature of Facility",
+          placeholder: "Nature of Facility",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["accoutType"],
+          shouldExclude: "shouldExcludeBankDetailNatureofFacilityPresent",
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "currency",
+          },
+          name: "outstandingOn",
+          label: "O/s Amount as on",
+          placeholder: "O/s Amount as on",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["accoutType"],
+          shouldExclude: "shouldExcludeBankDetailNatureofFacilityPresent",
+        },
+
+        {
+          render: {
+            //@ts-ignore
+            componentType: "rateOfInt",
+          },
+          name: "rateOfInterest",
+          label: "Rate of Interest",
+          placeholder: "Rate of Interest",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+          dependentFields: ["accoutType"],
+          shouldExclude: "shouldExcludeBankDetailNatureofFacilityPresent",
         },
       ],
     },

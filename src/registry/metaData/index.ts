@@ -1,4 +1,4 @@
-export * from "./businessDetailsMetadata";
+export * from "./bankDetailsMetadata";
 export * from "./collateralDetailsMetadata";
 export * from "./generalDetailsMetadata";
 export * from "./managementInformationMetaData";
