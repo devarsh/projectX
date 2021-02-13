@@ -702,17 +702,11 @@ export const ManagementInformationMetaData: MetaDataType = {
           render: {
             componentType: "select",
           },
-          name: "accoutType",
+          name: "accountType",
           label: "Account Type",
-          defaultValue: "01",
+          defaultValue: "00",
           //@ts-ignore
-          options: [
-            { label: "Saving", value: "01" },
-            { label: "Current", value: "02" },
-            { label: "Term Loan", value: "03" },
-            { label: "Overdraft", value: "04" },
-            { label: "Cash Credit", value: "05" },
-          ],
+          options: "bankFacilityType",
           GridProps: {
             xs: 12,
             md: 3,
@@ -722,11 +716,16 @@ export const ManagementInformationMetaData: MetaDataType = {
 
         {
           render: {
-            componentType: "textField",
+            //@ts-ignore
+            componentType: "autocomplete",
           },
           name: "bankName",
           label: "Name of Bank",
           placeholder: "Name of Bank",
+          defaultValue: "00",
+          enableVirtualized: true,
+          //@ts-ignore
+          options: "getPerfiosBankList",
           GridProps: {
             xs: 12,
             md: 3,
@@ -739,7 +738,7 @@ export const ManagementInformationMetaData: MetaDataType = {
             componentType: "textField",
             group: 2,
           },
-          name: "branchName",
+          name: "address",
           label: "Address",
           placeholder: "Address",
           GridProps: {
@@ -754,8 +753,8 @@ export const ManagementInformationMetaData: MetaDataType = {
             componentType: "textField",
           },
           name: "accountNo",
-          label: "Current A/C No",
-          placeholder: "Current A/C No",
+          label: "A/C No",
+          placeholder: "A/C No",
           type: "text",
           GridProps: {
             xs: 12,
@@ -769,7 +768,7 @@ export const ManagementInformationMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "currencyWithoutWords",
           },
-          name: "balance",
+          name: "averageBalance",
           label: "Average Bank Balance",
           placeholder: "Average Bank Balance",
           type: "text",
@@ -778,24 +777,25 @@ export const ManagementInformationMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["accoutType"],
+          dependentFields: ["accountType"],
           shouldExclude: "shouldExcludeBankDetailArrangements",
         },
 
         {
           render: {
-            componentType: "textField",
+            //@ts-ignore
+            componentType: "datePicker",
           },
-
-          name: "facilityName",
-          label: "Nature of Facility",
-          placeholder: "Nature of Facility",
+          name: "outstandingAmountAsOn",
+          label: "O/s Amount as on",
+          placeholder: "dd/mm/yyyy",
+          format: "dd/MM/yyyy",
           GridProps: {
             xs: 12,
             md: 3,
             sm: 3,
           },
-          dependentFields: ["accoutType"],
+          dependentFields: ["accountType"],
           shouldExclude: "shouldExcludeBankDetailNatureofFacilityPresent",
         },
 
@@ -803,16 +803,17 @@ export const ManagementInformationMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "currency",
+            group: 3,
           },
-          name: "outstandingOn",
-          label: "O/s Amount as on",
-          placeholder: "O/s Amount as on",
+          name: "outstandingAmount",
+          label: "O/s Amount",
+          placeholder: "O/s Amount",
           GridProps: {
             xs: 12,
             md: 3,
             sm: 3,
           },
-          dependentFields: ["accoutType"],
+          dependentFields: ["accountType"],
           shouldExclude: "shouldExcludeBankDetailNatureofFacilityPresent",
         },
 
@@ -829,7 +830,7 @@ export const ManagementInformationMetaData: MetaDataType = {
             md: 3,
             sm: 3,
           },
-          dependentFields: ["accoutType"],
+          dependentFields: ["accountType"],
           shouldExclude: "shouldExcludeBankDetailNatureofFacilityPresent",
         },
       ],

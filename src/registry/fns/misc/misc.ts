@@ -188,6 +188,19 @@ const MiscAPI = () => {
     }
   };
 
+  const getPerfiosBankList = async (): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher("./perfiosbanklist", {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.bank_cd,
+        label: one?.bank_name,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     getMiscVal,
@@ -197,6 +210,7 @@ const MiscAPI = () => {
     getPincodeExternal,
     getIndustryType,
     getIndustrySubType,
+    getPerfiosBankList,
   };
 };
 

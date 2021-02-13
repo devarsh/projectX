@@ -7,9 +7,9 @@ export const generalDetailNatureofFacilityProposed = (_, dependentValues) => {
 
 export const bankDetailNatureofFacilityPresent = (_, dependentValues) => {
   if (
-    dependentValues["bankDetails.accoutType"]?.value === "03" ||
-    dependentValues["bankDetails.accoutType"]?.value === "04" ||
-    dependentValues["bankDetails.accoutType"]?.value === "05"
+    dependentValues["bankDetails.accountType"]?.value === "L1" ||
+    dependentValues["bankDetails.accountType"]?.value === "L2" ||
+    dependentValues["bankDetails.accountType"]?.value === "L3"
   ) {
     return false;
   }
@@ -18,8 +18,8 @@ export const bankDetailNatureofFacilityPresent = (_, dependentValues) => {
 
 export const bankDetailBankingArrangements = (_, dependentValues) => {
   if (
-    dependentValues["bankDetails.accoutType"]?.value === "01" ||
-    dependentValues["bankDetails.accoutType"]?.value === "02"
+    dependentValues["bankDetails.accountType"]?.value === "D1" ||
+    dependentValues["bankDetails.accountType"]?.value === "D2"
   ) {
     return false;
   }
