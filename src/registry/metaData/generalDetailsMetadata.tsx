@@ -13,9 +13,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
       groups: {
         0: "Basic Details",
         1: "Address Details",
-        2: "Banking Arrangements",
-        3: "Nature of Facility Present",
-        4: "Nature of Facility Proposed",
+        2: "Business Details",
+        3: "Nature of Facility Proposed",
       },
       gridConfig: {
         item: {
@@ -611,190 +610,318 @@ export const GeneralDetailsMetaData: MetaDataType = {
 
     {
       render: {
-        componentType: "arrayField",
+        componentType: "textField",
         group: 2,
       },
-      name: "bankingArrangement",
+      name: "companyHistory",
+      label: "Company Brief History",
+      placeholder: "Company Brief History",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyService",
+      label: "Company Services",
+      placeholder: "Company Services",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyEndUseProducts",
+      label: "End Use of the Products",
+      placeholder: "End Use of the Products",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyMaterialsName",
+      label: "Name of Raw Materials",
+      placeholder: "Name of Raw Materials",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companySuppliersName",
+      label: "Name of Major Suppliers",
+      placeholder: "Name of Major Suppliers",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyPaymentTermSuppliers",
+      label: "Payment Terms with Suppliers",
+      placeholder: "Payment Terms with Suppliers",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyCustomersName",
+      label: "Name of Major Customers",
+      placeholder: "Name of Major Customers",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyPaymentTerm",
+      label: "Payment terms with Customers",
+      placeholder: "Payment terms with Customers",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyOrderBookPosition",
+      label: "Current Order Book Position",
+      placeholder: "Current Order Book Position",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyPolicy",
+      label: "Marketing & Distribution Policy/Strategy",
+      placeholder: "Marketing & Distribution Policy/Strategy",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyCompetitors",
+      label: "Name of Competitors",
+      placeholder: "Name of Competitors",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyExportCountry",
+      label: "Name of Major Countries where Exporting",
+      placeholder: "Name of Major Countries where Exporting",
+      defaultValue: "",
+      maxLength: 6000,
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+    },
+
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyExportRatio",
+      label: "Domestic and export sales ratio",
+      placeholder: "Domestic and export sales ratio",
+      defaultValue: "",
+      maxLength: 10,
       GridProps: {
         xs: 12,
-        md: 12,
-        sm: 12,
+        md: 3,
+        sm: 3,
       },
-      _fields: [
-        {
-          render: {
-            componentType: "textField",
-            group: 2,
-          },
-          name: "bankName",
-          label: "Name of Bank",
-          placeholder: "Name of Bank",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
+    },
 
-        {
-          render: {
-            componentType: "textField",
-            group: 2,
-          },
-          name: "branchName",
-          label: "Address",
-          placeholder: "Address",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
+    {
+      render: {
+        componentType: "numberFormat",
+        group: 2,
+      },
+      name: "companyEmployeeCount",
+      label: "No. of Employees",
+      placeholder: "No. of Employees",
+      defaultValue: "",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      FormatProps: {
+        format: "##########",
+      },
+    },
 
-        {
-          render: {
-            componentType: "textField",
-            group: 2,
-          },
-          name: "accountNo",
-          label: "Current A/C No",
-          placeholder: "Current A/C No",
-          type: "text",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyLicence",
+      label: "Other Industry specific approvals/license",
+      placeholder: "Other Industry specific approvals/license",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
 
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currencyWithoutWords",
-            group: 2,
-          },
-          name: "balance",
-          label: "Average Bank Balance",
-          placeholder: "Average Bank Balance",
-          type: "text",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-      ],
+    {
+      render: {
+        componentType: "textField",
+        group: 2,
+      },
+      name: "companyAwards",
+      label: "Any awards/Recognition received",
+      placeholder: "Any awards/Recognition received",
+      defaultValue: "",
+      maxLength: 250,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
     },
 
     {
       render: {
         componentType: "arrayField",
         group: 3,
-      },
-      GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
-      },
-      name: "presentNatureOfFacilityDetails",
-      _fields: [
-        {
-          render: {
-            //@ts-ignore
-            componentType: "hidden",
-          },
-          name: "lineNo",
-        },
-        {
-          render: {
-            componentType: "textField",
-            sequence: 2,
-          },
-
-          name: "facilityName",
-          label: "Nature of Facility",
-          placeholder: "Nature of Facility",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-        {
-          render: {
-            componentType: "select",
-            group: 3,
-            sequence: 6,
-          },
-
-          name: "bankName",
-          label: "Name of Bank",
-          placeholder: "Name of Bank",
-          defaultValue: "00",
-          //@ts-ignore
-          options: "getBankList",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-            group: 3,
-            sequence: 7,
-          },
-          name: "outstandingOn",
-          label: "O/s Amount as on",
-          placeholder: "O/s Amount as on",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-            group: 3,
-          },
-          name: "outstandingBalance",
-          label: "O/s Amount as Balance",
-          placeholder: "O/s Amount as Balance",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-
-        {
-          render: {
-            //@ts-ignore
-            componentType: "rateOfInt",
-            group: 3,
-          },
-          name: "rateOfInterest",
-          label: "Rate of Interest",
-          placeholder: "Rate of Interest",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-      ],
-    },
-
-    {
-      render: {
-        componentType: "arrayField",
-        group: 4,
       },
       GridProps: {
         xs: 12,
@@ -831,7 +958,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
         {
           render: {
             componentType: "textField",
-            group: 3,
           },
           name: "outstandingBalance",
           label: "New / Takeover",
@@ -847,7 +973,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "rateOfInt",
-            group: 3,
           },
           name: "rateOfInterest",
           label: "Requested ROI",
@@ -864,7 +989,6 @@ export const GeneralDetailsMetaData: MetaDataType = {
           render: {
             //@ts-ignore
             componentType: "currency",
-            group: 3,
             sequence: 5,
           },
           name: "amount",

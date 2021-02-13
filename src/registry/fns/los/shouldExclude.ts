@@ -5,8 +5,22 @@ export const generalDetailNatureofFacilityProposed = (_, dependentValues) => {
   return true;
 };
 
-export const generalDetailNatureofFacilityPresent = (_, dependentValues) => {
-  if (dependentValues["natureOfFacilityDetails.facilityType"]?.value === "01") {
+export const bankDetailNatureofFacilityPresent = (_, dependentValues) => {
+  if (
+    dependentValues["bankDetails.accoutType"]?.value === "03" ||
+    dependentValues["bankDetails.accoutType"]?.value === "04" ||
+    dependentValues["bankDetails.accoutType"]?.value === "05"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const bankDetailBankingArrangements = (_, dependentValues) => {
+  if (
+    dependentValues["bankDetails.accoutType"]?.value === "01" ||
+    dependentValues["bankDetails.accoutType"]?.value === "02"
+  ) {
     return false;
   }
   return true;

@@ -6,7 +6,7 @@ import { queryClient } from "cache";
 import { ClearCacheContext } from "cache";
 import { HeaderDetails } from "./headerDetails";
 import {
-  BussinessDetailsMetadata,
+  BankDetailsMetadata,
   GeneralDetailsMetaData,
   ManagementInformationMetaData,
   CollateralDetailsMetaData,
@@ -84,7 +84,7 @@ export const DetailsView: FC<{
             refID={refID}
             productType={"business"}
             isProductEditedRef={isProductEditedRef}
-            formMetaData={BussinessDetailsMetadata}
+            formMetaData={BankDetailsMetadata}
             dataAlwaysExists={true}
             closeDialog={undefined}
           />
