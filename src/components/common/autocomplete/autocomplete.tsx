@@ -114,6 +114,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     excluded,
     incomingMessage,
     whenToRunValidation,
+    value,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -138,7 +139,9 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   }, [isFieldFocused]);
 
   const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [lastUpdatedTime, setLastUpdatedTime] = useState(new Date().getTime());
+  const initDoneRef = useRef(false);
+  const defaultValueRef = useRef<any>(null);
   const { loadingOptions } = useOptionsFetcher(
     formState,
     options,
@@ -151,6 +154,41 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     _optionsKey,
     disableCaching
   );
+
+  //to set the default value
+  useEffect(() => {
+    let _internalValue: any | any[] = value;
+    if (
+      !initDoneRef.current &&
+      Boolean(_internalValue) &&
+      _options.length > 1
+    ) {
+      if (!Array.isArray(_internalValue)) {
+        console.log(_internalValue);
+        _internalValue = [value];
+      }
+      let answers: OptionsProps[] = [];
+      for (let i = 0; i < _options.length && _internalValue.length > 0; i++) {
+        let foundIndex = _internalValue.findIndex((one) =>
+          one == _options[i].value ? true : false
+        );
+        if (foundIndex > -1) {
+          answers.push(_options[i]);
+          const prev = _internalValue.slice(0, foundIndex);
+          const next = _internalValue.slice(foundIndex + 1);
+          _internalValue = [...prev, ...next];
+        }
+      }
+      initDoneRef.current = true;
+      if (multiple) {
+        defaultValueRef.current = answers;
+      } else {
+        defaultValueRef.current = answers[0];
+      }
+      setLastUpdatedTime(new Date().getTime());
+    }
+  }, [loadingOptions, _options, multiple]);
+
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
@@ -161,13 +199,21 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     <Suspense fallback={"loading..."}>
       <Autocomplete
         {...others}
+        key={`${fieldKey}-${lastUpdatedTime}`}
+        //@ts-ignore
+        defaultValue={defaultValueRef.current}
         limitTags={limitTags ?? 2}
-        key={fieldKey}
         multiple={multiple}
         disableClearable={disableClearable}
         freeSolo={freeSolo}
         options={_options}
         getOptionLabel={getOptionLabel}
+        getOptionSelected={(option, value) => {
+          if (option.value == value) {
+            return true;
+          }
+          return false;
+        }}
         ListboxComponent={
           Boolean(enableVirtualized)
             ? (ListBoxComponentVirtualized as ComponentType<
@@ -188,7 +234,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
             }
             return one;
           });
-
           if (!Boolean(multiple) && Array.isArray(value)) {
             //@ts-ignore
             handleChange(value[0]);
@@ -228,45 +273,45 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
             );
           });
         }}
-        renderInput={(params) => (
-          <TextField
-            {...TextFieldProps}
-            {...params}
-            name={name}
-            label={label}
-            placeholder={placeholder}
-            value={inputValue}
-            autoComplete="disabled"
-            onChange={(e) => setInputValue(e.target.value)}
-            type="text"
-            error={!isSubmitting && isError}
-            required={required}
-            helperText={!isSubmitting && isError ? error : null}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <Fragment>
-                  {validationRunning || loadingOptions ? (
-                    <CircularProgress
-                      color="primary"
-                      variant="indeterminate"
-                      {...CircularProgressProps}
-                    />
-                  ) : null}
-                  {params.InputProps.endAdornment}
-                </Fragment>
-              ),
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: "new-user-street-address",
-            }}
-          />
-        )}
-        renderOption={(option, { selected }) => {
+        renderInput={(params) => {
+          return (
+            <TextField
+              {...TextFieldProps}
+              {...params}
+              name={name}
+              label={label}
+              placeholder={placeholder}
+              autoComplete="disabled"
+              type="text"
+              error={!isSubmitting && isError}
+              required={required}
+              helperText={!isSubmitting && isError ? error : null}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <Fragment>
+                    {validationRunning || loadingOptions ? (
+                      <CircularProgress
+                        color="primary"
+                        variant="indeterminate"
+                        {...CircularProgressProps}
+                      />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </Fragment>
+                ),
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: "new-user-street-address",
+              }}
+            />
+          );
+        }}
+        renderOption={(option, { selected, inputValue }) => {
           let label = getOptionLabel(option);
           const matches = match(label, inputValue);
           const parts = parse(label, matches);

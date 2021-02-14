@@ -1,5 +1,7 @@
 import {
   FC,
+  useEffect,
+  useRef,
   useState,
   Fragment,
   ComponentType,
@@ -82,21 +84,59 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   disableCaching,
   ...others
 }) => {
-  const [inputValue, setInputValue] = useState("");
   const isTouched = Boolean(touched);
   const isError = isTouched && Boolean(error);
 
   const [_options, setOptions] = useState<OptionsProps[]>([]);
+  const [lastUpdatedTime, setLastUpdatedTime] = useState(new Date().getTime());
+  const initDoneRef = useRef(false);
+  const defaultValueRef = useRef<any>(null);
   const { loadingOptions } = useOptionsFetcherSimple(
     options,
     setOptions,
     _optionsKey,
     disableCaching
   );
+
+  //to set the default value
+  useEffect(() => {
+    let _internalValue: any | any[] = value;
+    if (
+      !initDoneRef.current &&
+      Boolean(_internalValue) &&
+      _options.length > 1
+    ) {
+      if (!Array.isArray(_internalValue)) {
+        console.log(_internalValue);
+        _internalValue = [value];
+      }
+      let answers: OptionsProps[] = [];
+      for (let i = 0; i < _options.length && _internalValue.length > 0; i++) {
+        let foundIndex = _internalValue.findIndex((one) =>
+          one == _options[i].value ? true : false
+        );
+        if (foundIndex > -1) {
+          answers.push(_options[i]);
+          const prev = _internalValue.slice(0, foundIndex);
+          const next = _internalValue.slice(foundIndex + 1);
+          _internalValue = [...prev, ...next];
+        }
+      }
+      initDoneRef.current = true;
+      if (multiple) {
+        defaultValueRef.current = answers;
+      } else {
+        defaultValueRef.current = answers[0];
+      }
+      setLastUpdatedTime(new Date().getTime());
+    }
+  }, [loadingOptions, _options, multiple]);
+
   return (
     <Suspense fallback={"loading..."}>
       <Autocomplete
         {...others}
+        //@ts-ignore
         multiple={multiple}
         disableClearable={disableClearable}
         freeSolo={freeSolo}
@@ -167,9 +207,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
             {...params}
             label={label}
             placeholder={placeholder}
-            value={inputValue}
             autoComplete="disabled"
-            onChange={(e) => setInputValue(e.target.value)}
             type="text"
             error={isError}
             required={required}
@@ -198,7 +236,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
             }}
           />
         )}
-        renderOption={(option, { selected }) => {
+        renderOption={(option, { selected, inputValue }) => {
           let label = getOptionLabel(option);
           const matches = match(label, inputValue);
           const parts = parse(label, matches);
