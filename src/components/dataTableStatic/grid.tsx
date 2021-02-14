@@ -211,7 +211,7 @@ export const DataGrid = ({
               },
             ])}
           >
-            {rows.length <= 0 ? (
+            {rows.length <= 0 && loading === false ? (
               <div
                 style={{
                   height: "calc(100vh - 35*8px)",
