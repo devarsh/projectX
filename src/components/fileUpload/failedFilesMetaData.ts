@@ -53,7 +53,7 @@ const failedFilesMetaData: GridMetaDataType = {
   ],
   gridConfig: {
     dense: true,
-    gridLabel: "Failed To Upload These Files",
+    gridLabel: "Failed To Add These Files For Upload",
     rowIdColumn: "id",
     defaultColumnConfig: {
       width: 150,
@@ -64,6 +64,7 @@ const failedFilesMetaData: GridMetaDataType = {
     disableRowSelect: true,
     disableGlobalFilter: true,
     disableSorting: true,
+    disableGroupBy: true,
     hideHeader: true,
   },
 };

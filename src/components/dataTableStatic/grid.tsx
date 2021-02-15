@@ -123,9 +123,15 @@ export const DataGrid = ({
   };
   const handleRowDoubleClickAction = (row) => (e) => {
     e.preventDefault();
+    console.log(row);
     setGridAction({
       name: doubleClickAction.actionName,
-      rows: [row],
+      rows: [
+        {
+          data: row?.original,
+          id: row?.id,
+        },
+      ],
     });
   };
 

@@ -66,6 +66,8 @@ const metaData: GridMetaDataType = {
     },
     allowColumnReordering: true,
     disableSorting: true,
+    disableGlobalFilter: true,
+    disableGroupBy: true,
     hideHeader: true,
     containerHeight: {
       min: "40vh",

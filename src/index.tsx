@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -15,7 +15,9 @@ require("mock");
 
 const Redirect = () => {
   const navigate = useNavigate();
-  setTimeout(() => navigate("crm/"), 1);
+  useEffect(() => {
+    navigate("crm/");
+  }, []);
   return null;
 };
 

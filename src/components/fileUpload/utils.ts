@@ -53,14 +53,14 @@ export const isDuplicate = (file: FileObjectType, fileIDs: string[]) => {
   return Array.isArray(fileIDs) && fileIDs.indexOf(file.id) > -1;
 };
 
-export function downloadFile(fileObj: FileObjectType) {
-  const url =
-    typeof fileObj.file === "object" && URL.createObjectURL(fileObj.blob);
+export function downloadFile(fileObj: File, fileName?: string) {
+  const url = typeof fileObj === "object" && URL.createObjectURL(fileObj);
 
   const a = document.createElement("a");
   a.href = String(url);
 
-  a.download = fileObj.name ?? `download-${new Date().getUTCMilliseconds()}`;
+  a.download =
+    fileName ?? fileObj.name ?? `download-${new Date().getUTCMilliseconds()}`;
   const clickHandler = () => {
     setTimeout(() => {
       URL.revokeObjectURL(String(url));

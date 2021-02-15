@@ -1,4 +1,4 @@
-import { useState, useCallback, Fragment } from "react";
+import { useState, useCallback, Fragment, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -7,9 +7,12 @@ import Collapse from "@material-ui/core/Collapse";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import Grid from "components/dataTableStatic";
+import { ActionTypes } from "components/dataTable";
 import metaData from "./metaData";
 import failedFilesMetaData from "./failedFilesMetaData";
 import { UploadTarget } from "./uploadTarget";
@@ -21,7 +24,7 @@ import {
   isDuplicate,
 } from "./utils";
 import { FileObjectType } from "./type";
-import { DialogActions, DialogContent } from "@material-ui/core";
+import { PDFViewer, ImageViewer, NoPreview } from "./preView";
 
 const transformFileObject = async (
   file: File,
@@ -42,11 +45,26 @@ const transformFileObject = async (
   };
 };
 
+const actions: ActionTypes[] = [
+  {
+    actionName: "Delete",
+    actionLabel: "Delete",
+    multiple: true,
+    rowDoubleClick: false,
+  },
+  {
+    actionName: "View",
+    actionLabel: "View File",
+    multiple: false,
+    rowDoubleClick: true,
+  },
+];
+
 export const FileUploadControl = () => {
   const [files, setFiles] = useState<FileObjectType[]>([]);
   const [failedFiles, setFailedFailes] = useState<FileObjectType[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [action, setAction] = useState(false);
+  const [action, setAction] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const allowedExtensions = ["jpg", "png", "pdf"];
   const maxAllowedSize = 1024 * 1024 * 3;
@@ -91,6 +109,15 @@ export const FileUploadControl = () => {
     },
     [setFiles, setFailedFailes, setOpenDialog]
   );
+  useEffect(() => {
+    if (action?.name === "Delete") {
+      const toDeleteObjs = action?.rows?.map?.((one) => one.id);
+      const newFiles = files.filter((one) => toDeleteObjs.indexOf(one.id) < 0);
+      setFiles(newFiles);
+      setAction(null);
+    }
+    console.log(action);
+  }, [action]);
 
   return (
     <Fragment>
@@ -100,11 +127,15 @@ export const FileUploadControl = () => {
           action={
             <CardActions>
               <div style={{ flexGrow: 2 }} />
-              <Button disabled={loading} size="small" color="primary">
+              <Button
+                disabled={loading || files.length <= 0}
+                size="small"
+                color="primary"
+              >
                 Upload
               </Button>
               <Button
-                disabled={loading}
+                disabled={loading || files.length <= 0}
                 onClick={() => setFiles([])}
                 size="small"
                 color="primary"
@@ -123,11 +154,17 @@ export const FileUploadControl = () => {
             />
           </DndProvider>
           <Collapse in={files.length > 0}>
-            <Grid finalMetaData={metaData} data={files} setData={setFiles} />
+            <Grid
+              finalMetaData={metaData}
+              data={files}
+              setData={setFiles}
+              actions={actions}
+              setAction={setAction}
+            />
           </Collapse>
         </CardContent>
       </Card>
-      <Dialog open={openDialog} maxWidth="md">
+      <Dialog open={openDialog} maxWidth="lg">
         <DialogTitle>Failed To Upload Following Files</DialogTitle>
         <DialogContent>
           <Grid
@@ -146,6 +183,28 @@ export const FileUploadControl = () => {
             Ok
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        open={Boolean(action)}
+        maxWidth="lg"
+        onClose={() => setAction(null)}
+        PaperProps={{
+          style: { width: "100%", height: "100%" },
+        }}
+      >
+        {action?.rows[0]?.data?._mimeType?.includes("pdf") ? (
+          <PDFViewer
+            blob={action?.rows[0]?.data?.blob}
+            fileName={action?.rows[0]?.data?.name}
+          />
+        ) : action?.rows[0]?.data?._mimeType?.includes("image") ? (
+          <ImageViewer
+            blob={action?.rows[0]?.data?.blob}
+            fileName={action?.rows[0]?.data?.name}
+          />
+        ) : (
+          <NoPreview />
+        )}
       </Dialog>
     </Fragment>
   );
