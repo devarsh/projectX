@@ -562,21 +562,28 @@ const LOSAPI = () => {
     }
   };
 
-  const deleteGeneralDetailsArrayFieldData = async (formState) => {
-    // const { data, status } = await internalFetcher(`./lead/${type}/grid/data`, {
-    //   body: JSON.stringify({
-    //     request_data: {
-    //       ...formState,
-    //     },
-    //     channel: "W",
-    //   }),
-    // });
-    // if (status === "success") {
-    //   return data?.response_data;
-    // } else {
-    //   throw data?.error_data;
-    // }
-    throw new Error("method not impliemented");
+  const deleteLeadArrayFieldData = async (
+    formState: any,
+    arrayfieldName: string
+  ) => {
+    console.log(arrayfieldName, formState);
+    const { productType, ...others } = formState;
+    const { data, status } = await internalFetcher(
+      `./lead/${productType}/${arrayfieldName}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...others,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
   };
 
   return {
@@ -609,7 +616,7 @@ const LOSAPI = () => {
     checkLeadDataExist,
     getLeadDetailsGridData,
     deleteLeadData,
-    deleteGeneralDetailsArrayFieldData,
+    deleteLeadArrayFieldData,
   };
 };
 

@@ -409,6 +409,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
         group: 1,
       },
       name: "addressDetails",
+      removeRowFn: "deleteLeadArrayFieldData",
+      arrayFieldIDName: "lineNo",
       GridProps: {
         xs: 12,
         md: 12,
@@ -929,8 +931,8 @@ export const GeneralDetailsMetaData: MetaDataType = {
         sm: 12,
       },
       name: "proposedNatureOfFacilityDetails",
-      removeRowFn: "deleteArrayFieldData",
-      arrayFieldIDName: "serialNo",
+      removeRowFn: "deleteLeadArrayFieldData",
+      arrayFieldIDName: "lineNo",
       _fields: [
         {
           render: {

@@ -31,7 +31,4 @@ registerFn(
   "shouldExcludeProjectDetailsTypeMeansOFFinance",
   shouldExclude.projectDetailsTypeMeansOFFinance
 );
-registerFn(
-  "deleteGeneralDetailsArrayFieldData",
-  LOSSDK.deleteGeneralDetailsArrayFieldData
-);
+registerFn("deleteLeadArrayFieldData", LOSSDK.deleteLeadArrayFieldData);

@@ -116,7 +116,6 @@ export const FileUploadControl = () => {
       setFiles(newFiles);
       setAction(null);
     }
-    console.log(action);
   }, [action]);
 
   return (

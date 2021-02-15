@@ -108,6 +108,7 @@ export const FormViewEdit: FC<{
   let errorMsg = `${result.error?.error_msg ?? ""}`;
   let formEditData = result.data;
   metaData.form.formState = {
+    productType: productType,
     refID: refID,
     serialNo: serialNo,
   };

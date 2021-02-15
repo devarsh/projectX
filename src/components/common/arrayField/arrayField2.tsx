@@ -110,6 +110,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     });
     return (
       <ArrayFieldRow
+        key={row.fieldIndexKey}
         fieldKey={row.cells[arrayFieldIDName ?? ""]?.key ?? ""}
         oneRow={oneRow}
         classes={classes}
@@ -122,6 +123,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         formState={formState}
         formName={formName}
         arrayFieldIDName={arrayFieldIDName}
+        arrayFieldName={name}
       />
     );
   });
@@ -173,6 +175,7 @@ export const ArrayFieldRow = ({
   formState,
   formName,
   arrayFieldIDName,
+  arrayFieldName,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -189,7 +192,10 @@ export const ArrayFieldRow = ({
           try {
             setLoading(true);
             await Promise.resolve(
-              removeRowFn({ ...formState, [arrayFieldIDName]: field.value })
+              removeRowFn(
+                { ...formState, [arrayFieldIDName]: field.value },
+                arrayFieldName
+              )
             );
             setLoading(false);
             setError("");
