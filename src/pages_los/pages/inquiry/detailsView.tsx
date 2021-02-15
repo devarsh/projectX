@@ -53,10 +53,9 @@ export const DetailsView: FC<{
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
-        <Tab label="Documents" id="2" />
-        <Tab label="Customer" id="3" />
+        <Tab label="Customer" id="2" />
         {/*<Tab label="Assign Inquiry" id="4" />*/}
-        <Tab label="Move To Lead" id="4" />
+        <Tab label="Move To Lead" id="3" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
@@ -82,9 +81,6 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="2" key={2}>
           <CustomerDetails refID={refID} productType={productInquiry} />
         </TabPanel>
-        {/*<TabPanel value={currentTab} index="4" key={4}>
-          <AssignInquiry refID={refID} />
-  </TabPanel>*/}
         <TabPanel value={currentTab} index="3" key={3}>
           <MoveInquiryToLead
             key={refID}
