@@ -79,6 +79,7 @@ export const Lead = () => {
         <ClearCacheProvider>
           <DetailsView
             key={action?.rows[0].id}
+            moduleType="lead"
             productGridData={action?.rows[0]}
             refID={action?.rows[0].id}
             isProductEditedRef={isProductEditedRef}

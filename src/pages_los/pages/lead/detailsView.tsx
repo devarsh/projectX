@@ -26,15 +26,17 @@ const TabPanel = ({ value, index, children }) => {
 };
 
 export const DetailsView: FC<{
-  productGridData: any;
   refID: string;
+  moduleType: string;
+  productGridData: any;
   isProductEditedRef: any;
   handleDialogClose: any;
   setSnackBarMessage: any;
 }> = ({
   refID,
-  isProductEditedRef,
+  moduleType,
   productGridData,
+  isProductEditedRef,
   handleDialogClose,
   setSnackBarMessage,
 }) => {
@@ -72,6 +74,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="0" key={0}>
           <SimpleCRUD
             refID={refID}
+            moduleType={moduleType}
             productType={"general"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={GeneralDetailsMetaData}
@@ -82,6 +85,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="1" key={1}>
           <SimpleCRUD
             refID={refID}
+            moduleType={moduleType}
             productType={"bank"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={BankDetailsMetadata}
@@ -92,6 +96,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="2" key={2}>
           <GridCRUD
             refID={refID}
+            moduleType={moduleType}
             productType={"management"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={ManagementInformationMetaData}
@@ -101,6 +106,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="3" key={3}>
           <SimpleCRUD
             refID={refID}
+            moduleType={moduleType}
             productType={"collateral"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={CollateralDetailsMetaData}
@@ -111,6 +117,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="4" key={4}>
           <GridCRUD
             refID={refID}
+            moduleType={moduleType}
             productType={"project"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={CollateralDetailsMetaData}
@@ -120,6 +127,7 @@ export const DetailsView: FC<{
         <TabPanel value={currentTab} index="5" key={5}>
           <GridCRUD
             refID={refID}
+            moduleType={moduleType}
             productType={"financial"}
             isProductEditedRef={isProductEditedRef}
             formMetaData={FinancialRatiosMetaData}

@@ -100,7 +100,7 @@ export const SimpleForm: FC<FormProps> = ({
       <Container maxWidth="lg" style={{ background: "white" }}>
         <br />
         <br />
-        <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
+        <div style={{ height: "65vh", overflowY: "auto", overflowX: "hidden" }}>
           <Grid
             container={true}
             spacing={formRenderConfig?.gridConfig?.container?.spacing ?? 2}

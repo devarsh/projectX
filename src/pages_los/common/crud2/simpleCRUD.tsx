@@ -4,6 +4,7 @@ import { FormNewExistsIfNotCreate } from "./formNewExistIfNotCreate";
 
 export const SimpleCRUD = ({
   refID,
+  moduleType,
   productType,
   isProductEditedRef,
   closeDialog,
@@ -15,6 +16,7 @@ export const SimpleCRUD = ({
   return dataExist ? (
     <FormViewEdit
       refID={refID}
+      moduleType={moduleType}
       productType={productType}
       isProductEditedRef={isProductEditedRef}
       metaData={formMetaData}
@@ -23,6 +25,7 @@ export const SimpleCRUD = ({
   ) : (
     <FormNewExistsIfNotCreate
       refID={refID}
+      moduleType={moduleType}
       productType={productType}
       isProductEditedRef={isProductEditedRef}
       successAction={() => setDataExist(true)}

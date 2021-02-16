@@ -218,6 +218,7 @@ const metaData: GridMetaDataType = {
       minWidth: 100,
     },
     allowColumnReordering: true,
+    disableGroupBy: true,
     disableSorting: true,
     hideHeader: true,
     containerHeight: {

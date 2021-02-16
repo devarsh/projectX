@@ -29,6 +29,7 @@ const actions: ActionTypes[] = [
 
 export const GridCRUD = ({
   refID,
+  moduleType,
   productType,
   isProductEditedRef,
   formMetaData,
@@ -52,14 +53,20 @@ export const GridCRUD = ({
         ref={gridRef}
         metaData={gridMetaData}
         refID={refID}
+        moduleType={moduleType}
         productType={productType}
         actions={actions}
         setAction={setCurrentAction}
       />
-      <Dialog open={Boolean(currentAction)} maxWidth="xl">
+      <Dialog
+        open={Boolean(currentAction)}
+        maxWidth="xl"
+        PaperProps={{ style: { width: "100%", height: "100%" } }}
+      >
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
             refID={refID}
+            moduleType={moduleType}
             productType={productType}
             metaData={formMetaData}
             successAction={closeMyDialog}
@@ -69,6 +76,7 @@ export const GridCRUD = ({
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
             refID={refID}
+            moduleType={moduleType}
             productType={productType}
             metaData={formMetaData}
             isProductEditedRef={dataChanged}
@@ -78,6 +86,7 @@ export const GridCRUD = ({
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction
             refID={refID}
+            moduleType={moduleType}
             productType={productType}
             serialNo={currentAction?.rows.map((one) => one.id)}
             closeDialog={closeMyDialog}

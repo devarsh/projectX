@@ -83,6 +83,7 @@ export const ProjectDetailsGridMetaData: GridMetaDataType = {
       maxWidth: 250,
       minWidth: 100,
     },
+    disableGroupBy: true,
     allowColumnReordering: false,
     containerHeight: {
       min: "40vh",

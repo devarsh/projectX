@@ -429,38 +429,29 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  //for Lead
 
-  const getLeadDataForView = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./lead/${type}/data/view`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
+  //We will use theme for lead and inquiry alike - for now only enabled for lead
+  //  moduleType - lead/inquiry
+  // productType - products within this module
 
-  const getLeadDataForEdit = async (
-    type: string,
+  const getFormData = async (
+    moduleType: string,
+    productType: string,
     refID: string,
     serialNo?: string
   ) => {
-    const { data, status } = await internalFetcher(`./lead/${type}/data/get`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          serialNo: serialNo,
-          srCD: serialNo,
-        },
-      }),
-    });
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/get`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+            srCD: serialNo,
+          },
+        }),
+      }
+    );
     if (status === "success") {
       return data?.response_data;
     } else {
@@ -468,31 +459,40 @@ const LOSAPI = () => {
     }
   };
 
-  const updateLeadData = async (
-    type: string,
+  const updateFormData = async (
+    moduleType: string,
+    productType: string,
     refID: string,
     formData: any,
     serialNo?: any
   ) => {
-    const { data, status } = await internalFetcher(`./lead/${type}/data/put`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          serialNo: serialNo,
-          ...formData,
-        },
-        channel: "W",
-      }),
-    });
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/put`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
     if (status === "success") {
       return data?.response_data;
     } else {
       throw data?.error_data;
     }
   };
-  const deleteLeadData = async (type: string, refID: string, serialNo: any) => {
+  const deleteFormData = async (
+    moduleType: string,
+    productType: string,
+    refID: string,
+    serialNo: any
+  ) => {
     const { data, status } = await internalFetcher(
-      `./lead/${type}/data/delete`,
+      `./${moduleType}/${productType}/data/delete`,
       {
         body: JSON.stringify({
           request_data: {
@@ -510,16 +510,24 @@ const LOSAPI = () => {
     }
   };
 
-  const insertLeadData = async (type: string, refID: string, formData: any) => {
-    const { data, status } = await internalFetcher(`./lead/${type}/data/post`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          ...formData,
-        },
-        channel: "W",
-      }),
-    });
+  const insertFormData = async (
+    moduleType: string,
+    productType: string,
+    refID: string,
+    formData: any
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/post`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
     if (status === "success") {
       return data?.response_data;
     } else {
@@ -527,9 +535,13 @@ const LOSAPI = () => {
     }
   };
 
-  const checkLeadDataExist = async (type: string, refID: string) => {
+  const checkFormDataExist = async (
+    moduleType: string,
+    productType: string,
+    refID: string
+  ) => {
     const { data, status } = await internalFetcher(
-      `./lead/${type}/data/exists`,
+      `./${moduleType}/${productType}/data/exists`,
       {
         body: JSON.stringify({
           request_data: {
@@ -546,15 +558,22 @@ const LOSAPI = () => {
     }
   };
 
-  const getLeadDetailsGridData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./lead/${type}/grid/data`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
+  const getStaticGridData = async (
+    moduleType: string,
+    productType: string,
+    refID: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/grid/data`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
     if (status === "success") {
       return data?.response_data;
     } else {
@@ -562,14 +581,14 @@ const LOSAPI = () => {
     }
   };
 
-  const deleteLeadArrayFieldData = async (
+  const deleteFormArrayFieldData = async (
     formState: any,
     arrayfieldName: string
   ) => {
     console.log(arrayfieldName, formState);
-    const { productType, ...others } = formState;
+    const { moduleType, productType, ...others } = formState;
     const { data, status } = await internalFetcher(
-      `./lead/${productType}/${arrayfieldName}/delete`,
+      `./${moduleType}/${productType}/${arrayfieldName}/delete`,
       {
         body: JSON.stringify({
           request_data: {
@@ -609,14 +628,14 @@ const LOSAPI = () => {
     deleteDocuments,
     constructDocumentDownloadURL,
     moveInquiryToLead,
-    getLeadDataForView,
-    getLeadDataForEdit,
-    updateLeadData,
-    insertLeadData,
-    checkLeadDataExist,
-    getLeadDetailsGridData,
-    deleteLeadData,
-    deleteLeadArrayFieldData,
+    //Lead
+    updateFormData,
+    getFormData,
+    insertFormData,
+    checkFormDataExist,
+    deleteFormData,
+    deleteFormArrayFieldData,
+    getStaticGridData,
   };
 };
 

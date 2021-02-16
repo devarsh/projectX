@@ -15,6 +15,7 @@ interface updateFormDataType {
   changeFormMode?: any;
   enableForm?: any;
   disableForm?: any;
+  moduleType: string;
   productType: string;
   refID: string;
   serialNo?: string;
@@ -22,15 +23,17 @@ interface updateFormDataType {
 
 const updateFormData = async ({
   data,
+  moduleType,
   productType,
   refID,
   serialNo,
 }: updateFormDataType) => {
-  return LOSSDK.updateLeadData(productType, refID, data, serialNo);
+  return LOSSDK.updateFormData(moduleType, productType, refID, data, serialNo);
 };
 
 export const FormViewEdit: FC<{
   refID: string;
+  moduleType: string;
   productType: string;
   isProductEditedRef: any;
   metaData: MetaDataType;
@@ -40,6 +43,7 @@ export const FormViewEdit: FC<{
   formState?: any;
 }> = ({
   refID,
+  moduleType,
   productType,
   serialNo,
   isProductEditedRef,
@@ -57,7 +61,12 @@ export const FormViewEdit: FC<{
       endSubmit(false, errorMsg);
     },
     onSuccess: (data, { changeFormMode, disableForm }) => {
-      queryClient.refetchQueries(["getLeadDataForEdit", productType, refID]);
+      queryClient.refetchQueries([
+        "getFormData",
+        moduleType,
+        productType,
+        refID,
+      ]);
       changeFormMode("view");
       disableForm();
       isProductEditedRef.current = true;
@@ -83,18 +92,19 @@ export const FormViewEdit: FC<{
       enableForm,
       disableForm,
       refID,
+      moduleType,
       productType,
       serialNo,
     });
   };
 
   useEffect(() => {
-    removeCache?.addEntry(["getLeadDataForEdit", productType, refID]);
+    removeCache?.addEntry(["getFormData", moduleType, productType, refID]);
   }, []);
 
   const result = useQuery(
-    ["getLeadDataForEdit", productType, refID, serialNo],
-    () => LOSSDK.getLeadDataForEdit(productType, refID, serialNo),
+    ["getFormData", moduleType, productType, refID, serialNo],
+    () => LOSSDK.getFormData(moduleType, productType, refID, serialNo),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -108,18 +118,19 @@ export const FormViewEdit: FC<{
   let errorMsg = `${result.error?.error_msg ?? ""}`;
   let formEditData = result.data;
   metaData.form.formState = {
+    moduleType: moduleType,
     productType: productType,
     refID: refID,
     serialNo: serialNo,
   };
 
   const renderResult = loading ? (
-    <img src={loaderGif} alt="loader" />
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : isError === true ? (
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${productType}-${refID}-${result.dataUpdatedAt}`}
+      key={`${moduleType}-${productType}-${refID}-${result.dataUpdatedAt}`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}

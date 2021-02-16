@@ -7,21 +7,24 @@ import Button from "@material-ui/core/Button";
 import DialogContent from "@material-ui/core/DialogContent";
 
 interface DeleteFormDataType {
+  moduleType: string;
   productType: string;
   refID: string;
   serialNo?: string;
 }
 
 const DeleteFormData = async ({
+  moduleType,
   productType,
   refID,
   serialNo,
 }: DeleteFormDataType) => {
-  return LOSSDK.deleteLeadData(productType, refID, serialNo);
+  return LOSSDK.deleteFormData(moduleType, productType, refID, serialNo);
 };
 
 export const DeleteAction = ({
   refID,
+  moduleType,
   productType,
   isProductEditedRef,
   closeDialog,
@@ -70,7 +73,9 @@ export const DeleteAction = ({
             Disagree
           </Button>
           <Button
-            onClick={() => mutation.mutate({ refID, productType, serialNo })}
+            onClick={() =>
+              mutation.mutate({ refID, moduleType, productType, serialNo })
+            }
             color="primary"
             disabled={mutation.isLoading}
           >

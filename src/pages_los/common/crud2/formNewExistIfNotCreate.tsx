@@ -9,6 +9,7 @@ import { FormNew } from "./formNew";
 
 export const FormNewExistsIfNotCreate = ({
   refID,
+  moduleType,
   productType,
   isProductEditedRef,
   metaData,
@@ -16,8 +17,8 @@ export const FormNewExistsIfNotCreate = ({
 }) => {
   const removeCache = useContext(ClearCacheContext);
   let result = useQuery(
-    ["checkDataExist", productType, refID],
-    () => LOSSDK.checkLeadDataExist(productType, refID),
+    ["checkFormDataExist", moduleType, productType, refID],
+    () => LOSSDK.checkFormDataExist(moduleType, productType, refID),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -25,7 +26,12 @@ export const FormNewExistsIfNotCreate = ({
     }
   );
   useEffect(() => {
-    removeCache?.addEntry(["checkDataExist", productType, refID]);
+    removeCache?.addEntry([
+      "checkFormDataExist",
+      moduleType,
+      productType,
+      refID,
+    ]);
   }, []);
   const loading = result.isFetching || result.isLoading;
   const isError = result.isError;
@@ -46,13 +52,14 @@ export const FormNewExistsIfNotCreate = ({
   }, [dataExist]);
 
   return loading ? (
-    <img src={loaderGif} alt="loader" />
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : isError ? (
     //@ts-ignore
     <div>{result?.error?.error_msg ?? "Unknown error occured"} </div>
   ) : !dataExist ? (
     <CreateFormConfirmation
       refID={refID}
+      moduleType={moduleType}
       productType={productType}
       successAction={successAction}
       isProductEditedRef={isProductEditedRef}
@@ -63,6 +70,7 @@ export const FormNewExistsIfNotCreate = ({
 
 export const CreateFormConfirmation = ({
   refID,
+  moduleType,
   productType,
   successAction,
   isProductEditedRef,
@@ -77,6 +85,7 @@ export const CreateFormConfirmation = ({
   ) : (
     <FormNew
       refID={refID}
+      moduleType={moduleType}
       productType={productType}
       isProductEditedRef={isProductEditedRef}
       cancelAction={setShowAsk}

@@ -78,7 +78,7 @@ export const MyTabs = ({
           );
         })}
       </Tabs>
-      <div style={{ height: "70vh", overflowY: "auto", overflowX: "hidden" }}>
+      <div style={{ height: "65vh", overflowY: "auto", overflowX: "hidden" }}>
         <br />
         <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
       </div>

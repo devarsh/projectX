@@ -8,17 +8,18 @@ import { ActionTypes } from "components/dataTable";
 type GridWrapperType = {
   metaData: any;
   refID: any;
+  moduleType: string;
   productType: string;
   actions: ActionTypes[];
   setAction: any;
 };
 
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
-  ({ metaData, productType, refID, actions, setAction }, ref) => {
+  ({ metaData, moduleType, productType, refID, actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
     const result = useQuery(
-      ["gridListing", productType, refID],
-      () => LOSSDK.getLeadDetailsGridData(productType, refID),
+      ["getStaticGridData", moduleType, productType, refID],
+      () => LOSSDK.getStaticGridData(moduleType, productType, refID),
       {
         cacheTime: 100000000,
         refetchOnWindowFocus: false,
@@ -26,7 +27,12 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       }
     );
     useEffect(() => {
-      removeCache?.addEntry(["gridListing", productType, refID]);
+      removeCache?.addEntry([
+        "getStaticGridData",
+        moduleType,
+        productType,
+        refID,
+      ]);
     }, []);
     useImperativeHandle(ref, () => ({
       refetch: () => result.refetch(),
@@ -41,7 +47,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         <span>{errorMsg}</span>
       ) : (
         <GridWrapper
-          key={`gridData-${dataUniqueKey}`}
+          key={`${moduleType}-${productType}-${refID}-staticGridData-${dataUniqueKey}`}
           data={result.data ?? []}
           finalMetaData={metaData}
           setData={() => null}

@@ -9,20 +9,23 @@ interface InsertFormDataFnType {
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
+  moduleType: string;
   productType: string;
   refID: string;
 }
 
 const insertFormData = async ({
   data,
+  moduleType,
   productType,
   refID,
 }: InsertFormDataFnType) => {
-  return LOSSDK.insertLeadData(productType, refID, data);
+  return LOSSDK.insertFormData(moduleType, productType, refID, data);
 };
 
 export const FormNew: FC<{
   refID: string;
+  moduleType: string;
   productType: string;
   isProductEditedRef: any;
   metaData: MetaDataType;
@@ -30,6 +33,7 @@ export const FormNew: FC<{
   cancelAction: any;
 }> = ({
   refID,
+  moduleType,
   productType,
   isProductEditedRef,
   metaData,
@@ -65,6 +69,7 @@ export const FormNew: FC<{
       endSubmit,
       setFieldError,
       refID,
+      moduleType,
       productType,
     });
   };
@@ -73,7 +78,7 @@ export const FormNew: FC<{
 
   const renderResult = (
     <FormWrapper
-      key={`${productType}-${refID}-NewMode`}
+      key={`${moduleType}-${productType}-${refID}-FormNew`}
       metaData={newMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}

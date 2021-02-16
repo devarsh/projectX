@@ -84,6 +84,7 @@ export const FinancialGridMetaData: GridMetaDataType = {
       minWidth: 100,
     },
     allowColumnReordering: false,
+    disableGroupBy: true,
     containerHeight: {
       min: "40vh",
       max: "50vh",

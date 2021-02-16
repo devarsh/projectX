@@ -58,7 +58,7 @@ export const FormWrapper: FC<FormWrapperProps> = ({
       >
         <Container
           component="main"
-          style={{ display: hidden ? "none" : "block" }}
+          style={{ display: hidden ? "none" : "block", paddingTop: "16px" }}
         >
           {formRenderType === "stepper" || formRenderType === "tabs" ? (
             <GroupedForm
