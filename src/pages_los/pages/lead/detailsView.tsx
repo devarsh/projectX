@@ -166,11 +166,3 @@ export const DetailsView: FC<{
     </Fragment>
   );
 };
-
-/*
-
-        
-        
-       
-        
-*/

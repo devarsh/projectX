@@ -14,8 +14,7 @@ import {
 } from "registry/metaData/grid";
 import { CRUDContextProvider } from "pages_los/common/crud2";
 import { LOSSDK } from "registry/fns/los";
-
-import { queryClient } from "cache";
+import { queryClient, ClearCacheProvider } from "cache";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -48,7 +47,7 @@ const bankCrudAPIArgs = (moduleType, productType, refID) => ({
   },
 });
 
-export const Config = () => {
+export const ConfigChild = () => {
   const isProductEditedRef = useRef(false);
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
@@ -67,10 +66,6 @@ export const Config = () => {
 
   return (
     <Fragment>
-      {/* <HeaderDetails
-        productData={productGridData}
-        handleDialogClose={handleDialogClose}
-      /> */}
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="SME" id="0" />
         <Tab label="Infra" id="1" />
@@ -100,3 +95,9 @@ export const Config = () => {
     </Fragment>
   );
 };
+
+export const Config = () => (
+  <ClearCacheProvider>
+    <ConfigChild />
+  </ClearCacheProvider>
+);
