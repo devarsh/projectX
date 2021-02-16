@@ -450,8 +450,30 @@ const LOSAPI = () => {
           request_data: {
             refID: refID,
             serialNo: serialNo,
-            srCD: serialNo,
           },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const deleteFormArrayFieldData = async (
+    formState: any,
+    arrayfieldName: string
+  ) => {
+    console.log(arrayfieldName, formState);
+    const { moduleType, productType, ...others } = formState;
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/${arrayfieldName}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...others,
+          },
+          channel: "W",
         }),
       }
     );
@@ -580,18 +602,106 @@ const LOSAPI = () => {
     }
   };
 
-  const deleteFormArrayFieldData = async (
-    formState: any,
-    arrayfieldName: string
+  const getBankData = ({ moduleType, productType }: crudType) => async (
+    serialNo?: string
   ) => {
-    console.log(arrayfieldName, formState);
-    const { moduleType, productType, ...others } = formState;
     const { data, status } = await internalFetcher(
-      `./${moduleType}/${productType}/${arrayfieldName}/delete`,
+      `./${moduleType}/${productType}/get`,
       {
         body: JSON.stringify({
           request_data: {
-            ...others,
+            refID: serialNo,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const updateBankData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any, bankRefCode?: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/put`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: bankRefCode,
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const deleteBankData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (bankRefCode: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: bankRefCode,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const insertBankData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/post`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getStaticBankGridData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/grid/data`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
           },
           channel: "W",
         }),
@@ -635,6 +745,12 @@ const LOSAPI = () => {
     deleteFormData,
     deleteFormArrayFieldData,
     getStaticGridData,
+    //Bank
+    updateBankData,
+    deleteBankData,
+    insertBankData,
+    getStaticBankGridData,
+    getBankData,
   };
 };
 

@@ -1,8 +1,8 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-export const BankMasterSMEDetailsMetaData: MetaDataType = {
+export const BankMasterCFDetailsMetaData: MetaDataType = {
   form: {
-    name: "bankMasterSME",
-    label: "Bank Master for SME",
+    name: "bankMasterInfra",
+    label: "Bank Master for Infra",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
@@ -79,8 +79,8 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
         componentType: "textField",
       },
       name: "departmentName",
-      label: "Name of Department",
-      placeholder: "Name of Department",
+      label: "Department of the Bank",
+      placeholder: "Department of the Bank",
       maxLength: 150,
       GridProps: {
         xs: 12,
@@ -93,10 +93,10 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "productName",
-      label: "Product Name",
-      placeholder: "Product Name",
-      maxLength: 100,
+      name: "schemaLocation",
+      label: "Location of Scheme",
+      placeholder: "Location of Scheme",
+      maxLength: 250,
       GridProps: {
         xs: 12,
         md: 3,
@@ -108,10 +108,10 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "businessVintage",
-      label: "Vintage of Business",
-      placeholder: "Vintage of Business",
-      maxLength: 100,
+      name: "schemaType",
+      label: "Type of Scheme",
+      placeholder: "Type of Scheme",
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -123,66 +123,10 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "promotorAge",
-      type: "number",
-      label: "Age of main Promoters",
-      placeholder: "Age of main Promoters",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "toLB",
-      label: "T/O LB",
-      placeholder: "T/O LB",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "toUB",
-      label: "T/O UB",
-      placeholder: "T/O UB",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "loanLB",
-      label: "Loan LB",
-      placeholder: "Loan LB",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "loanUB",
-      label: "Loan UB",
-      placeholder: "Loan UB",
+      name: "facilityType",
+      label: "Type of Facility",
+      placeholder: "Type of Facility",
+      maxLength: 50,
       GridProps: {
         xs: 12,
         md: 3,
@@ -194,11 +138,111 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "collateralCoverage",
-      label: "Collateral Coverage",
-      placeholder: "Collateral Coverage",
-      type: "number",
-      maxLength: 14,
+      name: "consTillDateSanction",
+      label:
+        "Experience in terms of Total Sq.Ft. Constructed till date of Sanction",
+      placeholder:
+        "Experience in terms of Total Sq.Ft. Constructed till date of Sanction",
+      maxLength: 50,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "booksLandValue",
+      label: "Land Value(As per Books)(Lacs)",
+      placeholder: "Land Value(As per Books)(Lacs)",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "marketLandValue",
+      label: "Land Value(Market Value Lacs)",
+      placeholder: "Land Value(Market Value Lacs)",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "constructionCost",
+      label: "Construction Cost (Lacs)",
+      placeholder: "Construction Cost (Lacs)",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "rateOfInt",
+      },
+      name: "totalUnit",
+      label: "Total no. of Units",
+      placeholder: "Total no. of Units",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "totalSaleableArea",
+      label: "Total Saleable Area",
+      placeholder: "Total Saleable Area",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "totalSalesValue",
+      label: "Total Sales Value",
+      placeholder: "Total Sales Value",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "otherCollateralValue",
+      label: "Additional Collateral Value (Lacs)",
+      placeholder: "Additional Collateral Value (Lacs)",
       GridProps: {
         xs: 12,
         md: 3,
@@ -214,6 +258,34 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
       label: "Type of Collateral",
       placeholder: "Type of Collateral",
       maxLength: 100,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currencyWithoutWords",
+      },
+      name: "collateralCoverage",
+      label: "Collateral Coverage",
+      placeholder: "Collateral Coverage",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "rateOfInt",
+      },
+      name: "advanceBookingPer",
+      label: "% of Cutback from the Booking Advance",
+      placeholder: "% of Cutback from the Booking Advance",
       GridProps: {
         xs: 12,
         md: 3,
@@ -253,171 +325,10 @@ export const BankMasterSMEDetailsMetaData: MetaDataType = {
         //@ts-ignore
         componentType: "textField",
       },
-      name: "promotorMinScore",
-      label: "Minimum CIBIL Score of Promoters",
-      placeholder: "Minimum CIBIL Score of Promoters",
-      maxLength: 10,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "textField",
-      },
-      name: "companyCMR",
-      label: "CMR of the Company",
-      placeholder: "CMR of the Company",
-      maxLength: 50,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "ebidtaAmount",
-      label: "EBIDTA Amount As per Audited Financials",
-      placeholder: "EBIDTA Amount As per Audited Financials",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "currentRatio",
-      label: "Current Ratio",
-      placeholder: "Current Ratio",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "textField",
-      },
-      name: "dscr",
-      label: "DSCR As per Audited Financials",
-      placeholder: "DSCR As per Audited Financials",
-      maxLength: 50,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "rateOfInt",
-      },
-      name: "chequeBouncesPer",
-      label: "% Of Cheque Bounces allowed",
-      placeholder: "% Of Cheque Bounces allowed",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currencyWithoutWords",
-      },
-      name: "processingFees",
-      label: "Processing Fees",
-      placeholder: "Processing Fees",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "select",
-      },
-      name: "externalRating",
-      label: "External Rating Required & Support",
-      placeholder: "External Rating Required & Support",
-      defaultValue: "N",
-      //@ts-ignore
-      options: "getYesOrNoOptions",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "textField",
-      },
-      name: "industryFocus",
-      label: "Industry Focus",
-      placeholder: "Industry Focus",
-      maxLength: 150,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "select",
-      },
-      name: "weHavePayout",
-      label: "whether We have Payout?",
-      placeholder: "whether We have Payout?",
-      defaultValue: "N",
-      //@ts-ignore
-      options: "getYesOrNoOptions",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "rateOfInt",
-      },
-      name: "payoutRate",
-      label: "Rate of Payout",
-      placeholder: "Rate of Payout",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "hidden",
-      },
-      name: "bankRefCode",
+      name: "pf",
+      label: "PF",
+      placeholder: "PF",
+      maxLength: 100,
       GridProps: {
         xs: 12,
         md: 3,

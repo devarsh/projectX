@@ -1,83 +1,81 @@
 import { GridMetaDataType } from "components/dataTableStatic";
 
-export const BankMasterGridMetaData: GridMetaDataType = {
+export const BankMasterCFGridMetaData: GridMetaDataType = {
   columns: [
     {
       columnName: "Name of Bank",
       componentType: "default",
       accessor: "bankTranCode",
-      sequence: 1,
+      sequence: 0,
       alignment: "left",
-    },
-    {
-      columnName: "Bank Ref code",
-      componentType: "default",
-      accessor: "bankRefCode",
-      sequence: 2,
-      alignment: "left",
-      isVisible: false,
     },
     {
       columnName: "Branch Name",
       componentType: "default",
       accessor: "branchName",
+      sequence: 1,
+      alignment: "left",
+    },
+    {
+      columnName: "Department of The Bank",
+      componentType: "default",
+      accessor: "departmentName",
+      sequence: 2,
+      alignment: "left",
+    },
+    {
+      columnName: "Location of Scheme",
+      componentType: "default",
+      accessor: "schemaLocation",
       sequence: 3,
       alignment: "left",
     },
+
     {
-      columnName: "Vintage of Business",
+      columnName: "Type of Scheme",
       componentType: "default",
-      accessor: "businessVintage",
+      accessor: "schemaType",
       sequence: 4,
       alignment: "left",
     },
+
     {
-      columnName: "Name of Department",
+      columnName: "Type of Facility",
       componentType: "default",
-      accessor: "departmentName",
+      accessor: "facilityType",
       sequence: 5,
       alignment: "left",
     },
+
     {
-      columnName: "Product Name",
+      columnName: "Land Value(As per Books)(Lacs)",
       componentType: "default",
-      accessor: "productName",
+      accessor: "booksLandValue",
       sequence: 6,
       alignment: "left",
     },
-
     {
-      columnName: "Age of main Promoters",
+      columnName: "Land Value(Market Value Lacs)",
       componentType: "default",
-      accessor: "promotorAge",
+      accessor: "marketLandValue",
       sequence: 7,
       alignment: "left",
-    },
-
-    {
-      columnName: "Bank Ref code",
-      componentType: "default",
-      accessor: "refID",
-      sequence: 8,
-      alignment: "left",
-      isVisible: false,
     },
   ],
 
   gridConfig: {
     dense: true,
-    gridLabel: "Bank Master",
+    gridLabel: "Bank Master of Infra",
     rowIdColumn: "refID",
     defaultColumnConfig: {
       width: 150,
       maxWidth: 250,
       minWidth: 100,
     },
-
     allowColumnReordering: true,
-    disableGroupBy: true,
     disableSorting: true,
     hideHeader: false,
+    disableGroupBy: true,
     containerHeight: {
       min: "40vh",
       max: "50vh",

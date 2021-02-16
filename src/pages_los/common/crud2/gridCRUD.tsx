@@ -46,6 +46,7 @@ export const GridCRUD = ({
   return (
     <Fragment>
       <MyGridWrapper
+        ref={gridRef}
         key="grid"
         metaData={gridMetaData}
         actions={actions}
