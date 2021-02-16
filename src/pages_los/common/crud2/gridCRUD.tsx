@@ -28,9 +28,6 @@ const actions: ActionTypes[] = [
 ];
 
 export const GridCRUD = ({
-  refID,
-  moduleType,
-  productType,
   isProductEditedRef,
   formMetaData,
   gridMetaData,
@@ -50,11 +47,7 @@ export const GridCRUD = ({
     <Fragment>
       <MyGridWrapper
         key="grid"
-        ref={gridRef}
         metaData={gridMetaData}
-        refID={refID}
-        moduleType={moduleType}
-        productType={productType}
         actions={actions}
         setAction={setCurrentAction}
       />
@@ -65,9 +58,6 @@ export const GridCRUD = ({
       >
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
-            refID={refID}
-            moduleType={moduleType}
-            productType={productType}
             metaData={formMetaData}
             successAction={closeMyDialog}
             cancelAction={closeMyDialog}
@@ -75,9 +65,6 @@ export const GridCRUD = ({
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
-            refID={refID}
-            moduleType={moduleType}
-            productType={productType}
             metaData={formMetaData}
             isProductEditedRef={dataChanged}
             closeDialog={closeMyDialog}
@@ -85,9 +72,6 @@ export const GridCRUD = ({
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction
-            refID={refID}
-            moduleType={moduleType}
-            productType={productType}
             serialNo={currentAction?.rows.map((one) => one.id)}
             closeDialog={closeMyDialog}
             isProductEditedRef={dataChanged}

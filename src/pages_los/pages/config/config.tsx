@@ -9,14 +9,14 @@ export const Config = () => {
 
   return (
     <Fragment>
-      <GridCRUD
+      {/* <GridCRUD
         refID={refID}
         moduleType={"config/bank"}
         productType={"sme"}
         isProductEditedRef={isProductEditedRef}
         formMetaData={BankMasterSMEDetailsMetaData}
         gridMetaData={BankMasterGridMetaData}
-      />
+      /> */}
     </Fragment>
   );
 };

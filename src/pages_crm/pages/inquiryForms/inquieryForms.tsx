@@ -141,6 +141,7 @@ export const InquiryFormWrapper = () => {
         initialValues={initialValues}
         onSubmitHandler={onSubmitHandlerNew}
         hidden={showDialog === true}
+        defaultMode={"new"}
       />
       {showDialog ? (
         <ViewFormWrapper

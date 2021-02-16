@@ -1,24 +1,28 @@
-import { useContext, useEffect, Fragment, useState } from "react";
-import { LOSSDK } from "registry/fns/los";
+import { useContext, useEffect, Fragment, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { FormNew } from "./formNew";
+import { CRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "./utils";
 
 export const FormNewExistsIfNotCreate = ({
-  refID,
-  moduleType,
-  productType,
   isProductEditedRef,
   metaData,
   successAction,
 }) => {
   const removeCache = useContext(ClearCacheContext);
+  const { checkFormDataExist } = useContext(CRUDContext);
+  const { insertFormData } = useContext(CRUDContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(Object.values(insertFormData.args));
+  }
   let result = useQuery(
-    ["checkFormDataExist", moduleType, productType, refID],
-    () => LOSSDK.checkFormDataExist(moduleType, productType, refID),
+    ["checkFormDataExist", wrapperKey.current],
+    () => checkFormDataExist.fn(checkFormDataExist.args),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -26,12 +30,7 @@ export const FormNewExistsIfNotCreate = ({
     }
   );
   useEffect(() => {
-    removeCache?.addEntry([
-      "checkFormDataExist",
-      moduleType,
-      productType,
-      refID,
-    ]);
+    removeCache?.addEntry(["checkFormDataExist", wrapperKey.current]);
   }, []);
   const loading = result.isFetching || result.isLoading;
   const isError = result.isError;
@@ -58,9 +57,6 @@ export const FormNewExistsIfNotCreate = ({
     <div>{result?.error?.error_msg ?? "Unknown error occured"} </div>
   ) : !dataExist ? (
     <CreateFormConfirmation
-      refID={refID}
-      moduleType={moduleType}
-      productType={productType}
       successAction={successAction}
       isProductEditedRef={isProductEditedRef}
       metaData={metaData}
@@ -69,9 +65,6 @@ export const FormNewExistsIfNotCreate = ({
 };
 
 export const CreateFormConfirmation = ({
-  refID,
-  moduleType,
-  productType,
   successAction,
   isProductEditedRef,
   metaData,
@@ -84,9 +77,6 @@ export const CreateFormConfirmation = ({
     </Fragment>
   ) : (
     <FormNew
-      refID={refID}
-      moduleType={moduleType}
-      productType={productType}
       isProductEditedRef={isProductEditedRef}
       cancelAction={setShowAsk}
       successAction={successAction}

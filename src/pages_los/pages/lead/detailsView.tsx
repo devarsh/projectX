@@ -18,12 +18,41 @@ import {
   ProjectDetailsGridMetaData,
 } from "registry/metaData/grid";
 import { GridCRUD, SimpleCRUD } from "pages_los/common/crud2";
+import { LOSSDK } from "registry/fns/los";
+import { CRUDContextProvider } from "pages_los/common/crud2";
 
 import { useStyles } from "./style";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
+
+const crudAPIArgs = (moduleType, productType, refID) => ({
+  insertFormData: {
+    fn: LOSSDK.insertFormData,
+    args: { moduleType, productType, refID },
+  },
+  checkFormDataExist: {
+    fn: LOSSDK.checkFormDataExist,
+    args: { moduleType, productType, refID },
+  },
+  deleteFormData: {
+    fn: LOSSDK.deleteFormData,
+    args: { moduleType, productType, refID },
+  },
+  updateFormData: {
+    fn: LOSSDK.updateFormData,
+    args: { moduleType, productType, refID },
+  },
+  getFormData: {
+    fn: LOSSDK.getFormData,
+    args: { moduleType, productType, refID },
+  },
+  getStaticGridData: {
+    fn: LOSSDK.getStaticGridData,
+    args: { moduleType, productType, refID },
+  },
+});
 
 export const DetailsView: FC<{
   refID: string;
@@ -72,69 +101,76 @@ export const DetailsView: FC<{
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
-          <SimpleCRUD
-            refID={refID}
-            moduleType={moduleType}
-            productType={"general"}
-            isProductEditedRef={isProductEditedRef}
-            formMetaData={GeneralDetailsMetaData}
-            dataAlwaysExists={true}
-            closeDialog={undefined}
-          />
+          <CRUDContextProvider {...crudAPIArgs(moduleType, "general", refID)}>
+            <SimpleCRUD
+              isProductEditedRef={isProductEditedRef}
+              formMetaData={GeneralDetailsMetaData}
+              dataAlwaysExists={true}
+              closeDialog={undefined}
+            />
+          </CRUDContextProvider>
         </TabPanel>
+
         <TabPanel value={currentTab} index="1" key={1}>
-          <SimpleCRUD
-            refID={refID}
-            moduleType={moduleType}
-            productType={"bank"}
-            isProductEditedRef={isProductEditedRef}
-            formMetaData={BankDetailsMetadata}
-            dataAlwaysExists={true}
-            closeDialog={undefined}
-          />
+          <CRUDContextProvider {...crudAPIArgs(moduleType, "bank", refID)}>
+            <SimpleCRUD
+              isProductEditedRef={isProductEditedRef}
+              formMetaData={BankDetailsMetadata}
+              dataAlwaysExists={true}
+              closeDialog={undefined}
+            />
+          </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="2" key={2}>
-          <GridCRUD
-            refID={refID}
-            moduleType={moduleType}
-            productType={"management"}
-            isProductEditedRef={isProductEditedRef}
-            formMetaData={ManagementInformationMetaData}
-            gridMetaData={ManagementDetailsGridMetaData}
-          />
+          <CRUDContextProvider
+            {...crudAPIArgs(moduleType, "management", refID)}
+          >
+            <GridCRUD
+              isProductEditedRef={isProductEditedRef}
+              formMetaData={ManagementInformationMetaData}
+              gridMetaData={ManagementDetailsGridMetaData}
+            />
+          </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
-          <SimpleCRUD
-            refID={refID}
-            moduleType={moduleType}
-            productType={"collateral"}
-            isProductEditedRef={isProductEditedRef}
-            formMetaData={CollateralDetailsMetaData}
-            dataAlwaysExists={true}
-            closeDialog={undefined}
-          />
+          <CRUDContextProvider
+            {...crudAPIArgs(moduleType, "collateral", refID)}
+          >
+            <SimpleCRUD
+              isProductEditedRef={isProductEditedRef}
+              formMetaData={CollateralDetailsMetaData}
+              dataAlwaysExists={true}
+              closeDialog={undefined}
+            />
+          </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="4" key={4}>
-          <GridCRUD
-            refID={refID}
-            moduleType={moduleType}
-            productType={"project"}
-            isProductEditedRef={isProductEditedRef}
-            formMetaData={CollateralDetailsMetaData}
-            gridMetaData={ProjectDetailsGridMetaData}
-          />
+          <CRUDContextProvider {...crudAPIArgs(moduleType, "project", refID)}>
+            <GridCRUD
+              isProductEditedRef={isProductEditedRef}
+              formMetaData={CollateralDetailsMetaData}
+              gridMetaData={ProjectDetailsGridMetaData}
+            />
+          </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="5" key={5}>
-          <GridCRUD
-            refID={refID}
-            moduleType={moduleType}
-            productType={"financial"}
-            isProductEditedRef={isProductEditedRef}
-            formMetaData={FinancialRatiosMetaData}
-            gridMetaData={FinancialGridMetaData}
-          />
+          <CRUDContextProvider {...crudAPIArgs(moduleType, "financial", refID)}>
+            <GridCRUD
+              isProductEditedRef={isProductEditedRef}
+              formMetaData={FinancialRatiosMetaData}
+              gridMetaData={FinancialGridMetaData}
+            />
+          </CRUDContextProvider>
         </TabPanel>
       </Box>
     </Fragment>
   );
 };
+
+/*
+
+        
+        
+       
+        
+*/

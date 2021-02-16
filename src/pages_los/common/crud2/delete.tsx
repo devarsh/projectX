@@ -1,50 +1,47 @@
-import { Fragment } from "react";
-import { LOSSDK } from "registry/fns/los";
+import { Fragment, useContext, useRef } from "react";
 import { useMutation } from "react-query";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import DialogContent from "@material-ui/core/DialogContent";
+import { CRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "./utils";
 
 interface DeleteFormDataType {
-  moduleType: string;
-  productType: string;
-  refID: string;
   serialNo?: string;
 }
 
-const DeleteFormData = async ({
-  moduleType,
-  productType,
-  refID,
+const DeleteFormDataFnWrapper = (deleteFormData) => async ({
   serialNo,
 }: DeleteFormDataType) => {
-  return LOSSDK.deleteFormData(moduleType, productType, refID, serialNo);
+  return deleteFormData(serialNo);
 };
 
-export const DeleteAction = ({
-  refID,
-  moduleType,
-  productType,
-  isProductEditedRef,
-  closeDialog,
-  serialNo,
-}) => {
-  const mutation = useMutation(DeleteFormData, {
-    onError: (error: any) => {
-      let errorMsg = "Unknown Error occured";
-      if (typeof error === "object") {
-        errorMsg = error?.error_msg ?? errorMsg;
-      }
-    },
-    onSuccess: (data) => {
-      isProductEditedRef.current = true;
-      closeDialog();
-    },
-  });
+export const DeleteAction = ({ isProductEditedRef, closeDialog, serialNo }) => {
+  const { deleteFormData } = useContext(CRUDContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(Object.values(deleteFormData.args));
+  }
+
+  const mutation = useMutation(
+    DeleteFormDataFnWrapper(deleteFormData.fn(deleteFormData.args)),
+    {
+      onError: (error: any) => {
+        let errorMsg = "Unknown Error occured";
+        if (typeof error === "object") {
+          errorMsg = error?.error_msg ?? errorMsg;
+        }
+      },
+      onSuccess: (data) => {
+        isProductEditedRef.current = true;
+        closeDialog();
+      },
+    }
+  );
 
   return (
-    <Fragment>
+    <Fragment key={wrapperKey.current}>
       <DialogTitle id="alert-dialog-title">
         Are you sure you want to delete the selected Records
       </DialogTitle>
@@ -73,9 +70,7 @@ export const DeleteAction = ({
             Disagree
           </Button>
           <Button
-            onClick={() =>
-              mutation.mutate({ refID, moduleType, productType, serialNo })
-            }
+            onClick={() => mutation.mutate({ serialNo })}
             color="primary"
             disabled={mutation.isLoading}
           >

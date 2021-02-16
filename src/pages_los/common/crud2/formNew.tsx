@@ -1,61 +1,54 @@
-import { FC } from "react";
-import { LOSSDK } from "registry/fns/los";
+import { FC, useContext, useRef } from "react";
 import { useMutation } from "react-query";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
+import { CRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "./utils";
 
 interface InsertFormDataFnType {
   data: object;
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
-  moduleType: string;
-  productType: string;
-  refID: string;
 }
 
-const insertFormData = async ({
+const insertFormDataFnWrapper = (insertFormData) => async ({
   data,
-  moduleType,
-  productType,
-  refID,
 }: InsertFormDataFnType) => {
-  return LOSSDK.insertFormData(moduleType, productType, refID, data);
+  return insertFormData(data);
 };
 
 export const FormNew: FC<{
-  refID: string;
-  moduleType: string;
-  productType: string;
   isProductEditedRef: any;
   metaData: MetaDataType;
   successAction: any;
   cancelAction: any;
-}> = ({
-  refID,
-  moduleType,
-  productType,
-  isProductEditedRef,
-  metaData,
-  successAction,
-  cancelAction,
-}) => {
-  const mutation = useMutation(insertFormData, {
-    onError: (error: any, { endSubmit }) => {
-      let errorMsg = "Unknown Error occured";
-      if (typeof error === "object") {
-        errorMsg = error?.error_msg ?? errorMsg;
-      }
-      endSubmit(false, errorMsg);
-    },
-    onSuccess: (data, { endSubmit }) => {
-      endSubmit(true, "");
-      isProductEditedRef.current = true;
-      if (typeof successAction === "function") {
-        successAction();
-      }
-    },
-  });
+}> = ({ isProductEditedRef, metaData, successAction, cancelAction }) => {
+  const { insertFormData } = useContext(CRUDContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(Object.values(insertFormData.args));
+  }
+
+  const mutation = useMutation(
+    insertFormDataFnWrapper(insertFormData.fn(insertFormData.args)),
+    {
+      onError: (error: any, { endSubmit }) => {
+        let errorMsg = "Unknown Error occured";
+        if (typeof error === "object") {
+          errorMsg = error?.error_msg ?? errorMsg;
+        }
+        endSubmit(false, errorMsg);
+      },
+      onSuccess: (data, { endSubmit }) => {
+        endSubmit(true, "");
+        isProductEditedRef.current = true;
+        if (typeof successAction === "function") {
+          successAction();
+        }
+      },
+    }
+  );
 
   const onSubmitHandler: SubmitFnType = (
     data,
@@ -68,9 +61,6 @@ export const FormNew: FC<{
       displayData,
       endSubmit,
       setFieldError,
-      refID,
-      moduleType,
-      productType,
     });
   };
 
@@ -78,7 +68,7 @@ export const FormNew: FC<{
 
   const renderResult = (
     <FormWrapper
-      key={`${moduleType}-${productType}-${refID}-FormNew`}
+      key={`${wrapperKey.current}`}
       metaData={newMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}

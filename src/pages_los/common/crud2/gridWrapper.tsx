@@ -1,25 +1,37 @@
-import { useContext, useEffect, forwardRef, useImperativeHandle } from "react";
+import {
+  useContext,
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import GridWrapper from "components/dataTableStatic";
-import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
+import { CRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "./utils";
 
 type GridWrapperType = {
   metaData: any;
-  refID: any;
-  moduleType: string;
-  productType: string;
   actions: ActionTypes[];
   setAction: any;
 };
 
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
-  ({ metaData, moduleType, productType, refID, actions, setAction }, ref) => {
+  ({ metaData, actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
+    const { getStaticGridData } = useContext(CRUDContext);
+    const wrapperKey = useRef<any>(null);
+    if (wrapperKey.current === null) {
+      wrapperKey.current = cacheWrapperKeyGen(
+        Object.values(getStaticGridData.args)
+      );
+    }
+
     const result = useQuery(
-      ["getStaticGridData", moduleType, productType, refID],
-      () => LOSSDK.getStaticGridData(moduleType, productType, refID),
+      ["getStaticGridData", wrapperKey.current],
+      () => getStaticGridData.fn(getStaticGridData.args)(),
       {
         cacheTime: 100000000,
         refetchOnWindowFocus: false,
@@ -27,12 +39,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       }
     );
     useEffect(() => {
-      removeCache?.addEntry([
-        "getStaticGridData",
-        moduleType,
-        productType,
-        refID,
-      ]);
+      removeCache?.addEntry(["getStaticGridData", wrapperKey.current]);
     }, []);
     useImperativeHandle(ref, () => ({
       refetch: () => result.refetch(),
@@ -47,7 +54,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         <span>{errorMsg}</span>
       ) : (
         <GridWrapper
-          key={`${moduleType}-${productType}-${refID}-staticGridData-${dataUniqueKey}`}
+          key={`staticGridData-${wrapperKey.current}-${dataUniqueKey}`}
           data={result.data ?? []}
           finalMetaData={metaData}
           setData={() => null}

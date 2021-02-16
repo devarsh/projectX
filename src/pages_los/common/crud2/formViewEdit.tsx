@@ -1,11 +1,12 @@
-import { FC, useContext, useEffect } from "react";
-import { LOSSDK } from "registry/fns/los";
+import { FC, useContext, useEffect, useRef } from "react";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "cache";
 import { ClearCacheContext } from "cache";
+import { CRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "./utils";
 
 interface updateFormDataType {
   data: object;
@@ -15,64 +16,53 @@ interface updateFormDataType {
   changeFormMode?: any;
   enableForm?: any;
   disableForm?: any;
-  moduleType: string;
-  productType: string;
-  refID: string;
+
   serialNo?: string;
 }
 
-const updateFormData = async ({
+const updateFormDataWrapperFn = (updateFormData) => async ({
   data,
-  moduleType,
-  productType,
-  refID,
   serialNo,
 }: updateFormDataType) => {
-  return LOSSDK.updateFormData(moduleType, productType, refID, data, serialNo);
+  return updateFormData(data, serialNo);
 };
 
 export const FormViewEdit: FC<{
-  refID: string;
-  moduleType: string;
-  productType: string;
   isProductEditedRef: any;
   metaData: MetaDataType;
   serialNo?: string;
   closeDialog?: any;
   defaultView?: "view" | "edit";
-  formState?: any;
-}> = ({
-  refID,
-  moduleType,
-  productType,
-  serialNo,
-  isProductEditedRef,
-  metaData,
-  closeDialog,
-  defaultView,
-}) => {
+}> = ({ serialNo, isProductEditedRef, metaData, closeDialog, defaultView }) => {
   const removeCache = useContext(ClearCacheContext);
-  const mutation = useMutation(updateFormData, {
-    onError: (error: any, { endSubmit }) => {
-      let errorMsg = "Unknown Error occured";
-      if (typeof error === "object") {
-        errorMsg = error?.error_msg ?? errorMsg;
-      }
-      endSubmit(false, errorMsg);
-    },
-    onSuccess: (data, { changeFormMode, disableForm }) => {
-      queryClient.refetchQueries([
-        "getFormData",
-        moduleType,
-        productType,
-        refID,
-      ]);
-      changeFormMode("view");
-      disableForm();
-      isProductEditedRef.current = true;
-      closeDialog();
-    },
-  });
+  const { updateFormData, getFormData } = useContext(CRUDContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(Object.values(getFormData.args));
+  }
+  const mutation = useMutation(
+    updateFormDataWrapperFn(updateFormData.fn(updateFormData.args)),
+    {
+      onError: (error: any, { endSubmit }) => {
+        let errorMsg = "Unknown Error occured";
+        if (typeof error === "object") {
+          errorMsg = error?.error_msg ?? errorMsg;
+        }
+        endSubmit(false, errorMsg);
+      },
+      onSuccess: (data, { changeFormMode, disableForm, serialNo }) => {
+        queryClient.refetchQueries([
+          "getFormData",
+          wrapperKey.current,
+          serialNo,
+        ]);
+        changeFormMode("view");
+        disableForm();
+        isProductEditedRef.current = true;
+        closeDialog();
+      },
+    }
+  );
 
   const onSubmitHandler: SubmitFnType = (
     data,
@@ -91,20 +81,18 @@ export const FormViewEdit: FC<{
       changeFormMode,
       enableForm,
       disableForm,
-      refID,
-      moduleType,
-      productType,
+
       serialNo,
     });
   };
 
   useEffect(() => {
-    removeCache?.addEntry(["getFormData", moduleType, productType, refID]);
+    removeCache?.addEntry(["getFormData", wrapperKey.current, serialNo ?? ""]);
   }, []);
 
   const result = useQuery(
-    ["getFormData", moduleType, productType, refID, serialNo],
-    () => LOSSDK.getFormData(moduleType, productType, refID, serialNo),
+    ["getFormData", wrapperKey.current, serialNo ?? ""],
+    () => getFormData.fn(getFormData.args)(serialNo),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -118,9 +106,7 @@ export const FormViewEdit: FC<{
   let errorMsg = `${result.error?.error_msg ?? ""}`;
   let formEditData = result.data;
   metaData.form.formState = {
-    moduleType: moduleType,
-    productType: productType,
-    refID: refID,
+    ...getFormData.args,
     serialNo: serialNo,
   };
 
@@ -130,7 +116,7 @@ export const FormViewEdit: FC<{
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${moduleType}-${productType}-${refID}-${result.dataUpdatedAt}`}
+      key={`${wrapperKey.current}-${result.dataUpdatedAt}`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}

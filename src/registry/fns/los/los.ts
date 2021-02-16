@@ -434,10 +434,13 @@ const LOSAPI = () => {
   //  moduleType - lead/inquiry
   // productType - products within this module
 
-  const getFormData = async (
-    moduleType: string,
-    productType: string,
-    refID: string,
+  interface crudType {
+    moduleType: string;
+    productType: string;
+    refID: string;
+  }
+
+  const getFormData = ({ moduleType, productType, refID }: crudType) => async (
     serialNo?: string
   ) => {
     const { data, status } = await internalFetcher(
@@ -459,13 +462,11 @@ const LOSAPI = () => {
     }
   };
 
-  const updateFormData = async (
-    moduleType: string,
-    productType: string,
-    refID: string,
-    formData: any,
-    serialNo?: any
-  ) => {
+  const updateFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any, serialNo?: any) => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/${productType}/data/put`,
       {
@@ -485,12 +486,11 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const deleteFormData = async (
-    moduleType: string,
-    productType: string,
-    refID: string,
-    serialNo: any
-  ) => {
+  const deleteFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (serialNo: any) => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/${productType}/data/delete`,
       {
@@ -510,12 +510,11 @@ const LOSAPI = () => {
     }
   };
 
-  const insertFormData = async (
-    moduleType: string,
-    productType: string,
-    refID: string,
-    formData: any
-  ) => {
+  const insertFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any) => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/${productType}/data/post`,
       {
@@ -535,11 +534,11 @@ const LOSAPI = () => {
     }
   };
 
-  const checkFormDataExist = async (
-    moduleType: string,
-    productType: string,
-    refID: string
-  ) => {
+  const checkFormDataExist = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/${productType}/data/exists`,
       {
@@ -558,11 +557,11 @@ const LOSAPI = () => {
     }
   };
 
-  const getStaticGridData = async (
-    moduleType: string,
-    productType: string,
-    refID: string
-  ) => {
+  const getStaticGridData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/${productType}/grid/data`,
       {
