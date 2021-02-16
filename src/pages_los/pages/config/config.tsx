@@ -3,7 +3,7 @@ import { GridCRUD } from "pages_los/common/crud2";
 import { BankMasterSMEDetailsMetaData } from "registry/metaData";
 import { BankMasterGridMetaData } from "registry/metaData/grid";
 
-export const LeadConfig = () => {
+export const Config = () => {
   let refID = 89;
   const isProductEditedRef = useRef(false);
 
@@ -11,7 +11,8 @@ export const LeadConfig = () => {
     <Fragment>
       <GridCRUD
         refID={refID}
-        productType={"config"}
+        moduleType={"config/bank"}
+        productType={"sme"}
         isProductEditedRef={isProductEditedRef}
         formMetaData={BankMasterSMEDetailsMetaData}
         gridMetaData={BankMasterGridMetaData}
