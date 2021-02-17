@@ -116,7 +116,7 @@ export const DetailsView: FC<{
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
               formMetaData={BankDetailsMetadata}
-              dataAlwaysExists={true}
+              dataAlwaysExists={false}
               closeDialog={undefined}
             />
           </CRUDContextProvider>
@@ -139,7 +139,7 @@ export const DetailsView: FC<{
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
               formMetaData={CollateralDetailsMetaData}
-              dataAlwaysExists={true}
+              dataAlwaysExists={false}
               closeDialog={undefined}
             />
           </CRUDContextProvider>

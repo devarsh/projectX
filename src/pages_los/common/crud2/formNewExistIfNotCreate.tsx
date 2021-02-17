@@ -22,7 +22,7 @@ export const FormNewExistsIfNotCreate = ({
   }
   let result = useQuery(
     ["checkFormDataExist", wrapperKey.current],
-    () => checkFormDataExist.fn(checkFormDataExist.args),
+    () => checkFormDataExist.fn(checkFormDataExist.args)(),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
