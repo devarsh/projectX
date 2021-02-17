@@ -66,7 +66,7 @@ export const BankMasterGridMetaData: GridMetaDataType = {
 
   gridConfig: {
     dense: true,
-    gridLabel: "Bank Master",
+    gridLabel: "Bank Master of SME",
     rowIdColumn: "refID",
     defaultColumnConfig: {
       width: 150,

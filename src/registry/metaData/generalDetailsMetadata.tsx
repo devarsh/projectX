@@ -123,7 +123,7 @@ export const GeneralDetailsMetaData: MetaDataType = {
         componentType: "select",
         group: 0,
       },
-      name: "businessType",
+      name: "typeOfIndustry",
       label: "Existing Type of Industry",
       defaultValue: "00",
       //@ts-ignore
@@ -141,12 +141,12 @@ export const GeneralDetailsMetaData: MetaDataType = {
         componentType: "select",
         group: 0,
       },
-      name: "businessSubType",
+      name: "subTypeOfIndustry",
       label: "Existing Type of Sub Industry",
       defaultValue: "00",
       //@ts-ignore
       options: "getIndustrySubType",
-      dependentFields: ["businessType"],
+      dependentFields: ["typeOfIndustry"],
       disableCaching: true,
       // validate: "getValidateValue",
       GridProps: {
