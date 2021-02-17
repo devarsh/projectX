@@ -157,7 +157,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       decimalScale: 2,
       fixedDecimalScale: true,
       allowNegative: false,
-      allowLeadingZeros: false,
+      allowEmptyFormatting: true,
       isAllowed: (values) => {
         //@ts-ignore
         if (values.floatValue <= 99.99) {

@@ -174,7 +174,7 @@ const MiscAPI = () => {
     dependentFields: any
   ): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher(
-      `./industrysubType/${dependentFields?.businessType?.value}`,
+      `./industrysubType/${dependentFields?.typeOfIndustry?.value}`,
       {}
     );
     if (status === "success" && Array.isArray(data.response_data)) {
