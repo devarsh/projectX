@@ -23,7 +23,7 @@ import { useStyles } from "./style";
 //This is temparoary
 // import CAM from "./pages/cam";
 import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
-import { FileUploadControl } from "components/fileUpload";
+import { DocumentGridCRUD } from "pages_los/common/documents";
 import { Form } from "registry/metaData/test";
 
 const DashbordPages = () => {
@@ -57,7 +57,7 @@ const DashbordPages = () => {
             <Route path="/cam" element={<CAMIFrame />} />
             {/*dummy routes*/}
             <Route path="/leadForm" element={<Form />} />
-            <Route path="/upload" element={<FileUploadControl />} />
+            <Route path="/upload" element={<DocumentGridCRUD />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

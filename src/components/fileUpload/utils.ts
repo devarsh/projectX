@@ -1,5 +1,6 @@
 import fileTypeDetect, { FileTypeResult } from "file-type/browser";
 import { FileObjectType } from "./type";
+import { GridColumnType, GridMetaDataType } from "components/dataTableStatic";
 
 export function hashCode(str) {
   // from https://stackoverflow.com/a/8831937/151666
@@ -71,3 +72,92 @@ export function downloadFile(fileObj: File, fileName?: string) {
   a.addEventListener("click", clickHandler, false);
   a.click();
 }
+
+export const transformFileObject = (otherFieldsTemplate: any) => async (
+  file: File
+): Promise<FileObjectType> => {
+  const mimeType = await detectMimeType(file);
+  return {
+    ...otherFieldsTemplate,
+    id: computeFileFingerprint(file),
+    blob: file,
+    name: file.name.split(".").slice(0, -1).join("."),
+    sizeStr: computeSize(file.size),
+    size: file.size,
+    mimeType: file.type,
+    _mimeType: mimeType?.mime ?? "NOT_FOUND",
+    ext: mimeType?.ext ?? "NOT_FOUND",
+    fileExt: file.name.split(".").pop(),
+  };
+};
+
+export const transformMetaDataByMutating = (
+  metaData: GridMetaDataType,
+  additionalColumns?: GridColumnType[],
+  editableFileName?: boolean
+): GridMetaDataType => {
+  const newMetaData = JSON.parse(JSON.stringify(metaData));
+  if (Boolean(editableFileName)) {
+    for (let i = 0; i < newMetaData.columns.length; i++) {
+      if (newMetaData.columns[i].accessor === "name") {
+        newMetaData.columns[i].componentType = "editableTextField";
+      }
+    }
+  }
+  if (Array.isArray(additionalColumns)) {
+    newMetaData.columns = [...metaData.columns, ...additionalColumns];
+  }
+  return newMetaData;
+};
+
+export const extractColumnsFromAdditionalMetaData = (
+  additionalColumns?: GridColumnType[]
+) => {
+  if (Array.isArray(additionalColumns)) {
+    const extractedFields = additionalColumns.reduce((accum, one) => {
+      accum[one.accessor] = "";
+      return accum;
+    }, {});
+    return extractedFields;
+  }
+  return {};
+};
+
+export const validateFilesAndAddToList = (
+  customTransformFileObj: any,
+  maxAllowedSize: number,
+  allowedExtensions: string | string[]
+) => async (newFiles: File[], existingFiles: FileObjectType[] | undefined) => {
+  let failedFiles: any = [];
+  let result = newFiles.map((one) => customTransformFileObj(one));
+  let filesObj = await Promise.all(result);
+  let existingFileIds: string[] = [];
+  if (Array.isArray(existingFiles)) {
+    existingFileIds = existingFiles.map((one) => one.id);
+  }
+  let filteredNewFilesObj = filesObj.filter((one) => {
+    if (one.size > maxAllowedSize) {
+      failedFiles.push({
+        ...one,
+        failedReason: "File Size exceed maximum size",
+      });
+      return false;
+    }
+    if (!isMimeTypeValid(one.ext, allowedExtensions)) {
+      failedFiles.push({
+        ...one,
+        failedReason: "File type is not allowed",
+      });
+      return false;
+    }
+    if (isDuplicate(one, existingFileIds)) {
+      failedFiles.push({
+        ...one,
+        failedReason: "File already added for uploaing",
+      });
+      return false;
+    }
+    return true;
+  });
+  return { failedFiles, filteredNewFilesObj };
+};

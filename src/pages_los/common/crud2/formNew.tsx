@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { CRUDContext } from "./context";
-import { cacheWrapperKeyGen } from "./utils";
+import { cacheWrapperKeyGen } from "cache";
 
 interface InsertFormDataFnType {
   data: object;

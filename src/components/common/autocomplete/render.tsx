@@ -249,10 +249,10 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
             </span>
           ));
           return (
-            <Fragment>
+            <div style={{ whiteSpace: "pre" }}>
               {Boolean(showCheckbox) ? <Checkbox checked={selected} /> : null}
               {labelJSX}
-            </Fragment>
+            </div>
           );
         }}
       />

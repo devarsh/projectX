@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "react-query";
 import { queryClient } from "cache";
 import { ClearCacheContext } from "cache";
 import { CRUDContext } from "./context";
-import { cacheWrapperKeyGen } from "./utils";
+import { cacheWrapperKeyGen } from "cache";
 
 interface updateFormDataType {
   data: object;

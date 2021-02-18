@@ -5,7 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import DialogContent from "@material-ui/core/DialogContent";
 import { CRUDContext } from "./context";
-import { cacheWrapperKeyGen } from "./utils";
+import { cacheWrapperKeyGen } from "cache";
 
 interface DeleteFormDataType {
   serialNo?: string;

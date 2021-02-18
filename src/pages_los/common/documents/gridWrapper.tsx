@@ -7,10 +7,9 @@ import {
 } from "react";
 import GridWrapper from "components/dataTableStatic";
 import { useQuery } from "react-query";
-import { ClearCacheContext } from "cache";
+import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
 import { ActionTypes } from "components/dataTable";
-import { CRUDContext } from "./context";
-import { cacheWrapperKeyGen } from "cache";
+import { DOCCRUDContext } from "./context";
 
 type GridWrapperType = {
   metaData: any;
@@ -21,17 +20,16 @@ type GridWrapperType = {
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   ({ metaData, actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
-    const { getStaticGridData } = useContext(CRUDContext);
+    //const { getDocumentsGridData } = useContext(DOCCRUDContext);
     const wrapperKey = useRef<any>(null);
     if (wrapperKey.current === null) {
-      wrapperKey.current = cacheWrapperKeyGen(
-        Object.values(getStaticGridData.args)
-      );
+      wrapperKey.current = cacheWrapperKeyGen(null);
+      //Object.values(getDocumentsGridData.args)
     }
 
     const result = useQuery(
-      ["getStaticGridData", wrapperKey.current],
-      () => getStaticGridData.fn(getStaticGridData.args)(),
+      ["getDocumentsGridData", wrapperKey.current],
+      () => [],
       {
         cacheTime: 100000000,
         refetchOnWindowFocus: false,
@@ -39,7 +37,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       }
     );
     useEffect(() => {
-      removeCache?.addEntry(["getStaticGridData", wrapperKey.current]);
+      removeCache?.addEntry(["getDocumentsGridData", wrapperKey.current]);
     }, []);
     useImperativeHandle(ref, () => ({
       refetch: () => result.refetch(),
@@ -54,7 +52,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         <span>{errorMsg}</span>
       ) : (
         <GridWrapper
-          key={`staticGridData-${wrapperKey.current}-${dataUniqueKey}`}
+          key={`DocumentsGridData-${wrapperKey.current}-${dataUniqueKey}`}
           data={result.data ?? []}
           finalMetaData={metaData}
           setData={() => null}

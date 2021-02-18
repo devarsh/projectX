@@ -1,6 +1,6 @@
-import { GridMetaDataType } from "components/dataTableStatic";
+import { GridMetaDataType, GridColumnType } from "components/dataTableStatic";
 
-const metaData: GridMetaDataType = {
+export const gridMetaData: GridMetaDataType = {
   columns: [
     {
       columnName: "File ID",
@@ -47,7 +47,7 @@ const metaData: GridMetaDataType = {
   ],
   gridConfig: {
     dense: true,
-    gridLabel: "Files",
+    gridLabel: "Bank Statement",
     rowIdColumn: "id",
     defaultColumnConfig: {
       width: 150,
@@ -58,7 +58,6 @@ const metaData: GridMetaDataType = {
     disableSorting: true,
     disableGlobalFilter: true,
     disableGroupBy: true,
-    hideHeader: true,
     containerHeight: {
       min: "40vh",
       max: "50vh",
@@ -66,4 +65,17 @@ const metaData: GridMetaDataType = {
   },
 };
 
-export default metaData;
+export const columnsMetaData: GridColumnType[] = [
+  {
+    columnName: "Bank",
+    componentType: "editableAutocomplete",
+    accessor: "bank",
+    sequence: 4,
+    alignment: "left",
+    options: "getPerfiosBankList",
+    schemaValidation: {
+      type: "string",
+      rules: [{ name: "required", params: ["required"] }],
+    },
+  },
+];

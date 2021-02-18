@@ -324,10 +324,10 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
             </span>
           ));
           return (
-            <Fragment>
+            <div style={{ whiteSpace: "pre" }}>
               {showCheckbox ? <Checkbox checked={selected} /> : null}
               {labelJSX}
-            </Fragment>
+            </div>
           );
         }}
       />

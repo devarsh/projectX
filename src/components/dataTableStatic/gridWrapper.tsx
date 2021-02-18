@@ -1,5 +1,4 @@
 import {
-  FC,
   useMemo,
   useCallback,
   useRef,
@@ -32,6 +31,8 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         setAction,
       });
     }
+    let dataRef = useRef(data);
+    dataRef.current = data;
     let metaData = metaDataRef.current;
     /* eslint-disable react-hooks/exhaustive-deps */
     const columns = useMemo(() => metaData.columns, []);
@@ -62,41 +63,47 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
       [metaData?.gridConfig?.rowIdColumn]
     );
 
-    const updateGridData = (rowIndex, columnID, value, touched, error) => {
-      setData((old) =>
-        old.map((row, index) => {
-          if (index === rowIndex) {
-            return {
-              ...old[rowIndex],
-              [columnID]: value,
-              _touched: {
-                ...old?.[rowIndex]?.["_touched"],
-                [columnID]: touched,
-              },
-              _error: {
-                ...old?.[rowIndex]?.["_error"],
-                [columnID]: error,
-              },
-            };
-          }
-          return row;
-        })
-      );
-    };
-    const deleteGridRow = (rowIndex) => {
-      setData((old) =>
-        old.map((row, index) => {
-          if (index !== rowIndex) {
-            return true;
-          }
-          return false;
-        })
-      );
-    };
-    const validateAllData = async (currentData: any) => {
+    const updateGridData = useCallback(
+      (rowIndex, columnID, value, touched, error) => {
+        setData((old) =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex],
+                [columnID]: value,
+                _touched: {
+                  ...old?.[rowIndex]?.["_touched"],
+                  [columnID]: touched,
+                },
+                _error: {
+                  ...old?.[rowIndex]?.["_error"],
+                  [columnID]: error,
+                },
+              };
+            }
+            return row;
+          })
+        );
+      },
+      [setData]
+    );
+
+    const stripValidationFromData = useCallback(() => {
+      if (Array.isArray(dataRef.current)) {
+        return dataRef.current.map((one) => {
+          const { _touched, _error, ...others } = one;
+          return others;
+        });
+      }
+      return [];
+    }, []);
+    const validateData = useCallback(async () => {
       let isError = false;
       let keys = Object.keys(columnsValidator);
-      let validatedData = currentData.map(async (one) => {
+      if (!Array.isArray(dataRef.current)) {
+        return { isValid: isError, data: [] };
+      }
+      let validatedData = dataRef.current.map(async (one) => {
         const touched = one["_touched"] ?? {};
         const error = one["_error"] ?? {};
         for (let i = 0; i < keys.length; i++) {
@@ -124,11 +131,12 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         return { ...one, _touched: touched, _error: error };
       });
       let result = await Promise.all(validatedData);
-      return { validatedData: result, isValid: isError };
-    };
+      return { hasError: isError, data: result };
+    }, []);
 
     useImperativeHandle(ref, () => ({
-      validate: (data) => validateAllData(data),
+      validate: () => validateData(),
+      cleanData: () => stripValidationFromData(),
       columns: columnsObj,
     }));
     if (!Array.isArray(data)) {
@@ -152,7 +160,6 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         alwaysAvailableAction={metaData?.alwaysAvailableAction}
         setGridAction={metaData?.setAction}
         updateGridData={updateGridData}
-        deleteGridRow={deleteGridRow}
         hideFooter={metaData?.gridConfig?.hideFooter}
         hideHeader={metaData?.gridConfig?.hideHeader}
         containerHeight={metaData?.gridConfig?.containerHeight}

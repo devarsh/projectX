@@ -1,4 +1,11 @@
-import { useState, useCallback, Fragment, useEffect } from "react";
+import {
+  useState,
+  useCallback,
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -9,41 +16,21 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+import Alert from "@material-ui/lab/Alert";
 import Grid from "components/dataTableStatic";
 import { ActionTypes } from "components/dataTable";
+import { GridColumnType, GridMetaDataType } from "components/dataTableStatic";
 import metaData from "./metaData";
 import failedFilesMetaData from "./failedFilesMetaData";
 import { UploadTarget } from "./uploadTarget";
 import {
-  computeSize,
-  computeFileFingerprint,
-  detectMimeType,
-  isMimeTypeValid,
-  isDuplicate,
+  transformFileObject,
+  transformMetaDataByMutating,
+  extractColumnsFromAdditionalMetaData,
+  validateFilesAndAddToList,
 } from "./utils";
 import { FileObjectType } from "./type";
 import { PDFViewer, ImageViewer, NoPreview } from "./preView";
-
-const transformFileObject = async (
-  file: File,
-  otherFieldsTemplate: any
-): Promise<FileObjectType> => {
-  const mimeType = await detectMimeType(file);
-  return {
-    ...otherFieldsTemplate,
-    id: computeFileFingerprint(file),
-    blob: file,
-    name: file.name.split(".").slice(0, -1).join("."),
-    sizeStr: computeSize(file.size),
-    size: file.size,
-    mimeType: file.type,
-    _mimeType: mimeType?.mime ?? "NOT_FOUND",
-    ext: mimeType?.ext ?? "NOT_FOUND",
-    fileExt: file.name.split(".").pop(),
-  };
-};
 
 const actions: ActionTypes[] = [
   {
@@ -56,58 +43,77 @@ const actions: ActionTypes[] = [
     actionName: "View",
     actionLabel: "View File",
     multiple: false,
-    rowDoubleClick: true,
+    rowDoubleClick: false,
   },
 ];
 
-export const FileUploadControl = () => {
+export const FileUploadControl = ({
+  additionalColumns,
+  editableFileName,
+  onClose,
+  onUpload,
+  dataChangedRef,
+  allowedExtensions = ["jpg", "png", "pdf"],
+  maxAllowedSize = 1024 * 1024 * 3,
+}: {
+  additionalColumns?: GridColumnType[];
+  editableFileName?: boolean;
+  onClose?: any;
+  onUpload?: any;
+  dataChangedRef?: any;
+  allowedExtensions?: string | string[];
+  maxAllowedSize: number;
+}) => {
+  const transformedFilesMetaData = useMemo(
+    () =>
+      transformMetaDataByMutating(
+        metaData,
+        additionalColumns,
+        editableFileName
+      ),
+    []
+  );
+  const additionalFieldsObj = useMemo(
+    () => extractColumnsFromAdditionalMetaData(additionalColumns),
+    []
+  );
+  const customTransformFileObj = useCallback(
+    (currentObj) => {
+      return transformFileObject(additionalFieldsObj)(currentObj);
+    },
+    [additionalFieldsObj]
+  );
   const [files, setFiles] = useState<FileObjectType[]>([]);
+  const [error, setError] = useState("");
   const [failedFiles, setFailedFailes] = useState<FileObjectType[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const allowedExtensions = ["jpg", "png", "pdf"];
-  const maxAllowedSize = 1024 * 1024 * 3;
-  const validateFilesAndAddToList = useCallback(
+  const gridRef = useRef<any>(null);
+  const validateFilesAndAddToListCB = useCallback(
     async (newFiles: File[], existingFiles: FileObjectType[] | undefined) => {
-      let failedFiles: any = [];
-      let result = newFiles.map((one) => transformFileObject(one, {}));
-      let filesObj = await Promise.all(result);
-      let existingFileIds: string[] = [];
-      if (Array.isArray(existingFiles)) {
-        existingFileIds = existingFiles.map((one) => one.id);
-      }
-      let filteredNewFilesObj = filesObj.filter((one) => {
-        if (one.size > maxAllowedSize) {
-          failedFiles.push({
-            ...one,
-            failedReason: "File Size exceed maximum size",
-          });
-          return false;
-        }
-        if (!isMimeTypeValid(one.ext, allowedExtensions)) {
-          failedFiles.push({
-            ...one,
-            failedReason: "File type is not allowed",
-          });
-          return false;
-        }
-        if (isDuplicate(one, existingFileIds)) {
-          failedFiles.push({
-            ...one,
-            failedReason: "File already added for uploaing",
-          });
-          return false;
-        }
-        return true;
-      });
+      let {
+        filteredNewFilesObj,
+        failedFiles,
+      } = await validateFilesAndAddToList(
+        customTransformFileObj,
+        maxAllowedSize,
+        allowedExtensions
+      )(newFiles, existingFiles);
       setFiles((old) => [...old, ...filteredNewFilesObj]);
       if (failedFiles.length > 0) {
         setFailedFailes(failedFiles);
         setOpenDialog(true);
       }
     },
-    [setFiles, setFailedFailes, setOpenDialog]
+    [
+      setFiles,
+      setFailedFailes,
+      setOpenDialog,
+      customTransformFileObj,
+      maxAllowedSize,
+      allowedExtensions,
+    ]
   );
   useEffect(() => {
     if (action?.name === "Delete") {
@@ -118,6 +124,28 @@ export const FileUploadControl = () => {
     }
   }, [action]);
 
+  const uploadDocuments = useCallback(
+    async (onUpload) => {
+      let { hasError, data } = await gridRef?.current?.validate?.();
+      if (hasError === true) {
+        setFiles(data);
+      } else {
+        let result = gridRef?.current?.cleanData?.();
+        setLoading(true);
+        setError("");
+        try {
+          await Promise.resolve(onUpload(result));
+          dataChangedRef.current = true;
+          onClose();
+        } catch (e) {
+          setError("unknown error occured");
+        }
+        setLoading(false);
+      }
+    },
+    [setLoading, setError, setFiles]
+  );
+
   return (
     <Fragment>
       <Card>
@@ -126,13 +154,16 @@ export const FileUploadControl = () => {
           action={
             <CardActions>
               <div style={{ flexGrow: 2 }} />
-              <Button
-                disabled={loading || files.length <= 0}
-                size="small"
-                color="primary"
-              >
-                Upload
-              </Button>
+              {typeof onUpload === "function" ? (
+                <Button
+                  disabled={loading || files.length <= 0}
+                  size="small"
+                  color="primary"
+                  onClick={() => uploadDocuments(onUpload)}
+                >
+                  Upload
+                </Button>
+              ) : null}
               <Button
                 disabled={loading || files.length <= 0}
                 onClick={() => setFiles([])}
@@ -141,30 +172,33 @@ export const FileUploadControl = () => {
               >
                 Clear All
               </Button>
+              {typeof onClose === "function" ? (
+                <Button onClick={() => onClose()}>Close</Button>
+              ) : null}
             </CardActions>
           }
         />
+        {Boolean(error) ? <Alert severity="error">{error}</Alert> : null}
         <CardContent>
-          <DndProvider backend={HTML5Backend}>
-            <UploadTarget
-              existingFiles={files}
-              onDrop={validateFilesAndAddToList}
-              disabled={loading}
-            />
-          </DndProvider>
+          <UploadTarget
+            existingFiles={files}
+            onDrop={validateFilesAndAddToListCB}
+            disabled={loading}
+          />
           <Collapse in={files.length > 0}>
             <Grid
-              finalMetaData={metaData}
+              finalMetaData={transformedFilesMetaData}
               data={files}
               setData={setFiles}
               actions={actions}
               setAction={setAction}
+              ref={gridRef}
             />
           </Collapse>
         </CardContent>
       </Card>
       <Dialog open={openDialog} maxWidth="lg">
-        <DialogTitle>Failed To Upload Following Files</DialogTitle>
+        <DialogTitle>Failed To Add Following Files For Upload</DialogTitle>
         <DialogContent>
           <Grid
             finalMetaData={failedFilesMetaData}

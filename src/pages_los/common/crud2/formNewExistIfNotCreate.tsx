@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { FormNew } from "./formNew";
 import { CRUDContext } from "./context";
-import { cacheWrapperKeyGen } from "./utils";
+import { cacheWrapperKeyGen } from "cache";
 
 export const FormNewExistsIfNotCreate = ({
   isProductEditedRef,
