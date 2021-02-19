@@ -10,7 +10,6 @@ import { cacheWrapperKeyGen } from "cache";
 
 export const FormNewExistsIfNotCreate = ({
   isProductEditedRef,
-  metaData,
   successAction,
 }) => {
   const removeCache = useContext(ClearCacheContext);
@@ -59,7 +58,6 @@ export const FormNewExistsIfNotCreate = ({
     <CreateFormConfirmation
       successAction={successAction}
       isProductEditedRef={isProductEditedRef}
-      metaData={metaData}
     />
   ) : null;
 };
@@ -67,7 +65,6 @@ export const FormNewExistsIfNotCreate = ({
 export const CreateFormConfirmation = ({
   successAction,
   isProductEditedRef,
-  metaData,
 }) => {
   const [showAsk, setShowAsk] = useState(true);
   return showAsk ? (
@@ -80,7 +77,6 @@ export const CreateFormConfirmation = ({
       isProductEditedRef={isProductEditedRef}
       cancelAction={setShowAsk}
       successAction={successAction}
-      metaData={metaData}
     />
   );
 };

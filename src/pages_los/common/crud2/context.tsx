@@ -7,6 +7,8 @@ interface CRUDProviderType {
   updateFormData: CRUDFNType;
   getFormData: CRUDFNType;
   getStaticGridData: CRUDFNType;
+  getFormMetaData: CRUDFNType;
+  getGridFormMetaData: CRUDFNType;
 }
 
 export const CRUDContext = createContext<CRUDProviderType>(
@@ -26,6 +28,8 @@ export const CRUDContextProvider: FC<CRUDProviderType> = ({
   updateFormData,
   getFormData,
   getStaticGridData,
+  getFormMetaData,
+  getGridFormMetaData,
 }) => {
   return (
     <CRUDContext.Provider
@@ -36,6 +40,8 @@ export const CRUDContextProvider: FC<CRUDProviderType> = ({
         updateFormData,
         getFormData,
         getStaticGridData,
+        getFormMetaData,
+        getGridFormMetaData,
       }}
     >
       {children}

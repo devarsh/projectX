@@ -45,6 +45,14 @@ const bankCrudAPIArgs = (moduleType, productType, refID) => ({
     fn: LOSSDK.getStaticBankGridData,
     args: { moduleType, productType, refID },
   },
+  getFormMetaData: {
+    fn: LOSSDK.getStaticBankGridData,
+    args: { moduleType, productType, refID },
+  },
+  getGridFormMetaData: {
+    fn: LOSSDK.getGridFormMetaData,
+    args: { moduleType, productType, refID },
+  },
 });
 
 export const ConfigChild = () => {
@@ -73,22 +81,14 @@ export const ConfigChild = () => {
       <Box py={2}>
         <TabPanel value={currentTab} index="0" key={0}>
           <CRUDContextProvider {...bankCrudAPIArgs("config/bank", "sme", null)}>
-            <GridCRUD
-              isProductEditedRef={isProductEditedRef}
-              formMetaData={BankMasterSMEDetailsMetaData}
-              gridMetaData={BankMasterGridMetaData}
-            />
+            <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUDContextProvider
             {...bankCrudAPIArgs("config/bank", "infra", null)}
           >
-            <GridCRUD
-              isProductEditedRef={isProductEditedRef}
-              formMetaData={BankMasterCFDetailsMetaData}
-              gridMetaData={BankMasterCFGridMetaData}
-            />
+            <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
       </Box>
