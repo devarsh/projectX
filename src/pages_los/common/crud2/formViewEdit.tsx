@@ -2,7 +2,7 @@ import { FC, useContext, useEffect, useRef } from "react";
 import loaderGif from "assets/images/loader.gif";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQueries } from "react-query";
 import { queryClient } from "cache";
 import { ClearCacheContext } from "cache";
 import { CRUDContext } from "./context";
@@ -16,7 +16,6 @@ interface updateFormDataType {
   changeFormMode?: any;
   enableForm?: any;
   disableForm?: any;
-
   serialNo?: string;
 }
 
@@ -27,15 +26,24 @@ const updateFormDataWrapperFn = (updateFormData) => async ({
   return updateFormData(data, serialNo);
 };
 
+const emptyFN = () => {};
+
 export const FormViewEdit: FC<{
   isProductEditedRef: any;
-  metaData: MetaDataType;
   serialNo?: string;
   closeDialog?: any;
   defaultView?: "view" | "edit";
-}> = ({ serialNo, isProductEditedRef, metaData, closeDialog, defaultView }) => {
+}> = ({
+  serialNo,
+  isProductEditedRef,
+  closeDialog = emptyFN,
+  defaultView = "view",
+}) => {
+  serialNo = Boolean(serialNo) ? serialNo : "SERIAL_NO_NOT_FOUND_DO_NOT_REMOVE";
   const removeCache = useContext(ClearCacheContext);
-  const { updateFormData, getFormData } = useContext(CRUDContext);
+  const { updateFormData, getFormData, getFormMetaData } = useContext(
+    CRUDContext
+  );
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(Object.values(getFormData.args));
@@ -81,34 +89,72 @@ export const FormViewEdit: FC<{
       changeFormMode,
       enableForm,
       disableForm,
-
       serialNo,
     });
   };
 
   useEffect(() => {
-    removeCache?.addEntry(["getFormData", wrapperKey.current, serialNo ?? ""]);
+    removeCache?.addEntry(["getFormData", wrapperKey.current, serialNo]);
+    removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "view"]);
+    removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "edit"]);
   }, []);
 
-  const result = useQuery(
-    ["getFormData", wrapperKey.current, serialNo ?? ""],
-    () => getFormData.fn(getFormData.args)(serialNo),
+  const result = useQueries([
     {
+      queryKey: ["getFormData", wrapperKey.current, serialNo],
+      queryFn: () => getFormData.fn(getFormData.args)(serialNo),
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
-    }
-  );
+    },
+    {
+      queryKey: ["getFormMetaData", wrapperKey.current, "view"],
+      queryFn: () => getFormMetaData.fn(getFormMetaData.args)("view"),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+    {
+      queryKey: ["getFormMetaData", wrapperKey.current, "edit"],
+      queryFn: () => getFormMetaData.fn(getFormMetaData.args)("edit"),
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  ]);
 
-  const loading = result.isLoading || result.isFetching;
-  let isError = result.isError;
+  const dataUniqueKey = `${result[0].dataUpdatedAt}`;
+  const loading =
+    result[0].isLoading ||
+    result[1].isLoading ||
+    result[2].isLoading ||
+    result[0].isFetching ||
+    result[1].isFetching ||
+    result[2].isFetching;
+  let isError = result[0].isError || result[1].isError || result[2].isError;
   //@ts-ignore
-  let errorMsg = `${result.error?.error_msg ?? ""}`;
-  let formEditData = result.data;
-  metaData.form.formState = {
-    ...getFormData.args,
-    serialNo: serialNo,
-  };
+  let errorMsg = `${result[0].error?.error_msg ?? "Unknown error occured"} ${
+    //@ts-ignore
+    result[1].error?.error_msg ?? "Unknown error occured"
+  }${
+    //@ts-ignore
+    result[2].error?.error_msg ?? "Unknown error occured"
+  }`;
+
+  let metaData: any = {};
+  if (defaultView === "edit") {
+    metaData = JSON.parse(JSON.stringify(result[2].data ?? {})) as MetaDataType;
+  } else {
+    metaData = JSON.parse(JSON.stringify(result[1].data ?? {})) as MetaDataType;
+  }
+  let formEditData = result[0].data;
+  if (loading === false && isError === false) {
+    // isError = !isMetaDataValid(metaData);
+    if (isError === false) {
+    } else {
+      errorMsg = "Error loading form";
+    }
+  }
 
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" width="50px" height="50px" />
@@ -116,13 +162,13 @@ export const FormViewEdit: FC<{
     <span>{errorMsg}</span>
   ) : (
     <FormWrapper
-      key={`${wrapperKey.current}-${result.dataUpdatedAt}`}
+      key={`${wrapperKey.current}-${dataUniqueKey}-${defaultView}`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
-      defaultMode={defaultView ?? "view"}
+      defaultMode={defaultView}
       onCancleHandler={closeDialog}
-      disableGroupErrorDetection={true}
+      disableGroupErrorDetection={false}
       disableGroupExclude={true}
     />
   );

@@ -5,7 +5,6 @@ import { FormNewExistsIfNotCreate } from "./formNewExistIfNotCreate";
 export const SimpleCRUD = ({
   isProductEditedRef,
   closeDialog,
-  formMetaData,
   dataAlwaysExists,
 }) => {
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
@@ -13,14 +12,12 @@ export const SimpleCRUD = ({
   return dataExist ? (
     <FormViewEdit
       isProductEditedRef={isProductEditedRef}
-      metaData={formMetaData}
       closeDialog={closeDialog}
     />
   ) : (
     <FormNewExistsIfNotCreate
       isProductEditedRef={isProductEditedRef}
       successAction={() => setDataExist(true)}
-      metaData={formMetaData}
     />
   );
 };
