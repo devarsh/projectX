@@ -73,24 +73,6 @@ export function downloadFile(fileObj: File, fileName?: string) {
   a.click();
 }
 
-export const transformFileObject = (otherFieldsTemplate: any) => async (
-  file: File
-): Promise<FileObjectType> => {
-  const mimeType = await detectMimeType(file);
-  return {
-    ...otherFieldsTemplate,
-    id: computeFileFingerprint(file),
-    blob: file,
-    name: file.name.split(".").slice(0, -1).join("."),
-    sizeStr: computeSize(file.size),
-    size: file.size,
-    mimeType: file.type,
-    _mimeType: mimeType?.mime ?? "NOT_FOUND",
-    ext: mimeType?.ext ?? "NOT_FOUND",
-    fileExt: file.name.split(".").pop(),
-  };
-};
-
 export const transformMetaDataByMutating = (
   metaData: GridMetaDataType,
   additionalColumns?: GridColumnType[],
@@ -160,4 +142,70 @@ export const validateFilesAndAddToList = (
     return true;
   });
   return { failedFiles, filteredNewFilesObj };
+};
+
+export const transformFileObject = (otherFieldsTemplate: any) => async (
+  file: File
+): Promise<FileObjectType> => {
+  const mimeType = await detectMimeType(file);
+  return {
+    ...otherFieldsTemplate,
+    id: computeFileFingerprint(file),
+    blob: file,
+    name: file.name.split(".").slice(0, -1).join("."),
+    sizeStr: computeSize(file.size),
+    size: file.size,
+    mimeType: file.type,
+    _mimeType: mimeType?.mime ?? "NOT_FOUND",
+    ext: mimeType?.ext ?? "NOT_FOUND",
+    fileExt: file.name.split(".").pop(),
+  };
+};
+
+export const cleanFileObj = (filesObj: FileObjectType[]) => {
+  if (!Array.isArray(filesObj)) {
+    return [];
+  }
+  return filesObj.map((one) => {
+    const {
+      blob,
+      name,
+      sizeStr,
+      size,
+      mimeType,
+      _mimeType,
+      ext,
+      fileExt,
+      ...others
+    } = one;
+    return {
+      name: `${name}.${ext}`,
+      blob: blob,
+      ext: ext,
+      ...others,
+    };
+  });
+};
+
+export const convertToFormData = (fileArrayObj: any[]) => {
+  const formData = new FormData();
+  if (!Array.isArray(fileArrayObj) || fileArrayObj.length === 0) {
+    return formData;
+  }
+  const metaData: any = {};
+  for (let j = 0; j < fileArrayObj.length; j++) {
+    const { blob, id, ...others } = fileArrayObj[j];
+    formData.append("blob", blob, `${id}`);
+    metaData[`${id}`] = others;
+  }
+  formData.append("metaData", JSON.stringify(metaData));
+  //const keys = Object.keys(fileArrayObj[0]);
+  // for (let j = 0; j < fileArrayObj.length; j++) {
+  //   for (let i = 0; i < keys.length; i++) {
+
+  //     formData.append(keys[i], fileArrayObj[j][keys[i]]);
+  //   }
+  // }
+
+  return formData;
 };

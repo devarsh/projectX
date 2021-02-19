@@ -69,7 +69,7 @@ export const columnsMetaData: GridColumnType[] = [
   {
     columnName: "Bank",
     componentType: "editableAutocomplete",
-    accessor: "bank",
+    accessor: "bankID",
     sequence: 4,
     alignment: "left",
     options: "getPerfiosBankList",
@@ -77,5 +77,19 @@ export const columnsMetaData: GridColumnType[] = [
       type: "string",
       rules: [{ name: "required", params: ["required"] }],
     },
+  },
+  {
+    columnName: "Password",
+    componentType: "editableTextField",
+    accessor: "password",
+    sequence: 4,
+    alignment: "left",
+  },
+  {
+    columnName: "Remarks",
+    componentType: "editableTextField",
+    accessor: "remarks",
+    sequence: 4,
+    alignment: "left",
   },
 ];

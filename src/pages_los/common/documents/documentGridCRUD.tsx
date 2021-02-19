@@ -4,6 +4,7 @@ import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
 import { FileUploadControl } from "components/fileUpload";
 import { gridMetaData, columnsMetaData } from "./meta";
+import { LOSSDK } from "registry/fns/los";
 
 const actions: ActionTypes[] = [
   {
@@ -37,10 +38,7 @@ export const DocumentGridCRUD = () => {
       dataChangedRef.current = false;
     }
   };
-  const onUpload = (files) => {
-    console.log(files);
-    return true;
-  };
+
   return (
     <Fragment>
       <MyGridWrapper
@@ -61,7 +59,11 @@ export const DocumentGridCRUD = () => {
             additionalColumns={columnsMetaData}
             editableFileName={false}
             dataChangedRef={dataChangedRef}
-            onUpload={onUpload}
+            onUpload={LOSSDK.uploadDocuments({
+              moduleType: "lead",
+              docCategory: "bank",
+              refID: "5",
+            })}
           />
         ) : null}
       </Dialog>

@@ -31,6 +31,7 @@ import { LinearProgressBarSpacer } from "components/dataTable/linerProgressBarSp
 import ArrowRightSharpIcon from "@material-ui/icons/ArrowRightSharp";
 import ArrowDropDownSharpIcon from "@material-ui/icons/ArrowDropDownSharp";
 import IconButton from "@material-ui/core/IconButton";
+import { CustomBackdrop } from "components/dataTable/backdrop";
 
 export const DataGrid = ({
   label,
@@ -54,6 +55,7 @@ export const DataGrid = ({
   disableGlobalFilter,
   disableRowSelect,
   disableGroupBy,
+  disableLoader,
   containerHeight,
 }) => {
   //@ts-ignore
@@ -69,19 +71,19 @@ export const DataGrid = ({
     preGlobalFilteredRows,
   } = useTable(
     {
+      initialState: {
+        hiddenColumns: defaultHiddenColumns,
+      },
       columns,
       defaultColumn,
       data,
       getRowId,
-      initialState: {
-        hiddenColumns: defaultHiddenColumns,
-      },
       allowColumnReordering: allowColumnReordering,
       autoResetSortBy: false,
-      updateGridData,
       disableSortBy: Boolean(disableSorting),
       disableGlobalFilter: Boolean(disableGlobalFilter),
       disableGroupBy: Boolean(disableGroupBy),
+      updateGridData,
     },
     useGlobalFilter,
     useColumnOrder,
@@ -166,7 +168,13 @@ export const DataGrid = ({
         mouseY={contextMenuPosition?.mouseY ?? null}
         handleClose={handleContextMenuClose}
       />
-      {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
+      {!disableLoader ? (
+        loading ? (
+          <LinearProgress />
+        ) : (
+          <LinearProgressBarSpacer />
+        )
+      ) : null}
       <TableContainer
         style={{
           position: "relative",
@@ -231,9 +239,15 @@ export const DataGrid = ({
               prepareRow(row);
               const rightClickHandler = handleContextMenuOpen(row);
               const thisRowDblClickHandler = handleRowDoubleClickAction(row);
+              let rowColorStyle: any[] = [];
+              if (Boolean(row?.original?._rowColor)) {
+                rowColorStyle = [
+                  { style: { color: row?.original?._rowColor } },
+                ];
+              }
               return (
                 <MyTableRow
-                  {...row.getRowProps()}
+                  {...row.getRowProps(rowColorStyle)}
                   id={row.id}
                   tabIndex={0}
                   component="div"
@@ -282,6 +296,7 @@ export const DataGrid = ({
             })}
           </TableBody>
         </Table>
+        <CustomBackdrop open={loading} />
       </TableContainer>
       {hideFooter ? null : (
         <TableCell style={{ display: "flex" }}>

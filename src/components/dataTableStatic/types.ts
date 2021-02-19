@@ -40,6 +40,7 @@ export interface GridConfigType {
   disableRowSelect?: boolean;
   disableGlobalFilter?: boolean;
   disableGroupBy?: boolean;
+  disableLoader?: boolean;
 }
 
 export interface GridMetaDataType {

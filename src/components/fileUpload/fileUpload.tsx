@@ -18,16 +18,19 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Alert from "@material-ui/lab/Alert";
 import Grid from "components/dataTableStatic";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { ActionTypes } from "components/dataTable";
-import { GridColumnType, GridMetaDataType } from "components/dataTableStatic";
+import { GridColumnType } from "components/dataTableStatic";
 import metaData from "./metaData";
 import failedFilesMetaData from "./failedFilesMetaData";
 import { UploadTarget } from "./uploadTarget";
 import {
   transformFileObject,
+  cleanFileObj,
   transformMetaDataByMutating,
   extractColumnsFromAdditionalMetaData,
   validateFilesAndAddToList,
+  convertToFormData,
 } from "./utils";
 import { FileObjectType } from "./type";
 import { PDFViewer, ImageViewer, NoPreview } from "./preView";
@@ -62,7 +65,7 @@ export const FileUploadControl = ({
   onUpload?: any;
   dataChangedRef?: any;
   allowedExtensions?: string | string[];
-  maxAllowedSize: number;
+  maxAllowedSize?: number;
 }) => {
   const transformedFilesMetaData = useMemo(
     () =>
@@ -89,6 +92,7 @@ export const FileUploadControl = ({
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(Infinity);
   const gridRef = useRef<any>(null);
   const validateFilesAndAddToListCB = useCallback(
     async (newFiles: File[], existingFiles: FileObjectType[] | undefined) => {
@@ -131,16 +135,25 @@ export const FileUploadControl = ({
         setFiles(data);
       } else {
         let result = gridRef?.current?.cleanData?.();
+        let cleanObj = cleanFileObj(result);
+        let formDataObj = convertToFormData(cleanObj);
         setLoading(true);
         setError("");
-        try {
-          await Promise.resolve(onUpload(result));
-          dataChangedRef.current = true;
-          onClose();
-        } catch (e) {
-          setError("unknown error occured");
-        }
-        setLoading(false);
+        onUpload(
+          formDataObj,
+          (progressValue) => {
+            setUploadProgress(progressValue);
+          },
+          ({ status, data }) => {
+            if (status === "success") {
+              dataChangedRef.current = true;
+              onClose();
+            } else {
+              setError("unknown error occured");
+            }
+            setLoading(false);
+          }
+        );
       }
     },
     [setLoading, setError, setFiles]
@@ -148,6 +161,14 @@ export const FileUploadControl = ({
 
   return (
     <Fragment>
+      {loading ? (
+        <LinearProgress
+          variant={
+            uploadProgress === Infinity ? "indeterminate" : "determinate"
+          }
+          value={uploadProgress}
+        />
+      ) : null}
       <Card>
         <CardHeader
           title="File Upload"
@@ -173,7 +194,14 @@ export const FileUploadControl = ({
                 Clear All
               </Button>
               {typeof onClose === "function" ? (
-                <Button onClick={() => onClose()}>Close</Button>
+                <Button
+                  disabled={loading}
+                  onClick={() => onClose()}
+                  size="small"
+                  color="primary"
+                >
+                  Close
+                </Button>
               ) : null}
             </CardActions>
           }
@@ -192,6 +220,7 @@ export const FileUploadControl = ({
               setData={setFiles}
               actions={actions}
               setAction={setAction}
+              loading={loading}
               ref={gridRef}
             />
           </Collapse>

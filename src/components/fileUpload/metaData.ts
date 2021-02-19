@@ -12,7 +12,7 @@ const metaData: GridMetaDataType = {
     },
     {
       columnName: "File Name",
-      componentType: "default",
+      componentType: "editableTextField",
       accessor: "name",
       sequence: 1,
       alignment: "left",
@@ -58,6 +58,7 @@ const metaData: GridMetaDataType = {
     disableSorting: true,
     disableGlobalFilter: true,
     disableGroupBy: true,
+    disableLoader: true,
     hideHeader: true,
     containerHeight: {
       min: "40vh",

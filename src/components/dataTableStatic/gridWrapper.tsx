@@ -91,7 +91,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
     const stripValidationFromData = useCallback(() => {
       if (Array.isArray(dataRef.current)) {
         return dataRef.current.map((one) => {
-          const { _touched, _error, ...others } = one;
+          const { _touched, _error, _rowColor, ...others } = one;
           return others;
         });
       }
@@ -166,6 +166,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         disableRowSelect={metaData?.gridConfig?.disableRowSelect}
         disableGlobalFilter={metaData?.gridConfig?.disableGlobalFilter}
         disableGroupBy={metaData?.gridConfig?.disableGroupBy}
+        disableLoader={metaData?.gridConfig?.disableLoader}
       />
     );
   }
