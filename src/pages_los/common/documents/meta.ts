@@ -79,6 +79,18 @@ export const columnsMetaData: GridColumnType[] = [
     },
   },
   {
+    columnName: "Document Type",
+    componentType: "editableAutocomplete",
+    accessor: "docType",
+    sequence: 4,
+    alignment: "left",
+    options: "getBankDocType",
+    schemaValidation: {
+      type: "string",
+      rules: [{ name: "required", params: ["required"] }],
+    },
+  },
+  {
     columnName: "Password",
     componentType: "editableTextField",
     accessor: "password",

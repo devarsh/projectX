@@ -62,7 +62,7 @@ export const DocumentGridCRUD = () => {
             onUpload={LOSSDK.uploadDocuments({
               moduleType: "lead",
               docCategory: "bank",
-              refID: "5",
+              refID: "89",
             })}
           />
         ) : null}
