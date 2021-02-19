@@ -67,34 +67,14 @@ registerFn(
 );
 
 registerFn("getPincodeDtl", pincode.getPincodeDtl(miscSDK.getPincodeExternal));
-registerFn(
-  "getPincodeDtlEdit",
-  pincode.getPincodeDtlEdit(miscSDK.getPincodeExternal)
-);
-
 registerFn("getLocationDtl", pincode.getLocationDtl);
-registerFn("getLocationDtlEdit", pincode.getLocationDtlEdit);
 registerFn(
   "getcoApplicantPincodeDtl",
   pincode.getcoApplicantPincodeDtl(miscSDK.getPincodeExternal)
 );
-registerFn("getcoApplicantLocationDtl", pincode.getcoApplicantLocationDtlEdit);
+registerFn("getcoApplicantLocationDtl", pincode.getcoApplicantLocationDtl);
 registerFn(
   "getSitePincodeDtl",
-  pincode.getSitePincodeDtlEdit(miscSDK.getPincodeExternal)
+  pincode.getSitePincodeDtl(miscSDK.getPincodeExternal)
 );
-
-registerFn(
-  "getcoApplicantPincodeDtlEdit",
-  pincode.getcoApplicantPincodeDtlEdit(miscSDK.getPincodeExternal)
-);
-registerFn(
-  "getcoApplicantLocationDtlEdit",
-  pincode.getcoApplicantLocationDtlEdit
-);
-registerFn(
-  "getSitePincodeDtlEdit",
-  pincode.getSitePincodeDtlEdit(miscSDK.getPincodeExternal)
-);
-registerFn("getSiteLocationDtl", pincode.getSiteLocationDtlEdit);
-registerFn("getSiteLocationDtlEdit", pincode.getSiteLocationDtlEdit);
+registerFn("getSiteLocationDtl", pincode.getSiteLocationDtl);
