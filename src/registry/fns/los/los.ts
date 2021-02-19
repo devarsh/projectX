@@ -434,10 +434,34 @@ const LOSAPI = () => {
   //  moduleType - lead/inquiry
   // productType - products within this module
 
+  const deleteFormArrayFieldData = async (
+    formState: any,
+    arrayfieldName: string
+  ) => {
+    const { moduleType, productType, ...others } = formState;
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/${arrayfieldName}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...others,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   interface crudType {
     moduleType: string;
     productType: string;
     refID: string;
+    metadataType: string;
   }
 
   const getFormData = ({ moduleType, productType, refID }: crudType) => async (
@@ -451,29 +475,6 @@ const LOSAPI = () => {
             refID: refID,
             serialNo: serialNo,
           },
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-  const deleteFormArrayFieldData = async (
-    formState: any,
-    arrayfieldName: string
-  ) => {
-    console.log(arrayfieldName, formState);
-    const { moduleType, productType, ...others } = formState;
-    const { data, status } = await internalFetcher(
-      `./${moduleType}/${productType}/${arrayfieldName}/delete`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            ...others,
-          },
-          channel: "W",
         }),
       }
     );
@@ -714,6 +715,52 @@ const LOSAPI = () => {
     }
   };
 
+  ///--------------------CAM crud metaData
+
+  const getFormMetaData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (metadataType: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/metadata/${metadataType}`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getGridFormMetaData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/grid/metadata`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -751,6 +798,10 @@ const LOSAPI = () => {
     insertBankData,
     getStaticBankGridData,
     getBankData,
+
+    //CAM
+    getFormMetaData,
+    getGridFormMetaData,
   };
 };
 

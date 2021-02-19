@@ -1,10 +1,16 @@
-import { useState, Fragment, useRef } from "react";
+import { useContext, useRef, useState, Fragment, useEffect } from "react";
+import loaderGif from "assets/images/loader.gif";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { FormNew } from "./formNew";
 import { FormViewEdit } from "./formViewEdit";
 import { DeleteAction } from "./delete";
 import { MyGridWrapper } from "./gridWrapper";
+import { CRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "./utils";
+import { ClearCacheContext } from "cache";
+import { useQuery } from "react-query";
+import { MetaDataType } from "components/dyanmicForm";
 
 const actions: ActionTypes[] = [
   {
@@ -27,14 +33,18 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const GridCRUD = ({
-  isProductEditedRef,
-  formMetaData,
-  gridMetaData,
-}) => {
+export const GridCRUD = ({ isProductEditedRef }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChanged = useRef(false);
+  const removeCache = useContext(ClearCacheContext);
+  const { getGridFormMetaData } = useContext(CRUDContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(
+      Object.values(getGridFormMetaData.args)
+    );
+  }
   const closeMyDialog = () => {
     setCurrentAction(null);
     if (dataChanged.current === true) {
@@ -43,12 +53,36 @@ export const GridCRUD = ({
       dataChanged.current = false;
     }
   };
-  return (
+
+  useEffect(() => {
+    removeCache?.addEntry(["getGridFormMetaData", wrapperKey.current]);
+  }, []);
+
+  const result = useQuery(
+    ["getGridFormMetaData", wrapperKey.current],
+    () => getGridFormMetaData.fn(getGridFormMetaData.args)(),
+    {
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+  const loading = result.isLoading || result.isFetching;
+  let isError = result.isError;
+  //@ts-ignore
+  let errorMsg = `${result.error?.error_msg ?? "Unknown error occured"} `;
+  let metaData = JSON.parse(JSON.stringify(result.data ?? {})) as MetaDataType;
+
+  const renderResult = loading ? (
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+  ) : isError === true ? (
+    <span>{errorMsg}</span>
+  ) : (
     <Fragment>
       <MyGridWrapper
         ref={gridRef}
         key="grid"
-        metaData={gridMetaData}
+        metaData={metaData}
         actions={actions}
         setAction={setCurrentAction}
       />
@@ -59,14 +93,12 @@ export const GridCRUD = ({
       >
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
-            metaData={formMetaData}
             successAction={closeMyDialog}
             cancelAction={closeMyDialog}
             isProductEditedRef={dataChanged}
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
-            metaData={formMetaData}
             isProductEditedRef={dataChanged}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
@@ -81,4 +113,5 @@ export const GridCRUD = ({
       </Dialog>
     </Fragment>
   );
+  return renderResult;
 };

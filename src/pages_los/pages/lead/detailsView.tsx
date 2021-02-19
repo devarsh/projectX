@@ -5,18 +5,6 @@ import { Tabs } from "components/styledComponent/tabs";
 import { queryClient } from "cache";
 import { ClearCacheContext } from "cache";
 import { HeaderDetails } from "./headerDetails";
-import {
-  BankDetailsMetadata,
-  GeneralDetailsMetaData,
-  ManagementInformationMetaData,
-  CollateralDetailsMetaData,
-  FinancialRatiosMetaData,
-} from "registry/metaData";
-import {
-  FinancialGridMetaData,
-  ManagementDetailsGridMetaData,
-  ProjectDetailsGridMetaData,
-} from "registry/metaData/grid";
 import { GridCRUD, SimpleCRUD } from "pages_los/common/crud2";
 import { LOSSDK } from "registry/fns/los";
 import { CRUDContextProvider } from "pages_los/common/crud2";
@@ -52,6 +40,14 @@ const crudAPIArgs = (moduleType, productType, refID) => ({
     fn: LOSSDK.getStaticGridData,
     args: { moduleType, productType, refID },
   },
+  getFormMetaData: {
+    fn: LOSSDK.getFormMetaData,
+    args: { moduleType, productType, refID },
+  },
+  getGridFormMetaData: {
+    fn: LOSSDK.getGridFormMetaData,
+    args: { moduleType, productType, refID },
+  },
 });
 
 export const DetailsView: FC<{
@@ -60,14 +56,13 @@ export const DetailsView: FC<{
   productGridData: any;
   isProductEditedRef: any;
   handleDialogClose: any;
-  setSnackBarMessage: any;
+  setSnackBarMessage?: any;
 }> = ({
   refID,
   moduleType,
   productGridData,
   isProductEditedRef,
   handleDialogClose,
-  setSnackBarMessage,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
@@ -104,18 +99,15 @@ export const DetailsView: FC<{
           <CRUDContextProvider {...crudAPIArgs(moduleType, "general", refID)}>
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
-              formMetaData={GeneralDetailsMetaData}
               dataAlwaysExists={true}
               closeDialog={undefined}
             />
           </CRUDContextProvider>
         </TabPanel>
-
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUDContextProvider {...crudAPIArgs(moduleType, "bank", refID)}>
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
-              formMetaData={BankDetailsMetadata}
               dataAlwaysExists={false}
               closeDialog={undefined}
             />
@@ -125,11 +117,7 @@ export const DetailsView: FC<{
           <CRUDContextProvider
             {...crudAPIArgs(moduleType, "management", refID)}
           >
-            <GridCRUD
-              isProductEditedRef={isProductEditedRef}
-              formMetaData={ManagementInformationMetaData}
-              gridMetaData={ManagementDetailsGridMetaData}
-            />
+            <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="3" key={3}>
@@ -138,7 +126,6 @@ export const DetailsView: FC<{
           >
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
-              formMetaData={CollateralDetailsMetaData}
               dataAlwaysExists={false}
               closeDialog={undefined}
             />
@@ -146,20 +133,12 @@ export const DetailsView: FC<{
         </TabPanel>
         <TabPanel value={currentTab} index="4" key={4}>
           <CRUDContextProvider {...crudAPIArgs(moduleType, "project", refID)}>
-            <GridCRUD
-              isProductEditedRef={isProductEditedRef}
-              formMetaData={CollateralDetailsMetaData}
-              gridMetaData={ProjectDetailsGridMetaData}
-            />
+            <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="5" key={5}>
           <CRUDContextProvider {...crudAPIArgs(moduleType, "financial", refID)}>
-            <GridCRUD
-              isProductEditedRef={isProductEditedRef}
-              formMetaData={FinancialRatiosMetaData}
-              gridMetaData={FinancialGridMetaData}
-            />
+            <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
       </Box>
