@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 export const EditableSelect = ({
   value: initialValue,
   row: { index, original },
-  column: { id, options, validation, _optionsKey },
+  column: { id, options, validation, _optionsKey, disableCachingOptions },
   updateGridData,
+  gridProps,
 }) => {
   const externalTouched = Boolean(original?._touched?.[id]);
   const externalError = original?._error?.[id] ?? "";
@@ -43,6 +44,8 @@ export const EditableSelect = ({
       loading={loading}
       disabled={loading}
       _optionsKey={_optionsKey}
+      optionsProps={gridProps}
+      disableCaching={disableCachingOptions}
     />
   );
 };

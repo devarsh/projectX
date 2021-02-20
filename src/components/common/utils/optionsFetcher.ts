@@ -104,17 +104,18 @@ export const useOptionsFetcherSimple = (
   options,
   setOptions,
   _optionsKey,
-  disableCaching
+  disableCaching,
+  optionsProps
 ) => {
   let loadingOptions = false;
 
   let queryKey: any[] = [];
   if (Boolean(disableCaching)) {
-    queryKey = [_optionsKey];
+    queryKey = [_optionsKey, optionsProps];
   } else {
     queryKey = [_optionsKey];
   }
-  const queryOptions = useQuery(queryKey, () => options(), {
+  const queryOptions = useQuery(queryKey, () => options(optionsProps), {
     enabled: typeof options === "function",
     cacheTime: 100000000,
     refetchOnWindowFocus: false,

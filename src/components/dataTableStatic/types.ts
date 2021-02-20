@@ -19,6 +19,7 @@ export interface GridColumnType {
   schemaValidation?: YupSchemaMetaDataType;
   options?: any;
   isPassword?: boolean;
+  disableCachingOptions?: boolean;
 }
 
 export interface GridConfigType {
@@ -59,6 +60,7 @@ export interface GridWrapperPropTypes {
   actions?: ActionTypes[];
   setAction?: any;
   loading?: any;
+  gridProps?: any;
 }
 
 export interface YupSchemaMetaDataType {

@@ -58,6 +58,7 @@ export const FileUploadControl = ({
   dataChangedRef,
   allowedExtensions = ["jpg", "png", "pdf"],
   maxAllowedSize = 1024 * 1024 * 3,
+  gridProps,
 }: {
   additionalColumns?: GridColumnType[];
   editableFileName?: boolean;
@@ -66,6 +67,7 @@ export const FileUploadControl = ({
   dataChangedRef?: any;
   allowedExtensions?: string | string[];
   maxAllowedSize?: number;
+  gridProps?: any;
 }) => {
   const transformedFilesMetaData = useMemo(
     () =>
@@ -222,6 +224,7 @@ export const FileUploadControl = ({
               setAction={setAction}
               loading={loading}
               ref={gridRef}
+              gridProps={gridProps}
             />
           </Collapse>
         </CardContent>

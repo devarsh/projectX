@@ -57,6 +57,7 @@ export const DataGrid = ({
   disableGroupBy,
   disableLoader,
   containerHeight,
+  gridProps,
 }) => {
   //@ts-ignore
   const {
@@ -84,6 +85,7 @@ export const DataGrid = ({
       disableGlobalFilter: Boolean(disableGlobalFilter),
       disableGroupBy: Boolean(disableGroupBy),
       updateGridData,
+      gridProps,
     },
     useGlobalFilter,
     useColumnOrder,

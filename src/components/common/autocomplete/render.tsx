@@ -51,6 +51,7 @@ interface AutoCompleteExtendedProps {
   required?: boolean;
   enableVirtualized?: boolean;
   disableCaching?: boolean;
+  optionsProps?: any;
 }
 
 const getOptionLabel = (option: OptionsProps) => option?.label ?? "";
@@ -82,6 +83,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
   value,
   _optionsKey,
   disableCaching,
+  optionsProps,
   ...others
 }) => {
   const isTouched = Boolean(touched);
@@ -95,7 +97,8 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
     options,
     setOptions,
     _optionsKey,
-    disableCaching
+    disableCaching,
+    optionsProps
   );
 
   //to set the default value
@@ -136,6 +139,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
     <Suspense fallback={"loading..."}>
       <Autocomplete
         {...others}
+        key={`${lastUpdatedTime}`}
         //@ts-ignore
         multiple={multiple}
         disableClearable={disableClearable}

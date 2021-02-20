@@ -22,7 +22,10 @@ import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
 
 export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
-  ({ finalMetaData, data, setData, actions, setAction, loading }, ref) => {
+  (
+    { finalMetaData, data, setData, actions, setAction, loading, gridProps },
+    ref
+  ) => {
     const metaDataRef = useRef<any>(null);
     if (metaDataRef.current === null) {
       metaDataRef.current = transformMetaData({
@@ -167,6 +170,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         disableGlobalFilter={metaData?.gridConfig?.disableGlobalFilter}
         disableGroupBy={metaData?.gridConfig?.disableGroupBy}
         disableLoader={metaData?.gridConfig?.disableLoader}
+        gridProps={gridProps}
       />
     );
   }

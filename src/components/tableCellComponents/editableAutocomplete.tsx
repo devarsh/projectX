@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 export const EditableAutocomplete = ({
   value: initialValue,
   row: { index, original },
-  column: { id, options, validation, _optionsKey },
+  column: { id, options, validation, _optionsKey, disableCachingOptions },
   updateGridData,
+  gridProps,
 }) => {
   const externalTouched = Boolean(original?._touched?.[id]);
   const externalError = original?._error?.[id] ?? "";
@@ -44,6 +45,8 @@ export const EditableAutocomplete = ({
       disabled={loading}
       _optionsKey={_optionsKey}
       renderInput={() => null}
+      optionsProps={gridProps}
+      disableCaching={disableCachingOptions}
     />
   );
 };

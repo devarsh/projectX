@@ -27,6 +27,7 @@ interface MySelectExtendedProps {
   readOnly?: boolean;
   value?: any;
   disableCaching?: boolean;
+  optionsProps?: any;
 }
 type MySelectProps = Merge<TextFieldProps, MySelectExtendedProps>;
 
@@ -48,6 +49,7 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   readOnly,
   _optionsKey,
   disableCaching,
+  optionsProps,
   ...others
 }) => {
   const [_options, setOptions] = useState<OptionsProps[]>([]);
@@ -57,7 +59,8 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
     options,
     setOptions,
     _optionsKey,
-    disableCaching
+    disableCaching,
+    optionsProps
   );
   const menuItems = _options.map((menuItem, index) => {
     return (
