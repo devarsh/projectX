@@ -87,16 +87,17 @@ export const DetailsView: FC<{
         handleDialogClose={handleDialogClose}
       />
       <Tabs value={currentTab} onChange={handleChangeTab}>
-        <Tab label="General Details" id="0" />
-        <Tab label="Bank Details" id="1" />
-        <Tab label="Management Details" id="2" />
-        <Tab label="Collateral Details" id="3" />
-        <Tab label="Project Details" id="4" />
-        <Tab label="Financial Details" id="5" />
+        <Tab label="Lead Details" id="0" />
+        <Tab label="General Details" id="1" />
+        <Tab label="Bank Details" id="2" />
+        <Tab label="Management Details" id="3" />
+        <Tab label="Collateral Details" id="4" />
+        <Tab label="Project Details" id="5" />
+        <Tab label="Financial Details" id="6" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
-          <CRUDContextProvider {...crudAPIArgs(moduleType, "general", refID)}>
+          <CRUDContextProvider {...crudAPIArgs(moduleType, "main", refID)}>
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
               dataAlwaysExists={true}
@@ -105,6 +106,15 @@ export const DetailsView: FC<{
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
+          <CRUDContextProvider {...crudAPIArgs(moduleType, "general", refID)}>
+            <SimpleCRUD
+              isProductEditedRef={isProductEditedRef}
+              dataAlwaysExists={true}
+              closeDialog={undefined}
+            />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="2" key={2}>
           <CRUDContextProvider {...crudAPIArgs(moduleType, "bank", refID)}>
             <SimpleCRUD
               isProductEditedRef={isProductEditedRef}
@@ -113,14 +123,14 @@ export const DetailsView: FC<{
             />
           </CRUDContextProvider>
         </TabPanel>
-        <TabPanel value={currentTab} index="2" key={2}>
+        <TabPanel value={currentTab} index="3" key={3}>
           <CRUDContextProvider
             {...crudAPIArgs(moduleType, "management", refID)}
           >
             <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
-        <TabPanel value={currentTab} index="3" key={3}>
+        <TabPanel value={currentTab} index="4" key={4}>
           <CRUDContextProvider
             {...crudAPIArgs(moduleType, "collateral", refID)}
           >
@@ -131,12 +141,12 @@ export const DetailsView: FC<{
             />
           </CRUDContextProvider>
         </TabPanel>
-        <TabPanel value={currentTab} index="4" key={4}>
+        <TabPanel value={currentTab} index="5" key={5}>
           <CRUDContextProvider {...crudAPIArgs(moduleType, "project", refID)}>
             <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
-        <TabPanel value={currentTab} index="5" key={5}>
+        <TabPanel value={currentTab} index="6" key={6}>
           <CRUDContextProvider {...crudAPIArgs(moduleType, "financial", refID)}>
             <GridCRUD isProductEditedRef={isProductEditedRef} />
           </CRUDContextProvider>
