@@ -20,6 +20,9 @@ const MiscAPI = () => {
       let response = await fetch(new URL(url, baseURL).href, {
         method: "GET",
         ...payload,
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
       });
       if (String(response.status) === "200") {
         let data = await response.json();
