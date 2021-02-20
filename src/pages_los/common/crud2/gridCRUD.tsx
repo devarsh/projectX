@@ -35,7 +35,7 @@ const actions: ActionTypes[] = [
 export const GridCRUD = ({ isProductEditedRef }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
-  const dataChanged = useRef(false);
+  const dataChangedRef = useRef(false);
   const removeCache = useContext(ClearCacheContext);
   const { getGridFormMetaData } = useContext(CRUDContext);
   const wrapperKey = useRef<any>(null);
@@ -46,10 +46,10 @@ export const GridCRUD = ({ isProductEditedRef }) => {
   }
   const closeMyDialog = () => {
     setCurrentAction(null);
-    if (dataChanged.current === true) {
+    if (dataChangedRef.current === true) {
       isProductEditedRef.current = true;
       gridRef.current?.refetch?.();
-      dataChanged.current = false;
+      dataChangedRef.current = false;
     }
   };
 
@@ -94,11 +94,11 @@ export const GridCRUD = ({ isProductEditedRef }) => {
           <FormNew
             successAction={closeMyDialog}
             cancelAction={closeMyDialog}
-            isProductEditedRef={dataChanged}
+            isProductEditedRef={dataChangedRef}
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
-            isProductEditedRef={dataChanged}
+            isProductEditedRef={dataChangedRef}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
           />
@@ -106,7 +106,7 @@ export const GridCRUD = ({ isProductEditedRef }) => {
           <DeleteAction
             serialNo={currentAction?.rows.map((one) => one.id)}
             closeDialog={closeMyDialog}
-            isProductEditedRef={dataChanged}
+            isProductEditedRef={dataChangedRef}
           />
         ) : null}
       </Dialog>

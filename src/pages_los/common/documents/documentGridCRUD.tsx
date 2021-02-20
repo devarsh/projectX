@@ -5,6 +5,7 @@ import { MyGridWrapper } from "./gridWrapper";
 import { FileUploadControl } from "components/fileUpload";
 import { DOCCRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
+import { DeleteAction } from "./delete";
 
 const actions: ActionTypes[] = [
   {
@@ -58,7 +59,12 @@ export const DocumentGridCRUD = ({ gridMetaData, uploadColumnsMetaData }) => {
       <Dialog
         open={Boolean(currentAction)}
         maxWidth="xl"
-        PaperProps={{ style: { width: "100%", height: "100%" } }}
+        PaperProps={{
+          style:
+            currentAction?.name === "Add"
+              ? { width: "100%", height: "100%" }
+              : {},
+        }}
       >
         {(currentAction?.name ?? "") === "Add" ? (
           <FileUploadControl
@@ -67,6 +73,12 @@ export const DocumentGridCRUD = ({ gridMetaData, uploadColumnsMetaData }) => {
             editableFileName={false}
             dataChangedRef={dataChangedRef}
             onUpload={uploadDocuments.fn(uploadDocuments.args)}
+          />
+        ) : (currentAction?.name ?? "") === "Delete" ? (
+          <DeleteAction
+            docUUID={currentAction?.rows.map((one) => one.id)}
+            closeDialog={closeMyDialog}
+            isProductEditedRef={dataChangedRef}
           />
         ) : null}
       </Dialog>

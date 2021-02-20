@@ -168,6 +168,7 @@ export const cleanFileObj = (filesObj: FileObjectType[]) => {
   }
   return filesObj.map((one) => {
     const {
+      id,
       blob,
       name,
       sizeStr,
@@ -182,6 +183,7 @@ export const cleanFileObj = (filesObj: FileObjectType[]) => {
       name: `${name}.${ext}`,
       blob: blob,
       ext: ext,
+      id: id,
       ...others,
     };
   });
