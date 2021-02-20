@@ -277,7 +277,6 @@ const LOSAPI = () => {
     ).href;
     let xhr = new XMLHttpRequest();
     data.append("refID", refID);
-    data.append("srID", "1");
     xhr.open("POST", newURL, true);
     xhr.setRequestHeader("Authorization", `Bearer ${token}`);
     xhr.upload.onprogress = (e) => {
@@ -304,6 +303,28 @@ const LOSAPI = () => {
       }
     };
     xhr.send(data);
+  };
+
+  const listingDocuments = ({
+    moduleType,
+    docCategory,
+    refID,
+  }: DOCCRUDTYPE) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/document/${docCategory}/data/get`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.request_data;
+    } else {
+      throw data?.error_data;
+    }
   };
 
   const moveInquiryToLead = async (refID: string, formData: any) => {
@@ -669,7 +690,9 @@ const LOSAPI = () => {
     getEditData,
     insertData,
     updateData,
+    //document
     uploadDocuments,
+    listingDocuments,
 
     moveInquiryToLead,
     //Lead

@@ -3,17 +3,16 @@ import { GridMetaDataType, GridColumnType } from "components/dataTableStatic";
 export const gridMetaData: GridMetaDataType = {
   columns: [
     {
-      columnName: "File ID",
+      columnName: "Bank Name",
       componentType: "default",
-      accessor: "id",
+      accessor: "bank",
       sequence: 0,
       alignment: "left",
-      isVisible: false,
     },
     {
       columnName: "File Name",
       componentType: "default",
-      accessor: "name",
+      accessor: "fileName",
       sequence: 1,
       alignment: "left",
       width: 300,
@@ -27,7 +26,7 @@ export const gridMetaData: GridMetaDataType = {
     {
       columnName: "Size",
       componentType: "default",
-      accessor: "sizeStr",
+      accessor: "fileSize",
       sequence: 2,
       alignment: "left",
       width: 100,
@@ -37,8 +36,28 @@ export const gridMetaData: GridMetaDataType = {
     {
       columnName: "Type",
       componentType: "default",
-      accessor: "fileExt",
+      accessor: "fileType",
       sequence: 3,
+      alignment: "left",
+      width: 100,
+      maxWidth: 100,
+      minWidth: 100,
+    },
+    {
+      columnName: "Uploaded Date",
+      componentType: "default",
+      accessor: "uploadDate",
+      sequence: 4,
+      alignment: "left",
+      width: 100,
+      maxWidth: 100,
+      minWidth: 100,
+    },
+    {
+      columnName: "Remarks",
+      componentType: "default",
+      accessor: "remarks",
+      sequence: 5,
       alignment: "left",
       width: 100,
       maxWidth: 100,
@@ -48,7 +67,7 @@ export const gridMetaData: GridMetaDataType = {
   gridConfig: {
     dense: true,
     gridLabel: "Bank Statement",
-    rowIdColumn: "id",
+    rowIdColumn: "docUUID",
     defaultColumnConfig: {
       width: 150,
       maxWidth: 250,

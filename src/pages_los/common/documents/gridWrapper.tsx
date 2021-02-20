@@ -20,39 +20,43 @@ type GridWrapperType = {
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   ({ metaData, actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
-    //const { getDocumentsGridData } = useContext(DOCCRUDContext);
+    const { getDocumentsGridData } = useContext(DOCCRUDContext);
     const wrapperKey = useRef<any>(null);
     if (wrapperKey.current === null) {
-      wrapperKey.current = cacheWrapperKeyGen(null);
-      //Object.values(getDocumentsGridData.args)
+      wrapperKey.current = cacheWrapperKeyGen(
+        Object.values(getDocumentsGridData.args)
+      );
     }
+    useEffect(() => {
+      removeCache?.addEntry(["getDocumentsGridData", wrapperKey.current]);
+    }, []);
+
+    useImperativeHandle(ref, () => ({
+      refetch: () => result.refetch(),
+    }));
 
     const result = useQuery(
       ["getDocumentsGridData", wrapperKey.current],
-      () => [],
+      () => getDocumentsGridData.fn(getDocumentsGridData.args)(),
       {
         cacheTime: 100000000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
       }
     );
-    useEffect(() => {
-      removeCache?.addEntry(["getDocumentsGridData", wrapperKey.current]);
-    }, []);
-    useImperativeHandle(ref, () => ({
-      refetch: () => result.refetch(),
-    }));
-    const dataUniqueKey = result.dataUpdatedAt;
+
+    const dataUniqueKey = `${result.dataUpdatedAt}`;
     const loading = result.isLoading || result.isFetching;
     let isError = result.isError;
     //@ts-ignore
-    let errorMsg = `${result.error?.error_msg ?? ""}`;
+    let errorMsg = `${result.error?.error_msg ?? "Unknown error occured"} `;
+
     const renderResult =
       isError === true ? (
         <span>{errorMsg}</span>
       ) : (
         <GridWrapper
-          key={`DocumentsGridData-${wrapperKey.current}-${dataUniqueKey}`}
+          key={`listingDocuments-${wrapperKey.current}-${dataUniqueKey}`}
           data={result.data ?? []}
           finalMetaData={metaData}
           setData={() => null}

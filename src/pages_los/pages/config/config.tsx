@@ -4,14 +4,6 @@ import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { ClearCacheContext } from "cache";
 import { GridCRUD } from "pages_los/common/crud2";
-import {
-  BankMasterSMEDetailsMetaData,
-  BankMasterCFDetailsMetaData,
-} from "registry/metaData";
-import {
-  BankMasterGridMetaData,
-  BankMasterCFGridMetaData,
-} from "registry/metaData/grid";
 import { CRUDContextProvider } from "pages_los/common/crud2";
 import { LOSSDK } from "registry/fns/los";
 import { queryClient, ClearCacheProvider } from "cache";
