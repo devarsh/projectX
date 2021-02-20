@@ -35,6 +35,7 @@ const LOSAPI = () => {
         ...payload,
         headers: new Headers({
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         }),
       });
       if (String(response.status) === "200") {
