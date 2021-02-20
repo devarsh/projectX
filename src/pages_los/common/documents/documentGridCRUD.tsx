@@ -1,10 +1,10 @@
-import { useState, Fragment, useRef } from "react";
+import { useState, Fragment, useRef, useContext } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
 import { FileUploadControl } from "components/fileUpload";
-import { gridMetaData, columnsMetaData } from "./meta";
-import { LOSSDK } from "registry/fns/los";
+import { DOCCRUDContext } from "./context";
+import { cacheWrapperKeyGen } from "cache";
 
 const actions: ActionTypes[] = [
   {
@@ -27,10 +27,17 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const DocumentGridCRUD = () => {
+export const DocumentGridCRUD = ({ gridMetaData, uploadColumnsMetaData }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
+  const wrapperKey = useRef<any>(null);
+  const { uploadDocuments, getDocumentsGridData } = useContext(DOCCRUDContext);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(
+      Object.values(getDocumentsGridData.args)
+    );
+  }
   const closeMyDialog = () => {
     setCurrentAction(null);
     if (dataChangedRef.current === true) {
@@ -56,14 +63,10 @@ export const DocumentGridCRUD = () => {
         {(currentAction?.name ?? "") === "Add" ? (
           <FileUploadControl
             onClose={closeMyDialog}
-            additionalColumns={columnsMetaData}
+            additionalColumns={uploadColumnsMetaData}
             editableFileName={false}
             dataChangedRef={dataChangedRef}
-            onUpload={LOSSDK.uploadDocuments({
-              moduleType: "lead",
-              docCategory: "bank",
-              refID: "89",
-            })}
+            onUpload={uploadDocuments.fn(uploadDocuments.args)}
           />
         ) : null}
       </Dialog>
