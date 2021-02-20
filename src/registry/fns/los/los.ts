@@ -327,6 +327,30 @@ const LOSAPI = () => {
     }
   };
 
+  const deleteDocuments = ({
+    moduleType,
+    docCategory,
+    refID,
+  }: DOCCRUDTYPE) => async (docUUID: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/document/${docCategory}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            UUIDs: docUUID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   const moveInquiryToLead = async (refID: string, formData: any) => {
     const { data, status } = await internalFetcher(`./inquiry/moveToLead`, {
       body: JSON.stringify({
@@ -693,6 +717,7 @@ const LOSAPI = () => {
     //document
     uploadDocuments,
     listingDocuments,
+    deleteDocuments,
 
     moveInquiryToLead,
     //Lead

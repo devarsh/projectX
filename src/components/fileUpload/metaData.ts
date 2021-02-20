@@ -12,7 +12,7 @@ const metaData: GridMetaDataType = {
     },
     {
       columnName: "File Name",
-      componentType: "editableTextField",
+      componentType: "default",
       accessor: "name",
       sequence: 1,
       alignment: "left",

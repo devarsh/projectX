@@ -14,7 +14,7 @@ const DocAPICrud = (moduleType, docCategory, refID) => ({
     args: { moduleType, docCategory, refID },
   },
   deleteDocuments: {
-    fn: LOSSDK.uploadDocuments,
+    fn: LOSSDK.deleteDocuments,
     args: { moduleType, docCategory, refID },
   },
   updateDocument: {
