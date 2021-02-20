@@ -30,6 +30,7 @@ export const DocumentGridCRUD = () => {
         <DocGrid
           gridMetaData={gridMetaData}
           uploadColumnsMetaData={columnsMetaData}
+          gridProps={{ refID: "89" }}
         />
       </DOCCRUDContextProvider>
     </Fragment>

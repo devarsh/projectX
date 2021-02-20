@@ -32,3 +32,5 @@ registerFn(
   shouldExclude.projectDetailsTypeMeansOFFinance
 );
 registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
+
+registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);

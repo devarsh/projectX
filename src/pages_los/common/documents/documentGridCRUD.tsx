@@ -28,7 +28,11 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const DocumentGridCRUD = ({ gridMetaData, uploadColumnsMetaData }) => {
+export const DocumentGridCRUD = ({
+  gridMetaData,
+  uploadColumnsMetaData,
+  gridProps,
+}) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
@@ -73,6 +77,7 @@ export const DocumentGridCRUD = ({ gridMetaData, uploadColumnsMetaData }) => {
             editableFileName={false}
             dataChangedRef={dataChangedRef}
             onUpload={uploadDocuments.fn(uploadDocuments.args)}
+            gridProps={gridProps}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction

@@ -3,7 +3,7 @@ import { format } from "date-fns";
 export const DateRowCellRenderer = (props) => {
   const {
     value,
-    column: { dateFormat },
+    column: { dateFormat = "dd/MM/yyyy hh:mm aaa" },
   } = props;
   const date = new Date(value);
   return (

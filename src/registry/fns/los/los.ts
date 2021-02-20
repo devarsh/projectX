@@ -699,6 +699,25 @@ const LOSAPI = () => {
     }
   };
 
+  const getBankListForLeadDocuments = async (props) => {
+    const { data, status } = await internalFetcher(`./lead/document/bank/get`, {
+      body: JSON.stringify({
+        request_data: {
+          ...props,
+        },
+      }),
+    });
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -718,6 +737,7 @@ const LOSAPI = () => {
     uploadDocuments,
     listingDocuments,
     deleteDocuments,
+    getBankListForLeadDocuments,
 
     moveInquiryToLead,
     //Lead
@@ -728,6 +748,7 @@ const LOSAPI = () => {
     deleteFormData,
     deleteFormArrayFieldData,
     getStaticGridData,
+
     //Bank
     updateBankData,
     deleteBankData,
