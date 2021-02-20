@@ -96,6 +96,7 @@ export const columnsMetaData: GridColumnType[] = [
     accessor: "password",
     sequence: 4,
     alignment: "left",
+    isPassword: true,
   },
   {
     columnName: "Remarks",

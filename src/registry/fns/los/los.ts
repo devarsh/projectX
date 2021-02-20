@@ -271,8 +271,7 @@ const LOSAPI = () => {
       };
     }
     const newURL = new URL(
-      //`./${moduleType}/document/${docCategory}/upload`,
-      `./document/${docCategory}/upload`,
+      `./${moduleType}/document/${docCategory}/upload`,
       baseURL as URL
     ).href;
     let xhr = new XMLHttpRequest();

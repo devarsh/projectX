@@ -18,6 +18,7 @@ export interface GridColumnType {
   validation?: any;
   schemaValidation?: YupSchemaMetaDataType;
   options?: any;
+  isPassword?: boolean;
 }
 
 export interface GridConfigType {
