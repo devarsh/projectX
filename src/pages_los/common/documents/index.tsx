@@ -21,6 +21,10 @@ const DocAPICrud = (moduleType, docCategory, refID) => ({
     fn: LOSSDK.uploadDocuments,
     args: { moduleType, docCategory, refID },
   },
+  verifyDocuments: {
+    fn: LOSSDK.deleteDocuments,
+    args: { moduleType, docCategory, refID },
+  },
 });
 
 export const DocumentGridCRUD = () => {

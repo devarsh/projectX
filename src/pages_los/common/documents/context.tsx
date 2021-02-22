@@ -5,6 +5,7 @@ interface DOCCRUDProviderType {
   deleteDocuments: CRUDFNType;
   updateDocument: CRUDFNType;
   getDocumentsGridData: CRUDFNType;
+  verifyDocuments: CRUDFNType;
 }
 
 export const DOCCRUDContext = createContext<DOCCRUDProviderType>(
@@ -21,6 +22,8 @@ export const DOCCRUDContextProvider: FC<DOCCRUDProviderType> = ({
   uploadDocuments,
   deleteDocuments,
   updateDocument,
+  verifyDocuments,
+
   getDocumentsGridData,
 }) => {
   return (
@@ -29,6 +32,7 @@ export const DOCCRUDContextProvider: FC<DOCCRUDProviderType> = ({
         uploadDocuments,
         deleteDocuments,
         updateDocument,
+        verifyDocuments,
         getDocumentsGridData,
       }}
     >

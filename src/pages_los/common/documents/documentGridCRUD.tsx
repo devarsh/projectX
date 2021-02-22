@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, useContext } from "react";
+import { useState, Fragment, useRef, useContext, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
@@ -6,11 +6,33 @@ import { FileUploadControl } from "components/fileUpload";
 import { DOCCRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
 import { DeleteAction } from "./delete";
+import { VerifyDocumentAction } from "./verify";
 
 const actions: ActionTypes[] = [
   {
+    actionName: "Add",
+    actionLabel: "Add Documents",
+    multiple: undefined,
+    alwaysAvailable: true,
+  },
+  {
+    actionName: "Verify",
+    actionLabel: "Verify",
+    multiple: true,
+    shouldExclude: (rows) => {
+      let exclude = false;
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].original?.status !== "Pending") {
+          exclude = true;
+          break;
+        }
+      }
+      return exclude;
+    },
+  },
+  {
     actionName: "View",
-    actionLabel: "View Document",
+    actionLabel: "View",
     multiple: false,
     rowDoubleClick: true,
   },
@@ -18,13 +40,6 @@ const actions: ActionTypes[] = [
     actionName: "Delete",
     actionLabel: "Delete",
     multiple: true,
-    rowDoubleClick: false,
-  },
-  {
-    actionName: "Add",
-    actionLabel: "Add Documents",
-    multiple: undefined,
-    alwaysAvailable: true,
   },
 ];
 
@@ -85,8 +100,23 @@ export const DocumentGridCRUD = ({
             closeDialog={closeMyDialog}
             isProductEditedRef={dataChangedRef}
           />
-        ) : null}
+        ) : (currentAction?.name ?? "") === "Verify" ? (
+          <VerifyDocumentAction
+            docUUID={currentAction?.rows.map((one) => one.id)}
+            closeDialog={closeMyDialog}
+            isProductEditedRef={dataChangedRef}
+          />
+        ) : (
+          <InvalidAction closeDialog={closeMyDialog} />
+        )}
       </Dialog>
     </Fragment>
   );
+};
+
+const InvalidAction = ({ closeDialog }) => {
+  useEffect(() => {
+    closeDialog();
+  }, []);
+  return null;
 };

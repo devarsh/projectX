@@ -1,4 +1,42 @@
+import { GridColumnType } from "components/dataTableStatic";
 import { GridMetaDataType } from "components/dataTableStatic";
+
+export const fileColumns = (fileNamedEditable: false): GridColumnType[] => [
+  {
+    columnName: "File Name",
+    componentType: fileNamedEditable ? "editableTextField" : "default",
+    accessor: "name",
+    sequence: 1,
+    alignment: "left",
+    width: 300,
+    maxWidth: 300,
+    minWidth: 100,
+    schemaValidation: {
+      type: "string",
+      rules: [{ name: "required", params: ["This is a required field"] }],
+    },
+  },
+  {
+    columnName: "Size",
+    componentType: "default",
+    accessor: "sizeStr",
+    sequence: 2,
+    alignment: "left",
+    width: 100,
+    maxWidth: 100,
+    minWidth: 100,
+  },
+  {
+    columnName: "Type",
+    componentType: "default",
+    accessor: "fileExt",
+    sequence: 3,
+    alignment: "left",
+    width: 100,
+    maxWidth: 100,
+    minWidth: 100,
+  },
+];
 
 const metaData: GridMetaDataType = {
   columns: [
@@ -10,40 +48,7 @@ const metaData: GridMetaDataType = {
       alignment: "left",
       isVisible: false,
     },
-    {
-      columnName: "File Name",
-      componentType: "default",
-      accessor: "name",
-      sequence: 1,
-      alignment: "left",
-      width: 300,
-      maxWidth: 300,
-      minWidth: 100,
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["This is a required field"] }],
-      },
-    },
-    {
-      columnName: "Size",
-      componentType: "default",
-      accessor: "sizeStr",
-      sequence: 2,
-      alignment: "left",
-      width: 100,
-      maxWidth: 100,
-      minWidth: 100,
-    },
-    {
-      columnName: "Type",
-      componentType: "default",
-      accessor: "fileExt",
-      sequence: 3,
-      alignment: "left",
-      width: 100,
-      maxWidth: 100,
-      minWidth: 100,
-    },
+    ...fileColumns(false),
   ],
   gridConfig: {
     dense: true,

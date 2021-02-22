@@ -170,6 +170,9 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         disableGlobalFilter={metaData?.gridConfig?.disableGlobalFilter}
         disableGroupBy={metaData?.gridConfig?.disableGroupBy}
         disableLoader={metaData?.gridConfig?.disableLoader}
+        pageSizes={metaData?.gridConfig?.pageSizes ?? [5, 10]}
+        defaultPageSize={metaData?.gridConfig?.defaultPageSize ?? 10}
+        enablePagination={metaData?.gridConfig?.enablePagination ?? false}
         gridProps={gridProps}
       />
     );

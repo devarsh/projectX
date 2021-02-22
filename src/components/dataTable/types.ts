@@ -69,6 +69,7 @@ export interface ActionTypes {
   tooltip?: string;
   rowDoubleClick?: boolean;
   alwaysAvailable?: boolean;
+  shouldExclude?: any;
 }
 
 export interface RenderActionType {

@@ -9,6 +9,7 @@ import {
   useGlobalFilter,
   useGroupBy,
   useExpanded,
+  usePagination,
 } from "react-table";
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -16,6 +17,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import TablePagination from "@material-ui/core/TablePagination";
 import { TableHeaderToolbar } from "./tableHeaderToolbar";
 import { StickyTableHead } from "components/dataTable/stickyTableHead";
 import { MyTableRow } from "components/dataTable/focusableTableRow";
@@ -25,6 +27,7 @@ import {
   TableActionToolbar,
   ActionContextMenu,
 } from "components/dataTable/tableActionToolbar";
+import { TablePaginationActions } from "components/dataTable/tablePaginationToolbar";
 import { useCheckboxColumn } from "./components/useCheckbox";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { LinearProgressBarSpacer } from "components/dataTable/linerProgressBarSpacer";
@@ -32,6 +35,7 @@ import ArrowRightSharpIcon from "@material-ui/icons/ArrowRightSharp";
 import ArrowDropDownSharpIcon from "@material-ui/icons/ArrowDropDownSharp";
 import IconButton from "@material-ui/core/IconButton";
 import { CustomBackdrop } from "components/dataTable/backdrop";
+import { filterAction } from "./utils";
 
 export const DataGrid = ({
   label,
@@ -58,6 +62,9 @@ export const DataGrid = ({
   disableLoader,
   containerHeight,
   gridProps,
+  pageSizes,
+  defaultPageSize,
+  enablePagination,
 }) => {
   //@ts-ignore
   const {
@@ -67,12 +74,18 @@ export const DataGrid = ({
     prepareRow,
     selectedFlatRows,
     rows,
+    page,
+    gotoPage,
+    setPageSize,
     state,
     setGlobalFilter,
     preGlobalFilteredRows,
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       initialState: {
+        pageIndex: 0,
+        pageSize: defaultPageSize,
         hiddenColumns: defaultHiddenColumns,
       },
       columns,
@@ -92,6 +105,7 @@ export const DataGrid = ({
     useGroupBy,
     useSortBy,
     useExpanded,
+    usePagination,
     useRowSelect,
     useResizeColumns,
     useBlockLayout,
@@ -99,6 +113,12 @@ export const DataGrid = ({
   );
 
   const tbodyRef = useRef(null);
+
+  const rowsToDisplay = enablePagination ? page : rows;
+
+  singleActions = filterAction(singleActions, selectedFlatRows);
+  multipleActions = filterAction(multipleActions, selectedFlatRows);
+  doubleClickAction = filterAction([doubleClickAction], selectedFlatRows, true);
 
   const [contextMenuPosition, setContextMenuPosition] = useState<{
     mouseX: number;
@@ -134,6 +154,12 @@ export const DataGrid = ({
         },
       ],
     });
+  };
+  const handleChangePage = (_, newPage) => {
+    gotoPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setPageSize(Number(event.target.value));
   };
 
   return (
@@ -224,7 +250,7 @@ export const DataGrid = ({
               },
             ])}
           >
-            {rows.length <= 0 && loading === false ? (
+            {rowsToDisplay.length <= 0 && loading === false ? (
               <div
                 style={{
                   height: "calc(100vh - 35*8px)",
@@ -237,14 +263,14 @@ export const DataGrid = ({
                 No data found
               </div>
             ) : null}
-            {rows.map((row, index) => {
+            {rowsToDisplay.map((row, index) => {
               prepareRow(row);
               const rightClickHandler = handleContextMenuOpen(row);
               const thisRowDblClickHandler = handleRowDoubleClickAction(row);
               let rowColorStyle: any[] = [];
               if (Boolean(row?.original?._rowColor)) {
                 rowColorStyle = [
-                  { style: { color: row?.original?._rowColor } },
+                  { style: { background: row?.original?._rowColor } },
                 ];
               }
               return (
@@ -283,7 +309,7 @@ export const DataGrid = ({
                                 <ArrowRightSharpIcon />
                               )}
                             </IconButton>
-                            {cell.render("Cell")} ({row.subRows.length})
+                            {cell.render("Cell")} <i>({row.subRows.length})</i>
                           </>
                         ) : cell.isAggregated ? (
                           cell.render("Aggregated")
@@ -300,7 +326,22 @@ export const DataGrid = ({
         </Table>
         <CustomBackdrop open={loading} />
       </TableContainer>
-      {hideFooter ? null : (
+
+      {hideFooter ? null : enablePagination ? (
+        <TablePagination
+          style={{ display: "flex" }}
+          variant="body"
+          component="div"
+          rowsPerPageOptions={pageSizes}
+          colSpan={3}
+          count={rows.length}
+          rowsPerPage={Number(pageSize)}
+          page={Number(pageIndex)}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+          ActionsComponent={TablePaginationActions}
+        />
+      ) : (
         <TableCell style={{ display: "flex" }}>
           Total No of Records: {rows.length}
         </TableCell>
