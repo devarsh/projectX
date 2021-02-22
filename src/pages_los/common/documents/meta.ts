@@ -115,5 +115,6 @@ export const columnsMetaData: GridColumnType[] = [
     accessor: "remarks",
     sequence: 6,
     alignment: "left",
+    isVisible: false,
   },
 ];

@@ -176,7 +176,7 @@ export const DataGrid = ({
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
           alwaysAvailableAction={alwaysAvailableAction}
-          setGridAction={setGridAction}
+          setGridAction={setGridAction} //for always Actions
           selectedFlatRows={selectedFlatRows}
           disableGlobalFilter={Boolean(disableGlobalFilter)}
         />
@@ -186,12 +186,14 @@ export const DataGrid = ({
         selectedFlatRows={selectedFlatRows}
         multipleActions={multipleActions}
         singleActions={singleActions}
-        setGridAction={setGridAction}
+        setGridAction={setGridAction} //for single/multiple actions
       />
       <ActionContextMenu
-        selectedFlatRows={contextMenuRow}
+        contextMenuRow={contextMenuRow}
+        selectedFlatRows={selectedFlatRows}
         singleActions={singleActions}
-        setGridAction={setGridAction}
+        multipleActions={multipleActions}
+        setGridAction={setGridAction} //for right click actions
         mouseX={contextMenuPosition?.mouseX ?? null}
         mouseY={contextMenuPosition?.mouseY ?? null}
         handleClose={handleContextMenuClose}

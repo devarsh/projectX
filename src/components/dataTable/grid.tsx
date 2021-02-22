@@ -139,7 +139,12 @@ export const DataGrid = ({
     e.preventDefault();
     setGridAction({
       name: doubleClickAction.actionName,
-      rows: [row],
+      rows: [
+        {
+          data: row?.original,
+          id: row?.id,
+        },
+      ],
     });
   };
 
@@ -244,7 +249,9 @@ export const DataGrid = ({
         setGridAction={setGridAction}
       />
       <ActionContextMenu
-        selectedFlatRows={contextMenuRow}
+        selectedFlatRows={selectedFlatRows}
+        contextMenuRow={contextMenuRow}
+        multipleActions={multipleActions}
         singleActions={singleActions}
         setGridAction={setGridAction}
         mouseX={contextMenuPosition?.mouseX ?? null}

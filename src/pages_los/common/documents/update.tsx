@@ -2,10 +2,15 @@ import { useContext } from "react";
 import GridWrapper from "components/dataTableStatic";
 import { DOCCRUDContext } from "./context";
 
-export const MyUpdateGridWrapper = ({ metaData, data }) => {
+export const UpdateDocumentData = ({
+  metaData,
+  data,
+  closeDialog,
+  isProductEditedRef,
+}) => {
   const { updateDocument } = useContext(DOCCRUDContext);
 
-  const renderResult = (
+  return (
     <GridWrapper
       key={`listingDocumentsForUpdate`}
       data={data ?? []}
@@ -13,7 +18,4 @@ export const MyUpdateGridWrapper = ({ metaData, data }) => {
       setData={() => null}
     />
   );
-
-  return renderResult;
 };
-MyUpdateGridWrapper.displayName = "MyGridUpdateWrapper";

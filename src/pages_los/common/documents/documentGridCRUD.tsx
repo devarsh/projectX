@@ -7,6 +7,7 @@ import { DOCCRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
 import { DeleteAction } from "./delete";
 import { VerifyDocumentAction } from "./verify";
+import { UpdateDocumentData } from "./update";
 
 const actions: ActionTypes[] = [
   {
@@ -40,6 +41,11 @@ const actions: ActionTypes[] = [
     actionName: "Delete",
     actionLabel: "Delete",
     multiple: true,
+  },
+  {
+    actionName: "Update",
+    actionLabel: "Update",
+    multiple: false,
   },
 ];
 
@@ -103,6 +109,13 @@ export const DocumentGridCRUD = ({
         ) : (currentAction?.name ?? "") === "Verify" ? (
           <VerifyDocumentAction
             docUUID={currentAction?.rows.map((one) => one.id)}
+            closeDialog={closeMyDialog}
+            isProductEditedRef={dataChangedRef}
+          />
+        ) : (currentAction?.name ?? "") === "Update" ? (
+          <UpdateDocumentData
+            metaData={gridMetaData}
+            data={[]}
             closeDialog={closeMyDialog}
             isProductEditedRef={dataChangedRef}
           />

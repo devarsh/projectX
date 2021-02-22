@@ -333,7 +333,7 @@ const LOSAPI = () => {
     refID,
   }: DOCCRUDTYPE) => async (docUUID: any) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/document/${docCategory}/delete`,
+      `./${moduleType}/document/${docCategory}/data/delete`,
       {
         body: JSON.stringify({
           request_data: {
@@ -700,13 +700,16 @@ const LOSAPI = () => {
   };
 
   const getBankListForLeadDocuments = async (props) => {
-    const { data, status } = await internalFetcher(`./lead/document/bank/get`, {
-      body: JSON.stringify({
-        request_data: {
-          ...props,
-        },
-      }),
-    });
+    const { data, status } = await internalFetcher(
+      `./lead/document/options/bank`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...props,
+          },
+        }),
+      }
+    );
     if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data?.response_data.map((one) => ({
         value: one?.data_val,

@@ -80,6 +80,7 @@ export interface RenderActionType {
 
 export interface TableActionType {
   selectedFlatRows: any;
+  contextMenuRow?: any;
   singleActions: ActionTypes[];
   multipleActions?: ActionTypes[];
   alwaysAvailableAction?: ActionTypes[];
