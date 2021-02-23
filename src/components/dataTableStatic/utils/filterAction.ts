@@ -5,8 +5,6 @@ export const filterAction = (
 ) => {
   if (!Array.isArray(actions) && Boolean(actions)) {
     actions = [actions];
-  } else {
-    actions = [];
   }
 
   if (actions.length <= 0 || selectedFlatRows.length <= 0) {
