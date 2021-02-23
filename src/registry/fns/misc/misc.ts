@@ -109,6 +109,67 @@ const MiscAPI = () => {
   };
 
   //dropdown value - dynamic form
+  const getPincodeExternalCopy = async (
+    dependentFields: any,
+    formState: any,
+    dependentFields2: any
+  ): Promise<{ options: OptionsProps[]; others: any }> => {
+    if (
+      !Boolean(dependentFields2?.["addressDetails.pincode"]?.error) &&
+      dependentFields2?.["addressDetails.pincode"]?.value.length === 6
+    ) {
+      try {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${dependentFields2?.["addressDetails.pincode"]?.value}`,
+          {
+            method: "GET",
+            redirect: "follow",
+          }
+        );
+        let data = await response.json();
+        if (Array.isArray(data) && data.length === 1) {
+          let result = data[0];
+          if (String(result.Status).toLowerCase() === "success") {
+            let areaArray = result.PostOffice.map((dtl) => ({
+              value: dtl?.Name,
+              label: dtl?.Name,
+            }));
+            areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
+            const otherValues = result.PostOffice.reduce(
+              (accumlator, current) => {
+                const val = {
+                  city: current.Block,
+                  district: current.District,
+                  state: current.State,
+                  country: current.Country,
+                };
+                accumlator[current.Name] = val;
+                return accumlator;
+              },
+              {}
+            );
+            return { options: areaArray, others: otherValues };
+          }
+        }
+        return {
+          options: [{ label: "Error fetching pincode", value: "0" }],
+          others: null,
+        };
+      } catch (e) {
+        return {
+          options: [{ label: "Error fetching pincode", value: "0" }],
+          others: null,
+        };
+      }
+    } else {
+      return {
+        options: [],
+        others: null,
+      };
+    }
+  };
+
+  //copy of old API call for pincode
   const getPincodeExternal = async (
     pincode: string
   ): Promise<{ options: OptionsProps[]; others: any }> => {
@@ -204,6 +265,32 @@ const MiscAPI = () => {
     }
   };
 
+  const getBranchList = async (): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher("./branchlist", {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.branchCode,
+        label: one?.branchName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getSourcelist = async (): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher("./sourcelist", {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.sourceCode,
+        label: one?.sourceName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     getMiscVal,
@@ -214,6 +301,8 @@ const MiscAPI = () => {
     getIndustryType,
     getIndustrySubType,
     getPerfiosBankList,
+    getBranchList,
+    getSourcelist,
   };
 };
 

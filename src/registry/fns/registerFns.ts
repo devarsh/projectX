@@ -51,8 +51,9 @@ registerFn("getBankList", miscSDK.getBankList);
 registerFn("getIndustryType", miscSDK.getIndustryType);
 registerFn("getIndustrySubType", miscSDK.getIndustrySubType);
 registerFn("getsubProductDtl", others.getSubProductDtl(miscSDK.getProductType));
-
 registerFn("getPerfiosBankList", miscSDK.getPerfiosBankList);
+registerFn("getBranchList", miscSDK.getBranchList);
+registerFn("getSourcelist", miscSDK.getSourcelist);
 
 /*register others*/
 
@@ -67,6 +68,7 @@ registerFn(
 );
 
 registerFn("getPincodeDtl", pincode.getPincodeDtl(miscSDK.getPincodeExternal));
+// registerFn("getPincode", miscSDK.getPincodeExternal) new changes;
 registerFn("getLocationDtl", pincode.getLocationDtl);
 registerFn(
   "getcoApplicantPincodeDtl",
