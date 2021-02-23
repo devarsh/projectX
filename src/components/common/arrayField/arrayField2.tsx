@@ -82,12 +82,16 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     }, {})
   );
 
-  const { renderRows, push, isSubmitting, formState, formName } = useFieldArray(
-    {
-      arrayFieldName: name,
-      template: template.current,
-    }
-  );
+  const {
+    renderRows,
+    unshift,
+    isSubmitting,
+    formState,
+    formName,
+  } = useFieldArray({
+    arrayFieldName: name,
+    template: template.current,
+  });
 
   let rows = renderRows(({ row, removeFn, rowIndex, fields, totalRows }) => {
     const oneRow = fields.map((field) => {
@@ -133,7 +137,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         <CardHeader
           title={label}
           action={
-            <IconButton onClick={push} disabled={isSubmitting}>
+            <IconButton onClick={unshift} disabled={isSubmitting}>
               <AddCircleOutlineIcon />
             </IconButton>
           }
