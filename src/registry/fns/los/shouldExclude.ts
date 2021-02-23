@@ -82,3 +82,13 @@ export const projectDetailsTypeMeansOFFinance = (_, dependentValues) => {
   }
   return true;
 };
+
+export const mainDetailsdeveloperOrContactor = (_, dependentValues) => {
+  if (
+    dependentValues["product"]?.value === "123000011" ||
+    dependentValues["product"]?.value === "123000012"
+  ) {
+    return false;
+  }
+  return true;
+};

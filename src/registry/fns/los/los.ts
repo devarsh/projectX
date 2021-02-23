@@ -721,6 +721,52 @@ const LOSAPI = () => {
     }
   };
 
+  const getLeadSubStageCode = async (
+    moduleType,
+    refID,
+    dependentFields: any
+  ) => {
+    const { status, data } = await internalFetcher(`lead/options/subStage`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: "89",
+          stageCode: "2",
+        },
+      }),
+    });
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.subStageCode,
+        label: one?.subStageName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getLeadEmploymentType = async (moduleType, refID) => {
+    const { status, data } = await internalFetcher(
+      `lead/options/employmentType`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: "89",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -751,6 +797,9 @@ const LOSAPI = () => {
     deleteFormData,
     deleteFormArrayFieldData,
     getStaticGridData,
+
+    getLeadSubStageCode,
+    getLeadEmploymentType,
 
     //Bank
     updateBankData,

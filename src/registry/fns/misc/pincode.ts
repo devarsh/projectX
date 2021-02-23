@@ -42,6 +42,25 @@ export const getPincodeDtl = (getPincode) => async (fieldData) => {
   }
 };
 
+export const getLocationDtlCopy = async (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    city: {
+      value: fieldValues?.city,
+    },
+    state: {
+      value: fieldValues?.state,
+    },
+    district: {
+      value: fieldValues?.district,
+    },
+    country: {
+      value: fieldValues?.country,
+    },
+  };
+};
+
+//copy of locationDtl method which will be deleted after fix the issue of pincode
 export const getLocationDtl = async (fieldData) => {
   if (fieldData.value === "") {
     return {

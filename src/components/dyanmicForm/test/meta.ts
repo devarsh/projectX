@@ -1,11 +1,5 @@
 import { MetaDataType } from "components/dyanmicForm";
 
-const getLoanType = [
-  { label: "Select option", value: "00" },
-  { label: "Proposed", value: "01" },
-  { label: "Present", value: "02" },
-];
-
 const GeneralDetailsMetaData: MetaDataType = {
   form: {
     name: "123456",
@@ -366,7 +360,6 @@ const GeneralDetailsMetaData: MetaDataType = {
             sm: 3,
           },
         },
-
         {
           render: {
             //@ts-ignore
@@ -375,12 +368,6 @@ const GeneralDetailsMetaData: MetaDataType = {
           name: "pincode",
           label: "Residence Pincode",
           placeholder: "Residence pincode",
-          required: true,
-          defaultValue: "",
-          validate: "getValidateValue",
-          runPostValidationHookAlways: true,
-          //@ts-ignore
-          postValidationSetCrossFieldValues: "getPincodeDtl",
           GridProps: {
             xs: 12,
             md: 3,
@@ -396,9 +383,10 @@ const GeneralDetailsMetaData: MetaDataType = {
           label: "Location",
           placeholder: "Location",
           required: true,
-          defaultValue: "0",
-          runPostValidationHookAlways: true,
-          validate: "getValidateValue",
+          disableCaching: true,
+          dependentFields: ["pincode"],
+          //@ts-ignore
+          options: "getPincode",
           //@ts-ignore
           postValidationSetCrossFieldValues: "getLocationDtl",
           GridProps: {
@@ -407,7 +395,6 @@ const GeneralDetailsMetaData: MetaDataType = {
             sm: 3,
           },
         },
-
         {
           render: {
             componentType: "textField",
@@ -566,7 +553,6 @@ const GeneralDetailsMetaData: MetaDataType = {
           label: "Select Type of Loan",
           defaultValue: "01",
           //@ts-ignore
-          options: getLoanType,
           GridProps: {
             xs: 12,
             md: 3,
