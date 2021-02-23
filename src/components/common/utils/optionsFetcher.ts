@@ -65,9 +65,9 @@ export const useOptionsFetcher = (
       setOptions(queryOptions.data);
       loadingOptions = false;
     } else if (typeof queryOptions.data === "object") {
-      const { options: _options, ...others } = options;
+      const { options: _options, ...others } = queryOptions.data;
       if (Array.isArray(_options)) {
-        setOptions(options);
+        setOptions(_options);
         if (Object.keys(others).length > 0) {
           setIncomingMessage(others);
         }

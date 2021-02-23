@@ -1,9 +1,8 @@
-import { Fragment, useContext, useRef } from "react";
+import { Fragment, useContext } from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
-import { cacheWrapperKeyGen } from "cache";
 import { useMutation } from "react-query";
 import { DOCCRUDContext } from "./context";
 
@@ -19,22 +18,11 @@ const DeleteDocumentDataFnWrapper = (deleteDocuments) => async ({
 
 export const DeleteAction = ({ isProductEditedRef, closeDialog, docUUID }) => {
   const { deleteDocuments } = useContext(DOCCRUDContext);
-  const wrapperKey = useRef<any>(null);
-  if (wrapperKey.current === null) {
-    wrapperKey.current = cacheWrapperKeyGen(
-      Object.values(deleteDocuments.args)
-    );
-  }
 
   const mutation = useMutation(
     DeleteDocumentDataFnWrapper(deleteDocuments.fn(deleteDocuments.args)),
     {
-      onError: (error: any) => {
-        let errorMsg = "Unknown Error occured";
-        if (typeof error === "object") {
-          errorMsg = error?.error_msg ?? errorMsg;
-        }
-      },
+      onError: (error: any) => {},
       onSuccess: (data) => {
         isProductEditedRef.current = true;
         closeDialog();
@@ -53,10 +41,18 @@ export const DeleteAction = ({ isProductEditedRef, closeDialog, docUUID }) => {
         Are you sure you want to delete the selected Records
       </DialogTitle>
       <DialogActions>
-        <Button onClick={closeDialog} color="primary">
+        <Button
+          onClick={closeDialog}
+          color="primary"
+          disabled={mutation.isLoading}
+        >
           Disagree
         </Button>
-        <Button color="primary" onClick={() => mutation.mutate({ docUUID })}>
+        <Button
+          color="primary"
+          onClick={() => mutation.mutate({ docUUID })}
+          disabled={mutation.isLoading}
+        >
           Agree
         </Button>
       </DialogActions>

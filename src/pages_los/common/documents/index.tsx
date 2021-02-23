@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
 import { DOCCRUDContextProvider } from "./context";
 import { LOSSDK } from "registry/fns/los";
-import { gridMetaData, columnsMetaData } from "./meta";
+import { gridMetaData, columnsMetaData, gridEditMetaData } from "./meta";
 
 const DocAPICrud = (moduleType, docCategory, refID) => ({
   uploadDocuments: {
@@ -18,7 +18,7 @@ const DocAPICrud = (moduleType, docCategory, refID) => ({
     args: { moduleType, docCategory, refID },
   },
   updateDocument: {
-    fn: LOSSDK.uploadDocuments,
+    fn: LOSSDK.updateDocuments,
     args: { moduleType, docCategory, refID },
   },
   verifyDocuments: {
@@ -33,6 +33,7 @@ export const DocumentGridCRUD = () => {
       <DOCCRUDContextProvider {...DocAPICrud("lead", "bank", "89")}>
         <DocGrid
           gridMetaData={gridMetaData}
+          gridEditMetaData={gridEditMetaData}
           uploadColumnsMetaData={columnsMetaData}
           gridProps={{ refID: "89" }}
         />

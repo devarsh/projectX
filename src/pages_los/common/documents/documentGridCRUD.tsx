@@ -51,6 +51,7 @@ const actions: ActionTypes[] = [
 
 export const DocumentGridCRUD = ({
   gridMetaData,
+  gridEditMetaData,
   uploadColumnsMetaData,
   gridProps,
 }) => {
@@ -114,10 +115,11 @@ export const DocumentGridCRUD = ({
           />
         ) : (currentAction?.name ?? "") === "Update" ? (
           <UpdateDocumentData
-            metaData={gridMetaData}
+            metaData={gridEditMetaData}
             row={currentAction?.rows[0]}
             closeDialog={closeMyDialog}
             isProductEditedRef={dataChangedRef}
+            gridProps={gridProps}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />

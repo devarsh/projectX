@@ -272,7 +272,7 @@ const LOSAPI = () => {
       };
     }
     const newURL = new URL(
-      `./${moduleType}/document/${docCategory}/upload`,
+      `./${moduleType}/document/${docCategory}/data/post`,
       baseURL as URL
     ).href;
     let xhr = new XMLHttpRequest();
@@ -338,7 +338,7 @@ const LOSAPI = () => {
         body: JSON.stringify({
           request_data: {
             refID: refID,
-            UUIDs: docUUID,
+            docUUID: docUUID,
           },
           channel: "W",
         }),
@@ -350,6 +350,67 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+
+  const verifyDocuments = ({
+    moduleType,
+    docCategory,
+    refID,
+  }: DOCCRUDTYPE) => async (
+    docUUID: any,
+    remarks: any,
+    docStatus: "Verfiy" | "Rejected"
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/document/${docCategory}/data/verification`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            docUUID: docUUID,
+            remarks: remarks,
+            status:
+              docStatus === "Verfiy"
+                ? "Y"
+                : docStatus === "Rejected"
+                ? "R"
+                : "X",
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const updateDocuments = ({
+    moduleType,
+    docCategory,
+    refID,
+  }: DOCCRUDTYPE) => async (updateData: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/document/${docCategory}/data/put`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            details: updateData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  //***END of docs API */
 
   const moveInquiryToLead = async (refID: string, formData: any) => {
     const { data, status } = await internalFetcher(`./inquiry/moveToLead`, {
@@ -738,8 +799,10 @@ const LOSAPI = () => {
     updateData,
     //document
     uploadDocuments,
-    listingDocuments,
+    updateDocuments,
     deleteDocuments,
+    listingDocuments,
+    verifyDocuments,
     getBankListForLeadDocuments,
 
     moveInquiryToLead,
