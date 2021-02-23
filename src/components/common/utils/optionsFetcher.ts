@@ -11,7 +11,8 @@ export const useOptionsFetcher = (
   runValidation,
   whenToRunValidation,
   _optionsKey,
-  disableCaching
+  disableCaching,
+  setIncomingMessage
 ) => {
   let loadingOptions = false;
   let componentMountedTime = useRef<any>(null);
@@ -39,6 +40,17 @@ export const useOptionsFetcher = (
     } else if (Array.isArray(options)) {
       setOptions(options);
       loadingOptions = false;
+    } else if (typeof options === "object") {
+      const { options: _options, ...others } = options;
+      if (Array.isArray(_options)) {
+        setOptions(options);
+        if (Object.keys(others).length > 0) {
+          setIncomingMessage(others);
+        }
+      } else {
+        setOptions([{ label: "Invalid Data", value: null }]);
+      }
+      loadingOptions = false;
     } else if (queryOptions.isLoading) {
       setOptions([{ label: "loading...", value: null }]);
       loadingOptions = true;
@@ -49,15 +61,25 @@ export const useOptionsFetcher = (
         queryOptions.error
       );
       loadingOptions = false;
-    } else {
-      if (Array.isArray(queryOptions.data)) {
-        setOptions(queryOptions.data);
+    } else if (Array.isArray(queryOptions.data)) {
+      setOptions(queryOptions.data);
+      loadingOptions = false;
+    } else if (typeof queryOptions.data === "object") {
+      const { options: _options, ...others } = options;
+      if (Array.isArray(_options)) {
+        setOptions(options);
+        if (Object.keys(others).length > 0) {
+          setIncomingMessage(others);
+        }
       } else {
-        setOptions([{ label: "Couldn't fetch", value: null }]);
-        console.log(
-          `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
-        );
+        setOptions([{ label: "Invalid Data", value: null }]);
       }
+      loadingOptions = false;
+    } else {
+      setOptions([{ label: "Couldn't fetch", value: null }]);
+      console.log(
+        `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
+      );
       loadingOptions = false;
     }
   }, [loadingOptions]);
@@ -99,6 +121,8 @@ export const useOptionsFetcher = (
 
   return { loadingOptions };
 };
+
+/****** ---- */
 
 export const useOptionsFetcherSimple = (
   options,

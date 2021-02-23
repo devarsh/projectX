@@ -89,6 +89,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -126,7 +127,8 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     runValidation,
     whenToRunValidation,
     _optionsKey,
-    disableCaching
+    disableCaching,
+    setIncomingMessage
   );
 
   if (excluded) {

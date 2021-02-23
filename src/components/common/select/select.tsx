@@ -76,6 +76,7 @@ const MySelect: FC<MySelectAllProps> = ({
     whenToRunValidation,
     readOnly,
     formState,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -122,7 +123,8 @@ const MySelect: FC<MySelectAllProps> = ({
     runValidation,
     whenToRunValidation,
     _optionsKey,
-    disableCaching
+    disableCaching,
+    setIncomingMessage
   );
 
   //dont move it to top it can mess up with hooks calling mechanism, if there is another

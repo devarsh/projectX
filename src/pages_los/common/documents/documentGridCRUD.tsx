@@ -115,7 +115,7 @@ export const DocumentGridCRUD = ({
         ) : (currentAction?.name ?? "") === "Update" ? (
           <UpdateDocumentData
             metaData={gridMetaData}
-            data={[]}
+            row={currentAction?.rows[0]}
             closeDialog={closeMyDialog}
             isProductEditedRef={dataChangedRef}
           />

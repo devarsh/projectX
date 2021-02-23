@@ -118,3 +118,76 @@ export const columnsMetaData: GridColumnType[] = [
     isVisible: false,
   },
 ];
+
+export const gridEditMetaData: GridMetaDataType = {
+  columns: [
+    {
+      columnName: "File Name",
+      componentType: "default",
+      accessor: "fileName",
+      sequence: 1,
+      alignment: "left",
+      width: 300,
+      maxWidth: 300,
+      minWidth: 100,
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This is a required field"] }],
+      },
+    },
+    {
+      columnName: "Bank",
+      componentType: "editableSelect",
+      accessor: "bankID",
+      sequence: 4,
+      alignment: "left",
+      options: "getBankListForLeadDocuments",
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["required"] }],
+      },
+      disableCachingOptions: true,
+    },
+    {
+      columnName: "Document Type",
+      componentType: "editableSelect",
+      accessor: "docType",
+      sequence: 5,
+      alignment: "left",
+      options: "getBankDocType",
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["required"] }],
+      },
+    },
+    {
+      columnName: "Password",
+      componentType: "editableTextField",
+      accessor: "password",
+      sequence: 6,
+      alignment: "left",
+      isPassword: true,
+    },
+  ],
+  gridConfig: {
+    dense: true,
+    gridLabel: "Update Statement",
+    rowIdColumn: "docUUID",
+    defaultColumnConfig: {
+      width: 150,
+      maxWidth: 250,
+      minWidth: 100,
+    },
+    allowColumnReordering: true,
+    disableSorting: true,
+    disableGlobalFilter: true,
+    disableGroupBy: true,
+    containerHeight: {
+      min: "10vh",
+      max: "10vh",
+    },
+    hideFooter: true,
+    hideHeader: true,
+    enablePagination: false,
+  },
+};

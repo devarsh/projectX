@@ -82,6 +82,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -119,7 +120,8 @@ const MyRadio: FC<MyRadioAllProps> = ({
     runValidation,
     whenToRunValidation,
     _optionsKey,
-    disableCaching
+    disableCaching,
+    setIncomingMessage
   );
 
   if (excluded) {

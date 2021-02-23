@@ -482,6 +482,15 @@ export const useField = ({
       }
     });
   }, [setFieldData]);
+
+  const setIncomingMessage = useCallback(
+    (value) => {
+      setFieldData((currVal) => {
+        return { ...currVal, incomingMessage: value };
+      });
+    },
+    [setFieldData]
+  );
   const setValue = useCallback(
     (val: any, displayValue: any, alwaysRun?: boolean) => {
       if (!!alwaysRun === false) {
@@ -624,6 +633,7 @@ export const useField = ({
     handleBlur,
     setTouched,
     setValue,
+    setIncomingMessage,
     runValidation,
     dependentValues: dependentFieldsState,
   };

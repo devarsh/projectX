@@ -115,6 +115,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     incomingMessage,
     whenToRunValidation,
     value,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -152,7 +153,8 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     runValidation,
     whenToRunValidation,
     _optionsKey,
-    disableCaching
+    disableCaching,
+    setIncomingMessage
   );
 
   //to set the default value
