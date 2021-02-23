@@ -31,6 +31,12 @@ registerFn(
   "shouldExcludeProjectDetailsTypeMeansOFFinance",
   shouldExclude.projectDetailsTypeMeansOFFinance
 );
+registerFn(
+  "shouldExcludeMainDetailsdeveloperOrContactor",
+  shouldExclude.mainDetailsdeveloperOrContactor
+);
 registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 
 registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);
+registerFn("getLeadSubStageCode", LOSSDK.getLeadSubStageCode);
+registerFn("getLeadEmploymentType", LOSSDK.getLeadEmploymentType);
