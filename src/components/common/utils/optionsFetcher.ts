@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import { transformDependentFieldsState } from "packages/form";
 
 export const useOptionsFetcher = (
   formState,
@@ -24,7 +25,12 @@ export const useOptionsFetcher = (
   }
   const queryOptions = useQuery(
     queryKey,
-    () => options(dependentValues, formState),
+    () =>
+      options(
+        dependentValues,
+        formState,
+        transformDependentFieldsState(dependentValues)
+      ),
     {
       enabled: typeof options === "function",
       cacheTime: 100000000,

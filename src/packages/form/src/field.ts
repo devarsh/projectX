@@ -834,7 +834,7 @@ const getFieldKeyForArray = (fieldKey: string) => {
   return "";
 };
 
-const transformDependentFieldsState = (
+export const transformDependentFieldsState = (
   dependentValues: DependentValuesType
 ) => {
   const values = Object.keys(dependentValues);
