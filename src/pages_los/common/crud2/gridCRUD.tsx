@@ -108,9 +108,18 @@ export const GridCRUD = ({ isProductEditedRef }) => {
             closeDialog={closeMyDialog}
             isProductEditedRef={dataChangedRef}
           />
-        ) : null}
+        ) : (
+          <InvalidAction closeDialog={closeMyDialog} />
+        )}
       </Dialog>
     </Fragment>
   );
   return renderResult;
+};
+
+const InvalidAction = ({ closeDialog }) => {
+  useEffect(() => {
+    closeDialog();
+  }, []);
+  return null;
 };

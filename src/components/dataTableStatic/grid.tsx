@@ -118,7 +118,7 @@ export const DataGrid = ({
 
   singleActions = filterAction(singleActions, selectedFlatRows);
   multipleActions = filterAction(multipleActions, selectedFlatRows);
-  doubleClickAction = filterAction([doubleClickAction], selectedFlatRows, true);
+  doubleClickAction = filterAction(doubleClickAction, selectedFlatRows, true);
 
   const [contextMenuPosition, setContextMenuPosition] = useState<{
     mouseX: number;

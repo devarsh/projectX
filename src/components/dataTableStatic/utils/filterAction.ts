@@ -1,13 +1,18 @@
 export const filterAction = (
-  actions: any[],
+  actions: any,
   selectedFlatRows: any,
   singleAction?: boolean
 ) => {
-  if (
-    !Array.isArray(actions) ||
-    actions.length <= 0 ||
-    selectedFlatRows.length <= 0
-  ) {
+  if (!Array.isArray(actions) && Boolean(actions)) {
+    actions = [actions];
+  } else {
+    actions = [];
+  }
+
+  if (actions.length <= 0 || selectedFlatRows.length <= 0) {
+    if (singleAction === true) {
+      return actions[0];
+    }
     return actions;
   }
   let result = actions.filter((one) => {
