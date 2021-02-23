@@ -5,6 +5,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import GridWrapper from "components/dataTableStatic";
 import { DOCCRUDContext } from "./context";
 
@@ -58,6 +59,7 @@ export const UpdateDocumentData = ({
           {mutation?.error?.error_msg ?? "Unknown Error occured"}
         </Alert>
       ) : null}
+      {mutation.isLoading ? <LinearProgress variant={"indeterminate"} /> : null}
       <DialogTitle id="alert-dialog-title">Update Documents</DialogTitle>
       <DialogContent>
         <GridWrapper
@@ -76,14 +78,14 @@ export const UpdateDocumentData = ({
           color="primary"
           disabled={mutation.isLoading}
         >
-          Disagree
+          No
         </Button>
         <Button
           color="primary"
           onClick={sendDataForUpdate}
           disabled={mutation.isLoading}
         >
-          Agree
+          Yes
         </Button>
       </DialogActions>
     </>

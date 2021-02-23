@@ -35,7 +35,7 @@ import ArrowRightSharpIcon from "@material-ui/icons/ArrowRightSharp";
 import ArrowDropDownSharpIcon from "@material-ui/icons/ArrowDropDownSharp";
 import IconButton from "@material-ui/core/IconButton";
 import { CustomBackdrop } from "components/dataTable/backdrop";
-import { filterAction } from "./utils";
+import { filterAction } from "components/dataTable/utils";
 
 export const DataGrid = ({
   label,
@@ -118,7 +118,6 @@ export const DataGrid = ({
 
   singleActions = filterAction(singleActions, selectedFlatRows);
   multipleActions = filterAction(multipleActions, selectedFlatRows);
-  doubleClickAction = filterAction(doubleClickAction, selectedFlatRows, true);
 
   const [contextMenuPosition, setContextMenuPosition] = useState<{
     mouseX: number;
@@ -145,6 +144,10 @@ export const DataGrid = ({
   };
   const handleRowDoubleClickAction = (row) => (e) => {
     e.preventDefault();
+    let result = filterAction(doubleClickAction, [row], true);
+    if (result === undefined) {
+      return;
+    }
     setGridAction({
       name: doubleClickAction.actionName,
       rows: [

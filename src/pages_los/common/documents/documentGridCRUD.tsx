@@ -23,7 +23,7 @@ const actions: ActionTypes[] = [
     shouldExclude: (rows) => {
       let exclude = false;
       for (let i = 0; i < rows.length; i++) {
-        if (rows[i].original?.status !== "Pending") {
+        if (rows[i].data?.status !== "Pending") {
           exclude = true;
           break;
         }
@@ -89,6 +89,8 @@ export const DocumentGridCRUD = ({
           style:
             currentAction?.name === "Add"
               ? { width: "100%", height: "100%" }
+              : currentAction?.name === "Verify"
+              ? { width: "40%" }
               : {},
         }}
       >

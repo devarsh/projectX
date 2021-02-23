@@ -7,3 +7,4 @@ export * from "./extractHiddenColumns";
 export * from "./sortColumnBySequence";
 export * from "./utils";
 export * from "./splitActions";
+export * from "./filterAction";

@@ -15,7 +15,11 @@ export const filterAction = (
   }
   let result = actions.filter((one) => {
     if (typeof one?.shouldExclude === "function") {
-      if (one.shouldExclude(selectedFlatRows) === true) {
+      if (
+        one.shouldExclude(
+          selectedFlatRows.map((one) => ({ id: one.id, data: one.original }))
+        ) === true
+      ) {
         return false;
       }
       return true;

@@ -32,6 +32,7 @@ import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
+import { filterAction } from "./utils";
 
 export const DataGrid = ({
   label,
@@ -108,6 +109,9 @@ export const DataGrid = ({
     useCheckboxColumn
   );
 
+  singleActions = filterAction(singleActions, selectedFlatRows);
+  multipleActions = filterAction(multipleActions, selectedFlatRows);
+
   const { pageIndex, pageSize, sortBy, filters } = tableState;
   const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
@@ -137,6 +141,10 @@ export const DataGrid = ({
   };
   const handleRowDoubleClickAction = (row) => (e) => {
     e.preventDefault();
+    let result = filterAction(doubleClickAction, [row], true);
+    if (result === undefined) {
+      return;
+    }
     setGridAction({
       name: doubleClickAction.actionName,
       rows: [

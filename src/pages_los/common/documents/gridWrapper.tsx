@@ -45,7 +45,6 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       }
     );
 
-    const dataUniqueKey = `${result.dataUpdatedAt}`;
     const loading = result.isLoading || result.isFetching;
     let isError = result.isError;
     //@ts-ignore
@@ -56,7 +55,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         <span>{errorMsg}</span>
       ) : (
         <GridWrapper
-          key={`listingDocuments-${wrapperKey.current}-${dataUniqueKey}`}
+          key={`listingDocuments-${wrapperKey.current}`}
           data={result.data ?? []}
           finalMetaData={metaData}
           setData={() => null}

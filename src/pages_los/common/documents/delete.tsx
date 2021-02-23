@@ -3,6 +3,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { useMutation } from "react-query";
 import { DOCCRUDContext } from "./context";
 
@@ -37,6 +38,7 @@ export const DeleteAction = ({ isProductEditedRef, closeDialog, docUUID }) => {
           {mutation?.error?.error_msg ?? "Unknown Error occured"}
         </Alert>
       ) : null}
+      {mutation.isLoading ? <LinearProgress variant={"indeterminate"} /> : null}
       <DialogTitle id="alert-dialog-title">
         Are you sure you want to delete the selected Records
       </DialogTitle>
@@ -46,14 +48,14 @@ export const DeleteAction = ({ isProductEditedRef, closeDialog, docUUID }) => {
           color="primary"
           disabled={mutation.isLoading}
         >
-          Disagree
+          No
         </Button>
         <Button
           color="primary"
           onClick={() => mutation.mutate({ docUUID })}
           disabled={mutation.isLoading}
         >
-          Agree
+          Yes
         </Button>
       </DialogActions>
     </Fragment>

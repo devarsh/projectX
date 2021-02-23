@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { TableActionType, RenderActionType } from "./types";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { filterAction } from "./utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -129,13 +130,14 @@ export const ActionContextMenu: FC<TableActionType> = ({
   if (typeof setGridAction !== "function") {
     setGridAction = () => {};
   }
-  const allActions = [...singleActions, ...(multipleActions ?? [])];
+  let allActions = [...singleActions, ...(multipleActions ?? [])];
   if (
     Array.isArray(allActions) &&
     allActions.length > 0 &&
     selectedFlatRows.length <= 1 &&
     contextMenuRow !== null
   ) {
+    allActions = filterAction(allActions, [contextMenuRow], false);
     menuItems = allActions.map((one) => (
       <MenuItem
         key={one.actionName}
