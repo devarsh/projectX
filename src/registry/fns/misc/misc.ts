@@ -108,19 +108,26 @@ const MiscAPI = () => {
     }
   };
 
-  //dropdown value - dynamic form
-  const getPincodeExternalCopy = async (
-    dependentFields: any,
-    formState: any,
+  const getPincodeExternal = async (
+    _: any,
+    __: any,
     dependentFields2: any
   ): Promise<{ options: OptionsProps[]; others: any }> => {
+    let result = Object.keys(dependentFields2);
+    let key = result.find((one) => one.indexOf("pincode")) ?? "";
+    if (!Boolean(key)) {
+      return {
+        options: [{ label: "Error fetching pincode", value: "0" }],
+        others: null,
+      };
+    }
     if (
-      !Boolean(dependentFields2?.["addressDetails.pincode"]?.error) &&
-      dependentFields2?.["addressDetails.pincode"]?.value.length === 6
+      !Boolean(dependentFields2?.[key]?.error) &&
+      dependentFields2?.[key]?.value.length === 6
     ) {
       try {
         const response = await fetch(
-          `https://api.postalpincode.in/pincode/${dependentFields2?.["addressDetails.pincode"]?.value}`,
+          `https://api.postalpincode.in/pincode/${dependentFields2?.[key]?.value}`,
           {
             method: "GET",
             redirect: "follow",
@@ -169,59 +176,7 @@ const MiscAPI = () => {
     }
   };
 
-  //copy of old API call for pincode
-  const getPincodeExternal = async (
-    pincode: string
-  ): Promise<{ options: OptionsProps[]; others: any }> => {
-    try {
-      const response = await fetch(
-        `https://api.postalpincode.in/pincode/${pincode}`,
-        {
-          method: "GET",
-          redirect: "follow",
-        }
-      );
-      let data = await response.json();
-      if (Array.isArray(data) && data.length === 1) {
-        let result = data[0];
-        if (String(result.Status).toLowerCase() === "success") {
-          let areaArray = result.PostOffice.map((dtl) => ({
-            value: dtl?.Name,
-            label: dtl?.Name,
-          }));
-          areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
-          const otherValues = result.PostOffice.reduce(
-            (accumlator, current) => {
-              const val = {
-                city: current.Block,
-                district: current.District,
-                state: current.State,
-                country: current.Country,
-              };
-              accumlator[current.Name] = val;
-              return accumlator;
-            },
-            {}
-          );
-          return { options: areaArray, others: otherValues };
-        }
-      }
-      return {
-        options: [{ label: "Error fetching pincode", value: "0" }],
-        others: null,
-      };
-    } catch (e) {
-      return {
-        options: [{ label: "Error fetching pincode", value: "0" }],
-        others: null,
-      };
-    }
-  };
-
-  const getIndustryType = async (
-    _: any,
-    formState: any
-  ): Promise<OptionsProps[]> => {
+  const getIndustryType = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher(`./industryType`, {});
     if (status === "success" && Array.isArray(data.response_data)) {
       const newArray = data.response_data.map((one) => ({

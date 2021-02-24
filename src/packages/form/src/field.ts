@@ -154,12 +154,12 @@ export const useField = ({
     };
     registerField(registrationValue);
     //we need to run handleBlur for postValidation hook - this a hack to fix an issue
-    if (
-      typeof postValidationSetCrossFieldValues === "function" &&
-      Boolean(defaultValue)
-    ) {
-      setTimeout(handleBlur, 1);
-    }
+    // if (
+    //   typeof postValidationSetCrossFieldValues === "function" &&
+    //   Boolean(defaultValue)
+    // ) {
+    //   setTimeout(handleBlur, 1);
+    // }
     //end of hack
 
     if (Boolean(formContext.resetFieldOnUnmount) === true) {

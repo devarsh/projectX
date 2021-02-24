@@ -134,7 +134,11 @@ export const DetailsView: FC<{
                   isProductEditedRef={isProductEditedRef}
                   dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                   closeDialog={undefined}
-                  formState={{ refID }}
+                  formState={{
+                    refID,
+                    moduleType,
+                    productType: one.productType,
+                  }}
                 />
               </CRUDContextProvider>
             ) : one.componentType === "grid" ? (

@@ -68,16 +68,15 @@ registerFn(
   others.getMonthlyEmiPayValidateValue
 );
 
-registerFn("getPincodeDtl", pincode.getPincodeDtl(miscSDK.getPincodeExternal));
-// registerFn("getPincode", miscSDK.getPincodeExternal) new changes;
-registerFn("getLocationDtl", pincode.getLocationDtl);
+registerFn("getPincode", miscSDK.getPincodeExternal);
+// Post validation hooks
+registerFn("postValidationSetPincodeDtl", pincode.postValidationSetPincodeDtl);
 registerFn(
-  "getcoApplicantPincodeDtl",
-  pincode.getcoApplicantPincodeDtl(miscSDK.getPincodeExternal)
+  "postValidationSetLocationDtl",
+  pincode.postValidationSetLocationDtl
 );
-registerFn("getcoApplicantLocationDtl", pincode.getcoApplicantLocationDtl);
 registerFn(
-  "getSitePincodeDtl",
-  pincode.getSitePincodeDtl(miscSDK.getPincodeExternal)
+  "postValidationSetCoApplicantLocationDtl",
+  pincode.getcoApplicantLocationDtl
 );
-registerFn("getSiteLocationDtl", pincode.getSiteLocationDtl);
+registerFn("postValidationSetSiteLocationDtl", pincode.getSiteLocationDtl);

@@ -16,7 +16,7 @@ export const useOptionsFetcher = (
   setIncomingMessage
 ) => {
   let loadingOptions = false;
-  let componentMountedTime = useRef<any>(null);
+  //let componentMountedTime = useRef<any>(null);
   let queryKey: any[] = [];
   if (Boolean(disableCaching)) {
     queryKey = [_optionsKey, formState, dependentValues];
@@ -88,33 +88,26 @@ export const useOptionsFetcher = (
       );
       loadingOptions = false;
     }
-  }, [loadingOptions]);
+  }, [loadingOptions, queryOptions.dataUpdatedAt]);
 
-  useEffect(() => {
-    componentMountedTime.current = new Date().getTime();
-  }, []);
+  // useEffect(() => {
+  //   componentMountedTime.current = new Date().getTime();
+  // }, []);
 
   useEffect(() => {
     const hookCalledTime = new Date().getTime();
-    const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
-    if (timeDiff < 5000) {
-      if (incomingMessage !== null && typeof incomingMessage === "object") {
-        const { options } = incomingMessage;
-        if (Array.isArray(options)) {
-          setOptions(options);
-        }
-      }
-    } else if (
+    //const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
+    if (
+      //timeDiff > 5000 &&
       incomingMessage !== null &&
       typeof incomingMessage === "object"
     ) {
-      const { value, options } = incomingMessage;
-      handleChangeInterceptor(value);
-      if (whenToRunValidation === "onBlur") {
-        runValidation({ value: value }, true);
-      }
-      if (Array.isArray(options)) {
-        setOptions(options);
+      const { value } = incomingMessage;
+      if (Boolean(value) || value === "") {
+        handleChangeInterceptor(value);
+        if (whenToRunValidation === "onBlur") {
+          runValidation({ value: value }, true);
+        }
       }
     }
   }, [

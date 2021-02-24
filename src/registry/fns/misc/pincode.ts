@@ -1,48 +1,24 @@
-export const getPincodeDtl = (getPincode) => async (fieldData) => {
-  if (fieldData.value.length === 6) {
-    let codes = await getPincode(fieldData.value);
-    return {
-      location: {
-        options: codes.options,
-        others: codes.others,
-        value: "",
-      },
-      city: {
-        value: "",
-      },
-      state: {
-        value: "",
-      },
-      district: {
-        value: "",
-      },
-      country: {
-        value: "",
-      },
-    };
-  } else if (fieldData.value === "") {
-    return {
-      location: {
-        options: [],
-        value: "",
-      },
-      city: {
-        value: "",
-      },
-      state: {
-        value: "",
-      },
-      district: {
-        value: "",
-      },
-      country: {
-        value: "",
-      },
-    };
-  }
+//copy of locationDtl method which will be deleted after fix the issue of pincode
+export const postValidationSetPincodeDtl = async () => {
+  return {
+    location: {
+      value: "",
+    },
+    city: {
+      value: "",
+    },
+    state: {
+      value: "",
+    },
+    district: {
+      value: "",
+    },
+    country: {
+      value: "",
+    },
+  };
 };
-
-export const getLocationDtlCopy = async (fieldData) => {
+export const postValidationSetLocationDtl = async (fieldData) => {
   const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
   return {
     city: {
@@ -58,86 +34,6 @@ export const getLocationDtlCopy = async (fieldData) => {
       value: fieldValues?.country,
     },
   };
-};
-
-//copy of locationDtl method which will be deleted after fix the issue of pincode
-export const getLocationDtl = async (fieldData) => {
-  if (fieldData.value === "") {
-    return {
-      city: {
-        value: "",
-      },
-      state: {
-        value: "",
-      },
-      district: {
-        value: "",
-      },
-      country: {
-        value: "",
-      },
-    };
-  } else {
-    const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
-    return {
-      city: {
-        value: fieldValues?.city,
-      },
-      state: {
-        value: fieldValues?.state,
-      },
-      district: {
-        value: fieldValues?.district,
-      },
-      country: {
-        value: fieldValues?.country,
-      },
-    };
-  }
-};
-
-export const getcoApplicantPincodeDtl = (getPincode) => async (fieldData) => {
-  if (fieldData.value.length === 6) {
-    let codes = await getPincode(fieldData.value);
-    return {
-      coApplicantLocation: {
-        options: codes.options,
-        others: codes.others,
-        value: "",
-      },
-      coApplicantCity: {
-        value: "",
-      },
-      coApplicantState: {
-        value: "",
-      },
-      coApplicantDistrict: {
-        value: "",
-      },
-      coApplicantCountry: {
-        value: "",
-      },
-    };
-  } else if (fieldData.value === "") {
-    return {
-      coApplicantLocation: {
-        options: [],
-        value: "",
-      },
-      coApplicantCity: {
-        value: "",
-      },
-      coApplicantState: {
-        value: "",
-      },
-      coApplicantDistrict: {
-        value: "",
-      },
-      coApplicantCountry: {
-        value: "",
-      },
-    };
-  }
 };
 
 export const getcoApplicantLocationDtl = async (fieldData) => {
@@ -170,50 +66,6 @@ export const getcoApplicantLocationDtl = async (fieldData) => {
       },
       coApplicantCountry: {
         value: fieldValues?.country,
-      },
-    };
-  }
-};
-
-export const getSitePincodeDtl = (getPincode) => async (fieldData) => {
-  if (fieldData.value.length === 6) {
-    let codes = await getPincode(fieldData.value);
-    return {
-      siteLocation: {
-        options: codes.options,
-        others: codes.others,
-        value: "",
-      },
-      siteCity: {
-        value: "",
-      },
-      siteState: {
-        value: "",
-      },
-      siteDistrict: {
-        value: "",
-      },
-      siteCountry: {
-        value: "",
-      },
-    };
-  } else if (fieldData.value === "") {
-    return {
-      siteLocation: {
-        options: [],
-        value: "",
-      },
-      siteCity: {
-        value: "",
-      },
-      siteState: {
-        value: "",
-      },
-      siteDistrict: {
-        value: "",
-      },
-      siteCountry: {
-        value: "",
       },
     };
   }
