@@ -2,15 +2,17 @@ import { useState, FC, Fragment, useEffect, useContext } from "react";
 import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
-import { queryClient } from "cache";
-import { ClearCacheContext } from "cache";
-import { HeaderDetails } from "./headerDetails";
-import { GridCRUD, SimpleCRUD } from "pages_los/common/crud2";
+import { useQuery } from "react-query";
+import { queryClient, ClearCacheContext } from "cache";
+import {
+  GridCRUD,
+  SimpleCRUD,
+  CRUDContextProvider,
+} from "pages_los/common/crud2";
 import { LOSSDK } from "registry/fns/los";
-import { CRUDContextProvider } from "pages_los/common/crud2";
-
 import { useStyles } from "./style";
-
+import { HeaderDetails } from "./headerDetails";
+import loaderGif from "assets/images/loader.gif";
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
@@ -77,81 +79,69 @@ export const DetailsView: FC<{
       entries.forEach((one) => {
         queryClient.removeQueries(one);
       });
+      queryClient.removeQueries(["getCRUDTabsMetadata", moduleType, refID]);
     };
   }, [removeCache]);
 
-  return (
+  const queryResult = useQuery(
+    ["getCRUDTabsMetadata", moduleType, refID],
+    () => LOSSDK.getCRUDTabsMetadata({ moduleType, refID }),
+    {
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+  let tabs: any[] = queryResult.data;
+  if (queryResult.isSuccess) {
+    if (!Array.isArray(tabs)) {
+      tabs = [];
+    } else {
+      tabs = tabs.sort((a, b) =>
+        a.sequence > b.sequence ? 1 : a.sequence < b.sequence ? -1 : 0
+      );
+    }
+  }
+  const result = queryResult.isLoading ? (
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+  ) : queryResult.isError ? (
+    //@ts-ignore
+    queryResult.error?.error_msg ?? "unknown error occured"
+  ) : (
     <Fragment>
       <HeaderDetails
         productData={productGridData}
         handleDialogClose={handleDialogClose}
       />
       <Tabs value={currentTab} onChange={handleChangeTab}>
-        <Tab label="Lead Details" id="0" />
-        <Tab label="General Details" id="1" />
-        <Tab label="Bank Details" id="2" />
-        <Tab label="Management Details" id="3" />
-        <Tab label="Collateral Details" id="4" />
-        <Tab label="Project Details" id="5" />
-        <Tab label="Financial Details" id="6" />
+        {tabs.map((one) => (
+          <Tab key={one.sequence} label={one.label} id={`${one.sequence}`} />
+        ))}
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
-        <TabPanel value={currentTab} index="0" key={0}>
-          <CRUDContextProvider {...crudAPIArgs(moduleType, "main", refID)}>
-            <SimpleCRUD
-              isProductEditedRef={isProductEditedRef}
-              dataAlwaysExists={true}
-              closeDialog={undefined}
-            />
-          </CRUDContextProvider>
-        </TabPanel>
-        <TabPanel value={currentTab} index="1" key={1}>
-          <CRUDContextProvider {...crudAPIArgs(moduleType, "general", refID)}>
-            <SimpleCRUD
-              isProductEditedRef={isProductEditedRef}
-              dataAlwaysExists={true}
-              closeDialog={undefined}
-            />
-          </CRUDContextProvider>
-        </TabPanel>
-        <TabPanel value={currentTab} index="2" key={2}>
-          <CRUDContextProvider {...crudAPIArgs(moduleType, "bank", refID)}>
-            <SimpleCRUD
-              isProductEditedRef={isProductEditedRef}
-              dataAlwaysExists={false}
-              closeDialog={undefined}
-            />
-          </CRUDContextProvider>
-        </TabPanel>
-        <TabPanel value={currentTab} index="3" key={3}>
-          <CRUDContextProvider
-            {...crudAPIArgs(moduleType, "management", refID)}
+        {tabs.map((one) => (
+          <TabPanel
+            value={currentTab}
+            index={`${one.sequence}`}
+            key={one.sequence}
           >
-            <GridCRUD isProductEditedRef={isProductEditedRef} />
-          </CRUDContextProvider>
-        </TabPanel>
-        <TabPanel value={currentTab} index="4" key={4}>
-          <CRUDContextProvider
-            {...crudAPIArgs(moduleType, "collateral", refID)}
-          >
-            <SimpleCRUD
-              isProductEditedRef={isProductEditedRef}
-              dataAlwaysExists={false}
-              closeDialog={undefined}
-            />
-          </CRUDContextProvider>
-        </TabPanel>
-        <TabPanel value={currentTab} index="5" key={5}>
-          <CRUDContextProvider {...crudAPIArgs(moduleType, "project", refID)}>
-            <GridCRUD isProductEditedRef={isProductEditedRef} />
-          </CRUDContextProvider>
-        </TabPanel>
-        <TabPanel value={currentTab} index="6" key={6}>
-          <CRUDContextProvider {...crudAPIArgs(moduleType, "financial", refID)}>
-            <GridCRUD isProductEditedRef={isProductEditedRef} />
-          </CRUDContextProvider>
-        </TabPanel>
+            <CRUDContextProvider
+              {...crudAPIArgs(moduleType, one.productType, refID)}
+            >
+              {one.componentType === "simple" ? (
+                <SimpleCRUD
+                  isProductEditedRef={isProductEditedRef}
+                  dataAlwaysExists={true}
+                  closeDialog={undefined}
+                />
+              ) : one.componentType === "grid" ? (
+                <GridCRUD isProductEditedRef={isProductEditedRef} />
+              ) : null}
+            </CRUDContextProvider>
+          </TabPanel>
+        ))}
       </Box>
     </Fragment>
   );
+  return result;
 };

@@ -83,7 +83,7 @@ export const FormNew: FC<{
   const loading = result.isLoading || result.isFetching;
   let isError = result.isError;
   //@ts-ignore
-  let errorMsg = `${result.error?.error_msg ?? ""}`;
+  let errorMsg = `${result.error?.error_msg ?? "unknown error occured"}`;
 
   let metaData = JSON.parse(JSON.stringify(result.data ?? {})) as MetaDataType;
   if (loading === false && isError === false) {

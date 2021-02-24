@@ -456,6 +456,24 @@ const LOSAPI = () => {
     }
   };
 
+  const getCRUDTabsMetadata = async ({ moduleType, refID }) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/tabs/metaData`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   interface crudType {
     moduleType: string;
     productType: string;
@@ -860,6 +878,8 @@ const LOSAPI = () => {
     deleteFormData,
     deleteFormArrayFieldData,
     getStaticGridData,
+
+    getCRUDTabsMetadata,
 
     getLeadSubStageCode,
     getLeadEmploymentType,
