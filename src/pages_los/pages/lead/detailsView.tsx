@@ -9,6 +9,7 @@ import {
   SimpleCRUD,
   CRUDContextProvider,
 } from "pages_los/common/crud2";
+import { DocumentGridCRUD } from "./documentsTab";
 import { LOSSDK } from "registry/fns/los";
 import { useStyles } from "./style";
 import { HeaderDetails } from "./headerDetails";
@@ -125,23 +126,29 @@ export const DetailsView: FC<{
             index={`${one.sequence}`}
             key={one.sequence}
           >
-            <CRUDContextProvider
-              {...crudAPIArgs(moduleType, one.productType, refID)}
-            >
-              {one.componentType === "simple" ? (
+            {one.componentType === "simple" ? (
+              <CRUDContextProvider
+                {...crudAPIArgs(moduleType, one.productType, refID)}
+              >
                 <SimpleCRUD
                   isProductEditedRef={isProductEditedRef}
                   dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                   closeDialog={undefined}
                   formState={{ refID }}
                 />
-              ) : one.componentType === "grid" ? (
+              </CRUDContextProvider>
+            ) : one.componentType === "grid" ? (
+              <CRUDContextProvider
+                {...crudAPIArgs(moduleType, one.productType, refID)}
+              >
                 <GridCRUD
                   isProductEditedRef={isProductEditedRef}
                   refID={refID}
                 />
-              ) : null}
-            </CRUDContextProvider>
+              </CRUDContextProvider>
+            ) : one.componentType === "document" ? (
+              <DocumentGridCRUD refID={refID} moduleType={moduleType} />
+            ) : null}
           </TabPanel>
         ))}
       </Box>

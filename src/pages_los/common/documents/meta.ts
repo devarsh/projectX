@@ -1,5 +1,6 @@
 import { GridMetaDataType, GridColumnType } from "components/dataTableStatic";
 
+//Listing Grid
 export const gridMetaData: GridMetaDataType = {
   columns: [
     {
@@ -85,6 +86,7 @@ export const gridMetaData: GridMetaDataType = {
   },
 };
 
+//upload Grid Additional fields
 export const columnsMetaData: GridColumnType[] = [
   {
     columnName: "Bank",
@@ -129,6 +131,7 @@ export const columnsMetaData: GridColumnType[] = [
   },
 ];
 
+//edit grid
 export const gridEditMetaData: GridMetaDataType = {
   columns: [
     {
