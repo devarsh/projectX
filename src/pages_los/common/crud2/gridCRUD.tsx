@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, Fragment, useEffect } from "react";
+import { useContext, useRef, useState, Fragment, useEffect, FC } from "react";
 import loaderGif from "assets/images/loader.gif";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
@@ -32,7 +32,10 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const GridCRUD = ({ isProductEditedRef, refID }) => {
+export const GridCRUD: FC<{ isProductEditedRef: any; refID?: any }> = ({
+  isProductEditedRef,
+  refID,
+}) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);

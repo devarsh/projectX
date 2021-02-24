@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, FC } from "react";
 import { FormViewEdit } from "./formViewEdit";
 import { FormNewExistsIfNotCreate } from "./formNewExistIfNotCreate";
 
-export const SimpleCRUD = ({
-  isProductEditedRef,
-  closeDialog,
-  dataAlwaysExists,
-  formState,
-}) => {
+export const SimpleCRUD: FC<{
+  isProductEditedRef: any;
+  closeDialog: any;
+  dataAlwaysExists: any;
+  formState?: any;
+}> = ({ isProductEditedRef, closeDialog, dataAlwaysExists, formState }) => {
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
 
   return dataExist ? (
