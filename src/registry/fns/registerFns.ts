@@ -69,6 +69,7 @@ registerFn(
 );
 
 registerFn("getPincode", miscSDK.getPincodeExternal);
+
 // Post validation hooks
 registerFn("postValidationSetPincodeDtl", pincode.postValidationSetPincodeDtl);
 registerFn(
@@ -76,7 +77,19 @@ registerFn(
   pincode.postValidationSetLocationDtl
 );
 registerFn(
-  "postValidationSetCoApplicantLocationDtl",
-  pincode.getcoApplicantLocationDtl
+  "postValidationSetCoApplicantPincodeDtl",
+  pincode.postValidationSetCoApplicantPincodeDtl
 );
-registerFn("postValidationSetSiteLocationDtl", pincode.getSiteLocationDtl);
+registerFn(
+  "postValidationSetCoApplicantLocationDtl",
+  pincode.postValidationSetCoApplicantLocationDtl
+);
+
+registerFn(
+  "postValidationSetSiteLocationDtl",
+  pincode.postValidationSetSiteLocationDtl
+);
+registerFn(
+  "postValidationSetSitePincodeDtl",
+  pincode.postValidationSetSitePincodeDtl
+);
