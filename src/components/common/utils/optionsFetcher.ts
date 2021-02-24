@@ -1,6 +1,19 @@
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { transformDependentFieldsState } from "packages/form";
+import { pincode } from "registry/fns/misc";
+
+const computeDependentKey = (dependentValues = {}) => {
+  let keys = Object.keys(dependentValues).sort();
+  return keys.reduce((accum, one) => {
+    accum[one] = dependentValues[one].value;
+    return accum;
+  }, {});
+};
+const computeFormStateKey = (formState: any = {}) => {
+  const { fromCode, moduleType, productType, ...others } = formState;
+  return others;
+};
 
 export const useOptionsFetcher = (
   formState,
@@ -16,12 +29,13 @@ export const useOptionsFetcher = (
   setIncomingMessage
 ) => {
   let loadingOptions = false;
-  //let componentMountedTime = useRef<any>(null);
   let queryKey: any[] = [];
   if (Boolean(disableCaching)) {
-    queryKey = [_optionsKey, formState, dependentValues];
+    const dependentKeys = computeDependentKey(dependentValues);
+    //const formStateKeys = computeFormStateKey(formState);
+    queryKey = [_optionsKey, dependentKeys];
   } else {
-    queryKey = [_optionsKey, formState];
+    queryKey = [_optionsKey];
   }
   const queryOptions = useQuery(
     queryKey,
