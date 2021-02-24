@@ -33,13 +33,15 @@ export const FormViewEdit: FC<{
   serialNo?: string;
   closeDialog?: any;
   defaultView?: "view" | "edit";
+  formState?: any;
 }> = ({
   serialNo,
   isProductEditedRef,
   closeDialog = emptyFN,
   defaultView = "view",
+  formState = {},
 }) => {
-  serialNo = Boolean(serialNo) ? serialNo : "SERIAL_NO_NOT_FOUND_DO_NOT_REMOVE";
+  serialNo = Boolean(serialNo) ? serialNo : "1";
   const removeCache = useContext(ClearCacheContext);
   const { updateFormData, getFormData, getFormMetaData } = useContext(
     CRUDContext
@@ -147,6 +149,10 @@ export const FormViewEdit: FC<{
   } else {
     metaData = JSON.parse(JSON.stringify(result[1].data ?? {})) as MetaDataType;
   }
+  if (Boolean(metaData?.form ?? "")) {
+    metaData.form.formState = formState;
+  }
+
   let formEditData = result[0].data;
   if (loading === false && isError === false) {
     // isError = !isMetaDataValid(metaData);

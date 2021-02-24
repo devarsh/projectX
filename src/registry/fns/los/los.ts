@@ -800,16 +800,12 @@ const LOSAPI = () => {
     }
   };
 
-  const getLeadSubStageCode = async (
-    moduleType,
-    refID,
-    dependentFields: any
-  ) => {
+  const getLeadSubStageCode = async (dependentFields: any, formState: any) => {
     const { status, data } = await internalFetcher(`lead/options/subStage`, {
       body: JSON.stringify({
         request_data: {
-          refID: "89",
-          stageCode: "2",
+          refID: formState?.refID,
+          stageCode: dependentFields?.stageCode?.value,
         },
       }),
     });
@@ -824,13 +820,13 @@ const LOSAPI = () => {
     }
   };
 
-  const getLeadEmploymentType = async (moduleType, refID) => {
+  const getLeadEmploymentType = async (_, formState: any) => {
     const { status, data } = await internalFetcher(
       `lead/options/employmentType`,
       {
         body: JSON.stringify({
           request_data: {
-            refID: "89",
+            refID: formState?.refID,
           },
         }),
       }

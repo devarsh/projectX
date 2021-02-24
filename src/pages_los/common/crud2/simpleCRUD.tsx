@@ -6,6 +6,7 @@ export const SimpleCRUD = ({
   isProductEditedRef,
   closeDialog,
   dataAlwaysExists,
+  formState,
 }) => {
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
 
@@ -13,11 +14,13 @@ export const SimpleCRUD = ({
     <FormViewEdit
       isProductEditedRef={isProductEditedRef}
       closeDialog={closeDialog}
+      formState={formState}
     />
   ) : (
     <FormNewExistsIfNotCreate
       isProductEditedRef={isProductEditedRef}
       successAction={() => setDataExist(true)}
+      formState={formState}
     />
   );
 };

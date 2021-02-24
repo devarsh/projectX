@@ -32,7 +32,7 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const GridCRUD = ({ isProductEditedRef }) => {
+export const GridCRUD = ({ isProductEditedRef, refID }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
@@ -95,12 +95,14 @@ export const GridCRUD = ({ isProductEditedRef }) => {
             successAction={closeMyDialog}
             cancelAction={closeMyDialog}
             isProductEditedRef={dataChangedRef}
+            formState={{ refID }}
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
             isProductEditedRef={dataChangedRef}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
+            formState={{ refID }}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction

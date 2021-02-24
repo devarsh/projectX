@@ -133,9 +133,13 @@ export const DetailsView: FC<{
                   isProductEditedRef={isProductEditedRef}
                   dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                   closeDialog={undefined}
+                  formState={{ refID }}
                 />
               ) : one.componentType === "grid" ? (
-                <GridCRUD isProductEditedRef={isProductEditedRef} />
+                <GridCRUD
+                  isProductEditedRef={isProductEditedRef}
+                  refID={refID}
+                />
               ) : null}
             </CRUDContextProvider>
           </TabPanel>

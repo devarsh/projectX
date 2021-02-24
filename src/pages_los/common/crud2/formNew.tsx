@@ -23,7 +23,8 @@ export const FormNew: FC<{
   isProductEditedRef: any;
   successAction: any;
   cancelAction: any;
-}> = ({ isProductEditedRef, successAction, cancelAction }) => {
+  formState?: any;
+}> = ({ isProductEditedRef, successAction, cancelAction, formState = {} }) => {
   const { insertFormData, getFormMetaData } = useContext(CRUDContext);
   const removeCache = useContext(ClearCacheContext);
   const wrapperKey = useRef<any>(null);
@@ -86,6 +87,9 @@ export const FormNew: FC<{
   let errorMsg = `${result.error?.error_msg ?? "unknown error occured"}`;
 
   let metaData = JSON.parse(JSON.stringify(result.data ?? {})) as MetaDataType;
+  if (Boolean(metaData?.form ?? "")) {
+    metaData.form.formState = formState;
+  }
   if (loading === false && isError === false) {
     // isError = !isMetaDataValid(metaData);
     if (isError === false) {
