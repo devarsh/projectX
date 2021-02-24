@@ -1,7 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { transformDependentFieldsState } from "packages/form";
-import { pincode } from "registry/fns/misc";
 
 const computeDependentKey = (dependentValues = {}) => {
   let keys = Object.keys(dependentValues).sort();
@@ -9,10 +8,6 @@ const computeDependentKey = (dependentValues = {}) => {
     accum[one] = dependentValues[one].value;
     return accum;
   }, {});
-};
-const computeFormStateKey = (formState: any = {}) => {
-  const { fromCode, moduleType, productType, ...others } = formState;
-  return others;
 };
 
 export const useOptionsFetcher = (
@@ -27,7 +22,7 @@ export const useOptionsFetcher = (
   _optionsKey,
   disableCaching,
   setIncomingMessage
-) => {
+): { loadingOptions: boolean } => {
   let loadingOptions = false;
   let queryKey: any[] = [];
   if (Boolean(disableCaching)) {
@@ -46,8 +41,9 @@ export const useOptionsFetcher = (
         transformDependentFieldsState(dependentValues)
       ),
     {
+      retry: false,
       enabled: typeof options === "function",
-      cacheTime: 100000000,
+      cacheTime: disableCaching ? 0 : 100000000,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     }
