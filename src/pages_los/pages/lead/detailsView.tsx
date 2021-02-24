@@ -131,7 +131,7 @@ export const DetailsView: FC<{
               {one.componentType === "simple" ? (
                 <SimpleCRUD
                   isProductEditedRef={isProductEditedRef}
-                  dataAlwaysExists={true}
+                  dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                   closeDialog={undefined}
                 />
               ) : one.componentType === "grid" ? (
