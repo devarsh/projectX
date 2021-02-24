@@ -45,6 +45,7 @@ registerFn("getITRDocType", miscSDK.getMiscVal("ITR_DOC_TYPE"));
 registerFn("getKYCDocType", miscSDK.getMiscVal("KYC_DOC_TYPE"));
 registerFn("getOtherDocType", miscSDK.getMiscVal("OTH_DOC_TYPE"));
 registerFn("getGSTDocType", miscSDK.getMiscVal("GST_DOC_TYPE"));
+registerFn("getLeadState", miscSDK.getMiscVal("LEAD_STAGE"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
