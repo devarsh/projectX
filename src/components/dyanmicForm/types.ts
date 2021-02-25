@@ -81,14 +81,15 @@ export interface FormMetaDataType {
   validationRun: "onBlur" | "onChange" | "all";
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
+  formState?: any;
+  //very specific need better api and remove from metaData -future TODO
   flow?: UserFlowType[];
   submitAction?: string;
-  refID?: string | number;
+  refID?: string | number; //remove it and make it part of formState
   confirmationBox?: {
     name: string;
     label: string;
   };
-  formState?: any;
 }
 
 export interface ComponentTypeProps {
@@ -214,9 +215,8 @@ export interface FormWrapperProps {
   metaData: MetaDataType;
   initialValues?: InitialValuesType;
   onSubmitHandler: SubmitFnType;
-  onCancleHandler?: any;
   hidden?: boolean;
-  defaultMode?: "view" | "edit" | "new";
+  displayMode?: "new" | "view" | "edit";
   disableGroupExclude?: boolean;
   disableGroupErrorDetection?: boolean;
 }
@@ -224,11 +224,9 @@ export interface FormWrapperProps {
 export interface FormProps {
   fields: GroupWiseRenderedFieldsType;
   formRenderConfig: FormRenderConfigType;
-  formDisplayName: string;
   formName: string;
-  submitFn: SubmitFnType;
-  cancelFn: any;
-  defaultMode: "view" | "edit" | "new";
   disableGroupExclude?: boolean;
   disableGroupErrorDetection?: boolean;
+  handleSubmitPartial?: any;
+  handleSubmit?: any;
 }

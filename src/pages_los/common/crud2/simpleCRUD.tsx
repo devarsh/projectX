@@ -4,16 +4,16 @@ import { FormNewExistsIfNotCreate } from "./formNewExistIfNotCreate";
 
 export const SimpleCRUD: FC<{
   isProductEditedRef: any;
-  closeDialog: any;
   dataAlwaysExists: any;
   formState?: any;
+  closeDialog?: any;
 }> = ({ isProductEditedRef, closeDialog, dataAlwaysExists, formState }) => {
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
 
   return dataExist ? (
     <FormViewEdit
       isProductEditedRef={isProductEditedRef}
-      closeDialog={closeDialog}
+      closeDialog={closeDialog} //view Mode
       formState={formState}
     />
   ) : (

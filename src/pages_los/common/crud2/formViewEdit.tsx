@@ -1,5 +1,13 @@
-import { FC, useContext, useEffect, useRef } from "react";
+import {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import loaderGif from "assets/images/loader.gif";
+import Button from "@material-ui/core/Button";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
@@ -13,9 +21,6 @@ interface updateFormDataType {
   displayData?: object;
   endSubmit?: any;
   setFieldError?: any;
-  changeFormMode?: any;
-  enableForm?: any;
-  disableForm?: any;
   serialNo?: string;
 }
 
@@ -37,12 +42,18 @@ export const FormViewEdit: FC<{
 }> = ({
   serialNo,
   isProductEditedRef,
-  closeDialog = emptyFN,
+  closeDialog,
   defaultView = "view",
   formState = {},
 }) => {
+  const [formMode, setFormMode] = useState(defaultView);
+
+  const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
+  const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
+  //This is for caching purpose to make sure serialNo is not blank
   serialNo = Boolean(serialNo) ? serialNo : "1";
   const removeCache = useContext(ClearCacheContext);
+
   const { updateFormData, getFormData, getFormMetaData } = useContext(
     CRUDContext
   );
@@ -60,16 +71,17 @@ export const FormViewEdit: FC<{
         }
         endSubmit(false, errorMsg);
       },
-      onSuccess: (data, { changeFormMode, disableForm, serialNo }) => {
+      onSuccess: (data, { serialNo }) => {
         queryClient.refetchQueries([
           "getFormData",
           wrapperKey.current,
           serialNo,
         ]);
-        changeFormMode("view");
-        disableForm();
         isProductEditedRef.current = true;
-        closeDialog();
+        moveToViewMode();
+        if (typeof closeDialog === "function") {
+          closeDialog();
+        }
       },
     }
   );
@@ -78,19 +90,13 @@ export const FormViewEdit: FC<{
     data,
     displayData,
     endSubmit,
-    setFieldError,
-    changeFormMode,
-    enableForm,
-    disableForm
+    setFieldError
   ) => {
     mutation.mutate({
       data,
       displayData,
       endSubmit,
       setFieldError,
-      changeFormMode,
-      enableForm,
-      disableForm,
       serialNo,
     });
   };
@@ -143,16 +149,6 @@ export const FormViewEdit: FC<{
     result[2].error?.error_msg ?? "Unknown error occured"
   }`;
 
-  let metaData: any = {};
-  if (defaultView === "edit") {
-    metaData = JSON.parse(JSON.stringify(result[2].data ?? {})) as MetaDataType;
-  } else {
-    metaData = JSON.parse(JSON.stringify(result[1].data ?? {})) as MetaDataType;
-  }
-  if (Boolean(metaData?.form ?? "")) {
-    metaData.form.formState = formState;
-  }
-
   let formEditData = result[0].data;
   if (loading === false && isError === false) {
     // isError = !isMetaDataValid(metaData);
@@ -161,22 +157,60 @@ export const FormViewEdit: FC<{
       errorMsg = "Error loading form";
     }
   }
+  let editMetaData: MetaDataType = {} as MetaDataType;
+  let viewMetaData: MetaDataType = {} as MetaDataType;
+
+  if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
+    editMetaData = result[2].data as MetaDataType;
+    editMetaData.form.name = `${editMetaData.form.name}-edit`;
+    editMetaData.form.formState = formState;
+    viewMetaData = result[1].data as MetaDataType;
+    viewMetaData.form.name = `${editMetaData.form.name}-view`;
+    viewMetaData.form.formState = formState;
+  }
 
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : isError === true ? (
     <span>{errorMsg}</span>
-  ) : (
+  ) : formMode === "view" ? (
     <FormWrapper
-      key={`${wrapperKey.current}-${dataUniqueKey}-${defaultView}`}
-      metaData={metaData as MetaDataType}
+      key={`${wrapperKey.current}-${dataUniqueKey}-${formMode}`}
+      metaData={viewMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
-      defaultMode={defaultView}
-      onCancleHandler={closeDialog}
+      //@ts-ignore
+      displayMode={formMode}
       disableGroupErrorDetection={false}
       disableGroupExclude={true}
-    />
-  );
+    >
+      <Button onClick={moveToEditMode}>Edit</Button>
+      {typeof closeDialog === "function" ? (
+        <Button onClick={closeDialog}>Cancel</Button>
+      ) : null}
+    </FormWrapper>
+  ) : formMode === "edit" ? (
+    <FormWrapper
+      key={`${wrapperKey.current}-${dataUniqueKey}-${formMode}`}
+      metaData={editMetaData as MetaDataType}
+      initialValues={formEditData as InitialValuesType}
+      onSubmitHandler={onSubmitHandler}
+      //@ts-ignore
+      displayMode={formMode}
+      disableGroupErrorDetection={false}
+      disableGroupExclude={true}
+    >
+      {({ isSubmitting, handleSubmit }) => (
+        <>
+          <Button onClick={handleSubmit} disabled={isSubmitting}>
+            Save
+          </Button>
+          <Button onClick={moveToViewMode} disabled={isSubmitting}>
+            Cancel
+          </Button>
+        </>
+      )}
+    </FormWrapper>
+  ) : null;
   return renderResult;
 };

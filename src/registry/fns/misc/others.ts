@@ -28,34 +28,34 @@ export const AutoFillGender = (field) => {
   });
 };
 
-export const getGenderValue = (field) => {
-  if (typeof field === "string") {
-    field = field.trim();
+export const getGenderValue = async (field) => {
+  console.log(field.value);
+  if (field.value === "00") {
+    return {
+      gender: {
+        value: "00",
+      },
+    };
   }
-  return new Promise((res) => {
-    if (field.value === "01") {
-      res({
-        gender: {
-          value: "01",
-        },
-        firstName: {
-          value: "",
-        },
-      });
-    } else if (field.value === "02" || field.value === "03") {
-      res({
-        gender: {
-          value: "02",
-        },
-      });
-    } else {
-      res({
-        gender: {
-          value: "00",
-        },
-      });
-    }
-  });
+  if (field.value === "01") {
+    return {
+      gender: {
+        value: "01",
+      },
+    };
+  } else if (field.value === "02" || field.value === "03") {
+    return {
+      gender: {
+        value: "02",
+      },
+    };
+  } else {
+    return {
+      gender: {
+        value: "00",
+      },
+    };
+  }
 };
 
 export const getYesOrNoOptions = () => {

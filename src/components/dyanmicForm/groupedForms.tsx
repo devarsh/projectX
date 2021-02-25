@@ -1,39 +1,22 @@
-import {
-  FC,
-  useState,
-  useRef,
-  cloneElement,
-  useEffect,
-  useContext,
-  useCallback,
-} from "react";
+import { FC, useState, useRef, cloneElement } from "react";
 import { useRecoilValue } from "recoil";
 import {
-  useForm,
-  SubmitFnType,
   formFieldsExcludedAtom,
   formFieldsErrorWatcherAtom,
 } from "packages/form";
 import Grid from "@material-ui/core/Grid";
-import {
-  GroupWiseRenderedFieldsType,
-  FormRenderConfigType,
-  FormProps,
-} from "./types";
-import { useStyles } from "./style";
+import { FormProps } from "./types";
 import { MyStepper } from "./stepperForm";
 import { MyTabs } from "./tabsForm";
 
 export const GroupedForm: FC<FormProps> = ({
   fields,
   formRenderConfig,
-  formDisplayName,
   formName,
-  submitFn,
-  cancelFn,
-  defaultMode,
   disableGroupErrorDetection,
   disableGroupExclude,
+  handleSubmit,
+  handleSubmitPartial,
 }) => {
   const defaultGroupName = "DefaultGroup";
   const disableGroupErrorDetectionStr = Boolean(disableGroupErrorDetection)
@@ -46,42 +29,14 @@ export const GroupedForm: FC<FormProps> = ({
   // Need to remove this code it defeats the purpose of the library maybe move it to an invididual component that
   // wont have the whole form rerender
   const excludedFields = useRecoilValue(
-    formFieldsExcludedAtom(disableGroupErrorDetectionStr)
+    formFieldsExcludedAtom(disableGroupExcludeStr)
   );
   const errorWatcherFields = useRecoilValue(
     formFieldsErrorWatcherAtom(disableGroupErrorDetectionStr)
   );
-  const classes = useStyles();
-  const [formMode, setFormMode] = useState(defaultMode);
+
   const [activeStep, setActiveStep] = useState(0);
-  const {
-    handleSubmit,
-    handleSubmitPartial,
-    serverSentError,
-    isSubmitting,
-    disableForm,
-    enableForm,
-    clearError,
-  } = useForm({
-    onSubmit: submitFn,
-    changeFormMode: setFormMode,
-  });
-  const setFormModeState = useCallback(
-    (mode: "view" | "edit" | "new") => {
-      if (mode === "view") {
-        disableForm();
-        setFormMode(mode);
-      } else if (mode === "edit" || mode === "new") {
-        clearError();
-        enableForm();
-        setFormMode(mode);
-      }
-    },
-    [setFormMode, disableForm, enableForm]
-  );
-  useEffect(() => {
-    setFormModeState(defaultMode);
-  }, [defaultMode]);
+
   const fieldGroups = useRef<string[]>(Object.keys(fields).sort());
   const fieldGroupsActiveStatus = fieldGroups.current.map((one) => {
     let groupName = defaultGroupName;
@@ -149,10 +104,11 @@ export const GroupedForm: FC<FormProps> = ({
   return (
     <CURRENT_COMPONENT
       key={formRenderConfig.renderType}
-      classes={classes}
-      formDisplayName={formDisplayName}
       activeStep={activeStep}
       filteredFieldGroups={filteredFieldGroups}
+      //special for Tabs
+      setActiveStep={setActiveStep}
+      //special for stepper
       formRenderConfig={formRenderConfig}
       defaultGroupName={defaultGroupName}
       fieldGroups={fieldGroups}
@@ -161,13 +117,7 @@ export const GroupedForm: FC<FormProps> = ({
       handlePrev={handlePrev}
       handleNext={handleNext}
       handleSubmit={handleSubmit}
-      handleCancel={cancelFn}
       isLastActiveStep={isLastActiveStep}
-      setActiveStep={setActiveStep}
-      setFormModeState={setFormModeState}
-      currentFormMode={formMode}
-      serverSentError={serverSentError}
-      isSubmitting={isSubmitting}
     />
   );
 };
@@ -184,7 +134,6 @@ const getNextActiveStep = (
       return i;
     }
   }
-
   return currentStep;
 };
 

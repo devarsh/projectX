@@ -71,7 +71,7 @@ export interface FormArrayFieldRowsAtomType {
 
 export interface UseFormHookProps {
   onSubmit: SubmitFnType;
-  changeFormMode?: any;
+  readOnly?: boolean;
 }
 
 export interface UseFieldHookProps {
@@ -131,10 +131,7 @@ export interface SubmitFnType {
     values: Object,
     displayValues: Object,
     endSubmit: (submitSuccessful: boolean, message?: string) => void,
-    setFieldErrors: (fieldsErrorObj: FieldsErrorObjType) => void,
-    changeFormMode: (mode: "view" | "edit" | "new") => void,
-    enableForm: any,
-    disableForm: any
+    setFieldErrors: (fieldsErrorObj: FieldsErrorObjType) => void
   ): void;
 }
 

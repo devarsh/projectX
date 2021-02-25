@@ -114,7 +114,9 @@ const MiscAPI = () => {
     dependentFields2: any
   ): Promise<{ options: OptionsProps[]; others: any }> => {
     let result = Object.keys(dependentFields2);
-    let key = result.find((one) => one.indexOf("pincode")) ?? "";
+    let key =
+      result.find((one) => one.toLocaleLowerCase().indexOf("pincode") >= 0) ??
+      "";
     if (!Boolean(key)) {
       return {
         options: [{ label: "Error fetching pincode", value: "0" }],

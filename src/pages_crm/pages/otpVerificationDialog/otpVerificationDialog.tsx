@@ -156,7 +156,7 @@ export const OtpVerificationPage = () => {
         });
         navigate(nextURL, nextFlowNavigationProps);
       } else {
-        const { message } = result.data;
+        const { message } = result?.data;
         dispatch({
           type: "endOTPVerificationFailure",
           payload: {

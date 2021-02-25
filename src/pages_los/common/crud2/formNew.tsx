@@ -1,5 +1,6 @@
 import { FC, useContext, useRef, useEffect } from "react";
 import loaderGif from "assets/images/loader.gif";
+import Button from "@material-ui/core/Button";
 import { useMutation, useQuery } from "react-query";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
@@ -85,10 +86,10 @@ export const FormNew: FC<{
   let isError = result.isError;
   //@ts-ignore
   let errorMsg = `${result.error?.error_msg ?? "unknown error occured"}`;
-
-  let metaData = JSON.parse(JSON.stringify(result.data ?? {})) as MetaDataType;
-  if (Boolean(metaData?.form ?? "")) {
-    metaData.form.formState = formState;
+  let newMetaData = {} as MetaDataType;
+  if (result.isSuccess) {
+    newMetaData = result.data as MetaDataType;
+    newMetaData.form.formState = formState;
   }
   if (loading === false && isError === false) {
     // isError = !isMetaDataValid(metaData);
@@ -104,16 +105,26 @@ export const FormNew: FC<{
   ) : (
     <FormWrapper
       key={`${wrapperKey.current}-${dataUniqueKey}-new`}
-      metaData={metaData as MetaDataType}
+      metaData={newMetaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}
-      defaultMode={"new"}
-      onCancleHandler={
-        typeof cancelAction === "function" ? () => cancelAction(true) : null
-      }
+      displayMode={"new"}
       disableGroupErrorDetection={true}
       disableGroupExclude={true}
-    />
+    >
+      {({ isSubmitting, handleSubmit }) => {
+        return (
+          <>
+            <Button onClick={handleSubmit} disabled={isSubmitting}>
+              Save
+            </Button>
+            <Button onClick={cancelAction} disabled={isSubmitting}>
+              Cancel
+            </Button>
+          </>
+        );
+      }}
+    </FormWrapper>
   );
   return renderResult;
 };

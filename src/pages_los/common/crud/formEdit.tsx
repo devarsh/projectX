@@ -149,8 +149,7 @@ export const EditForm: FC<{
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
-      onCancleHandler={moveToViewForm}
-      defaultMode="edit"
+      displayMode="edit"
     />
   );
   return renderResult;

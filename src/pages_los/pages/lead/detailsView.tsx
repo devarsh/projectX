@@ -114,7 +114,12 @@ export const DetailsView: FC<{
         productData={productGridData}
         handleDialogClose={handleDialogClose}
       />
-      <Tabs value={currentTab} onChange={handleChangeTab}>
+      <Tabs
+        value={currentTab}
+        onChange={handleChangeTab}
+        variant="scrollable"
+        scrollButtons="auto"
+      >
         {tabs.map((one) => (
           <Tab key={one.sequence} label={one.label} id={`${one.sequence}`} />
         ))}

@@ -24,7 +24,7 @@ import {
 } from "./types";
 import { FormContext } from "./context";
 
-export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
+export const useForm = ({ onSubmit, readOnly }: UseFormHookProps) => {
   const formContext = useContext(FormContext);
 
   const formState = useRecoilValue(formAtom(formContext.formName));
@@ -56,34 +56,6 @@ export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
       reset(formAtom(formContext.formName));
     },
     [formContext.formName]
-  );
-
-  const enableForm = useRecoilCallback(
-    ({ set }) => () => {
-      set(formAtom(formContext.formName), (currVal) => ({
-        ...currVal,
-        isSubmitting: false,
-      }));
-    },
-    []
-  );
-  const disableForm = useRecoilCallback(
-    ({ set }) => () => {
-      set(formAtom(formContext.formName), (currVal) => ({
-        ...currVal,
-        isSubmitting: true,
-      }));
-    },
-    []
-  );
-  const clearError = useRecoilCallback(
-    ({ set }) => () => {
-      set(formAtom(formContext.formName), (currVal) => ({
-        ...currVal,
-        serverSentError: "",
-      }));
-    },
-    []
   );
 
   //clear form Atoms on unmount
@@ -144,6 +116,13 @@ export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
     },
     []
   );
+
+  //initialize form readOnly
+  useEffect(() => {
+    if (Boolean(readOnly)) {
+      startSubmit();
+    }
+  }, [startSubmit]);
 
   const endSubmit = useRecoilCallback(
     ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {
@@ -418,10 +397,7 @@ export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
                 resultValueObj,
                 resultDisplayValueObj,
                 endSubmit,
-                setFieldErrors,
-                changeFormMode,
-                enableForm,
-                disableForm
+                setFieldErrors
               );
             }
           } else {
@@ -443,9 +419,6 @@ export const useForm = ({ onSubmit, changeFormMode }: UseFormHookProps) => {
     handleResetPartial,
     handleClear,
     handleClearPartial,
-    enableForm,
-    disableForm,
-    clearError,
     ...formState,
   };
 };

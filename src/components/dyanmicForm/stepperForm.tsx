@@ -5,10 +5,9 @@ import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import { useStyles } from "./style";
 
 export const MyStepper = ({
-  classes,
-  formDisplayName,
   activeStep,
   filteredFieldGroups,
   formRenderConfig,
@@ -18,18 +17,12 @@ export const MyStepper = ({
   handlePrev,
   handleNext,
   handleSubmit,
-  handleCancel,
-  setFormModeState,
-  currentFormMode,
   fieldGroupsActiveStatus,
   isLastActiveStep,
-  isSubmitting,
-  serverSentError,
-}) => (
-  <Fragment>
-    <Typography component="h3" className={classes.title}>
-      {formDisplayName}
-    </Typography>
+  setActiveStep,
+}) => {
+  const classes = useStyles();
+  return (
     <div className={classes.form}>
       <Stepper activeStep={activeStep} alternativeLabel>
         {filteredFieldGroups.map((field) => {
@@ -74,5 +67,5 @@ export const MyStepper = ({
         )}
       </Box>
     </div>
-  </Fragment>
-);
+  );
+};

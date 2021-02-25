@@ -55,9 +55,11 @@ export const InquiryFormWrapper = () => {
   };
 
   const postFormData = async () => {
-    if (confirmation === false) {
-      setConfirmationError("This is a required field");
-      return;
+    if (Boolean(metaData.current?.form.confirmationBox)) {
+      if (confirmation === false) {
+        setConfirmationError("This is a required field");
+        return;
+      }
     }
     setIsSubmitting(true);
     const result = await CRMSDK.submitInquiryQuestionData(
@@ -109,7 +111,7 @@ export const InquiryFormWrapper = () => {
     //@ts-ignore
     () => CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
     {
-      cacheTime: 100000000,
+      cacheTime: 0,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
     }
@@ -141,7 +143,7 @@ export const InquiryFormWrapper = () => {
         initialValues={initialValues}
         onSubmitHandler={onSubmitHandlerNew}
         hidden={showDialog === true}
-        defaultMode={"new"}
+        displayMode={"new"}
       />
       {showDialog ? (
         <ViewFormWrapper
@@ -155,16 +157,18 @@ export const InquiryFormWrapper = () => {
           {({ classes, isSubmitting, formMetaData, onAccept, onReject }) => (
             <Fragment>
               <Box width={1} display="flex" justifyContent="flex-start">
-                <ConfirmationBox
-                  name={formMetaData?.confirmationBox?.name}
-                  label={formMetaData?.confirmationBox?.label}
-                  value={confirmation}
-                  error={confirmationError}
-                  handleChange={(e) => {
-                    setConfirmation(e.target.checked);
-                  }}
-                  isSubmitting={isSubmitting}
-                />
+                {Boolean(formMetaData?.confirmationBox) ? (
+                  <ConfirmationBox
+                    name={formMetaData?.confirmationBox?.name}
+                    label={formMetaData?.confirmationBox?.label}
+                    value={confirmation}
+                    error={confirmationError}
+                    handleChange={(e) => {
+                      setConfirmation(e.target.checked);
+                    }}
+                    isSubmitting={isSubmitting}
+                  />
+                ) : null}
               </Box>
               <Box width={1} display="flex" justifyContent="flex-end">
                 <Button

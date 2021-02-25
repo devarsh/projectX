@@ -118,8 +118,7 @@ export const NewForm = ({
       metaData={metaData as MetaDataType}
       initialValues={{}}
       onSubmitHandler={onSubmitHandler}
-      onCancleHandler={returnToAsk}
-      defaultMode="edit"
+      displayMode="edit"
     />
   );
   return renderResult;

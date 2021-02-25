@@ -1,4 +1,11 @@
-import { useContext, useEffect, Fragment, useState, useRef } from "react";
+import {
+  useContext,
+  useEffect,
+  Fragment,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
@@ -70,6 +77,9 @@ export const CreateFormConfirmation = ({
   formState,
 }) => {
   const [showAsk, setShowAsk] = useState(true);
+  const cancleFormSubmit = useCallback(() => {
+    setShowAsk(true);
+  }, [setShowAsk]);
   return showAsk ? (
     <Fragment>
       <Typography variant="h6">No Data Found</Typography>
@@ -78,7 +88,7 @@ export const CreateFormConfirmation = ({
   ) : (
     <FormNew
       isProductEditedRef={isProductEditedRef}
-      cancelAction={setShowAsk}
+      cancelAction={cancleFormSubmit}
       successAction={successAction}
       formState={formState}
     />
