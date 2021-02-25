@@ -328,7 +328,7 @@ export const useField = ({
             formFieldAtom(`${formContext.formName}/${key}${field[0]}`),
             (old) => ({
               ...old,
-              incomingMessage: field[1],
+              incomingMessage: { ...old.incomingMessage, ...field[1] },
             })
           );
         }
@@ -478,7 +478,10 @@ export const useField = ({
   const setIncomingMessage = useCallback(
     (value) => {
       setFieldData((currVal) => {
-        return { ...currVal, incomingMessage: value };
+        return {
+          ...currVal,
+          incomingMessage: { ...currVal.incomingMessage, ...value },
+        };
       });
     },
     [setFieldData]
