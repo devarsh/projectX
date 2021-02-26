@@ -31,32 +31,21 @@ const updateFormDataWrapperFn = (updateFormData) => async ({
   return updateFormData(data, serialNo);
 };
 
-const emptyFN = () => {};
-
 export const FormViewEdit: FC<{
-  isProductEditedRef: any;
-  serialNo?: string;
+  isDataChangedRef: any;
   closeDialog?: any;
   defaultView?: "view" | "edit";
-  formState?: any;
-}> = ({
-  serialNo,
-  isProductEditedRef,
-  closeDialog,
-  defaultView = "view",
-  formState = {},
-}) => {
+  serialNo?: string; //need to find another way to pass it (its a little hardcoded)
+}> = ({ isDataChangedRef, closeDialog, defaultView = "view", serialNo }) => {
+  const { updateFormData, getFormData, getFormMetaData, context } = useContext(
+    CRUDContext
+  );
+  const removeCache = useContext(ClearCacheContext);
   const [formMode, setFormMode] = useState(defaultView);
-
   const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
   //This is for caching purpose to make sure serialNo is not blank
   serialNo = Boolean(serialNo) ? serialNo : "1";
-  const removeCache = useContext(ClearCacheContext);
-
-  const { updateFormData, getFormData, getFormMetaData } = useContext(
-    CRUDContext
-  );
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(Object.values(getFormData.args));
@@ -77,7 +66,7 @@ export const FormViewEdit: FC<{
           wrapperKey.current,
           serialNo,
         ]);
-        isProductEditedRef.current = true;
+        isDataChangedRef.current = true;
         moveToViewMode();
         if (typeof closeDialog === "function") {
           closeDialog();
@@ -163,10 +152,10 @@ export const FormViewEdit: FC<{
   if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
     editMetaData = result[2].data as MetaDataType;
     editMetaData.form.name = `${editMetaData.form.name}-edit`;
-    editMetaData.form.formState = formState;
+    editMetaData.form.formState = { ...context, serialNo };
     viewMetaData = result[1].data as MetaDataType;
     viewMetaData.form.name = `${editMetaData.form.name}-view`;
-    viewMetaData.form.formState = formState;
+    viewMetaData.form.formState = { ...context, serialNo };
   }
 
   const renderResult = loading ? (

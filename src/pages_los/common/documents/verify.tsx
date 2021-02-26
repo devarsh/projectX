@@ -26,7 +26,7 @@ const RejectDocumentDataFnWrapper = (verifyDocuments) => async ({
 };
 
 export const VerifyDocumentAction = ({
-  isProductEditedRef,
+  dataChangedRef,
   closeDialog,
   docUUID,
 }) => {
@@ -44,7 +44,7 @@ export const VerifyDocumentAction = ({
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
-        isProductEditedRef.current = true;
+        dataChangedRef.current = true;
         closeDialog();
       },
     }
@@ -54,7 +54,7 @@ export const VerifyDocumentAction = ({
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
-        isProductEditedRef.current = true;
+        dataChangedRef.current = true;
         closeDialog();
       },
     }

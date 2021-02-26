@@ -3,7 +3,7 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
 import { ListingGrid } from "pages_los/common/listingGrid";
-import { DetailsView } from "./detailsView";
+import { DetailsTabView } from "pages_los/common/crud2";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import Alert from "@material-ui/lab/Alert";
@@ -35,7 +35,7 @@ interface SnackBarType {
 export const Lead = () => {
   let gridCode = "TRN/003";
   const [action, setAction] = useState<null | any>(null);
-  const isProductEditedRef = useRef(false);
+  const isDataEditedRef = useRef(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [gridRefresh, setGridRefresh] = useState(false);
   const [userMessage, setUserMessage] = useState<SnackbarMessageType>("");
@@ -54,9 +54,9 @@ export const Lead = () => {
 
   const handleDialogClose = () => {
     setAction(null);
-    if (isProductEditedRef.current) {
+    if (isDataEditedRef.current) {
       setGridRefresh(true);
-      isProductEditedRef.current = false;
+      isDataEditedRef.current = false;
     }
   };
 
@@ -77,12 +77,12 @@ export const Lead = () => {
         key={action?.rows[0].id}
       >
         <ClearCacheProvider>
-          <DetailsView
+          <DetailsTabView
             key={action?.rows[0].id}
             moduleType="lead"
             productGridData={action?.rows[0]}
             refID={action?.rows[0].id}
-            isProductEditedRef={isProductEditedRef}
+            isDataChangedRef={isDataEditedRef}
             handleDialogClose={handleDialogClose}
             setSnackBarMessage={setSnackBarMessage}
           />

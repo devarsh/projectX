@@ -1,2 +1,1 @@
-export * from "./documentGridCRUD";
-export * from "./context";
+export * from "./documentsTab";

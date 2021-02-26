@@ -1,0 +1,138 @@
+import { Fragment, useState, FC, useContext, useEffect } from "react";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
+import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
+import { DOCCRUDContextProvider } from "./context";
+import { LOSSDK } from "registry/fns/los";
+import { makeStyles } from "@material-ui/core/styles";
+import { useQuery } from "react-query";
+import { ClearCacheContext } from "cache";
+import loaderGif from "assets/images/loader.gif";
+
+export const useStyles = makeStyles((theme) => ({
+  tabPanel: {
+    border: "1px solid #e8e8e8",
+    borderTop: "0",
+    padding: theme.spacing(2),
+    backgroundColor: "#fff",
+    boxShadow:
+      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+  },
+}));
+
+const DocAPICrud = (moduleType, docCategory, refID, serialNo) => ({
+  context: {
+    moduleType,
+    docCategory,
+    refID,
+    serialNo,
+  },
+  uploadDocuments: {
+    fn: LOSSDK.uploadDocuments,
+    args: { moduleType, docCategory, refID, serialNo },
+  },
+  getDocumentsGridData: {
+    fn: LOSSDK.listDocuments,
+    args: { moduleType, docCategory, refID, serialNo },
+  },
+  deleteDocuments: {
+    fn: LOSSDK.deleteDocuments,
+    args: { moduleType, docCategory, refID, serialNo },
+  },
+  updateDocument: {
+    fn: LOSSDK.updateDocuments,
+    args: { moduleType, docCategory, refID, serialNo },
+  },
+  verifyDocuments: {
+    fn: LOSSDK.deleteDocuments,
+    args: { moduleType, docCategory, refID, serialNo },
+  },
+  getDocumentListingGridMetaData: {
+    fn: LOSSDK.getDocumentGridMetaData,
+    args: { moduleType, docCategory, metaDataType: "grid" },
+  },
+  getDocumentUploadAddtionalFieldsMetaData: {
+    fn: LOSSDK.getDocumentGridMetaData,
+    args: { moduleType, docCategory, metaDataType: "upload" },
+  },
+  getDocumentEditGridMetaData: {
+    fn: LOSSDK.getDocumentGridMetaData,
+    args: { moduleType, docCategory, metaDataType: "edit" },
+  },
+});
+
+const TabPanel = ({ value, index, children }) => {
+  return Number(value) === Number(index) ? children : null;
+};
+
+export const DocumentGridCRUD: FC<{
+  moduleType: string;
+  refID: string;
+  serialNo?: string;
+  hideGST?: boolean;
+}> = ({ moduleType, refID, serialNo, hideGST }) => {
+  const removeCache = useContext(ClearCacheContext);
+  const [currentTab, setCurrentTab] = useState(0);
+  const handleChangeTab = (_, currentTab) => {
+    setCurrentTab(currentTab);
+  };
+  const classes = useStyles();
+  useEffect(() => {
+    removeCache?.addEntry([
+      "getDocumentCRUDTabsMetadata",
+      moduleType,
+      refID,
+      hideGST,
+    ]);
+  }, []);
+  const queryResult = useQuery(
+    ["getDocumentCRUDTabsMetadata", moduleType, refID, hideGST],
+    () => LOSSDK.getDocumentCRUDTabsMetadata({ moduleType, refID, hideGST }),
+    {
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+  let tabs: any[] = queryResult.data;
+  if (queryResult.isSuccess) {
+    if (!Array.isArray(tabs)) {
+      tabs = [];
+    } else {
+      tabs = tabs.sort((a, b) =>
+        a.sequence > b.sequence ? 1 : a.sequence < b.sequence ? -1 : 0
+      );
+    }
+  }
+  const renderResult = queryResult.isLoading ? (
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+  ) : queryResult.isError ? (
+    //@ts-ignore
+    queryResult.error?.error_msg ?? "unknown error occured"
+  ) : (
+    <Fragment>
+      <Tabs value={currentTab} onChange={handleChangeTab}>
+        {tabs.map((one) => (
+          <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
+        ))}
+      </Tabs>
+      <Box py={2} className={classes.tabPanel}>
+        {tabs.map((one) => (
+          <TabPanel
+            value={currentTab}
+            index={`${one.sequence}`}
+            key={one.sequence}
+          >
+            <DOCCRUDContextProvider
+              {...DocAPICrud(moduleType, one.docType, refID, serialNo)}
+            >
+              <DocGrid />
+            </DOCCRUDContextProvider>
+          </TabPanel>
+        ))}
+      </Box>
+    </Fragment>
+  );
+  return renderResult;
+};

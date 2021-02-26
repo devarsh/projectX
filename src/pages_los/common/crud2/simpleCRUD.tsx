@@ -2,25 +2,29 @@ import { useState, FC } from "react";
 import { FormViewEdit } from "./formViewEdit";
 import { FormNewExistsIfNotCreate } from "./formNewExistIfNotCreate";
 
+/*
+formState={{
+                    refID,
+                    moduleType,
+                    productType: one.productType,
+                  }}
+*/
 export const SimpleCRUD: FC<{
-  isProductEditedRef: any;
+  isDataChangedRef: any;
   dataAlwaysExists: any;
-  formState?: any;
   closeDialog?: any;
-}> = ({ isProductEditedRef, closeDialog, dataAlwaysExists, formState }) => {
+}> = ({ isDataChangedRef, closeDialog, dataAlwaysExists }) => {
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
 
   return dataExist ? (
     <FormViewEdit
-      isProductEditedRef={isProductEditedRef}
+      isDataChangedRef={isDataChangedRef}
       closeDialog={closeDialog} //view Mode
-      formState={formState}
     />
   ) : (
     <FormNewExistsIfNotCreate
-      isProductEditedRef={isProductEditedRef}
+      isDataChangedRef={isDataChangedRef}
       successAction={() => setDataExist(true)}
-      formState={formState}
     />
   );
 };

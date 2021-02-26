@@ -4,67 +4,74 @@ import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
 import { queryClient, ClearCacheContext } from "cache";
-import {
-  GridCRUD,
-  SimpleCRUD,
-  CRUDContextProvider,
-} from "pages_los/common/crud2";
-import { DocumentGridCRUD } from "./documentsTab";
 import { LOSSDK } from "registry/fns/los";
+import { GridCRUD } from "./gridCRUD";
+import { SimpleCRUD } from "./simpleCRUD";
+import { DocumentGridCRUD } from "../documents/documentsTab";
+import { CRUDContextProvider } from "./context";
 import { useStyles } from "./style";
-import { HeaderDetails } from "./headerDetails";
 import loaderGif from "assets/images/loader.gif";
+import { HeaderDetails } from "../../pages/lead/headerDetails";
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
 
 const crudAPIArgs = (moduleType, productType, refID) => ({
+  context: { moduleType, productType, refID },
+  // call to save form data
   insertFormData: {
     fn: LOSSDK.insertFormData,
     args: { moduleType, productType, refID },
   },
+  // to check if form data exist or not
   checkFormDataExist: {
     fn: LOSSDK.checkFormDataExist,
     args: { moduleType, productType, refID },
   },
+  // delete record from the grid for a particular form record
   deleteFormData: {
     fn: LOSSDK.deleteFormData,
     args: { moduleType, productType, refID },
   },
+  // update form data
   updateFormData: {
     fn: LOSSDK.updateFormData,
     args: { moduleType, productType, refID },
   },
+  // get form data for (View and Edit)
   getFormData: {
     fn: LOSSDK.getFormData,
     args: { moduleType, productType, refID },
   },
-  getStaticGridData: {
-    fn: LOSSDK.getStaticGridData,
+  // get grid listing data
+  getGridFormData: {
+    fn: LOSSDK.getGridFormData,
     args: { moduleType, productType, refID },
   },
+  // get form metaData for (new/view/edit)
   getFormMetaData: {
     fn: LOSSDK.getFormMetaData,
     args: { moduleType, productType, refID },
   },
+  // get grid metaData
   getGridFormMetaData: {
     fn: LOSSDK.getGridFormMetaData,
     args: { moduleType, productType, refID },
   },
 });
 
-export const DetailsView: FC<{
+export const DetailsTabView: FC<{
   refID: string;
   moduleType: string;
   productGridData: any;
-  isProductEditedRef: any;
+  isDataChangedRef: any;
   handleDialogClose: any;
   setSnackBarMessage?: any;
 }> = ({
   refID,
   moduleType,
   productGridData,
-  isProductEditedRef,
+  isDataChangedRef,
   handleDialogClose,
 }) => {
   const removeCache = useContext(ClearCacheContext);
@@ -136,14 +143,8 @@ export const DetailsView: FC<{
                 {...crudAPIArgs(moduleType, one.productType, refID)}
               >
                 <SimpleCRUD
-                  isProductEditedRef={isProductEditedRef}
+                  isDataChangedRef={isDataChangedRef}
                   dataAlwaysExists={Boolean(one.dataAlwaysExists)}
-                  closeDialog={undefined}
-                  formState={{
-                    refID,
-                    moduleType,
-                    productType: one.productType,
-                  }}
                 />
               </CRUDContextProvider>
             ) : one.componentType === "grid" ? (
@@ -151,8 +152,9 @@ export const DetailsView: FC<{
                 {...crudAPIArgs(moduleType, one.productType, refID)}
               >
                 <GridCRUD
-                  isProductEditedRef={isProductEditedRef}
-                  refID={refID}
+                  isDataChangedRef={isDataChangedRef}
+                  showDocuments={one?.document}
+                  hideGST={one?.hideGST}
                 />
               </CRUDContextProvider>
             ) : one.componentType === "document" ? (

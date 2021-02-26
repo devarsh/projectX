@@ -133,7 +133,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
       }
       setLastUpdatedTime(new Date().getTime());
     }
-  }, [loadingOptions, _options, multiple]);
+  }, [loadingOptions, _options, value, multiple]);
 
   return (
     <Suspense fallback={"loading..."}>

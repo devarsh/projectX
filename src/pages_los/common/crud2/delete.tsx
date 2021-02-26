@@ -17,7 +17,7 @@ const DeleteFormDataFnWrapper = (deleteFormData) => async ({
   return deleteFormData(serialNo);
 };
 
-export const DeleteAction = ({ isProductEditedRef, closeDialog, serialNo }) => {
+export const DeleteAction = ({ isDataChangedRef, closeDialog, serialNo }) => {
   const { deleteFormData } = useContext(CRUDContext);
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
@@ -34,7 +34,7 @@ export const DeleteAction = ({ isProductEditedRef, closeDialog, serialNo }) => {
         }
       },
       onSuccess: (data) => {
-        isProductEditedRef.current = true;
+        isDataChangedRef.current = true;
         closeDialog();
       },
     }

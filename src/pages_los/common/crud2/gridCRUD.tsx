@@ -1,5 +1,4 @@
 import { useContext, useRef, useState, Fragment, useEffect, FC } from "react";
-import loaderGif from "assets/images/loader.gif";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { FormNew } from "./formNew";
@@ -7,10 +6,7 @@ import { FormViewEdit } from "./formViewEdit";
 import { DeleteAction } from "./delete";
 import { MyGridWrapper } from "./gridWrapper";
 import { CRUDContext } from "./context";
-import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
-import { useQuery } from "react-query";
-import { MetaDataType } from "components/dyanmicForm";
-
+import { DocumentGridCRUD } from "../documents/documentsTab";
 const actions: ActionTypes[] = [
   {
     actionName: "View",
@@ -32,86 +28,76 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const GridCRUD: FC<{ isProductEditedRef: any; refID?: any }> = ({
-  isProductEditedRef,
-  refID,
-}) => {
+export const GridCRUD: FC<{
+  isDataChangedRef: any;
+  showDocuments?: boolean;
+  hideGST?: boolean;
+}> = ({ isDataChangedRef, showDocuments, hideGST }) => {
+  let allActions = useRef<any>(null);
+  if (allActions.current === null) {
+    allActions.current = [...actions];
+    if (Boolean(showDocuments)) {
+      allActions.current.push({
+        actionName: "Document",
+        actionLabel: "Document Details",
+        multiple: false,
+        rowDoubleClick: false,
+      });
+    }
+  }
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
-  const dataChangedRef = useRef(false);
-  const removeCache = useContext(ClearCacheContext);
-  const { getGridFormMetaData } = useContext(CRUDContext);
-  const wrapperKey = useRef<any>(null);
-  if (wrapperKey.current === null) {
-    wrapperKey.current = cacheWrapperKeyGen(
-      Object.values(getGridFormMetaData.args)
-    );
-  }
+  const isMyDataChangedRef = useRef(false);
+  const { context } = useContext(CRUDContext);
   const closeMyDialog = () => {
     setCurrentAction(null);
-    if (dataChangedRef.current === true) {
-      isProductEditedRef.current = true;
+    if (isMyDataChangedRef.current === true) {
+      isDataChangedRef.current = true;
       gridRef.current?.refetch?.();
-      dataChangedRef.current = false;
+      isMyDataChangedRef.current = false;
     }
   };
-
-  useEffect(() => {
-    removeCache?.addEntry(["getGridFormMetaData", wrapperKey.current]);
-  }, []);
-
-  const result = useQuery(
-    ["getGridFormMetaData", wrapperKey.current],
-    () => getGridFormMetaData.fn(getGridFormMetaData.args)(),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
-  );
-  const loading = result.isLoading || result.isFetching;
-  let isError = result.isError;
-  //@ts-ignore
-  let errorMsg = `${result.error?.error_msg ?? "Unknown error occured"} `;
-  let metaData = JSON.parse(JSON.stringify(result.data ?? {})) as MetaDataType;
-
-  const renderResult = loading ? (
-    <img src={loaderGif} alt="loader" width="50px" height="50px" />
-  ) : isError === true ? (
-    <span>{errorMsg}</span>
-  ) : (
+  return (
     <Fragment>
       <MyGridWrapper
         ref={gridRef}
         key="grid"
-        metaData={metaData}
-        actions={actions}
+        actions={allActions.current}
         setAction={setCurrentAction}
       />
       <Dialog
         open={Boolean(currentAction)}
         maxWidth="xl"
-        PaperProps={{ style: { width: "100%", height: "100%" } }}
+        PaperProps={
+          currentAction === "Delete"
+            ? {}
+            : { style: { width: "100%", height: "100%" } }
+        }
       >
         {(currentAction?.name ?? "") === "Add" ? (
           <FormNew
             successAction={closeMyDialog}
             cancelAction={closeMyDialog}
-            isProductEditedRef={dataChangedRef}
-            formState={{ refID }}
+            isDataChangedRef={isMyDataChangedRef}
           />
         ) : (currentAction?.name ?? "") === "View" ? (
           <FormViewEdit
-            isProductEditedRef={dataChangedRef}
+            isDataChangedRef={isMyDataChangedRef}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
-            formState={{ refID }}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction
             serialNo={currentAction?.rows.map((one) => one.id)}
             closeDialog={closeMyDialog}
-            isProductEditedRef={dataChangedRef}
+            isDataChangedRef={isMyDataChangedRef}
+          />
+        ) : (currentAction?.name ?? "") === "Document" ? (
+          <DocumentGridCRUD
+            refID={context?.refID}
+            moduleType={context?.moduleType}
+            serialNo={currentAction?.rows[0]?.id}
+            hideGST={hideGST}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
@@ -119,7 +105,6 @@ export const GridCRUD: FC<{ isProductEditedRef: any; refID?: any }> = ({
       </Dialog>
     </Fragment>
   );
-  return renderResult;
 };
 
 const InvalidAction = ({ closeDialog }) => {

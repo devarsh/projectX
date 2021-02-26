@@ -28,11 +28,11 @@ const shouldExcludeNotFound = (fieldKey) => () => {
   return false;
 };
 const inputMaskPrepareNotFound = (fieldKey) => (value) => {
-  console.log(`no method for inputMask.prepare found at ${fieldKey}`);
+  console.log(`no method for inputMaskPrepare found at ${fieldKey}`);
   return value;
 };
 const removeRowFnNotFound = (fieldKey) => (value) => {
-  console.log(`no method for inputMask.prepare found at ${fieldKey}`);
+  console.log(`no method for removeRowFn found at ${fieldKey}`);
   throw new Error("method not implemeneted");
 };
 

@@ -3,8 +3,7 @@ import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { ClearCacheContext } from "cache";
-import { GridCRUD } from "pages_los/common/crud2";
-import { CRUDContextProvider } from "pages_los/common/crud2";
+import { GridCRUD, CRUDContextProvider } from "pages_los/common/crud2";
 import { LOSSDK } from "registry/fns/los";
 import { queryClient, ClearCacheProvider } from "cache";
 
@@ -13,6 +12,11 @@ const TabPanel = ({ value, index, children }) => {
 };
 
 const bankCrudAPIArgs = (moduleType, productType, refID) => ({
+  context: {
+    moduleType,
+    productType,
+    refID,
+  },
   insertFormData: {
     fn: LOSSDK.insertBankData,
     args: { moduleType, productType, refID },
@@ -33,12 +37,12 @@ const bankCrudAPIArgs = (moduleType, productType, refID) => ({
     fn: LOSSDK.getBankData,
     args: { moduleType, productType, refID },
   },
-  getStaticGridData: {
+  getGridFormData: {
     fn: LOSSDK.getStaticBankGridData,
     args: { moduleType, productType, refID },
   },
   getFormMetaData: {
-    fn: LOSSDK.getStaticBankGridData,
+    fn: LOSSDK.getFormMetaData,
     args: { moduleType, productType, refID },
   },
   getGridFormMetaData: {
@@ -48,7 +52,7 @@ const bankCrudAPIArgs = (moduleType, productType, refID) => ({
 });
 
 export const ConfigChild = () => {
-  const isProductEditedRef = useRef(false);
+  const isDataEditedRef = useRef(false);
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -73,14 +77,14 @@ export const ConfigChild = () => {
       <Box py={2}>
         <TabPanel value={currentTab} index="0" key={0}>
           <CRUDContextProvider {...bankCrudAPIArgs("config/bank", "sme", null)}>
-            <GridCRUD isProductEditedRef={isProductEditedRef} />
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUDContextProvider
             {...bankCrudAPIArgs("config/bank", "infra", null)}
           >
-            <GridCRUD isProductEditedRef={isProductEditedRef} />
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
       </Box>

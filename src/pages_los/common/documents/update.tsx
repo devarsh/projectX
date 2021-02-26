@@ -1,5 +1,5 @@
-import { useContext, useRef, useState } from "react";
-import { useMutation } from "react-query";
+import { useContext, useRef, useState, useEffect } from "react";
+import { useMutation, useQuery } from "react-query";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -7,7 +7,9 @@ import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import GridWrapper from "components/dataTableStatic";
+import { ClearCacheContext } from "cache";
 import { DOCCRUDContext } from "./context";
+import loaderGif from "assets/images/loader.gif";
 
 interface DeleteFormDataType {
   data?: any;
@@ -16,27 +18,43 @@ interface DeleteFormDataType {
 const updateDocumentDataFnWrapper = (updateDocuments) => async ({
   data,
 }: DeleteFormDataType) => {
-  console.log(data);
   return updateDocuments(data);
 };
 
 export const UpdateDocumentData = ({
-  metaData,
   row: { data, id },
   closeDialog,
-  isProductEditedRef,
-  gridProps,
+  dataChangedRef,
 }) => {
   const [gridData, setGridData] = useState(Array.isArray(data) ? data : [data]);
-  const { updateDocument } = useContext(DOCCRUDContext);
+  const { updateDocument, getDocumentEditGridMetaData, context } = useContext(
+    DOCCRUDContext
+  );
+  const removeCache = useContext(ClearCacheContext);
   const gridRef = useRef<any>(null);
+  useEffect(() => {
+    removeCache?.addEntry([
+      "getDocumentEditGridMetaData",
+      context.moduleType,
+      context.docType,
+    ]);
+  }, []);
+  const query = useQuery(
+    ["getDocumentEditGridMetaData", context.moduleType, context.docType],
+    () => getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args),
+    {
+      cacheTime: 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
 
   const mutation = useMutation(
     updateDocumentDataFnWrapper(updateDocument.fn(updateDocument.args)),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
-        isProductEditedRef.current = true;
+        dataChangedRef.current = true;
         closeDialog();
       },
     }
@@ -51,8 +69,14 @@ export const UpdateDocumentData = ({
       await mutation.mutate({ data: result });
     }
   };
+  //@ts-ignore
+  let error = `${query.error?.error_msg ?? "unknown message"}`;
 
-  return (
+  const renderResult = query.isLoading ? (
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+  ) : query.isError === true ? (
+    <span>{error}</span>
+  ) : (
     <>
       {mutation.isError ? (
         <Alert severity="error">
@@ -65,9 +89,9 @@ export const UpdateDocumentData = ({
         <GridWrapper
           key={`listingDocumentsForUpdate`}
           data={gridData ?? []}
-          finalMetaData={metaData}
+          finalMetaData={query.data}
           setData={setGridData}
-          gridProps={gridProps}
+          gridProps={context}
           ref={gridRef}
           loading={mutation.isLoading}
         />
@@ -78,16 +102,17 @@ export const UpdateDocumentData = ({
           color="primary"
           disabled={mutation.isLoading}
         >
-          No
+          Cancel
         </Button>
         <Button
           color="primary"
           onClick={sendDataForUpdate}
           disabled={mutation.isLoading}
         >
-          Yes
+          Update
         </Button>
       </DialogActions>
     </>
   );
+  return renderResult;
 };

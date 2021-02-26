@@ -254,6 +254,7 @@ const LOSAPI = () => {
     moduleType: string;
     docCategory: string;
     refID: string;
+    srID?: string;
   }
 
   const uploadDocuments = ({
@@ -305,10 +306,11 @@ const LOSAPI = () => {
     xhr.send(data);
   };
 
-  const listingDocuments = ({
+  const listDocuments = ({
     moduleType,
     docCategory,
     refID,
+    srID,
   }: DOCCRUDTYPE) => async () => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/document/${docCategory}/data/get`,
@@ -316,6 +318,7 @@ const LOSAPI = () => {
         body: JSON.stringify({
           request_data: {
             refID: refID,
+            srID: srID,
           },
         }),
       }
@@ -410,6 +413,27 @@ const LOSAPI = () => {
     }
   };
 
+  const getDocumentGridMetaData = async ({
+    moduleType,
+    docCategory,
+    metaDataType,
+  }) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/document/${docCategory}/metaData/${metaDataType}`,
+      {
+        body: JSON.stringify({
+          request_data: {},
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   //***END of docs API */
 
   const moveInquiryToLead = async (refID: string, formData: any) => {
@@ -459,6 +483,30 @@ const LOSAPI = () => {
   const getCRUDTabsMetadata = async ({ moduleType, refID }) => {
     const { data, status } = await internalFetcher(
       `./${moduleType}/tabs/metaData`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getDocumentCRUDTabsMetadata = async ({
+    moduleType,
+    refID,
+    hideGST,
+  }) => {
+    const { data, status } = await internalFetcher(
+      Boolean(hideGST)
+        ? `./${moduleType}/management/document/metaData/tabs`
+        : `./${moduleType}/document/metaData/tabs`,
       {
         body: JSON.stringify({
           request_data: {
@@ -597,7 +645,7 @@ const LOSAPI = () => {
     }
   };
 
-  const getStaticGridData = ({
+  const getGridFormData = ({
     moduleType,
     productType,
     refID,
@@ -846,10 +894,13 @@ const LOSAPI = () => {
     inititateAPI,
     setToken,
     removeToken,
-    checkDataExist,
+    //For Server Side Grid
     getGridMetaData,
     getGridData,
     getGridColumnFilterData,
+
+    //Removed
+    checkDataExist,
     getNewMetaData,
     getViewMetaData,
     getViewData,
@@ -857,28 +908,32 @@ const LOSAPI = () => {
     getEditData,
     insertData,
     updateData,
+    //End of Remove
+
     //document
+    getDocumentGridMetaData, //update,upload,edit
+    listDocuments,
     uploadDocuments,
     updateDocuments,
     deleteDocuments,
-    listingDocuments,
     verifyDocuments,
     getBankListForLeadDocuments,
 
-    moveInquiryToLead,
-    //Lead
-    updateFormData,
+    //Lead/Inquiry/Config(Bank) -
+    getDocumentCRUDTabsMetadata,
+    getCRUDTabsMetadata,
+    getGridFormMetaData,
+    getGridFormData, // Grid Data
     getFormData,
     insertFormData,
-    checkFormDataExist,
+    updateFormData,
     deleteFormData,
+    checkFormDataExist,
     deleteFormArrayFieldData,
-    getStaticGridData,
-
-    getCRUDTabsMetadata,
 
     getLeadSubStageCode,
     getLeadEmploymentType,
+    moveInquiryToLead,
 
     //Bank
     updateBankData,
@@ -889,7 +944,6 @@ const LOSAPI = () => {
 
     //CAM
     getFormMetaData,
-    getGridFormMetaData,
   };
 };
 

@@ -17,15 +17,14 @@ const DeleteDocumentDataFnWrapper = (deleteDocuments) => async ({
   return deleteDocuments(docUUID);
 };
 
-export const DeleteAction = ({ isProductEditedRef, closeDialog, docUUID }) => {
+export const DeleteAction = ({ dataChangedRef, closeDialog, docUUID }) => {
   const { deleteDocuments } = useContext(DOCCRUDContext);
-
   const mutation = useMutation(
     DeleteDocumentDataFnWrapper(deleteDocuments.fn(deleteDocuments.args)),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
-        isProductEditedRef.current = true;
+        dataChangedRef.current = true;
         closeDialog();
       },
     }

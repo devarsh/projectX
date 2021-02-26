@@ -21,18 +21,16 @@ const insertFormDataFnWrapper = (insertFormData) => async ({
 };
 
 export const FormNew: FC<{
-  isProductEditedRef: any;
+  isDataChangedRef: any;
   successAction: any;
   cancelAction: any;
-  formState?: any;
-}> = ({ isProductEditedRef, successAction, cancelAction, formState = {} }) => {
-  const { insertFormData, getFormMetaData } = useContext(CRUDContext);
+}> = ({ isDataChangedRef, successAction, cancelAction }) => {
+  const { insertFormData, getFormMetaData, context } = useContext(CRUDContext);
   const removeCache = useContext(ClearCacheContext);
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(Object.values(insertFormData.args));
   }
-
   const mutation = useMutation(
     insertFormDataFnWrapper(insertFormData.fn(insertFormData.args)),
     {
@@ -45,14 +43,13 @@ export const FormNew: FC<{
       },
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
-        isProductEditedRef.current = true;
+        isDataChangedRef.current = true;
         if (typeof successAction === "function") {
           successAction();
         }
       },
     }
   );
-
   const onSubmitHandler: SubmitFnType = (
     data,
     displayData,
@@ -66,11 +63,9 @@ export const FormNew: FC<{
       setFieldError,
     });
   };
-
   useEffect(() => {
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "new"]);
   }, []);
-
   const result = useQuery(
     ["getFormMetaData", wrapperKey.current, "new"],
     () => getFormMetaData.fn(getFormMetaData.args)("new"),
@@ -80,7 +75,6 @@ export const FormNew: FC<{
       refetchOnMount: false,
     }
   );
-
   const dataUniqueKey = result.dataUpdatedAt;
   const loading = result.isLoading || result.isFetching;
   let isError = result.isError;
@@ -89,7 +83,7 @@ export const FormNew: FC<{
   let newMetaData = {} as MetaDataType;
   if (result.isSuccess) {
     newMetaData = result.data as MetaDataType;
-    newMetaData.form.formState = formState;
+    newMetaData.form.formState = context;
   }
   if (loading === false && isError === false) {
     // isError = !isMetaDataValid(metaData);

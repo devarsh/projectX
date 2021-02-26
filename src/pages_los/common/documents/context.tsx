@@ -1,11 +1,15 @@
 import { createContext, FC } from "react";
 
 interface DOCCRUDProviderType {
+  context: any;
   uploadDocuments: CRUDFNType;
   deleteDocuments: CRUDFNType;
   updateDocument: CRUDFNType;
   getDocumentsGridData: CRUDFNType;
   verifyDocuments: CRUDFNType;
+  getDocumentListingGridMetaData: CRUDFNType;
+  getDocumentUploadAddtionalFieldsMetaData: CRUDFNType;
+  getDocumentEditGridMetaData: CRUDFNType;
 }
 
 export const DOCCRUDContext = createContext<DOCCRUDProviderType>(
@@ -23,8 +27,11 @@ export const DOCCRUDContextProvider: FC<DOCCRUDProviderType> = ({
   deleteDocuments,
   updateDocument,
   verifyDocuments,
-
   getDocumentsGridData,
+  getDocumentListingGridMetaData,
+  getDocumentUploadAddtionalFieldsMetaData,
+  getDocumentEditGridMetaData,
+  context,
 }) => {
   return (
     <DOCCRUDContext.Provider
@@ -34,6 +41,10 @@ export const DOCCRUDContextProvider: FC<DOCCRUDProviderType> = ({
         updateDocument,
         verifyDocuments,
         getDocumentsGridData,
+        getDocumentListingGridMetaData,
+        getDocumentUploadAddtionalFieldsMetaData,
+        getDocumentEditGridMetaData,
+        context,
       }}
     >
       {children}

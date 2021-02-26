@@ -16,9 +16,8 @@ import { CRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
 
 export const FormNewExistsIfNotCreate = ({
-  isProductEditedRef,
+  isDataChangedRef,
   successAction,
-  formState,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   const { checkFormDataExist } = useContext(CRUDContext);
@@ -65,17 +64,12 @@ export const FormNewExistsIfNotCreate = ({
   ) : !dataExist ? (
     <CreateFormConfirmation
       successAction={successAction}
-      isProductEditedRef={isProductEditedRef}
-      formState={formState}
+      isDataChangedRef={isDataChangedRef}
     />
   ) : null;
 };
 
-export const CreateFormConfirmation = ({
-  successAction,
-  isProductEditedRef,
-  formState,
-}) => {
+export const CreateFormConfirmation = ({ successAction, isDataChangedRef }) => {
   const [showAsk, setShowAsk] = useState(true);
   const cancleFormSubmit = useCallback(() => {
     setShowAsk(true);
@@ -87,10 +81,9 @@ export const CreateFormConfirmation = ({
     </Fragment>
   ) : (
     <FormNew
-      isProductEditedRef={isProductEditedRef}
+      isDataChangedRef={isDataChangedRef}
       cancelAction={cancleFormSubmit}
       successAction={successAction}
-      formState={formState}
     />
   );
 };

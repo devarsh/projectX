@@ -1,13 +1,11 @@
-import { useState, Fragment, useRef, useContext, useEffect } from "react";
+import { useState, Fragment, useRef, useEffect, useContext } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
-import { FileUploadControl } from "components/fileUpload";
-import { DOCCRUDContext } from "./context";
-import { cacheWrapperKeyGen } from "cache";
 import { DeleteAction } from "./delete";
 import { VerifyDocumentAction } from "./verify";
 import { UpdateDocumentData } from "./update";
+import { UploadDocumentsApiWrapper } from "./upload";
 
 const actions: ActionTypes[] = [
   {
@@ -49,22 +47,10 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const DocumentGridCRUD = ({
-  gridMetaData,
-  gridEditMetaData,
-  uploadColumnsMetaData,
-  gridProps,
-}) => {
+export const DocumentGridCRUD = () => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
-  const wrapperKey = useRef<any>(null);
-  const { uploadDocuments, getDocumentsGridData } = useContext(DOCCRUDContext);
-  if (wrapperKey.current === null) {
-    wrapperKey.current = cacheWrapperKeyGen(
-      Object.values(getDocumentsGridData.args)
-    );
-  }
   const closeMyDialog = () => {
     setCurrentAction(null);
     if (dataChangedRef.current === true) {
@@ -72,13 +58,11 @@ export const DocumentGridCRUD = ({
       dataChangedRef.current = false;
     }
   };
-
   return (
     <Fragment>
       <MyGridWrapper
         ref={gridRef}
         key="grid"
-        metaData={gridMetaData}
         actions={actions}
         setAction={setCurrentAction}
       />
@@ -95,33 +79,28 @@ export const DocumentGridCRUD = ({
         }}
       >
         {(currentAction?.name ?? "") === "Add" ? (
-          <FileUploadControl
+          <UploadDocumentsApiWrapper
             onClose={closeMyDialog}
-            additionalColumns={uploadColumnsMetaData}
             editableFileName={false}
             dataChangedRef={dataChangedRef}
-            onUpload={uploadDocuments.fn(uploadDocuments.args)}
-            gridProps={gridProps}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction
             docUUID={currentAction?.rows.map((one) => one.id)}
             closeDialog={closeMyDialog}
-            isProductEditedRef={dataChangedRef}
+            dataChangedRef={dataChangedRef}
           />
         ) : (currentAction?.name ?? "") === "Verify" ? (
           <VerifyDocumentAction
             docUUID={currentAction?.rows.map((one) => one.id)}
             closeDialog={closeMyDialog}
-            isProductEditedRef={dataChangedRef}
+            dataChangedRef={dataChangedRef}
           />
         ) : (currentAction?.name ?? "") === "Update" ? (
           <UpdateDocumentData
-            metaData={gridEditMetaData}
             row={currentAction?.rows[0]}
             closeDialog={closeMyDialog}
-            isProductEditedRef={dataChangedRef}
-            gridProps={gridProps}
+            dataChangedRef={dataChangedRef}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />

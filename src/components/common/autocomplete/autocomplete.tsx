@@ -166,7 +166,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
       _options.length > 1
     ) {
       if (!Array.isArray(_internalValue)) {
-        console.log(_internalValue);
         _internalValue = [value];
       }
       let answers: OptionsProps[] = [];
@@ -189,7 +188,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
       }
       setLastUpdatedTime(new Date().getTime());
     }
-  }, [loadingOptions, _options, multiple]);
+  }, [loadingOptions, _options, value, multiple]);
 
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls

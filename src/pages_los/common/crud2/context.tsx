@@ -1,12 +1,13 @@
 import { createContext, FC } from "react";
 
 interface CRUDProviderType {
+  context: any;
   insertFormData: CRUDFNType;
   checkFormDataExist: CRUDFNType;
   deleteFormData: CRUDFNType;
   updateFormData: CRUDFNType;
   getFormData: CRUDFNType;
-  getStaticGridData: CRUDFNType;
+  getGridFormData: CRUDFNType;
   getFormMetaData: CRUDFNType;
   getGridFormMetaData: CRUDFNType;
 }
@@ -27,19 +28,21 @@ export const CRUDContextProvider: FC<CRUDProviderType> = ({
   deleteFormData,
   updateFormData,
   getFormData,
-  getStaticGridData,
+  getGridFormData,
   getFormMetaData,
   getGridFormMetaData,
+  context,
 }) => {
   return (
     <CRUDContext.Provider
       value={{
+        context,
         insertFormData,
         checkFormDataExist,
         deleteFormData,
         updateFormData,
         getFormData,
-        getStaticGridData,
+        getGridFormData,
         getFormMetaData,
         getGridFormMetaData,
       }}
