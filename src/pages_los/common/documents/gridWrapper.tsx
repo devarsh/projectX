@@ -47,14 +47,14 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
     const result = useQueries([
       {
         queryKey: ["getDocumentsGridData", wrapperKey.current],
-        queryFn: () => getDocumentsGridData.fn(getDocumentsGridData.args)(),
+        queryFn: () => getDocumentsGridData.fn(getDocumentsGridData.args),
         cacheTime: 100000000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
       },
       {
         queryKey: [
-          "documentListingGridMetaData",
+          "getDocumentListingGridMetaData",
           context.refID,
           context.docType,
         ],

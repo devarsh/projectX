@@ -95,9 +95,11 @@ export const GridCRUD: FC<{
         ) : (currentAction?.name ?? "") === "Document" ? (
           <DocumentGridCRUD
             refID={context?.refID}
+            productType={context?.productType}
             moduleType={context?.moduleType}
             serialNo={currentAction?.rows[0]?.id}
             hideGST={hideGST}
+            onClose={closeMyDialog}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />

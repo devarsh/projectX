@@ -6,10 +6,10 @@ interface CRUDProviderType {
   checkFormDataExist: CRUDFNType;
   deleteFormData: CRUDFNType;
   updateFormData: CRUDFNType;
-  getFormData: CRUDFNType;
-  getGridFormData: CRUDFNType;
   getFormMetaData: CRUDFNType;
+  getFormData: CRUDFNType;
   getGridFormMetaData: CRUDFNType;
+  getGridFormData: CRUDFNType;
 }
 
 export const CRUDContext = createContext<CRUDProviderType>(

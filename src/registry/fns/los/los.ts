@@ -252,15 +252,18 @@ const LOSAPI = () => {
 
   interface DOCCRUDTYPE {
     moduleType: string;
+    productType?: string;
     docCategory: string;
     refID: string;
-    srID?: string;
+    serialNo?: string;
   }
 
   const uploadDocuments = ({
     moduleType,
+    productType,
     docCategory,
     refID,
+    serialNo,
   }: DOCCRUDTYPE) => async (
     data: FormData,
     progressHandler: any = () => {},
@@ -273,11 +276,14 @@ const LOSAPI = () => {
       };
     }
     const newURL = new URL(
-      `./${moduleType}/document/${docCategory}/data/post`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/post`
+        : `./${moduleType}/document/${docCategory}/data/post`,
       baseURL as URL
     ).href;
     let xhr = new XMLHttpRequest();
     data.append("refID", refID);
+    data.append("serialNo", serialNo ?? "");
     xhr.open("POST", newURL, true);
     xhr.setRequestHeader("Authorization", `Bearer ${token}`);
     xhr.upload.onprogress = (e) => {
@@ -306,19 +312,22 @@ const LOSAPI = () => {
     xhr.send(data);
   };
 
-  const listDocuments = ({
+  const listDocuments = async ({
     moduleType,
+    productType,
     docCategory,
     refID,
-    srID,
-  }: DOCCRUDTYPE) => async () => {
+    serialNo,
+  }: DOCCRUDTYPE) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/document/${docCategory}/data/get`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/get`
+        : `./${moduleType}/document/${docCategory}/data/get`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
-            srID: srID,
+            serialNo: serialNo,
           },
         }),
       }
@@ -332,15 +341,20 @@ const LOSAPI = () => {
 
   const deleteDocuments = ({
     moduleType,
+    productType,
     docCategory,
     refID,
+    serialNo,
   }: DOCCRUDTYPE) => async (docUUID: any) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/document/${docCategory}/data/delete`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/delete`
+        : `./${moduleType}/document/${docCategory}/data/delete`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
+            serialNo: serialNo,
             docUUID: docUUID,
           },
           channel: "W",
@@ -356,19 +370,24 @@ const LOSAPI = () => {
 
   const verifyDocuments = ({
     moduleType,
+    productType,
     docCategory,
     refID,
+    serialNo,
   }: DOCCRUDTYPE) => async (
     docUUID: any,
     remarks: any,
     docStatus: "Verfiy" | "Rejected"
   ) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/document/${docCategory}/data/verification`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/verification`
+        : `./${moduleType}/document/${docCategory}/data/verification`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
+            serialNo: serialNo,
             docUUID: docUUID,
             remarks: remarks,
             status:
@@ -391,15 +410,20 @@ const LOSAPI = () => {
 
   const updateDocuments = ({
     moduleType,
+    productType,
     docCategory,
     refID,
+    serialNo,
   }: DOCCRUDTYPE) => async (updateData: any) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/document/${docCategory}/data/put`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/put`
+        : `./${moduleType}/document/${docCategory}/data/put`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
+            serialNo: serialNo,
             details: updateData,
           },
           channel: "W",
@@ -415,6 +439,7 @@ const LOSAPI = () => {
 
   const getDocumentGridMetaData = async ({
     moduleType,
+    productType,
     docCategory,
     metaDataType,
   }) => {

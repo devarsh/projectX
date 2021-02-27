@@ -2,6 +2,7 @@ import { Fragment, useState, FC, useContext, useEffect } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
 import { DOCCRUDContextProvider } from "./context";
 import { LOSSDK } from "registry/fns/los";
@@ -21,32 +22,33 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocAPICrud = (moduleType, docCategory, refID, serialNo) => ({
+const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
   context: {
     moduleType,
+    productType,
     docCategory,
     refID,
     serialNo,
   },
   uploadDocuments: {
     fn: LOSSDK.uploadDocuments,
-    args: { moduleType, docCategory, refID, serialNo },
+    args: { moduleType, docCategory, productType, refID, serialNo },
   },
   getDocumentsGridData: {
     fn: LOSSDK.listDocuments,
-    args: { moduleType, docCategory, refID, serialNo },
+    args: { moduleType, docCategory, productType, refID, serialNo },
   },
   deleteDocuments: {
     fn: LOSSDK.deleteDocuments,
-    args: { moduleType, docCategory, refID, serialNo },
+    args: { moduleType, docCategory, productType, refID, serialNo },
   },
   updateDocument: {
     fn: LOSSDK.updateDocuments,
-    args: { moduleType, docCategory, refID, serialNo },
+    args: { moduleType, docCategory, productType, refID, serialNo },
   },
   verifyDocuments: {
     fn: LOSSDK.deleteDocuments,
-    args: { moduleType, docCategory, refID, serialNo },
+    args: { moduleType, docCategory, productType, refID, serialNo },
   },
   getDocumentListingGridMetaData: {
     fn: LOSSDK.getDocumentGridMetaData,
@@ -68,10 +70,12 @@ const TabPanel = ({ value, index, children }) => {
 
 export const DocumentGridCRUD: FC<{
   moduleType: string;
+  productType?: string;
   refID: string;
   serialNo?: string;
   hideGST?: boolean;
-}> = ({ moduleType, refID, serialNo, hideGST }) => {
+  onClose?: any;
+}> = ({ moduleType, productType, refID, serialNo, hideGST, onClose }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -116,6 +120,14 @@ export const DocumentGridCRUD: FC<{
         {tabs.map((one) => (
           <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
         ))}
+        {typeof onClose === "function" ? (
+          <>
+            <Box flexGrow={1} />
+            <Button variant="text" onClick={onClose}>
+              Close
+            </Button>
+          </>
+        ) : null}
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         {tabs.map((one) => (
@@ -125,7 +137,13 @@ export const DocumentGridCRUD: FC<{
             key={one.sequence}
           >
             <DOCCRUDContextProvider
-              {...DocAPICrud(moduleType, one.docType, refID, serialNo)}
+              {...DocAPICrud(
+                moduleType,
+                productType,
+                one.docType,
+                refID,
+                serialNo
+              )}
             >
               <DocGrid />
             </DOCCRUDContextProvider>
