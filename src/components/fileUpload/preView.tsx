@@ -15,7 +15,7 @@ export const PDFViewer: FC<{ blob: File; fileName: string; onClose?: any }> = ({
   onClose,
 }) => {
   const urlObj = useRef(
-    typeof blob === "object" ? URL.createObjectURL(blob) : null
+    typeof blob === "object" && Boolean(blob) ? URL.createObjectURL(blob) : null
   );
   useEffect(() => {
     let toRemoveURL = urlObj.current ?? "";
@@ -60,7 +60,7 @@ export const ImageViewer: FC<{
   onClose?: any;
 }> = ({ blob, fileName, onClose }) => {
   const urlObj = useRef(
-    typeof blob === "object" ? URL.createObjectURL(blob) : ""
+    typeof blob === "object" && Boolean(blob) ? URL.createObjectURL(blob) : ""
   );
   useEffect(() => {
     let toRemoveURL = urlObj.current;

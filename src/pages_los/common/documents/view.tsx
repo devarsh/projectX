@@ -13,7 +13,7 @@ export const PreviewWrapper = ({
   docUUID,
   closeDialog,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { previewDocument } = useContext(DOCCRUDContext);
   const [blob, setBlob] = useState<Blob | null>(null);
@@ -30,7 +30,8 @@ export const PreviewWrapper = ({
         if (blob instanceof Error) {
           setError(blob.message);
         } else {
-          setBlob(blob);
+          const pdfBlob = new Blob([blob], { type: fileType });
+          setBlob(pdfBlob);
           setError("");
         }
         setLoading(false);
@@ -40,15 +41,14 @@ export const PreviewWrapper = ({
         setLoading(true);
       });
   }, []);
-
   return loading ? (
     <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : Boolean(error) ? (
     <NoPreview onClose={closeDialog} fileName={fileName} message={error} />
-  ) : fileType === "pdf" ? (
+  ) : fileType.indexOf("pdf") >= 0 ? (
     //@ts-ignore
     <PDFViewer blob={blob} fileName={fileName} onClose={closeDialog} />
-  ) : fileType === "jpg" ? (
+  ) : fileType.indexOf("image") >= 0 ? (
     //@ts-ignore
     <ImageViewer blob={blob} fileName={fileName} onClose={closeDialog} />
   ) : (

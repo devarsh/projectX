@@ -78,7 +78,7 @@ export const DocumentGridCRUD = () => {
         maxWidth="xl"
         PaperProps={{
           style:
-            currentAction?.name === "Add"
+            currentAction?.name === "Add" || currentAction?.name === "View"
               ? { width: "100%", height: "100%" }
               : currentAction?.name === "Verify"
               ? { width: "40%" }
