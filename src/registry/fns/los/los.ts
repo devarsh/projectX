@@ -377,7 +377,7 @@ const LOSAPI = () => {
   }: DOCCRUDTYPE) => async (
     docUUID: any,
     remarks: any,
-    docStatus: "Verfiy" | "Rejected"
+    docStatus: "Verify" | "Rejected"
   ) => {
     const { data, status } = await internalFetcher(
       Boolean(productType)
@@ -391,7 +391,7 @@ const LOSAPI = () => {
             docUUID: docUUID,
             remarks: remarks,
             status:
-              docStatus === "Verfiy"
+              docStatus === "Verify"
                 ? "Y"
                 : docStatus === "Rejected"
                 ? "R"
@@ -456,6 +456,59 @@ const LOSAPI = () => {
       return data?.response_data;
     } else {
       throw data?.error_data;
+    }
+  };
+
+  const generateDocumentDownloadURL = ({
+    moduleType,
+    productType,
+    docCategory,
+  }) => (docUUID) => {
+    if (!Array.isArray(docUUID)) {
+      docUUID = [docUUID];
+    }
+    let docs = docUUID.join(",");
+    return new URL(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/download?docUUID=${docs}&tokenID=${token}`
+        : `./${moduleType}/document/${docCategory}/data/download?docUUID=${docs}&tokenID=${token}`,
+      baseURL as URL
+    ).href;
+  };
+
+  const previewDocument = ({ moduleType, productType, docCategory }) => async (
+    docUUID
+  ) => {
+    if (!Array.isArray(docUUID)) {
+      docUUID = [docUUID];
+    }
+    const url = new URL(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/zipDownload`
+        : `./${moduleType}/document/${docCategory}/data/zipDownload`,
+      baseURL as URL
+    ).href;
+    try {
+      let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          request_data: {
+            docUUID: docUUID,
+          },
+        }),
+        headers: new Headers({
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        }),
+      });
+      if (String(response.status) === "200") {
+        let data = await response.blob();
+        return data;
+      } else {
+        return new Error("Error getting file");
+      }
+    } catch (e) {
+      return e;
     }
   };
 
@@ -525,12 +578,12 @@ const LOSAPI = () => {
 
   const getDocumentCRUDTabsMetadata = async ({
     moduleType,
+    productType,
     refID,
-    hideGST,
   }) => {
     const { data, status } = await internalFetcher(
-      Boolean(hideGST)
-        ? `./${moduleType}/management/document/metaData/tabs`
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/metaData/tabs`
         : `./${moduleType}/document/metaData/tabs`,
       {
         body: JSON.stringify({
@@ -943,6 +996,8 @@ const LOSAPI = () => {
     deleteDocuments,
     verifyDocuments,
     getBankListForLeadDocuments,
+    generateDocumentDownloadURL,
+    previewDocument,
 
     //Lead/Inquiry/Config(Bank) -
     getDocumentCRUDTabsMetadata,

@@ -1,14 +1,18 @@
 import { Fragment, FC, useEffect, useRef } from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
+import Close from "@material-ui/icons/Close";
 import { downloadFile } from "./utils";
+import { Button } from "@material-ui/core";
 
-export const PDFViewer: FC<{ blob: File; fileName: string }> = ({
+export const PDFViewer: FC<{ blob: File; fileName: string; onClose?: any }> = ({
   blob,
   fileName,
+  onClose,
 }) => {
   const urlObj = useRef(
     typeof blob === "object" ? URL.createObjectURL(blob) : null
@@ -33,6 +37,11 @@ export const PDFViewer: FC<{ blob: File; fileName: string }> = ({
         >
           <GetAppRoundedIcon />
         </IconButton>
+        {typeof onClose === "function" ? (
+          <IconButton color="primary" onClick={onClose}>
+            <Close />
+          </IconButton>
+        ) : null}
       </DialogActions>
       <DialogContent>
         <iframe
@@ -45,10 +54,11 @@ export const PDFViewer: FC<{ blob: File; fileName: string }> = ({
   );
 };
 
-export const ImageViewer: FC<{ blob: File; fileName: string }> = ({
-  blob,
-  fileName,
-}) => {
+export const ImageViewer: FC<{
+  blob: File;
+  fileName: string;
+  onClose?: any;
+}> = ({ blob, fileName, onClose }) => {
   const urlObj = useRef(
     typeof blob === "object" ? URL.createObjectURL(blob) : ""
   );
@@ -70,6 +80,11 @@ export const ImageViewer: FC<{ blob: File; fileName: string }> = ({
         >
           <GetAppRoundedIcon />
         </IconButton>
+        {typeof onClose === "function" ? (
+          <IconButton color="primary" onClick={onClose}>
+            <Close />
+          </IconButton>
+        ) : null}
       </DialogActions>
       <DialogContent>
         <img width="60%" src={urlObj.current} alt="Preview of document" />
@@ -78,6 +93,20 @@ export const ImageViewer: FC<{ blob: File; fileName: string }> = ({
   );
 };
 
-export const NoPreview = () => (
-  <Typography variant="h6">Preview Not Available</Typography>
+export const NoPreview: FC<{
+  fileName: string;
+  onClose?: any;
+  message?: string;
+}> = ({ onClose, fileName, message }) => (
+  <Fragment>
+    <DialogTitle>File: {fileName}</DialogTitle>
+    <DialogContent>
+      {Boolean(message) ? message : "Preview not available"}
+    </DialogContent>
+    {typeof onClose === "function" ? (
+      <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
+        <Button onClick={onClose}>Close</Button>
+      </DialogActions>
+    ) : null}
+  </Fragment>
 );

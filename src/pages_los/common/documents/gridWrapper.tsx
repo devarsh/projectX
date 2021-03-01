@@ -68,11 +68,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       },
     ]);
 
-    const loading =
-      result[0].isLoading ||
-      result[1].isLoading ||
-      result[0].isFetching ||
-      result[1].isFetching;
+    const loading = result[1].isLoading || result[1].isFetching;
     let isError = result[0].isError || result[1].isError;
     //@ts-ignore
     let errorMsg = `${result[0].error?.error_msg} ${result[0].error?.error_msg}`
@@ -86,13 +82,13 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       <span>{errorMsg}</span>
     ) : (
       <GridWrapper
-        key={`listingDocuments-${wrapperKey.current}`}
+        key={`listingDocuments`}
         data={result[0].data ?? []}
         finalMetaData={result[1].data as GridMetaDataType}
         setData={() => null}
         actions={actions}
         setAction={setAction}
-        loading={loading}
+        loading={result[0].isFetching || result[0].isLoading}
       />
     );
     return renderResult;

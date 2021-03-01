@@ -31,8 +31,7 @@ const actions: ActionTypes[] = [
 export const GridCRUD: FC<{
   isDataChangedRef: any;
   showDocuments?: boolean;
-  hideGST?: boolean;
-}> = ({ isDataChangedRef, showDocuments, hideGST }) => {
+}> = ({ isDataChangedRef, showDocuments }) => {
   let allActions = useRef<any>(null);
   if (allActions.current === null) {
     allActions.current = [...actions];
@@ -98,7 +97,6 @@ export const GridCRUD: FC<{
             productType={context?.productType}
             moduleType={context?.moduleType}
             serialNo={currentAction?.rows[0]?.id}
-            hideGST={hideGST}
             onClose={closeMyDialog}
           />
         ) : (

@@ -6,23 +6,25 @@ import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import TextField from "@material-ui/core/TextField";
-import { cacheWrapperKeyGen } from "cache";
 import { useMutation } from "react-query";
 import { DOCCRUDContext } from "./context";
 
 interface VerifyFormDataType {
   docUUID?: string;
+  remarks?: string;
 }
 
 const ConfirmDocumentDataFnWrapper = (verifyDocuments) => async ({
   docUUID,
+  remarks,
 }: VerifyFormDataType) => {
-  return verifyDocuments(docUUID);
+  return verifyDocuments(docUUID, remarks, "Verify");
 };
 const RejectDocumentDataFnWrapper = (verifyDocuments) => async ({
   docUUID,
+  remarks,
 }: VerifyFormDataType) => {
-  return verifyDocuments(docUUID);
+  return verifyDocuments(docUUID, remarks, "Rejected");
 };
 
 export const VerifyDocumentAction = ({
@@ -30,17 +32,11 @@ export const VerifyDocumentAction = ({
   closeDialog,
   docUUID,
 }) => {
-  const { deleteDocuments } = useContext(DOCCRUDContext);
+  const { verifyDocuments } = useContext(DOCCRUDContext);
   const [remarks, setRemarks] = useState("");
   const [error, setError] = useState("");
-  const wrapperKey = useRef<any>(null);
-  if (wrapperKey.current === null) {
-    wrapperKey.current = cacheWrapperKeyGen(
-      Object.values(deleteDocuments.args)
-    );
-  }
   const verifyMutation = useMutation(
-    ConfirmDocumentDataFnWrapper(deleteDocuments.fn(deleteDocuments.args)),
+    ConfirmDocumentDataFnWrapper(verifyDocuments.fn(verifyDocuments.args)),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
@@ -50,7 +46,7 @@ export const VerifyDocumentAction = ({
     }
   );
   const rejectMutation = useMutation(
-    RejectDocumentDataFnWrapper(deleteDocuments.fn(deleteDocuments.args)),
+    RejectDocumentDataFnWrapper(verifyDocuments.fn(verifyDocuments.args)),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
@@ -94,7 +90,7 @@ export const VerifyDocumentAction = ({
           color="primary"
           onClick={() => {
             if (Boolean(remarks)) {
-              verifyMutation.mutate({ docUUID });
+              verifyMutation.mutate({ docUUID, remarks });
             } else {
               setError("This is a required field");
             }
@@ -107,7 +103,7 @@ export const VerifyDocumentAction = ({
           color="primary"
           onClick={() => {
             if (Boolean(remarks)) {
-              rejectMutation.mutate({ docUUID });
+              rejectMutation.mutate({ docUUID, remarks });
             } else {
               setError("This is a required filed");
             }

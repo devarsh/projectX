@@ -10,6 +10,8 @@ interface DOCCRUDProviderType {
   getDocumentListingGridMetaData: CRUDFNType;
   getDocumentUploadAddtionalFieldsMetaData: CRUDFNType;
   getDocumentEditGridMetaData: CRUDFNType;
+  generateDocumentDownloadURL: CRUDFNType;
+  previewDocument: CRUDFNType;
 }
 
 export const DOCCRUDContext = createContext<DOCCRUDProviderType>(
@@ -31,6 +33,8 @@ export const DOCCRUDContextProvider: FC<DOCCRUDProviderType> = ({
   getDocumentListingGridMetaData,
   getDocumentUploadAddtionalFieldsMetaData,
   getDocumentEditGridMetaData,
+  generateDocumentDownloadURL,
+  previewDocument,
   context,
 }) => {
   return (
@@ -44,6 +48,8 @@ export const DOCCRUDContextProvider: FC<DOCCRUDProviderType> = ({
         getDocumentListingGridMetaData,
         getDocumentUploadAddtionalFieldsMetaData,
         getDocumentEditGridMetaData,
+        generateDocumentDownloadURL,
+        previewDocument,
         context,
       }}
     >

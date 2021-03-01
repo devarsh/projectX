@@ -1,17 +1,39 @@
-import { useState, FC, Fragment, useEffect, useContext } from "react";
+import {
+  useState,
+  FC,
+  Fragment,
+  useEffect,
+  useContext,
+  lazy,
+  Suspense,
+} from "react";
 import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
 import { queryClient, ClearCacheContext } from "cache";
 import { LOSSDK } from "registry/fns/los";
-import { GridCRUD } from "./gridCRUD";
-import { SimpleCRUD } from "./simpleCRUD";
-import { DocumentGridCRUD } from "../documents/documentsTab";
 import { CRUDContextProvider } from "./context";
 import { useStyles } from "./style";
 import loaderGif from "assets/images/loader.gif";
 import { HeaderDetails } from "../../pages/lead/headerDetails";
+
+const GridCRUD = lazy(() =>
+  import("./gridCRUD").then((module) => ({
+    default: module.GridCRUD,
+  }))
+);
+const SimpleCRUD = lazy(() =>
+  import("./simpleCRUD").then((module) => ({
+    default: module.SimpleCRUD,
+  }))
+);
+const DocumentGridCRUD = lazy(() =>
+  import("../documents/documentsTab").then((module) => ({
+    default: module.DocumentGridCRUD,
+  }))
+);
+
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
@@ -131,38 +153,39 @@ export const DetailsTabView: FC<{
           <Tab key={one.sequence} label={one.label} id={`${one.sequence}`} />
         ))}
       </Tabs>
-      <Box py={2} className={classes.tabPanel}>
-        {tabs.map((one) => (
-          <TabPanel
-            value={currentTab}
-            index={`${one.sequence}`}
-            key={one.sequence}
-          >
-            {one.componentType === "simple" ? (
-              <CRUDContextProvider
-                {...crudAPIArgs(moduleType, one.productType, refID)}
-              >
-                <SimpleCRUD
-                  isDataChangedRef={isDataChangedRef}
-                  dataAlwaysExists={Boolean(one.dataAlwaysExists)}
-                />
-              </CRUDContextProvider>
-            ) : one.componentType === "grid" ? (
-              <CRUDContextProvider
-                {...crudAPIArgs(moduleType, one.productType, refID)}
-              >
-                <GridCRUD
-                  isDataChangedRef={isDataChangedRef}
-                  showDocuments={one?.document}
-                  hideGST={one?.hideGST}
-                />
-              </CRUDContextProvider>
-            ) : one.componentType === "document" ? (
-              <DocumentGridCRUD refID={refID} moduleType={moduleType} />
-            ) : null}
-          </TabPanel>
-        ))}
-      </Box>
+      <Suspense fallback={"loading..."}>
+        <Box py={2} className={classes.tabPanel}>
+          {tabs.map((one) => (
+            <TabPanel
+              value={currentTab}
+              index={`${one.sequence}`}
+              key={one.sequence}
+            >
+              {one.componentType === "simple" ? (
+                <CRUDContextProvider
+                  {...crudAPIArgs(moduleType, one.productType, refID)}
+                >
+                  <SimpleCRUD
+                    isDataChangedRef={isDataChangedRef}
+                    dataAlwaysExists={Boolean(one.dataAlwaysExists)}
+                  />
+                </CRUDContextProvider>
+              ) : one.componentType === "grid" ? (
+                <CRUDContextProvider
+                  {...crudAPIArgs(moduleType, one.productType, refID)}
+                >
+                  <GridCRUD
+                    isDataChangedRef={isDataChangedRef}
+                    showDocuments={one?.document}
+                  />
+                </CRUDContextProvider>
+              ) : one.componentType === "document" ? (
+                <DocumentGridCRUD refID={refID} moduleType={moduleType} />
+              ) : null}
+            </TabPanel>
+          ))}
+        </Box>
+      </Suspense>
     </Fragment>
   );
   return result;

@@ -268,7 +268,7 @@ export const FileUploadControl = ({
             fileName={action?.rows[0]?.data?.name}
           />
         ) : (
-          <NoPreview />
+          <NoPreview fileName={action?.rows[0]?.data?.name} />
         )}
       </Dialog>
     </Fragment>

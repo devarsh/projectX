@@ -47,7 +47,7 @@ const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   verifyDocuments: {
-    fn: LOSSDK.deleteDocuments,
+    fn: LOSSDK.verifyDocuments,
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   getDocumentListingGridMetaData: {
@@ -62,6 +62,14 @@ const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
     fn: LOSSDK.getDocumentGridMetaData,
     args: { moduleType, docCategory, metaDataType: "edit" },
   },
+  generateDocumentDownloadURL: {
+    fn: LOSSDK.generateDocumentDownloadURL,
+    args: { moduleType, productType, docCategory },
+  },
+  previewDocument: {
+    fn: LOSSDK.previewDocument,
+    args: { moduleType, productType, docCategory },
+  },
 });
 
 const TabPanel = ({ value, index, children }) => {
@@ -73,9 +81,8 @@ export const DocumentGridCRUD: FC<{
   productType?: string;
   refID: string;
   serialNo?: string;
-  hideGST?: boolean;
   onClose?: any;
-}> = ({ moduleType, productType, refID, serialNo, hideGST, onClose }) => {
+}> = ({ moduleType, productType, refID, serialNo, onClose }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -83,16 +90,16 @@ export const DocumentGridCRUD: FC<{
   };
   const classes = useStyles();
   useEffect(() => {
-    removeCache?.addEntry([
-      "getDocumentCRUDTabsMetadata",
-      moduleType,
-      refID,
-      hideGST,
-    ]);
+    removeCache?.addEntry(["getDocumentCRUDTabsMetadata", moduleType, refID]);
   }, []);
   const queryResult = useQuery(
-    ["getDocumentCRUDTabsMetadata", moduleType, refID, hideGST],
-    () => LOSSDK.getDocumentCRUDTabsMetadata({ moduleType, refID, hideGST }),
+    ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
+    () =>
+      LOSSDK.getDocumentCRUDTabsMetadata({
+        moduleType,
+        productType,
+        refID,
+      }),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,

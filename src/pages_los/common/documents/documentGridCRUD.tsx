@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, useEffect, useContext } from "react";
+import { useState, Fragment, useRef, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
@@ -6,6 +6,8 @@ import { DeleteAction } from "./delete";
 import { VerifyDocumentAction } from "./verify";
 import { UpdateDocumentData } from "./update";
 import { UploadDocumentsApiWrapper } from "./upload";
+import { Download } from "./download";
+import { PreviewWrapper } from "./view";
 
 const actions: ActionTypes[] = [
   {
@@ -34,6 +36,11 @@ const actions: ActionTypes[] = [
     actionLabel: "View",
     multiple: false,
     rowDoubleClick: true,
+  },
+  {
+    actionName: "Download",
+    actionLabel: "download",
+    multiple: true,
   },
   {
     actionName: "Delete",
@@ -101,6 +108,21 @@ export const DocumentGridCRUD = () => {
             row={currentAction?.rows[0]}
             closeDialog={closeMyDialog}
             dataChangedRef={dataChangedRef}
+          />
+        ) : (currentAction?.name ?? "") === "Download" ? (
+          <Download
+            closeDialog={closeMyDialog}
+            docData={currentAction?.rows.map((one) => ({
+              id: one.id,
+              name: one.data?.fileName,
+            }))}
+          />
+        ) : (currentAction?.name ?? "") === "View" ? (
+          <PreviewWrapper
+            closeDialog={closeMyDialog}
+            docUUID={currentAction?.rows[0]?.id}
+            fileName={currentAction?.rows[0]?.data?.fileName}
+            fileType={currentAction?.rows[0]?.data?.fileType}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
