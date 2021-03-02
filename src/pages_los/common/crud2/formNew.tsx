@@ -82,8 +82,16 @@ export const FormNew: FC<{
   let errorMsg = `${result.error?.error_msg ?? "unknown error occured"}`;
   let newMetaData = {} as MetaDataType;
   if (result.isSuccess) {
+    newMetaData = JSON.parse(JSON.stringify(result.data)) as MetaDataType;
     newMetaData = result.data as MetaDataType;
-    newMetaData.form.formState = context;
+    newMetaData.form.formState = {
+      ...context,
+      formCode: newMetaData?.form?.name,
+    };
+    newMetaData.form.name = `${newMetaData.form.name}-New`;
+    if (newMetaData?.form?.render?.renderType === "stepper") {
+      newMetaData.form.render.renderType = "tabs";
+    }
   }
   if (loading === false && isError === false) {
     // isError = !isMetaDataValid(metaData);
@@ -92,6 +100,7 @@ export const FormNew: FC<{
       errorMsg = "Error loading form";
     }
   }
+
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : isError === true ? (

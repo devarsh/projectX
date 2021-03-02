@@ -466,7 +466,6 @@ const LOSAPI = () => {
     moduleType: string;
     productType: string;
     refID: string;
-    metadataType: string;
   }
 
   const getFormData = ({ moduleType, productType, refID }: crudType) => async (
