@@ -1,7 +1,7 @@
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import { useStyles } from "./style";
 import { format } from "date-fns";
-import { Button } from "@material-ui/core";
 
 export const HeaderDetails = ({ productData, handleDialogClose }) => {
   const classes = useStyles();

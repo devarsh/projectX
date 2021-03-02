@@ -1,8 +1,9 @@
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import { useStyles } from "./style";
 import { format } from "date-fns";
 
-export const HeaderDetails = ({ productData }) => {
+export const HeaderDetails = ({ productData, handleDialogClose }) => {
   const classes = useStyles();
   let dateValue;
   try {
@@ -41,6 +42,8 @@ export const HeaderDetails = ({ productData }) => {
             {productData?.original?.status}
           </div>
         </Box>
+        <Box flexGrow={1} px={3} />
+        <Button onClick={handleDialogClose}>Close</Button>
       </Box>
     </Box>
   );

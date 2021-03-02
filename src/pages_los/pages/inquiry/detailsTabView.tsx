@@ -104,7 +104,10 @@ export const DetailsTabView: FC<{
 
   return (
     <Fragment>
-      <HeaderDetails productData={productGridData} />
+      <HeaderDetails
+        productData={productGridData}
+        handleDialogClose={handleDialogClose}
+      />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
