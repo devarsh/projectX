@@ -56,7 +56,7 @@ export const FileUploadControl = ({
   onClose,
   onUpload,
   dataChangedRef,
-  allowedExtensions = ["jpg", "png", "pdf"],
+  allowedExtensions = ["pdf"],
   maxAllowedSize = 1024 * 1024 * 3,
   gridProps,
 }: {

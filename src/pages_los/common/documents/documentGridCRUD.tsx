@@ -65,11 +65,12 @@ export const DocumentGridCRUD = () => {
       dataChangedRef.current = false;
     }
   };
+
   return (
     <Fragment>
       <MyGridWrapper
         ref={gridRef}
-        key="grid"
+        key={`documentListing`}
         actions={actions}
         setAction={setCurrentAction}
       />

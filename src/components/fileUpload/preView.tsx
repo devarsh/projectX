@@ -1,13 +1,11 @@
 import { Fragment, FC, useEffect, useRef } from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
 import Close from "@material-ui/icons/Close";
 import { downloadFile } from "./utils";
-import { Button } from "@material-ui/core";
 
 export const PDFViewer: FC<{ blob: File; fileName: string; onClose?: any }> = ({
   blob,
@@ -99,14 +97,18 @@ export const NoPreview: FC<{
   message?: string;
 }> = ({ onClose, fileName, message }) => (
   <Fragment>
-    <DialogTitle>File: {fileName}</DialogTitle>
-    <DialogContent>
-      {Boolean(message) ? message : "Preview not available"}
-    </DialogContent>
-    {typeof onClose === "function" ? (
-      <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
-        <Button onClick={onClose}>Close</Button>
-      </DialogActions>
-    ) : null}
+    <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
+      <Typography variant="h6" color="textSecondary">
+        File:
+      </Typography>
+      <Typography variant="h6">{fileName}</Typography>
+      <div style={{ flexGrow: 1 }}></div>
+      {typeof onClose === "function" ? (
+        <IconButton color="primary" onClick={onClose}>
+          <Close />
+        </IconButton>
+      ) : null}
+    </DialogActions>
+    <DialogContent>{message}</DialogContent>
   </Fragment>
 );

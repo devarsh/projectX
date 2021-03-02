@@ -144,6 +144,7 @@ export const DocumentGridCRUD: FC<{
             key={one.sequence}
           >
             <DOCCRUDContextProvider
+              key={one.docType}
               {...DocAPICrud(
                 moduleType,
                 productType,

@@ -38,11 +38,14 @@ export const gridMetaData: GridMetaDataType = {
       minWidth: 100,
     },
     {
-      columnName: "Bank Name",
+      columnName: "Financial Year",
       componentType: "default",
-      accessor: "bank",
+      accessor: "finYear",
       sequence: 4,
       alignment: "left",
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
     },
     {
       columnName: "Document Type",
@@ -67,7 +70,7 @@ export const gridMetaData: GridMetaDataType = {
   ],
   gridConfig: {
     dense: true,
-    gridLabel: "Bank Statement",
+    gridLabel: "ITR Statement",
     rowIdColumn: "docUUID",
     defaultColumnConfig: {
       width: 150,
@@ -89,25 +92,29 @@ export const gridMetaData: GridMetaDataType = {
 //upload Grid Additional fields
 export const columnsMetaData: GridColumnType[] = [
   {
-    columnName: "Bank",
-    componentType: "editableSelect",
-    accessor: "bankID",
-    sequence: 4,
+    columnName: "Financial Year",
+    componentType: "editableNumberFormat",
+    accessor: "finYear",
+    sequence: 5,
     alignment: "left",
-    options: "getBankListForLeadDocuments",
+    //@ts-ignore
+    FormatProps: {
+      format: "####",
+      placeholder: "YYYY",
+      mask: ["Y", "Y", "Y", "Y"],
+    },
     schemaValidation: {
       type: "string",
       rules: [{ name: "required", params: ["required"] }],
     },
-    disableCachingOptions: true,
   },
   {
     columnName: "Document Type",
     componentType: "editableSelect",
     accessor: "docTypeID",
-    sequence: 5,
+    sequence: 6,
     alignment: "left",
-    options: "getBankDocType",
+    options: "getITRDocType",
     schemaValidation: {
       type: "string",
       rules: [{ name: "required", params: ["required"] }],
@@ -117,7 +124,7 @@ export const columnsMetaData: GridColumnType[] = [
     columnName: "Password",
     componentType: "editableTextField",
     accessor: "password",
-    sequence: 6,
+    sequence: 7,
     alignment: "left",
     isPassword: true,
   },
@@ -125,7 +132,7 @@ export const columnsMetaData: GridColumnType[] = [
     columnName: "Remarks",
     componentType: "editableTextField",
     accessor: "remarks",
-    sequence: 6,
+    sequence: 8,
     alignment: "left",
     isVisible: false,
   },
@@ -149,17 +156,21 @@ export const gridEditMetaData: GridMetaDataType = {
       },
     },
     {
-      columnName: "Bank",
-      componentType: "editableSelect",
-      accessor: "bankID",
-      sequence: 4,
+      columnName: "Financial Year",
+      componentType: "editableNumberFormat",
+      accessor: "finYear",
+      sequence: 5,
       alignment: "left",
-      options: "getBankListForLeadDocuments",
+      //@ts-ignore
+      FormatProps: {
+        format: "####",
+        placeholder: "YYYY",
+        mask: ["Y", "Y", "Y", "Y"],
+      },
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["required"] }],
       },
-      disableCachingOptions: true,
     },
     {
       columnName: "Document Type",
@@ -184,7 +195,7 @@ export const gridEditMetaData: GridMetaDataType = {
   ],
   gridConfig: {
     dense: true,
-    gridLabel: "Update Statement",
+    gridLabel: "ITR Document Update",
     rowIdColumn: "docUUID",
     defaultColumnConfig: {
       width: 150,

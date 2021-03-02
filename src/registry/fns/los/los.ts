@@ -484,8 +484,8 @@ const LOSAPI = () => {
     }
     const url = new URL(
       Boolean(productType)
-        ? `./${moduleType}/${productType}/document/${docCategory}/data/zipdownload`
-        : `./${moduleType}/document/${docCategory}/data/zipdownload`,
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/preview`
+        : `./${moduleType}/document/${docCategory}/data/preview`,
       baseURL as URL
     ).href;
     try {

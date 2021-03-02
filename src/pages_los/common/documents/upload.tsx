@@ -21,14 +21,14 @@ export const UploadDocumentsApiWrapper = ({
     removeCache?.addEntry([
       "getDocumentUploadAddtionalFieldsMetaData",
       context.moduleType,
-      context.docType,
+      context.docCategory,
     ]);
   }, []);
   const query = useQuery(
     [
       "getDocumentUploadAddtionalFieldsMetaData",
       context.moduleType,
-      context.docType,
+      context.docCategory,
     ],
     () =>
       getDocumentUploadAddtionalFieldsMetaData.fn(

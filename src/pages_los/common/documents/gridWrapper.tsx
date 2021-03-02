@@ -35,7 +35,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       removeCache?.addEntry([
         "getDocumentListingGridMetaData",
         context.refID,
-        context.docType,
+        context.docCategory,
       ]);
       removeCache?.addEntry(["getDocumentsGridData", wrapperKey.current]);
     }, []);
@@ -56,7 +56,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         queryKey: [
           "getDocumentListingGridMetaData",
           context.refID,
-          context.docType,
+          context.docCategory,
         ],
         queryFn: () =>
           getDocumentListingGridMetaData.fn(

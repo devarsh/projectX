@@ -5,6 +5,8 @@ import { DefaultRowCellRenderer } from "./defaultRowCellRenderer";
 import { EditableAutocomplete } from "./editableAutocomplete";
 import { EditableSelect } from "./editableSelect";
 import { EditableTextField } from "./editableTextField";
+import { EditableMaskInputField } from "./editableMaskInputField";
+import { EditableNumberFormat } from "./editableNumberFormat";
 
 export type CellComponentType =
   | "currency"
@@ -12,7 +14,9 @@ export type CellComponentType =
   | "default"
   | "editableAutocomplete"
   | "editableSelect"
-  | "editableTextField";
+  | "editableTextField"
+  | "editableMaskInputField"
+  | "editableNumberFormat";
 
 singletonFunctionRegisrationFactoryForTableCells.registerFn(
   "currency",
@@ -37,4 +41,12 @@ singletonFunctionRegisrationFactoryForTableCells.registerFn(
 singletonFunctionRegisrationFactoryForTableCells.registerFn(
   "editableTextField",
   EditableTextField
+);
+singletonFunctionRegisrationFactoryForTableCells.registerFn(
+  "editableMaskInputField",
+  EditableMaskInputField
+);
+singletonFunctionRegisrationFactoryForTableCells.registerFn(
+  "editableNumberFormat",
+  EditableNumberFormat
 );

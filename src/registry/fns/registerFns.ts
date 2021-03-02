@@ -43,7 +43,7 @@ registerFn("bankFacilityType", miscSDK.getMiscVal("ACCOUNT_TYPE"));
 registerFn("getBankDocType", miscSDK.getMiscVal("BANK_DOC_TYPE"));
 registerFn("getITRDocType", miscSDK.getMiscVal("ITR_DOC_TYPE"));
 registerFn("getKYCDocType", miscSDK.getMiscVal("KYC_DOC_TYPE"));
-registerFn("getOtherDocType", miscSDK.getMiscVal("OTH_DOC_TYPE"));
+registerFn("getOtherDocType", miscSDK.getMiscVal("OTHER_DOC_TYPE"));
 registerFn("getGSTDocType", miscSDK.getMiscVal("GST_DOC_TYPE"));
 registerFn("getLeadStage", miscSDK.getMiscVal("LEAD_STAGE"));
 registerFn("getNomineeRelation", miscSDK.getMiscVal("NOMINI_RELATION"));

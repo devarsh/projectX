@@ -36,11 +36,11 @@ export const UpdateDocumentData = ({
     removeCache?.addEntry([
       "getDocumentEditGridMetaData",
       context.moduleType,
-      context.docType,
+      context.docCategory,
     ]);
   }, []);
   const query = useQuery(
-    ["getDocumentEditGridMetaData", context.moduleType, context.docType],
+    ["getDocumentEditGridMetaData", context.moduleType, context.docCategory],
     () => getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args),
     {
       cacheTime: 100000000,
