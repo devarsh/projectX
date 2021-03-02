@@ -46,7 +46,7 @@ const CRMAPI = () => {
     const { action, ...others } = state;
     if (action === "crm_inquiry_metaData") {
       const { data, status } = await internalFetcher(
-        "./inquiry/metaData/get/new",
+        "./inquiry/main/metaData/new",
         {
           body: JSON.stringify({
             request_data: others,
@@ -60,7 +60,7 @@ const CRMAPI = () => {
       }
     } else if (action === "crm_questionnaire_metaData") {
       const { data, status } = await internalFetcher(
-        "./inquiryQuestion/metaData/get/new",
+        "./inquiry/question/metaData/new",
         {
           body: JSON.stringify({
             request_data: others,
@@ -85,12 +85,15 @@ const CRMAPI = () => {
   ) => {
     //rename prodCode to formCode since backend uses prodCode as FormCode
     if (submitAction === "inquiry") {
-      const { data, status } = await internalFetcher("./inquiry/data/post", {
-        body: JSON.stringify({
-          request_data: { refID: refID, ...formData, ...navigationProps },
-          channel: "W",
-        }),
-      });
+      const { data, status } = await internalFetcher(
+        "./inquiry/main/data/post",
+        {
+          body: JSON.stringify({
+            request_data: { refID: refID, ...formData, ...navigationProps },
+            channel: "W",
+          }),
+        }
+      );
       if (status === "success") {
         return { status, data: data?.response_data };
       } else {
@@ -98,7 +101,7 @@ const CRMAPI = () => {
       }
     } else if (submitAction === "question") {
       const { data, status } = await internalFetcher(
-        "./inquiryquestion/data/post",
+        "./inquiry/question/data/post",
         {
           body: JSON.stringify({
             request_data: { refID: refID, ...formData, ...navigationProps },

@@ -51,7 +51,7 @@ const bankCrudAPIArgs = (moduleType, productType, refID) => ({
   },
 });
 
-export const ConfigChild = () => {
+export const DetailsTabView = () => {
   const isDataEditedRef = useRef(false);
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
@@ -92,8 +92,8 @@ export const ConfigChild = () => {
   );
 };
 
-export const Config = () => (
+export const DetailsTabViewBank = () => (
   <ClearCacheProvider>
-    <ConfigChild />
+    <DetailsTabViewBank />
   </ClearCacheProvider>
 );

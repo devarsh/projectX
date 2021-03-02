@@ -3,7 +3,7 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
 import { ListingGrid } from "pages_los/common/listingGrid";
-import { DetailsView } from "./detailsView";
+import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import Alert from "@material-ui/lab/Alert";
@@ -36,7 +36,7 @@ export const Inquiry = () => {
   let gridCode = "TRN/001";
   const [action, setAction] = useState<null | any>(null);
   const disableDialogCloseRef = useRef(false);
-  const isProductEditedRef = useRef(false);
+  const isDataEditedRef = useRef(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [gridRefresh, setGridRefresh] = useState(false);
   const [userMessage, setUserMessage] = useState<SnackbarMessageType>("");
@@ -56,9 +56,9 @@ export const Inquiry = () => {
   const handleDialogClose = () => {
     if (!disableDialogCloseRef.current) {
       setAction(null);
-      if (isProductEditedRef.current) {
+      if (isDataEditedRef.current) {
         setGridRefresh(true);
-        isProductEditedRef.current = false;
+        isDataEditedRef.current = false;
       }
     } else {
       setSnackBarMessage("complete the current action before closing");
@@ -83,12 +83,12 @@ export const Inquiry = () => {
         key={action?.rows[0].id}
       >
         <ClearCacheProvider key={action?.rows[0].id}>
-          <DetailsView
+          <DetailsTabView
             key={action?.rows[0].id}
+            moduleType="inquiry"
             productGridData={action?.rows[0]}
             refID={action?.rows[0].id}
-            disableDialogCloseRef={disableDialogCloseRef}
-            isProductEditedRef={isProductEditedRef}
+            isDataChangedRef={isDataEditedRef}
             handleDialogClose={handleDialogClose}
             setSnackBarMessage={setSnackBarMessage}
           />

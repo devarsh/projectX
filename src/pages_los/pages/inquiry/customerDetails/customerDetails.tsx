@@ -8,12 +8,12 @@ import { useStyles } from "./style";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 
-export const CustomerDetails = ({ refID, productType }) => {
+export const CustomerDetails = ({ refID, moduleType, productType }) => {
   const classes = useStyles();
 
   const result = useQuery(
     ["getViewData", productType, refID],
-    () => LOSSDK.getViewData(productType, refID),
+    () => LOSSDK.getFormData({ moduleType, productType, refID }),
     {
       cacheTime: 100000000,
       refetchOnWindowFocus: false,
@@ -22,21 +22,16 @@ export const CustomerDetails = ({ refID, productType }) => {
   );
 
   //@ts-ignore
-  let errorMsg = `${result.error?.error_msg ?? ""}`;
-  let error = result.isError;
   let customerDetails = {};
-  if (result.isLoading === false && error === false) {
+  if (result.isSuccess) {
     customerDetails = transformCustomerData(result.data);
-    if (Object.keys(customerDetails).length <= 0) {
-      error = true;
-      errorMsg = "Error loading customer Information";
-    }
   }
 
   const renderResult = result.isLoading ? (
     <img src={loaderGif} alt="loader" />
-  ) : error ? (
-    <span>{errorMsg}</span>
+  ) : result.isError ? (
+    //@ts-ignore
+    <span>{result.error?.error_msg ?? "unnknown error occured"}</span>
   ) : (
     <TableContainer className={classes.tableContainer}>
       <Table className={classes.table} size="small" aria-label="lead table">

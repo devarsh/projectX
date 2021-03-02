@@ -3,7 +3,7 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
 import { ListingGrid } from "pages_los/common/listingGrid";
-import { DetailsTabView } from "pages_los/common/crud2";
+import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import Alert from "@material-ui/lab/Alert";

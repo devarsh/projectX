@@ -23,9 +23,7 @@ const moveToLead = async ({ data, refID }: moveToLeadFnType) => {
 
 export const MoveInquiryToLead = ({
   refID,
-  isProductEditedRef,
-  disableDialogCloseRef,
-  handleDialogClose,
+  isDataChangedRef,
   setSnackBarMessage,
 }) => {
   const classes = useStyles();
@@ -46,9 +44,7 @@ export const MoveInquiryToLead = ({
       <MoveInquiryToLeadForm
         classes={classes}
         refID={refID}
-        handleDialogClose={handleDialogClose}
-        disableDialogCloseRef={disableDialogCloseRef}
-        isProductEditedRef={isProductEditedRef}
+        isDataChangedRef={isDataChangedRef}
         setSnackBarMessage={setSnackBarMessage}
       />
     </FormContext.Provider>
@@ -58,22 +54,19 @@ export const MoveInquiryToLead = ({
 const MoveInquiryToLeadForm = ({
   classes,
   refID,
-  handleDialogClose,
-  disableDialogCloseRef,
-  isProductEditedRef,
+
+  isDataChangedRef,
   setSnackBarMessage,
 }) => {
   const moveInquiryToLead = useMutation(moveToLead, {
-    onMutate: () => {
-      disableDialogCloseRef.current = true;
-    },
+    onMutate: () => {},
     onError: (error: any, { endSubmit }) => {
       let errorMsg = "Unknown Error occured";
       if (typeof error === "object") {
         errorMsg = error?.error_msg ?? errorMsg;
       }
       endSubmit(false, errorMsg);
-      disableDialogCloseRef.current = false;
+
       setSnackBarMessage({
         type: "error",
         message: errorMsg,
@@ -81,13 +74,12 @@ const MoveInquiryToLeadForm = ({
     },
     onSuccess: (data, { endSubmit }) => {
       endSubmit(true, "");
-      disableDialogCloseRef.current = false;
-      isProductEditedRef.current = true;
+
+      isDataChangedRef.current = true;
       setSnackBarMessage({
         type: "success",
         message: "Inquiry successfully moved to lead",
       });
-      setTimeout(() => handleDialogClose(), 1);
     },
   });
 

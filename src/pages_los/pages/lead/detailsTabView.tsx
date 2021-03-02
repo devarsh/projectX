@@ -13,23 +13,22 @@ import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
 import { queryClient, ClearCacheContext } from "cache";
 import { LOSSDK } from "registry/fns/los";
-import { CRUDContextProvider } from "./context";
-import { useStyles } from "./style";
+import { CRUDContextProvider, useStyles } from "pages_los/common/crud2";
 import loaderGif from "assets/images/loader.gif";
-import { HeaderDetails } from "../../pages/lead/headerDetails";
+import { HeaderDetails } from "./headerDetails";
 
 const GridCRUD = lazy(() =>
-  import("./gridCRUD").then((module) => ({
+  import("pages_los/common/crud2").then((module) => ({
     default: module.GridCRUD,
   }))
 );
 const SimpleCRUD = lazy(() =>
-  import("./simpleCRUD").then((module) => ({
+  import("pages_los/common/crud2").then((module) => ({
     default: module.SimpleCRUD,
   }))
 );
 const DocumentGridCRUD = lazy(() =>
-  import("../documents/documentsTab").then((module) => ({
+  import("pages_los/common/documents").then((module) => ({
     default: module.DocumentGridCRUD,
   }))
 );

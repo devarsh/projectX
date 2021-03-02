@@ -150,12 +150,26 @@ export const FormViewEdit: FC<{
   let viewMetaData: MetaDataType = {} as MetaDataType;
 
   if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
-    editMetaData = result[2].data as MetaDataType;
+    editMetaData = JSON.parse(JSON.stringify(result[2].data)) as MetaDataType;
+    viewMetaData = JSON.parse(JSON.stringify(result[1].data)) as MetaDataType;
+    editMetaData.form.formState = {
+      ...context,
+      serialNo,
+      formCode: editMetaData.form.name,
+    };
     editMetaData.form.name = `${editMetaData.form.name}-edit`;
-    editMetaData.form.formState = { ...context, serialNo };
-    viewMetaData = result[1].data as MetaDataType;
-    viewMetaData.form.name = `${editMetaData.form.name}-view`;
-    viewMetaData.form.formState = { ...context, serialNo };
+    if (editMetaData?.form?.render?.renderType === "stepper") {
+      editMetaData.form.render.renderType = "tabs";
+    }
+    viewMetaData.form.formState = {
+      ...context,
+      serialNo,
+      formCode: viewMetaData.form.name,
+    };
+    viewMetaData.form.name = `${viewMetaData.form.name}-view`;
+    if (viewMetaData?.form?.render?.renderType === "stepper") {
+      viewMetaData.form.render.renderType = "tabs";
+    }
   }
 
   const renderResult = loading ? (

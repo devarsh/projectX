@@ -14,7 +14,7 @@ import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
 import { Lead } from "./pages/lead";
-import { Config } from "./pages/config";
+import { DetailsTabViewBank } from "./pages/config/bank";
 import NewInquiry from "./pages/newInquiry";
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -51,7 +51,7 @@ const DashbordPages = () => {
             />
             <Route path="/inquiries" element={<Inquiry />} />
             <Route path="/leads" element={<Lead />} />
-            <Route path="/config/banks" element={<Config />} />
+            <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CAMIFrame />} />
             {/*dummy routes*/}
