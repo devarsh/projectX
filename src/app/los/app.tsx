@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { SnackbarProvider } from "notistack";
 import { queryClient } from "cache";
 import "registry/fns/registerFnsLOS";
 import "components/tableCellComponents";
@@ -16,8 +17,10 @@ export const App = () => {
     <Fragment>
       <ThemeProvider theme={themeObj}>
         <QueryClientProvider client={queryClient}>
-          <IndexPage />
-          <ReactQueryDevtools />
+          <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
+            <IndexPage />
+            <ReactQueryDevtools />
+          </SnackbarProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </Fragment>

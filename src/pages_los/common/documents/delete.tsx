@@ -6,6 +6,7 @@ import Alert from "@material-ui/lab/Alert";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { useMutation } from "react-query";
 import { DOCCRUDContext } from "./context";
+import { useSnackbar } from "notistack";
 
 interface DeleteFormDataType {
   docUUID?: string;
@@ -19,12 +20,14 @@ const DeleteDocumentDataFnWrapper = (deleteDocuments) => async ({
 
 export const DeleteAction = ({ dataChangedRef, closeDialog, docUUID }) => {
   const { deleteDocuments } = useContext(DOCCRUDContext);
+  const { enqueueSnackbar } = useSnackbar();
   const mutation = useMutation(
     DeleteDocumentDataFnWrapper(deleteDocuments.fn(deleteDocuments.args)),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
         dataChangedRef.current = true;
+        enqueueSnackbar("Documents successful deleted", { variant: "success" });
         closeDialog();
       },
     }

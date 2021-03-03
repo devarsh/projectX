@@ -2,13 +2,6 @@ import { useState, FC } from "react";
 import { FormViewEdit } from "./formViewEdit";
 import { FormNewExistsIfNotCreate } from "./formNewExistIfNotCreate";
 
-/*
-formState={{
-                    refID,
-                    moduleType,
-                    productType: one.productType,
-                  }}
-*/
 export const SimpleCRUD: FC<{
   isDataChangedRef: any;
   dataAlwaysExists: any;
@@ -19,7 +12,7 @@ export const SimpleCRUD: FC<{
   return dataExist ? (
     <FormViewEdit
       isDataChangedRef={isDataChangedRef}
-      closeDialog={closeDialog} //view Mode
+      closeDialog={closeDialog}
     />
   ) : (
     <FormNewExistsIfNotCreate

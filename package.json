@@ -35,6 +35,7 @@
     "match-sorter": "^5.0.0",
     "mui-datatables": "^3.7.1",
     "namor": "^2.0.2",
+    "notistack": "^1.0.5",
     "num-words": "^1.2.0",
     "prettier": "^2.1.2",
     "react": "^17.0.0",

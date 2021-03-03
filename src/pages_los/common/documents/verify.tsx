@@ -8,6 +8,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import TextField from "@material-ui/core/TextField";
 import { useMutation } from "react-query";
 import { DOCCRUDContext } from "./context";
+import { useSnackbar } from "notistack";
 
 interface VerifyFormDataType {
   docUUID?: string;
@@ -35,12 +36,16 @@ export const VerifyDocumentAction = ({
   const { verifyDocuments } = useContext(DOCCRUDContext);
   const [remarks, setRemarks] = useState("");
   const [error, setError] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
   const verifyMutation = useMutation(
     ConfirmDocumentDataFnWrapper(verifyDocuments.fn(verifyDocuments.args)),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
         dataChangedRef.current = true;
+        enqueueSnackbar("Documents Successfully verified", {
+          variant: "success",
+        });
         closeDialog();
       },
     }
@@ -51,6 +56,9 @@ export const VerifyDocumentAction = ({
       onError: (error: any) => {},
       onSuccess: (data) => {
         dataChangedRef.current = true;
+        enqueueSnackbar("Documents Successfully Rejected", {
+          variant: "success",
+        });
         closeDialog();
       },
     }

@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { DOCCRUDContext } from "./context";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
+import { useSnackbar } from "notistack";
 
 export const UploadDocumentsApiWrapper = ({
   onClose,
@@ -16,6 +17,15 @@ export const UploadDocumentsApiWrapper = ({
     context,
   } = useContext(DOCCRUDContext);
   const removeCache = useContext(ClearCacheContext);
+  const { enqueueSnackbar } = useSnackbar();
+  const closeWrapper = () => {
+    if (dataChangedRef.current === true) {
+      enqueueSnackbar("Documents Successfully uploaded", {
+        variant: "success",
+      });
+    }
+    onClose();
+  };
 
   useEffect(() => {
     removeCache?.addEntry([
@@ -48,7 +58,7 @@ export const UploadDocumentsApiWrapper = ({
     <span>{error}</span>
   ) : (
     <FileUploadControl
-      onClose={onClose}
+      onClose={closeWrapper}
       additionalColumns={query.data}
       editableFileName={editableFileName}
       dataChangedRef={dataChangedRef}

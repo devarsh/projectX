@@ -16,6 +16,7 @@ import { queryClient } from "cache";
 import { ClearCacheContext } from "cache";
 import { CRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
+import { useSnackbar } from "notistack";
 
 interface updateFormDataType {
   data: object;
@@ -43,6 +44,7 @@ export const FormViewEdit: FC<{
   );
   const removeCache = useContext(ClearCacheContext);
   const [formMode, setFormMode] = useState(defaultView);
+  const { enqueueSnackbar } = useSnackbar();
   const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
   //This is for caching purpose to make sure serialNo is not blank
@@ -67,6 +69,9 @@ export const FormViewEdit: FC<{
           wrapperKey.current,
           serialNo,
         ]);
+        enqueueSnackbar("Data changes successfully saved", {
+          variant: "success",
+        });
         isDataChangedRef.current = true;
         moveToViewMode();
         if (typeof closeDialog === "function") {

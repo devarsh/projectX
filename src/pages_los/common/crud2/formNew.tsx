@@ -7,6 +7,7 @@ import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
 import { CRUDContext } from "./context";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { useSnackbar } from "notistack";
 
 interface InsertFormDataFnType {
   data: object;
@@ -27,6 +28,7 @@ export const FormNew: FC<{
   cancelAction: any;
 }> = ({ isDataChangedRef, successAction, cancelAction }) => {
   const { insertFormData, getFormMetaData, context } = useContext(CRUDContext);
+  const { enqueueSnackbar } = useSnackbar();
   const removeCache = useContext(ClearCacheContext);
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
@@ -45,6 +47,9 @@ export const FormNew: FC<{
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
         isDataChangedRef.current = true;
+        enqueueSnackbar("Data is successfully saved with", {
+          variant: "success",
+        });
         if (typeof successAction === "function") {
           successAction();
         }

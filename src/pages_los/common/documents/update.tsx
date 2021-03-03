@@ -10,6 +10,7 @@ import GridWrapper from "components/dataTableStatic";
 import { ClearCacheContext } from "cache";
 import { DOCCRUDContext } from "./context";
 import loaderGif from "assets/images/loader.gif";
+import { useSnackbar } from "notistack";
 
 interface DeleteFormDataType {
   data?: any;
@@ -31,6 +32,7 @@ export const UpdateDocumentData = ({
     DOCCRUDContext
   );
   const removeCache = useContext(ClearCacheContext);
+  const { enqueueSnackbar } = useSnackbar();
   const gridRef = useRef<any>(null);
   useEffect(() => {
     removeCache?.addEntry([
@@ -55,6 +57,7 @@ export const UpdateDocumentData = ({
       onError: (error: any) => {},
       onSuccess: (data) => {
         dataChangedRef.current = true;
+        enqueueSnackbar("Document changes successful", { variant: "success" });
         closeDialog();
       },
     }
