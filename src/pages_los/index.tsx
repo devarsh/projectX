@@ -22,7 +22,7 @@ import { useStyles } from "./style";
 
 //This is temparoary
 // import CAM from "./pages/cam";
-import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
+import { CAMWrapper } from "./pages/cam/camComponents/camSME/camWrapperSME";
 import { Form } from "registry/metaData/test";
 
 const DashbordPages = () => {
@@ -53,7 +53,7 @@ const DashbordPages = () => {
             <Route path="/leads" element={<Lead />} />
             <Route path="/config/banks" element={<Config />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cam" element={<CAMIFrame />} />
+            <Route path="/cam" element={<CAMWrapper />} />
             {/*dummy routes*/}
             <Route path="/leadForm" element={<Form />} />
             <Route path="/pages/:id" element={<Dummy />} />

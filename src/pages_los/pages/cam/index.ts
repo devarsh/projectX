@@ -9,4 +9,4 @@ export { BorrowerSENPHomeOrLAP } from "./borrower/senpOfHomeOrLAP";
 export { CAMSENPHomeOrLAP } from "./cam/senpOfHomeOrLAP";
 export { CAMSalariedHomeOrLAP } from "./cam/salariedOfHomeOrLap";
 
-export { CAMWrapper as default } from "./camComponents/camWrapper";
+export { CAMWrapper as default } from "./camComponents/camSME/camWrapperSME";

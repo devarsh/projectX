@@ -4,7 +4,8 @@ table {
   font-size: 12px;
   border-collapse: collapse;
   margin: 0px auto;
-  max-width: calc(100% - 2rem);
+  width: 3508 x 2480 px;
+  /* max-width: calc(100% - 2rem); */
 }
 table th,
 table tfoot th {
@@ -17,7 +18,7 @@ table th,
 table td {
   padding: 0 8px !important;
   border: 1px solid lightgrey !important;
-  min-width: 180px;
+  min-width: 180px !important;
   font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
 }
 
@@ -28,5 +29,20 @@ table tr td:first-child {
 
 .form-heading {
   text-align: center;
-  padding: 5px;
+  padding: 10px !important;
+  font-size: 15px !important;
+  color: #ffffff !important;
+  background-color: #26a456 !important;
+}
+
+.form-sub-heading {
+  text-align: center;
+  padding: 10px !important;
+  color: #26a456 !important;
+}
+
+.content-text {
+  word-break: break-all;
+  display: block !important;
+  max-width: 100%;
 }
