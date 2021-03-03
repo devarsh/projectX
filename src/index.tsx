@@ -11,7 +11,6 @@ import "registry"; //register functions to be used across application
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 require("dotenv").config();
-require("mock");
 
 const Redirect = () => {
   const navigate = useNavigate();
