@@ -21,6 +21,7 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[] | dependentOptionsFn;
+  _optionsKey?: string;
   label: string;
 }
 
@@ -35,6 +36,7 @@ interface MyCheckboxExtendedProps {
   GridProps?: GridProps;
   enableGrid: boolean;
   CircularProgressProps?: CircularProgressProps;
+  disableCaching?: boolean;
 }
 
 export type MyCheckboxGroupAllProps = Merge<
@@ -67,6 +69,8 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
   enableGrid,
   runValidationOnDependentFieldsChange,
   CircularProgressProps,
+  _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -85,6 +89,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -120,7 +125,10 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey,
+    disableCaching,
+    setIncomingMessage
   );
 
   if (excluded) {
@@ -152,7 +160,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
     >
       <FormLabel {...FormLabelProps} component="label">
@@ -171,7 +179,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
           checkboxes
         )}
       </FormGroup>
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

@@ -3,9 +3,9 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Snackbar from "@material-ui/core/Snackbar";
 import { ListingGrid } from "pages_los/common/listingGrid";
-import { DetailsView } from "./detailsView";
+import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
-import { RemoveCacheRegisterProvider } from "pages_los/common/removeCacheRegisterContext";
+import { ClearCacheProvider } from "cache";
 import Alert from "@material-ui/lab/Alert";
 
 const actions: ActionTypes[] = [
@@ -35,8 +35,7 @@ interface SnackBarType {
 export const Lead = () => {
   let gridCode = "TRN/003";
   const [action, setAction] = useState<null | any>(null);
-  const disableDialogCloseRef = useRef(false);
-  const isProductEditedRef = useRef(false);
+  const isDataEditedRef = useRef(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [gridRefresh, setGridRefresh] = useState(false);
   const [userMessage, setUserMessage] = useState<SnackbarMessageType>("");
@@ -54,14 +53,10 @@ export const Lead = () => {
   );
 
   const handleDialogClose = () => {
-    if (!disableDialogCloseRef.current) {
-      setAction(null);
-      if (isProductEditedRef.current) {
-        setGridRefresh(true);
-        isProductEditedRef.current = false;
-      }
-    } else {
-      setSnackBarMessage("complete the current action before closing");
+    setAction(null);
+    if (isDataEditedRef.current) {
+      setGridRefresh(true);
+      isDataEditedRef.current = false;
     }
   };
 
@@ -79,20 +74,19 @@ export const Lead = () => {
         open={action !== null}
         //@ts-ignore
         TransitionComponent={Transition}
-        onClose={handleDialogClose}
         key={action?.rows[0].id}
       >
-        <RemoveCacheRegisterProvider key={action?.rows[0].id}>
-          <DetailsView
+        <ClearCacheProvider>
+          <DetailsTabView
             key={action?.rows[0].id}
+            moduleType="lead"
             productGridData={action?.rows[0]}
             refID={action?.rows[0].id}
-            disableDialogCloseRef={disableDialogCloseRef}
-            isProductEditedRef={isProductEditedRef}
+            isDataChangedRef={isDataEditedRef}
             handleDialogClose={handleDialogClose}
             setSnackBarMessage={setSnackBarMessage}
           />
-        </RemoveCacheRegisterProvider>
+        </ClearCacheProvider>
       </Dialog>
       <SnackbarMessage
         open={snackBarOpen}

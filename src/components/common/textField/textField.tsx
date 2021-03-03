@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useCallback, Fragment } from "react";
+import { FC, useEffect, useRef, useCallback } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
@@ -10,6 +10,7 @@ import CircularProgress, {
 import { Merge } from "../types";
 import numWords from "num-words";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { transformDependentFieldsState } from "packages/form";
 
 interface MyGridExtendedProps {
   enableNumWords?: boolean;
@@ -19,6 +20,7 @@ interface MyGridExtendedProps {
   EndAdornment?: string;
   CircularProgressProps?: CircularProgressProps;
   enableGrid: boolean;
+  setValueOnDependentFieldsChange?: any;
 }
 
 type MyTextFieldAllProps = Merge<TextFieldProps, MyGridExtendedProps>;
@@ -47,6 +49,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   //@ts-ignore
   isFieldFocused,
   maxLength = -1,
+  setValueOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -64,6 +67,8 @@ const MyTextField: FC<MyTextFieldProps> = ({
     incomingMessage,
     whenToRunValidation,
     runValidation,
+    validationAPIResult,
+    dependentValues,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -96,13 +101,24 @@ const MyTextField: FC<MyTextFieldProps> = ({
   }, [isFieldFocused]);
 
   useEffect(() => {
+    if (typeof setValueOnDependentFieldsChange === "function") {
+      let result = setValueOnDependentFieldsChange(
+        transformDependentFieldsState(dependentValues)
+      );
+      if (result !== undefined || result !== null) {
+        handleChange(result);
+      }
+    }
+  }, [dependentValues, handleChange]);
+
+  useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
-      if (value !== "DEFAULT_VALUE") {
+      if (Boolean(value) || value === "") {
         handleChange(value);
-      }
-      if (whenToRunValidation === "onBlur") {
-        runValidation({ value: value }, true);
+        if (whenToRunValidation === "onBlur") {
+          runValidation({ value: value }, true);
+        }
       }
     }
   }, [incomingMessage, handleChange, runValidation, whenToRunValidation]);
@@ -134,10 +150,16 @@ const MyTextField: FC<MyTextFieldProps> = ({
       id={fieldKey}
       name={name}
       value={value}
-      error={isError}
+      error={!isSubmitting && isError}
       helperText={
         <div style={{ display: "flex" }}>
-          <FormHelperText>{isError ? myError : numWordsVar}</FormHelperText>
+          <FormHelperText>
+            {!isSubmitting && isError
+              ? myError
+              : Boolean(validationAPIResult)
+              ? validationAPIResult
+              : numWordsVar}
+          </FormHelperText>
           {maxLength > 0 && (
             <FormHelperText
               error={false}
@@ -155,7 +177,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
       }
       FormHelperTextProps={{
         //@ts-ignore
-        component: Fragment,
+        component: "div",
       }}
       //@ts-ignore
       InputProps={{

@@ -1,44 +1,42 @@
 import { FC, useState, useRef, cloneElement } from "react";
 import { useRecoilValue } from "recoil";
 import {
-  useForm,
-  SubmitFnType,
   formFieldsExcludedAtom,
   formFieldsErrorWatcherAtom,
 } from "packages/form";
 import Grid from "@material-ui/core/Grid";
-import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
-import { useStyles } from "./style";
+import { FormProps } from "./types";
 import { MyStepper } from "./stepperForm";
 import { MyTabs } from "./tabsForm";
-
-interface FormProps {
-  fields: GroupWiseRenderedFieldsType;
-  formRenderConfig: FormRenderConfigType;
-  formDisplayName: string;
-  formName: string;
-  submitFn: SubmitFnType;
-  cancelFn: any;
-}
 
 export const GroupedForm: FC<FormProps> = ({
   fields,
   formRenderConfig,
-  formDisplayName,
   formName,
-  submitFn,
-  cancelFn,
+  disableGroupErrorDetection,
+  disableGroupExclude,
+  handleSubmit,
+  handleSubmitPartial,
 }) => {
   const defaultGroupName = "DefaultGroup";
-  const excludedFields = useRecoilValue(formFieldsExcludedAtom(formName));
-  const errorWatcherFields = useRecoilValue(
-    formFieldsErrorWatcherAtom(formName)
+  const disableGroupErrorDetectionStr = Boolean(disableGroupErrorDetection)
+    ? `${formName}-disableGroupErrorDetection`
+    : formName;
+  const disableGroupExcludeStr = Boolean(disableGroupExclude)
+    ? `${formName}-disableGroupExclude`
+    : formName;
+
+  // Need to remove this code it defeats the purpose of the library maybe move it to an invididual component that
+  // wont have the whole form rerender
+  const excludedFields = useRecoilValue(
+    formFieldsExcludedAtom(disableGroupExcludeStr)
   );
-  const classes = useStyles();
+  const errorWatcherFields = useRecoilValue(
+    formFieldsErrorWatcherAtom(disableGroupErrorDetectionStr)
+  );
+
   const [activeStep, setActiveStep] = useState(0);
-  const { handleSubmit, handleSubmitPartial } = useForm({
-    onSubmit: submitFn,
-  });
+
   const fieldGroups = useRef<string[]>(Object.keys(fields).sort());
   const fieldGroupsActiveStatus = fieldGroups.current.map((one) => {
     let groupName = defaultGroupName;
@@ -106,10 +104,11 @@ export const GroupedForm: FC<FormProps> = ({
   return (
     <CURRENT_COMPONENT
       key={formRenderConfig.renderType}
-      classes={classes}
-      formDisplayName={formDisplayName}
       activeStep={activeStep}
       filteredFieldGroups={filteredFieldGroups}
+      //special for Tabs
+      setActiveStep={setActiveStep}
+      //special for stepper
       formRenderConfig={formRenderConfig}
       defaultGroupName={defaultGroupName}
       fieldGroups={fieldGroups}
@@ -118,9 +117,7 @@ export const GroupedForm: FC<FormProps> = ({
       handlePrev={handlePrev}
       handleNext={handleNext}
       handleSubmit={handleSubmit}
-      handleCancel={cancelFn}
       isLastActiveStep={isLastActiveStep}
-      setActiveStep={setActiveStep}
     />
   );
 };
@@ -137,7 +134,6 @@ const getNextActiveStep = (
       return i;
     }
   }
-
   return currentStep;
 };
 
@@ -196,7 +192,15 @@ const isGroupHavingError = (
 ) => {
   const remaningFields = currentGroupFields.filter((fieldName) => {
     const fullFieldName = `${formName}/${fieldName}`;
-    return errorFields.indexOf(fullFieldName) >= 0 ? true : false;
+    let result = errorFields.indexOf(fullFieldName) >= 0 ? true : false;
+    if (result === false) {
+      result = Boolean(
+        errorFields.find((one) => one.indexOf(fullFieldName) > -1)
+      )
+        ? true
+        : false;
+    }
+    return result;
   });
   if (remaningFields.length > 0) {
     return true;

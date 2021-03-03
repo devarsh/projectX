@@ -1,4 +1,14 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
+import { transformDependentFieldsState } from "packages/form";
+
+const computeDependentKey = (dependentValues = {}) => {
+  let keys = Object.keys(dependentValues).sort();
+  return keys.reduce((accum, one) => {
+    accum[one] = dependentValues[one].value;
+    return accum;
+  }, {});
+};
 
 export const useOptionsFetcher = (
   formState,
@@ -8,76 +18,106 @@ export const useOptionsFetcher = (
   dependentValues,
   incomingMessage,
   runValidation,
-  whenToRunValidation
-) => {
-  const lastOptionsPromise = useRef<Promise<any> | null>(null);
-  const [loadingOptions, setLoadingOptions] = useState(false);
-
-  //formState value mutates causing this component to rerender, need to fix
-  //for now we wont pass form state as depedency and fix it but needs investigation why this
-  //is happening
-  const syncAsyncSetOptions = useCallback(
-    (options, dependentValues) => {
-      if (Array.isArray(options)) {
-        setOptions(options);
-      } else if (typeof options === "function") {
-        try {
-          setLoadingOptions(true);
-          setOptions([{ label: "loading...", value: null }]);
-          let currentPromise = Promise.resolve(
-            options(dependentValues, formState)
-          );
-          lastOptionsPromise.current = currentPromise;
-          currentPromise
-            .then((result) => {
-              setLoadingOptions(false);
-              if (lastOptionsPromise.current === currentPromise) {
-                if (Array.isArray(result)) {
-                  setOptions(result);
-                } else {
-                  setOptions([{ label: "Couldn't fetch", value: null }]);
-                  console.log(
-                    `expected optionsFunction in select component to return array of OptionsType but got: ${result}`
-                  );
-                }
-              }
-            })
-            .catch((e) => {
-              setLoadingOptions(false);
-              setOptions([{ label: "Couldn't fetch", value: null }]);
-              console.log(`error occured while fetching options`, e?.message);
-            });
-        } catch (e) {
-          setLoadingOptions(false);
-          setOptions([{ label: "Couldn't fetch", value: null }]);
-          console.log(`error occured while fetching options`, e?.message);
-        }
-      }
-    },
-    [setOptions]
+  whenToRunValidation,
+  _optionsKey,
+  disableCaching,
+  setIncomingMessage
+): { loadingOptions: boolean } => {
+  let loadingOptions = false;
+  let queryKey: any[] = [];
+  if (Boolean(disableCaching)) {
+    const dependentKeys = computeDependentKey(dependentValues);
+    //const formStateKeys = computeFormStateKey(formState);
+    queryKey = [_optionsKey, dependentKeys];
+  } else {
+    queryKey = [_optionsKey];
+  }
+  const queryOptions = useQuery(
+    queryKey,
+    () =>
+      options(
+        dependentValues,
+        formState,
+        transformDependentFieldsState(dependentValues)
+      ),
+    {
+      retry: false,
+      enabled: typeof options === "function",
+      cacheTime: disableCaching ? 0 : 100000000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
   );
-  // const values = useRef({
-  //   options,
-  //   dependentValues,
-  //   syncAsyncSetOptions,
-  //   formState,
-  // });
+  loadingOptions = queryOptions.isLoading;
   useEffect(() => {
-    syncAsyncSetOptions(options, dependentValues);
-  }, [options, dependentValues, syncAsyncSetOptions]);
+    if (options === undefined) {
+      setOptions([{ label: "No Data", value: null }]);
+      loadingOptions = false;
+    } else if (Array.isArray(options)) {
+      setOptions(options);
+      loadingOptions = false;
+    } else if (typeof options === "object") {
+      const { options: _options, ...others } = options;
+      if (Array.isArray(_options)) {
+        setOptions(options);
+        if (Object.keys(others).length > 0) {
+          setIncomingMessage(others);
+        }
+      } else {
+        setOptions([{ label: "Invalid Data", value: null }]);
+      }
+      loadingOptions = false;
+    } else if (queryOptions.isLoading) {
+      setOptions([{ label: "loading...", value: null }]);
+      loadingOptions = true;
+    } else if (queryOptions.isError) {
+      setOptions([{ label: "Couldn't fetch", value: null }]);
+      console.log(
+        `error occured while fetching data for ${_optionsKey}`,
+        queryOptions.error
+      );
+      loadingOptions = false;
+    } else if (Array.isArray(queryOptions.data)) {
+      setOptions(queryOptions.data);
+      loadingOptions = false;
+    } else if (typeof queryOptions.data === "object") {
+      const { options: _options, ...others } = queryOptions.data;
+      if (Array.isArray(_options)) {
+        setOptions(_options);
+        if (Object.keys(others).length > 0) {
+          setIncomingMessage(others);
+        }
+      } else {
+        setOptions([{ label: "Invalid Data", value: null }]);
+      }
+      loadingOptions = false;
+    } else {
+      setOptions([{ label: "Couldn't fetch", value: null }]);
+      console.log(
+        `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
+      );
+      loadingOptions = false;
+    }
+  }, [loadingOptions, queryOptions.dataUpdatedAt]);
+
+  // useEffect(() => {
+  //   componentMountedTime.current = new Date().getTime();
+  // }, []);
 
   useEffect(() => {
-    if (incomingMessage !== null && typeof incomingMessage === "object") {
-      const { value, options } = incomingMessage;
-      //this a patch to not change current value we have as default value
-      if (value !== "DEFAULT_VALUE") {
+    const hookCalledTime = new Date().getTime();
+    //const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
+    if (
+      //timeDiff > 5000 &&
+      incomingMessage !== null &&
+      typeof incomingMessage === "object"
+    ) {
+      const { value } = incomingMessage;
+      if (Boolean(value) || value === "") {
         handleChangeInterceptor(value);
-      }
-      if (whenToRunValidation === "onBlur") {
-        runValidation({ value: value }, true);
-      }
-      if (Array.isArray(options)) {
-        setOptions(options);
+        if (whenToRunValidation === "onBlur") {
+          runValidation({ value: value }, true);
+        }
       }
     }
   }, [
@@ -87,6 +127,63 @@ export const useOptionsFetcher = (
     runValidation,
     whenToRunValidation,
   ]);
+
+  return { loadingOptions };
+};
+
+/****** ---- */
+
+export const useOptionsFetcherSimple = (
+  options,
+  setOptions,
+  _optionsKey,
+  disableCaching,
+  optionsProps
+) => {
+  let loadingOptions = false;
+
+  let queryKey: any[] = [];
+  if (Boolean(disableCaching)) {
+    queryKey = [_optionsKey, optionsProps];
+  } else {
+    queryKey = [_optionsKey];
+  }
+  const queryOptions = useQuery(queryKey, () => options(optionsProps), {
+    enabled: typeof options === "function",
+    cacheTime: 100000000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+  loadingOptions = queryOptions.isLoading;
+  useEffect(() => {
+    if (options === undefined) {
+      setOptions([{ label: "No Data", value: null }]);
+      loadingOptions = false;
+    } else if (Array.isArray(options)) {
+      setOptions(options);
+      loadingOptions = false;
+    } else if (queryOptions.isLoading) {
+      setOptions([{ label: "loading...", value: null }]);
+      loadingOptions = true;
+    } else if (queryOptions.isError) {
+      setOptions([{ label: "Couldn't fetch", value: null }]);
+      console.log(
+        `error occured while fetching data for ${_optionsKey}`,
+        queryOptions.error
+      );
+      loadingOptions = false;
+    } else {
+      if (Array.isArray(queryOptions.data)) {
+        setOptions(queryOptions.data);
+      } else {
+        setOptions([{ label: "Couldn't fetch", value: null }]);
+        console.log(
+          `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
+        );
+      }
+      loadingOptions = false;
+    }
+  }, [loadingOptions]);
 
   return { loadingOptions };
 };

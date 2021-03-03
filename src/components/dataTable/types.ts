@@ -1,8 +1,10 @@
+import { CellComponentType } from "components/tableCellComponents";
+
 export interface GridColumnType {
   columnName: string;
   accessor: string;
   sequence: number;
-  componentType: "default" | "date" | "currency";
+  componentType: CellComponentType;
   Cell?: any;
   Filter?: any;
   filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";
@@ -56,15 +58,18 @@ export interface GridMetaDataType {
   multipleActions: ActionTypes[];
   singleActions: ActionTypes[];
   doubleClickAction: ActionTypes | boolean;
+  alwaysAvailableAction: ActionTypes[];
 }
 
 export interface ActionTypes {
   actionName: string;
   actionLabel: string;
-  multiple: boolean;
+  multiple: boolean | undefined;
   actionIcon?: any;
   tooltip?: string;
   rowDoubleClick?: boolean;
+  alwaysAvailable?: boolean;
+  shouldExclude?: any;
 }
 
 export interface RenderActionType {
@@ -75,8 +80,10 @@ export interface RenderActionType {
 
 export interface TableActionType {
   selectedFlatRows: any;
+  contextMenuRow?: any;
   singleActions: ActionTypes[];
   multipleActions?: ActionTypes[];
+  alwaysAvailableAction?: ActionTypes[];
   setGridAction: any;
   mouseX?: any;
   mouseY?: any;

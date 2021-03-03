@@ -20,3 +20,7 @@ export interface dependentOptionsFn {
     | OptionsProps[]
     | Promise<OptionsProps[]>;
 }
+
+export interface OptionsFn {
+  (): OptionsProps[] | Promise<OptionsProps[]>;
+}

@@ -20,6 +20,8 @@ import {
   AllAutocompleteProps,
   ArrayFieldProps,
   AllTextareaAutosizeFieldProps,
+  AllHiddenFieldProps,
+  AllTypographyFieldProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -79,9 +81,11 @@ export interface FormMetaDataType {
   validationRun: "onBlur" | "onChange" | "all";
   render: FormRenderConfigType;
   componentProps: ComponentTypeProps;
+  formState?: any;
+  //very specific need better api and remove from metaData -future TODO
   flow?: UserFlowType[];
   submitAction?: string;
-  refID?: string | number;
+  refID?: string | number; //remove it and make it part of formState
   confirmationBox?: {
     name: string;
     label: string;
@@ -136,6 +140,8 @@ export type FieldMetaDataTypeX =
   | AllInputMaskProps
   | AllAutocompleteProps
   | AllTextareaAutosizeFieldProps
+  | AllTypographyFieldProps
+  | AllHiddenFieldProps
   | ArrayFieldProps;
 
 export type FieldMetaDataType = Merge<
@@ -209,6 +215,18 @@ export interface FormWrapperProps {
   metaData: MetaDataType;
   initialValues?: InitialValuesType;
   onSubmitHandler: SubmitFnType;
-  onCancleHandler?: any;
   hidden?: boolean;
+  displayMode?: "new" | "view" | "edit";
+  disableGroupExclude?: boolean;
+  disableGroupErrorDetection?: boolean;
+}
+
+export interface FormProps {
+  fields: GroupWiseRenderedFieldsType;
+  formRenderConfig: FormRenderConfigType;
+  formName: string;
+  disableGroupExclude?: boolean;
+  disableGroupErrorDetection?: boolean;
+  handleSubmitPartial?: any;
+  handleSubmit?: any;
 }

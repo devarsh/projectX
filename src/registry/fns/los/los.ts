@@ -35,6 +35,7 @@ const LOSAPI = () => {
         ...payload,
         headers: new Headers({
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         }),
       });
       if (String(response.status) === "200") {
@@ -111,149 +112,22 @@ const LOSAPI = () => {
     }
   };
 
-  const getNewMetaData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(
-      `./${type}/metaData/get/new`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            refID: refID,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
+  interface DOCCRUDTYPE {
+    moduleType: string;
+    productType?: string;
+    docCategory: string;
+    refID: string;
+    serialNo?: string;
+  }
 
-  const getViewMetaData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(
-      `./${type}/metaData/get/view`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            refID: refID,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getViewData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./${type}/data/view`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getEditMetaData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(
-      `./${type}/metaData/get/edit`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            refID: refID,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getEditData = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./${type}/data/get`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const updateData = async (type: string, refID: string, formData: any) => {
-    const { data, status } = await internalFetcher(`./${type}/data/put`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          ...formData,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const insertData = async (type: string, refID: string, formData: any) => {
-    const { data, status } = await internalFetcher(`./${type}/data/post`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          ...formData,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const checkDataExist = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./${type}/data/exists`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const uploadDocuments = async (
-    type: string,
-    files: File[],
-    docID: string,
-    refID: string,
+  const uploadDocuments = ({
+    moduleType,
+    productType,
+    docCategory,
+    refID,
+    serialNo,
+  }: DOCCRUDTYPE) => async (
+    data: FormData,
     progressHandler: any = () => {},
     completeHandler: any = () => {}
   ) => {
@@ -263,14 +137,15 @@ const LOSAPI = () => {
         data: "Invalid token or API not initialized",
       };
     }
-    const newURL = new URL(`./${type}/document/upload`, baseURL as URL).href;
-    let formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("file", files[i]);
-    }
-    formData.append("refID", refID);
-    formData.append("docID", docID);
+    const newURL = new URL(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/post`
+        : `./${moduleType}/document/${docCategory}/data/post`,
+      baseURL as URL
+    ).href;
     let xhr = new XMLHttpRequest();
+    data.append("refID", refID);
+    data.append("serialNo", serialNo ?? "");
     xhr.open("POST", newURL, true);
     xhr.setRequestHeader("Authorization", `Bearer ${token}`);
     xhr.upload.onprogress = (e) => {
@@ -296,15 +171,53 @@ const LOSAPI = () => {
         });
       }
     };
-    xhr.send(formData);
+    xhr.send(data);
   };
-  const getDocumentListingTemplate = async (type: string, refID: string) => {
+
+  const listDocuments = async ({
+    moduleType,
+    productType,
+    docCategory,
+    refID,
+    serialNo,
+  }: DOCCRUDTYPE) => {
     const { data, status } = await internalFetcher(
-      `./${type}/document/template`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/get`
+        : `./${moduleType}/document/${docCategory}/data/get`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
+            serialNo: serialNo,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.request_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const deleteDocuments = ({
+    moduleType,
+    productType,
+    docCategory,
+    refID,
+    serialNo,
+  }: DOCCRUDTYPE) => async (docUUID: any) => {
+    const { data, status } = await internalFetcher(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/delete`
+        : `./${moduleType}/document/${docCategory}/data/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+            docUUID: docUUID,
           },
           channel: "W",
         }),
@@ -316,35 +229,35 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const getDocumentsList = async (type: string, refID: string) => {
-    const { data, status } = await internalFetcher(`./${type}/document/get`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-  const verifyDocuments = async (
-    type: string,
-    refID: string,
-    docID: string,
-    userComments: string
+
+  const verifyDocuments = ({
+    moduleType,
+    productType,
+    docCategory,
+    refID,
+    serialNo,
+  }: DOCCRUDTYPE) => async (
+    docUUID: any,
+    remarks: any,
+    docStatus: "Verify" | "Rejected"
   ) => {
     const { data, status } = await internalFetcher(
-      `./${type}/document/verify`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/verification`
+        : `./${moduleType}/document/${docCategory}/data/verification`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
-            docID: docID,
-            comment: userComments,
+            serialNo: serialNo,
+            docUUID: docUUID,
+            remarks: remarks,
+            status:
+              docStatus === "Verify"
+                ? "Y"
+                : docStatus === "Rejected"
+                ? "R"
+                : "X",
           },
           channel: "W",
         }),
@@ -356,20 +269,24 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const rejectDocuments = async (
-    type: string,
-    refID: string,
-    docID: string,
-    userComments: string
-  ) => {
+
+  const updateDocuments = ({
+    moduleType,
+    productType,
+    docCategory,
+    refID,
+    serialNo,
+  }: DOCCRUDTYPE) => async (updateData: any) => {
     const { data, status } = await internalFetcher(
-      `./${type}/document/reject`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/put`
+        : `./${moduleType}/document/${docCategory}/data/put`,
       {
         body: JSON.stringify({
           request_data: {
             refID: refID,
-            docID: docID,
-            comment: userComments,
+            serialNo: serialNo,
+            details: updateData,
           },
           channel: "W",
         }),
@@ -381,19 +298,18 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const deleteDocuments = async (
-    type: string,
-    refID: string,
-    docID: string
-  ) => {
+
+  const getDocumentGridMetaData = async ({
+    moduleType,
+    productType,
+    docCategory,
+    metaDataType,
+  }) => {
     const { data, status } = await internalFetcher(
-      `./${type}/document/delete`,
+      `./${moduleType}/document/${docCategory}/metaData/${metaDataType}`,
       {
         body: JSON.stringify({
-          request_data: {
-            refID: refID,
-            docID: docID,
-          },
+          request_data: {},
           channel: "W",
         }),
       }
@@ -404,14 +320,61 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const constructDocumentDownloadURL = (type, documentID) => {
-    if (!isAPIInitialized()) {
-      return "";
+
+  const generateDocumentDownloadURL = ({
+    moduleType,
+    productType,
+    docCategory,
+  }) => (docUUID) => {
+    if (!Array.isArray(docUUID)) {
+      docUUID = [docUUID];
     }
-    let downloadURL = new URL(`./${type}/document/download`, baseURL as URL)
-      .href;
-    return `${downloadURL}?docUUID=${documentID}&token=${token}`;
+    let docs = docUUID.join(",");
+    return new URL(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/download?docUUID=${docs}&tokenID=${token}`
+        : `./${moduleType}/document/${docCategory}/data/download?docUUID=${docs}&tokenID=${token}`,
+      baseURL as URL
+    ).href;
   };
+
+  const previewDocument = ({ moduleType, productType, docCategory }) => async (
+    docUUID
+  ) => {
+    if (!Array.isArray(docUUID)) {
+      docUUID = [docUUID];
+    }
+    const url = new URL(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/${docCategory}/data/preview`
+        : `./${moduleType}/document/${docCategory}/data/preview`,
+      baseURL as URL
+    ).href;
+    try {
+      let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          request_data: {
+            docUUID: docUUID,
+          },
+        }),
+        headers: new Headers({
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        }),
+      });
+      if (String(response.status) === "200") {
+        let data = await response.blob();
+        return data;
+      } else {
+        return new Error("Error getting file");
+      }
+    } catch (e) {
+      return e;
+    }
+  };
+
+  //***END of docs API */
 
   const moveInquiryToLead = async (refID: string, formData: any) => {
     const { data, status } = await internalFetcher(`./inquiry/moveToLead`, {
@@ -430,29 +393,505 @@ const LOSAPI = () => {
     }
   };
 
+  //We will use theme for lead and inquiry alike - for now only enabled for lead
+  //  moduleType - lead/inquiry
+  // productType - products within this module
+
+  const deleteFormArrayFieldData = async (
+    formState: any,
+    arrayfieldName: string
+  ) => {
+    const { moduleType, productType, ...others } = formState;
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/${arrayfieldName}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...others,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getCRUDTabsMetadata = async ({ moduleType, refID }) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/tabs/metaData`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getDocumentCRUDTabsMetadata = async ({
+    moduleType,
+    productType,
+    refID,
+  }) => {
+    const { data, status } = await internalFetcher(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/metaData/tabs`
+        : `./${moduleType}/document/metaData/tabs`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  interface crudType {
+    moduleType: string;
+    productType: string;
+    refID: string;
+  }
+
+  const getFormData = ({ moduleType, productType, refID }: crudType) => async (
+    serialNo?: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/get`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const updateFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any, serialNo?: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/put`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const deleteFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (serialNo: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            serialNo: serialNo,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const insertFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/post`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const checkFormDataExist = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/data/exists`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getGridFormData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/grid/data`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getBankData = ({ moduleType, productType }: crudType) => async (
+    serialNo?: string
+  ) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/get`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: serialNo,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const updateBankData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any, bankRefCode?: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/put`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: bankRefCode,
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const deleteBankData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (bankRefCode: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/delete`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: bankRefCode,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const insertBankData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (formData: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/post`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...formData,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getStaticBankGridData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/grid/data`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  ///--------------------CAM crud metaData
+
+  const getFormMetaData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async (metadataType: any) => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/metadata/${metadataType}`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getGridFormMetaData = ({
+    moduleType,
+    productType,
+    refID,
+  }: crudType) => async () => {
+    const { data, status } = await internalFetcher(
+      `./${moduleType}/${productType}/grid/metadata`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getBankListForLeadDocuments = async (props) => {
+    const { data, status } = await internalFetcher(
+      `./lead/document/options/bank`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            ...props,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getLeadSubStageCode = async (dependentFields: any, formState: any) => {
+    const { status, data } = await internalFetcher(`lead/options/subStage`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: formState?.refID,
+          stageCode: dependentFields?.stageCode?.value,
+        },
+      }),
+    });
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.subStageCode,
+        label: one?.subStageName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getLeadEmploymentType = async (_, formState: any) => {
+    const { status, data } = await internalFetcher(
+      `lead/options/employmentType`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getCAMData = async (refID: string) => {
+    const { data, status } = await internalFetcher(`./lead/cam/data`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
     removeToken,
-    checkDataExist,
+    //For Server Side Grid
     getGridMetaData,
     getGridData,
     getGridColumnFilterData,
-    getNewMetaData,
-    getViewMetaData,
-    getViewData,
-    getEditMetaData,
-    getEditData,
-    insertData,
-    updateData,
+
+    //document
+    getDocumentGridMetaData, //update,upload,edit
+    listDocuments,
     uploadDocuments,
-    getDocumentListingTemplate,
-    getDocumentsList,
-    verifyDocuments,
-    rejectDocuments,
+    updateDocuments,
     deleteDocuments,
-    constructDocumentDownloadURL,
+    verifyDocuments,
+    getBankListForLeadDocuments,
+    generateDocumentDownloadURL,
+    previewDocument,
+
+    //Lead/Inquiry/Config(Bank) -
+    getDocumentCRUDTabsMetadata,
+    getCRUDTabsMetadata,
+    getGridFormMetaData,
+    getGridFormData, // Grid Data
+    getFormData,
+    insertFormData,
+    updateFormData,
+    deleteFormData,
+    checkFormDataExist,
+    deleteFormArrayFieldData,
+
+    getLeadSubStageCode,
+    getLeadEmploymentType,
     moveInquiryToLead,
+
+    //Bank
+    updateBankData,
+    deleteBankData,
+    insertBankData,
+    getStaticBankGridData,
+    getBankData,
+
+    //CAM
+    getFormMetaData,
+
+    getCAMData,
   };
 };
 

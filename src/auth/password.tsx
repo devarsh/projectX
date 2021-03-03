@@ -1,4 +1,3 @@
-import React from "react";
 import { TextField } from "components/styledComponent/textfield";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -30,6 +29,7 @@ export const PasswordField = ({
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
           <Button
             endIcon={loginState.loading ? <CircularProgress size={20} /> : null}
+            disabled={loginState.loading}
             onClick={verifyPassword}
           >
             Login

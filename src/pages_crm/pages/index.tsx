@@ -10,6 +10,7 @@ import { BecomePartnerFormWrapper } from "./becomePartner";
 import OTPVerificationPage from "./otpVerificationDialog";
 import AadharVerification from "./aadharVerification";
 import Equifax from "./equifax";
+import TestForm from "components/dyanmicForm/test";
 
 const Index = () => {
   const classes = useStyles();
@@ -72,6 +73,16 @@ const Index = () => {
           <Box width={1} display="flex" className={classes.wrapper}>
             <div className={classes.paper}>
               <InquiryForms />
+            </div>
+          </Box>
+        }
+      />
+      <Route
+        path="test"
+        element={
+          <Box width={1} display="flex" className={classes.wrapper}>
+            <div className={classes.paper}>
+              <TestForm />
             </div>
           </Box>
         }

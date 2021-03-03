@@ -19,19 +19,15 @@ import { NumberFormatProps } from "components/derived/numberFormat";
 import { PasswordFieldProps } from "components/derived/passwordField";
 import { InputMaskProps } from "components/derived/inputMask";
 import { ValidateFnType, shouldExcludeFnType } from "packages/form";
-import { TopLevelCondition } from "json-rules-engine";
+import { CustomRuleType } from "components/utils";
 import { ArrayField2Props } from "components/common/arrayField";
 import { TextareaAutosizeFieldProps } from "components/common/textarea";
+import { TypographyProps } from "components/common/typograhpy";
+import { HiddenFieldProps } from "components/common/hidden";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
   sequence?: number;
-}
-
-export interface CustomRuleType {
-  conditions: TopLevelCondition;
-  success: any;
-  failure: any;
 }
 
 export interface FieldMetaData<T> {
@@ -162,3 +158,13 @@ export type AllTextareaAutosizeFieldProps = Merge<
 >;
 
 export type TextareaAutosizeFieldPropsOptional = Optional<AllTextFieldProps>;
+
+export type AllHiddenFieldProps = Merge<
+  Omitted<HiddenFieldProps>,
+  FieldMetaData<"hidden">
+>;
+
+export type AllTypographyFieldProps = Merge<
+  Omitted<TypographyProps>,
+  FieldMetaData<"typography">
+>;

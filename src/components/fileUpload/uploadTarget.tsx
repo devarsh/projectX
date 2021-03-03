@@ -16,19 +16,19 @@ const style = ({ disabled }): CSSProperties => ({
 });
 
 export const UploadTarget: FC<TargetBoxType> = (props) => {
-  const { onDrop, disabled } = props;
+  const { onDrop, disabled, existingFiles } = props;
   const fileUploadControl = useRef<any | null>(null);
   const handleFileSelect = (e) => {
     const files = e.target.files;
     const filesArray = Array.from(files);
-    onDrop(props, filesArray as File[]);
+    onDrop(filesArray as File[], existingFiles);
   };
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: [NativeTypes.FILE],
     drop(item, monitor) {
       if (typeof onDrop === "function") {
         const files = Array.from(monitor.getItem().files) as File[];
-        onDrop(props, files);
+        onDrop(files, existingFiles);
       }
     },
     collect: (monitor) => ({
@@ -62,6 +62,11 @@ export const UploadTarget: FC<TargetBoxType> = (props) => {
             style={{ display: "none" }}
             ref={fileUploadControl}
             onChange={handleFileSelect}
+            onClick={(e) => {
+              //to clear the file uploaded state to reupload the same file (AKA allow our handler to handle duplicate file)
+              //@ts-ignore
+              e.target.value = "";
+            }}
           />
         </>
       )}

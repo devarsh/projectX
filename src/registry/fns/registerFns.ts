@@ -1,5 +1,5 @@
 import { others, pincode, MiscSDK as miscSDK } from "./misc";
-import { singletonFunctionRegisrationFactory } from "components/dyanmicForm";
+import { singletonFunctionRegisrationFactory } from "components/utils";
 
 const { registerFn } = singletonFunctionRegisrationFactory;
 
@@ -8,7 +8,6 @@ registerFn("getResidentialStatus", miscSDK.getMiscVal("RESI_STATUS"));
 registerFn("getSalutation", miscSDK.getMiscVal("SALUTATION_TYPE"));
 registerFn("getProfessionalYears", miscSDK.getMiscVal("PROF_YEARS"));
 registerFn("getBusinessNature", miscSDK.getMiscVal("BUSINESS_NATURE"));
-registerFn("getIndustryType", miscSDK.getMiscVal("INDUSTRY_TYPE"));
 registerFn("getFirmType", miscSDK.getMiscVal("FIRM_TYPE"));
 registerFn("getProfession", miscSDK.getMiscVal("PROFESSION"));
 registerFn("getProfessionYears", miscSDK.getMiscVal("PROF_YEARS"));
@@ -33,10 +32,30 @@ registerFn("getAccountType", miscSDK.getMiscVal("ACCT_TYPE"));
 registerFn("getChannelType", miscSDK.getMiscVal("CHANNEL_TYPE"));
 registerFn("getBusinessInterest", miscSDK.getMiscVal("BUSI_INTREST"));
 registerFn("getLeadPriority", miscSDK.getMiscVal("LEAD_PRIORITY"));
+registerFn("getIndividualAddressType", miscSDK.getMiscVal("IND_ADD_TYPE"));
+registerFn("businessAddressType", miscSDK.getMiscVal("BUSSIN_ADD_TYPE"));
+registerFn("facilityType", miscSDK.getMiscVal("FACILITY_TYPE"));
+registerFn("securityType", miscSDK.getMiscVal("SECURITY_TYPE"));
+registerFn("businessSize", miscSDK.getMiscVal("BUSINESS_SIZE"));
+registerFn("getNatureOfFacility", miscSDK.getMiscVal("NATURE_FACILITY"));
+registerFn("projectParticularType", miscSDK.getMiscVal("PARTICULAR_TYPE"));
+registerFn("bankFacilityType", miscSDK.getMiscVal("ACCOUNT_TYPE"));
+registerFn("getBankDocType", miscSDK.getMiscVal("BANK_DOC_TYPE"));
+registerFn("getITRDocType", miscSDK.getMiscVal("ITR_DOC_TYPE"));
+registerFn("getKYCDocType", miscSDK.getMiscVal("KYC_DOC_TYPE"));
+registerFn("getOtherDocType", miscSDK.getMiscVal("OTHER_DOC_TYPE"));
+registerFn("getGSTDocType", miscSDK.getMiscVal("GST_DOC_TYPE"));
+registerFn("getLeadStage", miscSDK.getMiscVal("LEAD_STAGE"));
+registerFn("getNomineeRelation", miscSDK.getMiscVal("NOMINI_RELATION"));
 registerFn("getProductType", miscSDK.getProductType);
-registerFn("getsubProductDtl", miscSDK.getSubProductDtl);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
+registerFn("getIndustryType", miscSDK.getIndustryType);
+registerFn("getIndustrySubType", miscSDK.getIndustrySubType);
+registerFn("getsubProductDtl", others.getSubProductDtl(miscSDK.getProductType));
+registerFn("getPerfiosBankList", miscSDK.getPerfiosBankList);
+registerFn("getBranchList", miscSDK.getBranchList);
+registerFn("getSourcelist", miscSDK.getSourcelist);
 
 /*register others*/
 
@@ -50,35 +69,33 @@ registerFn(
   others.getMonthlyEmiPayValidateValue
 );
 
-registerFn("getPincodeDtl", pincode.getPincodeDtl(miscSDK.getPincodeExternal));
+registerFn("getPincode", miscSDK.getPincodeExternal);
+
+// Post validation hooks
+registerFn("postValidationSetPincodeDtl", pincode.postValidationSetPincodeDtl);
 registerFn(
-  "getPincodeDtlEdit",
-  pincode.getPincodeDtlEdit(miscSDK.getPincodeExternal)
+  "postValidationSetLocationDtl",
+  pincode.postValidationSetLocationDtl
+);
+registerFn(
+  "postValidationSetCoApplicantPincodeDtl",
+  pincode.postValidationSetCoApplicantPincodeDtl
+);
+registerFn(
+  "postValidationSetCoApplicantLocationDtl",
+  pincode.postValidationSetCoApplicantLocationDtl
 );
 
-registerFn("getLocationDtl", pincode.getLocationDtl);
-registerFn("getLocationDtlEdit", pincode.getLocationDtlEdit);
 registerFn(
-  "getcoApplicantPincodeDtl",
-  pincode.getcoApplicantPincodeDtl(miscSDK.getPincodeExternal)
+  "postValidationSetSiteLocationDtl",
+  pincode.postValidationSetSiteLocationDtl
 );
-registerFn("getcoApplicantLocationDtl", pincode.getcoApplicantLocationDtlEdit);
 registerFn(
-  "getSitePincodeDtl",
-  pincode.getSitePincodeDtlEdit(miscSDK.getPincodeExternal)
+  "postValidationSetSitePincodeDtl",
+  pincode.postValidationSetSitePincodeDtl
 );
 
 registerFn(
-  "getcoApplicantPincodeDtlEdit",
-  pincode.getcoApplicantPincodeDtlEdit(miscSDK.getPincodeExternal)
+  "setValueOnDependentFieldsChangeOne",
+  others.setValueOnDependentFieldsChangeOne
 );
-registerFn(
-  "getcoApplicantLocationDtlEdit",
-  pincode.getcoApplicantLocationDtlEdit
-);
-registerFn(
-  "getSitePincodeDtlEdit",
-  pincode.getSitePincodeDtlEdit(miscSDK.getPincodeExternal)
-);
-registerFn("getSiteLocationDtl", pincode.getSiteLocationDtlEdit);
-registerFn("getSiteLocationDtlEdit", pincode.getSiteLocationDtlEdit);

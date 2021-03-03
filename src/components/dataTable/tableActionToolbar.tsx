@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { TableActionType, RenderActionType } from "./types";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { filterAction } from "./utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,18 +112,33 @@ export const RenderActions: FC<RenderActionType> = ({
 
 export const ActionContextMenu: FC<TableActionType> = ({
   singleActions,
+  multipleActions,
   setGridAction,
-  selectedFlatRows: selectedFlatRow,
+  contextMenuRow,
+  selectedFlatRows,
   mouseX,
   mouseY,
   handleClose,
 }) => {
+  const selectedRows = selectedFlatRows.map((one) => {
+    return {
+      data: one.original,
+      id: one.id,
+    };
+  });
   let menuItems: null | JSX.Element[] = null;
   if (typeof setGridAction !== "function") {
     setGridAction = () => {};
   }
-  if (singleActions.length > 0 && selectedFlatRow !== null) {
-    menuItems = singleActions.map((one) => (
+  let allActions = [...singleActions, ...(multipleActions ?? [])];
+  if (
+    Array.isArray(allActions) &&
+    allActions.length > 0 &&
+    selectedFlatRows.length <= 1 &&
+    contextMenuRow !== null
+  ) {
+    allActions = filterAction(allActions, [contextMenuRow], false);
+    menuItems = allActions.map((one) => (
       <MenuItem
         key={one.actionName}
         onClick={() => {
@@ -130,10 +146,30 @@ export const ActionContextMenu: FC<TableActionType> = ({
             name: one.actionName,
             rows: [
               {
-                data: selectedFlatRow?.original,
-                id: selectedFlatRow?.id,
+                data: contextMenuRow?.original,
+                id: contextMenuRow?.id,
               },
             ],
+          });
+          handleClose();
+        }}
+      >
+        {one.actionLabel}
+      </MenuItem>
+    ));
+  } else if (
+    Array.isArray(multipleActions) &&
+    multipleActions.length > 0 &&
+    selectedFlatRows.length > 1 &&
+    selectedFlatRows !== null
+  ) {
+    menuItems = multipleActions?.map((one) => (
+      <MenuItem
+        key={one.actionName}
+        onClick={() => {
+          setGridAction({
+            name: one.actionName,
+            rows: selectedRows,
           });
           handleClose();
         }}

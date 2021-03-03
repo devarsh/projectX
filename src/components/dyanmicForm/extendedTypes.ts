@@ -23,6 +23,27 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     },
     enableNumWords: true,
   },
+  currencyWithoutWords: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      thousandSeparator: true,
+      prefix: "₹",
+      thousandsGroupStyle: "lakh",
+      allowNegative: false,
+      allowLeadingZeros: false,
+      decimalScale: 0,
+      maxLength: 13,
+      isAllowed: (values) => {
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
+    },
+    enableNumWords: false,
+  },
   dob: {
     render: {
       componentType: "datePicker",
@@ -70,6 +91,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
         return true;
       },
     },
+    StartAdornment: "+91",
   },
   panCard: {
     render: {
@@ -88,7 +110,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       rules: [
         { name: "required", params: ["This Field is required"] },
         {
-          name: "pan_no",
+          name: "pancard",
           params: ["Please enter valid Pan Card Number"],
         },
       ],
@@ -104,15 +126,6 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
         return str.toUpperCase();
       },
       lazy: true,
-    },
-    schemaValidation: {
-      type: "string",
-      rules: [
-        {
-          name: "pancard",
-          params: ["Please enter valid Pan Card Number"],
-        },
-      ],
     },
   },
   aadharCard: {
@@ -144,7 +157,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       decimalScale: 2,
       fixedDecimalScale: true,
       allowNegative: false,
-      allowLeadingZeros: false,
+      allowEmptyFormatting: true,
       isAllowed: (values) => {
         //@ts-ignore
         if (values.floatValue <= 99.99) {
@@ -202,6 +215,22 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
         }
         return true;
       },
+    },
+  },
+  futureDateNotAllowed: {
+    render: {
+      componentType: "datePicker",
+    },
+    //@ts-ignore
+    schemaValidation: {
+      type: "date",
+      rules: [
+        { name: "typeError", params: ["Must be a valid date"] },
+        {
+          name: "max",
+          params: [new Date(), "Future Date not allowed."],
+        },
+      ],
     },
   },
 };

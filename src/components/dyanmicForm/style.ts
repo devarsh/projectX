@@ -27,6 +27,20 @@ export const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%",
   },
+  tabsSubmitBtn: {
+    boxShadow: "none ",
+    background: "#e0e0e0",
+    marginRight: theme.spacing(2),
+    color: "#0b6fb8 ",
+    fontSize: "1.2rem",
+    "&:hover": {
+      color: "#e0e0e0 ",
+      background:
+        "linear-gradient(-90deg, rgba(94,231,131,1) 0%, rgba(74,205,159,1) 35%, rgba(33,150,218,1) 100%)",
+      boxShadow: "none ",
+    },
+  },
+
   submit: {
     margin: theme.spacing(3, 0, 2),
     fontSize: "1.2rem",

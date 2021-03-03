@@ -1,34 +1,11 @@
 import { FC, useRef, Suspense } from "react";
-import { useForm, SubmitFnType } from "packages/form";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+
 import Grid from "@material-ui/core/Grid";
-import { GroupWiseRenderedFieldsType, FormRenderConfigType } from "./types";
-import { useStyles } from "./style";
+import { FormProps } from "./types";
+import Container from "@material-ui/core/Container";
 
-interface FormProps {
-  fields: GroupWiseRenderedFieldsType;
-  formRenderConfig: FormRenderConfigType;
-  formDisplayName: string;
-  formName: string;
-  submitFn: SubmitFnType;
-  cancelFn: any;
-}
-
-export const SimpleForm: FC<FormProps> = ({
-  fields,
-  formRenderConfig,
-  formDisplayName,
-  submitFn,
-  cancelFn,
-}) => {
-  const classes = useStyles();
-  const { handleSubmit } = useForm({
-    onSubmit: submitFn,
-  });
+export const SimpleForm: FC<FormProps> = ({ fields, formRenderConfig }) => {
   const fieldGroups = useRef<string[]>(Object.keys(fields).sort());
-
   const formComponentGroupWise = fieldGroups.current.map((one) => {
     const current = fields[one];
     return current.fields;
@@ -39,11 +16,10 @@ export const SimpleForm: FC<FormProps> = ({
   }, []);
 
   return (
-    <div>
-      <Typography component="h3" className={classes.title}>
-        {formDisplayName}
-      </Typography>
-      <div className={classes.form}>
+    <Container maxWidth="lg" style={{ background: "white" }}>
+      <br />
+      <br />
+      <div style={{ height: "65vh", overflowY: "auto", overflowX: "hidden" }}>
         <Grid
           container={true}
           spacing={formRenderConfig?.gridConfig?.container?.spacing ?? 2}
@@ -53,21 +29,7 @@ export const SimpleForm: FC<FormProps> = ({
         >
           <Suspense fallback={<div>Loading...</div>}>{FormComponent}</Suspense>
         </Grid>
-        <Box width={1} display="flex" justifyContent="flex-end">
-          <Button
-            type="button"
-            className={classes.submit}
-            onClick={handleSubmit}
-          >
-            {formRenderConfig?.labels?.complete ?? "Submit"}
-          </Button>
-          {typeof cancelFn === "function" ? (
-            <Button type="button" className={classes.submit} onClick={cancelFn}>
-              Cancel
-            </Button>
-          ) : null}
-        </Box>
       </div>
-    </div>
+    </Container>
   );
 };

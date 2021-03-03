@@ -1,4 +1,3 @@
-import { UsernameField } from "auth/username";
 import { CommonFetcherResponse } from "../type";
 
 const authAPI = () => {

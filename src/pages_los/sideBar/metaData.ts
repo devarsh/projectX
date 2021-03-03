@@ -263,6 +263,18 @@ export const metaData: NavBarMetaDataType = {
       ],
     },
     {
+      label: "Config Management",
+      icon: "tasks",
+      children: [
+        {
+          label: "Bank",
+          href: "./config/banks",
+          isRouterLink: true,
+          icon: "circle",
+        },
+      ],
+    },
+    {
       label: "Customers",
       href: "./pages/customers",
       isRouterLink: true,

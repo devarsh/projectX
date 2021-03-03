@@ -1,4 +1,14 @@
-import { FC, useEffect, useRef, useState, Fragment } from "react";
+import {
+  FC,
+  useEffect,
+  useRef,
+  useState,
+  Fragment,
+  ComponentType,
+  HTMLAttributes,
+  lazy,
+  Suspense,
+} from "react";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 import CircularProgress, {
@@ -18,6 +28,11 @@ import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { useOptionsFetcher } from "../utils";
 
+const ListBoxComponentVirtualized = lazy(() =>
+  import("./virtualized").then((module) => ({
+    default: module.ListBoxComponent,
+  }))
+);
 //will use it if there is a neeed for advance sorter
 //import matchSorter from "match-sorter";
 
@@ -33,6 +48,9 @@ interface AutoCompleteExtendedProps {
   label?: string;
   placeholder?: string;
   required?: boolean;
+  enableVirtualized?: boolean;
+  _optionsKey?: string;
+  disableCaching?: boolean;
 }
 
 type MyAutocompleteProps = Merge<
@@ -67,8 +85,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   TextFieldProps,
   CircularProgressProps,
   ChipProps,
-  //@ts-ignore
-  isFieldFocused,
   showCheckbox,
   CreateFilterOptionsConfig,
   runValidationOnDependentFieldsChange,
@@ -76,6 +92,11 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   placeholder,
   limitTags,
   required,
+  enableVirtualized,
+  //@ts-ignore
+  isFieldFocused,
+  _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -93,6 +114,8 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     excluded,
     incomingMessage,
     whenToRunValidation,
+    value,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -117,7 +140,9 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   }, [isFieldFocused]);
 
   const [_options, setOptions] = useState<OptionsProps[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [lastUpdatedTime, setLastUpdatedTime] = useState(new Date().getTime());
+  const initDoneRef = useRef(false);
+  const defaultValueRef = useRef<any>(null);
   const { loadingOptions } = useOptionsFetcher(
     formState,
     options,
@@ -126,8 +151,45 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey,
+    disableCaching,
+    setIncomingMessage
   );
+
+  //to set the default value
+  useEffect(() => {
+    let _internalValue: any | any[] = value;
+    if (
+      !initDoneRef.current &&
+      Boolean(_internalValue) &&
+      _options.length > 1
+    ) {
+      if (!Array.isArray(_internalValue)) {
+        _internalValue = [value];
+      }
+      let answers: OptionsProps[] = [];
+      for (let i = 0; i < _options.length && _internalValue.length > 0; i++) {
+        let foundIndex = _internalValue.findIndex((one) =>
+          one == _options[i].value ? true : false
+        );
+        if (foundIndex > -1) {
+          answers.push(_options[i]);
+          const prev = _internalValue.slice(0, foundIndex);
+          const next = _internalValue.slice(foundIndex + 1);
+          _internalValue = [...prev, ...next];
+        }
+      }
+      initDoneRef.current = true;
+      if (multiple) {
+        defaultValueRef.current = answers;
+      } else {
+        defaultValueRef.current = answers[0];
+      }
+      setLastUpdatedTime(new Date().getTime());
+    }
+  }, [loadingOptions, _options, value, multiple]);
+
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
   //hook added move this below all hook calls
   if (excluded) {
@@ -135,123 +197,142 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
   }
   const isError = touched && (error ?? "") !== "";
   const result = (
-    <Autocomplete
-      {...others}
-      limitTags={limitTags ?? 2}
-      key={fieldKey}
-      multiple={multiple}
-      disableClearable={disableClearable}
-      freeSolo={freeSolo}
-      options={_options}
-      getOptionLabel={getOptionLabel}
-      onChange={(_, value) => {
-        if (!Array.isArray(value)) {
-          value = [value];
-        }
-        value = value.map((one) => {
-          if (typeof one === "object") {
-            if (!Boolean(freeSolo)) {
-              return getOptionValue(one);
-            }
-            return getOptionLabel(one);
+    <Suspense fallback={"loading..."}>
+      <Autocomplete
+        {...others}
+        key={`${fieldKey}-${lastUpdatedTime}`}
+        //@ts-ignore
+        defaultValue={defaultValueRef.current}
+        limitTags={limitTags ?? 2}
+        multiple={multiple}
+        disableClearable={disableClearable}
+        freeSolo={freeSolo}
+        options={_options}
+        getOptionLabel={getOptionLabel}
+        getOptionSelected={(option, value) => {
+          if (option.value == value) {
+            return true;
           }
-          return one;
-        });
-
-        if (!Boolean(multiple) && Array.isArray(value)) {
-          //@ts-ignore
-          handleChange(value[0]);
-        } else {
-          handleChange(value);
+          return false;
+        }}
+        ListboxComponent={
+          Boolean(enableVirtualized)
+            ? (ListBoxComponentVirtualized as ComponentType<
+                HTMLAttributes<HTMLElement>
+              >)
+            : undefined
         }
-      }}
-      onBlur={handleBlur}
-      disabled={isSubmitting}
-      filterOptions={
-        Boolean(CreateFilterOptionsConfig) &&
-        typeof CreateFilterOptionsConfig === "object"
-          ? createFilterOptions(CreateFilterOptionsConfig)
-          : undefined
-      }
-      renderTags={(value, getTagProps) => {
-        return value.map((option, index) => {
-          if (typeof option === "string") {
+        onChange={(_, value) => {
+          if (!Array.isArray(value)) {
+            value = [value];
+          }
+          value = value.map((one) => {
+            if (typeof one === "object") {
+              if (!Boolean(freeSolo)) {
+                return getOptionValue(one);
+              }
+              return getOptionLabel(one);
+            }
+            return one;
+          });
+          if (!Boolean(multiple) && Array.isArray(value)) {
+            //@ts-ignore
+            handleChange(value[0]);
+          } else {
+            handleChange(value);
+          }
+        }}
+        onBlur={handleBlur}
+        disabled={isSubmitting}
+        filterOptions={
+          Boolean(CreateFilterOptionsConfig) &&
+          typeof CreateFilterOptionsConfig === "object"
+            ? createFilterOptions(CreateFilterOptionsConfig)
+            : undefined
+        }
+        renderTags={(value, getTagProps) => {
+          return value.map((option, index) => {
+            if (typeof option === "string") {
+              return (
+                <Chip
+                  key={option}
+                  variant="outlined"
+                  {...ChipProps}
+                  label={option}
+                  {...getTagProps({ index })}
+                />
+              );
+            }
             return (
               <Chip
-                key={option}
+                key={`${option.label}-${index}`}
                 variant="outlined"
                 {...ChipProps}
-                label={option}
+                label={option.label}
                 {...getTagProps({ index })}
               />
             );
-          }
+          });
+        }}
+        renderInput={(params) => {
           return (
-            <Chip
-              key={`${option.label}-${index}`}
-              variant="outlined"
-              {...ChipProps}
-              label={option.label}
-              {...getTagProps({ index })}
+            <TextField
+              {...TextFieldProps}
+              {...params}
+              name={name}
+              label={label}
+              placeholder={placeholder}
+              autoComplete="disabled"
+              type="text"
+              error={!isSubmitting && isError}
+              required={required}
+              helperText={!isSubmitting && isError ? error : null}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <Fragment>
+                    {validationRunning || loadingOptions ? (
+                      <CircularProgress
+                        color="primary"
+                        variant="indeterminate"
+                        {...CircularProgressProps}
+                      />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </Fragment>
+                ),
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: "new-user-street-address",
+              }}
             />
           );
-        });
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...TextFieldProps}
-          {...params}
-          name={name}
-          label={label}
-          placeholder={placeholder}
-          value={inputValue}
-          autoComplete="disabled"
-          onChange={(e) => setInputValue(e.target.value)}
-          type="text"
-          error={isError}
-          required={required}
-          helperText={isError ? error : null}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <Fragment>
-                {validationRunning || loadingOptions ? (
-                  <CircularProgress
-                    color="primary"
-                    variant="indeterminate"
-                    {...CircularProgressProps}
-                  />
-                ) : null}
-                {params.InputProps.endAdornment}
-              </Fragment>
-            ),
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-user-street-address",
-          }}
-        />
-      )}
-      renderOption={(option, { selected }) => {
-        let label = getOptionLabel(option);
-        const matches = match(label, inputValue);
-        const parts = parse(label, matches);
-        const labelJSX = parts.map((part, index) => (
-          <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-            {part.text}
-          </span>
-        ));
-        return (
-          <Fragment>
-            {showCheckbox ? <Checkbox checked={selected} /> : null}
-            {labelJSX}
-          </Fragment>
-        );
-      }}
-    />
+        }}
+        renderOption={(option, { selected, inputValue }) => {
+          let label = getOptionLabel(option);
+          const matches = match(label, inputValue);
+          const parts = parse(label, matches);
+          const labelJSX = parts.map((part, index) => (
+            <span
+              key={index}
+              style={{ fontWeight: part.highlight ? 700 : 400 }}
+            >
+              {part.text}
+            </span>
+          ));
+          return (
+            <div style={{ whiteSpace: "pre" }}>
+              {showCheckbox ? <Checkbox checked={selected} /> : null}
+              {labelJSX}
+            </div>
+          );
+        }}
+      />
+    </Suspense>
   );
   if (Boolean(enableGrid)) {
     return <Grid {...GridProps}>{result}</Grid>;

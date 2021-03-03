@@ -21,6 +21,8 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[];
+  _optionsKey?: string;
+  disableCaching?: boolean;
   label: string;
 }
 
@@ -60,6 +62,8 @@ const MyRadio: FC<MyRadioAllProps> = ({
   enableGrid,
   runValidationOnDependentFieldsChange,
   CircularProgressProps,
+  _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -78,6 +82,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -113,7 +118,10 @@ const MyRadio: FC<MyRadioAllProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey,
+    disableCaching,
+    setIncomingMessage
   );
 
   if (excluded) {
@@ -142,7 +150,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
     >
       <FormLabel {...FormLabelProps} component="label">
@@ -166,7 +174,7 @@ const MyRadio: FC<MyRadioAllProps> = ({
           radios
         )}
       </RadioGroup>
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

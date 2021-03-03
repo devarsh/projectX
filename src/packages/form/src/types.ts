@@ -71,6 +71,7 @@ export interface FormArrayFieldRowsAtomType {
 
 export interface UseFormHookProps {
   onSubmit: SubmitFnType;
+  readOnly?: boolean;
 }
 
 export interface UseFieldHookProps {
@@ -139,6 +140,7 @@ export interface RenderFnOptionsType {
   fields: string[];
   rowIndex: number;
   removeFn: (index: number) => void;
+  totalRows: number;
 }
 
 export type RenderFn = (options: RenderFnOptionsType) => JSX.Element;

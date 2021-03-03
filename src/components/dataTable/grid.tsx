@@ -32,6 +32,7 @@ import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
+import { filterAction } from "./utils";
 
 export const DataGrid = ({
   label,
@@ -58,6 +59,7 @@ export const DataGrid = ({
   multipleActions,
   singleActions,
   doubleClickAction,
+  alwaysAvailableAction,
   gridRefresh,
   setGridRefresh,
 }) => {
@@ -107,6 +109,9 @@ export const DataGrid = ({
     useCheckboxColumn
   );
 
+  singleActions = filterAction(singleActions, selectedFlatRows);
+  multipleActions = filterAction(multipleActions, selectedFlatRows);
+
   const { pageIndex, pageSize, sortBy, filters } = tableState;
   const onFetchDataDebounced = useAsyncDebounce(onFetchData, 500);
 
@@ -136,9 +141,18 @@ export const DataGrid = ({
   };
   const handleRowDoubleClickAction = (row) => (e) => {
     e.preventDefault();
+    let result = filterAction(doubleClickAction, [row], true);
+    if (result === undefined) {
+      return;
+    }
     setGridAction({
       name: doubleClickAction.actionName,
-      rows: [row],
+      rows: [
+        {
+          data: row?.original,
+          id: row?.id,
+        },
+      ],
     });
   };
 
@@ -230,16 +244,22 @@ export const DataGrid = ({
         defaultHiddenColumns={defaultHiddenColumns}
         allowColumnHiding={allowColumnHiding}
         setGridRefresh={setGridRefresh}
+        alwaysAvailableAction={alwaysAvailableAction}
+        setGridAction={setGridAction}
+        selectedFlatRows={selectedFlatRows}
       />
       <TableActionToolbar
         dense={dense}
         selectedFlatRows={selectedFlatRows}
         multipleActions={multipleActions}
         singleActions={singleActions}
+        alwaysAvailableAction={alwaysAvailableAction}
         setGridAction={setGridAction}
       />
       <ActionContextMenu
-        selectedFlatRows={contextMenuRow}
+        selectedFlatRows={selectedFlatRows}
+        contextMenuRow={contextMenuRow}
+        multipleActions={multipleActions}
         singleActions={singleActions}
         setGridAction={setGridAction}
         mouseX={contextMenuPosition?.mouseX ?? null}

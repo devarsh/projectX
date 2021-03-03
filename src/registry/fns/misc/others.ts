@@ -28,34 +28,34 @@ export const AutoFillGender = (field) => {
   });
 };
 
-export const getGenderValue = (field) => {
-  if (typeof field === "string") {
-    field = field.trim();
+export const getGenderValue = async (field) => {
+  console.log(field.value);
+  if (field.value === "00") {
+    return {
+      gender: {
+        value: "00",
+      },
+    };
   }
-  return new Promise((res) => {
-    if (field.value === "01") {
-      res({
-        gender: {
-          value: "01",
-        },
-        firstName: {
-          value: "",
-        },
-      });
-    } else if (field.value === "02" || field.value === "03") {
-      res({
-        gender: {
-          value: "02",
-        },
-      });
-    } else {
-      res({
-        gender: {
-          value: "00",
-        },
-      });
-    }
-  });
+  if (field.value === "01") {
+    return {
+      gender: {
+        value: "01",
+      },
+    };
+  } else if (field.value === "02" || field.value === "03") {
+    return {
+      gender: {
+        value: "02",
+      },
+    };
+  } else {
+    return {
+      gender: {
+        value: "00",
+      },
+    };
+  }
 };
 
 export const getYesOrNoOptions = () => {
@@ -91,5 +91,47 @@ export const getValidateValue = async (fieldData) => {
   ) {
     return "This field is required";
   } else {
+  }
+};
+
+//dropdown value - dynamic form
+export const getSubProductDtl = (getProductType) => async (fieldData) => {
+  if (fieldData.value.length !== 0) {
+    try {
+      let codes = await getProductType(null, { formCode: fieldData.value });
+      return {
+        subProductType: {
+          options: codes,
+          value: "00",
+        },
+      };
+    } catch (e) {
+      return {
+        subProductType: {
+          options: [],
+          value: "",
+        },
+      };
+    }
+  } else if (fieldData.value === "") {
+    return {
+      subProductType: {
+        options: [],
+        value: "",
+      },
+    };
+  }
+};
+
+export const setValueOnDependentFieldsChangeOne = (dependentFields) => {
+  if (typeof dependentFields === "object") {
+    let result = Object.values(dependentFields);
+    if (Array.isArray(result) && result.length > 0) {
+      const total = result.reduce((accum, one) => {
+        accum = Number(accum) + Number(one.value);
+        return accum;
+      }, 0);
+      return total;
+    }
   }
 };

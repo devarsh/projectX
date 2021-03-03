@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -8,28 +8,32 @@ import CRM from "app/crm";
 import LOS from "app/los";
 import "typeface-roboto";
 import "registry"; //register functions to be used across application
-
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 require("dotenv").config();
-require("mock");
 
 const Redirect = () => {
   const navigate = useNavigate();
-  setTimeout(() => navigate("crm/"), 1);
+  useEffect(() => {
+    navigate("crm/");
+  }, []);
   return null;
 };
 
 const App = () => (
   <StrictMode>
-    <RecoilRoot>
-      <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/los/*" element={<LOS />} />
-          <Route path="/crm/*" element={<CRM />} />
-          <Route path="*" element={<Redirect />} />
-        </Routes>
-      </BrowserRouter>
-    </RecoilRoot>
+    <DndProvider backend={HTML5Backend}>
+      <RecoilRoot>
+        <CssBaseline />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/los/*" element={<LOS />} />
+            <Route path="/crm/*" element={<CRM />} />
+            <Route path="*" element={<Redirect />} />
+          </Routes>
+        </BrowserRouter>
+      </RecoilRoot>
+    </DndProvider>
   </StrictMode>
 );
 

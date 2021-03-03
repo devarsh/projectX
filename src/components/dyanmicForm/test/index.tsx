@@ -11,6 +11,7 @@ const TestForm = () => {
         console.log(values);
         endSubmit(true);
       }}
+      displayMode="edit"
     />
   );
 };

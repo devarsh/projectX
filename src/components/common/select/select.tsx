@@ -15,6 +15,8 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFieldProps extends UseFieldHookProps {
   options?: OptionsProps[] | dependentOptionsFn;
+  _optionsKey?: string;
+  disableCaching?: boolean;
   multiple?: boolean;
   showCheckbox?: boolean;
 }
@@ -53,6 +55,8 @@ const MySelect: FC<MySelectAllProps> = ({
   inputProps,
   CircularProgressProps,
   runValidationOnDependentFieldsChange,
+  _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -72,6 +76,7 @@ const MySelect: FC<MySelectAllProps> = ({
     whenToRunValidation,
     readOnly,
     formState,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -116,7 +121,10 @@ const MySelect: FC<MySelectAllProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey,
+    disableCaching,
+    setIncomingMessage
   );
 
   //dont move it to top it can mess up with hooks calling mechanism, if there is another
@@ -156,8 +164,8 @@ const MySelect: FC<MySelectAllProps> = ({
       id={fieldKey}
       name={name}
       value={multiple && !Array.isArray(value) ? [value] : value}
-      error={isError}
-      helperText={isError ? error : null}
+      error={!isSubmitting && isError}
+      helperText={!isSubmitting && isError ? error : null}
       onChange={handleChangeInterceptor}
       onBlur={handleBlur}
       disabled={isSubmitting}

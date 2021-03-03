@@ -55,7 +55,20 @@ export const useField = ({
       ? `${formContext.formName}/${fieldKey}`
       : `${formContext.formName}/${name}`
   );
+  //dependent fields change transform for array values
 
+  const dependentFieldsRef = useRef<string | string[] | undefined>(
+    "DO_NOT_CHANGE_THIS_VALUE_I_WILL_FIRE_YOU"
+  );
+  if (
+    dependentFieldsRef.current === "DO_NOT_CHANGE_THIS_VALUE_I_WILL_FIRE_YOU"
+  ) {
+    //@ts-ignore
+    dependentFieldsRef.current = transformDependentFields(
+      fieldKey,
+      dependentFields
+    );
+  }
   //fieldData atom stores current field state
   const [fieldData, setFieldData] = useRecoilState<FormFieldAtomType>(
     formFieldAtom(fieldKeyRef.current)
@@ -140,14 +153,6 @@ export const useField = ({
       fieldName: currentfield,
     };
     registerField(registrationValue);
-    //we need to run handleBlur for postValidation hook - this a hack to fix an issue
-    if (
-      typeof postValidationSetCrossFieldValues === "function" &&
-      Boolean(defaultValue)
-    ) {
-      setTimeout(handleBlur, 1);
-    }
-    //end of hack
 
     if (Boolean(formContext.resetFieldOnUnmount) === true) {
       return () => {
@@ -181,12 +186,12 @@ export const useField = ({
       setFieldData((currVal) => ({
         ...currVal,
         validate: wrappedValidation,
-        dependentFields: dependentFields,
+        dependentFields: dependentFieldsRef.current,
       }));
     } else {
       setFieldData((currVal) => ({
         ...currVal,
-        dependentFields: dependentFields,
+        dependentFields: dependentFieldsRef.current,
       }));
     }
   }, [
@@ -225,7 +230,7 @@ export const useField = ({
   const dependentFieldsState = useRecoilValue(
     subscribeToFormFieldsSelector({
       formName: formContext.formName,
-      fields: dependentFields,
+      fields: dependentFieldsRef.current,
     })
   );
   const dependentFieldsStateRef = useRef(dependentFieldsState);
@@ -242,7 +247,11 @@ export const useField = ({
   useEffect(() => {
     if (typeof shouldExclude === "function") {
       const currentShouldExcludePromise = Promise.resolve(
-        shouldExclude(fieldData, dependentFieldsState, formContext.formState)
+        shouldExclude(
+          fieldData,
+          transformDependentFieldsState(dependentFieldsState),
+          formContext.formState
+        )
       );
       lastShouldExcludePromise.current = currentShouldExcludePromise;
       currentShouldExcludePromise.then((result) => {
@@ -268,7 +277,11 @@ export const useField = ({
     }
     if (typeof isReadOnly === "function") {
       const currentIsReadOnlyPromise = Promise.resolve(
-        isReadOnly(fieldData, dependentFieldsState, formContext.formState)
+        isReadOnly(
+          fieldData,
+          transformDependentFieldsState(dependentFieldsState),
+          formContext.formState
+        )
       );
       lastIsReadOnlyPromise.current = currentIsReadOnlyPromise;
       currentIsReadOnlyPromise.then((result) => {
@@ -301,6 +314,7 @@ export const useField = ({
   });
   const passCrossFieldMessage = useRecoilCallback(
     ({ snapshot, set }) => (fieldsObj: InitialValuesType) => {
+      const key = getFieldKeyForArray(fieldKey);
       const fieldsLoadable = snapshot.getLoadable(
         formFieldRegistryAtom(formContext.formName)
       );
@@ -309,11 +323,14 @@ export const useField = ({
         fields = fieldsLoadable.contents;
       }
       for (const field of Object.entries(fieldsObj)) {
-        if (fields.indexOf(`${formContext.formName}/${field[0]}`) >= 0) {
-          set(formFieldAtom(`${formContext.formName}/${field[0]}`), (old) => ({
-            ...old,
-            incomingMessage: field[1],
-          }));
+        if (fields.indexOf(`${formContext.formName}/${key}${field[0]}`) >= 0) {
+          set(
+            formFieldAtom(`${formContext.formName}/${key}${field[0]}`),
+            (old) => ({
+              ...old,
+              incomingMessage: { ...old.incomingMessage, ...field[1] },
+            })
+          );
         }
       }
     },
@@ -356,7 +373,7 @@ export const useField = ({
       const currentPromise = Promise.resolve(
         fieldDataRef.current.validate(
           data,
-          dependentFieldsState,
+          transformDependentFieldsState(dependentFieldsState),
           formContext.formState
         )
       );
@@ -457,6 +474,18 @@ export const useField = ({
       }
     });
   }, [setFieldData]);
+
+  const setIncomingMessage = useCallback(
+    (value) => {
+      setFieldData((currVal) => {
+        return {
+          ...currVal,
+          incomingMessage: { ...currVal.incomingMessage, ...value },
+        };
+      });
+    },
+    [setFieldData]
+  );
   const setValue = useCallback(
     (val: any, displayValue: any, alwaysRun?: boolean) => {
       if (!!alwaysRun === false) {
@@ -561,7 +590,6 @@ export const useField = ({
               )
             : displayValue;
         }
-
         setValue(val, displayVal);
         if (
           isValidationFnRef.current &&
@@ -599,6 +627,7 @@ export const useField = ({
     handleBlur,
     setTouched,
     setValue,
+    setIncomingMessage,
     runValidation,
     dependentValues: dependentFieldsState,
   };
@@ -695,7 +724,7 @@ function wrapValidationMethod(
         );
         if (typeof errorMsgObj === "object") {
           errorMsg = errorMsgObj.error;
-          apiResult = errorMsg.apiResult;
+          apiResult = errorMsgObj.apiResult;
         } else {
           errorMsg = errorMsgObj;
         }
@@ -767,3 +796,47 @@ function wrapValidationMethod(
     return wrapperFunctionAlways;
   }
 }
+
+const transformDependentFields = (
+  fieldKey: string,
+  dependentFields: string[] | string | undefined
+) => {
+  if (dependentFields === undefined) {
+    return dependentFields;
+  }
+  if (typeof dependentFields === "string") {
+    dependentFields = [dependentFields];
+  }
+  if (Array.isArray(dependentFields)) {
+    if (fieldKey.split(".").length > 1) {
+      const fieldKeys = fieldKey.split(".");
+      const prevKey = fieldKeys.slice(0, fieldKeys.length - 1).join(".");
+      dependentFields = dependentFields.map((one) => {
+        return `${prevKey}.${one}`;
+      });
+    }
+  }
+  return dependentFields;
+};
+
+const getFieldKeyForArray = (fieldKey: string) => {
+  if (fieldKey.split(".").length > 1) {
+    const fieldKeys = fieldKey.split(".");
+    const prevKey = fieldKeys.slice(0, fieldKeys.length - 1).join(".");
+    return `${prevKey}.`;
+  }
+  return "";
+};
+
+export const transformDependentFieldsState = (
+  dependentValues: DependentValuesType
+) => {
+  const values = Object.keys(dependentValues);
+  let newDependentValues = values.reduce((accum, fieldKey) => {
+    let currentValue = dependentValues[fieldKey];
+    const newFieldKeyFlattend = fieldKey.replace(/(\[\d+\])/g, "");
+    accum[newFieldKeyFlattend] = currentValue;
+    return accum;
+  }, {});
+  return newDependentValues;
+};

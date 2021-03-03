@@ -7,6 +7,7 @@ export const becomePartnerMetaData: MetaDataType = {
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "",
+    refID: "3434",
     render: {
       ordering: "auto",
       renderType: "simple",
@@ -160,20 +161,19 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "GST No",
       placeholder: "Enter GST number",
       required: true,
+      defaultValue: "",
       //@ts-ignore
       validate: "getValidateValue",
+      runPostValidationHookAlways: true,
+      //@ts-ignore
+      postValidationSetCrossFieldValues: "getCompanyNameFromGST",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
       dependentFields: ["partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.partner_type?.value === "C") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartner",
     },
 
     {
@@ -193,12 +193,7 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       dependentFields: ["partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.partner_type?.value === "C") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartner",
     },
 
     {
@@ -253,7 +248,6 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
     },
-
     {
       render: {
         componentType: "select",
@@ -267,7 +261,6 @@ export const becomePartnerMetaData: MetaDataType = {
       validate: "getValidateValue",
       //@ts-ignore
       postValidationSetCrossFieldValues: "getLocationDtl",
-
       GridProps: {
         xs: 12,
         md: 3,
@@ -356,12 +349,7 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       dependentFields: ["partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.partner_type?.value === "C") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartner",
     },
 
     {
@@ -381,12 +369,7 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       dependentFields: ["partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.partner_type?.value === "I") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerIndividual",
     },
 
     {
@@ -584,12 +567,7 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       dependentFields: ["partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.partner_type?.value === "I") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerIndividual",
     },
 
     {
@@ -648,12 +626,7 @@ export const becomePartnerMetaData: MetaDataType = {
       //@ts-ignore
       options: "getYesOrNoOptions",
       dependentFields: ["partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (dependentValues?.partner_type?.value === "I") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerIndividual",
       runPostValidationHookAlways: true,
     },
 
@@ -673,15 +646,7 @@ export const becomePartnerMetaData: MetaDataType = {
       },
       validate: "getValidateValue",
       dependentFields: ["nominee_flag", "partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (
-          dependentValues?.nominee_flag?.value === "Y" &&
-          dependentValues?.partner_type?.value === "I"
-        ) {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerNominee",
     },
 
     {
@@ -700,15 +665,7 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       dependentFields: ["nominee_flag", "partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (
-          dependentValues?.nominee_flag?.value === "Y" &&
-          dependentValues?.partner_type?.value === "I"
-        ) {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerNominee",
     },
 
     {
@@ -729,15 +686,7 @@ export const becomePartnerMetaData: MetaDataType = {
       options: "getRelationship",
       validate: "getValidateValue",
       dependentFields: ["nominee_flag", "partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (
-          dependentValues?.nominee_flag?.value === "Y" &&
-          dependentValues?.partner_type?.value === "I"
-        ) {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerNominee",
     },
     {
       render: {
@@ -765,15 +714,7 @@ export const becomePartnerMetaData: MetaDataType = {
         sm: 3,
       },
       dependentFields: ["nominee_flag", "partner_type"],
-      shouldExclude: (_, dependentValues) => {
-        if (
-          dependentValues?.nominee_flag?.value === "Y" &&
-          dependentValues?.partner_type?.value === "I"
-        ) {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: "shouldExcludeBecomePartnerNominee",
     },
   ],
 };

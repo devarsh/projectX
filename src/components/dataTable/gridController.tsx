@@ -82,6 +82,7 @@ export const GirdController: FC<{
       multipleActions={metaData?.multipleActions}
       singleActions={metaData?.singleActions}
       doubleClickAction={metaData?.doubleClickAction}
+      alwaysAvailableAction={metaData?.alwaysAvailableAction}
       setGridAction={metaData?.setAction}
       dense={true}
       localFilterManager={localFilterManager}
@@ -97,9 +98,8 @@ export const GirdController: FC<{
       setGridRefresh={setGridRefresh}
       pageCount={pageCount}
       totalRecords={totalRecords}
-      //pageSizes={metaData.gridConfig?.pageSize}
-      pageSizes={[5, 10, 200]}
-      defaultPageSize={metaData.gridConfig?.defaultPageSize}
+      pageSizes={metaData.gridConfig?.pageSize ?? 10}
+      defaultPageSize={metaData.gridConfig?.defaultPageSize ?? [5, 10]}
       allowColumnReordering={
         metaData.gridConfig?.allowColumnReordering ?? false
       }

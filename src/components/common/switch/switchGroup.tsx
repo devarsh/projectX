@@ -20,6 +20,8 @@ import { getLabelFromValues, useOptionsFetcher } from "../utils";
 
 interface extendedFiledProps extends UseFieldHookProps {
   options: OptionsProps[];
+  _optionsKey?: string;
+  disableCaching?: boolean;
   label: string;
 }
 
@@ -66,6 +68,8 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
   GridProps,
   enableGrid,
   CircularProgressProps,
+  _optionsKey,
+  disableCaching,
   ...others
 }) => {
   const {
@@ -84,6 +88,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     incomingMessage,
     runValidation,
     whenToRunValidation,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -118,7 +123,10 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     dependentValues,
     incomingMessage,
     runValidation,
-    whenToRunValidation
+    whenToRunValidation,
+    _optionsKey,
+    disableCaching,
+    setIncomingMessage
   );
 
   if (excluded) {
@@ -150,7 +158,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
       key={fieldKey}
       component="fieldset"
       disabled={isSubmitting}
-      error={isError}
+      error={!isSubmitting && isError}
       onBlur={handleBlur}
     >
       <FormLabel {...FormLabelProps} component="label">
@@ -169,7 +177,7 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
           switches
         )}
       </FormGroup>
-      {isError ? (
+      {!isSubmitting && isError ? (
         <FormHelperText {...FormHelperTextProps}>{error}</FormHelperText>
       ) : null}
     </FormControl>

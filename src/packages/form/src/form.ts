@@ -12,6 +12,7 @@ import {
   formArrayFieldRowsAtom,
   formArrayFieldRegistryAtom,
   formFieldsExcludedAtom,
+  formFieldsErrorWatcherAtom,
   subscribeToFormFieldsSelector,
 } from "./atoms";
 import { setIn, getIn } from "./util";
@@ -23,7 +24,7 @@ import {
 } from "./types";
 import { FormContext } from "./context";
 
-export const useForm = ({ onSubmit }: UseFormHookProps) => {
+export const useForm = ({ onSubmit, readOnly }: UseFormHookProps) => {
   const formContext = useContext(FormContext);
 
   const formState = useRecoilValue(formAtom(formContext.formName));
@@ -48,9 +49,10 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
           reset(formArrayFieldRowsAtom(arrayField));
         }
       }
+      reset(formArrayFieldRegistryAtom(formContext.formName));
       reset(formFieldRegistryAtom(formContext.formName));
-      reset(formArrayFieldRowsAtom(formContext.formName));
       reset(formFieldsExcludedAtom(formContext.formName));
+      reset(formFieldsErrorWatcherAtom(formContext.formName));
       reset(formAtom(formContext.formName));
     },
     [formContext.formName]
@@ -114,6 +116,13 @@ export const useForm = ({ onSubmit }: UseFormHookProps) => {
     },
     []
   );
+
+  //initialize form readOnly
+  useEffect(() => {
+    if (Boolean(readOnly)) {
+      startSubmit();
+    }
+  }, [startSubmit]);
 
   const endSubmit = useRecoilCallback(
     ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {
