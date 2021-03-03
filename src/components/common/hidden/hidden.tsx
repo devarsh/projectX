@@ -20,7 +20,7 @@ const MyHiddenField: FC<MyHiddenFieldProps> = ({
   //set touch property to true of the field
   useEffect(() => {
     handleBlur();
-  }, []);
+  }, [handleBlur]);
 
   return null;
 };
