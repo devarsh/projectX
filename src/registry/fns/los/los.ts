@@ -829,6 +829,22 @@ const LOSAPI = () => {
     }
   };
 
+  const getCAMData = async (refID: string) => {
+    const { data, status } = await internalFetcher(`./lead/cam/data`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -874,6 +890,8 @@ const LOSAPI = () => {
 
     //CAM
     getFormMetaData,
+
+    getCAMData,
   };
 };
 
