@@ -58,16 +58,11 @@ const GeneralDetailsMetaData: any = {
       _fields: [
         {
           render: {
-            componentType: "pincode",
+            componentType: "textField",
           },
-          name: "pincode",
-          label: "Residence Pincode",
-          placeholder: "Residence pincode",
-          postValidationSetCrossFieldValues: "postValidationSetPincodeDtl",
-          runPostValidationHookAlways: true,
-          required: true,
-          defaultValue: "",
-          validate: "getValidateValue",
+          name: "value1",
+          label: "Value1",
+          placeholder: "Value1",
           GridProps: {
             xs: 12,
             md: 3,
@@ -76,17 +71,11 @@ const GeneralDetailsMetaData: any = {
         },
         {
           render: {
-            componentType: "select",
+            componentType: "currency",
           },
-          name: "location",
-          label: "Location",
-          placeholder: "Location",
-          required: true,
-          dependentFields: ["pincode"],
-          options: "getPincode",
-          validate: "getValidateValue",
-          postValidationSetCrossFieldValues: "postValidationSetLocationDtl",
-          disableCaching: true,
+          name: "value2",
+          label: "Value2",
+          placeholder: "Value2",
           GridProps: {
             xs: 12,
             md: 3,
@@ -97,9 +86,9 @@ const GeneralDetailsMetaData: any = {
           render: {
             componentType: "textField",
           },
-          name: "city",
-          label: "City",
-          placeholder: "City",
+          name: "value3",
+          label: "Value3",
+          placeholder: "Value3",
           GridProps: {
             xs: 12,
             md: 3,
@@ -108,24 +97,13 @@ const GeneralDetailsMetaData: any = {
         },
         {
           render: {
-            componentType: "textField",
+            componentType: "currency",
           },
-          name: "district",
-          label: "District",
-          placeholder: "District",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-        {
-          render: {
-            componentType: "textField",
-          },
-          name: "state",
-          label: "State",
-          placeholder: "State",
+          name: "total",
+          label: "Total",
+          placeholder: "Total",
+          dependentFields: ["value1", "value2", "value3"],
+          setValueOnDependentFieldsChange: "setValueOnDependentFieldsChangeOne",
           GridProps: {
             xs: 12,
             md: 3,

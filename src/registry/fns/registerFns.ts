@@ -94,3 +94,8 @@ registerFn(
   "postValidationSetSitePincodeDtl",
   pincode.postValidationSetSitePincodeDtl
 );
+
+registerFn(
+  "setValueOnDependentFieldsChangeOne",
+  others.setValueOnDependentFieldsChangeOne
+);

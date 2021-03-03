@@ -122,3 +122,16 @@ export const getSubProductDtl = (getProductType) => async (fieldData) => {
     };
   }
 };
+
+export const setValueOnDependentFieldsChangeOne = (dependentFields) => {
+  if (typeof dependentFields === "object") {
+    let result = Object.values(dependentFields);
+    if (Array.isArray(result) && result.length > 0) {
+      const total = result.reduce((accum, one) => {
+        accum = Number(accum) + Number(one.value);
+        return accum;
+      }, 0);
+      return total;
+    }
+  }
+};

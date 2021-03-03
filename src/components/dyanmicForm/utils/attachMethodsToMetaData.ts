@@ -35,6 +35,10 @@ const removeRowFnNotFound = (fieldKey) => (value) => {
   console.log(`no method for removeRowFn found at ${fieldKey}`);
   throw new Error("method not implemeneted");
 };
+const setValueOnDependentFieldsChangeNotFound = (fieldKey) => (value) => {
+  console.log(`no method for removeRowFn found at ${fieldKey}`);
+  return "";
+};
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.options$/, optionsMethodNotFound],
@@ -47,6 +51,10 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.shouldExclude$/, shouldExcludeNotFound],
   [/^fields.*.MaskProps.prepare$/, inputMaskPrepareNotFound],
   [/^fields.*.removeRowFn$/, removeRowFnNotFound],
+  [
+    /^fields.*.setValueOnDependentFieldsChange$/,
+    setValueOnDependentFieldsChangeNotFound,
+  ],
 ];
 
 //do not walk for arrayFields _fields as well we will run it seperately

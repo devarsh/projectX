@@ -24,6 +24,7 @@ import { useStyles } from "./style";
 // import CAM from "./pages/cam";
 import { CAMIFrame } from "./pages/cam/camComponents/camIFrame";
 import { Form } from "registry/metaData/test";
+import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -55,7 +56,7 @@ const DashbordPages = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/cam" element={<CAMIFrame />} />
             {/*dummy routes*/}
-            <Route path="/leadForm" element={<Form />} />
+            <Route path="/testForm" element={<TestForm />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

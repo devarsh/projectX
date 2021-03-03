@@ -10,6 +10,7 @@ import CircularProgress, {
 import { Merge } from "../types";
 import numWords from "num-words";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { transformDependentFieldsState } from "packages/form";
 
 interface MyGridExtendedProps {
   enableNumWords?: boolean;
@@ -19,6 +20,7 @@ interface MyGridExtendedProps {
   EndAdornment?: string;
   CircularProgressProps?: CircularProgressProps;
   enableGrid: boolean;
+  setValueOnDependentFieldsChange?: any;
 }
 
 type MyTextFieldAllProps = Merge<TextFieldProps, MyGridExtendedProps>;
@@ -47,7 +49,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   //@ts-ignore
   isFieldFocused,
   maxLength = -1,
-
+  setValueOnDependentFieldsChange,
   ...others
 }) => {
   const {
@@ -66,6 +68,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
     whenToRunValidation,
     runValidation,
     validationAPIResult,
+    dependentValues,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -96,18 +99,20 @@ const MyTextField: FC<MyTextFieldProps> = ({
       }, 1);
     }
   }, [isFieldFocused]);
-  //const componentMountedTime = useRef<any>(null);
-  // useEffect(() => {
-  //   componentMountedTime.current = new Date().getTime();
-  // }, []);
+
   useEffect(() => {
-    const hookCalledTime = new Date().getTime();
-    //const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
-    if (
-      //timeDiff > 5000 &&
-      incomingMessage !== null &&
-      typeof incomingMessage === "object"
-    ) {
+    if (typeof setValueOnDependentFieldsChange === "function") {
+      let result = setValueOnDependentFieldsChange(
+        transformDependentFieldsState(dependentValues)
+      );
+      if (result !== undefined || result !== null) {
+        handleChange(result);
+      }
+    }
+  }, [dependentValues, handleChange]);
+
+  useEffect(() => {
+    if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
       if (Boolean(value) || value === "") {
         handleChange(value);
