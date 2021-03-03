@@ -1,1 +1,1 @@
-export { InquiryFormWrapper as default } from "./inquiryForm";
+export * from "./newInquiry";

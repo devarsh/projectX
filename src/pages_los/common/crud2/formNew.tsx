@@ -1,11 +1,12 @@
 import { FC, useContext, useRef, useEffect } from "react";
-import loaderGif from "assets/images/loader.gif";
 import Button from "@material-ui/core/Button";
 import { useMutation, useQuery } from "react-query";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
-import { CRUDContext } from "./context";
 import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
+import loaderGif from "assets/images/loader.gif";
+import { CRUDContext } from "./context";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface InsertFormDataFnType {
   data: object;
@@ -118,7 +119,11 @@ export const FormNew: FC<{
       {({ isSubmitting, handleSubmit }) => {
         return (
           <>
-            <Button onClick={handleSubmit} disabled={isSubmitting}>
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
+            >
               Save
             </Button>
             <Button onClick={cancelAction} disabled={isSubmitting}>

@@ -15,7 +15,7 @@ import { Profile } from "./pages/profile";
 import { Inquiry } from "./pages/inquiry";
 import { Lead } from "./pages/lead";
 import { DetailsTabViewBank } from "./pages/config/bank";
-import NewInquiry from "./pages/newInquiry";
+import { NewInquiry } from "./pages/newInquiry";
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";

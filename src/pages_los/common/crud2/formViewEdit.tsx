@@ -8,6 +8,7 @@ import {
 } from "react";
 import loaderGif from "assets/images/loader.gif";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
@@ -205,7 +206,11 @@ export const FormViewEdit: FC<{
     >
       {({ isSubmitting, handleSubmit }) => (
         <>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
+          >
             Save
           </Button>
           <Button onClick={moveToViewMode} disabled={isSubmitting}>

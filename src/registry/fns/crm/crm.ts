@@ -119,6 +119,49 @@ const CRMAPI = () => {
     }
   };
 
+  //This is for react-query
+  const submitInquiryQuestionData2 = async (
+    submitAction?: string,
+    formData?: any,
+    navigationProps?: any,
+    refID?: any
+  ) => {
+    //rename prodCode to formCode since backend uses prodCode as FormCode
+    if (submitAction === "inquiry") {
+      const { data, status } = await internalFetcher(
+        "./inquiry/main/data/post",
+        {
+          body: JSON.stringify({
+            request_data: { refID: refID, ...formData, ...navigationProps },
+            channel: "W",
+          }),
+        }
+      );
+      if (status === "success") {
+        return data?.response_data;
+      } else {
+        throw data?.error_data;
+      }
+    } else if (submitAction === "question") {
+      const { data, status } = await internalFetcher(
+        "./inquiry/question/data/post",
+        {
+          body: JSON.stringify({
+            request_data: { refID: refID, ...formData, ...navigationProps },
+            channel: "W",
+          }),
+        }
+      );
+      if (status === "success") {
+        return data?.response_data;
+      } else {
+        throw data?.error_data;
+      }
+    } else {
+      throw { error_msg: "Unknown error occured" };
+    }
+  };
+
   //External API - called from dynamic form
   const validatePanNumber = async (currentField, _, formState) => {
     if (!Boolean(currentField?.value)) {
@@ -331,6 +374,7 @@ const CRMAPI = () => {
     inititateAPI,
     getInquiryQuestionMetaData,
     submitInquiryQuestionData,
+    submitInquiryQuestionData2,
     validatePanNumber,
     initiateAadharValidation,
     getAadharRequestStatus,
