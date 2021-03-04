@@ -1,5 +1,5 @@
-import clone from "lodash/clone";
-import toPath from "lodash/toPath";
+import { clone, toPath } from "lodash-es";
+
 import * as yup from "yup";
 import { FormFieldAtomType } from "./types";
 
@@ -72,10 +72,7 @@ const validationConfig = {
 };
 
 export const yupValidationHelper = (
-  schema:
-    | yup.Schema<object | undefined>
-    | yup.StringSchema<any>
-    | yup.NumberSchema<any>
+  schema: yup.AnyObjectSchema | yup.StringSchema<any> | yup.NumberSchema<any>
 ) => async (field: FormFieldAtomType) => {
   const { value } = field;
   try {
@@ -90,7 +87,7 @@ export const yupValidationHelper = (
 };
 
 export const yupReachAndValidate = (
-  schema: yup.ObjectSchema | undefined,
+  schema: yup.AnyObjectSchema | undefined,
   path: string
 ) => {
   if (typeof schema === "object") {
