@@ -38,7 +38,7 @@ const bankCrudAPIArgs = (moduleType, productType, refID) => ({
     args: { moduleType, productType, refID },
   },
   getGridFormData: {
-    fn: LOSSDK.getStaticBankGridData,
+    fn: LOSSDK.getGridBankData,
     args: { moduleType, productType, refID },
   },
   getFormMetaData: {
@@ -66,7 +66,7 @@ export const DetailsTabView = () => {
         queryClient.removeQueries(one);
       });
     };
-  }, [removeCache]);
+  }, []);
 
   return (
     <Fragment>
@@ -94,6 +94,6 @@ export const DetailsTabView = () => {
 
 export const DetailsTabViewBank = () => (
   <ClearCacheProvider>
-    <DetailsTabViewBank />
+    <DetailsTabView />
   </ClearCacheProvider>
 );

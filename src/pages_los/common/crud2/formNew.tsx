@@ -1,5 +1,7 @@
 import { FC, useContext, useRef, useEffect } from "react";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import { useMutation, useQuery } from "react-query";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
@@ -108,9 +110,27 @@ export const FormNew: FC<{
   }
 
   const renderResult = loading ? (
-    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+    <>
+      <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      {typeof cancelAction === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={cancelAction}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : isError === true ? (
-    <span>{errorMsg}</span>
+    <>
+      <span>{errorMsg}</span>
+      {typeof cancelAction === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={cancelAction}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : (
     <FormWrapper
       key={`${wrapperKey.current}-${dataUniqueKey}-new`}

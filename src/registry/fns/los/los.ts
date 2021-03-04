@@ -611,7 +611,7 @@ const LOSAPI = () => {
     serialNo?: string
   ) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/${productType}/get`,
+      `./${moduleType}/${productType}/data/get`,
       {
         body: JSON.stringify({
           request_data: {
@@ -633,7 +633,7 @@ const LOSAPI = () => {
     refID,
   }: crudType) => async (formData: any, bankRefCode?: any) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/${productType}/put`,
+      `./${moduleType}/${productType}/data/put`,
       {
         body: JSON.stringify({
           request_data: {
@@ -656,7 +656,7 @@ const LOSAPI = () => {
     refID,
   }: crudType) => async (bankRefCode: any) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/${productType}/delete`,
+      `./${moduleType}/${productType}/data/delete`,
       {
         body: JSON.stringify({
           request_data: {
@@ -679,7 +679,7 @@ const LOSAPI = () => {
     refID,
   }: crudType) => async (formData: any) => {
     const { data, status } = await internalFetcher(
-      `./${moduleType}/${productType}/post`,
+      `./${moduleType}/${productType}/data/post`,
       {
         body: JSON.stringify({
           request_data: {
@@ -696,7 +696,7 @@ const LOSAPI = () => {
     }
   };
 
-  const getStaticBankGridData = ({
+  const getGridBankData = ({
     moduleType,
     productType,
     refID,
@@ -885,7 +885,7 @@ const LOSAPI = () => {
     updateBankData,
     deleteBankData,
     insertBankData,
-    getStaticBankGridData,
+    getGridBankData,
     getBankData,
 
     //CAM
