@@ -839,7 +839,8 @@ const LOSAPI = () => {
       }),
     });
     if (status === "success") {
-      return data?.response_data;
+      const { response_data, ...others } = data;
+      return { data: response_data, others };
     } else {
       throw data?.error_data;
     }

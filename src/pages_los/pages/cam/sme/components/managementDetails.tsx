@@ -1,7 +1,13 @@
-import "../../../cam/styles.css";
-import { IncomeDetails } from "pages_los/pages/cam/camComponents/camSME/incomeDetails";
+import { IncomeDetails } from "./incomeDetails";
 
 export const ManagementDetails = ({ management }) => {
+  if (!Array.isArray(management) || management.length <= 0) {
+    return (
+      <tr>
+        <td>Invalid data</td>
+      </tr>
+    );
+  }
   return (
     <>
       <tr>

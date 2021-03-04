@@ -1,4 +1,7 @@
-export const CollateralDetails = ({ collateral, primary, personal }) => {
+export const CollateralDetails = ({ primary, collateral, personal }) => {
+  if (!Array.isArray(primary) || primary.length <= 0) {
+    return null;
+  }
   return (
     <>
       <tr>
@@ -36,6 +39,9 @@ export const CollateralDetails = ({ collateral, primary, personal }) => {
 };
 
 const CollateralSecurity = ({ collateral }) => {
+  if (!Array.isArray(collateral) || collateral.length <= 0) {
+    return null;
+  }
   return (
     <>
       <tr>
@@ -85,6 +91,9 @@ const CollateralSecurity = ({ collateral }) => {
 };
 
 const PersonalGuarantee = ({ personal }) => {
+  if (!Array.isArray(personal) || personal.length <= 0) {
+    return null;
+  }
   return (
     <>
       <tr>
