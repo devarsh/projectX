@@ -110,8 +110,13 @@ export const AuthProvider = ({ children }) => {
         ).then((result) => {
           if (result.status === "success") {
             login(localStorageAuthState, true);
-          } else {
-            logout();
+          } else if (result.status === "failure") {
+            console.log(result);
+            if (result.data instanceof Error) {
+              navigate("/error/Internet");
+            } else {
+              logout();
+            }
           }
           setAuthenticating(false);
         });

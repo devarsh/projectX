@@ -81,6 +81,26 @@ const MiscAPI = () => {
   };
 
   //dropdown value - dynamic form
+  const getProductTypeForBank = async (
+    _: any,
+    formState: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(
+      `./productType/${formState?.productCode}`,
+      {}
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.sub_prod_code,
+        label: one?.sub_prod_desc,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  //dropdown value - dynamic form
   const getPropertyCity = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./propertyCityList", {});
     if (status === "success" && Array.isArray(data?.response_data)) {
@@ -252,6 +272,7 @@ const MiscAPI = () => {
     inititateAPI,
     getMiscVal,
     getProductType,
+    getProductTypeForBank,
     getPropertyCity,
     getBankList,
     getPincodeExternal,

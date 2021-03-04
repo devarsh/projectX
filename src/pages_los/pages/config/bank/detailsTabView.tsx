@@ -83,14 +83,14 @@ export const DetailsTabView = () => {
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
           <CRUDContextProvider
-            {...bankCrudAPIArgs("config/bank", "sme", null, "")}
+            {...bankCrudAPIArgs("config/bank", "sme", null, "12000002")}
           >
             <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUDContextProvider
-            {...bankCrudAPIArgs("config/bank", "infra", null, "")}
+            {...bankCrudAPIArgs("config/bank", "infra", null, "12000003")}
           >
             <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
