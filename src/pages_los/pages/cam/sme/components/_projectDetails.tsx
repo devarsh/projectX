@@ -1,4 +1,11 @@
 export const ProjectDetails = ({ project }) => {
+  if (!Array.isArray(project) || project.length <= 0) {
+    return (
+      <tr>
+        <td>Invalid data</td>
+      </tr>
+    );
+  }
   return (
     <>
       <tr>
