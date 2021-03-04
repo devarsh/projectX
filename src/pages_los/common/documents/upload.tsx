@@ -33,7 +33,7 @@ export const UploadDocumentsApiWrapper = ({
       context.moduleType,
       context.docCategory,
     ]);
-  }, []);
+  }, [context, removeCache]);
   const query = useQuery(
     [
       "getDocumentUploadAddtionalFieldsMetaData",

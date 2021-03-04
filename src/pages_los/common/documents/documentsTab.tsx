@@ -91,7 +91,7 @@ export const DocumentGridCRUD: FC<{
   const classes = useStyles();
   useEffect(() => {
     removeCache?.addEntry(["getDocumentCRUDTabsMetadata", moduleType, refID]);
-  }, []);
+  }, [removeCache, moduleType, refID]);
   const queryResult = useQuery(
     ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
     () =>

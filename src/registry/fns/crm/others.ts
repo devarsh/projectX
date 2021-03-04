@@ -15,6 +15,7 @@ export const validateSamePanNumber = (validatePanNumber) => async (
   dependentFields,
   formState
 ) => {
+  /* eslint-disable eqeqeq */
   if (currentField.value == dependentFields.firmPanNumber.value) {
     return "Pan card No. could not be the same as Firm Pan card No.";
   }

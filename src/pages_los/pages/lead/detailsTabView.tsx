@@ -87,7 +87,6 @@ export const DetailsTabView: FC<{
   productGridData: any;
   isDataChangedRef: any;
   handleDialogClose: any;
-  setSnackBarMessage?: any;
 }> = ({
   refID,
   moduleType,
@@ -110,7 +109,7 @@ export const DetailsTabView: FC<{
       });
       queryClient.removeQueries(["getCRUDTabsMetadata", moduleType, refID]);
     };
-  }, [removeCache]);
+  }, [removeCache, moduleType, refID]);
 
   const queryResult = useQuery(
     ["getCRUDTabsMetadata", moduleType, refID],

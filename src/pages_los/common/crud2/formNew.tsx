@@ -71,7 +71,7 @@ export const FormNew: FC<{
   };
   useEffect(() => {
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "new"]);
-  }, []);
+  }, [removeCache]);
   const result = useQuery(
     ["getFormMetaData", wrapperKey.current, "new"],
     () => getFormMetaData.fn(getFormMetaData.args)("new"),

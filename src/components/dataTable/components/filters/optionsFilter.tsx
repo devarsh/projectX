@@ -36,6 +36,7 @@ export const OptionsFilter = (props) => {
     : "";
 
   const [value, setValue] = useState<string | string[]>(defaultValue);
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     if (!Boolean(localFilterManager.getFilterState(id))) {
       setLoading(true);

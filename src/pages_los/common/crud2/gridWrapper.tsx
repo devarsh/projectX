@@ -47,7 +47,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
     useEffect(() => {
       removeCache?.addEntry(["getStaticGridData", wrapperKey.current]);
       removeCache?.addEntry(["getGridFormMetaData", wrapperKey.current]);
-    }, []);
+    }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result[1].refetch(),
     }));

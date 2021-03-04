@@ -38,7 +38,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         context.docCategory,
       ]);
       removeCache?.addEntry(["getDocumentsGridData", wrapperKey.current]);
-    }, []);
+    }, [removeCache, context]);
 
     useImperativeHandle(ref, () => ({
       refetch: () => result[0].refetch(),
@@ -97,19 +97,19 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
 MyGridWrapper.displayName = "MyGridWrapper";
 
 //If need to coloreize Data wrap Data in this function
-const ColorizeData = (data) => {
-  if (Array.isArray(data) && data.length > 0) {
-    data = data.map((one) => {
-      if (one.status === "Pending") {
-        return { ...one, _rowColor: "rgb(232, 244, 253)" };
-      } else if (one.status === "Rejected") {
-        return { ...one, _rowColor: "rgb(253, 236, 234)" };
-      } else if (one.status === "Verified") {
-        return { ...one, _rowColor: "rgb(237, 247, 237)" };
-      } else {
-        return one;
-      }
-    });
-  }
-  return data;
-};
+// const ColorizeData = (data) => {
+//   if (Array.isArray(data) && data.length > 0) {
+//     data = data.map((one) => {
+//       if (one.status === "Pending") {
+//         return { ...one, _rowColor: "rgb(232, 244, 253)" };
+//       } else if (one.status === "Rejected") {
+//         return { ...one, _rowColor: "rgb(253, 236, 234)" };
+//       } else if (one.status === "Verified") {
+//         return { ...one, _rowColor: "rgb(237, 247, 237)" };
+//       } else {
+//         return one;
+//       }
+//     });
+//   }
+//   return data;
+// };

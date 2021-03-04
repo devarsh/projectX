@@ -43,6 +43,7 @@ export const PDFViewer: FC<{ blob: File; fileName: string; onClose?: any }> = ({
       </DialogActions>
       <DialogContent>
         <iframe
+          title="Document Preview"
           src={`${urlObj.current}`}
           style={{ height: "100%", width: "100%" }}
           aria-label="PDF Preview"

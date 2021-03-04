@@ -9,7 +9,7 @@ export const GlobalFilter = ({
   setGlobalFilter,
 }) => {
   const count = preGlobalFilteredRows.length;
-  const [value, setValue] = useState(globalFilter);
+  const [, setValue] = useState(globalFilter);
   const onChange = useAsyncDebounce(
     (value) => setGlobalFilter(value || undefined),
     200

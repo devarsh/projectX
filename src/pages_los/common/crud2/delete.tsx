@@ -27,12 +27,7 @@ export const DeleteAction = ({ isDataChangedRef, closeDialog, serialNo }) => {
   const mutation = useMutation(
     DeleteFormDataFnWrapper(deleteFormData.fn(deleteFormData.args)),
     {
-      onError: (error: any) => {
-        let errorMsg = "Unknown Error occured";
-        if (typeof error === "object") {
-          errorMsg = error?.error_msg ?? errorMsg;
-        }
-      },
+      onError: (error: any) => {},
       onSuccess: (data) => {
         isDataChangedRef.current = true;
         closeDialog();

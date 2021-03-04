@@ -116,6 +116,7 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
       let answers: OptionsProps[] = [];
       for (let i = 0; i < _options.length && _internalValue.length > 0; i++) {
         let foundIndex = _internalValue.findIndex((one) =>
+          /* eslint-disable eqeqeq */
           one == _options[i].value ? true : false
         );
         if (foundIndex > -1) {

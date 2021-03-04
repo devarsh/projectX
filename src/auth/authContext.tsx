@@ -59,6 +59,8 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  //Cannot add location.pathName
+  /*eslint-disable react-hooks/exhaustive-deps*/
   const login = useCallback(
     (payload: AuthStateType, stopNavigation?: boolean) => {
       dispatch({

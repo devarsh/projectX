@@ -16,7 +16,7 @@ const Redirect = () => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate("crm/");
-  }, []);
+  }, [navigate]);
   return null;
 };
 

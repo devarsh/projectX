@@ -23,7 +23,6 @@ import { useStyles } from "./style";
 //This is temparoary
 // import CAM from "./pages/cam";
 import { CAMWrapper } from "./pages/cam/camComponents/camSME/camWrapperSME";
-import { Form } from "registry/metaData/test";
 import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
@@ -94,7 +93,7 @@ const RedirectComponent = () => {
     } else {
       navigate(location.pathname);
     }
-  }, []);
+  }, [navigate, location.pathname]);
   return null;
 };
 

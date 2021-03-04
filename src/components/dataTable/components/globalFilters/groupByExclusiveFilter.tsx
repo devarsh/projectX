@@ -62,6 +62,8 @@ export const GroupByExclusiveFilter = ({
   const [value, setValue] = useState("all");
   const apiCount = useRef(0);
 
+  //We cannot add dependentFilters as depencency as we only want to setFiltersCondition when we are last depedency not otherwise
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     if (typeof value === "string" && value !== "all") {
       const condition = {

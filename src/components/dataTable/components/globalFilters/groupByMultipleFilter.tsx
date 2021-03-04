@@ -63,6 +63,7 @@ export const GroupByMultipleFilter = ({
   const [clear, setClear] = useState(true);
   const apiCount = useRef(0);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (Array.isArray(value) && value.length > 0) {
       const condition = {

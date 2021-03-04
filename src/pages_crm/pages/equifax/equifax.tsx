@@ -31,8 +31,8 @@ export const Equifax = () => {
   const [retailAccountsDetails, setRetailAccountsDetails] = useState<any[]>([]);
 
   const [
-    flowExist,
-    // refID,
+    ,
+    /*flowExist*/ // refID,
     nextURL,
     nextFlowNavigationProps,
   ] = useNavigationFlow(location, "/thankyou");
@@ -71,7 +71,7 @@ export const Equifax = () => {
       }
     };
     getEquifaxDetails();
-  }, []);
+  }, [refID]);
 
   const renderResult = loading ? (
     <img src={loaderGif} alt="loader" />

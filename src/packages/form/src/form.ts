@@ -24,7 +24,7 @@ import {
 } from "./types";
 import { FormContext } from "./context";
 
-export const useForm = ({ onSubmit, readOnly }: UseFormHookProps) => {
+export const useForm = ({ onSubmit, readOnly = false }: UseFormHookProps) => {
   const formContext = useContext(FormContext);
 
   const formState = useRecoilValue(formAtom(formContext.formName));
@@ -122,7 +122,7 @@ export const useForm = ({ onSubmit, readOnly }: UseFormHookProps) => {
     if (Boolean(readOnly)) {
       startSubmit();
     }
-  }, [startSubmit]);
+  }, [startSubmit, readOnly]);
 
   const endSubmit = useRecoilCallback(
     ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {

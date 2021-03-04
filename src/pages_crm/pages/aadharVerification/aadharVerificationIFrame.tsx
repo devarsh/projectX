@@ -71,7 +71,7 @@ export const AadharVerification = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
   const location = useLocation();
-  const [_, refID, nextURL, nextFlowNavigationProps] = useNavigationFlow(
+  const [, refID, nextURL, nextFlowNavigationProps] = useNavigationFlow(
     location,
     "./thankyou"
   );

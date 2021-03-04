@@ -1,6 +1,6 @@
 import { MetaDataType } from "components/dyanmicForm";
 
-const GeneralDetailsMetaData: any = {
+const GeneralDetailsMetaData: MetaDataType = {
   form: {
     name: "123456",
     label: "General Details",
@@ -71,6 +71,7 @@ const GeneralDetailsMetaData: any = {
         },
         {
           render: {
+            //@ts-ignore
             componentType: "currency",
           },
           name: "value2",
@@ -97,6 +98,7 @@ const GeneralDetailsMetaData: any = {
         },
         {
           render: {
+            //@ts-ignore
             componentType: "currency",
           },
           name: "total",

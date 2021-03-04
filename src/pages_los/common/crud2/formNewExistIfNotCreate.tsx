@@ -37,7 +37,7 @@ export const FormNewExistsIfNotCreate = ({
   );
   useEffect(() => {
     removeCache?.addEntry(["checkFormDataExist", wrapperKey.current]);
-  }, []);
+  }, [removeCache]);
   const loading = result.isFetching || result.isLoading;
   const isError = result.isError;
   //const errorMsg = result.error;
@@ -48,13 +48,20 @@ export const FormNewExistsIfNotCreate = ({
       ? false
       : false;
 
+  /*eslint-disable react-hooks/exhaustive-deps*/
+  const successActionAlways = useCallback(() => {
+    if (typeof successAction === "function") {
+      successAction();
+    }
+  }, []);
+
   useEffect(() => {
     if (dataExist) {
       if (typeof successAction === "function") {
-        successAction();
+        successActionAlways();
       }
     }
-  }, [dataExist]);
+  }, [dataExist, successActionAlways]);
 
   return loading ? (
     <img src={loaderGif} alt="loader" width="50px" height="50px" />

@@ -49,6 +49,7 @@ export const useOptionsFetcher = (
     }
   );
   loadingOptions = queryOptions.isLoading;
+  /*eslint-disable */
   useEffect(() => {
     if (options === undefined) {
       setOptions([{ label: "No Data", value: null }]);
@@ -100,18 +101,8 @@ export const useOptionsFetcher = (
     }
   }, [loadingOptions, queryOptions.dataUpdatedAt]);
 
-  // useEffect(() => {
-  //   componentMountedTime.current = new Date().getTime();
-  // }, []);
-
   useEffect(() => {
-    const hookCalledTime = new Date().getTime();
-    //const timeDiff = Math.abs(hookCalledTime - componentMountedTime.current);
-    if (
-      //timeDiff > 5000 &&
-      incomingMessage !== null &&
-      typeof incomingMessage === "object"
-    ) {
+    if (incomingMessage !== null && typeof incomingMessage === "object") {
       const { value } = incomingMessage;
       if (Boolean(value) || value === "") {
         handleChangeInterceptor(value);

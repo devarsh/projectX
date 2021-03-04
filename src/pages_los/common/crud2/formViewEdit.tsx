@@ -38,7 +38,12 @@ export const FormViewEdit: FC<{
   closeDialog?: any;
   defaultView?: "view" | "edit";
   serialNo?: string; //need to find another way to pass it (its a little hardcoded)
-}> = ({ isDataChangedRef, closeDialog, defaultView = "view", serialNo }) => {
+}> = ({
+  isDataChangedRef,
+  closeDialog,
+  defaultView = "view",
+  serialNo = "1",
+}) => {
   const { updateFormData, getFormData, getFormMetaData, context } = useContext(
     CRUDContext
   );
@@ -47,8 +52,6 @@ export const FormViewEdit: FC<{
   const { enqueueSnackbar } = useSnackbar();
   const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
-  //This is for caching purpose to make sure serialNo is not blank
-  serialNo = Boolean(serialNo) ? serialNo : "1";
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(Object.values(getFormData.args));
@@ -100,7 +103,7 @@ export const FormViewEdit: FC<{
     removeCache?.addEntry(["getFormData", wrapperKey.current, serialNo]);
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "view"]);
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "edit"]);
-  }, []);
+  }, [removeCache, serialNo]);
 
   const result = useQueries([
     {

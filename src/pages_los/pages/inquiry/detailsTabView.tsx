@@ -77,14 +77,12 @@ export const DetailsTabView: FC<{
   productGridData: any;
   isDataChangedRef: any;
   handleDialogClose: any;
-  setSnackBarMessage?: any;
 }> = ({
   refID,
   moduleType,
   productGridData,
   isDataChangedRef,
   handleDialogClose,
-  setSnackBarMessage,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
@@ -146,7 +144,7 @@ export const DetailsTabView: FC<{
               key={refID}
               refID={refID}
               isDataChangedRef={isDataChangedRef}
-              setSnackBarMessage={setSnackBarMessage}
+              handleDialogClose={handleDialogClose}
             />
           </TabPanel>
         </Box>

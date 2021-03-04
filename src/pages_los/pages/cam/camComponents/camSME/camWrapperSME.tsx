@@ -9,7 +9,7 @@ import { ProjectDetails } from "./ProjectDetails";
 import { LOSSDK } from "registry/fns/los";
 
 export const CAMWrapper = () => {
-  let camType = "smeCCOD" || "smeTermLoan" || "smeTermLoanCCOD" || "smeNFB";
+  //let camType = "smeCCOD" || "smeTermLoan" || "smeTermLoanCCOD" || "smeNFB";
 
   const result = useQuery(
     ["getViewData", "lead", "cam"],

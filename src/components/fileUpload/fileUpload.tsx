@@ -69,6 +69,7 @@ export const FileUploadControl = ({
   maxAllowedSize?: number;
   gridProps?: any;
 }) => {
+  /*eslint-disable  react-hooks/exhaustive-deps*/
   const transformedFilesMetaData = useMemo(
     () =>
       transformMetaDataByMutating(
