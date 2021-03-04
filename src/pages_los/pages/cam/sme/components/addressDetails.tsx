@@ -1,4 +1,11 @@
 export const AddressDetails = ({ address }) => {
+  if (!Array.isArray(address) || address.length > 0) {
+    return (
+      <tr>
+        <td>Invalid data</td>
+      </tr>
+    );
+  }
   return (
     <>
       <tr>

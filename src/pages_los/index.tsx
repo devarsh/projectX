@@ -20,9 +20,8 @@ import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 
-//This is temparoary
-// import CAM from "./pages/cam";
-import { CAMWrapper } from "./pages/cam/camComponents/camSME/camWrapperSME";
+import { CAM } from "./pages/cam";
+import { Form } from "registry/metaData/test";
 import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
@@ -53,9 +52,9 @@ const DashbordPages = () => {
             <Route path="/leads" element={<Lead />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cam" element={<CAMWrapper />} />
+            <Route path="/cam" element={<CAM />} />
             {/*dummy routes*/}
-            <Route path="/testForm" element={<TestForm />} />
+            <Route path="/testForm" element={<Form />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

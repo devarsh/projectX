@@ -1,7 +1,27 @@
-import "../../../cam/styles.css";
-import { AddressDetails } from "pages_los/pages/cam/camComponents/camSME/addressDetails";
-import { PromoterDetails } from "pages_los/pages/cam/camComponents/camSME/promoterDetails";
+import { AddressDetails } from "./addressDetails";
+import { PromoterDetails } from "./promoterDetails";
 export const GeneralDetails = ({ general, promoter, address }) => {
+  if (typeof general === "object") {
+    return (
+      <>
+        <tr>
+          <th className="form-heading" colSpan={9}>
+            General Details
+          </th>
+        </tr>
+        {generalDetailsLabels?.map((res) => {
+          return general[res?.name] ? (
+            <tr>
+              <th colSpan={2}>{res?.label ?? "N/A"}</th>
+              <td colSpan={7}>{general[res?.name] ?? "N/A"}</td>
+            </tr>
+          ) : null;
+        }) ?? "No data found"}
+        <AddressDetails address={address} />;
+        <PromoterDetails promoter={promoter} />
+      </>
+    );
+  }
   return (
     <>
       <tr>
@@ -9,16 +29,9 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           General Details
         </th>
       </tr>
-      {generalDetailsLabels?.map((res) => {
-        return general[res?.name] ? (
-          <tr>
-            <th colSpan={2}>{res?.label ?? "N/A"}</th>
-            <td colSpan={7}>{general[res?.name] ?? "N/A"}</td>
-          </tr>
-        ) : null;
-      }) ?? "No data found"}
-      <AddressDetails address={address} />;
-      <PromoterDetails promoter={promoter} />
+      <tr>
+        <th>Invalid data</th>
+      </tr>
     </>
   );
 };
