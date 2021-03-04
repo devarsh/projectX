@@ -26,14 +26,8 @@ export const FormNewExistsIfNotCreate = ({
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(Object.values(insertFormData.args));
   }
-  let result = useQuery(
-    ["checkFormDataExist", wrapperKey.current],
-    () => checkFormDataExist.fn(checkFormDataExist.args)(),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  let result = useQuery(["checkFormDataExist", wrapperKey.current], () =>
+    checkFormDataExist.fn(checkFormDataExist.args)()
   );
   useEffect(() => {
     removeCache?.addEntry(["checkFormDataExist", wrapperKey.current]);

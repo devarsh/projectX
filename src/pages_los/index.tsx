@@ -22,7 +22,7 @@ import { useStyles } from "./style";
 
 import { CAM } from "./pages/cam";
 import { Form } from "registry/metaData/test";
-import TestForm from "components/dyanmicForm/test";
+//import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
   const classes = useStyles();

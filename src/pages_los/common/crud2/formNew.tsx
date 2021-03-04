@@ -74,14 +74,8 @@ export const FormNew: FC<{
   useEffect(() => {
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "new"]);
   }, [removeCache]);
-  const result = useQuery(
-    ["getFormMetaData", wrapperKey.current, "new"],
-    () => getFormMetaData.fn(getFormMetaData.args)("new"),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const result = useQuery(["getFormMetaData", wrapperKey.current, "new"], () =>
+    getFormMetaData.fn(getFormMetaData.args)("new")
   );
   const dataUniqueKey = result.dataUpdatedAt;
   const loading = result.isLoading || result.isFetching;

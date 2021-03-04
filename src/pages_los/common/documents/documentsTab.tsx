@@ -99,12 +99,7 @@ export const DocumentGridCRUD: FC<{
         moduleType,
         productType,
         refID,
-      }),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+      })
   );
   let tabs: any[] = queryResult.data;
   if (queryResult.isSuccess) {

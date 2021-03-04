@@ -43,12 +43,7 @@ export const UploadDocumentsApiWrapper = ({
     () =>
       getDocumentUploadAddtionalFieldsMetaData.fn(
         getDocumentUploadAddtionalFieldsMetaData.args
-      ),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+      )
   );
   //@ts-ignore
   let error = `${query.error?.error_msg ?? "unknown message"}`;

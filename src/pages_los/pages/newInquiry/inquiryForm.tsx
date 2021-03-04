@@ -66,8 +66,6 @@ export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {
     () => CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
     {
       cacheTime: 0,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     }
   );
   let metaData: MetaDataType = {} as MetaDataType;

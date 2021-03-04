@@ -44,8 +44,6 @@ export const useOptionsFetcher = (
       retry: false,
       enabled: typeof options === "function",
       cacheTime: disableCaching ? 0 : 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     }
   );
   loadingOptions = queryOptions.isLoading;
@@ -141,9 +139,6 @@ export const useOptionsFetcherSimple = (
   }
   const queryOptions = useQuery(queryKey, () => options(optionsProps), {
     enabled: typeof options === "function",
-    cacheTime: 100000000,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
   });
   loadingOptions = queryOptions.isLoading;
   useEffect(() => {

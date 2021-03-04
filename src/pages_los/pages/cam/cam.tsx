@@ -9,14 +9,8 @@ const SME = lazy(() =>
 );
 
 export const CAM = () => {
-  const result = useQuery(
-    ["getViewData", "lead", "cam"],
-    () => LOSSDK.getCAMData("89"),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const result = useQuery(["getViewData", "lead", "cam"], () =>
+    LOSSDK.getCAMData("89")
   );
   console.log(result);
   let ComponentToRender;

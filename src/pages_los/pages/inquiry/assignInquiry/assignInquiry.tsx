@@ -40,14 +40,8 @@ export const AssignInquiry = ({ refID }) => {
     }
   }, [userMessage]);
 
-  const employeeListQuery = useQuery(
-    ["employeeList", branchCode],
-    () => APISDK.getEmployeeListToAssignLead(branchCode),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const employeeListQuery = useQuery(["employeeList", branchCode], () =>
+    APISDK.getEmployeeListToAssignLead(branchCode)
   );
   let employeeListOptions: any = [];
   if (

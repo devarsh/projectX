@@ -43,12 +43,7 @@ export const UpdateDocumentData = ({
   }, [removeCache, context]);
   const query = useQuery(
     ["getDocumentEditGridMetaData", context.moduleType, context.docCategory],
-    () => getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+    () => getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args)
   );
 
   const mutation = useMutation(

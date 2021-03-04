@@ -113,14 +113,8 @@ export const DetailsTabView: FC<{
     };
   }, [removeCache, moduleType, refID]);
 
-  const queryResult = useQuery(
-    ["getCRUDTabsMetadata", moduleType, refID],
-    () => LOSSDK.getCRUDTabsMetadata({ moduleType, refID }),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const queryResult = useQuery(["getCRUDTabsMetadata", moduleType, refID], () =>
+    LOSSDK.getCRUDTabsMetadata({ moduleType, refID })
   );
   let tabs: any[] = queryResult.data;
   if (queryResult.isSuccess) {
