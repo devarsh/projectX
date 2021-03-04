@@ -66,7 +66,7 @@ export const DetailsTabView = () => {
         queryClient.removeQueries(one);
       });
     };
-  }, []);
+  }, [removeCache]);
 
   return (
     <Fragment>
