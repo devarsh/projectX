@@ -91,7 +91,7 @@ export const DocumentGridCRUD: FC<{
   const classes = useStyles();
   useEffect(() => {
     removeCache?.addEntry(["getDocumentCRUDTabsMetadata", moduleType, refID]);
-  }, []);
+  }, [removeCache, moduleType, refID]);
   const queryResult = useQuery(
     ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
     () =>
@@ -99,12 +99,7 @@ export const DocumentGridCRUD: FC<{
         moduleType,
         productType,
         refID,
-      }),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+      })
   );
   let tabs: any[] = queryResult.data;
   if (queryResult.isSuccess) {

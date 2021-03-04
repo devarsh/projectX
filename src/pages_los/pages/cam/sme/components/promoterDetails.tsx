@@ -1,4 +1,7 @@
 export const PromoterDetails = ({ promoter }) => {
+  if (!Array.isArray(promoter) || promoter.length <= 0) {
+    return null;
+  }
   return (
     <>
       <tr>

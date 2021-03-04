@@ -73,7 +73,7 @@ const CRMAPI = () => {
         throw data?.error_data;
       }
     } else {
-      throw "Invalid Metadata type";
+      throw new Error("Invalid Metadata type");
     }
   };
 
@@ -158,7 +158,7 @@ const CRMAPI = () => {
         throw data?.error_data;
       }
     } else {
-      throw { error_msg: "Unknown error occured" };
+      throw new Error("Unknown error occured");
     }
   };
 

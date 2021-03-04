@@ -11,14 +11,8 @@ import { useQuery } from "react-query";
 export const CustomerDetails = ({ refID, moduleType, productType }) => {
   const classes = useStyles();
 
-  const result = useQuery(
-    ["getViewData", productType, refID],
-    () => LOSSDK.getFormData({ moduleType, productType, refID }),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const result = useQuery(["getViewData", productType, refID], () =>
+    LOSSDK.getFormData({ moduleType, productType, refID })
   );
 
   //@ts-ignore

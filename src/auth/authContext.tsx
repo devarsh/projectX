@@ -59,6 +59,8 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  //Cannot add location.pathName
+  /*eslint-disable react-hooks/exhaustive-deps*/
   const login = useCallback(
     (payload: AuthStateType, stopNavigation?: boolean) => {
       dispatch({
@@ -108,8 +110,13 @@ export const AuthProvider = ({ children }) => {
         ).then((result) => {
           if (result.status === "success") {
             login(localStorageAuthState, true);
-          } else {
-            logout();
+          } else if (result.status === "failure") {
+            console.log(result);
+            if (result.data instanceof Error) {
+              navigate("/error/Internet");
+            } else {
+              logout();
+            }
           }
           setAuthenticating(false);
         });

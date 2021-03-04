@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, useEffect } from "react";
+import { useState, Fragment, useRef, useEffect, useCallback } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
@@ -58,13 +58,13 @@ export const DocumentGridCRUD = () => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
-  const closeMyDialog = () => {
+  const closeMyDialog = useCallback(() => {
     setCurrentAction(null);
     if (dataChangedRef.current === true) {
       gridRef.current?.refetch?.();
       dataChangedRef.current = false;
     }
-  };
+  }, [setCurrentAction]);
 
   return (
     <Fragment>
@@ -136,6 +136,6 @@ export const DocumentGridCRUD = () => {
 const InvalidAction = ({ closeDialog }) => {
   useEffect(() => {
     closeDialog();
-  }, []);
+  }, [closeDialog]);
   return null;
 };

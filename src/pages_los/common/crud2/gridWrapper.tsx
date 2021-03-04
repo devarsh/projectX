@@ -21,7 +21,9 @@ type GridWrapperType = {
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   ({ actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
-    const { getGridFormData, getGridFormMetaData } = useContext(CRUDContext);
+    const { getGridFormData, getGridFormMetaData, context } = useContext(
+      CRUDContext
+    );
     const wrapperKey = useRef<any>(null);
     if (wrapperKey.current === null) {
       wrapperKey.current = cacheWrapperKeyGen(
@@ -47,7 +49,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
     useEffect(() => {
       removeCache?.addEntry(["getStaticGridData", wrapperKey.current]);
       removeCache?.addEntry(["getGridFormMetaData", wrapperKey.current]);
-    }, []);
+    }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result[1].refetch(),
     }));
@@ -75,6 +77,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         actions={actions}
         setAction={setAction}
         loading={loading}
+        gridProps={context}
       />
     );
     return renderResult;

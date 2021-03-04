@@ -1,15 +1,16 @@
-import { Fragment, useCallback } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import { useStyles } from "./style";
-import { FormContext, useForm } from "packages/form";
+import { useMutation } from "react-query";
 import * as yup from "yup";
+import { FormContext, useForm } from "packages/form";
+import { useStyles } from "./style";
 import { TextField, Select } from "components/common";
 import { MiscSDK } from "registry/fns/misc";
 import { LOSSDK } from "registry/fns/los";
-import { useMutation } from "react-query";
+import { useSnackbar } from "notistack";
 
 interface moveToLeadFnType {
   refID: string;
@@ -24,7 +25,7 @@ const moveToLead = async ({ data, refID }: moveToLeadFnType) => {
 export const MoveInquiryToLead = ({
   refID,
   isDataChangedRef,
-  setSnackBarMessage,
+  handleDialogClose,
 }) => {
   const classes = useStyles();
   return (
@@ -45,7 +46,7 @@ export const MoveInquiryToLead = ({
         classes={classes}
         refID={refID}
         isDataChangedRef={isDataChangedRef}
-        setSnackBarMessage={setSnackBarMessage}
+        handleDialogClose={handleDialogClose}
       />
     </FormContext.Provider>
   );
@@ -54,10 +55,10 @@ export const MoveInquiryToLead = ({
 const MoveInquiryToLeadForm = ({
   classes,
   refID,
-
   isDataChangedRef,
-  setSnackBarMessage,
+  handleDialogClose,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const moveInquiryToLead = useMutation(moveToLead, {
     onMutate: () => {},
     onError: (error: any, { endSubmit }) => {
@@ -66,31 +67,29 @@ const MoveInquiryToLeadForm = ({
         errorMsg = error?.error_msg ?? errorMsg;
       }
       endSubmit(false, errorMsg);
-
-      setSnackBarMessage({
-        type: "error",
-        message: errorMsg,
-      });
+      enqueueSnackbar(errorMsg, { variant: "error" });
     },
     onSuccess: (data, { endSubmit }) => {
       endSubmit(true, "");
-
       isDataChangedRef.current = true;
-      setSnackBarMessage({
-        type: "success",
-        message: "Inquiry successfully moved to lead",
+      enqueueSnackbar("Inquiry successfully moved to lead", {
+        variant: "success",
       });
+      handleDialogClose();
     },
   });
 
-  const onSubmitHandler = useCallback((values, displayValues, endSubmit) => {
-    moveInquiryToLead.mutate({ refID, data: values, endSubmit });
-  }, []);
+  const onSubmitHandler = useCallback(
+    (values, displayValues, endSubmit) => {
+      moveInquiryToLead.mutate({ refID, data: values, endSubmit });
+    },
+    [refID, moveInquiryToLead]
+  );
 
   const { handleSubmit, isSubmitting } = useForm({
     onSubmit: onSubmitHandler,
   });
-  const leadOptions = useCallback(MiscSDK.getMiscVal("LEAD_PRIORITY"), []);
+  const leadOptions = useMemo(() => MiscSDK.getMiscVal("LEAD_PRIORITY"), []);
   return (
     <Fragment>
       <Typography>Move To Lead</Typography>

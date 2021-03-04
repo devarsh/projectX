@@ -92,6 +92,7 @@ export const OtpVerificationPage = () => {
   const trimmedOTPLengthValid = trimmedOTP.length === 6;
   const trimmedOTPLengthMsg = "Otp must be of 6 characters long";
 
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     dispatch({
       type: "startOTPRequest",

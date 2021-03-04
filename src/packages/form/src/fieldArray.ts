@@ -63,7 +63,8 @@ export const useFieldArray = ({
         formFieldsErrorWatcherRemoveSelector(formContext.formName),
         fieldName
       );
-    }
+    },
+    []
   );
 
   const isFieldRegistered = useRecoilCallback(
@@ -161,7 +162,13 @@ export const useFieldArray = ({
         }
       }
     },
-    [setFieldRows, unregisterField, arrayFieldName, formContext.formName]
+    [
+      setFieldRows,
+      unregisterField,
+      arrayFieldName,
+      formContext.formName,
+      RemoveFieldsFromErrorWatcher,
+    ]
   );
   //Initialize the form array with default rows
   const setDefaultValue = useCallback(

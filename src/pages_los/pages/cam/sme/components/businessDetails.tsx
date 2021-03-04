@@ -1,4 +1,27 @@
 export const BusinessDetails = ({ business }) => {
+  if (typeof business === "object") {
+    return (
+      <>
+        <tr>
+          <th colSpan={9} className="form-heading">
+            Business Details
+          </th>
+        </tr>
+        {businessDetailsLabels?.map((res) => {
+          return business[res?.name] ? (
+            <tr>
+              <th colSpan={2}>{res?.label ?? "N/A"}</th>
+              <td colSpan={7}>
+                <span className="content-text">
+                  {business[res?.name] ?? "N/A"}
+                </span>
+              </td>
+            </tr>
+          ) : null;
+        }) ?? "No data found"}
+      </>
+    );
+  }
   return (
     <>
       <tr>
@@ -6,18 +29,9 @@ export const BusinessDetails = ({ business }) => {
           Business Details
         </th>
       </tr>
-      {businessDetailsLabels?.map((res) => {
-        return business[res?.name] ? (
-          <tr>
-            <th colSpan={2}>{res?.label ?? "N/A"}</th>
-            <td colSpan={7}>
-              <span className="content-text">
-                {business[res?.name] ?? "N/A"}
-              </span>
-            </td>
-          </tr>
-        ) : null;
-      }) ?? "No data found"}
+      <tr>
+        <th>Invalid data</th>
+      </tr>
     </>
   );
 };

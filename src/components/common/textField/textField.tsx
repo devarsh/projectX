@@ -109,7 +109,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
         handleChange(result);
       }
     }
-  }, [dependentValues, handleChange]);
+  }, [dependentValues, handleChange, setValueOnDependentFieldsChange]);
 
   useEffect(() => {
     if (incomingMessage !== null && typeof incomingMessage === "object") {

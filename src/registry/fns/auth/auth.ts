@@ -109,7 +109,7 @@ const authAPI = () => {
     if (status === "success") {
       return { status, data: data?.response_data };
     } else {
-      return { status, data: data?.error_data };
+      return { status, data: data instanceof Error ? data : data?.error_data };
     }
   };
 

@@ -73,12 +73,13 @@ export const FileViewer: FC<{
       </DialogActions>
       <DialogContent>
         {loading ? (
-          <img src={loaderGif} width="50px" height="50px" />
+          <img src={loaderGif} width="50px" height="50px" alt="loader" />
         ) : Boolean(error) ? (
           <span>{error}</span>
         ) : (
           <iframe
             src={`${urlObj.current}`}
+            title="Document View"
             style={{ height: "100%", width: "100%" }}
             aria-label="File Preview"
           />
@@ -145,7 +146,15 @@ const useBlobLoader = ({ docUUID, fileType }) => {
         setLoading(true);
         setSuccess(false);
       });
-  }, []);
+  }, [
+    setError,
+    setLoading,
+    setSuccess,
+    setBlob,
+    docUUID,
+    fileType,
+    previewDocument,
+  ]);
   return {
     success,
     loading,

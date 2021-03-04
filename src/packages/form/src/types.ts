@@ -1,4 +1,4 @@
-import { ObjectSchema } from "yup";
+import { AnyObjectSchema } from "yup";
 export interface TemplateFieldRowType {
   fieldIndexKey: string;
   cells: TemplateFieldCellsObjectType;
@@ -19,7 +19,7 @@ export interface FormContextType {
   validationRun?: ValidationRunType;
   resetFieldOnUnmount?: boolean;
   initialValues?: InitialValuesType;
-  validationSchema?: ObjectSchema;
+  validationSchema?: AnyObjectSchema;
   formState: any;
   defaultArrayFieldValues?: InitialValuesType;
 }

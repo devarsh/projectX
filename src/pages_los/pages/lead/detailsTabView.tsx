@@ -8,6 +8,8 @@ import {
   Suspense,
 } from "react";
 import Box from "@material-ui/core/Box";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
@@ -87,7 +89,6 @@ export const DetailsTabView: FC<{
   productGridData: any;
   isDataChangedRef: any;
   handleDialogClose: any;
-  setSnackBarMessage?: any;
 }> = ({
   refID,
   moduleType,
@@ -110,16 +111,10 @@ export const DetailsTabView: FC<{
       });
       queryClient.removeQueries(["getCRUDTabsMetadata", moduleType, refID]);
     };
-  }, [removeCache]);
+  }, [removeCache, moduleType, refID]);
 
-  const queryResult = useQuery(
-    ["getCRUDTabsMetadata", moduleType, refID],
-    () => LOSSDK.getCRUDTabsMetadata({ moduleType, refID }),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const queryResult = useQuery(["getCRUDTabsMetadata", moduleType, refID], () =>
+    LOSSDK.getCRUDTabsMetadata({ moduleType, refID })
   );
   let tabs: any[] = queryResult.data;
   if (queryResult.isSuccess) {
@@ -132,10 +127,28 @@ export const DetailsTabView: FC<{
     }
   }
   const result = queryResult.isLoading ? (
-    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+    <>
+      <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      {typeof handleDialogClose === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={handleDialogClose}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : queryResult.isError ? (
-    //@ts-ignore
-    queryResult.error?.error_msg ?? "unknown error occured"
+    <>
+      {/* @ts-ignore */}
+      <span>{queryResult.error?.error_msg ?? "unknown error occured"}</span>
+      {typeof handleDialogClose === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={handleDialogClose}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : (
     <Fragment>
       <HeaderDetails

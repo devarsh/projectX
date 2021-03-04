@@ -109,7 +109,7 @@ const DashLet = () => {
                   <div className={classes.icon}>{val.icon}</div>
                 </div>
                 <div className={classes.status}>
-                  {val?.informationBlocks?.map((block) => {
+                  {val?.informationBlocks?.map((block, index) => {
                     let statusClass = "";
                     let statusBgClass = "";
                     block.status === "confirmed"
@@ -134,7 +134,7 @@ const DashLet = () => {
                     const currentClass = clsx(statusClass, classes.statusText);
                     const currentBgClass = clsx(classes.unit, statusBgClass);
                     return (
-                      <>
+                      <Fragment key={index}>
                         <Typography
                           variant="subtitle2"
                           className={currentClass}
@@ -142,7 +142,7 @@ const DashLet = () => {
                           <span className={currentBgClass}>{block.value}</span>
                           {block.label}
                         </Typography>
-                      </>
+                      </Fragment>
                     );
                   })}
                 </div>

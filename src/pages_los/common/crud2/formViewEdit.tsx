@@ -8,6 +8,8 @@ import {
 } from "react";
 import loaderGif from "assets/images/loader.gif";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
@@ -38,7 +40,12 @@ export const FormViewEdit: FC<{
   closeDialog?: any;
   defaultView?: "view" | "edit";
   serialNo?: string; //need to find another way to pass it (its a little hardcoded)
-}> = ({ isDataChangedRef, closeDialog, defaultView = "view", serialNo }) => {
+}> = ({
+  isDataChangedRef,
+  closeDialog,
+  defaultView = "view",
+  serialNo = "1",
+}) => {
   const { updateFormData, getFormData, getFormMetaData, context } = useContext(
     CRUDContext
   );
@@ -47,8 +54,6 @@ export const FormViewEdit: FC<{
   const { enqueueSnackbar } = useSnackbar();
   const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
-  //This is for caching purpose to make sure serialNo is not blank
-  serialNo = Boolean(serialNo) ? serialNo : "1";
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(Object.values(getFormData.args));
@@ -100,7 +105,7 @@ export const FormViewEdit: FC<{
     removeCache?.addEntry(["getFormData", wrapperKey.current, serialNo]);
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "view"]);
     removeCache?.addEntry(["getFormMetaData", wrapperKey.current, "edit"]);
-  }, []);
+  }, [removeCache, serialNo]);
 
   const result = useQueries([
     {
@@ -179,9 +184,27 @@ export const FormViewEdit: FC<{
   }
 
   const renderResult = loading ? (
-    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+    <>
+      <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : isError === true ? (
-    <span>{errorMsg}</span>
+    <>
+      <span>{errorMsg}</span>
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : formMode === "view" ? (
     <FormWrapper
       key={`${wrapperKey.current}-${dataUniqueKey}-${formMode}`}

@@ -110,6 +110,6 @@ export const GridCRUD: FC<{
 const InvalidAction = ({ closeDialog }) => {
   useEffect(() => {
     closeDialog();
-  }, []);
+  }, [closeDialog]);
   return null;
 };

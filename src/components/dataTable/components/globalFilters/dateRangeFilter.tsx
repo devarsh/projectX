@@ -56,6 +56,7 @@ export const DaysFilter = ({ accessor, columnName, dependencies, last }) => {
     return resetFilter;
   }, [resetFilter]);
 
+  /* eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     setFilterCondition(condition);
     if (last) {

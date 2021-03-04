@@ -1,1 +1,0 @@
-export { DetailsTabContainer } from "./tabs";

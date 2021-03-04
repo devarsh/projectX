@@ -48,9 +48,11 @@ const parseYupSchemaAndAttachMethod = (
 };
 
 const attachYupValidator = (
-  validator: yup.Schema<
-    yup.DateSchema | yup.NumberSchema | yup.StringSchema | yup.BooleanSchema
-  >
+  validator:
+    | yup.DateSchema
+    | yup.NumberSchema
+    | yup.StringSchema
+    | yup.BooleanSchema
 ) => async (value: number | string | boolean | Date) => {
   try {
     await validator.validate(value, validationConfig);

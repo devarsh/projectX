@@ -18,14 +18,8 @@ export const ListingGrid = ({
   );
   /* eslint-disable react-hooks/exhaustive-deps */
   const getGridData = useCallback(LOSSDK.getGridData(gridCode), [gridCode]);
-  const result = useQuery(
-    ["gridMetaData", gridCode],
-    () => LOSSDK.getGridMetaData(gridCode),
-    {
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
+  const result = useQuery(["gridMetaData", gridCode], () =>
+    LOSSDK.getGridMetaData(gridCode)
   );
   useEffect(() => {
     return () => {
