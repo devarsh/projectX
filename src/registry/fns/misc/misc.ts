@@ -61,10 +61,7 @@ const MiscAPI = () => {
   };
 
   //dropdown value - dynamic form
-  const getProductType = async (
-    _: any,
-    formState: any
-  ): Promise<OptionsProps[]> => {
+  const getProductType = async (formState: any): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher(
       `./productType/${formState?.formCode}`,
       {}
@@ -100,6 +97,41 @@ const MiscAPI = () => {
     }
   };
 
+  //dropdown value - dynamic form
+  const getBankSubProductType = async (
+    dependentFields: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(
+      `./productType/${dependentFields?.productId?.value}`,
+      {}
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.sub_prod_code,
+        label: one?.sub_prod_desc,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const getBankSubProductType2 = async (
+    dependentFields: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(
+      `./productType/${dependentFields?.subProduct1?.value}`,
+      {}
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.sub_prod_code,
+        label: one?.sub_prod_desc,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data?.error_msg;
+    }
+  };
   //dropdown value - dynamic form
   const getPropertyCity = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./propertyCityList", {});
@@ -273,6 +305,8 @@ const MiscAPI = () => {
     getMiscVal,
     getProductType,
     getProductTypeForBank,
+    getBankSubProductType,
+    getBankSubProductType2,
     getPropertyCity,
     getBankList,
     getPincodeExternal,

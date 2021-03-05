@@ -233,4 +233,34 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       ],
     },
   },
+  minAge: {
+    render: {
+      componentType: "numberFormat",
+    },
+    schemaValidation: {
+      type: "number",
+      rules: [
+        { name: "required", params: ["Min Age is required"] },
+        { name: "min", params: [25, "Min age should be 25 years"] },
+      ],
+    },
+    FormatProps: {
+      format: "##",
+    },
+  },
+  maxAge: {
+    render: {
+      componentType: "numberFormat",
+    },
+    schemaValidation: {
+      type: "number",
+      rules: [
+        { name: "required", params: ["Max Age is required"] },
+        { name: "max", params: [65, "Max age should be 65 years"] },
+      ],
+    },
+    FormatProps: {
+      format: "##",
+    },
+  },
 };

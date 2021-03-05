@@ -9,13 +9,9 @@ const SME = lazy(() =>
 );
 
 export const CAM = () => {
-  const result = useQuery(["getViewData", "lead", "cam"], () =>
-    LOSSDK.getCAMData("89")
-  );
-  console.log(result);
+  const result = useQuery(["getCAMData", "89"], () => LOSSDK.getCAMData("89"));
   let ComponentToRender;
   if (result.isSuccess) {
-    //put condition in case of multipleCam
     ComponentToRender = SME;
   }
   const renderResult = result.isLoading ? (
@@ -33,6 +29,7 @@ export const CAM = () => {
         data={result.data?.data}
         others={result?.data?.others}
       />
+      <div className="divFooter">UNCLASSIFIED</div>
     </Suspense>
   );
   return renderResult;

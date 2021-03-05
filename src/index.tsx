@@ -7,6 +7,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import CRM from "app/crm";
 import LOS from "app/los";
 import ErrorPage from "app/error";
+import { CAMSOLO } from "pages_los/pages/cam";
 import "typeface-roboto";
 import "registry"; //register functions to be used across application
 import { DndProvider } from "react-dnd";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/los/*" element={<LOS />} />
             <Route path="/crm/*" element={<CRM />} />
             <Route path="/error/*" element={<ErrorPage />} />
+            <Route path="/cam/" element={<CAMSOLO />} />
             <Route path="*" element={<Redirect />} />
           </Routes>
         </BrowserRouter>
