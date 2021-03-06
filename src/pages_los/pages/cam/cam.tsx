@@ -32,6 +32,7 @@ export const CAM = () => {
         data={result.data?.data}
         others={result?.data?.others}
       />
+      <div className="divFooter">UNCLASSIFIED</div>
     </Suspense>
   );
   return renderResult;

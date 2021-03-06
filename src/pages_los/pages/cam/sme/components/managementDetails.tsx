@@ -10,6 +10,10 @@ export const ManagementDetails = ({ management }) => {
   }
   return (
     <>
+      <br />
+      <tr className="page-break">
+        <th></th>
+      </tr>
       <tr>
         <th colSpan={9} className="form-heading">
           Management Details

@@ -3,7 +3,7 @@ import { GridColumnType, YupSchemaMetaDataType } from "../types";
 
 const validationConfig = {
   abortEarly: false,
-  strict: true,
+  strict: false,
 };
 
 export const attachYupSchemaValidator = (columns: GridColumnType[]) => {

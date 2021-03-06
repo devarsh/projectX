@@ -75,6 +75,8 @@ export const DetailsTabView = () => {
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="SME" id="0" />
         <Tab label="Infra" id="1" />
+        <Tab label="Retail" id="2" />
+        <Tab label="Unsecured" id="3" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
@@ -87,6 +89,20 @@ export const DetailsTabView = () => {
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUDContextProvider
             {...bankCrudAPIArgs("config/bank", "infra", null, "12000003")}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="2" key={2}>
+          <CRUDContextProvider
+            {...bankCrudAPIArgs("config/bank", "retail", null, "12000001")}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="3" key={3}>
+          <CRUDContextProvider
+            {...bankCrudAPIArgs("config/bank", "unsecured", null, "12000004")}
           >
             <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
