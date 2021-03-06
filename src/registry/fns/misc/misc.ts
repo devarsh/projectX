@@ -61,7 +61,7 @@ const MiscAPI = () => {
   };
 
   //dropdown value - dynamic form
-  const getProductType = async (formState: any): Promise<OptionsProps[]> => {
+  const getProductType = async (,formState: any): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher(
       `./productType/${formState?.formCode}`,
       {}
