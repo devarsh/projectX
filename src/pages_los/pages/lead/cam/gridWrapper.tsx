@@ -1,10 +1,17 @@
-import { useContext, useEffect, forwardRef, useImperativeHandle } from "react";
+import {
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useRef,
+} from "react";
 import { useQueries } from "react-query";
-import { queryClient } from "cache";
 import GridWrapper from "components/dataTableStatic";
 import { ActionTypes, GridMetaDataType } from "components/dataTable";
 import loaderGif from "assets/images/loader.gif";
 import { CAMContext } from "./context";
+import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
+import { MetaData } from "./metaData";
 
 type GridWrapperType = {
   actions: ActionTypes[];
@@ -14,24 +21,27 @@ type GridWrapperType = {
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   ({ actions, setAction }, ref) => {
     const { getGridCAMMetaData, getGridCAMData } = useContext(CAMContext);
-
+    const removeCache = useContext(ClearCacheContext);
+    const wrapperKeyMetaRef = useRef(
+      cacheWrapperKeyGen(Object.values(getGridCAMMetaData.args))
+    );
+    const wrapperKeyDataRef = useRef(
+      cacheWrapperKeyGen(Object.values(getGridCAMData.args))
+    );
     const result = useQueries([
       {
-        queryKey: ["getGridCamMetaData", getGridCAMMetaData.args],
+        queryKey: ["getGridCamMetaData", wrapperKeyMetaRef.current],
         queryFn: () => getGridCAMMetaData.fn(getGridCAMMetaData.args),
       },
       {
-        queryKey: ["getGridCamData", getGridCAMData.args],
+        queryKey: ["getGridCamData", wrapperKeyDataRef.current],
         queryFn: () => getGridCAMData.fn(getGridCAMData.args),
       },
     ]);
     useEffect(() => {
-      queryClient.removeQueries([
-        "getGridCamMetaData",
-        getGridCAMMetaData.args,
-      ]);
-      queryClient.removeQueries(["getGridCamData", getGridCAMData.args]);
-    }, []);
+      removeCache?.addEntry("getGridCamMetaData", wrapperKeyMetaRef.current);
+      removeCache?.addEntry("getGridCamData", wrapperKeyDataRef.current);
+    }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result[1].refetch(),
     }));
@@ -53,8 +63,9 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
     ) : (
       <GridWrapper
         key={`camGridListing`}
-        finalMetaData={result[0].data as GridMetaDataType}
-        data={result[1].data ?? []}
+        //finalMetaData={result[0].data as GridMetaDataType}
+        finalMetaData={MetaData as GridMetaDataType}
+        data={transformData(result[1].data ?? [])}
         setData={() => null}
         actions={actions}
         setAction={setAction}
@@ -65,3 +76,18 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   }
 );
 MyGridWrapper.displayName = "CAMGridWrapper";
+
+//logic to transform gridData
+
+const transformData = (data) => {
+  if (Array.isArray(data) && data.length > 0) {
+    return data.map((one) => {
+      const { status, lastUpdateDate, ...others } = one;
+      if (status === "Initiated") {
+        return { status, lastUpdateDate: "", ...others };
+      }
+      return one;
+    });
+  }
+  return data;
+};

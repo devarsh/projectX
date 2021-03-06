@@ -38,7 +38,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
     dataRef.current = data;
     let metaData = metaDataRef.current;
     /* eslint-disable react-hooks/exhaustive-deps */
-    const columns = useMemo(() => metaData.columns, []);
+    const columns = useMemo(() => metaData.columns ?? [], []);
     const columnsValidator = useMemo(() => {
       return columns.reduce((accum, one) => {
         accum[one.accessor] = one.validation;
@@ -49,7 +49,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
       return columns.reduce((accum, one) => {
         accum[one.accessor] = "";
         return accum;
-      });
+      }, {});
     }, [columns]);
     const defaultColumn = useMemo(
       () => ({

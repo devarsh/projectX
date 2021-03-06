@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, Fragment, useEffect, FC } from "react";
+import { useContext, useRef, useState, Fragment, FC } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { FormNew } from "./formNew";
@@ -7,6 +7,7 @@ import { DeleteAction } from "./delete";
 import { MyGridWrapper } from "./gridWrapper";
 import { CRUDContext } from "./context";
 import { DocumentGridCRUD } from "../documents/documentsTab";
+import { InvalidAction } from "pages_los/common/invalidAction";
 const actions: ActionTypes[] = [
   {
     actionName: "View",
@@ -105,11 +106,4 @@ export const GridCRUD: FC<{
       </Dialog>
     </Fragment>
   );
-};
-
-const InvalidAction = ({ closeDialog }) => {
-  useEffect(() => {
-    closeDialog();
-  }, [closeDialog]);
-  return null;
 };

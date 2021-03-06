@@ -1,10 +1,13 @@
 import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ListingGrid } from "pages_los/common/listingGrid";
-import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
+import { InvalidAction } from "pages_los/common/invalidAction";
+import { HeaderDetails } from "./headerDetails";
+import { DetailsTabView } from "./detailsTabView";
+import { CAM } from "./cam";
 
 const actions: ActionTypes[] = [
   {
@@ -23,12 +26,12 @@ const actions: ActionTypes[] = [
 
 export const Lead = () => {
   let gridCode = "TRN/003";
-  const [action, setAction] = useState<null | any>(null);
+  const [currentAction, setCurrentAction] = useState<null | any>(null);
   const isDataEditedRef = useRef(false);
   const [gridRefresh, setGridRefresh] = useState(false);
 
   const handleDialogClose = () => {
-    setAction(null);
+    setCurrentAction(null);
     if (isDataEditedRef.current) {
       setGridRefresh(true);
       isDataEditedRef.current = false;
@@ -40,26 +43,39 @@ export const Lead = () => {
       <ListingGrid
         gridCode={gridCode}
         actions={actions}
-        setAction={setAction}
+        setAction={setCurrentAction}
         gridRefresh={gridRefresh}
         setGridRefresh={setGridRefresh}
       />
       <Dialog
         fullScreen
-        open={action !== null}
+        open={Boolean(currentAction)}
         //@ts-ignore
         TransitionComponent={Transition}
-        key={action?.rows[0].id}
+        key={currentAction?.rows[0].id}
       >
         <ClearCacheProvider>
-          <DetailsTabView
-            key={action?.rows[0].id}
-            moduleType="lead"
-            productGridData={action?.rows[0]}
-            refID={action?.rows[0].id}
-            isDataChangedRef={isDataEditedRef}
+          <HeaderDetails
+            productData={currentAction?.rows[0]}
             handleDialogClose={handleDialogClose}
           />
+          {(currentAction?.name ?? "") === "completeView" ? (
+            <DetailsTabView
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+              isDataChangedRef={isDataEditedRef}
+            />
+          ) : (currentAction?.name ?? "") === "cam" ? (
+            <CAM
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+              isDataChangedRef={isDataEditedRef}
+            />
+          ) : (
+            <InvalidAction closeDialog={handleDialogClose} />
+          )}
         </ClearCacheProvider>
       </Dialog>
     </Fragment>

@@ -7,11 +7,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import CRM from "app/crm";
 import LOS from "app/los";
 import ErrorPage from "app/error";
-import { CAMSOLO } from "pages_los/pages/cam";
+import Middleware from "app/middleware";
 import "typeface-roboto";
 import "registry"; //register functions to be used across application
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
 require("dotenv").config();
 
 const Redirect = () => {
@@ -32,7 +33,7 @@ const App = () => (
             <Route path="/los/*" element={<LOS />} />
             <Route path="/crm/*" element={<CRM />} />
             <Route path="/error/*" element={<ErrorPage />} />
-            <Route path="/cam/" element={<CAMSOLO />} />
+            <Route path="/middleware/:refID" element={<Middleware />} />
             <Route path="*" element={<Redirect />} />
           </Routes>
         </BrowserRouter>

@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef, useEffect, useCallback } from "react";
+import { useState, Fragment, useRef, useCallback } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "./gridWrapper";
@@ -8,6 +8,7 @@ import { UpdateDocumentData } from "./update";
 import { UploadDocumentsApiWrapper } from "./upload";
 import { Download } from "./download";
 import { PreviewWrapper } from "./view";
+import { InvalidAction } from "pages_los/common/invalidAction";
 
 const actions: ActionTypes[] = [
   {
@@ -131,11 +132,4 @@ export const DocumentGridCRUD = () => {
       </Dialog>
     </Fragment>
   );
-};
-
-const InvalidAction = ({ closeDialog }) => {
-  useEffect(() => {
-    closeDialog();
-  }, [closeDialog]);
-  return null;
 };

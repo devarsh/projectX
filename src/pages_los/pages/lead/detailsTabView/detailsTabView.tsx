@@ -1,7 +1,5 @@
 import { useState, FC, Fragment, useEffect, useContext, Suspense } from "react";
 import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
-import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
@@ -9,7 +7,6 @@ import { queryClient, ClearCacheContext } from "cache";
 import { LOSSDK } from "registry/fns/los";
 import { useStyles } from "pages_los/common";
 import loaderGif from "assets/images/loader.gif";
-import { HeaderDetails } from "../headerDetails";
 import { CRUDComponentPicker } from "./crud";
 
 const TabPanel = ({ value, index, children }) => {
@@ -19,16 +16,8 @@ const TabPanel = ({ value, index, children }) => {
 export const DetailsTabView: FC<{
   refID: string;
   moduleType: string;
-  productGridData: any;
   isDataChangedRef: any;
-  handleDialogClose: any;
-}> = ({
-  refID,
-  moduleType,
-  productGridData,
-  isDataChangedRef,
-  handleDialogClose,
-}) => {
+}> = ({ refID, moduleType, isDataChangedRef }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -60,34 +49,12 @@ export const DetailsTabView: FC<{
     }
   }
   const result = queryResult.isLoading ? (
-    <>
-      <img src={loaderGif} alt="loader" width="50px" height="50px" />
-      {typeof handleDialogClose === "function" ? (
-        <div style={{ position: "absolute", right: 0, top: 0 }}>
-          <IconButton onClick={handleDialogClose}>
-            <HighlightOffOutlinedIcon />
-          </IconButton>
-        </div>
-      ) : null}
-    </>
+    <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : queryResult.isError ? (
-    <>
-      {/* @ts-ignore */}
-      <span>{queryResult.error?.error_msg ?? "unknown error occured"}</span>
-      {typeof handleDialogClose === "function" ? (
-        <div style={{ position: "absolute", right: 0, top: 0 }}>
-          <IconButton onClick={handleDialogClose}>
-            <HighlightOffOutlinedIcon />
-          </IconButton>
-        </div>
-      ) : null}
-    </>
+    //@ts-ignore
+    <span>{queryResult.error?.error_msg ?? "unknown error occured"}</span>
   ) : (
     <Fragment>
-      <HeaderDetails
-        productData={productGridData}
-        handleDialogClose={handleDialogClose}
-      />
       <Tabs
         value={currentTab}
         onChange={handleChangeTab}

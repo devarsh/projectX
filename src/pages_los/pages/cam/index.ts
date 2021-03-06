@@ -1,2 +1,2 @@
 export * from "./cam";
-export * from "./camSolo";
+export * from "./wrapper";

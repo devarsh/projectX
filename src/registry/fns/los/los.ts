@@ -857,8 +857,7 @@ const LOSAPI = () => {
       }),
     });
     if (status === "success") {
-      const { response_data, ...others } = data;
-      return { data: response_data, others };
+      return data?.response_data;
     } else {
       throw data?.error_data;
     }
@@ -873,8 +872,7 @@ const LOSAPI = () => {
       }),
     });
     if (status === "success") {
-      const { response_data, ...others } = data;
-      return { data: response_data, others };
+      return data?.response_data;
     } else {
       throw data?.error_data;
     }
@@ -889,28 +887,16 @@ const LOSAPI = () => {
       }),
     });
     if (status === "success") {
-      const { response_data, ...others } = data;
-      return { data: response_data, others };
+      return data?.response_data;
     } else {
       throw data?.error_data;
     }
   };
   const generateCAM_URL = async (refID: string, serialNo: string) => {
-    const { data, status } = await internalFetcher(`./lead/cam/download`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          serialNo: serialNo,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      const { response_data, ...others } = data;
-      return { data: response_data, others };
-    } else {
-      throw data?.error_data;
-    }
+    return new URL(
+      `./lead/cam/download?refID=${refID}&serialNo=${serialNo}&tokenID=${token}`,
+      baseURL as URL
+    ).href;
   };
 
   return {

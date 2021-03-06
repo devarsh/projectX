@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
 import { DOCCRUDContextProvider } from "./context";
 import { LOSSDK } from "registry/fns/los";
-import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
