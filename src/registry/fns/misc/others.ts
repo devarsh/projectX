@@ -135,3 +135,62 @@ export const setValueOnDependentFieldsChangeOne = (dependentFields) => {
     }
   }
 };
+
+export const setLTVValues = async (field) => {
+  if (field.value === "00") {
+    return {
+      minLTV: {
+        value: "00",
+      },
+      maxLTV: {
+        value: "00",
+      },
+    };
+  }
+  if (field.value === "01") {
+    return {
+      minLTV: {
+        value: "01",
+      },
+      maxLTV: {
+        value: "01",
+      },
+    };
+  } else if (field.value === "02") {
+    return {
+      minLTV: {
+        value: "02",
+      },
+      maxLTV: {
+        value: "02",
+      },
+    };
+  } else if (field.value === "03") {
+    return {
+      minLTV: {
+        value: "03",
+      },
+      maxLTV: {
+        value: "03",
+      },
+    };
+  } else if (field.value === "04") {
+    return {
+      minLTV: {
+        value: "04",
+      },
+      maxLTV: {
+        value: "04",
+      },
+    };
+  } else {
+    return {
+      minLTV: {
+        value: "00",
+      },
+      maxLTV: {
+        value: "00",
+      },
+    };
+  }
+};
