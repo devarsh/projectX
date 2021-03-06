@@ -39,3 +39,6 @@ https://medium.com/@adostes/using-environment-variables-in-a-react-application-a
 
 #Multiple entry points CRA 
 https://blog.logrocket.com/multiple-entry-points-in-create-react-app-without-ejecting/
+
+#HTML Print CSS
+https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/

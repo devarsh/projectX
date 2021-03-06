@@ -1,12 +1,4 @@
-import {
-  useState,
-  FC,
-  Fragment,
-  useEffect,
-  useContext,
-  lazy,
-  Suspense,
-} from "react";
+import { useState, FC, Fragment, useEffect, useContext, Suspense } from "react";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
@@ -15,73 +7,14 @@ import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
 import { queryClient, ClearCacheContext } from "cache";
 import { LOSSDK } from "registry/fns/los";
-import { CRUDContextProvider, useStyles } from "pages_los/common/crud2";
+import { useStyles } from "pages_los/common";
 import loaderGif from "assets/images/loader.gif";
-import { HeaderDetails } from "./headerDetails";
-
-const GridCRUD = lazy(() =>
-  import("pages_los/common/crud2").then((module) => ({
-    default: module.GridCRUD,
-  }))
-);
-const SimpleCRUD = lazy(() =>
-  import("pages_los/common/crud2").then((module) => ({
-    default: module.SimpleCRUD,
-  }))
-);
-const DocumentGridCRUD = lazy(() =>
-  import("pages_los/common/documents").then((module) => ({
-    default: module.DocumentGridCRUD,
-  }))
-);
+import { HeaderDetails } from "../headerDetails";
+import { CRUDComponentPicker } from "./crud";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
 };
-
-const crudAPIArgs = (moduleType, productType, refID) => ({
-  context: { moduleType, productType, refID },
-  // call to save form data
-  insertFormData: {
-    fn: LOSSDK.insertFormData,
-    args: { moduleType, productType, refID },
-  },
-  // to check if form data exist or not
-  checkFormDataExist: {
-    fn: LOSSDK.checkFormDataExist,
-    args: { moduleType, productType, refID },
-  },
-  // delete record from the grid for a particular form record
-  deleteFormData: {
-    fn: LOSSDK.deleteFormData,
-    args: { moduleType, productType, refID },
-  },
-  // update form data
-  updateFormData: {
-    fn: LOSSDK.updateFormData,
-    args: { moduleType, productType, refID },
-  },
-  // get form data for (View and Edit)
-  getFormData: {
-    fn: LOSSDK.getFormData,
-    args: { moduleType, productType, refID },
-  },
-  // get grid listing data
-  getGridFormData: {
-    fn: LOSSDK.getGridFormData,
-    args: { moduleType, productType, refID },
-  },
-  // get form metaData for (new/view/edit)
-  getFormMetaData: {
-    fn: LOSSDK.getFormMetaData,
-    args: { moduleType, productType, refID },
-  },
-  // get grid metaData
-  getGridFormMetaData: {
-    fn: LOSSDK.getGridFormMetaData,
-    args: { moduleType, productType, refID },
-  },
-});
 
 export const DetailsTabView: FC<{
   refID: string;
@@ -173,27 +106,15 @@ export const DetailsTabView: FC<{
               index={`${one.sequence}`}
               key={one.sequence}
             >
-              {one.componentType === "simple" ? (
-                <CRUDContextProvider
-                  {...crudAPIArgs(moduleType, one.productType, refID)}
-                >
-                  <SimpleCRUD
-                    isDataChangedRef={isDataChangedRef}
-                    dataAlwaysExists={Boolean(one.dataAlwaysExists)}
-                  />
-                </CRUDContextProvider>
-              ) : one.componentType === "grid" ? (
-                <CRUDContextProvider
-                  {...crudAPIArgs(moduleType, one.productType, refID)}
-                >
-                  <GridCRUD
-                    isDataChangedRef={isDataChangedRef}
-                    showDocuments={one?.document}
-                  />
-                </CRUDContextProvider>
-              ) : one.componentType === "document" ? (
-                <DocumentGridCRUD refID={refID} moduleType={moduleType} />
-              ) : null}
+              <CRUDComponentPicker
+                componentType={one.componentType}
+                productType={one.productType}
+                moduleType={moduleType}
+                refID={refID}
+                isDataChangedRef={isDataChangedRef}
+                dataAlwaysExists={Boolean(one.dataAlwaysExists)}
+                showDocuments={one?.document}
+              />
             </TabPanel>
           ))}
         </Box>

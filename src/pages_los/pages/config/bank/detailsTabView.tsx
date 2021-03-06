@@ -3,11 +3,7 @@ import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { ClearCacheContext } from "cache";
-import {
-  GridCRUD,
-  CRUDContextProvider,
-  useStyles,
-} from "pages_los/common/crud2";
+import { GridCRUD, CRUDContextProvider, useStyles } from "pages_los/common";
 import { LOSSDK } from "registry/fns/los";
 import { queryClient, ClearCacheProvider } from "cache";
 

@@ -9,7 +9,10 @@ const SME = lazy(() =>
 );
 
 export const CAM = () => {
-  const result = useQuery(["getCAMData", "89"], () => LOSSDK.getCAMData("89"));
+  const refID = "89";
+  const result = useQuery(["getCAMData", refID], () =>
+    LOSSDK.getCAMData({ refID })
+  );
   let ComponentToRender;
   if (result.isSuccess) {
     ComponentToRender = SME;

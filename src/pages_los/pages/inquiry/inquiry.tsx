@@ -1,10 +1,10 @@
-import { useState, useRef, forwardRef, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import Slide from "@material-ui/core/Slide";
 import { ListingGrid } from "pages_los/common/listingGrid";
 import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
+import { Transition } from "pages_los/common";
 
 const actions: ActionTypes[] = [
   {
@@ -14,11 +14,6 @@ const actions: ActionTypes[] = [
     rowDoubleClick: true,
   },
 ];
-
-const Transition = forwardRef(function Transition(props, ref) {
-  //@ts-ignore
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export const Inquiry = () => {
   let gridCode = "TRN/001";
