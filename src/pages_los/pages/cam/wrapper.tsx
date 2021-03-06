@@ -1,10 +1,11 @@
+import { FC } from "react";
 import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 import loaderGif from "assets/images/loader.gif";
 import { CAM } from "./cam";
 
-export const CAMLOSWrapper = () => {
-  const refID = "89";
+//remove default after testing
+export const CAMLOSWrapper: FC<{ refID?: string }> = ({ refID = "89" }) => {
   const result = useQuery(["getCAMData", refID], () =>
     LOSSDK.getCAMData({ refID })
   );

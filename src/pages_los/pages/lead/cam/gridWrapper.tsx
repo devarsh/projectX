@@ -30,17 +30,17 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
     );
     const result = useQueries([
       {
-        queryKey: ["getGridCamMetaData", wrapperKeyMetaRef.current],
+        queryKey: ["getGridCAMMetaData", wrapperKeyMetaRef.current],
         queryFn: () => getGridCAMMetaData.fn(getGridCAMMetaData.args),
       },
       {
-        queryKey: ["getGridCamData", wrapperKeyDataRef.current],
+        queryKey: ["getGridCAMData", wrapperKeyDataRef.current],
         queryFn: () => getGridCAMData.fn(getGridCAMData.args),
       },
     ]);
     useEffect(() => {
-      removeCache?.addEntry("getGridCamMetaData", wrapperKeyMetaRef.current);
-      removeCache?.addEntry("getGridCamData", wrapperKeyDataRef.current);
+      removeCache?.addEntry("getGridCAMMetaData", wrapperKeyMetaRef.current);
+      removeCache?.addEntry("getGridCAMData", wrapperKeyDataRef.current);
     }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result[1].refetch(),

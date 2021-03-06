@@ -6,7 +6,6 @@ export interface CAMProviderType {
   previewCAM: CRUDFNType;
   getGridCAMMetaData: CRUDFNType;
   getGridCAMData: CRUDFNType;
-  getCAMData: CRUDFNType;
 }
 
 export const CAMContext = createContext<CAMProviderType>({} as CAMProviderType);
@@ -22,7 +21,6 @@ export const CAMContextProvider: FC<CAMProviderType> = ({
   previewCAM,
   getGridCAMMetaData,
   getGridCAMData,
-  getCAMData,
   context,
 }) => {
   return (
@@ -33,7 +31,6 @@ export const CAMContextProvider: FC<CAMProviderType> = ({
         previewCAM,
         getGridCAMMetaData,
         getGridCAMData,
-        getCAMData,
       }}
     >
       {children}

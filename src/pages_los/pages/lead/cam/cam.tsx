@@ -5,7 +5,9 @@ import { queryClient, ClearCacheContext } from "cache";
 import { MyGridWrapper } from "./gridWrapper";
 import { CAMContextProvider, CAMProviderType } from "./context";
 import { LOSSDK } from "registry/fns/los";
-import { PreviewCAM, DownloadCAM } from "./downloadCAM";
+import { DownloadCAM } from "./download";
+import { ViewCAM } from "./view";
+import { PreviewCAM } from "./preview";
 import { InvalidAction } from "pages_los/common/invalidAction";
 
 const CAMAPIArgs = ({ refID }): CAMProviderType => ({
@@ -14,7 +16,6 @@ const CAMAPIArgs = ({ refID }): CAMProviderType => ({
   previewCAM: { fn: LOSSDK.generateCAM_URL, args: { refID } },
   getGridCAMData: { fn: LOSSDK.getCAMGridData, args: { refID } },
   getGridCAMMetaData: { fn: LOSSDK.getCAMGridMetaData, args: { refID } },
-  getCAMData: { fn: LOSSDK.getCAMData, args: { refID } },
 });
 
 const actions: ActionTypes[] = [
@@ -51,7 +52,7 @@ const actions: ActionTypes[] = [
     },
   },
   {
-    actionName: "Previewx",
+    actionName: "Preview",
     actionLabel: "Preview CAM",
     multiple: undefined,
     alwaysAvailable: true,
@@ -95,11 +96,16 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
             serialNo={currentAction?.rows[0].id}
           />
         ) : currentAction?.name === "View" ? (
-          <PreviewCAM
+          <ViewCAM
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0].id}
           />
-        ) : currentAction?.name === "Preview" ? null : (
+        ) : currentAction?.name === "Preview" ? (
+          <PreviewCAM
+            closeDialog={closeMyDialog}
+            dataChangedRef={isMyDataChangedRef}
+          />
+        ) : (
           <InvalidAction closeDialog={closeMyDialog} />
         )}
       </Dialog>

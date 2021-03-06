@@ -892,9 +892,9 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const generateCAM_URL = async (refID: string, serialNo: string) => {
+  const generateCAM_URL = ({ refID }) => ({ serialNo }) => {
     return new URL(
-      `./lead/cam/download?refID=${refID}&serialNo=${serialNo}&tokenID=${token}`,
+      `./lead/cam/download?refID=${refID}&serialNo=${serialNo}&token=${token}`,
       baseURL as URL
     ).href;
   };
