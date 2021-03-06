@@ -9,13 +9,12 @@ const SME = lazy(() =>
 );
 
 export const CAM = () => {
-  const result = useQuery(["getViewData", "lead", "cam"], () =>
-    LOSSDK.getCAMData("89")
+  const refID = "89";
+  const result = useQuery(["getCAMData", refID], () =>
+    LOSSDK.getCAMData({ refID })
   );
-  console.log(result);
   let ComponentToRender;
   if (result.isSuccess) {
-    //put condition in case of multipleCam
     ComponentToRender = SME;
   }
   const renderResult = result.isLoading ? (

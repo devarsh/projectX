@@ -111,23 +111,14 @@ export const FormViewEdit: FC<{
     {
       queryKey: ["getFormData", wrapperKey.current, serialNo],
       queryFn: () => getFormData.fn(getFormData.args)(serialNo),
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
     {
       queryKey: ["getFormMetaData", wrapperKey.current, "view"],
       queryFn: () => getFormMetaData.fn(getFormMetaData.args)("view"),
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
     {
       queryKey: ["getFormMetaData", wrapperKey.current, "edit"],
       queryFn: () => getFormMetaData.fn(getFormMetaData.args)("edit"),
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
   ]);
 

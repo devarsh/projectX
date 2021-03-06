@@ -48,9 +48,6 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       {
         queryKey: ["getDocumentsGridData", wrapperKey.current],
         queryFn: () => getDocumentsGridData.fn(getDocumentsGridData.args),
-        cacheTime: 100000000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
       },
       {
         queryKey: [
@@ -62,9 +59,6 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
           getDocumentListingGridMetaData.fn(
             getDocumentListingGridMetaData.args
           ),
-        cacheTime: 100000000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
       },
     ]);
 

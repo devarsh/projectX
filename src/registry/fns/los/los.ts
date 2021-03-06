@@ -829,11 +829,78 @@ const LOSAPI = () => {
     }
   };
 
-  const getCAMData = async (refID: string) => {
+  //CAM
+
+  const getCAMData = async ({ refID }) => {
     const { data, status } = await internalFetcher(`./lead/cam/data`, {
       body: JSON.stringify({
         request_data: {
           refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      const { response_data, ...others } = data;
+      return { data: response_data, others };
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const generateCAM = async ({ refID }) => {
+    const { data, status } = await internalFetcher(`./lead/cam/generate`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      const { response_data, ...others } = data;
+      return { data: response_data, others };
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const getCAMGridMetaData = async ({ refID }) => {
+    const { data, status } = await internalFetcher(`./lead/cam/grid/metadata`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      const { response_data, ...others } = data;
+      return { data: response_data, others };
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const getCAMGridData = async ({ refID }) => {
+    const { data, status } = await internalFetcher(`./lead/cam/grid/data`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+        },
+        channel: "W",
+      }),
+    });
+    if (status === "success") {
+      const { response_data, ...others } = data;
+      return { data: response_data, others };
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const generateCAM_URL = async (refID: string, serialNo: string) => {
+    const { data, status } = await internalFetcher(`./lead/cam/download`, {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          serialNo: serialNo,
         },
         channel: "W",
       }),
@@ -850,6 +917,7 @@ const LOSAPI = () => {
     inititateAPI,
     setToken,
     removeToken,
+
     //For Server Side Grid
     getGridMetaData,
     getGridData,
@@ -866,11 +934,12 @@ const LOSAPI = () => {
     generateDocumentDownloadURL,
     previewDocument,
 
-    //Lead/Inquiry/Config(Bank) -
+    //Lead/Inquiry/
     getDocumentCRUDTabsMetadata,
     getCRUDTabsMetadata,
     getGridFormMetaData,
     getGridFormData, // Grid Data
+    getFormMetaData, //for View/Edit/New
     getFormData,
     insertFormData,
     updateFormData,
@@ -878,11 +947,7 @@ const LOSAPI = () => {
     checkFormDataExist,
     deleteFormArrayFieldData,
 
-    getLeadSubStageCode,
-    getLeadEmploymentType,
-    moveInquiryToLead,
-
-    //Bank
+    //Config(Bank) -
     updateBankData,
     deleteBankData,
     insertBankData,
@@ -890,9 +955,16 @@ const LOSAPI = () => {
     getBankData,
 
     //CAM
-    getFormMetaData,
-
     getCAMData,
+    getCAMGridData,
+    getCAMGridMetaData,
+    generateCAM,
+    generateCAM_URL,
+
+    //Inquiry & Lead Stages
+    getLeadSubStageCode,
+    getLeadEmploymentType,
+    moveInquiryToLead,
   };
 };
 
