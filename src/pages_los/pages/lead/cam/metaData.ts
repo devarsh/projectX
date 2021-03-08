@@ -3,7 +3,7 @@ import { GridMetaDataType } from "components/dataTableStatic";
 export const MetaData: GridMetaDataType = {
   columns: [
     {
-      columnName: "serial No",
+      columnName: "Version No",
       componentType: "default",
       accessor: "serialNo",
       sequence: 0,
