@@ -13,6 +13,9 @@ import {
   formArrayFieldRegistryAtom,
   formFieldsErrorWatcherRemoveSelector,
   formAtom,
+  formFieldAtom,
+  subscribeToFormFieldsSelector,
+  formFieldRegistryAtom,
 } from "./atoms";
 import {
   useRecoilState,
@@ -26,6 +29,9 @@ import { FormContext } from "./context";
 export const useFieldArray = ({
   arrayFieldName,
   template,
+  shouldExclude,
+  dependentFields,
+  getFixedRowsCount,
 }: UseFieldArrayHookProps) => {
   //fromContext provides formName for scoping
   const formContext = useContext(FormContext);
@@ -83,6 +89,98 @@ export const useFieldArray = ({
     },
     [formContext.formName, formArrayFieldRegisterSelector]
   );
+
+  //New logic for should exclude and fixed Row Count set
+  const dependentFieldsState = useRecoilValue(
+    subscribeToFormFieldsSelector({
+      formName:
+        typeof shouldExclude === "function"
+          ? formContext.formName
+          : `${formContext.formName}-NOTEXIST`,
+      fields: dependentFields,
+    })
+  );
+
+  const clearArrayFieldRows = useRecoilCallback(
+    ({ reset, snapshot, set }) => (
+      templateFieldRows: TemplateFieldRowType[]
+    ) => {
+      const allKeysToRemove: string[] = [];
+      for (let i = 0; i < templateFieldRows.length; i++) {
+        let keys = Object.keys(templateFieldRows[i]?.cells);
+        for (let j = 0; j < keys.length; j++) {
+          const currentFieldKey = templateFieldRows[i].cells[keys[j]].key;
+          reset(formFieldAtom(`${formContext.formName}/${currentFieldKey}`));
+          allKeysToRemove.push(`${formContext.formName}/${currentFieldKey}`);
+        }
+      }
+      const fields = snapshot.getLoadable(
+        formFieldRegistryAtom(formContext.formName)
+      );
+      if (fields.state === "hasValue") {
+        let allFields = fields.getValue();
+        let newAllFields = allFields.filter((one) =>
+          allKeysToRemove.indexOf(one) >= 0 ? false : true
+        );
+        set(formFieldRegistryAtom(formContext.formName), newAllFields);
+      }
+    },
+    []
+  );
+
+  const lastShouldExcludePromise = useRef<Promise<any> | null>(null);
+  useEffect(() => {
+    if (typeof shouldExclude === "function") {
+      const currentShouldExcludePromise = Promise.resolve(
+        shouldExclude({} as any, dependentFieldsState, formContext.formState)
+      );
+      lastShouldExcludePromise.current = currentShouldExcludePromise;
+      currentShouldExcludePromise.then((result) => {
+        if (currentShouldExcludePromise === lastShouldExcludePromise.current) {
+          if (result === true && fieldRows.excluded === false) {
+            setFieldRows((old) => ({ ...old, excluded: true }));
+            clearArrayFieldRows(fieldRows.templateFieldRows);
+            clearFieldArray();
+          } else if (result === false && fieldRows.excluded === true) {
+            setFieldRows((old) => ({ ...old, excluded: false }));
+            if (typeof getFixedRowsCount === "function") {
+              let currentRowCount = getFixedRowsCount(
+                fieldRows,
+                dependentFieldsState,
+                formContext.formState
+              );
+              if (fieldRows.lastInsertIndex < currentRowCount) {
+                if (fieldRows.lastInsertIndex === -1) {
+                  let diff = currentRowCount;
+                  let index: number = 0;
+                  let rowBuf: any = [];
+                  while (diff > 0) {
+                    let result = _insert(
+                      rowBuf.length,
+                      rowBuf,
+                      rowBuf.length - 1,
+                      templateFieldNamesRef.current
+                    );
+                    rowBuf = result?.newRows;
+                    index = result?.lastIndex ?? -1;
+                    diff--;
+                  }
+                  if (Array.isArray(rowBuf)) {
+                    setFieldRows((old) => ({
+                      ...old,
+                      lastInsertIndex: index,
+                      templateFieldRows: rowBuf,
+                    }));
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+  //end of new should exclude logic
 
   //_insert adds a new field to the fieldArray with a new key
   const _insert = useCallback(
@@ -453,6 +551,7 @@ export const useFieldArray = ({
     swap,
     move,
     renderRows,
+    excluded: fieldRows.excluded,
     isSubmitting: formState.isSubmitting,
     formState: formContext.formState,
     formName: formContext.formName,

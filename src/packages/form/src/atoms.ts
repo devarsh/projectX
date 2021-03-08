@@ -210,6 +210,7 @@ export const formArrayFieldRowsAtom = atomFamily<
     templateFieldRows: [],
     lastInsertIndex: -1,
     resetFlag: false,
+    excluded: false,
   }),
   dangerouslyAllowMutability: true,
 });

@@ -104,3 +104,8 @@ registerFn(
   "setValueOnDependentFieldsChangeOne",
   others.setValueOnDependentFieldsChangeOne
 );
+
+//Dummy only for testing
+registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
+registerFn("getCountForRow", others.getCountForRows);
+//End of Dummy only for testing

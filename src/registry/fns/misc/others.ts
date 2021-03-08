@@ -147,3 +147,17 @@ export const setLTVValue = async (fieldData) => {
     },
   };
 };
+
+//Dummy only for testing
+export const shouldExcludeDummy = async (_, dependentFields, formState) => {
+  if (dependentFields["dummy"].value === "1") {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const getCountForRows = (_, dependentFields, formState) => {
+  return 5;
+};
+//End of ummy only for testing

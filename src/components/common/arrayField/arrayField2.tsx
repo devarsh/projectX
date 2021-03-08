@@ -40,6 +40,10 @@ export interface ArrayField2Props {
   componentProps?: any;
   removeRowFn?: any;
   arrayFieldIDName?: string;
+  dependentFields?: string | string[];
+  shouldExclude?: any;
+  fixedRows?: boolean;
+  getFixedRowsCount?: any;
 }
 
 const metaDataTransform = (metaData: MetaDataType): MetaDataType => {
@@ -58,7 +62,12 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   componentProps = {},
   removeRowFn,
   arrayFieldIDName,
+  dependentFields,
+  shouldExclude,
+  fixedRows,
+  getFixedRowsCount,
 }) => {
+  console.log("getFixedRowsCount", getFixedRowsCount);
   let currentFieldsMeta = JSON.parse(
     JSON.stringify(_fields)
   ) as FieldMetaDataType[];
@@ -88,10 +97,17 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     isSubmitting,
     formState,
     formName,
+    excluded,
   } = useFieldArray({
     arrayFieldName: name,
     template: template.current,
+    dependentFields: dependentFields,
+    shouldExclude: shouldExclude,
+    getFixedRowsCount: getFixedRowsCount,
   });
+  if (excluded) {
+    return null;
+  }
 
   let rows = renderRows(({ row, removeFn, rowIndex, fields, totalRows }) => {
     const oneRow = fields.map((field) => {
@@ -128,6 +144,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         formName={formName}
         arrayFieldIDName={arrayFieldIDName}
         arrayFieldName={name}
+        fixedRows={fixedRows}
       />
     );
   });
@@ -137,9 +154,11 @@ export const ArrayField2: FC<ArrayField2Props> = ({
         <CardHeader
           title={label}
           action={
-            <IconButton onClick={unshift} disabled={isSubmitting}>
-              <AddCircleOutlineIcon />
-            </IconButton>
+            !Boolean(fixedRows) ? (
+              <IconButton onClick={unshift} disabled={isSubmitting}>
+                <AddCircleOutlineIcon />
+              </IconButton>
+            ) : null
           }
         />
         <CardContent className={classes.arrayRowCardContent}>
@@ -180,6 +199,7 @@ export const ArrayFieldRow = ({
   formName,
   arrayFieldIDName,
   arrayFieldName,
+  fixedRows,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -255,7 +275,7 @@ export const ArrayFieldRow = ({
         className={classes.arrayRowContainer}
       >
         {oneRow}
-        {typeof removeFn === "function" ? (
+        {typeof removeFn === "function" && !Boolean(fixedRows) ? (
           <IconButton
             onClick={dialogOpen}
             className={classes.arrayRowRemoveBtn}

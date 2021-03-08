@@ -46,10 +46,31 @@ const GeneralDetailsMetaData: MetaDataType = {
   fields: [
     {
       render: {
+        componentType: "select",
+        group: 0,
+      },
+      name: "dummy",
+      label: "dummy",
+      options: [
+        { value: "1", label: "Yes" },
+        { value: "2", label: "No" },
+      ],
+      GridProps: {
+        xs: 3,
+        md: 3,
+        sm: 12,
+      },
+    },
+    {
+      render: {
         componentType: "arrayField",
         group: 0,
       },
       name: "addressDetails",
+      dependentFields: ["dummy"],
+      shouldExclude: "shouldExcludeDummy",
+      fixedRows: true,
+      getFixedRowsCount: "getCountForRow",
       GridProps: {
         xs: 12,
         md: 12,

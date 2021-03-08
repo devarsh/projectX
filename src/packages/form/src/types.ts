@@ -67,6 +67,7 @@ export interface FormArrayFieldRowsAtomType {
   templateFieldRows: TemplateFieldRowType[];
   lastInsertIndex: number;
   resetFlag: boolean;
+  excluded: boolean;
 }
 
 export interface UseFormHookProps {
@@ -90,11 +91,20 @@ export interface UseFieldHookProps {
 export interface UseFieldArrayHookProps {
   arrayFieldName: string;
   template: any;
+  dependentFields?: string[] | string;
+  shouldExclude?: typeof shouldExcludeFnType;
+  getFixedRowsCount?: typeof getFixedRowsCountFnType;
 }
 
 export interface SubscritionFieldsType {
   [key: string]: string[] | string | undefined;
 }
+
+export declare function getFixedRowsCountFnType(
+  fieldData: FormArrayFieldRowsAtomType,
+  dependentFieldsValues: DependentValuesType,
+  formState: any
+): number;
 
 export declare function shouldExcludeFnType(
   fieldData: FormFieldAtomType,
