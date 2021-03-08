@@ -915,45 +915,15 @@ const LOSAPI = () => {
         value: one?.propertyType,
         label: one?.propertyName,
       }));
-      return newArray;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getMinLTVForProductName = async (dependentFields: any) => {
-    const { status, data } = await internalFetcher(`./lead/options/minltv`, {
-      body: JSON.stringify({
-        request_data: {
-          productId: dependentFields?.productId?.value,
-        },
-      }),
-    });
-    if (status === "success" && Array.isArray(data?.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.propertyType,
-        label: one?.minLTV,
-      }));
-      return newArray;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
-  const getMaxLTVForProductName = async (dependentFields: any) => {
-    const { status, data } = await internalFetcher(`./lead/options/maxltv`, {
-      body: JSON.stringify({
-        request_data: {
-          productId: dependentFields?.productId?.value,
-        },
-      }),
-    });
-    if (status === "success" && Array.isArray(data?.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.propertyType,
-        label: one?.maxLTV,
-      }));
-      return newArray;
+      const otherValues = data.response_data.reduce((accumlator, current) => {
+        const val = {
+          minLTV: current.minLTV,
+          maxLTV: current.maxLTV,
+        };
+        accumlator[current.propertyType] = val;
+        return accumlator;
+      }, {});
+      return { options: newArray, others: otherValues };
     } else {
       throw data?.error_data;
     }
@@ -993,9 +963,6 @@ const LOSAPI = () => {
     checkFormDataExist,
     deleteFormArrayFieldData,
     getProductTypeForProductName,
-
-    getMinLTVForProductName,
-    getMaxLTVForProductName,
 
     //Config(Bank) -
     updateBankData,
