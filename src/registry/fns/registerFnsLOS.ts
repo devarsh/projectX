@@ -41,8 +41,6 @@ registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);
 registerFn("getLeadSubStageCode", LOSSDK.getLeadSubStageCode);
 registerFn("getLeadEmploymentType", LOSSDK.getLeadEmploymentType);
 registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
-registerFn("getMinLTVForProductName", LOSSDK.getMinLTVForProductName);
-registerFn("getMaxLTVForProductName", LOSSDK.getMaxLTVForProductName);
 
 registerFn(
   "shouldExcludesShowSMELAPSubProductTypeField",
