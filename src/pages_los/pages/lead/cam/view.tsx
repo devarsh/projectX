@@ -7,9 +7,9 @@ import Close from "@material-ui/icons/Close";
 import { CAMContext } from "./context";
 
 export const ViewCAM = ({ serialNo, closeDialog }) => {
-  const { previewCAM, context } = useContext(CAMContext);
+  const { viewCAM, context } = useContext(CAMContext);
   const { refID } = context;
-  const url = previewCAM.fn(previewCAM.args)({ serialNo: serialNo });
+  const url = viewCAM.fn(viewCAM.args)({ serialNo: serialNo });
 
   return (
     <Fragment>

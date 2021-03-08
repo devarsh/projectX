@@ -847,7 +847,7 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const generateCAM = async ({ refID }) => {
+  const generateCAM = ({ refID }) => async () => {
     const { data, status } = await internalFetcher(`./lead/cam/generate`, {
       body: JSON.stringify({
         request_data: {
@@ -892,9 +892,11 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const generateCAM_URL = ({ refID }) => ({ serialNo }) => {
+  const generateCAM_URL = ({ refID, download }) => ({ serialNo }) => {
     return new URL(
-      `./lead/cam/download?refID=${refID}&serialNo=${serialNo}&token=${token}`,
+      `./lead/cam/download?refID=${refID}&serialNo=${serialNo}&token=${token}&download=${
+        Boolean(download) ? "Yes" : "No"
+      }`,
       baseURL as URL
     ).href;
   };

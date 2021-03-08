@@ -3,7 +3,8 @@ import { createContext, FC } from "react";
 export interface CAMProviderType {
   context: any;
   generateCAM: CRUDFNType;
-  previewCAM: CRUDFNType;
+  viewCAM: CRUDFNType;
+  downloadCAM: CRUDFNType;
   getGridCAMMetaData: CRUDFNType;
   getGridCAMData: CRUDFNType;
 }
@@ -18,7 +19,8 @@ interface CRUDFNType {
 export const CAMContextProvider: FC<CAMProviderType> = ({
   children,
   generateCAM,
-  previewCAM,
+  viewCAM,
+  downloadCAM,
   getGridCAMMetaData,
   getGridCAMData,
   context,
@@ -28,7 +30,8 @@ export const CAMContextProvider: FC<CAMProviderType> = ({
       value={{
         context,
         generateCAM,
-        previewCAM,
+        viewCAM,
+        downloadCAM,
         getGridCAMMetaData,
         getGridCAMData,
       }}

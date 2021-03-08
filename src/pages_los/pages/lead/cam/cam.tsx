@@ -13,7 +13,8 @@ import { InvalidAction } from "pages_los/common/invalidAction";
 const CAMAPIArgs = ({ refID }): CAMProviderType => ({
   context: { refID },
   generateCAM: { fn: LOSSDK.generateCAM, args: { refID } },
-  previewCAM: { fn: LOSSDK.generateCAM_URL, args: { refID } },
+  viewCAM: { fn: LOSSDK.generateCAM_URL, args: { refID, download: false } },
+  downloadCAM: { fn: LOSSDK.generateCAM_URL, args: { refID, download: true } },
   getGridCAMData: { fn: LOSSDK.getCAMGridData, args: { refID } },
   getGridCAMMetaData: { fn: LOSSDK.getCAMGridMetaData, args: { refID } },
 });
@@ -89,7 +90,13 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
         actions={actions}
         setAction={setCurrentAction}
       />
-      <Dialog open={Boolean(currentAction)} maxWidth="xl">
+      <Dialog
+        open={Boolean(currentAction)}
+        maxWidth="xl"
+        PaperProps={{
+          style: { width: "100%", height: "100%" },
+        }}
+      >
         {currentAction?.name === "Download" ? (
           <DownloadCAM
             closeDialog={closeMyDialog}

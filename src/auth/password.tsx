@@ -25,6 +25,7 @@ export const PasswordField = ({
           onChange={handlePassword}
           error={loginState.isError}
           helperText={loginState.isError ? loginState.userMessage : ""}
+          disabled={loginState.loading}
         />
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
           <Button
