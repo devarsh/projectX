@@ -8,6 +8,6 @@ export const DownloadCAM = ({ serialNo, closeDialog }) => {
   useEffect(() => {
     downloadFile(url, `download-${new Date().getUTCMilliseconds()}`);
     closeDialog();
-  }, [url]);
+  }, [url, closeDialog]);
   return null;
 };

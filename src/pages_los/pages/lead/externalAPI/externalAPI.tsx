@@ -44,7 +44,7 @@ export const ExternalAPI = () => {
       </ToggleButtonGroup>
       {Boolean(entity) && Boolean(apiType) ? (
         <RecoilRoot key={`${entity}-${apiType}`}>
-          <APIForm metaData={} />
+          {/*<APIForm metaData={} />*/}
         </RecoilRoot>
       ) : null}
     </div>

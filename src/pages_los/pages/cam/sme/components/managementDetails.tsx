@@ -48,7 +48,7 @@ export const ManagementDetails = ({ management }) => {
             </tr>
             <tr>
               <th colSpan={2}>Profit Sharing / Shareholding %</th>
-              <td>{data.profitSharing}</td>
+              <td colSpan={7}>{data.profitSharing}</td>
             </tr>
             <tr>
               <th colSpan={2}>Networth</th>
