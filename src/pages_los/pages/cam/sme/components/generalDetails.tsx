@@ -9,9 +9,9 @@ export const GeneralDetails = ({ general, promoter, address }) => {
             General Details
           </th>
         </tr>
-        {generalDetailsLabels?.map((res) => {
+        {generalDetailsLabels?.map((res, index) => {
           return general[res?.name] ? (
-            <tr>
+            <tr key={index}>
               <th colSpan={2}>{res?.label ?? "N/A"}</th>
               <td colSpan={7}>{general[res?.name] ?? "N/A"}</td>
             </tr>

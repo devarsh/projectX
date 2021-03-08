@@ -5,6 +5,10 @@ const SME = lazy(() =>
   import("./sme").then((module) => ({ default: module.SME }))
 );
 
+const Infra = lazy(() =>
+  import("./infra").then((module) => ({ default: module.Infra }))
+);
+
 export const CAM = ({ camData }) => {
   let ComponentToRender;
   ComponentToRender = SME;
