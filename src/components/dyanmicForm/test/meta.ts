@@ -63,11 +63,39 @@ const GeneralDetailsMetaData: MetaDataType = {
     },
     {
       render: {
+        componentType: "datePicker",
+        group: 0,
+      },
+      name: "fromPeriod",
+      label: "From Period",
+      format: "MM/yyyy",
+      GridProps: {
+        xs: 3,
+        md: 3,
+        sm: 12,
+      },
+    },
+    {
+      render: {
+        componentType: "datePicker",
+        group: 0,
+      },
+      name: "toPeriod",
+      label: "To Period",
+      format: "MM/yyyy",
+      GridProps: {
+        xs: 3,
+        md: 3,
+        sm: 12,
+      },
+    },
+    {
+      render: {
         componentType: "arrayField",
         group: 0,
       },
       name: "addressDetails",
-      dependentFields: ["dummy"],
+      dependentFields: ["dummy", "fromPeriod", "toPeriod"],
       shouldExclude: "shouldExcludeDummy",
       fixedRows: true,
       getFixedRowsCount: "getCountForRow",

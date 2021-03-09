@@ -67,7 +67,6 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   fixedRows,
   getFixedRowsCount,
 }) => {
-  console.log("getFixedRowsCount", getFixedRowsCount);
   let currentFieldsMeta = JSON.parse(
     JSON.stringify(_fields)
   ) as FieldMetaDataType[];

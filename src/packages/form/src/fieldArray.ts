@@ -143,43 +143,67 @@ export const useFieldArray = ({
             clearFieldArray();
           } else if (result === false && fieldRows.excluded === true) {
             setFieldRows((old) => ({ ...old, excluded: false }));
-            if (typeof getFixedRowsCount === "function") {
-              let currentRowCount = getFixedRowsCount(
-                fieldRows,
-                dependentFieldsState,
-                formContext.formState
-              );
-              if (fieldRows.lastInsertIndex < currentRowCount) {
-                if (fieldRows.lastInsertIndex === -1) {
-                  let diff = currentRowCount;
-                  let index: number = 0;
-                  let rowBuf: any = [];
-                  while (diff > 0) {
-                    let result = _insert(
-                      rowBuf.length,
-                      rowBuf,
-                      rowBuf.length - 1,
-                      templateFieldNamesRef.current
-                    );
-                    rowBuf = result?.newRows;
-                    index = result?.lastIndex ?? -1;
-                    diff--;
-                  }
-                  if (Array.isArray(rowBuf)) {
-                    setFieldRows((old) => ({
-                      ...old,
-                      lastInsertIndex: index,
-                      templateFieldRows: rowBuf,
-                    }));
-                  }
-                }
-              }
-            }
           }
         }
       });
     }
   });
+  useEffect(() => {
+    if (
+      typeof getFixedRowsCount === "function" &&
+      fieldRows.excluded === false
+    ) {
+      let currentRowCount = getFixedRowsCount(
+        fieldRows,
+        dependentFieldsState,
+        formContext.formState
+      );
+      console.log(fieldRows.templateFieldRows.length, currentRowCount);
+      if (fieldRows.templateFieldRows.length !== currentRowCount) {
+        let diff = currentRowCount - fieldRows.templateFieldRows.length;
+        if (diff > 0) {
+          //add new rows
+          let index: number = fieldRows.templateFieldRows.length;
+          let rowBuf: any = fieldRows.templateFieldRows;
+          let lastInsertIndex = fieldRows.lastInsertIndex;
+          while (diff > 0) {
+            let result = _insert(
+              index,
+              rowBuf,
+              lastInsertIndex,
+              templateFieldNamesRef.current
+            );
+            rowBuf = result?.newRows;
+            lastInsertIndex = result?.lastIndex ?? -1;
+            index++;
+            diff--;
+          }
+          if (Array.isArray(rowBuf)) {
+            setFieldRows((old) => ({
+              ...old,
+              lastInsertIndex: lastInsertIndex,
+              templateFieldRows: rowBuf,
+            }));
+          }
+        } else {
+          let currentTemplateRows = fieldRows.templateFieldRows.slice(
+            0,
+            Math.abs(diff) - 1
+          );
+          let removeRows = fieldRows.templateFieldRows.slice(
+            Math.abs(diff) - 1
+          );
+          clearArrayFieldRows(removeRows);
+          setFieldRows((oldValues) => ({
+            ...oldValues,
+            templateFieldRows: currentTemplateRows,
+            lastInsertIndex: oldValues.lastInsertIndex,
+          }));
+        }
+      }
+    }
+  });
+
   //end of new should exclude logic
 
   //_insert adds a new field to the fieldArray with a new key
