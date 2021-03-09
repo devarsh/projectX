@@ -163,7 +163,6 @@ export const getCountForRows = (_, dependentFields, formState) => {
   let from = dependentFields["fromPeriod"]?.value;
   let to = dependentFields["toPeriod"]?.value;
   let result = differenceInMonths(to, from);
-  console.log(result);
   if (isNaN(result)) {
     return 0;
   } else if (result < 0) {

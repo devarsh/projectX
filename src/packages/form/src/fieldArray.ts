@@ -158,7 +158,9 @@ export const useFieldArray = ({
         dependentFieldsState,
         formContext.formState
       );
-      console.log(fieldRows.templateFieldRows.length, currentRowCount);
+      if (currentRowCount < 0) {
+        currentRowCount = 0;
+      }
       if (fieldRows.templateFieldRows.length !== currentRowCount) {
         let diff = currentRowCount - fieldRows.templateFieldRows.length;
         if (diff > 0) {
@@ -186,13 +188,12 @@ export const useFieldArray = ({
             }));
           }
         } else {
+          let indexToRemoveFrom = fieldRows.templateFieldRows.length + diff;
           let currentTemplateRows = fieldRows.templateFieldRows.slice(
             0,
-            Math.abs(diff) - 1
+            indexToRemoveFrom
           );
-          let removeRows = fieldRows.templateFieldRows.slice(
-            Math.abs(diff) - 1
-          );
+          let removeRows = fieldRows.templateFieldRows.slice(indexToRemoveFrom);
           clearArrayFieldRows(removeRows);
           setFieldRows((oldValues) => ({
             ...oldValues,
