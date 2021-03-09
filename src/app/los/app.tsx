@@ -1,5 +1,8 @@
 import { Fragment } from "react";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  unstable_createMuiStrictModeTheme,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { SnackbarProvider } from "notistack";
@@ -10,7 +13,7 @@ import IndexPage from "pages_los";
 import { theme } from "./theme";
 import "./index.css";
 
-const themeObj = createMuiTheme(theme);
+const themeObj = unstable_createMuiStrictModeTheme(theme);
 
 export const App = () => {
   return (

@@ -161,7 +161,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
           }
         />
         <CardContent className={classes.arrayRowCardContent}>
-          <Grid container spacing={1} xs={12} md={12} sm={12}>
+          <Grid container item spacing={1} xs={12} md={12} sm={12}>
             {rows}
             {rows.length <= 0 ? (
               <Typography>

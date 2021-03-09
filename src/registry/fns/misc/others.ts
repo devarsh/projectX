@@ -1,4 +1,4 @@
-import { differenceInMonths } from "date-fns";
+import { differenceInMonths, endOfMonth, startOfMonth } from "date-fns";
 
 export const AutoFillGender = (field) => {
   if (typeof field.value === "string") {
@@ -162,14 +162,17 @@ export const shouldExcludeDummy = async (_, dependentFields, formState) => {
 export const getCountForRows = (_, dependentFields, formState) => {
   let from = dependentFields["fromPeriod"]?.value;
   let to = dependentFields["toPeriod"]?.value;
-  let result = differenceInMonths(to, from);
+  let result = -1;
+  if (from instanceof Date && to instanceof Date) {
+    from = startOfMonth(from);
+    to = endOfMonth(to);
+    result = differenceInMonths(to, from);
+  }
   if (isNaN(result)) {
-    return 0;
+    return -1;
   } else if (result < 0) {
-    return 0;
+    return -1;
   } else {
     return result + 1;
   }
 };
-
-//End of ummy only for testing
