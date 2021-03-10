@@ -67,10 +67,7 @@ export const APIForm = ({ metaData, handleSubmitFn }) => {
               disabled={isSubmitting}
               endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
             >
-              Save
-            </Button>
-            <Button onClick={() => null} disabled={isSubmitting}>
-              Cancel
+              Proceed
             </Button>
           </>
         );

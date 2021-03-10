@@ -4,19 +4,19 @@ import { ActionTypes } from "components/dataTable";
 import { queryClient, ClearCacheContext } from "cache";
 import { MyGridWrapper } from "./gridWrapper";
 import { CAMContextProvider, CAMProviderType } from "./context";
-import { LOSSDK } from "registry/fns/los";
 import { DownloadCAM } from "./download";
 import { ViewCAM } from "./view";
 import { PreviewCAM } from "./preview";
 import { InvalidAction } from "pages_los/common/invalidAction";
+import * as API from "./api";
 
 const CAMAPIArgs = ({ refID }): CAMProviderType => ({
   context: { refID },
-  generateCAM: { fn: LOSSDK.generateCAM, args: { refID } },
-  viewCAM: { fn: LOSSDK.generateCAM_URL, args: { refID, download: false } },
-  downloadCAM: { fn: LOSSDK.generateCAM_URL, args: { refID, download: true } },
-  getGridCAMData: { fn: LOSSDK.getCAMGridData, args: { refID } },
-  getGridCAMMetaData: { fn: LOSSDK.getCAMGridMetaData, args: { refID } },
+  generateCAM: { fn: API.generateCAM, args: { refID } },
+  viewCAM: { fn: API.generateCAM_URL, args: { refID, download: false } },
+  downloadCAM: { fn: API.generateCAM_URL, args: { refID, download: true } },
+  getGridCAMData: { fn: API.getCAMGridData, args: { refID } },
+  getGridCAMMetaData: { fn: API.getCAMGridMetaData, args: { refID } },
 });
 
 const actions: ActionTypes[] = [

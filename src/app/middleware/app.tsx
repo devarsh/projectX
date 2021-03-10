@@ -9,7 +9,9 @@ import { MiddlewareSDK } from "registry/fns/middleware";
 MiddlewareSDK.inititateAPI(
   `${new URL("./middleware/", process.env.REACT_APP_API_URL).href}` ?? ""
 );
-MiddlewareSDK.setToken("saddafsdgdsgd");
+MiddlewareSDK.setToken(
+  process.env.REACT_APP_MIDDLEWARE_TOKEN ?? "NO_TOKEN_SET"
+);
 
 const themeObj = createMuiTheme();
 

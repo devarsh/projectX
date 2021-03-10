@@ -4,7 +4,8 @@ import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { ClearCacheContext } from "cache";
 import { GridCRUD, CRUDContextProvider, useStyles } from "pages_los/common";
-import { LOSSDK } from "registry/fns/los";
+import * as API from "./api";
+import { API as CRUD2API } from "pages_los/common/crud2";
 import { queryClient, ClearCacheProvider } from "cache";
 
 const TabPanel = ({ value, index, children }) => {
@@ -19,35 +20,35 @@ const bankCrudAPIArgs = (moduleType, productType, refID, productCode) => ({
     productCode,
   },
   insertFormData: {
-    fn: LOSSDK.insertBankData,
+    fn: API.insertBankData,
     args: { moduleType, productType, refID },
   },
   checkFormDataExist: {
-    fn: LOSSDK.checkFormDataExist,
+    fn: CRUD2API.checkFormDataExist,
     args: { moduleType, productType, refID },
   },
   deleteFormData: {
-    fn: LOSSDK.deleteBankData,
+    fn: API.deleteBankData,
     args: { moduleType, productType, refID },
   },
   updateFormData: {
-    fn: LOSSDK.updateBankData,
+    fn: API.updateBankData,
     args: { moduleType, productType, refID },
   },
   getFormData: {
-    fn: LOSSDK.getBankData,
+    fn: API.getBankData,
     args: { moduleType, productType, refID },
   },
   getGridFormData: {
-    fn: LOSSDK.getGridBankData,
+    fn: API.getGridBankData,
     args: { moduleType, productType, refID },
   },
   getFormMetaData: {
-    fn: LOSSDK.getFormMetaData,
+    fn: CRUD2API.getFormMetaData,
     args: { moduleType, productType, refID },
   },
   getGridFormMetaData: {
-    fn: LOSSDK.getGridFormMetaData,
+    fn: CRUD2API.getGridFormMetaData,
     args: { moduleType, productType, refID },
   },
 });

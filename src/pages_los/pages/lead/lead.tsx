@@ -7,6 +7,7 @@ import { Transition } from "pages_los/common";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { HeaderDetails } from "./headerDetails";
 import { DetailsTabView } from "./detailsTabView";
+import { ExternalAPI } from "./externalAPI";
 import { CAM } from "./cam";
 
 const actions: ActionTypes[] = [
@@ -19,6 +20,12 @@ const actions: ActionTypes[] = [
   {
     actionName: "cam",
     actionLabel: "CAM",
+    multiple: false,
+    rowDoubleClick: false,
+  },
+  {
+    actionName: "external",
+    actionLabel: "External API",
     multiple: false,
     rowDoubleClick: false,
   },
@@ -72,6 +79,12 @@ export const Lead = () => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
+            />
+          ) : (currentAction?.name ?? "") === "external" ? (
+            <ExternalAPI
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
             />
           ) : (
             <InvalidAction closeDialog={handleDialogClose} />

@@ -5,11 +5,11 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
 import { DOCCRUDContextProvider } from "./context";
-import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
 import { useStyles } from "../style";
+import * as API from "./api";
 
 const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
   context: {
@@ -20,43 +20,43 @@ const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
     serialNo,
   },
   uploadDocuments: {
-    fn: LOSSDK.uploadDocuments,
+    fn: API.uploadDocuments,
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   getDocumentsGridData: {
-    fn: LOSSDK.listDocuments,
+    fn: API.listDocuments,
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   deleteDocuments: {
-    fn: LOSSDK.deleteDocuments,
+    fn: API.deleteDocuments,
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   updateDocument: {
-    fn: LOSSDK.updateDocuments,
+    fn: API.updateDocuments,
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   verifyDocuments: {
-    fn: LOSSDK.verifyDocuments,
+    fn: API.verifyDocuments,
     args: { moduleType, docCategory, productType, refID, serialNo },
   },
   getDocumentListingGridMetaData: {
-    fn: LOSSDK.getDocumentGridMetaData,
+    fn: API.getDocumentGridMetaData,
     args: { moduleType, docCategory, metaDataType: "grid" },
   },
   getDocumentUploadAddtionalFieldsMetaData: {
-    fn: LOSSDK.getDocumentGridMetaData,
+    fn: API.getDocumentGridMetaData,
     args: { moduleType, docCategory, metaDataType: "upload" },
   },
   getDocumentEditGridMetaData: {
-    fn: LOSSDK.getDocumentGridMetaData,
+    fn: API.getDocumentGridMetaData,
     args: { moduleType, docCategory, metaDataType: "edit" },
   },
   generateDocumentDownloadURL: {
-    fn: LOSSDK.generateDocumentDownloadURL,
+    fn: API.generateDocumentDownloadURL,
     args: { moduleType, productType, docCategory },
   },
   previewDocument: {
-    fn: LOSSDK.previewDocument,
+    fn: API.previewDocument,
     args: { moduleType, productType, docCategory },
   },
 });
@@ -84,7 +84,7 @@ export const DocumentGridCRUD: FC<{
   const queryResult = useQuery(
     ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
     () =>
-      LOSSDK.getDocumentCRUDTabsMetadata({
+      API.getDocumentCRUDTabsMetadata({
         moduleType,
         productType,
         refID,

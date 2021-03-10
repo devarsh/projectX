@@ -4,8 +4,8 @@ import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
 import { queryClient, ClearCacheContext } from "cache";
-import { LOSSDK } from "registry/fns/los";
 import { useStyles } from "pages_los/common";
+import { API } from "pages_los/common/crud2";
 import loaderGif from "assets/images/loader.gif";
 import { CRUDComponentPicker } from "./crud";
 
@@ -36,7 +36,7 @@ export const DetailsTabView: FC<{
   }, [removeCache, moduleType, refID]);
 
   const queryResult = useQuery(["getCRUDTabsMetadata", moduleType, refID], () =>
-    LOSSDK.getCRUDTabsMetadata({ moduleType, refID })
+    API.getCRUDTabsMetadata({ moduleType, refID })
   );
   let tabs: any[] = queryResult.data;
   if (queryResult.isSuccess) {

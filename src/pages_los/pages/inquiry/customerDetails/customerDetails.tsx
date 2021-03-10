@@ -5,14 +5,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import loaderGif from "assets/images/loader.gif";
 import TableRow from "@material-ui/core/TableRow";
 import { useStyles } from "./style";
-import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
+import { API } from "pages_los/common/crud2";
 
 export const CustomerDetails = ({ refID, moduleType, productType }) => {
   const classes = useStyles();
 
   const result = useQuery(["getViewData", productType, refID], () =>
-    LOSSDK.getFormData({ moduleType, productType, refID })
+    API.getFormData({ moduleType, productType, refID })
   );
 
   //@ts-ignore

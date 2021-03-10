@@ -244,7 +244,7 @@ export const metaData: NavBarMetaDataType = {
         },
         {
           label: "Customer Interaction",
-          href: "./pages/customer-interaction",
+          href: "./testApi",
           isRouterLink: true,
           icon: "circle",
         },

@@ -35,12 +35,9 @@ registerFn(
   "shouldExcludeMainDetailsdeveloperOrContactor",
   shouldExclude.mainDetailsdeveloperOrContactor
 );
-registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 
-registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);
 registerFn("getLeadSubStageCode", LOSSDK.getLeadSubStageCode);
 registerFn("getLeadEmploymentType", LOSSDK.getLeadEmploymentType);
-registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
 
 registerFn(
   "shouldExcludesShowSMELAPSubProductTypeField",
@@ -63,3 +60,8 @@ registerFn(
   "shouldShowRetailHomeLAPEmployementField",
   shouldExclude.showRetailHomeLAPEmployementField
 );
+
+registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);
+
+registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
+registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
