@@ -260,6 +260,28 @@ const LOSAPI = () => {
     }
   };
 
+  const getManagementPersonnel = async ({ refID }) => {
+    const { status, data } = await internalFetcher(
+      `./lead/management/options`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: refID,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -285,6 +307,9 @@ const LOSAPI = () => {
     //Inquiry / Leads
     deleteFormArrayFieldData,
     getProductTypeForProductName,
+
+    //CAM API
+    getManagementPersonnel,
   };
 };
 
