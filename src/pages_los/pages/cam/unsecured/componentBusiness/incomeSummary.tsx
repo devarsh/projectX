@@ -1,12 +1,13 @@
 import { printTDS } from "pages_los/pages/cam/utils";
-export const IncomeDetails = ({ income }) => {
+
+export const IncomeSummaryDetails = ({ income }) => {
   if (!Array.isArray(income) || income.length <= 0) {
     return null;
   }
   return (
     <>
       <tr>
-        <th colSpan={2} className="form-sub-heading">
+        <th colSpan={9} className="form-sub-heading">
           Income Summary
         </th>
       </tr>

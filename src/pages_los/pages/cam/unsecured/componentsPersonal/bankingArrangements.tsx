@@ -5,17 +5,13 @@ export const BankDetails = ({ bank }) => {
     return null;
   }
 
-  let { savingOrCurrentAccountDetails, otherAccountDetails }: any = [];
+  const savingOrCurrentAccountDetails = bank.filter(
+    (one) => one.accountType === "Saving" || one.accountType === "Current"
+  );
 
-  const bankDetails = bank.map((expandBank) => {
-    savingOrCurrentAccountDetails = expandBank.bankDetails.filter(
-      (one) => one.accountType === "Saving" || one.accountType === "Current"
-    );
-
-    otherAccountDetails = expandBank.bankDetails.filter(
-      (one) => one.accountType !== "Saving" && one.accountType !== "Current"
-    );
-  });
+  const otherAccountDetails = bank.filter(
+    (one) => one.accountType !== "Saving" && one.accountType !== "Current"
+  );
 
   return (
     <>
@@ -38,7 +34,7 @@ export const BankDetails = ({ bank }) => {
             <td colSpan={2}>{bankDetail.bankName}</td>
             <td colSpan={2}>{bankDetail.address}</td>
             <td colSpan={2}>{bankDetail.accountNo}</td>
-            <td>
+            <td colSpan={1}>
               {convertIntoCurrency({
                 amount: bankDetail.averageBalance,
               })}
@@ -63,10 +59,9 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
         <th colSpan={2}></th>
         <th colSpan={1}>Nature of Facility</th>
         <th colSpan={2}>Name of Bank</th>
-        <th colSpan={1}>O/s Amount as on</th>
+        <th colSpan={2}>O/s Amount as on</th>
         <th colSpan={1}>O/s Amount</th>
         <th colSpan={1}>Rate of Interest</th>
-        <th colSpan={1}>EMI of the Existing Loan</th>
       </tr>
       {otherAccountDetails.map((bankDetail, index) => {
         return (
@@ -74,15 +69,10 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
             <td colSpan={2}></td>
             <td colSpan={1}>{bankDetail.accountType}</td>
             <td colSpan={2}>{bankDetail.bankName}</td>
-            <td colSpan={1}>{bankDetail.outstandingAmountAsOn}</td>
-            <td>
+            <td colSpan={2}>{bankDetail.outstandingAmountAsOn}</td>
+            <td colSpan={1}>
               {convertIntoCurrency({
-                amount: bankDetail.outstandingAmount,
-              })}
-            </td>
-            <td>
-              {convertIntoCurrency({
-                amount: bankDetail.existingLoanEMI,
+                amount: bankDetail.rateOfInterest,
               })}
             </td>
             <td colSpan={1}>{bankDetail.rateOfInterest}</td>

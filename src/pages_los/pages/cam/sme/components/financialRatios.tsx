@@ -1,4 +1,5 @@
-import { printTDS } from "./utils";
+import { printTDS } from "pages_los/pages/cam/utils";
+
 export const FinancialRatios = ({ finance }) => {
   return (
     <>

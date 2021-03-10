@@ -6,7 +6,7 @@ export const IncomeDetails = ({ income }) => {
   return (
     <>
       <tr>
-        <th colSpan={2} className="form-sub-heading">
+        <th colSpan={9} className="form-sub-heading">
           Income Summary
         </th>
       </tr>
