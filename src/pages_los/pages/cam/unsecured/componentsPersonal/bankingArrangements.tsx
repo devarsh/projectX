@@ -1,7 +1,7 @@
 import { convertIntoCurrency } from "pages_los/pages/cam/utils";
 
 export const BankDetails = ({ bank }) => {
-  if (!Array.isArray(bank) || bank.length < 0) {
+  if (!Array.isArray(bank) || bank.length <= 0) {
     return null;
   }
 
