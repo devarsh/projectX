@@ -61,7 +61,10 @@ registerFn(
   shouldExclude.showRetailHomeLAPEmployementField
 );
 
-registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);
+registerFn(
+  "getBankListForLeadDocuments",
+  LOSSDK.getBankListForLeadDocumentsForGridUpload
+);
 
 registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);

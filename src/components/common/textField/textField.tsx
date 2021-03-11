@@ -141,8 +141,15 @@ const MyTextField: FC<MyTextFieldProps> = ({
     myError = "oops...i don't know how to spell this";
     myTouch = true;
   }
+  /*fix for numberFormat*/
+  if (InputProps?.inputProps) {
+    InputProps.inputProps = {
+      ...InputProps.inputProps,
+      readOnly: readOnly,
+      tabIndex: readOnly ? -1 : undefined,
+    };
+  }
   const isError = myTouch && Boolean(myError);
-
   const result = (
     <TextField
       {...others}

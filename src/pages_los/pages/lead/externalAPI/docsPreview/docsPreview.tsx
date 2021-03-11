@@ -5,6 +5,10 @@ import { MyGridWrapper } from "pages_los/common/documents/gridWrapper";
 import { Download } from "pages_los/common/documents/download";
 import { PreviewWrapper } from "pages_los/common/documents/view";
 import { InvalidAction } from "pages_los/common/invalidAction";
+import {
+  DOCCRUDContextProvider,
+  DocAPICrudProviderGenerator,
+} from "pages_los/common/documents/context";
 
 const actions: ActionTypes[] = [
   {
@@ -20,9 +24,7 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const DocumentPreview: FC<{ transformData?: any }> = ({
-  transformData,
-}) => {
+const DocumentPreview: FC<{ transformData?: any }> = ({ transformData }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
@@ -75,5 +77,28 @@ export const DocumentPreview: FC<{ transformData?: any }> = ({
         )}
       </Dialog>
     </Fragment>
+  );
+};
+
+export const DocumentsPreviewWrapper = ({
+  isManagement,
+  docCateg,
+  refID,
+  serialNo,
+  transformData,
+}) => {
+  console.log(isManagement, docCateg, refID, serialNo);
+  return (
+    <DOCCRUDContextProvider
+      {...DocAPICrudProviderGenerator(
+        "lead",
+        isManagement ? "management" : false,
+        docCateg,
+        refID,
+        serialNo
+      )}
+    >
+      <DocumentPreview transformData={transformData} />
+    </DOCCRUDContextProvider>
   );
 };
