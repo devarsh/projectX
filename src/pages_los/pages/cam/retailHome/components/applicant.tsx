@@ -4,13 +4,21 @@ import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
 import { getAge } from "pages_los/pages/cam/utils";
 
-export const ApplicantDetails = ({ applicant }) => {
+export const ApplicantDetails = ({ applicant, others }) => {
   if (typeof applicant !== "object") {
     return null;
   }
 
   return (
     <>
+      <tr>
+        <th colSpan={2}>Loan Requested</th>
+        <td colSpan={7}></td>
+      </tr>
+      <tr>
+        <th colSpan={2}>FOIR or Portion of Income Considered</th>
+        <td colSpan={7}>{others.foir}</td>
+      </tr>
       <tr>
         <th colSpan={9} className="form-heading">
           Applicant Details

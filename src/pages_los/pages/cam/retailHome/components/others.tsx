@@ -6,6 +6,8 @@ export const OtherDetails = ({ others }) => {
   }
   return (
     <>
+      <br />
+      <br />
       <tr>
         <th colSpan={2}>Tenure</th>
         <td colSpan={7}>{others.tenur}</td>
@@ -14,6 +16,13 @@ export const OtherDetails = ({ others }) => {
         <th colSpan={2}>Rate</th>
         <td colSpan={7}>{others.rate}</td>
       </tr>
+      {others?.propertyType !== "" ? (
+        <tr>
+          <th colSpan={2}>Property Type</th>
+          <td colSpan={7}>{others.propertyType}</td>
+        </tr>
+      ) : null}
+
       <tr>
         <th colSpan={2}>Market Value of Property</th>
         <td colSpan={7}>
