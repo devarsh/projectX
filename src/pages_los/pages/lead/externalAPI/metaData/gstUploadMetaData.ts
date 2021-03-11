@@ -25,6 +25,9 @@ export const GSTUploadMetaData: MetaDataType = {
       datePicker: {
         fullWidth: true,
       },
+      select: {
+        fullWidth: true,
+      },
     },
   },
   fields: [
@@ -46,8 +49,10 @@ export const GSTUploadMetaData: MetaDataType = {
       },
       name: "management",
       label: "Management Person",
-      defaultValue: "",
-      shouldExclude: "",
+      //@ts-ignore
+      options: "getManagementPersonnel",
+      dependentFields: ["entity"],
+      shouldExclude: "shouldExcludeExternalAPIManagementDetails",
     },
     {
       render: {
@@ -56,7 +61,7 @@ export const GSTUploadMetaData: MetaDataType = {
       name: "fromDate",
       label: "From Date",
       format: "MM/yyyy",
-      validationRun: "onChange",
+      placeholder: "mm/yyyy",
       schemaValidation: {
         type: "date",
         rules: [
@@ -74,6 +79,7 @@ export const GSTUploadMetaData: MetaDataType = {
       name: "toDate",
       label: "To Date",
       format: "MM/yyyy",
+      placeholder: "mm/yyyy",
       schemaValidation: {
         type: "date",
         rules: [
@@ -84,14 +90,15 @@ export const GSTUploadMetaData: MetaDataType = {
         ],
       },
       dependentFields: ["fromDate"],
-      validationRun: "onChange",
+      validationRun: "all",
+      runValidationOnDependentFieldsChange: true,
       validate: {
         conditions: {
           any: [
             {
               fact: "dependentFields",
               path: "$.fromDate.value",
-              operator: "lessThan",
+              operator: "lessThanDate",
               value: {
                 fact: "currentField",
                 path: "$.value",

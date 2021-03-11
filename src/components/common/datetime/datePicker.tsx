@@ -13,6 +13,7 @@ type KeyboardDatePickerPropsSubset = Omit<
 
 interface MyGridExtendedProps {
   GridProps?: GridProps;
+  disableTimestamp?: boolean;
   enableGrid: boolean;
 }
 
@@ -39,6 +40,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   InputProps,
   inputProps,
   runValidationOnDependentFieldsChange,
+  disableTimestamp,
   ...others
 }) => {
   const {
@@ -64,7 +66,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
-
+  disableTimestamp = Boolean(disableTimestamp);
   useEffect(() => {
     if (typeof value === "string") {
       let result = parseJSON(value);
@@ -74,10 +76,13 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
       }
       //@ts-ignore
       if (!isNaN(result)) {
+        result = disableTimestamp
+          ? new Date(result?.toJSON()?.slice(0, 10))
+          : new Date(result?.toString()?.slice(0, 24));
         handleChange(result);
       }
     }
-  }, [value, handleChange]);
+  }, [value, handleChange, disableTimestamp]);
 
   const focusRef = useRef();
   useEffect(() => {
@@ -92,9 +97,14 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = useCallback(
     (date) => {
-      handleChange(date);
+      let result = date;
+
+      result = disableTimestamp
+        ? new Date(result?.toJSON()?.slice(0, 10))
+        : new Date(result?.toString()?.slice(0, 24));
+      handleChange(result);
     },
-    [handleChange]
+    [handleChange, disableTimestamp]
   );
   if (excluded) {
     return null;

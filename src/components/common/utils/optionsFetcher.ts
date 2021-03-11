@@ -28,9 +28,9 @@ export const useOptionsFetcher = (
   if (Boolean(disableCaching)) {
     const dependentKeys = computeDependentKey(dependentValues);
     //const formStateKeys = computeFormStateKey(formState);
-    queryKey = [_optionsKey, dependentKeys];
+    queryKey = [_optionsKey, dependentKeys, formState ?? { none: true }];
   } else {
-    queryKey = [_optionsKey];
+    queryKey = [_optionsKey, formState ?? { none: true }];
   }
   const queryOptions = useQuery(
     queryKey,

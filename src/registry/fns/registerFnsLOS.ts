@@ -65,3 +65,8 @@ registerFn("getBankListForLeadDocuments", LOSSDK.getBankListForLeadDocuments);
 
 registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
+registerFn("getManagementPersonnel", LOSSDK.getManagementPersonnel);
+registerFn(
+  "shouldExcludeExternalAPIManagementDetails",
+  shouldExclude.externalAPIManagementDetails
+);

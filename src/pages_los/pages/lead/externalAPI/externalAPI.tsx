@@ -3,6 +3,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 import { useCallback, useRef, useState } from "react";
 import { RecoilRoot } from "recoil";
 import { APIForm } from "./externalAPIForms";
@@ -14,7 +15,7 @@ export const ExternalAPI = ({ refID, moduleType }) => {
   const [apiType, setApiType] = useState("");
   const classes = useStyles();
   const endSubmitRef = useRef<any>(null);
-  const [data, setData] = useState<any>(null);
+  const formDataRef = useRef<any>(null);
   const [showDocs, setShowDocs] = useState(false);
 
   const handleEntityChange = useCallback(
@@ -28,25 +29,16 @@ export const ExternalAPI = ({ refID, moduleType }) => {
     (_, newApiType) => setApiType(newApiType),
     [setApiType]
   );
+  const cancelFn = () => {
+    endSubmitRef.current = null;
+    formDataRef.current = null;
+    setShowDocs(false);
+  };
 
   return (
     <div>
       <RecoilRoot key={`${entity}-${apiType}`}>
         <Grid container spacing={2} style={{ margin: "0px 16px" }}>
-          <Grid item xs={4} md={4} sm={4}>
-            <Typography className={classes.filterType}>Entity Type</Typography>
-            <Paper elevation={0} className={classes.paper}>
-              <ToggleButtonGroup
-                size="small"
-                value={entity}
-                exclusive
-                onChange={handleEntityChange}
-              >
-                <ToggleButton value="business">Legal</ToggleButton>
-                <ToggleButton value="individual">Individual</ToggleButton>
-              </ToggleButtonGroup>
-            </Paper>
-          </Grid>
           <Grid item xs={4} md={4} sm={4}>
             <Typography className={classes.filterType}>API Type</Typography>
             <Paper elevation={0} className={classes.paper}>
@@ -68,10 +60,10 @@ export const ExternalAPI = ({ refID, moduleType }) => {
         {Boolean(entity) && Boolean(apiType) ? (
           <APIForm
             metaData={GSTUploadMetaData}
+            formState={{ refID, moduleType }}
             handleSubmitFn={(data, displayData, endSubmit) => {
               endSubmitRef.current = endSubmit;
-              setData(data);
-              endSubmit(true);
+              formDataRef.current = data;
               setShowDocs(true);
             }}
           />

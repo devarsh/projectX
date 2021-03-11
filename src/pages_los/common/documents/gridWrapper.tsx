@@ -15,10 +15,11 @@ import loaderGif from "assets/images/loader.gif";
 type GridWrapperType = {
   actions: ActionTypes[];
   setAction: any;
+  transformData?: any;
 };
 
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
-  ({ actions, setAction }, ref) => {
+  ({ actions, setAction, transformData = (data) => data }, ref) => {
     const removeCache = useContext(ClearCacheContext);
     const {
       getDocumentsGridData,
@@ -77,7 +78,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
     ) : (
       <GridWrapper
         key={`listingDocuments`}
-        data={result[0].data ?? []}
+        data={transformData(result[0].data ?? [])}
         finalMetaData={result[1].data as GridMetaDataType}
         setData={() => null}
         actions={actions}

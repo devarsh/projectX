@@ -260,13 +260,13 @@ const LOSAPI = () => {
     }
   };
 
-  const getManagementPersonnel = async ({ refID }) => {
+  const getManagementPersonnel = async (_, formState) => {
     const { status, data } = await internalFetcher(
       `./lead/management/options`,
       {
         body: JSON.stringify({
           request_data: {
-            refID: refID,
+            refID: formState?.refID ?? "NO_REF_ID_FOUND",
           },
         }),
       }

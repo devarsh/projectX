@@ -4,62 +4,12 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
-import { DOCCRUDContextProvider } from "./context";
+import { DOCCRUDContextProvider, DocAPICrudProviderGenerator } from "./context";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
 import { useStyles } from "../style";
 import * as API from "./api";
-
-const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
-  context: {
-    moduleType,
-    productType,
-    docCategory,
-    refID,
-    serialNo,
-  },
-  uploadDocuments: {
-    fn: API.uploadDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  getDocumentsGridData: {
-    fn: API.listDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  deleteDocuments: {
-    fn: API.deleteDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  updateDocument: {
-    fn: API.updateDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  verifyDocuments: {
-    fn: API.verifyDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  getDocumentListingGridMetaData: {
-    fn: API.getDocumentGridMetaData,
-    args: { moduleType, docCategory, metaDataType: "grid" },
-  },
-  getDocumentUploadAddtionalFieldsMetaData: {
-    fn: API.getDocumentGridMetaData,
-    args: { moduleType, docCategory, metaDataType: "upload" },
-  },
-  getDocumentEditGridMetaData: {
-    fn: API.getDocumentGridMetaData,
-    args: { moduleType, docCategory, metaDataType: "edit" },
-  },
-  generateDocumentDownloadURL: {
-    fn: API.generateDocumentDownloadURL,
-    args: { moduleType, productType, docCategory },
-  },
-  previewDocument: {
-    fn: API.previewDocument,
-    args: { moduleType, productType, docCategory },
-  },
-});
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -129,7 +79,7 @@ export const DocumentGridCRUD: FC<{
           >
             <DOCCRUDContextProvider
               key={one.docType}
-              {...DocAPICrud(
+              {...DocAPICrudProviderGenerator(
                 moduleType,
                 productType,
                 one.docType,
