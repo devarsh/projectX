@@ -4,7 +4,7 @@ import {
   OtherDetails,
 } from "./components";
 
-export const RetailHome = ({ data }) => {
+export const RetailHome = ({ data, others }) => {
   let { applicantDetails, coApplicantDetails, OthersDetails } = data;
 
   return (
