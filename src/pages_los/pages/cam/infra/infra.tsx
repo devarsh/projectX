@@ -1,9 +1,7 @@
 import {
   GeneralDetails,
-  AddressDetails,
-  PromoterDetails,
-  BankDetails,
-  SiteAreaDetails,
+  CompletionProjectDetails,
+  CollateralDetails,
 } from "./components";
 
 export const Infra = ({ data, others }) => {
@@ -11,11 +9,15 @@ export const Infra = ({ data, others }) => {
     generalDetails,
     promotersDetails,
     addressDetails,
-    projectDetails,
-    siteAreaDetails,
     managementDetails,
+    projectOthersDetails,
+    projectParticularDetails,
+    siteAreaDetails,
+    projectDetails,
+    collateralSecurity,
+    primaryCollateralSecurity,
+    personalGuaranteeSecurity,
   } = data;
-  let { productID } = others;
 
   return (
     <table className="page">
@@ -25,8 +27,16 @@ export const Infra = ({ data, others }) => {
           promoter={promotersDetails}
           address={addressDetails}
           bank={managementDetails}
+          project={projectOthersDetails}
+          projectParticular={projectParticularDetails}
+          siteArea={siteAreaDetails}
         />
-        <SiteAreaDetails siteArea={siteAreaDetails} />
+        <CompletionProjectDetails projectCompletion={projectDetails} />
+        <CollateralDetails
+          collateral={collateralSecurity}
+          primary={primaryCollateralSecurity}
+          personal={personalGuaranteeSecurity}
+        />
       </tbody>
     </table>
   );

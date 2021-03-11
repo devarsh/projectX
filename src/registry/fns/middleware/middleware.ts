@@ -31,12 +31,13 @@ const MiddlewareAPI = () => {
     }
     try {
       const newURL = new URL(url, baseURL as URL);
-      newURL.searchParams.append("signature", token ?? "");
+      //newURL.searchParams.append("signature", token ?? "");
       let response = await fetch(newURL.href, {
         method: "POST",
         ...payload,
         headers: new Headers({
           "Content-Type": "application/json",
+          signature: token ?? "",
         }),
       });
       if (String(response.status) === "200") {

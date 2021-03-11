@@ -1,7 +1,19 @@
 import { AddressDetails } from "./addressDetails";
-import { PromoterDetails } from "./promoterDetails";
+import { PromoterDetails } from "./partnerDetails";
 import { BankDetails } from "./bankDetails";
-export const GeneralDetails = ({ general, promoter, address, bank }) => {
+import { BreifeAboutProject } from "./projectBrief";
+import { ProjectParticularDetails } from "./projectParticular";
+import { SiteAreaDetails } from "./siteAreaDetail";
+
+export const GeneralDetails = ({
+  general,
+  promoter,
+  address,
+  bank,
+  project,
+  projectParticular,
+  siteArea,
+}) => {
   if (typeof general === "object") {
     return (
       <>
@@ -21,6 +33,9 @@ export const GeneralDetails = ({ general, promoter, address, bank }) => {
         <AddressDetails address={address} />;
         <PromoterDetails promoter={promoter} />
         <BankDetails bank={bank} />
+        <BreifeAboutProject project={project} />
+        <ProjectParticularDetails projectParticular={projectParticular} />
+        <SiteAreaDetails siteArea={siteArea} />
       </>
     );
   }

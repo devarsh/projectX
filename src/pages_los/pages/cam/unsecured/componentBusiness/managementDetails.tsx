@@ -1,4 +1,4 @@
-import { IncomeDetails } from "./incomeDetails";
+import { IncomeSummaryDetails } from "./incomeSummary";
 import { convertIntoCurrency } from "pages_los/pages/cam/utils";
 
 export const ManagementDetails = ({ management }) => {
@@ -64,11 +64,27 @@ export const ManagementDetails = ({ management }) => {
               <td colSpan={7}>{data.responsibility}</td>
             </tr>
             <tr>
-              <th colSpan={2}>Credit Score</th>
+              <th colSpan={2}>CIBIL Score</th>
               <td colSpan={7}>{data.associatedCompany}</td>
             </tr>
+            <tr>
+              <th colSpan={2}>Any Other Source of Income</th>
+              <td colSpan={7}>{data.sourceIncomeOther}</td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Average Banking Balance</th>
+              <td colSpan={7}>{data.averageBankBal}</td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Name of existing bankers</th>
+              <td colSpan={7}>{data.existingBankersName}</td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Moratorium taken or not</th>
+              <td colSpan={7}>{data.maratoriumTaken}</td>
+            </tr>
 
-            <IncomeDetails income={data.incomeDetails} />
+            <IncomeSummaryDetails income={data.incomeDetails} />
 
             <br />
             <br />
