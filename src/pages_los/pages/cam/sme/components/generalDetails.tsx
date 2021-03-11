@@ -1,5 +1,6 @@
 import { AddressDetails } from "./addressDetails";
 import { PromoterDetails } from "./promoterDetails";
+
 export const GeneralDetails = ({ general, promoter, address }) => {
   if (typeof general === "object") {
     return (
