@@ -14,10 +14,10 @@ export const CoApplicantDetails = ({ coApplicant }) => {
           Co-Applicant Details
         </th>
       </tr>
-      {coApplicant.map((coApplicantDetails) => {
+      {coApplicant.map((coApplicantDetails, index) => {
         return (
           <>
-            <tr>
+            <tr key={index}>
               <th colSpan={2}>Name</th>
               <td colSpan={7}>
                 {coApplicantDetails.firstName}
@@ -40,6 +40,7 @@ export const CoApplicantDetails = ({ coApplicant }) => {
               returnFiling={coApplicantDetails.returnFilingDetails}
             />
             <SalaryDetails salary={coApplicantDetails.salaryDetails} />
+            <br />
           </>
         );
       })}
