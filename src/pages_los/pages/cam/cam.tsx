@@ -9,9 +9,9 @@ const Infra = lazy(() =>
   import("./infra").then((module) => ({ default: module.Infra }))
 );
 
-const UnsecuredBusiness = lazy(() =>
+const Unsecured = lazy(() =>
   import("./unsecured").then((module) => ({
-    default: module.UnsecuredPersonal,
+    default: module.Unsecured,
   }))
 );
 
@@ -51,7 +51,7 @@ const selectComponent = ({ others }) => {
     }
     case "123000013":
     case "123000014": {
-      return UnsecuredBusiness;
+      return Unsecured;
     }
     default: {
       return CAM_NOT_AVAILABLE;

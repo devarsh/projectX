@@ -1,4 +1,4 @@
-import { shouldExclude, LOSSDK } from "./los";
+import { shouldExclude, LOSSDK, retail } from "./los";
 
 import { singletonFunctionRegisrationFactory } from "components/utils";
 const { registerFn } = singletonFunctionRegisrationFactory;
@@ -70,3 +70,19 @@ registerFn(
   "shouldExcludeExternalAPIManagementDetails",
   shouldExclude.externalAPIManagementDetails
 );
+registerFn("retailCalculateEligibleEMI", retail.eligibleEMI);
+registerFn(
+  "retailCalculateLoanAmountBasedOnFOIR",
+  retail.loanAmountBasedOnFOIR
+);
+registerFn("retailCalculateLTV", retail.calculateLTV);
+registerFn("retailCalculateLoanAmountBasedOnLTV", retail.loanAmountBasedOnLTV);
+registerFn(
+  "retailCalculateLoanAmountBasedOnFOIRLTV",
+  retail.loanAmountBasedOnFOIRLTV
+);
+registerFn(
+  "retailCalculateEligibileLoanAmountDifference",
+  retail.eligibileLoanAmountDifference
+);
+registerFn("retailSetEligibleLoanAmount", retail.setEligibleLoanAmount);

@@ -1,7 +1,7 @@
-import { AddressDetails } from "../componentsPersonal/addressDetails";
-import { PromoterDetails } from "./promoterDetails";
+import { AddressDetails } from "./addressDetails";
+import { PromoterDetails } from "./promoterDetail";
 
-export const GeneralDetails = ({ general, promoter, address }) => {
+export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
   if (typeof general === "object") {
     return (
       <>
@@ -20,9 +20,6 @@ export const GeneralDetails = ({ general, promoter, address }) => {
         }) ?? "No data found"}
         <AddressDetails address={address} />;
         <PromoterDetails promoter={promoter} />
-        {/*<BankDetails bank={bank} />
-        <ProjectNatureOfFacilityDetails bank={bank} />
-        <ProjectParticularDetails projectParticular={projectParticular} />*/}
       </>
     );
   }
