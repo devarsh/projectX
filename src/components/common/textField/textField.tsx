@@ -132,7 +132,13 @@ const MyTextField: FC<MyTextFieldProps> = ({
   try {
     if (enableNumWords && Boolean(value)) {
       let amountArray = String(value).split(".");
-      numWordsVar = `${numWords(amountArray[0])} Rupees`;
+      let amountPart = Number(amountArray[0]);
+      if (amountPart < 0) {
+        amountPart = Math.abs(Number(amountPart));
+        numWordsVar = `Negative ${numWords(amountPart)} Rupees`;
+      } else {
+        numWordsVar = `${numWords(amountPart)} Rupees`;
+      }
       if (amountArray.length === 2 && Boolean(amountArray[1])) {
         numWordsVar = `${numWordsVar} and ${numWords(amountArray[1])} paise`;
       }
