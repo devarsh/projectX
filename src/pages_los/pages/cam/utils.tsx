@@ -33,3 +33,7 @@ export const convertIntoCurrency = ({ amount }) => {
   });
   return formatter.format(Number(amount));
 };
+
+export const convertIntoPrcentage = ({ amount }) => {
+  return `${amount}%`;
+};

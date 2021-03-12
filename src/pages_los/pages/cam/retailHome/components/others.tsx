@@ -1,4 +1,7 @@
-import { convertIntoCurrency } from "pages_los/pages/cam/utils";
+import {
+  convertIntoCurrency,
+  convertIntoPrcentage,
+} from "pages_los/pages/cam/utils";
 
 export const OtherDetails = ({ others }) => {
   if (typeof others !== "object") {
@@ -14,7 +17,7 @@ export const OtherDetails = ({ others }) => {
       </tr>
       <tr>
         <th colSpan={2}>Rate</th>
-        <td colSpan={7}>{others.rate}</td>
+        <td colSpan={7}>{convertIntoPrcentage({ amount: others.rate })}</td>
       </tr>
       {others?.propertyType !== "" ? (
         <tr>
@@ -60,7 +63,7 @@ export const OtherDetails = ({ others }) => {
       <tr>
         <th colSpan={2}>Difference Between Applied and Eligible Loan Amount</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.difApplliedEligibleAmount })}
+          {convertIntoPrcentage({ amount: others.difApplliedEligibleAmount })}
         </td>
       </tr>
       <tr>

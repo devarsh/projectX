@@ -2,7 +2,7 @@ import { BankDetails } from "./bankDetails";
 import { ContactDetails } from "./contactDetails";
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { getAge } from "pages_los/pages/cam/utils";
+import { getAge, convertIntoPrcentage } from "pages_los/pages/cam/utils";
 
 export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
   if (typeof applicant !== "object") {
@@ -17,7 +17,7 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
       </tr>
       <tr>
         <th colSpan={2}>FOIR or Portion of Income Considered</th>
-        <td colSpan={7}>{others.foir}</td>
+        <td colSpan={7}>{convertIntoPrcentage({ amount: others.foir })}</td>
       </tr>
       <tr>
         <th colSpan={9} className="form-heading">
