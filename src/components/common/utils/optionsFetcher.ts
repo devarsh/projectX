@@ -26,7 +26,13 @@ export const useOptionsFetcher = (
 ): { loadingOptions: boolean } => {
   let loadingOptions = false;
   let queryKey: any[] = [];
-  const formStateKeys = cacheWrapperKeyGen(formState ?? { none: true });
+  const formStateKeys = cacheWrapperKeyGen(
+    Object.values(
+      typeof formState === "object" && formState !== null
+        ? formState
+        : { none: true }
+    )
+  );
   if (Boolean(disableCaching)) {
     const dependentKeys = computeDependentKey(dependentValues);
     queryKey = [_optionsKey, dependentKeys, formStateKeys];
