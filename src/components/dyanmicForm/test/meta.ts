@@ -49,6 +49,26 @@ const GeneralDetailsMetaData: MetaDataType = {
         componentType: "currency",
         group: 0,
       },
+      isReadOnly: true,
+      name: "dumdum",
+      label: "dumdum",
+      GridProps: {
+        xs: 3,
+        md: 3,
+        sm: 12,
+      },
+    },
+  ],
+};
+
+export default GeneralDetailsMetaData;
+
+/*
+{
+      render: {
+        componentType: "select",
+        group: 0,
+      },
       name: "totalObligations",
       label: "Obligations",
       placeholder: "Obligations",
@@ -280,7 +300,4 @@ const GeneralDetailsMetaData: MetaDataType = {
         sm: 3,
       },
     },
-  ],
-};
-
-export default GeneralDetailsMetaData;
+*/

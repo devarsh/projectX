@@ -185,13 +185,53 @@ const LOSAPI = () => {
     }
   };
 
-  const getBankListForLeadDocuments = async (props) => {
+  const getBankListForLeadDocumentsForGridUpload = async ({
+    docCategory,
+    moduleType,
+    productType,
+    refID,
+    serialNo,
+  }) => {
     const { data, status } = await internalFetcher(
-      `./lead/document/options/bank`,
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/options/${docCategory}`
+        : `./${moduleType}/document/options/${docCategory}`,
       {
         body: JSON.stringify({
           request_data: {
-            ...props,
+            refID,
+            serialNo,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getBankListForLeadDocumentsForAPICallInterface = async ({
+    docCategory,
+    moduleType,
+    productType,
+    refID,
+    serialNo,
+  }) => {
+    const { data, status } = await internalFetcher(
+      Boolean(productType)
+        ? `./${moduleType}/${productType}/document/options/${docCategory}`
+        : `./${moduleType}/document/options/${docCategory}`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID,
+            serialNo,
           },
         }),
       }
@@ -302,7 +342,7 @@ const LOSAPI = () => {
     moveInquiryToLead,
 
     //documents
-    getBankListForLeadDocuments,
+    getBankListForLeadDocumentsForGridUpload,
 
     //Inquiry / Leads
     deleteFormArrayFieldData,
