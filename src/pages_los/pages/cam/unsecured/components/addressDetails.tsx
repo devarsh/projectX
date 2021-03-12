@@ -21,11 +21,11 @@ export const AddressDetails = ({ address }) => {
                 {addressData?.addressType ?? "No Address Type"} Address
               </th>
               <td colSpan={7}>
-                {addressData.addressLine1 === "" ? "," : ""}
-                {addressData.addressLine2 === "" ? "," : ""},
-                {addressData.landmark},{addressData.location},{addressData.city}
-                ,{addressData.district},{addressData.state},
-                {addressData.country}-{addressData.pincode}.
+                {addressData.addressLine1}
+                {addressData.addressLine2},{addressData.landmark},
+                {addressData.location},{addressData.city},{addressData.district}
+                ,{addressData.state},{addressData.country}-{addressData.pincode}
+                .
               </td>
             </tr>
           </>
