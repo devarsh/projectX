@@ -1,2 +1,1 @@
-export * from "./unsecuredPersonal";
-export * from "./unsecuredBusiness";
+export * from "./unsecure";

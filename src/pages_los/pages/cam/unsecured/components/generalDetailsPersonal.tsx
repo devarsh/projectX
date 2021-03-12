@@ -1,6 +1,6 @@
 import { AddressDetails } from "./addressDetails";
 import { BankDetails } from "./bankingArrangements";
-import { IncomeDetails } from "./incomeDetails";
+import { IncomeSummaryDetails } from "./incomeSummary";
 
 export const GeneralDetailsPersonal = ({ general }) => {
   if (!Array.isArray(general) || general.length <= 0) {
@@ -89,7 +89,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
             </tr>
             <AddressDetails address={personlaDetail.contactDetails} />
             <BankDetails bank={personlaDetail.bankDetails} />
-            <IncomeDetails income={personlaDetail.incomeDetails} />
+            <IncomeSummaryDetails income={personlaDetail.incomeDetails} />
           </>
         );
       })}
