@@ -57,10 +57,12 @@ export const DocumentGridCRUD: FC<{
     queryResult.error?.error_msg ?? "unknown error occured"
   ) : (
     <Fragment>
-      <Tabs value={currentTab} onChange={handleChangeTab}>
-        {tabs.map((one) => (
-          <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
-        ))}
+      <Box display="flex">
+        <Tabs value={currentTab} onChange={handleChangeTab}>
+          {tabs.map((one) => (
+            <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
+          ))}
+        </Tabs>
         {typeof onClose === "function" ? (
           <>
             <Box flexGrow={1} />
@@ -69,7 +71,7 @@ export const DocumentGridCRUD: FC<{
             </Button>
           </>
         ) : null}
-      </Tabs>
+      </Box>
       <Box py={2} className={classes.tabPanel}>
         {tabs.map((one) => (
           <TabPanel
