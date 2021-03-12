@@ -86,3 +86,4 @@ registerFn(
   retail.eligibileLoanAmountDifference
 );
 registerFn("retailSetEligibleLoanAmount", retail.setEligibleLoanAmount);
+registerFn("retailCalculateFOIR", retail.calculateFOIR);

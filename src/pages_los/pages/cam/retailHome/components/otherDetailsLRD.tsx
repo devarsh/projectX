@@ -81,18 +81,12 @@ export const OtherLRDDetails = ({ others }) => {
         </td>
       </tr>
 
-      {/* <tr>
+      <tr>
         <th colSpan={2}>Credit Score</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.loanAmountBasedOnFOIRLTV })}
+          {convertIntoCurrency({ amount: others.creditScore })}
         </td>
-      </tr> */}
-      {/* <tr>
-        <th colSpan={2}>Final Amount</th>
-        <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.difApplliedEligibleAmount })}
-        </td>
-      </tr> */}
+      </tr>
       <tr>
         <th colSpan={2}>Eligible Loan Amount</th>
         <td colSpan={7}>

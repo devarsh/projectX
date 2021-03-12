@@ -1,5 +1,16 @@
 import { PV } from "./utils";
 
+export const calculateFOIR = (dependentFields) => {
+  const totalIncome = Number(dependentFields?.totalIncome?.value);
+  if (totalIncome < 20000) {
+    return 60;
+  } else if (totalIncome > 100000) {
+    return 70;
+  } else {
+    return 65;
+  }
+};
+
 export const eligibleEMI = (dependentFields) => {
   const percentageValue = dependentFields?.foir?.value / 100;
   if (typeof dependentFields === "object") {
