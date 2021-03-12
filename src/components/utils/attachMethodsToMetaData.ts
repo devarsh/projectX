@@ -17,6 +17,8 @@ export type AccumulatorType = [
 
 const defaultBooleanFunction = (value) => () => value;
 
+const defaultNumberFunction = (value) => () => Number(value);
+
 const patternMatch = (patters: AttachMethodArrayType[], value: string) => {
   for (const currentPattern of patters) {
     if (currentPattern[0] instanceof RegExp) {
@@ -37,8 +39,15 @@ const JSONWalkerFinalPath = (
 ) => {
   let result = patternMatch(interestedValues, currentPath);
   if (result.found) {
-    //attach a function that returns boolean
-    if (currentObj === "true")
+    if (lastKey === "getFixedRowsCount" && !isNaN(Number(currentObj))) {
+      accumulator.push([
+        currentPath,
+        "NUMBERIC_FUNCTION_TO_ATTACH_FOR_FIXED_ROW_COUNT",
+        lastKey,
+        defaultNumberFunction(currentObj),
+      ]);
+    } //attach a function that returns boolean
+    else if (currentObj === "true")
       accumulator.push([
         currentPath,
         "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",

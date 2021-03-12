@@ -6,7 +6,13 @@ const TestForm = () => {
     <FormWrapper
       key={`testForm`}
       metaData={metaData as MetaDataType}
-      initialValues={{}}
+      initialValues={{
+        addressDetails: [
+          { value1: "334" },
+          { value2: "3434" },
+          { value1: "34345354" },
+        ],
+      }}
       onSubmitHandler={(values, displayValues, endSubmit) => {
         console.log(values);
         endSubmit(true);
