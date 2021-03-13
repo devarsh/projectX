@@ -78,3 +78,34 @@ export const eligibileLoanAmountDifference = (dependentFields) => {
 export const setEligibleLoanAmount = (dependentFields) => {
   return Number(dependentFields?.loanAmountBasedOnFOIRLTV?.value);
 };
+
+export const balanceLeasePeriodRemaining = (dependentFields) => {
+  const totalMonthLeasePeriod = dependentFields?.totalMonthLeasePeriod?.value;
+  const momnthPassed = dependentFields?.momnthPassed?.value * 30;
+  return totalMonthLeasePeriod - momnthPassed;
+};
+
+export const rentRevisionMonths = (dependentFields) => {
+  const momnthPassed = dependentFields?.momnthPassed?.value;
+  const rentReviFrequency = dependentFields?.rentReviFrequency?.value;
+  const calculateMod = momnthPassed % rentReviFrequency;
+  return rentReviFrequency - calculateMod;
+};
+
+export const calculateLTVLRD = (dependentFields) => {
+  const propertyType = dependentFields?.propertyType?.value;
+
+  if (propertyType === "01" || propertyType === "02") {
+    return 65;
+  } else if (propertyType === "03") {
+    return 60;
+  } else {
+    return null;
+  }
+};
+
+export const loanAmountBasedOnLTVLRD = (dependentFields) => {
+  const ltv = dependentFields?.ltv?.value / 100;
+  const propertyValue = Number(dependentFields?.propertyValue?.value);
+  return ltv * propertyValue;
+};
