@@ -15,3 +15,11 @@ export function PV(rate, periods, payment, future, type) {
     );
   }
 }
+
+export function PMT(ir, np, pv, fv = 0) {
+  var presentValueInterstFector = Math.pow(1 + ir, np);
+  var pmt =
+    (ir * pv * (presentValueInterstFector + fv)) /
+    (presentValueInterstFector - 1);
+  return pmt;
+}

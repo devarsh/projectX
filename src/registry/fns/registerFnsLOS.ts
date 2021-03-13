@@ -90,6 +90,32 @@ registerFn(
 );
 registerFn("retailSetEligibleLoanAmount", retail.setEligibleLoanAmount);
 registerFn("retailCalculateFOIR", retail.calculateFOIR);
+registerFn("retailCalculateNewLTVCondition", retail.calculateNewLTVCondition);
+registerFn("retailCalcualteSENPCLFR", retail.calculateSENPCLFR);
+registerFn("retailCalcualteSENPEligibleEMI", retail.calcualteSENPEligibleEMI);
+registerFn("retailCalculateSENPCondition", retail.calculateSENPCondition);
+registerFn(
+  "retailCalculateSENPLoanAmountBasedOnFOIRCondition",
+  retail.calculateSENPLoanAmountBasedOnFOIRCondition
+);
+registerFn(
+  "retailCalculateSENPLoanAmountCondition",
+  retail.calculateSENPLoanAmountCondition
+);
+registerFn("retailCalculateSENPAmount", retail.calculateSENPAmount);
+registerFn("retailCalculateSENPNewCLFR", retail.calculateSENPNewCLFR);
+registerFn("retailCalculateSENPltvCondition", retail.calculateSENPltvCondition);
+registerFn("retailCalculateSENPNewLTV", retail.calculateSENPNewLTV);
+registerFn("retailCalculateSENPNewFOIR", retail.calculateSENPNewFOIR);
+registerFn(
+  "retailCalculateSENPLoanAmountBasedOnLTV",
+  retail.calculateSENPLoanAmountBasedOnLTV
+);
+registerFn(
+  "retailCalculateSENPEligibleLoanAmount",
+  retail.calculateSENPEligibleLoanAmount
+);
+
 registerFn(
   "retailLRDCalculateBalanceLeasePeriodRemaining",
   retail.balanceLeasePeriodRemaining
@@ -99,6 +125,7 @@ registerFn("retailLRDCalculatecalLTV", retail.calculateLTVLRD);
 registerFn(
   "retailLRDCalculatecalLoanAmountBasedOnLTV",
   retail.loanAmountBasedOnLTVLRD
+);
 registerFn("getBankFacilityOptions", LOSSDK.getBankFacilityOptions);
 registerFn(
   "getBankListForLeadDocumentsForAPICallInterface",
