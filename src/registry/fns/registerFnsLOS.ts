@@ -99,4 +99,8 @@ registerFn("retailLRDCalculatecalLTV", retail.calculateLTVLRD);
 registerFn(
   "retailLRDCalculatecalLoanAmountBasedOnLTV",
   retail.loanAmountBasedOnLTVLRD
+registerFn("getBankFacilityOptions", LOSSDK.getBankFacilityOptions);
+registerFn(
+  "getBankListForLeadDocumentsForAPICallInterface",
+  LOSSDK.getBankListForLeadDocumentsForAPICallInterface
 );

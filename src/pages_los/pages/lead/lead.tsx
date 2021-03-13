@@ -63,7 +63,7 @@ export const Lead = () => {
       >
         <ClearCacheProvider>
           <HeaderDetails
-            productData={currentAction?.rows[0]}
+            rowData={currentAction?.rows[0]}
             handleDialogClose={handleDialogClose}
           />
           {(currentAction?.name ?? "") === "completeView" ? (
@@ -72,6 +72,7 @@ export const Lead = () => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
+              rowData={currentAction?.rows[0]}
             />
           ) : (currentAction?.name ?? "") === "cam" ? (
             <CAM

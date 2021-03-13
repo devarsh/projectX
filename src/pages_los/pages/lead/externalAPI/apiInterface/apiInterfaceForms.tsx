@@ -2,7 +2,7 @@ import Button from "@material-ui/core/Button";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export const APIForm = ({ metaData, formState, handleSubmitFn }) => {
+export const APIInterfaceForm = ({ metaData, formState, handleSubmitFn }) => {
   if (metaData?.form) {
     metaData.form.formState = formState;
   }
