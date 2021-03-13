@@ -148,6 +148,149 @@ const GeneralDetailsMetaData: MetaDataType = {
         },
       ],
     },
+
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "totalMonthLeasePeriod",
+      type: "number",
+      maxLength: 3,
+      defaultValue: 360,
+      label: "Total Month Lease Period In Months",
+      placeholder: "Total Month Lease Period In Months",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "momnthPassed",
+      maxLength: 3,
+      defaultValue: 0,
+      label: "Months Passsed",
+      placeholder: "Months Passsed",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "balanceLeasePeriodRem",
+      maxLength: 3,
+      label: "Balance Lease period remaining",
+      placeholder: "Balance Lease period remaining",
+      dependentFields: ["totalMonthLeasePeriod", "momnthPassed"],
+      setValueOnDependentFieldsChange:
+        "retailLRDCalculateBalanceLeasePeriodRemaining",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "rentReviFrequency",
+      label: "Rent Revision Frequency",
+      placeholder: "Rent Revision Frequency",
+      defaultValue: 12,
+      //@ts-ignore
+      maxLenght: 2,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+      },
+      name: "rentReviMonth",
+      //@ts-ignore
+      maxLenght: 2,
+      label: "Rent Revision Month",
+      placeholder: "Rent Revision Month",
+      dependentFields: ["rentReviFrequency", "momnthPassed"],
+      setValueOnDependentFieldsChange: "retailLRDCalculateRentRevisionMonths",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "propertyType",
+      label: "Property Type",
+      //@ts-ignore
+      options: "getPropertyType",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currency",
+      },
+      name: "propertyValue",
+      label: "Property Value",
+      defaultValue: 70000000,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "rateOfInt",
+      },
+      name: "ltv",
+      label: "LTV",
+      placeholder: "LTV",
+      dependentFields: ["propertyType"],
+      setValueOnDependentFieldsChange: "retailLRDCalculatecalLTV",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currency",
+      },
+      name: "loanAmountBasedOnLTV",
+      label: "Loan Based on LTV",
+      placeholder: "Loan Based on LTV",
+      dependentFields: ["propertyValue", "ltv"],
+      setValueOnDependentFieldsChange:
+        "retailLRDCalculatecalLoanAmountBasedOnLTV",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
   ],
 };
 export default GeneralDetailsMetaData;

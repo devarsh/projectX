@@ -90,3 +90,13 @@ registerFn(
 );
 registerFn("retailSetEligibleLoanAmount", retail.setEligibleLoanAmount);
 registerFn("retailCalculateFOIR", retail.calculateFOIR);
+registerFn(
+  "retailLRDCalculateBalanceLeasePeriodRemaining",
+  retail.balanceLeasePeriodRemaining
+);
+registerFn("retailLRDCalculateRentRevisionMonths", retail.rentRevisionMonths);
+registerFn("retailLRDCalculatecalLTV", retail.calculateLTVLRD);
+registerFn(
+  "retailLRDCalculatecalLoanAmountBasedOnLTV",
+  retail.loanAmountBasedOnLTVLRD
+);
