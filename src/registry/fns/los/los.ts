@@ -216,37 +216,6 @@ const LOSAPI = () => {
     }
   };
 
-  const getBankListForLeadDocumentsForAPICallInterface = async ({
-    docCategory,
-    moduleType,
-    productType,
-    refID,
-    serialNo,
-  }) => {
-    const { data, status } = await internalFetcher(
-      Boolean(productType)
-        ? `./${moduleType}/${productType}/document/options/${docCategory}`
-        : `./${moduleType}/document/options/${docCategory}`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            refID,
-            serialNo,
-          },
-        }),
-      }
-    );
-    if (status === "success" && Array.isArray(data?.response_data)) {
-      const newArray = data?.response_data.map((one) => ({
-        value: one?.data_val,
-        label: one?.display_val,
-      }));
-      return newArray;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   const deleteFormArrayFieldData = async (
     formState: any,
     arrayfieldName: string
@@ -322,6 +291,67 @@ const LOSAPI = () => {
     }
   };
 
+  const getBankFacilityOptions = async (dependentValues, formState) => {
+    if (!Boolean(dependentValues?.entity?.value)) {
+      return [{ value: "", label: "No Data" }];
+    }
+    const { status, data } = await internalFetcher(
+      (dependentValues?.entity?.value ?? "X") === "L"
+        ? "./lead/document/options/facility"
+        : "./lead/management/document/options/facility",
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID ?? "NO_REF_ID_FOUND",
+            serialNo:
+              dependentValues?.management?.value ?? "SERIAL_NO_NOT_FOUND",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getBankListForLeadDocumentsForAPICallInterface = async (
+    dependentValues,
+    formState
+  ) => {
+    if (!Boolean(dependentValues?.entity?.value)) {
+      return [{ value: "", label: "No Data" }];
+    }
+    const { data, status } = await internalFetcher(
+      (dependentValues?.entity?.value ?? "X") === "L"
+        ? `./${formState?.moduleType}/document/options/bank`
+        : `./${formState?.moduleType}/management/document/options/bank`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID ?? "NO_REF_ID_FOUND",
+            serialNo:
+              dependentValues?.management?.value ?? "SERIAL_NO_NOT_FOUND",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -350,6 +380,8 @@ const LOSAPI = () => {
 
     //CAM API
     getManagementPersonnel,
+    getBankFacilityOptions,
+    getBankListForLeadDocumentsForAPICallInterface,
   };
 };
 

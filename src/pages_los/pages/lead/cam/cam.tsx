@@ -8,16 +8,7 @@ import { DownloadCAM } from "./download";
 import { ViewCAM } from "./view";
 import { PreviewCAM } from "./preview";
 import { InvalidAction } from "pages_los/common/invalidAction";
-import * as API from "./api";
-
-const CAMAPIArgs = ({ refID }): CAMProviderType => ({
-  context: { refID },
-  generateCAM: { fn: API.generateCAM, args: { refID } },
-  viewCAM: { fn: API.generateCAM_URL, args: { refID, download: false } },
-  downloadCAM: { fn: API.generateCAM_URL, args: { refID, download: true } },
-  getGridCAMData: { fn: API.getCAMGridData, args: { refID } },
-  getGridCAMMetaData: { fn: API.getCAMGridMetaData, args: { refID } },
-});
+import { generateCAMAPIContext } from "./context";
 
 const actions: ActionTypes[] = [
   {
@@ -83,7 +74,7 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
   }, [removeCache, moduleType, refID]);
 
   return (
-    <CAMContextProvider {...CAMAPIArgs({ refID: refID })}>
+    <CAMContextProvider {...generateCAMAPIContext({ refID: refID })}>
       <MyGridWrapper
         ref={gridRef}
         key="grid"

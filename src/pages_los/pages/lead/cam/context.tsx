@@ -1,4 +1,5 @@
 import { createContext, FC } from "react";
+import * as API from "./api";
 
 export interface CAMProviderType {
   context: any;
@@ -40,3 +41,12 @@ export const CAMContextProvider: FC<CAMProviderType> = ({
     </CAMContext.Provider>
   );
 };
+
+export const generateCAMAPIContext = ({ refID }): CAMProviderType => ({
+  context: { refID },
+  generateCAM: { fn: API.generateCAM, args: { refID } },
+  viewCAM: { fn: API.generateCAM_URL, args: { refID, download: false } },
+  downloadCAM: { fn: API.generateCAM_URL, args: { refID, download: true } },
+  getGridCAMData: { fn: API.getCAMGridData, args: { refID } },
+  getGridCAMMetaData: { fn: API.getCAMGridMetaData, args: { refID } },
+});

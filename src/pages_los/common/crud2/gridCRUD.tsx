@@ -32,7 +32,8 @@ const actions: ActionTypes[] = [
 export const GridCRUD: FC<{
   isDataChangedRef: any;
   showDocuments?: boolean;
-}> = ({ isDataChangedRef, showDocuments }) => {
+  rowData?: any;
+}> = ({ isDataChangedRef, showDocuments, rowData }) => {
   let allActions = useRef<any>(null);
   if (allActions.current === null) {
     allActions.current = [...actions];

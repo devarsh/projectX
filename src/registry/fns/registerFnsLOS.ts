@@ -90,3 +90,8 @@ registerFn(
 );
 registerFn("retailSetEligibleLoanAmount", retail.setEligibleLoanAmount);
 registerFn("retailCalculateFOIR", retail.calculateFOIR);
+registerFn("getBankFacilityOptions", LOSSDK.getBankFacilityOptions);
+registerFn(
+  "getBankListForLeadDocumentsForAPICallInterface",
+  LOSSDK.getBankListForLeadDocumentsForAPICallInterface
+);
