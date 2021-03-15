@@ -69,6 +69,8 @@ registerFn("AutoFillGender", others.AutoFillGender);
 registerFn("getValidateValue", others.getValidateValue);
 registerFn("getGenderValue", others.getGenderValue);
 registerFn("setLTVValue", others.setLTVValue);
+registerFn("setNewLTVValue", others.setNewLTVValue);
+registerFn("setLTVValueForCAM", others.setLTVValueForCAM);
 
 registerFn(
   "getMonthlyEmiPayValidateValue",

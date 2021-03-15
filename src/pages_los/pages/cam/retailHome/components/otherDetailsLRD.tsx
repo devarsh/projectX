@@ -38,6 +38,14 @@ export const OtherLRDDetails = ({ others }) => {
         <th colSpan={2}>Rent Revision Month</th>
         <td colSpan={7}>{others.rentReviMonth}</td>
       </tr>
+      <tr>
+        <th colSpan={2}>TDS Percentage</th>
+        <td colSpan={7}>{others.newclfr}</td>
+      </tr>
+      <tr>
+        <th colSpan={2}>Discount Percentage</th>
+        <td colSpan={7}>{others.newltv}</td>
+      </tr>
       {others?.propertyType !== "" ? (
         <tr>
           <th colSpan={2}>Property Type</th>

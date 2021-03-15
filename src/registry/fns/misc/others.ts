@@ -150,6 +150,24 @@ export const setLTVValue = async (fieldData) => {
   };
 };
 
+export const setNewLTVValue = async (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    newltvCondition: {
+      value: fieldValues?.maxLTV,
+    },
+  };
+};
+
+export const setLTVValueForCAM = async (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    ltv: {
+      value: fieldValues?.maxLTV,
+    },
+  };
+};
+
 //Dummy only for testing
 export const shouldExcludeDummy = async (_, dependentFields, formState) => {
   if (dependentFields["dummy"].value === "1") {

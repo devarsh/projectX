@@ -352,6 +352,36 @@ const LOSAPI = () => {
     }
   };
 
+  const getPropertyTypeCAM = (productCode: string) => async () => {
+    const { status, data } = await internalFetcher(
+      `./lead/options/propertytype`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            productId: productCode,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.propertyType,
+        label: one?.propertyName,
+      }));
+      const otherValues = data.response_data.reduce((accumlator, current) => {
+        const val = {
+          minLTV: current.minLTV,
+          maxLTV: current.maxLTV,
+        };
+        accumlator[current.propertyType] = val;
+        return accumlator;
+      }, {});
+      return { options: newArray, others: otherValues };
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -370,6 +400,7 @@ const LOSAPI = () => {
     getLeadSubStageCode,
     getLeadEmploymentType,
     moveInquiryToLead,
+    getPropertyTypeCAM,
 
     //documents
     getBankListForLeadDocumentsForGridUpload,

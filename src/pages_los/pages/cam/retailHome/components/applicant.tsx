@@ -15,10 +15,15 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
         <th colSpan={2}>Loan Requested</th>
         <td colSpan={7}>{loanAmount}</td>
       </tr>
-      <tr>
-        <th colSpan={2}>FOIR or Portion of Income Considered</th>
-        <td colSpan={7}>{convertIntoPrcentage({ amount: others.foir })}</td>
-      </tr>
+      {others.foir !== null ? (
+        <tr>
+          <th colSpan={2}>FOIR or Portion of Income Considered</th>
+          <td colSpan={7}>{convertIntoPrcentage({ amount: others.foir })}</td>
+        </tr>
+      ) : (
+        ""
+      )}
+
       <tr>
         <th colSpan={9} className="form-heading">
           Applicant Details
