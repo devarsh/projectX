@@ -151,7 +151,7 @@ export const calculateSENPCondition = (dependentFields) => {
 export const calculateSENPLoanAmountBasedOnFOIRCondition = (
   dependentFields
 ) => {
-  const condition = dependentFields?.condition?.value?.toLowercase();
+  const condition = dependentFields?.condition?.value?.toLowerCase();
   const loanAmount = Number(dependentFields?.loanAmountBasedOnFOIR?.value);
   if (condition == "fine") {
     return loanAmount;
@@ -220,7 +220,7 @@ export const calculateSENPNewFOIR = (dependentFields) => {
 };
 
 export const calculateSENPLoanAmountBasedOnLTV = (dependentFields) => {
-  const ltvcondition = dependentFields?.ltvCondition?.value?.toLowercase();
+  const ltvcondition = dependentFields?.ltvCondition?.value?.toLowerCase();
   const amount = Number(dependentFields?.amount?.value);
   if (ltvcondition == "fine") {
     return amount;
