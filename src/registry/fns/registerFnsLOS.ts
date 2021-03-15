@@ -69,6 +69,8 @@ registerFn(
 registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
 registerFn("getManagementPersonnel", LOSSDK.getManagementPersonnel);
+registerFn("getPropertyTypeCAM", LOSSDK.getPropertyTypeCAM("12300002"));
+registerFn("getLRDPropertyTypeCAM", LOSSDK.getPropertyTypeCAM("12300003"));
 registerFn(
   "shouldExcludeExternalAPIManagementDetails",
   shouldExclude.externalAPIManagementDetails
@@ -130,4 +132,26 @@ registerFn("getBankFacilityOptions", LOSSDK.getBankFacilityOptions);
 registerFn(
   "getBankListForLeadDocumentsForAPICallInterface",
   LOSSDK.getBankListForLeadDocumentsForAPICallInterface
+);
+registerFn(
+  "retailCalculateBalanceLeasePeriodRemaining",
+  retail.calculateBalanceLeasePeriodRemaining
+);
+registerFn(
+  "retailsCalculateRentRevisionMonth",
+  retail.calculateRentRevisionMonth
+);
+registerFn(
+  "retailLRDCalculateLoanAmountBasedOnRent",
+  retail.calculateLoanAmountBasedOnRent
+);
+registerFn(
+  "retailLRDCalculateMinimumLoanAmountBasedOnLTVRent",
+  retail.calculateMinimumLoanAmountBasedOnLTVRent
+);
+registerFn("retailLRDCalculateEligibleEMI", retail.calculateLRDEligibleEMI);
+
+registerFn(
+  "retailLRDCalculateEligibleLoanAmount",
+  retail.calculateLRDEligibleLoanAmount
 );

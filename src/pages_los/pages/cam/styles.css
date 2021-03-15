@@ -4,8 +4,9 @@ table {
   font-size: 12px;
   border-collapse: collapse;
   margin: 0px auto;
-  max-width: 2480px;
+  /* max-width: 2480px; */
   width: 100%;
+  /* max-width: 60%; */
 }
 table th,
 table tfoot th {
@@ -18,7 +19,7 @@ table th,
 table td {
   padding: 0 8px !important;
   border: 1px solid lightgrey !important;
-  min-width: 180px !important;
+  min-width: 100px !important;
   font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
 }
 
