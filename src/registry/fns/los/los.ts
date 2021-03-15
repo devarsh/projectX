@@ -344,9 +344,9 @@ const LOSAPI = () => {
     if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data?.response_data.map((one) => ({
         value: one?.data_val,
-        label: one?.display_val,
+        label: `${one?.bankName}-${one?.facility}-${one?.accountNumber}`,
       }));
-      return newArray;
+      return { options: newArray, others: newArray };
     } else {
       throw data?.error_data;
     }
