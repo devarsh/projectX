@@ -312,7 +312,7 @@ const LOSAPI = () => {
     if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
         value: one?.data_val,
-        label: one?.display_val,
+        label: `${one?.facility}`,
       }));
       return newArray;
     } else {

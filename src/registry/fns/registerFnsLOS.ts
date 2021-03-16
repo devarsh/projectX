@@ -62,19 +62,35 @@ registerFn(
 );
 
 registerFn(
+  "shouldExcludeExternalAPIManagementDetails",
+  shouldExclude.externalAPIManagementDetails
+);
+registerFn(
+  "shouldExcludeDocumentUploadBankDetailsOD",
+  shouldExclude.shouldExcludeDocumentUploadBankDetailsOD
+);
+registerFn(
+  "shouldExcludeDocumentUploadBankDetailsCC",
+  shouldExclude.shouldExcludeDocumentUploadBankDetailsCC
+);
+registerFn(
+  "shouldExcludeDocumentUploadBankDetailsCC1",
+  shouldExclude.shouldExcludeDocumentUploadBankDetailsCC1
+);
+
+registerFn(
+  "shouldExcludeSanctionLimitFixedAmountDocumentUploadBankDetailsOD",
+  shouldExclude.sanctionLimitFixedAmountDocumentUploadBankDetailsOD
+);
+registerFn(
   "getBankListForLeadDocuments",
   LOSSDK.getBankListForLeadDocumentsForGridUpload
 );
-
 registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
 registerFn("getManagementPersonnel", LOSSDK.getManagementPersonnel);
 registerFn("getPropertyTypeCAM", LOSSDK.getPropertyTypeCAM("12300002"));
 registerFn("getLRDPropertyTypeCAM", LOSSDK.getPropertyTypeCAM("12300003"));
-registerFn(
-  "shouldExcludeExternalAPIManagementDetails",
-  shouldExclude.externalAPIManagementDetails
-);
 registerFn("retailCalculateEligibleEMI", retail.eligibleEMI);
 registerFn(
   "retailCalculateLoanAmountBasedOnFOIR",
