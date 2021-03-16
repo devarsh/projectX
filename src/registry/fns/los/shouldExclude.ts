@@ -141,3 +141,58 @@ export const externalAPIManagementDetails = (_, dependentValues) => {
   }
   return false;
 };
+
+export const shouldExcludeDocumentUploadBankDetailsCC = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["bankFacility"].value === "1" &&
+    dependentFields["sanctionLimitFixed"].value === "N"
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const shouldExcludeDocumentUploadBankDetailsCC1 = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["bankFacility"].value === "1" &&
+    dependentFields["sanctionLimitFixed"].value === "Y"
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const shouldExcludeDocumentUploadBankDetailsOD = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["bankFacility"].value === "2" &&
+    dependentFields["sanctionLimitFixed"].value === "N"
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const sanctionLimitFixedAmountDocumentUploadBankDetailsOD = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["sanctionLimitFixed"].value === "Y" &&
+    dependentFields["bankFacility"].value === "2"
+  ) {
+    return false;
+  }
+  return true;
+};

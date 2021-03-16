@@ -31,7 +31,6 @@ export const AutoFillGender = (field) => {
 };
 
 export const getGenderValue = async (field) => {
-  console.log(field.value);
   if (field.value === "00") {
     return {
       gender: {
@@ -178,8 +177,8 @@ export const shouldExcludeDummy = async (_, dependentFields, formState) => {
 };
 
 export const getCountForRows = (_, dependentFields, formState) => {
-  let from = dependentFields["fromPeriod"]?.value;
-  let to = dependentFields["toPeriod"]?.value;
+  let from = dependentFields["fromDate"]?.value;
+  let to = dependentFields["toDate"]?.value;
   let result = -1;
   if (from instanceof Date && to instanceof Date) {
     from = startOfMonth(from);
