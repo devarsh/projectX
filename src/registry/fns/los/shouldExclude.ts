@@ -142,35 +142,9 @@ export const externalAPIManagementDetails = (_, dependentValues) => {
   return false;
 };
 
-export const sanctionLimitVariableAmountDocumentUploadBankDetailsCC = async (
-  _,
-  dependentFields
-) => {
-  if (
-    dependentFields["bankFacility"].value === "Cash Credit" &&
-    dependentFields["sanctionLimitFixed"].value === "N"
-  ) {
-    return false;
-  } else {
-    return true;
-  }
-};
+//should exclude for external Bank API
 
-export const drawingPowerVariableAmountDocumentUploadBankDetails = async (
-  _,
-  dependentFields
-) => {
-  if (
-    dependentFields["bankFacility"].value === "Cash Credit" &&
-    dependentFields["sanctionLimitFixed"].value === "Y"
-  ) {
-    return false;
-  } else {
-    return true;
-  }
-};
-
-export const sanctionLimitVariableAmountDocumentUploadBankDetailsOD = async (
+export const sanctionLimitVariableAmountDocumentUploadBankDetails = async (
   _,
   dependentFields
 ) => {
@@ -184,12 +158,25 @@ export const sanctionLimitVariableAmountDocumentUploadBankDetailsOD = async (
   }
 };
 
-export const sanctionLimitFixedAmountDocumentUploadBankDetailsCCOD = async (
+export const sanctionLimitOptionsExternalAPIBank = async (
   _,
   dependentFields
 ) => {
   if (
-    dependentFields["sanctionLimitFixed"].value === "Y" &&
+    dependentFields["bankFacility"].value === "Overdraft" ||
+    dependentFields["bankFacility"].value === "Cash Credit"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const sanctionLimitFixedAmountExternalAPIBank = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["sanctionLimitType"].value === "fixed" &&
     (dependentFields["bankFacility"].value === "Overdraft" ||
       dependentFields["bankFacility"].value === "Cash Credit")
   ) {
@@ -198,14 +185,25 @@ export const sanctionLimitFixedAmountDocumentUploadBankDetailsCCOD = async (
   return true;
 };
 
-export const sanctionLimitFixedDocumentUploadBankDetailsCCOD = async (
+export const sanctionLimitVariableAmountExternalAPIBank = async (
   _,
   dependentFields
 ) => {
   if (
-    dependentFields["bankFacility"].value === "Overdraft" ||
-    dependentFields["bankFacility"].value === "Cash Credit"
+    dependentFields["sanctionLimitType"].value === "variable" &&
+    (dependentFields["bankFacility"].value === "Overdraft" ||
+      dependentFields["bankFacility"].value === "Cash Credit")
   ) {
+    return false;
+  }
+  return true;
+};
+
+export const drawingPowerVariableAmountExternalAPIBank = async (
+  _,
+  dependentFields
+) => {
+  if (dependentFields["bankFacility"].value === "Cash Credit") {
     return false;
   }
   return true;

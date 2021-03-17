@@ -120,15 +120,6 @@ export const BankUploadMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
-      name: "acceptancePolicy",
-      label: "Acceptance Policy",
-      //@ts-ignore
-      options: "getAcceptancePolicy",
-    },
-    {
-      render: {
-        componentType: "select",
-      },
       name: "bank",
       label: "Bank",
       disableCaching: true,
@@ -144,6 +135,16 @@ export const BankUploadMetaData: MetaDataType = {
       },
       name: "bankFacility",
       label: "Bank Facility",
+      isReadOnly: true,
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "acceptancePolicy",
+      label: "Acceptance Policy",
+      //@ts-ignore
+      options: "getAcceptancePolicy",
     },
     {
       render: {
@@ -182,15 +183,19 @@ export const BankUploadMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
-      name: "sanctionLimitFixed",
-      label: "Sanction Limit Fixed",
+      name: "sanctionLimitType",
+      label: "Sanction Limit Type",
       //@ts-ignore
-      options: "getYesOrNoOptions",
+      options: [
+        { label: "Select option", value: "0" },
+        { label: "Fixed", value: "fixed" },
+        { label: "Variable", value: "variable" },
+      ],
+      defaultValue: "0",
       //@ts-ignore
       disableCaching: true,
       dependentFields: ["bankFacility"],
-      shouldExclude:
-        "shouldExcludeSanctionLimitFixedDocumentUploadBankDetailsCCOD",
+      shouldExclude: "shouldExcludeSanctionLimitOptionsExternalAPIBank",
       required: true,
       GridProps: {
         xs: 12,
@@ -206,9 +211,8 @@ export const BankUploadMetaData: MetaDataType = {
       name: "sanctionLimitFixedAmount",
       label: "Sanction Limit Fixed Amount",
       placeholder: "Sanction Limit Fixed Amount",
-      dependentFields: ["bankFacility", "sanctionLimitFixed"],
-      shouldExclude:
-        "shouldExcludeSanctionLimitFixedAmountDocumentUploadBankDetailsCCOD",
+      dependentFields: ["bankFacility", "sanctionLimitType"],
+      shouldExclude: "shouldExcludeSanctionLimitFixedAmountExternalAPIBank",
       required: true,
       GridProps: {
         xs: 12,
@@ -216,26 +220,39 @@ export const BankUploadMetaData: MetaDataType = {
         sm: 3,
       },
     },
-
+    {
+      render: {
+        componentType: "spacer",
+      },
+      name: "emptySpace",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      HiddenProps: {
+        smDown: true,
+      },
+    },
     {
       render: {
         componentType: "arrayField",
       },
-      name: "sanctionLimitVariableAmountOD",
+      name: "sanctionLimitVariableAmount",
+      label: "Sancation Limit For Each Month",
       dependentFields: [
         "bankFacility",
-        "sanctionLimitFixed",
+        "sanctionLimitType",
         "fromDate",
         "toDate",
       ],
-      shouldExclude:
-        "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsOD",
+      shouldExclude: "shouldExcludeSanctionLimitVariableAmountExternalAPIBank",
       fixedRows: true,
       getFixedRowsCount: "getMonthDifferenceInRows",
       GridProps: {
         xs: 12,
-        md: 12,
-        sm: 12,
+        md: 6,
+        sm: 6,
       },
       _fields: [
         {
@@ -243,14 +260,13 @@ export const BankUploadMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "currency",
           },
-          name: "sanctionLimitVariableAmounts",
-          label: "Sanction Limit Variable Amounts",
-          placeholder: "Sanction Limit Variable Amounts",
+          name: "sancationAmount",
+          label: "Sancation Limit Amount",
           required: true,
           GridProps: {
             xs: 12,
-            md: 3,
-            sm: 3,
+            md: 12,
+            sm: 12,
           },
         },
       ],
@@ -260,21 +276,16 @@ export const BankUploadMetaData: MetaDataType = {
       render: {
         componentType: "arrayField",
       },
-      name: "drawingPowerVariableAmountOD",
-      dependentFields: [
-        "bankFacility",
-        "sanctionLimitFixed",
-        "fromDate",
-        "toDate",
-      ],
-      shouldExclude:
-        "shouldExcludeDrawingPowerVariableAmountDocumentUploadBankDetails",
+      name: "drawingPowerVariableAmount",
+      label: "Drawing Power For Each Month",
+      dependentFields: ["bankFacility", "fromDate", "toDate"],
+      shouldExclude: "shouldExcludeDrawingPowerVariableAmountExternalAPIBank",
       fixedRows: true,
       getFixedRowsCount: "getMonthDifferenceInRows",
       GridProps: {
         xs: 12,
-        md: 12,
-        sm: 12,
+        md: 6,
+        sm: 6,
       },
       _fields: [
         {
@@ -282,92 +293,13 @@ export const BankUploadMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "currency",
           },
-          name: "drawingPowerVariableAmounts",
-          label: "Drawing Power Variable Amounts",
-          placeholder: "Drawing Power Variable Amounts",
+          name: "drawingPowerAmount",
+          label: "Drawing Power Amount",
           required: true,
           GridProps: {
             xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-      ],
-    },
-
-    {
-      render: {
-        componentType: "arrayField",
-      },
-      name: "drawingPowerVariableAmountCC",
-      dependentFields: [
-        "bankFacility",
-        "sanctionLimitFixed",
-        "fromDate",
-        "toDate",
-      ],
-      shouldExclude:
-        "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsCC",
-      fixedRows: true,
-      getFixedRowsCount: "getMonthDifferenceInRows",
-      GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
-      },
-      _fields: [
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-          },
-          name: "drawingPowerVariableAmounts",
-          label: "Drawing Power Variable Amounts",
-          placeholder: "Drawing Power Variable Amounts",
-          required: true,
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-      ],
-    },
-
-    {
-      render: {
-        componentType: "arrayField",
-      },
-      name: "sanctionLimitVariableAmountCC",
-      dependentFields: [
-        "bankFacility",
-        "sanctionLimitFixed",
-        "fromDate",
-        "toDate",
-      ],
-      shouldExclude:
-        "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsCC",
-      fixedRows: true,
-      getFixedRowsCount: "getMonthDifferenceInRows",
-      GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
-      },
-      _fields: [
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-          },
-          name: "sanctionLimitVariableAmounts",
-          label: "Sanction Limit Variable Amounts",
-          placeholder: "Sanction Limit Variable Amounts",
-          required: true,
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
+            md: 12,
+            sm: 12,
           },
         },
       ],

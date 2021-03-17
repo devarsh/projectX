@@ -65,27 +65,27 @@ registerFn(
   "shouldExcludeExternalAPIManagementDetails",
   shouldExclude.externalAPIManagementDetails
 );
-registerFn(
-  "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsOD",
-  shouldExclude.sanctionLimitVariableAmountDocumentUploadBankDetailsOD
-);
-registerFn(
-  "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsCC",
-  shouldExclude.sanctionLimitVariableAmountDocumentUploadBankDetailsCC
-);
-registerFn(
-  "shouldExcludeDrawingPowerVariableAmountDocumentUploadBankDetails",
-  shouldExclude.drawingPowerVariableAmountDocumentUploadBankDetails
-);
+
+//Bank API
 
 registerFn(
-  "shouldExcludeSanctionLimitFixedAmountDocumentUploadBankDetailsCCOD",
-  shouldExclude.sanctionLimitFixedAmountDocumentUploadBankDetailsCCOD
+  "shouldExcludeSanctionLimitFixedAmountExternalAPIBank",
+  shouldExclude.sanctionLimitFixedAmountExternalAPIBank
 );
 registerFn(
-  "shouldExcludeSanctionLimitFixedDocumentUploadBankDetailsCCOD",
-  shouldExclude.sanctionLimitFixedDocumentUploadBankDetailsCCOD
+  "shouldExcludeSanctionLimitOptionsExternalAPIBank",
+  shouldExclude.sanctionLimitOptionsExternalAPIBank
 );
+registerFn(
+  "shouldExcludeSanctionLimitVariableAmountExternalAPIBank",
+  shouldExclude.sanctionLimitVariableAmountExternalAPIBank
+);
+registerFn(
+  "shouldExcludeDrawingPowerVariableAmountExternalAPIBank",
+  shouldExclude.drawingPowerVariableAmountExternalAPIBank
+);
+
+//END of Bank API
 registerFn(
   "getBankListForLeadDocuments",
   LOSSDK.getBankListForLeadDocumentsForGridUpload
