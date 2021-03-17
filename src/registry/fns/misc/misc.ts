@@ -303,6 +303,24 @@ const MiscAPI = () => {
     }
   };
 
+  const getCRMSubProductType = async (
+    dependentFields: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(
+      `./productType/${dependentFields?.productType?.value}`,
+      {}
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.sub_prod_code,
+        label: one?.sub_prod_desc,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     getMiscVal,
@@ -318,6 +336,7 @@ const MiscAPI = () => {
     getPerfiosBankList,
     getBranchList,
     getSourcelist,
+    getCRMSubProductType,
   };
 };
 

@@ -57,7 +57,7 @@ registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
 registerFn("getIndustryType", miscSDK.getIndustryType);
 registerFn("getIndustrySubType", miscSDK.getIndustrySubType);
-registerFn("getsubProductDtl", others.getSubProductDtl(miscSDK.getProductType));
+registerFn("getCRMSubProductType", miscSDK.getCRMSubProductType);
 registerFn("getPerfiosBankList", miscSDK.getPerfiosBankList);
 registerFn("getBranchList", miscSDK.getBranchList);
 registerFn("getSourcelist", miscSDK.getSourcelist);
@@ -110,5 +110,6 @@ registerFn(
 
 //Dummy only for testing
 registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
-registerFn("getCountForRow", others.getCountForRows);
+registerFn("getMonthDifferenceInRows", others.getMonthDifferenceInRows);
+registerFn("setBankFacilityValue", others.setBankFacilityValue);
 //End of Dummy only for testing

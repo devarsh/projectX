@@ -346,7 +346,14 @@ const LOSAPI = () => {
         value: one?.data_val,
         label: `${one?.bankName}-${one?.facility}-${one?.accountNumber}`,
       }));
-      return { options: newArray, others: newArray };
+      const otherValues = data.response_data.reduce((accumlator, current) => {
+        const val = {
+          facility: current.facility,
+        };
+        accumlator[current.data_val] = val;
+        return accumlator;
+      }, {});
+      return { options: newArray, others: otherValues };
     } else {
       throw data?.error_data;
     }
@@ -377,6 +384,25 @@ const LOSAPI = () => {
         return accumlator;
       }, {});
       return { options: newArray, others: otherValues };
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getLoanAmountForDocumentsForAPICallInterface = async (formState) => {
+    const { status, data } = await internalFetcher(
+      `./lead/loanAmount/data/get`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState.formState.refID,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newValue = data?.response_data[0]?.data_val;
+      return newValue;
     } else {
       throw data?.error_data;
     }
@@ -413,6 +439,7 @@ const LOSAPI = () => {
     getManagementPersonnel,
     getBankFacilityOptions,
     getBankListForLeadDocumentsForAPICallInterface,
+    getLoanAmountForDocumentsForAPICallInterface,
   };
 };
 
