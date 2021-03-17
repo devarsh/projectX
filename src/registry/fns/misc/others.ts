@@ -95,35 +95,6 @@ export const getValidateValue = async (fieldData) => {
   }
 };
 
-//dropdown value - dynamic form
-export const getSubProductDtl = (getProductType) => async (fieldData) => {
-  if (fieldData.value.length !== 0) {
-    try {
-      let codes = await getProductType(null, { formCode: fieldData.value });
-      return {
-        subProductType: {
-          options: codes,
-          value: "00",
-        },
-      };
-    } catch (e) {
-      return {
-        subProductType: {
-          options: [],
-          value: "",
-        },
-      };
-    }
-  } else if (fieldData.value === "") {
-    return {
-      subProductType: {
-        options: [],
-        value: "",
-      },
-    };
-  }
-};
-
 export const setValueOnDependentFieldsChangeOne = (dependentFields) => {
   if (typeof dependentFields === "object") {
     let result = Object.values(dependentFields);
@@ -176,7 +147,7 @@ export const shouldExcludeDummy = async (_, dependentFields, formState) => {
   }
 };
 
-export const getCountForRows = (_, dependentFields, formState) => {
+export const getMonthDifferenceInRows = (_, dependentFields, formState) => {
   let from = dependentFields["fromDate"]?.value;
   let to = dependentFields["toDate"]?.value;
   let result = -1;
@@ -192,4 +163,13 @@ export const getCountForRows = (_, dependentFields, formState) => {
   } else {
     return result + 1;
   }
+};
+
+export const setBankFacilityValue = (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    bankFacility: {
+      value: fieldValues?.facility,
+    },
+  };
 };

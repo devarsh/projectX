@@ -66,21 +66,25 @@ registerFn(
   shouldExclude.externalAPIManagementDetails
 );
 registerFn(
-  "shouldExcludeDocumentUploadBankDetailsOD",
-  shouldExclude.shouldExcludeDocumentUploadBankDetailsOD
+  "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsOD",
+  shouldExclude.sanctionLimitVariableAmountDocumentUploadBankDetailsOD
 );
 registerFn(
-  "shouldExcludeDocumentUploadBankDetailsCC",
-  shouldExclude.shouldExcludeDocumentUploadBankDetailsCC
+  "shouldExcludeSanctionLimitVariableAmountDocumentUploadBankDetailsCC",
+  shouldExclude.sanctionLimitVariableAmountDocumentUploadBankDetailsCC
 );
 registerFn(
-  "shouldExcludeDocumentUploadBankDetailsCC1",
-  shouldExclude.shouldExcludeDocumentUploadBankDetailsCC1
+  "shouldExcludeDrawingPowerVariableAmountDocumentUploadBankDetails",
+  shouldExclude.drawingPowerVariableAmountDocumentUploadBankDetails
 );
 
 registerFn(
-  "shouldExcludeSanctionLimitFixedAmountDocumentUploadBankDetailsOD",
-  shouldExclude.sanctionLimitFixedAmountDocumentUploadBankDetailsOD
+  "shouldExcludeSanctionLimitFixedAmountDocumentUploadBankDetailsCCOD",
+  shouldExclude.sanctionLimitFixedAmountDocumentUploadBankDetailsCCOD
+);
+registerFn(
+  "shouldExcludeSanctionLimitFixedDocumentUploadBankDetailsCCOD",
+  shouldExclude.sanctionLimitFixedDocumentUploadBankDetailsCCOD
 );
 registerFn(
   "getBankListForLeadDocuments",
