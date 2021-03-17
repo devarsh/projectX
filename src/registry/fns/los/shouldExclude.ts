@@ -142,12 +142,12 @@ export const externalAPIManagementDetails = (_, dependentValues) => {
   return false;
 };
 
-export const shouldExcludeDocumentUploadBankDetailsCC = async (
+export const sanctionLimitVariableAmountDocumentUploadBankDetailsCC = async (
   _,
   dependentFields
 ) => {
   if (
-    dependentFields["bankFacility"].value === "1" &&
+    dependentFields["bankFacility"].value === "Cash Credit" &&
     dependentFields["sanctionLimitFixed"].value === "N"
   ) {
     return false;
@@ -156,12 +156,12 @@ export const shouldExcludeDocumentUploadBankDetailsCC = async (
   }
 };
 
-export const shouldExcludeDocumentUploadBankDetailsCC1 = async (
+export const drawingPowerVariableAmountDocumentUploadBankDetails = async (
   _,
   dependentFields
 ) => {
   if (
-    dependentFields["bankFacility"].value === "1" &&
+    dependentFields["bankFacility"].value === "Cash Credit" &&
     dependentFields["sanctionLimitFixed"].value === "Y"
   ) {
     return false;
@@ -170,12 +170,12 @@ export const shouldExcludeDocumentUploadBankDetailsCC1 = async (
   }
 };
 
-export const shouldExcludeDocumentUploadBankDetailsOD = async (
+export const sanctionLimitVariableAmountDocumentUploadBankDetailsOD = async (
   _,
   dependentFields
 ) => {
   if (
-    dependentFields["bankFacility"].value === "2" &&
+    dependentFields["bankFacility"].value === "Overdraft" &&
     dependentFields["sanctionLimitFixed"].value === "N"
   ) {
     return false;
@@ -184,13 +184,27 @@ export const shouldExcludeDocumentUploadBankDetailsOD = async (
   }
 };
 
-export const sanctionLimitFixedAmountDocumentUploadBankDetailsOD = async (
+export const sanctionLimitFixedAmountDocumentUploadBankDetailsCCOD = async (
   _,
   dependentFields
 ) => {
   if (
     dependentFields["sanctionLimitFixed"].value === "Y" &&
-    dependentFields["bankFacility"].value === "2"
+    (dependentFields["bankFacility"].value === "Overdraft" ||
+      dependentFields["bankFacility"].value === "Cash Credit")
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const sanctionLimitFixedDocumentUploadBankDetailsCCOD = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["bankFacility"].value === "Overdraft" ||
+    dependentFields["bankFacility"].value === "Cash Credit"
   ) {
     return false;
   }
