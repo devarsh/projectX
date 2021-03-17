@@ -153,6 +153,7 @@ registerFn(
   "getBankListForLeadDocumentsForAPICallInterface",
   LOSSDK.getBankListForLeadDocumentsForAPICallInterface
 );
+
 registerFn(
   "retailCalculateBalanceLeasePeriodRemaining",
   retail.calculateBalanceLeasePeriodRemaining
@@ -175,3 +176,8 @@ registerFn(
   "retailLRDCalculateEligibleLoanAmount",
   retail.calculateLRDEligibleLoanAmount
 );
+
+//role Assignment API register functions
+registerFn("getUsersList", LOSSDK.getUsersListForPendingRoleAssignment);
+registerFn("getBranchList", LOSSDK.getBranchList);
+registerFn("getRoleList", LOSSDK.getRoleList);
