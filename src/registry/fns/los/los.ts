@@ -408,6 +408,60 @@ const LOSAPI = () => {
     }
   };
 
+  const getUsersListForPendingRoleAssignment = async () => {
+    const { status, data } = await internalFetcher(
+      `./users/employee/options/new`,
+      {
+        body: JSON.stringify({
+          request_data: {},
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.userId,
+        label: one?.userName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getBranchList = async () => {
+    const { status, data } = await internalFetcher(`./users/options/branch`, {
+      body: JSON.stringify({
+        request_data: {},
+      }),
+    });
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.branchCode,
+        label: one?.branchName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getRoleList = async () => {
+    const { status, data } = await internalFetcher(`./users/options/role`, {
+      body: JSON.stringify({
+        request_data: {},
+      }),
+    });
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.roleCode,
+        label: one?.roleName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -440,6 +494,10 @@ const LOSAPI = () => {
     getBankFacilityOptions,
     getBankListForLeadDocumentsForAPICallInterface,
     getLoanAmountForDocumentsForAPICallInterface,
+
+    getUsersListForPendingRoleAssignment,
+    getBranchList,
+    getRoleList,
   };
 };
 
