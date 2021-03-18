@@ -35,31 +35,17 @@ export const GSTUploadMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
-      name: "entity",
+      name: "entityType",
       label: "Entity",
-      defaultValue: "1",
-      options: [
-        { value: "1", label: "Legal" },
-        { value: "2", label: "Individual" },
-      ],
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "management",
-      label: "Management Person",
-      //@ts-ignore
-      options: "getManagementPersonnel",
-      dependentFields: ["entity"],
-      shouldExclude: "shouldExcludeExternalAPIManagementDetails",
+      defaultValue: "L",
+      options: [{ value: "L", label: "Legal" }],
     },
     {
       render: {
         componentType: "datePicker",
       },
-      name: "fromDate",
-      label: "From Date",
+      name: "periodFrom",
+      label: "Period From",
       format: "MM/yyyy",
       placeholder: "mm/yyyy",
       schemaValidation: {
@@ -76,8 +62,8 @@ export const GSTUploadMetaData: MetaDataType = {
       render: {
         componentType: "datePicker",
       },
-      name: "toDate",
-      label: "To Date",
+      name: "periodTo",
+      label: "Period To",
       format: "MM/yyyy",
       placeholder: "mm/yyyy",
       schemaValidation: {
@@ -89,7 +75,7 @@ export const GSTUploadMetaData: MetaDataType = {
           },
         ],
       },
-      dependentFields: ["fromDate"],
+      dependentFields: ["periodFrom"],
       validationRun: "all",
       runValidationOnDependentFieldsChange: true,
       validate: {
@@ -97,7 +83,7 @@ export const GSTUploadMetaData: MetaDataType = {
           any: [
             {
               fact: "dependentFields",
-              path: "$.fromDate.value",
+              path: "$.periodFrom.value",
               operator: "lessThanDate",
               value: {
                 fact: "currentField",
@@ -107,7 +93,7 @@ export const GSTUploadMetaData: MetaDataType = {
           ],
         },
         success: "",
-        failure: "To date must be gerater than from date",
+        failure: "Period To date must be gerater than Period from date",
       },
     },
   ],
