@@ -80,6 +80,7 @@ export const DetailsTabView = () => {
     <Fragment>
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Role Assignment" id="0" />
+        <Tab label="Team Assignment" id="1" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
@@ -94,6 +95,49 @@ export const DetailsTabView = () => {
                 return { userId };
               }}
             />
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="1" key={1}>
+          <CRUDContextProvider
+            {...roleAssignmentCrudAPIArgs("users/employee", "team", null, null)}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="2" key={2}>
+          <CRUDContextProvider
+            {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="3" key={3}>
+          <CRUDContextProvider
+            {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="4" key={4}>
+          <CRUDContextProvider
+            {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="5" key={5}>
+          <CRUDContextProvider
+            {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
+          </CRUDContextProvider>
+        </TabPanel>
+        <TabPanel value={currentTab} index="6" key={6}>
+          <CRUDContextProvider
+            {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
+          >
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
       </Box>

@@ -11,7 +11,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogAction from "@material-ui/core/DialogActions";
 import { APIInterfaceForm } from "./apiInterfaceForms";
 import { DocumentsPreviewWrapper } from "../docsPreview";
-import { GSTUploadMetaData, BankUploadMetaData } from "./metaData";
+import {
+  GSTUploadMetaData,
+  BankUploadMetaData,
+  ITRUploadMetaData,
+} from "./metaData";
 import { useStyles } from "./styles";
 
 export const APIInterface = ({
@@ -62,8 +66,8 @@ export const APIInterface = ({
         {Boolean(docType) ? (
           docType === "itr" ? (
             <APIInterfaceForm
-              metaData={GSTUploadMetaData}
-              formState={{ refID, moduleType }}
+              metaData={ITRUploadMetaData}
+              formState={{ refID, moduleType, productType: "itrupload" }}
               handleSubmitFn={(data, displayData, endSubmit) => {
                 endSubmitRef.current = endSubmit;
                 formDataRef.current = data;
@@ -73,7 +77,17 @@ export const APIInterface = ({
           ) : docType === "bank" ? (
             <APIInterfaceForm
               metaData={BankUploadMetaData}
-              formState={{ refID, moduleType }}
+              formState={{ refID, moduleType, productType: "bankupload" }}
+              handleSubmitFn={(data, displayData, endSubmit) => {
+                endSubmitRef.current = endSubmit;
+                formDataRef.current = data;
+                setShowDocs(true);
+              }}
+            />
+          ) : docType === "gst" ? (
+            <APIInterfaceForm
+              metaData={GSTUploadMetaData}
+              formState={{ refID, moduleType, productType: "gstupload" }}
               handleSubmitFn={(data, displayData, endSubmit) => {
                 endSubmitRef.current = endSubmit;
                 formDataRef.current = data;
