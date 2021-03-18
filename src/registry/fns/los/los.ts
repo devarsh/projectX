@@ -461,6 +461,25 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+  const getAllUsersList = async () => {
+    const { status, data } = await internalFetcher(
+      `./users/employee/options/all`,
+      {
+        body: JSON.stringify({
+          request_data: {},
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.userId,
+        label: one?.userName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
 
   return {
     inititateAPI,
@@ -498,6 +517,7 @@ const LOSAPI = () => {
     getUsersListForPendingRoleAssignment,
     getBranchList,
     getRoleList,
+    getAllUsersList,
   };
 };
 

@@ -85,7 +85,6 @@ export const FormNew: FC<{
   let newMetaData = {} as MetaDataType;
   if (result.isSuccess) {
     newMetaData = JSON.parse(JSON.stringify(result.data)) as MetaDataType;
-    newMetaData = result.data as MetaDataType;
     newMetaData.form.formState = {
       ...context,
       formCode: newMetaData?.form?.name,
