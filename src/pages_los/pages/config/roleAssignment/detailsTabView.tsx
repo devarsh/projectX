@@ -86,7 +86,10 @@ export const DetailsTabView = () => {
           <CRUDContextProvider
             {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
           >
-            <GridCRUD isDataChangedRef={isDataEditedRef} />
+            <GridCRUD
+              isDataChangedRef={isDataEditedRef}
+              disableActions={["Add", "Delete"]}
+            />
           </CRUDContextProvider>
         </TabPanel>
       </Box>

@@ -33,7 +33,8 @@ export const GridCRUD: FC<{
   isDataChangedRef: any;
   showDocuments?: boolean;
   rowData?: any;
-}> = ({ isDataChangedRef, showDocuments, rowData }) => {
+  disableActions?: string | string[];
+}> = ({ isDataChangedRef, showDocuments, disableActions, rowData }) => {
   let allActions = useRef<any>(null);
   if (allActions.current === null) {
     allActions.current = [...actions];
@@ -43,6 +44,19 @@ export const GridCRUD: FC<{
         actionLabel: "Document Details",
         multiple: false,
         rowDoubleClick: false,
+      });
+    }
+    let disableActionsArray: string[];
+    if (typeof disableActions === "string") {
+      disableActionsArray = [disableActions];
+    } else if (Array.isArray(disableActions)) {
+      disableActionsArray = disableActions;
+    } else {
+      disableActionsArray = [];
+    }
+    if (Array.isArray(disableActionsArray)) {
+      allActions.current = allActions.current.filter((one) => {
+        return disableActionsArray?.indexOf(one.actionName) >= 0 ? false : true;
       });
     }
   }
