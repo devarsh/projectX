@@ -292,11 +292,11 @@ const LOSAPI = () => {
   };
 
   const getBankFacilityOptions = async (dependentValues, formState) => {
-    if (!Boolean(dependentValues?.entity?.value)) {
+    if (!Boolean(dependentValues?.entityType?.value)) {
       return [{ value: "", label: "No Data" }];
     }
     const { status, data } = await internalFetcher(
-      (dependentValues?.entity?.value ?? "X") === "L"
+      (dependentValues?.entityType?.value ?? "X") === "L"
         ? "./lead/document/options/facility"
         : "./lead/management/document/options/facility",
       {
@@ -324,11 +324,11 @@ const LOSAPI = () => {
     dependentValues,
     formState
   ) => {
-    if (!Boolean(dependentValues?.entity?.value)) {
+    if (!Boolean(dependentValues?.entityType?.value)) {
       return [{ value: "", label: "No Data" }];
     }
     const { data, status } = await internalFetcher(
-      (dependentValues?.entity?.value ?? "X") === "L"
+      (dependentValues?.entityType?.value ?? "X") === "L"
         ? `./${formState?.moduleType}/document/options/bank`
         : `./${formState?.moduleType}/management/document/options/bank`,
       {
@@ -462,6 +462,29 @@ const LOSAPI = () => {
     }
   };
 
+  const documentUploadInitiate = async (value: any, formState) => {
+    console.log("hiii", formState);
+    //https://digix.aiplsolution.in/ratnaafin/los/lead/external/bankupload/initiate
+    const { data, status } = await internalFetcher(
+      `./${formState?.moduleType}/external/${formState?.productType}/initiate`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID,
+            serialNo: value?.management ?? 1,
+            ...value,
+          },
+          channel: "W",
+        }),
+      }
+    );
+    if (status === "success") {
+      return data?.response_data;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -498,6 +521,9 @@ const LOSAPI = () => {
     getUsersListForPendingRoleAssignment,
     getBranchList,
     getRoleList,
+    documentUploadInitiate,
+
+    getAllUsersList,
   };
 };
 

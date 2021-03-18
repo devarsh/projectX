@@ -41,7 +41,7 @@ export const BankUploadMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
-      name: "entity",
+      name: "entityType",
       label: "Entity",
       defaultValue: "1",
       options: [
@@ -57,7 +57,7 @@ export const BankUploadMetaData: MetaDataType = {
       label: "Management Person",
       //@ts-ignore
       options: "getManagementPersonnel",
-      dependentFields: ["entity"],
+      dependentFields: ["entityType"],
       shouldExclude: "shouldExcludeExternalAPIManagementDetails",
     },
     {
@@ -120,10 +120,10 @@ export const BankUploadMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
-      name: "bank",
+      name: "bankLineID",
       label: "Bank",
       disableCaching: true,
-      dependentFields: ["entity", "management"],
+      dependentFields: ["entityType", "management"],
       //@ts-ignore
       options: "getBankListForLeadDocumentsForAPICallInterface",
       //@ts-ignore
@@ -260,7 +260,7 @@ export const BankUploadMetaData: MetaDataType = {
             //@ts-ignore
             componentType: "currency",
           },
-          name: "sancationAmount",
+          name: "sanctionAmount",
           label: "Sancation Limit Amount",
           required: true,
           GridProps: {

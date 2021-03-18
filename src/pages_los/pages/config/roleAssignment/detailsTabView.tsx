@@ -80,6 +80,7 @@ export const DetailsTabView = () => {
     <Fragment>
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Role Assignment" id="0" />
+        <Tab label="Team Assignment" id="1" />
       </Tabs>
       <Box py={2} className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
@@ -91,7 +92,7 @@ export const DetailsTabView = () => {
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
           <CRUDContextProvider
-            {...roleAssignmentCrudAPIArgs("users/employee", "role", null, null)}
+            {...roleAssignmentCrudAPIArgs("users/employee", "team", null, null)}
           >
             <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>

@@ -32,6 +32,7 @@ export const getData = ({ moduleType, productType }: crudType) => async (
       body: JSON.stringify({
         request_data: {
           userId: serialNo,
+          serialNo: serialNo,
         },
       }),
     }
