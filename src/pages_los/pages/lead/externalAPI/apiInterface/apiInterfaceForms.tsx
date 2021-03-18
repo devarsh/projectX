@@ -5,68 +5,21 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useMutation, useQuery } from "react-query";
 import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
-import { useSnackbar } from "notistack";
 
-interface docUploadInitiateFnType {
-  formState: any;
-  data: any;
-  endSubmit?: any;
-}
-
-export const APIInterfaceForm = ({ metaData, formState, handleSubmitFn }) => {
-  const { enqueueSnackbar } = useSnackbar();
+export const APIInterfaceForm = ({
+  metaData,
+  formState,
+  handleSubmitFn,
+  inititalValues = undefined as any,
+}) => {
   if (metaData?.form) {
     metaData.form.formState = formState;
   }
-
-  const uploadDocument = async ({ data }: docUploadInitiateFnType) => {
-    return LOSSDK.documentUploadInitiate(data, formState);
-  };
-
-  const uploadInitiate = useMutation(uploadDocument, {
-    onMutate: () => {},
-    onError: (error: any, { endSubmit }) => {
-      let errorMsg = "Unknown Error occured";
-      if (typeof error === "object") {
-        errorMsg = error?.error_msg ?? errorMsg;
-      }
-      endSubmit(false, errorMsg);
-      enqueueSnackbar(errorMsg, { variant: "error" });
-    },
-    onSuccess: (data, { endSubmit }) => {
-      endSubmit(true, "");
-      enqueueSnackbar("Success", {
-        variant: "success",
-      });
-    },
-  });
-
-  const onSubmitHandler = useCallback(
-    (values, endSubmit) => {
-      uploadInitiate.mutate({ data: values, formState, endSubmit });
-    },
-    [uploadInitiate]
-  );
-
-  const result = useQuery(
-    ["getLoanAmountForDocumentsForAPICallInterface", formState],
-    () => LOSSDK.getLoanAmountForDocumentsForAPICallInterface({ formState })
-  );
-
-  const renderResult = result.isLoading ? (
-    <img src={loaderGif} height="50px" width="50px" alt="loader" />
-  ) : result.isError ? (
-    <span>
-      {
-        //@ts-ignore
-        result.error?.error_msg ?? "unknown error occured"
-      }
-    </span>
-  ) : (
+  return (
     <FormWrapper
       metaData={metaData as MetaDataType}
-      initialValues={{ loanAmount: result?.data }}
-      onSubmitHandler={onSubmitHandler}
+      initialValues={inititalValues}
+      onSubmitHandler={handleSubmitFn}
       displayMode={"new"}
       disableGroupErrorDetection={true}
       disableGroupExclude={true}
@@ -86,5 +39,35 @@ export const APIInterfaceForm = ({ metaData, formState, handleSubmitFn }) => {
       }}
     </FormWrapper>
   );
+};
+
+export const BankAPIInterfaceWrapper = ({
+  metaData,
+  formState,
+  handleSubmitFn,
+}) => {
+  const result = useQuery(
+    ["getLoanAmountForDocumentsForAPICallInterface", formState],
+    () => LOSSDK.getLoanAmountForDocumentsForAPICallInterface({ formState })
+  );
+
+  const renderResult = result.isLoading ? (
+    <img src={loaderGif} height="50px" width="50px" alt="loader" />
+  ) : result.isError ? (
+    <span>
+      {
+        //@ts-ignore
+        result.error?.error_msg ?? "unknown error occured"
+      }
+    </span>
+  ) : (
+    <APIInterfaceForm
+      metaData={metaData}
+      formState={formState}
+      handleSubmitFn={handleSubmitFn}
+      inititalValues={{ loanAmount: result?.data }}
+    />
+  );
+
   return renderResult;
 };

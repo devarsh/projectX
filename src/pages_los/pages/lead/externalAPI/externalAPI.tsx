@@ -57,7 +57,7 @@ export const ExternalAPI = ({ refID, moduleType }) => {
           <APIInterface
             refID={refID}
             moduleType={moduleType}
-            cancelAction={closeMyDialog}
+            closeDialog={closeMyDialog}
             isDataChangedRef={isMyDataChangedRef}
           />
         ) : (

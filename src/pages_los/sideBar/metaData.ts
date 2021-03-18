@@ -274,7 +274,7 @@ export const metaData: NavBarMetaDataType = {
         },
         {
           label: "User Management",
-          href: "./config/roleAssignment",
+          href: "./config/userManagement",
           isRouterLink: true,
           icon: "circle",
         },
