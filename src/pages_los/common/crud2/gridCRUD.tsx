@@ -34,7 +34,14 @@ export const GridCRUD: FC<{
   showDocuments?: boolean;
   rowData?: any;
   disableActions?: string | string[];
-}> = ({ isDataChangedRef, showDocuments, disableActions, rowData }) => {
+  setEditFormStateFromInitValues?: any;
+}> = ({
+  isDataChangedRef,
+  showDocuments,
+  rowData,
+  disableActions,
+  setEditFormStateFromInitValues,
+}) => {
   let allActions = useRef<any>(null);
   if (allActions.current === null) {
     allActions.current = [...actions];
@@ -100,6 +107,7 @@ export const GridCRUD: FC<{
             isDataChangedRef={isMyDataChangedRef}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
+            setEditFormStateFromInitValues={setEditFormStateFromInitValues}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction
