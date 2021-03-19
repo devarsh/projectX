@@ -7,8 +7,6 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import Typography from "@material-ui/core/Typography";
-import { LOSSDK } from "registry/fns/los";
-
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -16,6 +14,7 @@ import DialogAction from "@material-ui/core/DialogActions";
 import Box from "@material-ui/core/Box";
 import { APIInterfaceForm, BankAPIInterfaceWrapper } from "./apiInterfaceForms";
 import { DocumentsPreviewWrapper } from "../docsPreview";
+import { documentUploadInitiate } from "../api";
 import {
   GSTUploadMetaData,
   BankUploadMetaData,
@@ -48,7 +47,7 @@ export const APIInterface = ({
 
   //handle API Submitting here - Aayesha
   const handleApiInititation = () => {
-    LOSSDK.documentUploadInitiate(apiType, formDataRef, refID, moduleType);
+    documentUploadInitiate(apiType, formDataRef, refID, moduleType);
     isDataChangedRef.current = true;
     closeDialog();
   };

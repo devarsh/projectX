@@ -481,33 +481,6 @@ const LOSAPI = () => {
     }
   };
 
-  const documentUploadInitiate = async (
-    formState,
-    value: any,
-    refID,
-    moduleType
-  ) => {
-    //https://digix.aiplsolution.in/ratnaafin/los/lead/external/bankupload/initiate
-    const { data, status } = await internalFetcher(
-      `./${moduleType}/external/${formState}upload/initiate`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            refID: refID,
-            serialNo: value?.current?.management ?? 1,
-            ...value?.current,
-          },
-          channel: "W",
-        }),
-      }
-    );
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   const getTeamRoleList = async (_, formState) => {
     const { status, data } = await internalFetcher(
       `./users/employee/team/options/role`,
@@ -589,8 +562,6 @@ const LOSAPI = () => {
     getUsersListForPendingRoleAssignment,
     getBranchList,
     getRoleList,
-    documentUploadInitiate,
-
     getAllUsersList,
     getTeamRoleList,
     getUserListFromTeamRole,
