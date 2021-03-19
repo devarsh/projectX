@@ -7,6 +7,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import Typography from "@material-ui/core/Typography";
+import { LOSSDK } from "registry/fns/los";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -47,7 +48,7 @@ export const APIInterface = ({
 
   //handle API Submitting here - Aayesha
   const handleApiInititation = () => {
-    console.log(formDataRef);
+    LOSSDK.documentUploadInitiate(apiType, formDataRef, refID, moduleType);
     isDataChangedRef.current = true;
     closeDialog();
   };
@@ -82,7 +83,7 @@ export const APIInterface = ({
           apiType === "itr" ? (
             <APIInterfaceForm
               metaData={ITRUploadMetaData}
-              formState={{ refID, moduleType, productType: "itrupload" }}
+              formState={{ refID, moduleType }}
               handleSubmitFn={(data, displayData, endSubmit) => {
                 endSubmitRef.current = endSubmit;
                 formDataRef.current = data;
@@ -92,7 +93,7 @@ export const APIInterface = ({
           ) : apiType === "bank" ? (
             <BankAPIInterfaceWrapper
               metaData={BankUploadMetaData}
-              formState={{ refID, moduleType, productType: "bankupload" }}
+              formState={{ refID, moduleType }}
               handleSubmitFn={(data, displayData, endSubmit) => {
                 endSubmitRef.current = endSubmit;
                 formDataRef.current = data;
@@ -102,7 +103,7 @@ export const APIInterface = ({
           ) : apiType === "gst" ? (
             <APIInterfaceForm
               metaData={GSTUploadMetaData}
-              formState={{ refID, moduleType, productType: "gstupload" }}
+              formState={{ refID, moduleType }}
               handleSubmitFn={(data, displayData, endSubmit) => {
                 endSubmitRef.current = endSubmit;
                 formDataRef.current = data;
@@ -123,7 +124,7 @@ export const APIInterface = ({
               Documents to be sent for Analysis
             </Typography>
             <div style={{ flexGrow: 1 }} />
-            <Button onClick={() => handleApiInititation()}>Inititate</Button>
+            <Button onClick={() => handleApiInititation()}>Initiate</Button>
             <Button onClick={() => cancel()}>Cancel</Button>
           </DialogAction>
           <DialogContent>
