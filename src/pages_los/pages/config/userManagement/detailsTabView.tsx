@@ -45,14 +45,7 @@ export const DetailsTabView = () => {
               null
             )}
           >
-            <GridCRUD
-              isDataChangedRef={isDataEditedRef}
-              disableActions={["Add"]}
-              setEditFormStateFromInitValues={(data) => {
-                const { userId } = data;
-                return { userId };
-              }}
-            />
+            <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
         <TabPanel value={currentTab} index="1" key={1}>
@@ -64,7 +57,13 @@ export const DetailsTabView = () => {
               null
             )}
           >
-            <GridCRUD isDataChangedRef={isDataEditedRef} />
+            <GridCRUD
+              isDataChangedRef={isDataEditedRef}
+              disableActions={["Add"]}
+              setEditFormStateFromInitValues={(data) => {
+                return { data };
+              }}
+            />
           </CRUDContextProvider>
         </TabPanel>
       </Box>

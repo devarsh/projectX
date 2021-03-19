@@ -481,17 +481,21 @@ const LOSAPI = () => {
     }
   };
 
-  const documentUploadInitiate = async (value: any, formState) => {
-    console.log("hiii", formState);
+  const documentUploadInitiate = async (
+    formState,
+    value: any,
+    refID,
+    moduleType
+  ) => {
     //https://digix.aiplsolution.in/ratnaafin/los/lead/external/bankupload/initiate
     const { data, status } = await internalFetcher(
-      `./${formState?.moduleType}/external/${formState?.productType}/initiate`,
+      `./${moduleType}/external/${formState}upload/initiate`,
       {
         body: JSON.stringify({
           request_data: {
-            refID: formState?.refID,
-            serialNo: value?.management ?? 1,
-            ...value,
+            refID: refID,
+            serialNo: value?.current?.management ?? 1,
+            ...value?.current,
           },
           channel: "W",
         }),
@@ -504,6 +508,51 @@ const LOSAPI = () => {
     }
   };
 
+  const getTeamRoleList = async (_, formState) => {
+    const { status, data } = await internalFetcher(
+      `./users/employee/team/options/role`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            teamDesignationCode: formState?.data?.teamDesignationCode ?? " ",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.roleCode,
+        label: one?.roleName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getUserListFromTeamRole = async (_, formState, dependentFields2) => {
+    const { status, data } = await internalFetcher(
+      `./users/employee/team/options/unregistered`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            teamRole:
+              dependentFields2["userBranchRoleMapping.teamRole"].value ?? " ",
+            branchCode: formState?.data?.branchCode ?? " ",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.userid,
+        label: one?.username,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
   return {
     inititateAPI,
     setToken,
@@ -543,6 +592,8 @@ const LOSAPI = () => {
     documentUploadInitiate,
 
     getAllUsersList,
+    getTeamRoleList,
+    getUserListFromTeamRole,
   };
 };
 

@@ -33,7 +33,8 @@ export const APIGrid = forwardRef<any, GridWrapperType>(
       removeCache?.addEntry("getAPIGridStatusData", wrapperKeyDataRef.current);
     }, [removeCache]);
     useImperativeHandle(ref, () => ({
-      refetch: () => result[1].refetch(),
+      refetch: () => result.refetch(),
+      // refetch: () => result[1].refetch(),
     }));
     const loading = result.isLoading || result.isFetching;
     let isError = result.isError;

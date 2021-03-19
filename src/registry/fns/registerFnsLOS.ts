@@ -182,3 +182,5 @@ registerFn("getUsersList", LOSSDK.getUsersListForPendingRoleAssignment);
 registerFn("getBranchList", LOSSDK.getBranchList);
 registerFn("getRoleList", LOSSDK.getRoleList);
 registerFn("getAllUsersList", LOSSDK.getAllUsersList);
+registerFn("getTeamRoleList", LOSSDK.getTeamRoleList);
+registerFn("getUserListFromTeamRole", LOSSDK.getUserListFromTeamRole);
