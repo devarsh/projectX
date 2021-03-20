@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useMemo } from "react";
+import { Fragment, useCallback } from "react";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -89,7 +89,8 @@ const MoveInquiryToLeadForm = ({
   const { handleSubmit, isSubmitting } = useForm({
     onSubmit: onSubmitHandler,
   });
-  const leadOptions = useMemo(() => MiscSDK.getMiscVal("LEAD_PRIORITY"), []);
+  const leadOptions = MiscSDK.getMiscVal("LEAD_PRIORITY");
+
   return (
     <Fragment>
       <Typography>Move To Lead</Typography>
@@ -104,6 +105,7 @@ const MoveInquiryToLeadForm = ({
             fullWidth
             label="Lead Priority"
             options={leadOptions}
+            _optionsKey="getLeadPriority"
             enableGrid={true}
             autoComplete="off"
             GridProps={{
