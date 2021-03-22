@@ -1,8 +1,7 @@
-import { useCallback, useState } from "react";
 import Button from "@material-ui/core/Button";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { LOSSDK } from "registry/fns/los";
 import loaderGif from "assets/images/loader.gif";
 

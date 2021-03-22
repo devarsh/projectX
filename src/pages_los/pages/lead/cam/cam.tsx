@@ -3,7 +3,7 @@ import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { queryClient, ClearCacheContext } from "cache";
 import { MyGridWrapper } from "./gridWrapper";
-import { CAMContextProvider, CAMProviderType } from "./context";
+import { CAMContextProvider } from "./context";
 import { DownloadCAM } from "./download";
 import { ViewCAM } from "./view";
 import { PreviewCAM } from "./preview";

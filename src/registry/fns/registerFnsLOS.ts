@@ -178,9 +178,10 @@ registerFn(
 );
 
 //role Assignment API register functions
-registerFn("getUsersList", LOSSDK.getUsersListForPendingRoleAssignment);
+
 registerFn("getBranchList", LOSSDK.getBranchList);
 registerFn("getRoleList", LOSSDK.getRoleList);
-registerFn("getAllUsersList", LOSSDK.getAllUsersList);
+registerFn("getAllUnRegisteredUsersList", LOSSDK.getAllUnRegisteredUsersList);
+registerFn("getAllRegisteredUsersList", LOSSDK.getAllRegisteredUsersList);
 registerFn("getTeamRoleList", LOSSDK.getTeamRoleList);
 registerFn("getUserListFromTeamRole", LOSSDK.getUserListFromTeamRole);

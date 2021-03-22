@@ -14,7 +14,7 @@ export const createRoleAssignmentContext = (
     productCode,
   },
   insertFormData: {
-    fn: API.insertData,
+    fn: CRUD2API.insertFormData,
     args: { moduleType, productType, refID },
   },
   checkFormDataExist: {
@@ -22,19 +22,19 @@ export const createRoleAssignmentContext = (
     args: { moduleType, productType, refID },
   },
   deleteFormData: {
-    fn: API.deleteData,
+    fn: CRUD2API.deleteFormData,
     args: { moduleType, productType, refID },
   },
   updateFormData: {
-    fn: API.updateData,
+    fn: API.updateUserData,
     args: { moduleType, productType, refID },
   },
   getFormData: {
-    fn: API.getData,
+    fn: API.getUsersData,
     args: { moduleType, productType, refID },
   },
   getGridFormData: {
-    fn: API.getGridData,
+    fn: CRUD2API.getGridFormData,
     args: { moduleType, productType, refID },
   },
   getFormMetaData: {
@@ -42,7 +42,7 @@ export const createRoleAssignmentContext = (
     args: { moduleType, productType, refID },
   },
   getGridFormMetaData: {
-    fn: CRUD2API.getGridFormMetaData,
+    fn: API.getGridFormMetaData,
     args: { moduleType, productType, refID },
   },
 });

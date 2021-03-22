@@ -1,8 +1,8 @@
 import { ClearCacheProvider } from "cache";
-import { DetailsTabView } from "./detailsTabView";
+import { RoleManagement } from "./roleAssignment";
 
 export const UserManagement = () => (
   <ClearCacheProvider>
-    <DetailsTabView />
+    <RoleManagement />
   </ClearCacheProvider>
 );

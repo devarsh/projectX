@@ -408,26 +408,6 @@ const LOSAPI = () => {
     }
   };
 
-  const getUsersListForPendingRoleAssignment = async () => {
-    const { status, data } = await internalFetcher(
-      `./users/employee/options/new`,
-      {
-        body: JSON.stringify({
-          request_data: {},
-        }),
-      }
-    );
-    if (status === "success" && Array.isArray(data?.response_data)) {
-      const newArray = data.response_data.map((one) => ({
-        value: one?.userId,
-        label: one?.userName,
-      }));
-      return newArray;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   const getBranchList = async () => {
     const { status, data } = await internalFetcher(`./users/options/branch`, {
       body: JSON.stringify({
@@ -461,7 +441,26 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
-  const getAllUsersList = async () => {
+  const getAllUnRegisteredUsersList = async () => {
+    const { status, data } = await internalFetcher(
+      `./users/employee/options/new`,
+      {
+        body: JSON.stringify({
+          request_data: {},
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.userID,
+        label: one?.userName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const getAllRegisteredUsersList = async () => {
     const { status, data } = await internalFetcher(
       `./users/employee/options/all`,
       {
@@ -472,7 +471,7 @@ const LOSAPI = () => {
     );
     if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
-        value: one?.userId,
+        value: one?.userID,
         label: one?.userName,
       }));
       return newArray;
@@ -558,10 +557,10 @@ const LOSAPI = () => {
     getBankListForLeadDocumentsForAPICallInterface,
     getLoanAmountForDocumentsForAPICallInterface,
 
-    getUsersListForPendingRoleAssignment,
     getBranchList,
     getRoleList,
-    getAllUsersList,
+    getAllUnRegisteredUsersList,
+    getAllRegisteredUsersList,
     getTeamRoleList,
     getUserListFromTeamRole,
   };
