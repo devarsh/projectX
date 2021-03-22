@@ -6,7 +6,7 @@ import { FormViewEdit } from "pages_los/common/crud2/formViewEdit";
 import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { TeamAssignment } from "../teamAssignment";
-import { Target } from "../target/target";
+import { YearlyTargetGrid } from "../targetManagement";
 
 const actions: ActionTypes[] = [
   {
@@ -84,10 +84,14 @@ export const RoleAssignment = () => {
             }}
           />
         ) : (currentAction?.name ?? "") === "Target" ? (
-          <Target
+          <YearlyTargetGrid
             isDataChangedRef={isMyDataChangedRef}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
+            setEditFormStateFromInitValues={(initialValues) => {
+              const { userID } = initialValues;
+              return { userID };
+            }}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />

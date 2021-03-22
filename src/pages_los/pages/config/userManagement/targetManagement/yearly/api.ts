@@ -30,11 +30,11 @@ export const insertUserData = ({
   }
 };
 
-export const getTargetGridData = async ({
+export const getTargetGridData = ({
   moduleType,
   productType,
   userID,
-}: TargetCRUDTYPE) => {
+}: TargetCRUDTYPE) => async () => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/${productType}/grid/data`,
     {

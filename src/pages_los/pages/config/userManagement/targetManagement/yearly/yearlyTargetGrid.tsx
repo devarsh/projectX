@@ -10,6 +10,7 @@ import { DeleteAction } from "pages_los/common/crud2/delete";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { CRUDContextProvider } from "pages_los/common";
 import { TargetAPICrudProviderGenerator } from "./context";
+import { MonthlyTargetGrid } from "../monthly";
 
 const actions: ActionTypes[] = [
   {
@@ -19,23 +20,33 @@ const actions: ActionTypes[] = [
     alwaysAvailable: true,
   },
   {
-    actionName: "Delete",
+    actionName: "Delete Target",
     actionLabel: "Delete",
     multiple: true,
   },
   {
-    actionName: "Update",
+    actionName: "Update Target",
     actionLabel: "Update",
+    multiple: false,
+  },
+  {
+    actionName: "Monthly",
+    actionLabel: "Monthly Target Details",
     multiple: false,
   },
 ];
 
-export const Target: FC<{
+export const YearlyTargetGrid: FC<{
   isDataChangedRef: any;
   closeDialog?: any;
   serialNo?: string;
   setEditFormStateFromInitValues?: any;
-}> = ({ isDataChangedRef, closeDialog, serialNo }) => {
+}> = ({
+  isDataChangedRef,
+  closeDialog,
+  serialNo,
+  setEditFormStateFromInitValues,
+}) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const isMyDataChangedRef = useRef(false);
@@ -78,13 +89,16 @@ export const Target: FC<{
               isDataChangedRef={isMyDataChangedRef}
               closeDialog={closeMyDialog}
               serialNo={currentAction?.rows[0]?.id}
-              setEditFormStateFromInitValues={(initialValues) => {
-                const { userID } = initialValues;
-                return { userID };
-              }}
+              setEditFormStateFromInitValues={setEditFormStateFromInitValues}
             />
           ) : (currentAction?.name ?? "") === "Delete" ? (
             <DeleteAction
+              serialNo={currentAction?.rows.map((one) => one?.data?.serialNo)}
+              closeDialog={closeMyDialog}
+              isDataChangedRef={isMyDataChangedRef}
+            />
+          ) : (currentAction?.name ?? "") === "Monthly" ? (
+            <MonthlyTargetGrid
               serialNo={currentAction?.rows.map((one) => one?.data?.serialNo)}
               closeDialog={closeMyDialog}
               isDataChangedRef={isMyDataChangedRef}
