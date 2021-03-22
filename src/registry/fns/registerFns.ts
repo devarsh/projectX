@@ -49,6 +49,8 @@ registerFn("getLeadStage", miscSDK.getMiscVal("LEAD_STAGE"));
 registerFn("getNomineeRelation", miscSDK.getMiscVal("NOMINI_RELATION"));
 registerFn("getSMEDepartment", miscSDK.getMiscVal("SME_DEPARTMENT"));
 registerFn("getAcceptancePolicy", miscSDK.getMiscVal("ACCEPT_POLICY"));
+registerFn("getTargetYears", miscSDK.getMiscVal("TARGET_YEARS"));
+registerFn("getTargetMonth", miscSDK.getMiscVal("TARGET_MONTH"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
 registerFn("getBankSubProductType", miscSDK.getBankSubProductType);

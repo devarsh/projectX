@@ -19,7 +19,7 @@ export const RoleManagement = () => {
 
   return (
     <CRUDContextProvider
-      {...createRoleAssignmentContext("users/employee", "role", null, null)}
+      {...createRoleAssignmentContext("users/employee", "role", null)}
     >
       <RoleAssignment />
     </CRUDContextProvider>

@@ -486,7 +486,7 @@ const LOSAPI = () => {
       {
         body: JSON.stringify({
           request_data: {
-            teamDesignationCode: formState?.data?.teamDesignationCode ?? " ",
+            teamDesignationCode: formState?.teamDesignationCode ?? " ",
           },
         }),
       }
@@ -509,14 +509,14 @@ const LOSAPI = () => {
         body: JSON.stringify({
           request_data: {
             teamRole: dependentFields2["userTeamDetails.teamRole"].value ?? " ",
-            branchCode: formState?.data?.branchCode ?? " ",
+            branchCode: formState?.branchCode ?? " ",
           },
         }),
       }
     );
     if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
-        value: one?.userid,
+        value: one?.userID,
         label: one?.username,
       }));
       return newArray;

@@ -5,6 +5,7 @@ import { FormNew } from "pages_los/common/crud2/formNew";
 import { FormViewEdit } from "pages_los/common/crud2/formViewEdit";
 import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
 import { InvalidAction } from "pages_los/common/invalidAction";
+import { TeamAssignment } from "../teamAssignment";
 
 const actions: ActionTypes[] = [
   {
@@ -69,6 +70,16 @@ export const RoleAssignment = () => {
             setEditFormStateFromInitValues={(initialValues) => {
               const { userID } = initialValues;
               return { userID };
+            }}
+          />
+        ) : (currentAction?.name ?? "") === "Team" ? (
+          <TeamAssignment
+            isDataChangedRef={isMyDataChangedRef}
+            closeDialog={closeMyDialog}
+            serialNo={currentAction?.rows[0]?.id}
+            setEditFormStateFromInitValues={(initialValues) => {
+              const { teamDesignationCode, branchCode } = initialValues;
+              return { teamDesignationCode, branchCode };
             }}
           />
         ) : (

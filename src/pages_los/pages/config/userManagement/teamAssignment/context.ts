@@ -1,7 +1,7 @@
 import * as API from "./api";
 import { API as CRUD2API } from "pages_los/common/crud2";
 
-export const createRoleAssignmentContext = (
+export const createTeamAssignmentContext = (
   moduleType,
   productType,
   refID
@@ -12,7 +12,7 @@ export const createRoleAssignmentContext = (
     refID,
   },
   insertFormData: {
-    fn: API.insertUserData,
+    fn: CRUD2API.insertFormData,
     args: { moduleType, productType, refID },
   },
   checkFormDataExist: {
@@ -31,12 +31,12 @@ export const createRoleAssignmentContext = (
     fn: API.getUsersData,
     args: { moduleType, productType, refID },
   },
-  getGridFormData: {
-    fn: CRUD2API.getGridFormData,
-    args: { moduleType, productType, refID },
-  },
   getFormMetaData: {
     fn: CRUD2API.getFormMetaData,
+    args: { moduleType, productType, refID },
+  },
+  getGridFormData: {
+    fn: API.getGridFormData,
     args: { moduleType, productType, refID },
   },
   getGridFormMetaData: {
