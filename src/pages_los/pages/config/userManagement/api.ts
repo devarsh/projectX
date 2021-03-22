@@ -95,7 +95,8 @@ export const deleteData = ({
   moduleType,
   productType,
   refID,
-}: crudType) => async (serialNo: any) => {
+}: crudType) => async (serialNo: any, formState: any) => {
+  console.log(formState);
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/${productType}/data/delete`,
     {

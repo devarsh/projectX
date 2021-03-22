@@ -509,8 +509,7 @@ const LOSAPI = () => {
       {
         body: JSON.stringify({
           request_data: {
-            teamRole:
-              dependentFields2["userBranchRoleMapping.teamRole"].value ?? " ",
+            teamRole: dependentFields2["userTeamDetails.teamRole"].value ?? " ",
             branchCode: formState?.data?.branchCode ?? " ",
           },
         }),
