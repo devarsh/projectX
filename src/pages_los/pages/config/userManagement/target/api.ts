@@ -1,4 +1,5 @@
 import { LOSSDK } from "registry/fns/los";
+import { YearlyTargetGridMetaData } from "./yearlyTargetGridMetadata";
 
 export interface TargetCRUDTYPE {
   moduleType: string;
@@ -7,7 +8,29 @@ export interface TargetCRUDTYPE {
   serialNo?: string;
 }
 
-export const listYearlyTarget = async ({
+export const insertUserData = ({
+  moduleType,
+  productType,
+}: TargetCRUDTYPE) => async (formData: any) => {
+  const { data, status } = await LOSSDK.internalFetcher(
+    `./${moduleType}/${productType}/data/post`,
+    {
+      body: JSON.stringify({
+        request_data: {
+          ...formData,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const getTargetGridData = async ({
   moduleType,
   productType,
   userID,
@@ -17,7 +40,7 @@ export const listYearlyTarget = async ({
     {
       body: JSON.stringify({
         request_data: {
-          userId: userID,
+          userID: userID,
         },
       }),
     }
@@ -29,26 +52,7 @@ export const listYearlyTarget = async ({
   }
 };
 
-export const getYearlyTargetGridMetaData = async ({
-  moduleType,
-  productType,
-}: TargetCRUDTYPE) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    `./${moduleType}/${productType}/grid/metadata`,
-    {
-      body: JSON.stringify({
-        request_data: {},
-      }),
-    }
-  );
-  if (status === "success") {
-    return data?.response_data;
-  } else {
-    throw data?.error_data;
-  }
-};
-
-export const deleteYearlyTarget = ({
+export const deleteTarget = ({
   moduleType,
   productType,
 }: TargetCRUDTYPE) => async (serialNo: any) => {
@@ -69,3 +73,5 @@ export const deleteYearlyTarget = ({
     throw data?.error_data;
   }
 };
+
+export const getGridFormMetaData = () => async () => YearlyTargetGridMetaData;

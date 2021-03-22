@@ -6,6 +6,7 @@ import { FormViewEdit } from "pages_los/common/crud2/formViewEdit";
 import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { TeamAssignment } from "../teamAssignment";
+import { Target } from "../target/target";
 
 const actions: ActionTypes[] = [
   {
@@ -81,6 +82,12 @@ export const RoleAssignment = () => {
               const { teamDesignationCode, branchCode } = initialValues;
               return { teamDesignationCode, branchCode };
             }}
+          />
+        ) : (currentAction?.name ?? "") === "Target" ? (
+          <Target
+            isDataChangedRef={isMyDataChangedRef}
+            closeDialog={closeMyDialog}
+            serialNo={currentAction?.rows[0]?.id}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
