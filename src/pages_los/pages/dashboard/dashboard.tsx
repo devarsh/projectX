@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -16,6 +16,7 @@ import {
   HealthInsuranceIcon,
   LiabilityInsuranceIcon,
 } from "assets/icons/productIcons";
+import { AuthContext } from "auth";
 import { useStyles } from "./style";
 import { WelcomeText1, WelcomeText2, CardTitle, CardValue } from "./variants";
 
@@ -157,12 +158,17 @@ const DashLet = () => {
 
 export const Dashboard = () => {
   const classes = useStyles();
+  const authController = useContext(AuthContext);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper className={classes.paper}>
-          <WelcomeText1>Welcome Employee,</WelcomeText1>
-          <WelcomeText2>This is your Ratnaafin account.</WelcomeText2>
+          <WelcomeText1>
+            Welcome{" "}
+            {`${authController?.authState?.user?.firstName ?? ""} ${
+              authController?.authState?.user?.lastName
+            }`}
+          </WelcomeText1>
         </Paper>
       </Grid>
 
