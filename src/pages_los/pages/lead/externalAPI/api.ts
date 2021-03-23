@@ -20,23 +20,42 @@ export const getAPIStatusGridData = async ({ refID }) => {
 };
 
 export const documentUploadInitiate = async (
-  formState,
-  value: any,
+  docType,
+  formData: any,
   refID,
   moduleType
 ) => {
   //https://digix.aiplsolution.in/ratnaafin/los/lead/external/bankupload/initiate
   const { data, status } = await LOSSDK.internalFetcher(
-    `./${moduleType}/external/${formState}upload/initiate`,
+    `./${moduleType}/external/${docType}upload/initiate`,
     {
       body: JSON.stringify({
         request_data: {
           refID: refID,
-          serialNo: value?.current?.management ?? 1,
-          ...value?.current,
+          serialNo: formData?.management ?? 1,
+          ...formData,
         },
         channel: "W",
       }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const documentUploadReinitiate = async (
+  docType,
+  formData: any,
+  moduleType
+) => {
+  //https://digix.aiplsolution.in/ratnaafin/los/lead/external/bankupload/initiate
+  const { data, status } = await LOSSDK.internalFetcher(
+    `./${moduleType}/external/${docType}upload/initiate`,
+    {
+      body: formData, //JSON
     }
   );
   if (status === "success") {
