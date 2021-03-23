@@ -4,8 +4,9 @@ import { queryClient, ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { APIGrid } from "./apiGrid";
-import { APIInterface } from "./apiInterface";
+import { APIInterfaceWrapper } from "./apiInterface";
 import { generateExternalAPIContext, ExternalAPIProvider } from "./context";
+import { ReInitiateExternalAPI } from "./reInitiate";
 
 const actions: ActionTypes[] = [
   {
@@ -14,15 +15,14 @@ const actions: ActionTypes[] = [
     multiple: undefined,
     alwaysAvailable: true,
   },
-
   {
     actionName: "reInitiate",
     actionLabel: "Re-Initiate",
-    multiple: true,
-    shouldExclude: (rows) => {
+    multiple: false,
+    shouldExclude: (rows: any) => {
       let exclude = false;
       for (let i = 0; i < rows.length; i++) {
-        if (rows[i].data?.status !== "ERROR") {
+        if (["ERROR", "FAILED"].indexOf(rows[i].data?.status) < 0) {
           exclude = true;
           break;
         }
@@ -71,14 +71,20 @@ export const ExternalAPI = ({ refID, moduleType }) => {
         }
       >
         {(currentAction?.name ?? "") === "perfiosUpload" ? (
-          <APIInterface
+          <APIInterfaceWrapper
             refID={refID}
             moduleType={moduleType}
             closeDialog={closeMyDialog}
             isDataChangedRef={isMyDataChangedRef}
           />
         ) : (currentAction?.name ?? "") === "reInitiate" ? (
-          "hiiii"
+          <ReInitiateExternalAPI
+            refID={refID}
+            moduleType={moduleType}
+            closeDialog={closeMyDialog}
+            row={currentAction?.rows[0] ?? undefined}
+            isDataChangedRef={isMyDataChangedRef}
+          />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
         )}
