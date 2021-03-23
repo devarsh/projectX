@@ -4,43 +4,43 @@ import { API as CRUD2API } from "pages_los/common/crud2";
 export const TargetAPICrudProviderGenerator = (
   moduleType: any,
   productType: any,
-  userID?: any
+  serialNo?: any
 ) => ({
   context: {
     moduleType,
     productType,
-    userID,
+    serialNo,
   },
   insertFormData: {
     fn: CRUD2API.insertFormData,
-    args: { moduleType, productType, userID },
+    args: { moduleType, productType, serialNo },
   },
   checkFormDataExist: {
     fn: CRUD2API.checkFormDataExist,
-    args: { moduleType, productType, userID },
+    args: { moduleType, productType, serialNo },
   },
   deleteFormData: {
-    fn: API.deleteTarget,
-    args: { moduleType, productType, userID },
+    fn: CRUD2API.deleteFormData,
+    args: { moduleType, productType, serialNo },
   },
   updateFormData: {
-    fn: API.deleteTarget,
-    args: { moduleType, productType, userID },
+    fn: API.updateMonthlyTargetData,
+    args: { moduleType, productType, serialNo },
   },
   getFormMetaData: {
     fn: CRUD2API.getFormMetaData,
-    args: { moduleType, productType, userID },
+    args: { moduleType, productType, serialNo },
   },
   getFormData: {
     fn: API.getTargetGridData,
-    args: { moduleType, productType, userID },
+    args: { moduleType, productType, serialNo },
   },
   getGridFormMetaData: {
     fn: API.getGridFormMetaData,
-    args: { moduleType, productType, userID },
+    args: { moduleType, productType, serialNo },
   },
   getGridFormData: {
     fn: API.getTargetGridData,
-    args: { moduleType, productType, userID },
+    args: { moduleType, productType, serialNo },
   },
 });

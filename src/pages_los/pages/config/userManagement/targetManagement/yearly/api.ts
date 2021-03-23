@@ -11,12 +11,14 @@ export interface TargetCRUDTYPE {
 export const insertUserData = ({
   moduleType,
   productType,
+  userID,
 }: TargetCRUDTYPE) => async (formData: any) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/${productType}/data/post`,
     {
       body: JSON.stringify({
         request_data: {
+          userID: userID,
           ...formData,
         },
         channel: "W",
@@ -62,6 +64,31 @@ export const deleteTarget = ({
       body: JSON.stringify({
         request_data: {
           serialNo: serialNo,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const updateYearlyTargetData = ({
+  moduleType,
+  productType,
+  userID,
+}: TargetCRUDTYPE) => async (formData: any, serialNo?: any) => {
+  const { data, status } = await LOSSDK.internalFetcher(
+    `./${moduleType}/${productType}/data/put`,
+    {
+      body: JSON.stringify({
+        request_data: {
+          userID: userID,
+          serialNo: serialNo,
+          ...formData,
         },
         channel: "W",
       }),
