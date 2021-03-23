@@ -87,7 +87,7 @@ export const RoleAssignment = () => {
           <YearlyTargetGrid
             isDataChangedRef={isMyDataChangedRef}
             closeDialog={closeMyDialog}
-            serialNo={currentAction?.rows[0]?.id}
+            userID={currentAction?.rows[0]?.id}
             setEditFormStateFromInitValues={(initialValues) => {
               const { userID } = initialValues;
               return { userID };

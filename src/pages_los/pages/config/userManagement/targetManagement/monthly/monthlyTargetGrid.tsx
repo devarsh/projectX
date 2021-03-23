@@ -4,34 +4,17 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
-import { FormNew } from "pages_los/common/crud2/formNew";
 import { FormViewEdit } from "pages_los/common/crud2/formViewEdit";
-import { DeleteAction } from "pages_los/common/crud2/delete";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { CRUDContextProvider } from "pages_los/common";
 import { TargetAPICrudProviderGenerator } from "./context";
 
 const actions: ActionTypes[] = [
   {
-    actionName: "Add",
-    actionLabel: "Add Yearly Target",
-    multiple: undefined,
-    alwaysAvailable: true,
-  },
-  {
-    actionName: "Delete Target",
-    actionLabel: "Delete",
-    multiple: true,
-  },
-  {
-    actionName: "Update Target",
-    actionLabel: "Update",
+    actionName: "View",
+    actionLabel: "Update Monthly Target",
     multiple: false,
-  },
-  {
-    actionName: "Monthly",
-    actionLabel: "Monthly Target Details",
-    multiple: false,
+    rowDoubleClick: true,
   },
 ];
 
@@ -72,25 +55,13 @@ export const MonthlyTargetGrid: FC<{
           setAction={setCurrentAction}
         />
         <Dialog open={Boolean(currentAction)} maxWidth="xl">
-          {(currentAction?.name ?? "") === "Add" ? (
-            <FormNew
-              successAction={closeMyDialog}
-              cancelAction={closeMyDialog}
-              isDataChangedRef={isMyDataChangedRef}
-            />
-          ) : (currentAction?.name ?? "") === "View" ? (
+          {(currentAction?.name ?? "") === "View" ? (
             <FormViewEdit
               isDataChangedRef={isMyDataChangedRef}
               closeDialog={closeMyDialog}
-              serialNo={currentAction?.rows[0]?.id}
+              serialNo={currentAction?.rows[0]?.id} //lineNO
             />
-          ) : (currentAction?.name ?? "") === "Delete" ? (
-            <DeleteAction
-              serialNo={currentAction?.rows.map((one) => one?.data?.serialNo)}
-              closeDialog={closeMyDialog}
-              isDataChangedRef={isMyDataChangedRef}
-            />
-          ) : (currentAction?.name ?? "") === "Monthly" ? null : (
+          ) : (
             <InvalidAction closeDialog={closeMyDialog} />
           )}
         </Dialog>

@@ -14,6 +14,22 @@ const actions: ActionTypes[] = [
     multiple: undefined,
     alwaysAvailable: true,
   },
+
+  {
+    actionName: "reInitiate",
+    actionLabel: "Re-Initiate",
+    multiple: true,
+    shouldExclude: (rows) => {
+      let exclude = false;
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].data?.status !== "ERROR") {
+          exclude = true;
+          break;
+        }
+      }
+      return exclude;
+    },
+  },
 ];
 
 export const ExternalAPI = ({ refID, moduleType }) => {
@@ -36,6 +52,7 @@ export const ExternalAPI = ({ refID, moduleType }) => {
       });
     };
   }, [removeCache, moduleType, refID]);
+
   return (
     <ExternalAPIProvider {...generateExternalAPIContext({ refID, moduleType })}>
       <APIGrid
@@ -60,6 +77,8 @@ export const ExternalAPI = ({ refID, moduleType }) => {
             closeDialog={closeMyDialog}
             isDataChangedRef={isMyDataChangedRef}
           />
+        ) : (currentAction?.name ?? "") === "reInitiate" ? (
+          "hiiii"
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
         )}
