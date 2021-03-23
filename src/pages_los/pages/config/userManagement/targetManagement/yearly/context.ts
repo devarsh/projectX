@@ -12,7 +12,7 @@ export const TargetAPICrudProviderGenerator = (
     userID,
   },
   insertFormData: {
-    fn: CRUD2API.insertFormData,
+    fn: API.insertUserData,
     args: { moduleType, productType, userID },
   },
   checkFormDataExist: {
@@ -24,7 +24,7 @@ export const TargetAPICrudProviderGenerator = (
     args: { moduleType, productType, userID },
   },
   updateFormData: {
-    fn: API.deleteTarget,
+    fn: API.updateYearlyTargetData,
     args: { moduleType, productType, userID },
   },
   getFormMetaData: {
@@ -32,7 +32,7 @@ export const TargetAPICrudProviderGenerator = (
     args: { moduleType, productType, userID },
   },
   getFormData: {
-    fn: API.getTargetGridData,
+    fn: CRUD2API.getFormData,
     args: { moduleType, productType, userID },
   },
   getGridFormMetaData: {
