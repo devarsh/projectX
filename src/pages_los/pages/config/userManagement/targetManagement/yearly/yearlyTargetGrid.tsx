@@ -20,14 +20,15 @@ const actions: ActionTypes[] = [
     alwaysAvailable: true,
   },
   {
-    actionName: "Delete Target",
-    actionLabel: "Delete",
+    actionName: "Delete",
+    actionLabel: "Delete Target",
     multiple: true,
   },
   {
-    actionName: "Update Target",
-    actionLabel: "Update",
+    actionName: "View",
+    actionLabel: "Update Target",
     multiple: false,
+    rowDoubleClick: true,
   },
   {
     actionName: "Monthly",
@@ -39,12 +40,12 @@ const actions: ActionTypes[] = [
 export const YearlyTargetGrid: FC<{
   isDataChangedRef: any;
   closeDialog?: any;
-  serialNo?: string;
+  userID?: string;
   setEditFormStateFromInitValues?: any;
 }> = ({
   isDataChangedRef,
   closeDialog,
-  serialNo,
+  userID,
   setEditFormStateFromInitValues,
 }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
@@ -58,6 +59,7 @@ export const YearlyTargetGrid: FC<{
       isMyDataChangedRef.current = false;
     }
   };
+
   return (
     <Fragment>
       <Box display="flex">
@@ -68,7 +70,7 @@ export const YearlyTargetGrid: FC<{
         {...TargetAPICrudProviderGenerator(
           "users/employee",
           "yearlyTarget",
-          serialNo
+          userID
         )}
       >
         <MyGridWrapper
@@ -77,7 +79,11 @@ export const YearlyTargetGrid: FC<{
           actions={actions}
           setAction={setCurrentAction}
         />
-        <Dialog open={Boolean(currentAction)} maxWidth="xl">
+        <Dialog
+          open={Boolean(currentAction)}
+          maxWidth="xl"
+          PaperProps={{ style: { width: "100%", height: "100%" } }}
+        >
           {(currentAction?.name ?? "") === "Add" ? (
             <FormNew
               successAction={closeMyDialog}
@@ -99,7 +105,7 @@ export const YearlyTargetGrid: FC<{
             />
           ) : (currentAction?.name ?? "") === "Monthly" ? (
             <MonthlyTargetGrid
-              serialNo={currentAction?.rows.map((one) => one?.data?.serialNo)}
+              serialNo={currentAction?.rows[0]?.id}
               closeDialog={closeMyDialog}
               isDataChangedRef={isMyDataChangedRef}
             />

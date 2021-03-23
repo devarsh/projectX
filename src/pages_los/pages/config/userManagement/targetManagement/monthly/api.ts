@@ -1,46 +1,23 @@
 import { LOSSDK } from "registry/fns/los";
 import { MonthlyTargetGridMetadata } from "./monthlyTargetGridMetadata";
 
-export interface TargetCRUDTYPE {
+export interface MonthlyTargetCRUDTYPE {
   moduleType: string;
   productType: string;
-  userID?: string;
   serialNo?: string;
 }
-
-export const insertUserData = ({
-  moduleType,
-  productType,
-}: TargetCRUDTYPE) => async (formData: any) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    `./${moduleType}/${productType}/data/post`,
-    {
-      body: JSON.stringify({
-        request_data: {
-          ...formData,
-        },
-        channel: "W",
-      }),
-    }
-  );
-  if (status === "success") {
-    return data?.response_data;
-  } else {
-    throw data?.error_data;
-  }
-};
 
 export const getTargetGridData = ({
   moduleType,
   productType,
-  userID,
-}: TargetCRUDTYPE) => async () => {
+  serialNo,
+}: MonthlyTargetCRUDTYPE) => async () => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/${productType}/grid/data`,
     {
       body: JSON.stringify({
         request_data: {
-          userID: userID,
+          serialNo: serialNo,
         },
       }),
     }
@@ -52,16 +29,41 @@ export const getTargetGridData = ({
   }
 };
 
-export const deleteTarget = ({
+export const getTargetFormData = ({
   moduleType,
   productType,
-}: TargetCRUDTYPE) => async (serialNo: any) => {
+  serialNo,
+}: MonthlyTargetCRUDTYPE) => async () => {
   const { data, status } = await LOSSDK.internalFetcher(
-    `./${moduleType}/${productType}/data/delete`,
+    `./${moduleType}/${productType}/grid/data`,
     {
       body: JSON.stringify({
         request_data: {
           serialNo: serialNo,
+        },
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const updateMonthlyTargetData = ({
+  moduleType,
+  productType,
+  serialNo,
+}: MonthlyTargetCRUDTYPE) => async (formData: any, lineNo?: any) => {
+  const { data, status } = await LOSSDK.internalFetcher(
+    `./${moduleType}/${productType}/data/put`,
+    {
+      body: JSON.stringify({
+        request_data: {
+          serialNo: serialNo,
+          lineNo: lineNo,
+          ...formData,
         },
         channel: "W",
       }),
