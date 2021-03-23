@@ -12,15 +12,27 @@ export const UsernameField = ({
 }) => {
   return (
     <Fragment>
-      <h2>Login</h2>
-      <div className="text">
+      <h2>
         {loginType === "employee"
-          ? "Login with your registere userID/Mobile No"
+          ? "Employee Login"
+          : loginType === "customer"
+          ? "Customer Login"
+          : loginType === "partner"
+          ? "Partner Login"
+          : "ERRR!!"}
+      </h2>
+      <div className="text">
+        {["employee", "partner"].indexOf(loginType) >= 0
+          ? "Login with your registere userID"
           : "Login with your registered Mobile Number"}
       </div>
       <div className={classes.formWrap}>
         <TextField
-          label={loginType === "employee" ? "UserID" : "Mobile No"}
+          label={
+            ["employee", "partner"].indexOf(loginType) >= 0
+              ? "UserID"
+              : "Mobile No"
+          }
           fullWidth
           type={loginType === "customer" ? "number" : "email"}
           className="mobileNumber"

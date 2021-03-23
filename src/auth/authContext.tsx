@@ -7,8 +7,8 @@ import {
 } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
-import { AuthSDK } from "registry/fns/auth";
 import { LOSSDK } from "registry/fns/los";
+import * as API from "./api";
 
 const inititalState: AuthStateType = {
   token: "",
@@ -58,7 +58,6 @@ export const AuthProvider = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-
   //Cannot add location.pathName
   /*eslint-disable react-hooks/exhaustive-deps*/
   const login = useCallback(
@@ -70,7 +69,17 @@ export const AuthProvider = ({ children }) => {
       LOSSDK.setToken(payload.token);
       localStorage.setItem("authDetails", JSON.stringify(payload));
       if (!Boolean(stopNavigation)) {
-        navigate(location.pathname);
+        if (
+          [
+            "/los/auth/login/customer",
+            "/los/auth/login/employee",
+            "/los/auth/login/partner",
+          ].indexOf(location.pathname) >= 0
+        ) {
+          navigate("/los");
+        } else {
+          navigate(location.pathname);
+        }
       }
     },
     [dispatch, navigate]
@@ -82,7 +91,17 @@ export const AuthProvider = ({ children }) => {
       payload: {},
     });
     LOSSDK.removeToken();
-    navigate("/los");
+    if (
+      [
+        "/los/auth/login/customer",
+        "/los/auth/login/employee",
+        "/los/auth/login/partner",
+      ].indexOf(location.pathname) >= 0
+    ) {
+      navigate(location.pathname);
+    } else {
+      navigate("/los/auth/login/customer");
+    }
   }, [dispatch, navigate]);
 
   const isLoggedIn = () => {
@@ -104,7 +123,7 @@ export const AuthProvider = ({ children }) => {
         Boolean(localStorageAuthState?.token ?? "") &&
         Boolean(localStorageAuthState?.user.type ?? "")
       ) {
-        AuthSDK.verifyToken(
+        API.verifyToken(
           localStorageAuthState.user.type,
           localStorageAuthState.token
         ).then((result) => {

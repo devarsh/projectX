@@ -1,5 +1,5 @@
 export function PV(rate, periods, payment, future, type) {
-  var type = typeof type === "undefined" ? 0 : type;
+  type = typeof type === "undefined" ? 0 : type;
   rate = Number(rate);
   periods = Number(periods);
 

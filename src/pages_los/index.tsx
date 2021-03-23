@@ -69,6 +69,7 @@ const EntryPoint = () => (
   <Fragment>
     <AuthProvider>
       <Routes>
+        <Route path="/auth/login/:type" element={<AuthLoginController />} />
         <Route
           path="/*"
           element={
@@ -77,7 +78,6 @@ const EntryPoint = () => (
             </ProtectedRoutes>
           }
         />
-        <Route path="/auth/login/:type" element={<AuthLoginController />} />
       </Routes>
     </AuthProvider>
   </Fragment>

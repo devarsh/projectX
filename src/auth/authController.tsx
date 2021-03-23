@@ -1,12 +1,12 @@
-import { useReducer, useContext } from "react";
+import { useReducer, useContext, useEffect, useCallback } from "react";
 import Box from "@material-ui/core/Box";
-import { AuthSDK } from "registry/fns/auth";
 import { useParams, useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
 import { useStyles } from "./style";
 import { UsernameField } from "./username";
 import { PasswordField } from "./password";
 import { AuthContext } from "./authContext";
+import * as API from "./api";
 
 const inititalState = {
   username: "",
@@ -64,16 +64,14 @@ export const AuthLoginController = () => {
   const [loginState, dispath] = useReducer(reducer, inititalState);
   const loginType = params["type"];
 
-  //redirect the user to LOS if already logged in
-  if (authContext?.isLoggedIn()) {
-    setTimeout(() => navigate("/los"), 1);
-    return null;
-  }
-
-  if (["customer", "employee"].indexOf(loginType) < 0) {
-    setTimeout(() => navigate("/crm", { replace: true }), 1);
-    return null;
-  }
+  useEffect(() => {
+    if (["customer", "employee", "partner"].indexOf(loginType) < 0) {
+      navigate("/crm", { replace: true });
+    }
+    if (authContext?.isLoggedIn()) {
+      navigate("/los");
+    }
+  }, []);
 
   const verifyUsername = async () => {
     if (!Boolean(loginState.username)) {
@@ -85,10 +83,7 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititateUserNameVerification" });
     try {
-      const result = await AuthSDK.veirfyUsername(
-        loginState.username,
-        loginType
-      );
+      const result = await API.veirfyUsername(loginState.username, loginType);
       if (result.status === "success") {
         dispath({
           type: "usernameVerificationSuccessful",
@@ -122,7 +117,7 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititatePasswordVerification" });
     try {
-      const result = await AuthSDK.verifyPasswordAndLogin(
+      const result = await API.verifyPasswordAndLogin(
         loginState.transactionID,
         loginState.username,
         loginState.password,
@@ -149,18 +144,24 @@ export const AuthLoginController = () => {
     }
   };
 
-  const handleUsername = (e) => {
-    dispath({
-      type: "setUsername",
-      payload: { data: e.target.value },
-    });
-  };
-  const handlePassword = (e) => {
-    dispath({
-      type: "setPassword",
-      payload: { data: e.target.value },
-    });
-  };
+  const handleUsername = useCallback(
+    (e) => {
+      dispath({
+        type: "setUsername",
+        payload: { data: e.target.value },
+      });
+    },
+    [dispath]
+  );
+  const handlePassword = useCallback(
+    (e) => {
+      dispath({
+        type: "setPassword",
+        payload: { data: e.target.value },
+      });
+    },
+    [dispath]
+  );
 
   return (
     <Box display="flex" width={1} className={classes.wrapper}>
@@ -180,6 +181,7 @@ export const AuthLoginController = () => {
       >
         {loginState.currentFlow === "username" ? (
           <UsernameField
+            key="username"
             loginType={loginType}
             classes={classes}
             loginState={loginState}
@@ -188,6 +190,7 @@ export const AuthLoginController = () => {
           />
         ) : (
           <PasswordField
+            key="password"
             loginType={loginType}
             classes={classes}
             loginState={loginState}
