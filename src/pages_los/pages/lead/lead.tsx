@@ -1,6 +1,6 @@
 import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { ListingGrid } from "pages_los/common/listingGrid";
+import { ServerGrid } from "pages_los/common/serverGrid";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
@@ -46,7 +46,7 @@ export const Lead = () => {
 
   return (
     <Fragment>
-      <ListingGrid
+      <ServerGrid
         gridCode={gridCode}
         actions={actions}
         setAction={setCurrentAction}

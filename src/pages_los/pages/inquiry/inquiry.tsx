@@ -1,6 +1,6 @@
 import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { ListingGrid } from "pages_los/common/listingGrid";
+import { ServerGrid } from "pages_los/common/serverGrid";
 import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
@@ -22,7 +22,6 @@ export const Inquiry = () => {
   const isDataEditedRef = useRef(false);
   const myGridRef = useRef<any>(null);
   const handleDialogClose = () => {
-    console.log(myGridRef);
     setAction(null);
     if (isDataEditedRef.current) {
       myGridRef?.current?.fetchData?.();
@@ -32,7 +31,7 @@ export const Inquiry = () => {
 
   return (
     <Fragment>
-      <ListingGrid
+      <ServerGrid
         gridCode={gridCode}
         actions={actions}
         setAction={setAction}

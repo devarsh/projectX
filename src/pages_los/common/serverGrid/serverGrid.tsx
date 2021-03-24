@@ -1,27 +1,26 @@
 import { useCallback, useEffect, forwardRef } from "react";
 import DataGrid from "components/dataTable";
-import { LOSSDK } from "registry/fns/los";
 import { useQuery } from "react-query";
 import { queryClient } from "cache";
 import { ActionTypes } from "components/dataTable";
-
-interface ListingGridType {
+import * as API from "./api";
+interface ServerGridType {
   gridCode: any;
   actions?: ActionTypes[];
   setAction: any;
 }
 
-export const ListingGrid = forwardRef<ListingGridType, any>(
+export const ServerGrid = forwardRef<ServerGridType, any>(
   ({ gridCode, actions, setAction }, myRef) => {
     /* eslint-disable react-hooks/exhaustive-deps */
     const getGridColumnFilterData = useCallback(
-      LOSSDK.getGridColumnFilterData(gridCode),
+      API.getGridColumnFilterData(gridCode),
       [gridCode]
     );
     /* eslint-disable react-hooks/exhaustive-deps */
-    const getGridData = useCallback(LOSSDK.getGridData(gridCode), [gridCode]);
+    const getGridData = useCallback(API.getGridData(gridCode), [gridCode]);
     const result = useQuery(["gridMetaData", gridCode], () =>
-      LOSSDK.getGridMetaData(gridCode)
+      API.getGridMetaData(gridCode)
     );
     useEffect(() => {
       return () => {
