@@ -12,7 +12,12 @@ import { Drawer } from "./drawer";
 import { Content } from "./content";
 import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
-import { Inquiry } from "./pages/inquiry";
+import {
+  CrossInquiry,
+  AssignedInquiry,
+  IncomingInquiry,
+  UnmappedInqiry,
+} from "./pages/inquiry";
 import { Lead } from "./pages/lead";
 import { DetailsTabViewBank } from "./pages/config/bank";
 import { UserManagement } from "./pages/config/userManagement";
@@ -20,9 +25,7 @@ import { NewInquiry } from "./pages/newInquiry";
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
-
 import { CAMLOSWrapper } from "./pages/cam";
-//import { Form } from "registry/metaData/test";
 import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
@@ -41,6 +44,7 @@ const DashbordPages = () => {
           <Routes>
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            {/*New Inquiries */}
             <Route
               path="/newInquiry/*"
               element={<NewInquiry key="inquiryx" />}
@@ -49,7 +53,22 @@ const DashbordPages = () => {
               path="/newInquiryQuestion"
               element={<NewInquiry key="question" />}
             />
-            <Route path="/inquiries" element={<Inquiry />} />
+
+            {/* Inquiries */}
+            <Route path="/inquiry/myInquiries" element={<AssignedInquiry />} />
+            <Route
+              path="/inquiry/myCrossInquiries"
+              element={<CrossInquiry />}
+            />
+            <Route
+              path="/inquiry/incomingInquiries"
+              element={<IncomingInquiry />}
+            />
+            <Route
+              path="/inquiry/unmappedInquiries"
+              element={<UnmappedInqiry />}
+            />
+
             <Route path="/leads" element={<Lead />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />

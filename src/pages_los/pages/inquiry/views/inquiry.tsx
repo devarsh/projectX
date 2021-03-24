@@ -1,22 +1,11 @@
 import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ServerGrid } from "pages_los/common/serverGrid";
-import { DetailsTabView } from "./detailsTabView";
-import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
+import { DetailsTabView } from "../detailsTabView";
 
-const actions: ActionTypes[] = [
-  {
-    actionName: "completeView",
-    actionLabel: "360 View",
-    multiple: false,
-    rowDoubleClick: true,
-  },
-];
-
-export const Inquiry = () => {
-  let gridCode = "TRN/001";
+export const Inquiry = ({ gridCode, actions }) => {
   const [action, setAction] = useState<null | any>(null);
   const isDataEditedRef = useRef(false);
   const myGridRef = useRef<any>(null);
@@ -27,7 +16,6 @@ export const Inquiry = () => {
       isDataEditedRef.current = false;
     }
   };
-
   return (
     <Fragment>
       <ServerGrid

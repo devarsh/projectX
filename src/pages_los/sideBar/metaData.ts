@@ -223,8 +223,32 @@ export const metaData: NavBarMetaDataType = {
     {
       label: "Inquiry Management",
       icon: "question",
-      isRouterLink: true,
-      href: "./inquiries",
+      children: [
+        {
+          label: "My Inquiries",
+          href: "./inquiry/myInquiries",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "My Cross Inquiries",
+          href: "./inquiry/myCrossInquiries",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Incoming Inquiries",
+          href: "./inquiry/incomingInquiries",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Unmapped Inquiries",
+          href: "./inquiry/unmappedInquiries",
+          isRouterLink: true,
+          icon: "circle",
+        },
+      ],
     },
     {
       label: "Lead Management",

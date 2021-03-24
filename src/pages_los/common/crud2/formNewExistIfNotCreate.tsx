@@ -18,6 +18,7 @@ import { cacheWrapperKeyGen } from "cache";
 export const FormNewExistsIfNotCreate = ({
   isDataChangedRef,
   successAction,
+  readOnly,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   const { checkFormDataExist } = useContext(CRUDContext);
@@ -66,11 +67,16 @@ export const FormNewExistsIfNotCreate = ({
     <CreateFormConfirmation
       successAction={successAction}
       isDataChangedRef={isDataChangedRef}
+      readOnly={readOnly}
     />
   ) : null;
 };
 
-export const CreateFormConfirmation = ({ successAction, isDataChangedRef }) => {
+export const CreateFormConfirmation = ({
+  successAction,
+  isDataChangedRef,
+  readOnly,
+}) => {
   const [showAsk, setShowAsk] = useState(true);
   const cancleFormSubmit = useCallback(() => {
     setShowAsk(true);
@@ -78,7 +84,9 @@ export const CreateFormConfirmation = ({ successAction, isDataChangedRef }) => {
   return showAsk ? (
     <Fragment>
       <Typography variant="h6">No Data Found</Typography>
-      <Button onClick={() => setShowAsk(false)}>Click Here to Add</Button>
+      {!Boolean(readOnly) ? (
+        <Button onClick={() => setShowAsk(false)}>Click Here to Add</Button>
+      ) : null}
     </Fragment>
   ) : (
     <FormNew

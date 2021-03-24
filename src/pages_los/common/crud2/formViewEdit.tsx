@@ -41,12 +41,14 @@ export const FormViewEdit: FC<{
   defaultView?: "view" | "edit";
   serialNo?: string; //need to find another way to pass it (its a little hardcoded)
   setEditFormStateFromInitValues?: any;
+  readOnly?: boolean;
 }> = ({
   isDataChangedRef,
   closeDialog,
   defaultView = "view",
   serialNo = "1",
   setEditFormStateFromInitValues,
+  readOnly = false,
 }) => {
   const { updateFormData, getFormData, getFormMetaData, context } = useContext(
     CRUDContext
@@ -215,7 +217,7 @@ export const FormViewEdit: FC<{
       disableGroupErrorDetection={false}
       disableGroupExclude={true}
     >
-      <Button onClick={moveToEditMode}>Edit</Button>
+      {!readOnly ? <Button onClick={moveToEditMode}>Edit</Button> : null}
       {typeof closeDialog === "function" ? (
         <Button onClick={closeDialog}>Cancel</Button>
       ) : null}
