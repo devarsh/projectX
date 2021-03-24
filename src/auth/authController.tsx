@@ -125,6 +125,7 @@ export const AuthLoginController = () => {
       );
       if (result.status === "success") {
         dispath({ type: "passwordVerificationSuccessful" });
+        console.log(result.data);
         authContext?.login(result.data);
       } else {
         dispath({

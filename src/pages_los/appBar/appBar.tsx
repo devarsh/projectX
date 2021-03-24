@@ -68,7 +68,8 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
         >
           LOS: Loan Origination System
           <Typography variant="caption" display="block" color="secondary">
-            Branch: {authController?.authState?.user?.branch ?? ""}
+            Branch: {authController?.authState?.user?.branchCode ?? ""}-
+            {authController?.authState?.user?.branch ?? ""}
           </Typography>
           <Typography
             variant="caption"

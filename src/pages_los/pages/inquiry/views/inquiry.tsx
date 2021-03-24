@@ -1,9 +1,13 @@
 import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { ServerGrid } from "pages_los/common/serverGrid";
+import {
+  ServerGrid,
+  ServerGridContextProvider,
+} from "pages_los/common/serverGrid";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
 import { DetailsTabView } from "../detailsTabView";
+import { serverGridContextGenerator } from "./context";
 
 export const Inquiry = ({ gridCode, actions }) => {
   const [action, setAction] = useState<null | any>(null);
@@ -18,12 +22,14 @@ export const Inquiry = ({ gridCode, actions }) => {
   };
   return (
     <Fragment>
-      <ServerGrid
-        gridCode={gridCode}
-        actions={actions}
-        setAction={setAction}
-        ref={myGridRef}
-      />
+      <ServerGridContextProvider {...serverGridContextGenerator(gridCode)}>
+        <ServerGrid
+          gridCode={gridCode}
+          actions={actions}
+          setAction={setAction}
+          ref={myGridRef}
+        />
+      </ServerGridContextProvider>
       <Dialog
         fullScreen
         open={action !== null}

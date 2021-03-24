@@ -1,9 +1,14 @@
-import { useCallback, useEffect, forwardRef } from "react";
+import { useCallback, useEffect, forwardRef, useContext } from "react";
 import DataGrid from "components/dataTable";
 import { useQuery } from "react-query";
 import { queryClient } from "cache";
 import { ActionTypes } from "components/dataTable";
-import * as API from "./api";
+import {
+  ServerGridContext,
+  ServerGridContextProvider,
+  serverGridContextGenerator,
+} from "./context";
+
 interface ServerGridType {
   gridCode: any;
   actions?: ActionTypes[];
@@ -12,15 +17,22 @@ interface ServerGridType {
 
 export const ServerGrid = forwardRef<ServerGridType, any>(
   ({ gridCode, actions, setAction }, myRef) => {
+    const {
+      getGridColumnFilterData,
+      getGridData,
+      getGridMetaData,
+    } = useContext(ServerGridContext);
     /* eslint-disable react-hooks/exhaustive-deps */
-    const getGridColumnFilterData = useCallback(
-      API.getGridColumnFilterData(gridCode),
+    const getGridColumnFilterDataFn = useCallback(
+      getGridColumnFilterData.fn(getGridColumnFilterData.args),
       [gridCode]
     );
     /* eslint-disable react-hooks/exhaustive-deps */
-    const getGridData = useCallback(API.getGridData(gridCode), [gridCode]);
+    const getGridDataFn = useCallback(getGridData.fn(getGridData.args), [
+      gridCode,
+    ]);
     const result = useQuery(["gridMetaData", gridCode], () =>
-      API.getGridMetaData(gridCode)
+      getGridMetaData.fn(getGridMetaData.args)()
     );
     useEffect(() => {
       return () => {
@@ -46,11 +58,26 @@ export const ServerGrid = forwardRef<ServerGridType, any>(
         key={gridCode}
         metaData={result.data}
         gridCode={gridCode}
-        getGridData={getGridData}
-        getGridColumnFilterData={getGridColumnFilterData}
+        getGridData={getGridDataFn}
+        getGridColumnFilterData={getGridColumnFilterDataFn}
         actions={actions}
         setAction={setAction}
       />
+    );
+  }
+);
+
+export const ServerGridWrapper = forwardRef<ServerGridType, any>(
+  ({ gridCode, actions, setAction }, ref) => {
+    return (
+      <ServerGridContextProvider {...serverGridContextGenerator(gridCode)}>
+        <ServerGrid
+          gridCode={gridCode}
+          actions={actions}
+          setAction={setAction}
+          ref={ref}
+        />
+      </ServerGridContextProvider>
     );
   }
 );

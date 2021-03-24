@@ -19,6 +19,7 @@ const inititalState: AuthStateType = {
     firstName: "",
     lastLogin: "",
     branch: "",
+    branchCode: "",
     type: "",
   },
 };
@@ -41,6 +42,7 @@ const authReducer = (
           firstName: "",
           lastLogin: "",
           branch: "",
+          branchCode: "",
           type: "",
         },
       };

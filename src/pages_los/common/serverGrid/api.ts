@@ -1,6 +1,6 @@
 import { LOSSDK } from "registry/fns/los";
 
-export const getGridColumnFilterData = (gridCode) => async (options) => {
+export const getGridColumnFilterData = ({ gridCode }) => async (options) => {
   /*
     options = {accessor:'column_id',result_type:'getGroups|getRange',filter_conditions:[]}
     */
@@ -19,7 +19,7 @@ export const getGridColumnFilterData = (gridCode) => async (options) => {
   }
 };
 
-export const getGridData = (gridCode) => async (
+export const getGridData = ({ gridCode }) => async (
   fromNo,
   toNo,
   sortBy,
@@ -43,7 +43,7 @@ export const getGridData = (gridCode) => async (
   }
 };
 
-export const getGridMetaData = async (gridCode) => {
+export const getGridMetaData = ({ gridCode }) => async () => {
   const { data, status } = await LOSSDK.internalFetcher("./grid/metaData", {
     body: JSON.stringify({
       request_data: {
