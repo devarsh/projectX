@@ -48,7 +48,9 @@ export const ReInitiateExternalAPI = ({
     isDataChangedRef.current = true;
     closeDialog();
   };
-  console.log(formData, currentMetaData);
+  if (currentMetaData?.form) {
+    currentMetaData.form.formState = { refID: refID };
+  }
   return (
     <Fragment>
       <DialogTitle id="alert-dialog-title">
