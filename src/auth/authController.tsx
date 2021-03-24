@@ -71,7 +71,7 @@ export const AuthLoginController = () => {
     if (authContext?.isLoggedIn()) {
       navigate("/los");
     }
-  }, []);
+  }, [navigate]);
 
   const verifyUsername = async () => {
     if (!Boolean(loginState.username)) {

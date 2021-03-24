@@ -5,7 +5,6 @@ import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
-import Button from "@material-ui/core/Button";
 
 const actions: ActionTypes[] = [
   {

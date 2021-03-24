@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from "react";
+import { forwardRef } from "react";
 import { GridMetaDataType, ActionTypes } from "./types";
 import {
   attachCellComponentsToMetaData,
@@ -21,7 +21,7 @@ interface GridWrapperPropsType {
   setAction: any;
 }
 
-export const GridWrapper = forwardRef<GridMetaDataType, any>(
+export const GridWrapper = forwardRef<GridWrapperPropsType, any>(
   (
     {
       gridCode,
