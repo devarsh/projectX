@@ -35,12 +35,11 @@ export const Lead = () => {
   let gridCode = "TRN/003";
   const [currentAction, setCurrentAction] = useState<null | any>(null);
   const isDataEditedRef = useRef(false);
-  const [gridRefresh, setGridRefresh] = useState(false);
-
+  const myGridRef = useRef<any>(null);
   const handleDialogClose = () => {
     setCurrentAction(null);
     if (isDataEditedRef.current) {
-      setGridRefresh(true);
+      myGridRef?.current?.fetchData?.();
       isDataEditedRef.current = false;
     }
   };
@@ -51,8 +50,7 @@ export const Lead = () => {
         gridCode={gridCode}
         actions={actions}
         setAction={setCurrentAction}
-        gridRefresh={gridRefresh}
-        setGridRefresh={setGridRefresh}
+        ref={myGridRef}
       />
       <Dialog
         fullScreen

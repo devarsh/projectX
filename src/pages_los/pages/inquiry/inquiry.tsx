@@ -5,6 +5,7 @@ import { DetailsTabView } from "./detailsTabView";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
+import Button from "@material-ui/core/Button";
 
 const actions: ActionTypes[] = [
   {
@@ -19,12 +20,12 @@ export const Inquiry = () => {
   let gridCode = "TRN/001";
   const [action, setAction] = useState<null | any>(null);
   const isDataEditedRef = useRef(false);
-  const [gridRefresh, setGridRefresh] = useState(false);
-
+  const myGridRef = useRef<any>(null);
   const handleDialogClose = () => {
+    console.log(myGridRef);
     setAction(null);
     if (isDataEditedRef.current) {
-      setGridRefresh(true);
+      myGridRef?.current?.fetchData?.();
       isDataEditedRef.current = false;
     }
   };
@@ -35,8 +36,7 @@ export const Inquiry = () => {
         gridCode={gridCode}
         actions={actions}
         setAction={setAction}
-        gridRefresh={gridRefresh}
-        setGridRefresh={setGridRefresh}
+        ref={myGridRef}
       />
       <Dialog
         fullScreen
