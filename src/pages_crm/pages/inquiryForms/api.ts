@@ -1,9 +1,9 @@
-import { LOSSDK } from "registry/fns/los";
+import { CRMSDK } from "registry/fns/crm";
 
 export const getInquiryQuestionMetaData = async (state) => {
   const { action, ...others } = state;
   if (action === "crm_inquiry_metaData") {
-    const { data, status } = await LOSSDK.internalFetcher(
+    const { data, status } = await CRMSDK.internalFetcher(
       "./inquiry/main/metaData/new",
       {
         body: JSON.stringify({
@@ -17,7 +17,7 @@ export const getInquiryQuestionMetaData = async (state) => {
       throw data?.error_data;
     }
   } else if (action === "crm_questionnaire_metaData") {
-    const { data, status } = await LOSSDK.internalFetcher(
+    const { data, status } = await CRMSDK.internalFetcher(
       "./inquiry/question/metaData/new",
       {
         body: JSON.stringify({
@@ -35,7 +35,6 @@ export const getInquiryQuestionMetaData = async (state) => {
   }
 };
 
-//This is for react-query
 export const submitInquiryQuestionData = async (
   submitAction?: string,
   formData?: any,
@@ -44,7 +43,7 @@ export const submitInquiryQuestionData = async (
 ) => {
   //rename prodCode to formCode since backend uses prodCode as FormCode
   if (submitAction === "inquiry") {
-    const { data, status } = await LOSSDK.internalFetcher(
+    const { data, status } = await CRMSDK.internalFetcher(
       "./inquiry/main/data/post",
       {
         body: JSON.stringify({
@@ -54,12 +53,12 @@ export const submitInquiryQuestionData = async (
       }
     );
     if (status === "success") {
-      return data?.response_data;
+      return { status, data: data?.response_data };
     } else {
-      throw data?.error_data;
+      return { status, data: data?.response_data };
     }
   } else if (submitAction === "question") {
-    const { data, status } = await LOSSDK.internalFetcher(
+    const { data, status } = await CRMSDK.internalFetcher(
       "./inquiry/question/data/post",
       {
         body: JSON.stringify({
@@ -69,11 +68,11 @@ export const submitInquiryQuestionData = async (
       }
     );
     if (status === "success") {
-      return data?.response_data;
+      return { status, data: data?.response_data };
     } else {
-      throw data?.error_data;
+      return { status, data: data?.response_data };
     }
   } else {
-    throw new Error("Unknown error occured");
+    return { status: "failure", data: "invalid submitAction" };
   }
 };

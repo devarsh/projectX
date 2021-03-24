@@ -1,25 +1,23 @@
+import { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useNavigationFlow } from "../utils/navHelpers";
-import { useStyles } from "./style";
-import ReactSpeedometer from "react-d3-speedometer";
-import { useEffect, useState } from "react";
-import { APISDK } from "registry/fns/sdk";
-import loaderGif from "assets/images/loader.gif";
 import Alert from "@material-ui/lab/Alert";
-
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { useNavigate, useLocation } from "react-router-dom";
+import ReactSpeedometer from "react-d3-speedometer";
+import { useNavigationFlow } from "../utils/navHelpers";
+import { useStyles } from "./style";
+import * as API from "./api";
+import loaderGif from "assets/images/loader.gif";
 
 export const Equifax = () => {
   const classes = useStyles();
@@ -42,7 +40,7 @@ export const Equifax = () => {
     setLoading(true);
     const getEquifaxDetails = async () => {
       try {
-        const result = await APISDK.getHealthCheckScore(refID);
+        const result = await API.getCreditScore(refID);
         if (result.status === "success") {
           setLoading(false);
           let resultData = result?.data?.CIRReportDataLst[0] ?? "N/A";

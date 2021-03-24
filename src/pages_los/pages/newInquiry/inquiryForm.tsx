@@ -20,12 +20,7 @@ const insertFormDataFnWrapper = async ({
   navigationProps,
   refID,
 }: InsertFormDataFnType) => {
-  return API.submitInquiryQuestionData2(
-    "inquiry",
-    data,
-    navigationProps,
-    refID
-  );
+  return API.submitInquiryQuestionData("inquiry", data, navigationProps, refID);
 };
 
 export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {

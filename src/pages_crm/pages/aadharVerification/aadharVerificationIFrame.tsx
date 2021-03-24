@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useReducer } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
-import { CRMSDK } from "registry/fns/crm";
+import * as API from "./api";
 import { useNavigationFlow } from "../utils/navHelpers";
 
 const initialState = {
@@ -88,7 +88,7 @@ export const AadharVerification = () => {
       type: "startAadharRequest",
     });
     try {
-      const result = await CRMSDK.initiateAadharValidation(refID);
+      const result = await API.initiateAadharValidation(refID);
       if (result.status === "success") {
         const { transactionId, url } = result.data;
         dispatch({
@@ -121,7 +121,7 @@ export const AadharVerification = () => {
 
   const startPooling = (aadharTransactionID) => {
     intervalRef.current = setInterval(() => {
-      CRMSDK.getAadharRequestStatus(aadharTransactionID).then((resp) => {
+      API.getAadharRequestStatus(aadharTransactionID).then((resp) => {
         if (resp.status === "success") {
           if (resp.data.requestStatus === "failed") {
             dispatch({
