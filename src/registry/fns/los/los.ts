@@ -66,23 +66,6 @@ const LOSAPI = () => {
 
   //***END of docs API */
 
-  const moveInquiryToLead = async (refID: string, formData: any) => {
-    const { data, status } = await internalFetcher(`./inquiry/moveToLead`, {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-          ...formData,
-        },
-        channel: "W",
-      }),
-    });
-    if (status === "success") {
-      return data?.response_data;
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   //We will use theme for lead and inquiry alike - for now only enabled for lead
   //  moduleType - lead/inquiry
   // productType - products within this module
@@ -482,7 +465,7 @@ const LOSAPI = () => {
     //Inquiry & Lead Stages
     getLeadSubStageCode,
     getLeadEmploymentType,
-    moveInquiryToLead,
+
     getPropertyTypeCAM,
 
     //documents

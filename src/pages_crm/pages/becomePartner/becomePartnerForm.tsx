@@ -1,9 +1,9 @@
 import { memo, Fragment, FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { APISDK } from "registry/fns/sdk";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { InitialValuesType } from "packages/form";
 import { becomePartnerMetaData } from "./metaData";
+import * as API from "./api";
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
@@ -19,7 +19,7 @@ const BecomePartnerForm: FC<BecomePartnerFormProps> = ({
   const navigate = useNavigate();
 
   const onSubmitHandler = async (values, _, submitEnd) => {
-    const data = await APISDK.submitBecomePartnerData(values);
+    const data = await API.submitBecomePartnerData(values);
     if (data.status === "success") {
       submitEnd(true);
       navigate("./thankyou");

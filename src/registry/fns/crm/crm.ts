@@ -372,6 +372,8 @@ const CRMAPI = () => {
 
   return {
     inititateAPI,
+    internalFetcher,
+
     getInquiryQuestionMetaData,
     submitInquiryQuestionData,
     submitInquiryQuestionData2,

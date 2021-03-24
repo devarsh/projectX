@@ -7,8 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
-import { APISDK } from "registry/fns/sdk";
+import * as API from "./api";
 import { useStyles } from "./style";
 
 interface AssignLeadType {
@@ -22,7 +21,7 @@ const assignLead = async ({
   employeeID,
   inquiryStatus,
 }: AssignLeadType) => {
-  return await APISDK.inquiryAssignToLead(refID, employeeID, inquiryStatus);
+  return await API.inquiryAssignToLead(refID, employeeID, inquiryStatus);
 };
 
 export const AssignInquiry = ({ refID }) => {
@@ -41,7 +40,7 @@ export const AssignInquiry = ({ refID }) => {
   }, [userMessage]);
 
   const employeeListQuery = useQuery(["employeeList", branchCode], () =>
-    APISDK.getEmployeeListToAssignLead(branchCode)
+    API.getEmployeeListToAssignLead(branchCode)
   );
   let employeeListOptions: any = [];
   if (

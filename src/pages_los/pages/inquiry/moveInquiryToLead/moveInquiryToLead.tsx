@@ -9,7 +9,7 @@ import { FormContext, useForm } from "packages/form";
 import { useStyles } from "./style";
 import { TextField, Select } from "components/common";
 import { MiscSDK } from "registry/fns/misc";
-import { LOSSDK } from "registry/fns/los";
+import * as API from "./api";
 import { useSnackbar } from "notistack";
 
 interface moveToLeadFnType {
@@ -19,7 +19,7 @@ interface moveToLeadFnType {
 }
 
 const moveToLead = async ({ data, refID }: moveToLeadFnType) => {
-  return LOSSDK.moveInquiryToLead(refID, data);
+  return API.moveInquiryToLead(refID, data);
 };
 
 export const MoveInquiryToLead = ({
