@@ -33,6 +33,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
       disableGroupExclude,
       disableGroupErrorDetection,
       displayMode,
+      hideTitleBar = false,
       children,
     },
     ref
@@ -79,6 +80,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
             groupWiseFields={groupWiseFields}
             disableGroupExclude={disableGroupExclude}
             disableGroupErrorDetection={disableGroupErrorDetection}
+            hideTitleBar={hideTitleBar}
             wrapperChild={children}
           />
         </FormContext.Provider>
@@ -100,6 +102,7 @@ const ChildFormWrapper = forwardRef<any, any>(
       groupWiseFields,
       disableGroupExclude,
       disableGroupErrorDetection,
+      hideTitleBar,
       wrapperChild,
     },
     ref
@@ -114,8 +117,9 @@ const ChildFormWrapper = forwardRef<any, any>(
       readOnly: displayMode === "view" ? true : false,
     });
     const classes = useStyles();
+    //this is useful in cases where we want to merge this form with other forms, but we should handle form submission
+    //and only get form values
     useImperativeHandle(ref, () => ({
-      isSubmitting: isSubmitting,
       handleSubmit: handleSubmit,
       formDisplayLabel: formDisplayLabel,
     }));
@@ -128,7 +132,7 @@ const ChildFormWrapper = forwardRef<any, any>(
           <Typography component="h3" className={classes.title}>
             {formDisplayLabel}
           </Typography>
-        ) : (
+        ) : !Boolean(hideTitleBar) ? (
           <AppBar position="relative" color="secondary">
             <Toolbar>
               <Typography component="div" variant="h6">
@@ -144,10 +148,10 @@ const ChildFormWrapper = forwardRef<any, any>(
               <Alert severity="error">{serverSentError}</Alert>
             ) : null}
           </AppBar>
-        )}
-        {formRenderType === "stepper" || formRenderType === "tabs" ? (
+        ) : null}
+        {formRenderType === "stepper" ? (
           <GroupedForm
-            key={`${formName}-grouped`}
+            key={`${formName}-grouped-stepper`}
             fields={groupWiseFields}
             formRenderConfig={formRenderConfig}
             formName={formName}
@@ -157,13 +161,39 @@ const ChildFormWrapper = forwardRef<any, any>(
             handleSubmit={handleSubmit}
             handleSubmitPartial={handleSubmitPartial}
           />
+        ) : formRenderType === "tabs" ? (
+          <Container
+            maxWidth="lg"
+            style={{ background: "white" }}
+            key={`${formName}-grouped-tabs`}
+          >
+            <GroupedForm
+              key={`${formName}-grouped-tabs`}
+              fields={groupWiseFields}
+              formRenderConfig={formRenderConfig}
+              formName={formName}
+              disableGroupErrorDetection={disableGroupErrorDetection}
+              disableGroupExclude={disableGroupExclude}
+              //stepper - will handleSubmit there
+              handleSubmit={handleSubmit}
+              handleSubmitPartial={handleSubmitPartial}
+            />
+          </Container>
         ) : formRenderType === "simple" ? (
-          <SimpleForm
+          <Container
+            maxWidth="lg"
+            style={{ background: "white" }}
             key={`${formName}-simple`}
-            fields={groupWiseFields}
-            formRenderConfig={formRenderConfig}
-            formName={formName}
-          />
+          >
+            <br />
+            <br />
+            <SimpleForm
+              key={`${formName}-simple`}
+              fields={groupWiseFields}
+              formRenderConfig={formRenderConfig}
+              formName={formName}
+            />
+          </Container>
         ) : (
           <div>RenderType {formRenderType} not available</div>
         )}
