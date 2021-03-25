@@ -52,8 +52,7 @@ export const DetailsTabView: FC<{
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
-        <Tab label="Customer" id="2" />
-        <Tab label="Move To Lead" id="3" />
+        <Tab label="Move To Lead" id="2" />
       </Tabs>
       <Suspense fallback={"loading..."}>
         <Box py={2} className={classes.tabPanel}>
@@ -73,13 +72,6 @@ export const DetailsTabView: FC<{
               refID={refID}
               dataAlwaysExists={false}
               isDataChangedRef={isDataChangedRef}
-            />
-          </TabPanel>
-          <TabPanel value={currentTab} index="2" key={2}>
-            <CustomerDetails
-              refID={refID}
-              moduleType={"inquiry"}
-              productType={"main"}
             />
           </TabPanel>
           <TabPanel value={currentTab} index="3" key={3}>
