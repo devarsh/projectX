@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import Alert from "@material-ui/lab/Alert";
 import AppBar from "@material-ui/core/AppBar";
@@ -23,134 +23,151 @@ import { SimpleForm } from "./simpleForm";
 import { extendedMetaData } from "./extendedTypes";
 import { useStyles } from "./style";
 
-export const FormWrapper: FC<FormWrapperProps> = ({
-  metaData: freshMetaData,
-  initialValues,
-  onSubmitHandler,
-  hidden = false,
-  disableGroupExclude,
-  disableGroupErrorDetection,
-  displayMode,
-  children,
-}) => {
-  //this line is very important to preserve our metaData across render - deep clone hack
-  let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
-  metaData = extendFieldTypes(metaData, extendedMetaData);
-  metaData = attachMethodsToMetaData(metaData);
-  metaData = MoveSequenceToRender(metaData);
-  const groupWiseFields = renderFieldsByGroup(metaData);
-  const initValues = constructInitialValue(metaData.fields, initialValues);
-  const defaultArrayFieldInitValues = constructInitialValuesForArrayFields(
-    metaData.fields
-  );
-  const yupValidationSchema = constructYupSchema(metaData.fields);
-  const formName = metaData.form.name ?? "NO_NAME";
-  return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <FormContext.Provider
-        value={{
-          formName: formName,
-          resetFieldOnUnmount: Boolean(metaData.form.resetFieldOnUmnount),
-          validationRun: metaData.form.validationRun,
-          initialValues: initValues,
-          defaultArrayFieldValues: defaultArrayFieldInitValues,
-          validationSchema: yupValidationSchema,
-          formState: {
-            formCode: metaData.form.name,
-            refID: metaData.form.refID,
-            ...metaData.form?.formState,
-          },
-        }}
-      >
-        <ChildFormWrapper
-          formName={formName}
-          formDisplayLabel={metaData?.form?.label ?? "NO_LABEL"}
-          formRenderType={metaData.form.render.renderType ?? "simple"}
-          formRenderConfig={metaData.form.render}
-          submitFn={onSubmitHandler}
-          hidden={hidden}
-          displayMode={displayMode}
-          groupWiseFields={groupWiseFields}
-          disableGroupExclude={disableGroupExclude}
-          disableGroupErrorDetection={disableGroupErrorDetection}
-          wrapperChild={children}
-        />
-      </FormContext.Provider>
-    </MuiPickersUtilsProvider>
-  );
-};
+export const FormWrapper = forwardRef<FormWrapperProps, any>(
+  (
+    {
+      metaData: freshMetaData,
+      initialValues,
+      onSubmitHandler,
+      hidden = false,
+      disableGroupExclude,
+      disableGroupErrorDetection,
+      displayMode,
+      children,
+    },
+    ref
+  ) => {
+    //this line is very important to preserve our metaData across render - deep clone hack
+    let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
+    metaData = extendFieldTypes(metaData, extendedMetaData);
+    metaData = attachMethodsToMetaData(metaData);
+    metaData = MoveSequenceToRender(metaData);
+    const groupWiseFields = renderFieldsByGroup(metaData);
+    const initValues = constructInitialValue(metaData.fields, initialValues);
+    const defaultArrayFieldInitValues = constructInitialValuesForArrayFields(
+      metaData.fields
+    );
+    const yupValidationSchema = constructYupSchema(metaData.fields);
+    const formName = metaData.form.name ?? "NO_NAME";
+    return (
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <FormContext.Provider
+          value={{
+            formName: formName,
+            resetFieldOnUnmount: Boolean(metaData.form.resetFieldOnUmnount),
+            validationRun: metaData.form.validationRun,
+            initialValues: initValues,
+            defaultArrayFieldValues: defaultArrayFieldInitValues,
+            validationSchema: yupValidationSchema,
+            formState: {
+              formCode: metaData.form.name,
+              refID: metaData.form.refID,
+              ...metaData.form?.formState,
+            },
+          }}
+        >
+          <ChildFormWrapper
+            //@ts-ignore
+            ref={ref}
+            formName={formName}
+            formDisplayLabel={metaData?.form?.label ?? "NO_LABEL"}
+            formRenderType={metaData.form.render.renderType ?? "simple"}
+            formRenderConfig={metaData.form.render}
+            submitFn={onSubmitHandler}
+            hidden={hidden}
+            displayMode={displayMode}
+            groupWiseFields={groupWiseFields}
+            disableGroupExclude={disableGroupExclude}
+            disableGroupErrorDetection={disableGroupErrorDetection}
+            wrapperChild={children}
+          />
+        </FormContext.Provider>
+      </MuiPickersUtilsProvider>
+    );
+  }
+);
 
-const ChildFormWrapper = ({
-  formName,
-  formDisplayLabel,
-  formRenderType,
-  formRenderConfig,
-  submitFn,
-  hidden,
-  displayMode,
-  groupWiseFields,
-  disableGroupExclude,
-  disableGroupErrorDetection,
-  wrapperChild,
-}) => {
-  const {
-    handleSubmit,
-    handleSubmitPartial,
-    serverSentError,
-    isSubmitting,
-  } = useForm({
-    onSubmit: submitFn,
-    readOnly: displayMode === "view" ? true : false,
-  });
-  const classes = useStyles();
-  return (
-    <Container
-      component="main"
-      style={{ display: hidden ? "none" : "block", paddingTop: "16px" }}
-    >
-      {formRenderType === "stepper" ? (
-        <Typography component="h3" className={classes.title}>
-          {formDisplayLabel}
-        </Typography>
-      ) : (
-        <AppBar position="relative" color="secondary">
-          <Toolbar>
-            <Typography component="div" variant="h6">
-              {formDisplayLabel}
-              {Boolean(displayMode) && `-${displayMode}`}
-            </Typography>
-            <Box flexGrow={1} />
-            {typeof wrapperChild === "function"
-              ? wrapperChild({ isSubmitting, handleSubmit })
-              : wrapperChild}
-          </Toolbar>
-          {!isSubmitting && Boolean(serverSentError) ? (
-            <Alert severity="error">{serverSentError}</Alert>
-          ) : null}
-        </AppBar>
-      )}
-      {formRenderType === "stepper" || formRenderType === "tabs" ? (
-        <GroupedForm
-          key={`${formName}-grouped`}
-          fields={groupWiseFields}
-          formRenderConfig={formRenderConfig}
-          formName={formName}
-          disableGroupErrorDetection={disableGroupErrorDetection}
-          disableGroupExclude={disableGroupExclude}
-          //stepper - will handleSubmit there
-          handleSubmit={handleSubmit}
-          handleSubmitPartial={handleSubmitPartial}
-        />
-      ) : formRenderType === "simple" ? (
-        <SimpleForm
-          key={`${formName}-simple`}
-          fields={groupWiseFields}
-          formRenderConfig={formRenderConfig}
-          formName={formName}
-        />
-      ) : (
-        <div>RenderType {formRenderType} not available</div>
-      )}
-    </Container>
-  );
-};
+const ChildFormWrapper = forwardRef<any, any>(
+  (
+    {
+      formName,
+      formDisplayLabel,
+      formRenderType,
+      formRenderConfig,
+      submitFn,
+      hidden,
+      displayMode,
+      groupWiseFields,
+      disableGroupExclude,
+      disableGroupErrorDetection,
+      wrapperChild,
+    },
+    ref
+  ) => {
+    const {
+      handleSubmit,
+      handleSubmitPartial,
+      serverSentError,
+      isSubmitting,
+    } = useForm({
+      onSubmit: submitFn,
+      readOnly: displayMode === "view" ? true : false,
+    });
+    const classes = useStyles();
+    useImperativeHandle(ref, () => ({
+      isSubmitting: isSubmitting,
+      handleSubmit: handleSubmit,
+      formDisplayLabel: formDisplayLabel,
+    }));
+    return (
+      <Container
+        component="main"
+        style={{ display: hidden ? "none" : "block", paddingTop: "16px" }}
+      >
+        {formRenderType === "stepper" ? (
+          <Typography component="h3" className={classes.title}>
+            {formDisplayLabel}
+          </Typography>
+        ) : (
+          <AppBar position="relative" color="secondary">
+            <Toolbar>
+              <Typography component="div" variant="h6">
+                {formDisplayLabel}
+                {Boolean(displayMode) && `-${displayMode}`}
+              </Typography>
+              <Box flexGrow={1} />
+              {typeof wrapperChild === "function"
+                ? wrapperChild({ isSubmitting, handleSubmit })
+                : wrapperChild}
+            </Toolbar>
+            {!isSubmitting && Boolean(serverSentError) ? (
+              <Alert severity="error">{serverSentError}</Alert>
+            ) : null}
+          </AppBar>
+        )}
+        {formRenderType === "stepper" || formRenderType === "tabs" ? (
+          <GroupedForm
+            key={`${formName}-grouped`}
+            fields={groupWiseFields}
+            formRenderConfig={formRenderConfig}
+            formName={formName}
+            disableGroupErrorDetection={disableGroupErrorDetection}
+            disableGroupExclude={disableGroupExclude}
+            //stepper - will handleSubmit there
+            handleSubmit={handleSubmit}
+            handleSubmitPartial={handleSubmitPartial}
+          />
+        ) : formRenderType === "simple" ? (
+          <SimpleForm
+            key={`${formName}-simple`}
+            fields={groupWiseFields}
+            formRenderConfig={formRenderConfig}
+            formName={formName}
+          />
+        ) : (
+          <div>RenderType {formRenderType} not available</div>
+        )}
+      </Container>
+    );
+  }
+);

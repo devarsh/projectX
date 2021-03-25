@@ -17,5 +17,5 @@ const actions: ActionTypes[] = [
 ];
 
 export const IncomingInquiry = () => {
-  return <Inquiry gridCode="TRN/001" actions={actions} />;
+  return <Inquiry gridCode="TRN/005" actions={actions} />;
 };
