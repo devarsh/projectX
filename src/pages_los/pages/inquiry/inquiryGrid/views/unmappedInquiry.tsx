@@ -1,11 +1,11 @@
 import { ActionTypes } from "components/dataTable";
-import { Inquiry } from "./inquiry";
+import { Inquiry } from "../inquiry";
 
 const actions: ActionTypes[] = [
   {
     actionName: "AssignBranch",
     actionLabel: "Assign Branch",
-    multiple: false,
+    multiple: true,
     rowDoubleClick: false,
   },
   {

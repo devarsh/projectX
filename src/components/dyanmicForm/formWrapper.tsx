@@ -34,6 +34,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
       disableGroupErrorDetection,
       displayMode,
       hideTitleBar = false,
+      hideDisplayModeInTitle = false,
       children,
     },
     ref
@@ -81,6 +82,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
             disableGroupExclude={disableGroupExclude}
             disableGroupErrorDetection={disableGroupErrorDetection}
             hideTitleBar={hideTitleBar}
+            hideDisplayModeInTitle={hideDisplayModeInTitle}
             wrapperChild={children}
           />
         </FormContext.Provider>
@@ -103,6 +105,7 @@ const ChildFormWrapper = forwardRef<any, any>(
       disableGroupExclude,
       disableGroupErrorDetection,
       hideTitleBar,
+      hideDisplayModeInTitle,
       wrapperChild,
     },
     ref
@@ -137,7 +140,9 @@ const ChildFormWrapper = forwardRef<any, any>(
             <Toolbar>
               <Typography component="div" variant="h6">
                 {formDisplayLabel}
-                {Boolean(displayMode) && `-${displayMode}`}
+                {Boolean(displayMode) && !Boolean(hideDisplayModeInTitle)
+                  ? `-${displayMode}`
+                  : ""}
               </Typography>
               <Box flexGrow={1} />
               {typeof wrapperChild === "function"

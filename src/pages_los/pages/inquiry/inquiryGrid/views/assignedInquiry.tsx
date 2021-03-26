@@ -1,9 +1,9 @@
 import { ActionTypes } from "components/dataTable";
-import { Inquiry } from "./inquiry";
+import { Inquiry } from "../inquiry";
 
 const actions: ActionTypes[] = [
   {
-    actionName: "AssignInquiryVH",
+    actionName: "AssignInquiry",
     actionLabel: "Assign Inquiry",
     multiple: false,
     rowDoubleClick: false,
@@ -14,8 +14,14 @@ const actions: ActionTypes[] = [
     multiple: false,
     rowDoubleClick: true,
   },
+  {
+    actionName: "Priority",
+    actionLabel: "Priority",
+    multiple: false,
+    rowDoubleClick: false,
+  },
 ];
 
-export const IncomingInquiry = () => {
-  return <Inquiry gridCode="TRN/005" actions={actions} />;
+export const AssignedInquiry = () => {
+  return <Inquiry gridCode="TRN/006" actions={actions} />;
 };

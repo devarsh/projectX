@@ -2,12 +2,8 @@ import { useState, FC, Fragment, useEffect, useContext, Suspense } from "react";
 import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
-import { queryClient } from "cache";
-import { ClearCacheContext } from "cache";
+import { ClearCacheContext, queryClient } from "cache";
 import { useStyles } from "pages_los/common";
-import { CustomerDetails } from "../customerDetails";
-import { HeaderDetails } from "../headerDetails";
-import { MoveInquiryToLead } from "../moveInquiryToLead";
 import { CRUD } from "./crud";
 
 const TabPanel = ({ value, index, children }) => {
@@ -17,23 +13,15 @@ const TabPanel = ({ value, index, children }) => {
 export const DetailsTabView: FC<{
   refID: string;
   moduleType: string;
-  productGridData: any;
   isDataChangedRef: any;
   handleDialogClose: any;
-}> = ({
-  refID,
-  moduleType,
-  productGridData,
-  isDataChangedRef,
-  handleDialogClose,
-}) => {
+}> = ({ refID, moduleType, isDataChangedRef, handleDialogClose }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
     setCurrentTab(currentTab);
   };
   const classes = useStyles();
-
   useEffect(() => {
     return () => {
       let entries = removeCache?.getEntries() as any[];
@@ -45,14 +33,9 @@ export const DetailsTabView: FC<{
 
   return (
     <Fragment>
-      <HeaderDetails
-        productData={productGridData}
-        handleDialogClose={handleDialogClose}
-      />
       <Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
-        <Tab label="Move To Lead" id="2" />
       </Tabs>
       <Suspense fallback={"loading..."}>
         <Box py={2} className={classes.tabPanel}>
@@ -72,14 +55,6 @@ export const DetailsTabView: FC<{
               refID={refID}
               dataAlwaysExists={false}
               isDataChangedRef={isDataChangedRef}
-            />
-          </TabPanel>
-          <TabPanel value={currentTab} index="3" key={3}>
-            <MoveInquiryToLead
-              key={refID}
-              refID={refID}
-              isDataChangedRef={isDataChangedRef}
-              handleDialogClose={handleDialogClose}
             />
           </TabPanel>
         </Box>

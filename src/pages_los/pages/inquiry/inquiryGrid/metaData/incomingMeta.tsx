@@ -11,15 +11,15 @@ export const incomingMetaData = {
     allowGlobalFilter: true,
   },
   headerFilters: [
-    {
-      accessor: "status",
-      filterComponentType: "groupByFilter",
-      filterComponentProps: {
-        selectType: "single",
-      },
-      columnName: "Status",
-      level: 2,
-    },
+    // {
+    //   accessor: "status",
+    //   filterComponentType: "groupByFilter",
+    //   filterComponentProps: {
+    //     selectType: "single",
+    //   },
+    //   columnName: "Status",
+    //   level: 2,
+    // },
     {
       accessor: "tran_dt",
       filterComponentType: "daysFilter",

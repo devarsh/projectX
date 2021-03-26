@@ -1,5 +1,5 @@
 import { ActionTypes } from "components/dataTable";
-import { Inquiry } from "./inquiry";
+import { Inquiry } from "../inquiry";
 
 const actions: ActionTypes[] = [
   {

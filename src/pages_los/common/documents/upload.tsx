@@ -59,6 +59,8 @@ export const UploadDocumentsApiWrapper = ({
       dataChangedRef={dataChangedRef}
       onUpload={uploadDocuments.fn(uploadDocuments.args)}
       gridProps={context}
+      maxAllowedSize={1024 * 1204 * 10} //10Mb file
+      allowedExtensions={["pdf"]}
     />
   );
   return renderResult;
