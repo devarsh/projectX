@@ -294,7 +294,7 @@ export const useField = ({
           } else if (result === false && fieldData.readOnly === true) {
             setFieldData((old) => ({
               ...old,
-              readOnly: true,
+              readOnly: false,
             }));
           }
         }

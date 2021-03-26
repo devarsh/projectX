@@ -80,6 +80,7 @@ export const priorityChangeMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      defaultValue: "N",
       options: [
         { label: "Yes", value: "Y" },
         { label: "No", value: "N" },
@@ -87,7 +88,7 @@ export const priorityChangeMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "textField",
+        componentType: "numberFormat",
       },
       name: "priorityDays",
       label: "Priority Hold Days",
@@ -97,7 +98,17 @@ export const priorityChangeMetaData: MetaDataType = {
         md: 3,
         sm: 3,
       },
+      FormatProps: {
+        format: "##",
+        isAllowed: (values) => {
+          if (values.floatValue === 0) {
+            return false;
+          }
+          return true;
+        },
+      },
       dependentFields: ["enableHoldDays"],
+      isReadOnly: "readOnlyPriorityHoldDays",
     },
     {
       render: {
