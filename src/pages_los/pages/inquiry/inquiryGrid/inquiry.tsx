@@ -26,6 +26,7 @@ export const Inquiry = ({ gridCode, actions }) => {
       isDataChangedRef.current = false;
     }
   };
+  console.log(currentAction);
   return (
     <Fragment>
       <ServerGridContextProvider {...serverGridContextGenerator(gridCode)}>
@@ -38,7 +39,7 @@ export const Inquiry = ({ gridCode, actions }) => {
       </ServerGridContextProvider>
       <Dialog
         fullScreen={
-          ["viewDetails", "Priority"].indexOf(currentAction?.name) >= 0
+          ["ViewDetails", "Priority"].indexOf(currentAction?.name) >= 0
             ? true
             : false
         }
@@ -49,7 +50,7 @@ export const Inquiry = ({ gridCode, actions }) => {
         key={currentAction?.rows[0].id}
       >
         <ClearCacheProvider key={currentAction?.rows[0].id}>
-          {(currentAction?.name ?? "") === "viewDetails" ? (
+          {(currentAction?.name ?? "") === "ViewDetails" ? (
             <Fragment key={currentAction?.rows[0].id}>
               <HeaderDetails
                 productData={currentAction?.rows[0]}
@@ -59,7 +60,6 @@ export const Inquiry = ({ gridCode, actions }) => {
                 moduleType="inquiry"
                 refID={currentAction?.rows[0].id}
                 isDataChangedRef={isDataChangedRef}
-                handleDialogClose={handleDialogClose}
               />
             </Fragment>
           ) : (currentAction?.name ?? "") === "AssignBranch" ? (

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef, useCallback } from "react";
 import { TextField } from "components/styledComponent/textfield";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { NumberFormatCustom } from "components/derived/numberFormat";
 
 export const PasswordField = ({
   loginType,
@@ -15,6 +16,16 @@ export const PasswordField = ({
   handlePassword,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState(loginState?.password);
+  const currentPassword = useRef<any>(null);
+  currentPassword.current = password;
+  const handleChange = useCallback((e) => setPassword(e.target.value), [
+    setPassword,
+  ]);
+  const handleBlur = useCallback(() => {
+    handlePassword(currentPassword.current);
+  }, [handlePassword]);
+
   return (
     <Fragment>
       <div className={classes.formWrap}>
@@ -27,11 +38,20 @@ export const PasswordField = ({
             fullWidth
             type="number"
             name="otp"
-            value={loginState?.password ?? ""}
-            onChange={handlePassword}
+            value={password}
+            onChange={handleChange}
+            onBlur={handleBlur}
             error={loginState.isError}
             helperText={loginState.isError ? loginState.userMessage : ""}
             disabled={loginState.loading}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+              inputProps: {
+                FormatProps: {
+                  format: "# # # # # #",
+                },
+              },
+            }}
           />
         ) : (
           <TextField
@@ -44,8 +64,9 @@ export const PasswordField = ({
             fullWidth
             type={showPassword ? "text" : "password"}
             name="otp"
-            value={loginState?.password ?? ""}
-            onChange={handlePassword}
+            value={password}
+            onChange={handleChange}
+            onBlur={handleBlur}
             error={loginState.isError}
             helperText={loginState.isError ? loginState.userMessage : ""}
             disabled={loginState.loading}

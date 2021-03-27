@@ -225,14 +225,14 @@ export const metaData: NavBarMetaDataType = {
       icon: "question",
       children: [
         {
-          label: "My Inquiries",
-          href: "./inquiry/myInquiries",
+          label: "Assigned Inquiries",
+          href: "./inquiry/assignedInquiries",
           isRouterLink: true,
           icon: "circle",
         },
         {
-          label: "My Cross Inquiries",
-          href: "./inquiry/myCrossInquiries",
+          label: "Cross Inquiries",
+          href: "./inquiry/crossInquiries",
           isRouterLink: true,
           icon: "circle",
         },

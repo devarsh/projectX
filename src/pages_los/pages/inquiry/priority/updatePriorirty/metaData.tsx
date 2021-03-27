@@ -57,16 +57,14 @@ export const priorityChangeMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "spacer",
+        componentType: "textField",
       },
-      name: "priorityspacer",
+      name: "priorityRemarks",
+      label: "Remarks",
       GridProps: {
         xs: 12,
         md: 6,
         sm: 6,
-      },
-      HiddenProps: {
-        xsDown: true,
       },
     },
     {
@@ -77,8 +75,8 @@ export const priorityChangeMetaData: MetaDataType = {
       label: "Change Priority Hold Days",
       GridProps: {
         xs: 12,
-        md: 3,
-        sm: 3,
+        md: 6,
+        sm: 6,
       },
       defaultValue: "N",
       options: [
@@ -95,8 +93,8 @@ export const priorityChangeMetaData: MetaDataType = {
       required: true,
       GridProps: {
         xs: 12,
-        md: 3,
-        sm: 3,
+        md: 6,
+        sm: 6,
       },
       FormatProps: {
         format: "##",
@@ -108,19 +106,7 @@ export const priorityChangeMetaData: MetaDataType = {
         },
       },
       dependentFields: ["enableHoldDays"],
-      isReadOnly: "readOnlyPriorityHoldDays",
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "priorityRemarks",
-      label: "Remarks",
-      GridProps: {
-        xs: 12,
-        md: 6,
-        sm: 6,
-      },
+      shouldExclude: "readOnlyPriorityHoldDays",
     },
   ],
 };

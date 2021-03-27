@@ -48,7 +48,7 @@ export const Priority = ({ refID, moduleType, isDataChangedRef }) => {
       />
       <Dialog
         open={Boolean(currentAction)}
-        maxWidth="md"
+        maxWidth="sm"
         PaperProps={{ style: { height: "100%", width: "100%" } }}
       >
         {(currentAction?.name ?? "") === "priority" ? (
