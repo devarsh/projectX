@@ -1,8 +1,8 @@
 import { LOSSDK } from "registry/fns/los";
 
-export const moveInquiryToLead = async (refID: string, formData: any) => {
+export const moveToLead = ({ moduleType, refID }) => async (formData) => {
   const { data, status } = await LOSSDK.internalFetcher(
-    `./inquiry/moveToLead`,
+    `./${moduleType}/moveToLead`,
     {
       body: JSON.stringify({
         request_data: {

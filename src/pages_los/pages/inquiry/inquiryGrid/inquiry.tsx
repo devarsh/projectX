@@ -11,6 +11,7 @@ import { HeaderDetails } from "../headerDetails";
 import { DetailsTabView } from "../detailsTabView";
 import { AssignBranch } from "../assignBranch";
 import { Priority } from "../priority";
+import { MoveToLead } from "../moveToLead";
 import { InvalidAction } from "pages_los/common/invalidAction";
 
 //All actions = [AssignBranch,ViewDetails,Priority,AssignInquiry,ViewStatus,]
@@ -26,7 +27,6 @@ export const Inquiry = ({ gridCode, actions }) => {
       isDataChangedRef.current = false;
     }
   };
-  console.log(currentAction);
   return (
     <Fragment>
       <ServerGridContextProvider {...serverGridContextGenerator(gridCode)}>
@@ -80,6 +80,19 @@ export const Inquiry = ({ gridCode, actions }) => {
                 moduleType="inquiry"
                 refID={currentAction?.rows[0].id}
                 isDataChangedRef={isDataChangedRef}
+              />
+            </Fragment>
+          ) : (currentAction?.name ?? "") === "Move" ? (
+            <Fragment key={currentAction?.rows[0].id}>
+              <HeaderDetails
+                productData={currentAction?.rows[0]}
+                handleDialogClose={handleDialogClose}
+              />
+              <MoveToLead
+                moduleType="inquiry"
+                refID={currentAction?.rows[0].id}
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
               />
             </Fragment>
           ) : (

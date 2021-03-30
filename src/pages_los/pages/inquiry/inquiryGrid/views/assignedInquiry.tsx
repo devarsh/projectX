@@ -3,12 +3,6 @@ import { Inquiry } from "../inquiry";
 
 const actions: ActionTypes[] = [
   {
-    actionName: "AssignInquiry",
-    actionLabel: "Assign Inquiry",
-    multiple: false,
-    rowDoubleClick: false,
-  },
-  {
     actionName: "ViewDetails",
     actionLabel: "View Details",
     multiple: false,
@@ -17,6 +11,12 @@ const actions: ActionTypes[] = [
   {
     actionName: "Priority",
     actionLabel: "Priority",
+    multiple: false,
+    rowDoubleClick: false,
+  },
+  {
+    actionName: "Move",
+    actionLabel: "Move To Lead",
     multiple: false,
     rowDoubleClick: false,
   },
