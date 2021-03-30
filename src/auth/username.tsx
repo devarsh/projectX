@@ -24,15 +24,6 @@ export const UsernameField = ({
 
   return (
     <Fragment>
-      <h2>
-        {loginType === "employee"
-          ? "Employee Login"
-          : loginType === "customer"
-          ? "Customer Login"
-          : loginType === "partner"
-          ? "Partner Login"
-          : "ERRR!!"}
-      </h2>
       <div className="text">
         {["employee", "partner"].indexOf(loginType) >= 0
           ? "Login with your registere userID"

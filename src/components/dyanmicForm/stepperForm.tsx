@@ -20,6 +20,7 @@ export const MyStepper = ({
   fieldGroupsActiveStatus,
   isLastActiveStep,
   setActiveStep,
+  stepsRenderer,
 }) => {
   const classes = useStyles();
   return (
@@ -40,7 +41,11 @@ export const MyStepper = ({
             : defaultGroupName}
         </Typography>
       </Box>
-      <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+      {typeof stepsRenderer === "function" ? (
+        stepsRenderer({ steps })
+      ) : (
+        <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+      )}
 
       <Box width={1} display="flex" justifyContent="flex-end">
         {activeStep === 0 ? null : (

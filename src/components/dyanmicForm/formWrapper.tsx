@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, Suspense, useImperativeHandle } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import Alert from "@material-ui/lab/Alert";
 import AppBar from "@material-ui/core/AppBar";
@@ -182,7 +182,20 @@ const ChildFormWrapper = forwardRef<any, any>(
               //stepper - will handleSubmit there
               handleSubmit={handleSubmit}
               handleSubmitPartial={handleSubmitPartial}
-            />
+            >
+              {({ steps }) => (
+                <div
+                  style={{
+                    height: "65vh",
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                  }}
+                >
+                  <br />
+                  <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
+                </div>
+              )}
+            </GroupedForm>
           </Container>
         ) : formRenderType === "simple" ? (
           <Container

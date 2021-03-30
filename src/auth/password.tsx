@@ -77,6 +77,7 @@ export const PasswordField = ({
                     aria-label="toggle password visibility"
                     onClick={() => setShowPassword((old) => !old)}
                     onMouseDown={(e) => e.preventDefault()}
+                    disabled={loginState.loading}
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>

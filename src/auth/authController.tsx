@@ -7,6 +7,7 @@ import { UsernameField } from "./username";
 import { PasswordField } from "./password";
 import { AuthContext } from "./authContext";
 import * as API from "./api";
+import logo from "assets/images/logo.svg";
 
 const inititalState = {
   username: "",
@@ -180,6 +181,16 @@ export const AuthLoginController = () => {
         width={1 / 2}
         className={classes.loginRight}
       >
+        <img src={logo} alt="Logo" width="100px" height="100px" />
+        <h2>
+          {loginType === "employee"
+            ? "Employee Login"
+            : loginType === "customer"
+            ? "Customer Login"
+            : loginType === "partner"
+            ? "Partner Login"
+            : "ERRR!!"}
+        </h2>
         {loginState.currentFlow === "username" ? (
           <UsernameField
             key="username"

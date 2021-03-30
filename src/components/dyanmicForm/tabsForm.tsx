@@ -15,6 +15,7 @@ export const MyTabs = ({
   handleSubmit,
   fieldGroupsActiveStatus,
   isLastActiveStep,
+  stepsRenderer,
 }) => {
   return (
     <Fragment>
@@ -35,10 +36,11 @@ export const MyTabs = ({
           );
         })}
       </Tabs>
-      <div style={{ height: "65vh", overflowY: "auto", overflowX: "hidden" }}>
-        <br />
+      {typeof stepsRenderer === "function" ? (
+        stepsRenderer({ steps })
+      ) : (
         <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
-      </div>
+      )}
     </Fragment>
   );
 };
