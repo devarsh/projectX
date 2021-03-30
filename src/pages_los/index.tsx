@@ -55,11 +55,11 @@ const DashbordPages = () => {
             />
 
             {/* Inquiries */}
-            <Route path="/inquiry/myInquiries" element={<AssignedInquiry />} />
             <Route
-              path="/inquiry/myCrossInquiries"
-              element={<CrossInquiry />}
+              path="/inquiry/assignedInquiries"
+              element={<AssignedInquiry />}
             />
+            <Route path="/inquiry/crossInquiries" element={<CrossInquiry />} />
             <Route
               path="/inquiry/incomingInquiries"
               element={<IncomingInquiry />}

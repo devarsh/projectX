@@ -1,5 +1,5 @@
 import { ActionTypes } from "components/dataTable";
-import { Inquiry } from "./inquiry";
+import { Inquiry } from "../inquiry";
 
 const actions: ActionTypes[] = [
   {
@@ -11,5 +11,5 @@ const actions: ActionTypes[] = [
 ];
 
 export const CrossInquiry = () => {
-  return <Inquiry gridCode="TRN/001" actions={actions} />;
+  return <Inquiry gridCode="TRN/007" actions={actions} />;
 };

@@ -111,6 +111,7 @@ const MyCheckboxGroup: FC<MyCheckboxGroupAllProps> = ({
 
   const handleChangeInterceptor = useCallback(
     (e) => {
+      console.log(handleChange);
       const value = typeof e === "object" ? e?.target?.value ?? "" : e;
       let result = getLabelFromValuesForOptions(value);
       handleChange(e, result[0] as any);

@@ -87,6 +87,19 @@ export const AuthProvider = ({ children }) => {
     [dispatch, navigate]
   );
   const logout = useCallback(() => {
+    let result = localStorage.getItem("authDetails");
+    let outPath = "/crm";
+    let currentAuthState: AuthStateType | any = null;
+    if (result !== null) {
+      currentAuthState = JSON.parse(result);
+    }
+    if (currentAuthState?.user?.type === "customer") {
+      outPath = "/los/auth/login/customer";
+    } else if (currentAuthState?.user?.type === "employee") {
+      outPath = "/los/auth/login/employee";
+    } else if (currentAuthState?.user?.type === "partner") {
+      outPath = "/los/auth/login/partner";
+    }
     localStorage.removeItem("authDetails");
     dispatch({
       type: "logout",
@@ -102,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     ) {
       navigate(location.pathname);
     } else {
-      navigate("/los/auth/login/customer");
+      navigate(outPath);
     }
   }, [dispatch, navigate]);
 

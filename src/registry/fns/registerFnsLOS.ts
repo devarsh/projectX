@@ -1,4 +1,4 @@
-import { shouldExclude, LOSSDK, retail } from "./los";
+import { shouldExclude, LOSSDK, retail, readOnly } from "./los";
 
 import { singletonFunctionRegisrationFactory } from "components/utils";
 const { registerFn } = singletonFunctionRegisrationFactory;
@@ -185,3 +185,6 @@ registerFn("getAllUnRegisteredUsersList", LOSSDK.getAllUnRegisteredUsersList);
 registerFn("getAllRegisteredUsersList", LOSSDK.getAllRegisteredUsersList);
 registerFn("getTeamRoleList", LOSSDK.getTeamRoleList);
 registerFn("getUserListFromTeamRole", LOSSDK.getUserListFromTeamRole);
+
+//for priority change form
+registerFn("readOnlyPriorityHoldDays", readOnly.priorityHoldDays);

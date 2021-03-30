@@ -87,7 +87,6 @@ export const DocumentsPreviewWrapper = ({
   serialNo,
   transformData,
 }) => {
-  console.log(isManagement, docCateg, refID, serialNo);
   return (
     <DOCCRUDContextProvider
       {...DocAPICrudProviderGenerator(

@@ -219,6 +219,8 @@ export interface FormWrapperProps {
   displayMode?: "new" | "view" | "edit";
   disableGroupExclude?: boolean;
   disableGroupErrorDetection?: boolean;
+  hideTitleBar?: boolean;
+  hideDisplayModeInTitle?: boolean;
 }
 
 export interface FormProps {

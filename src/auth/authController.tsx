@@ -146,19 +146,19 @@ export const AuthLoginController = () => {
   };
 
   const handleUsername = useCallback(
-    (e) => {
+    (value) => {
       dispath({
         type: "setUsername",
-        payload: { data: e.target.value },
+        payload: { data: value },
       });
     },
     [dispath]
   );
   const handlePassword = useCallback(
-    (e) => {
+    (value) => {
       dispath({
         type: "setPassword",
-        payload: { data: e.target.value },
+        payload: { data: value },
       });
     },
     [dispath]

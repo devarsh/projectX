@@ -1,6 +1,6 @@
 import { useState, useRef, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { ServerGrid, ServerGridWrapper } from "pages_los/common/serverGrid";
+import { ServerGridWrapper } from "pages_los/common/serverGrid";
 import { ActionTypes } from "components/dataTable";
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";

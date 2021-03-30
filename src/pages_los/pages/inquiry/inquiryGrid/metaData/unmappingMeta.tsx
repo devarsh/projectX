@@ -1,9 +1,9 @@
-export const crossMetaData = {
+export const unmappedMetaData = {
   gridConfig: {
     dense: false,
     pageSize: [5, 10],
     defaultPageSize: "10",
-    gridLabel: "Cross Inquiries",
+    gridLabel: "Unmapped Inquiries",
     rowIdColumn: "tran_cd",
     allowColumnReordering: true,
     allowColumnHiding: true,
@@ -11,15 +11,15 @@ export const crossMetaData = {
     allowGlobalFilter: true,
   },
   headerFilters: [
-    {
-      accessor: "status",
-      filterComponentType: "groupByFilter",
-      filterComponentProps: {
-        selectType: "single",
-      },
-      columnName: "Status",
-      level: 2,
-    },
+    // {
+    //   accessor: "status",
+    //   filterComponentType: "groupByFilter",
+    //   filterComponentProps: {
+    //     selectType: "single",
+    //   },
+    //   columnName: "Status",
+    //   level: 2,
+    // },
     {
       accessor: "tran_dt",
       filterComponentType: "daysFilter",
