@@ -8,12 +8,13 @@ import { InvalidAction } from "pages_los/common/invalidAction";
 import { HeaderDetails } from "./headerDetails";
 import { DetailsTabView } from "./detailsTabView";
 import { ExternalAPI } from "./externalAPI";
+import { Stage } from "./stages";
 import { CAM } from "./cam";
 
 const actions: ActionTypes[] = [
   {
-    actionName: "completeView",
-    actionLabel: "360 View",
+    actionName: "detailView",
+    actionLabel: "Detail View",
     multiple: false,
     rowDoubleClick: true,
   },
@@ -26,6 +27,12 @@ const actions: ActionTypes[] = [
   {
     actionName: "external",
     actionLabel: "External API",
+    multiple: false,
+    rowDoubleClick: false,
+  },
+  {
+    actionName: "stages",
+    actionLabel: "Lead Stages",
     multiple: false,
     rowDoubleClick: false,
   },
@@ -64,7 +71,7 @@ export const Lead = () => {
             rowData={currentAction?.rows[0]}
             handleDialogClose={handleDialogClose}
           />
-          {(currentAction?.name ?? "") === "completeView" ? (
+          {(currentAction?.name ?? "") === "detailView" ? (
             <DetailsTabView
               key={currentAction?.rows[0].id}
               moduleType="lead"
@@ -84,6 +91,13 @@ export const Lead = () => {
               key={currentAction?.rows[0].id}
               moduleType="lead"
               refID={currentAction?.rows[0].id}
+            />
+          ) : (currentAction?.name ?? "") === "stages" ? (
+            <Stage
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+              isDataChangedRef={isDataEditedRef}
             />
           ) : (
             <InvalidAction closeDialog={handleDialogClose} />
