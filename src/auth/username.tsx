@@ -24,15 +24,6 @@ export const UsernameField = ({
 
   return (
     <Fragment>
-      <h2>
-        {loginType === "employee"
-          ? "Employee Login"
-          : loginType === "customer"
-          ? "Customer Login"
-          : loginType === "partner"
-          ? "Partner Login"
-          : "ERRR!!"}
-      </h2>
       <div className="text">
         {["employee", "partner"].indexOf(loginType) >= 0
           ? "Login with your registere userID"
@@ -57,16 +48,15 @@ export const UsernameField = ({
           InputLabelProps={{ shrink: true }}
           disabled={loginState.loading}
           prefix={loginType === "customer" ? "+91" : ""}
-          InputProps={{
-            startAdornment:
-              loginType === "customer" ? (
-                <InputAdornment position="start">+91</InputAdornment>
-              ) : undefined,
-            inputComponent: NumberFormatCustom,
-            inputProps: {
-              FormatProps:
-                loginType === "customer"
-                  ? {
+          InputProps={
+            loginType === "customer"
+              ? {
+                  startAdornment: (
+                    <InputAdornment position="start">+91</InputAdornment>
+                  ),
+                  inputComponent: NumberFormatCustom,
+                  inputProps: {
+                    FormatProps: {
                       format: "##########",
                       isAllowed: (values) => {
                         if (values.floatValue === 0) {
@@ -74,10 +64,11 @@ export const UsernameField = ({
                         }
                         return true;
                       },
-                    }
-                  : {},
-            },
-          }}
+                    },
+                  },
+                }
+              : {}
+          }
         />
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
           <Button

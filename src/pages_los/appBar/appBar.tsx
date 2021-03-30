@@ -83,12 +83,12 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             )}
           </Typography>
         </Typography>
-        <SearchBar />
-        <IconButton color="inherit" className="ml-2">
-          <Badge badgeContent={4} color="primary">
+        {/* <SearchBar /> */}
+        {/* <IconButton color="inherit" className="ml-2">
+          <Badge badgeContent={0} color="primary">
             <NotificationsIcon />
           </Badge>
-        </IconButton>
+        </IconButton> */}
 
         <div className={classes.loggedInUser}>
           <Button

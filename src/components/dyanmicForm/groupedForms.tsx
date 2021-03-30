@@ -17,6 +17,7 @@ export const GroupedForm: FC<FormProps> = ({
   disableGroupExclude,
   handleSubmit,
   handleSubmitPartial,
+  children,
 }) => {
   const defaultGroupName = "DefaultGroup";
   const disableGroupErrorDetectionStr = Boolean(disableGroupErrorDetection)
@@ -118,6 +119,7 @@ export const GroupedForm: FC<FormProps> = ({
       handleNext={handleNext}
       handleSubmit={handleSubmit}
       isLastActiveStep={isLastActiveStep}
+      stepsRenderer={children}
     />
   );
 };
