@@ -41,7 +41,7 @@ export const moveToLeadMetaData: MetaDataType = {
   fields: [
     {
       render: {
-        componentType: "select",
+        componentType: "textField",
       },
       name: "remarks",
       label: "Remarks",
