@@ -28,7 +28,7 @@ export const TargetAPICrudProviderGenerator = (
     args: { moduleType, productType, userID },
   },
   getFormMetaData: {
-    fn: CRUD2API.getFormMetaData,
+    fn: API.getFormMetaData,
     args: { moduleType, productType, userID },
   },
   getFormData: {
