@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { NumberFormatCustom } from "components/derived/numberFormat";
+import { InputMaskCustom } from "components/derived/inputMask";
 
 export const PasswordField = ({
   loginType,
@@ -16,7 +16,7 @@ export const PasswordField = ({
   handlePassword,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState(loginState?.password);
+  const [password, setPassword] = useState();
   const currentPassword = useRef<any>(null);
   currentPassword.current = password;
   const handleChange = useCallback((e) => setPassword(e.target.value), [
@@ -45,10 +45,10 @@ export const PasswordField = ({
             helperText={loginState.isError ? loginState.userMessage : ""}
             disabled={loginState.loading}
             InputProps={{
-              inputComponent: NumberFormatCustom,
+              inputComponent: InputMaskCustom,
               inputProps: {
-                FormatProps: {
-                  format: "# # # # # #",
+                MaskProps: {
+                  mask: "000000",
                 },
               },
             }}
