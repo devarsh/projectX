@@ -15,7 +15,7 @@ import { Priority } from "../priority";
 import { MoveToLead } from "../moveToLead";
 import { InvalidAction } from "pages_los/common/invalidAction";
 
-//All actions = [ViewDetails,AssignBranch,Priority,MoveToLead,AssignInquiry]
+//All actions = [ViewDetails,ViewDetailsReadOnly,AssignBranch,Priority,MoveToLead,AssignInquiry]
 
 export const Inquiry = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
