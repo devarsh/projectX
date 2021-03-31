@@ -18,7 +18,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { useSnackbar } from "notistack";
 import { useMutation } from "react-query";
 import { APIInterfaceForm, BankAPIInterfaceWrapper } from "./apiInterfaceForms";
-import { DocumentsPreviewWrapper } from "../docsPreview";
+import { DocumentsPreviewWrapper } from "./docsPreview";
 import { documentUploadInitiate } from "../api";
 import {
   GSTUploadMetaData,
@@ -209,6 +209,13 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
             isManagement={Boolean(formDataRef.current?.management)}
             docCateg={apiType}
             transformData={(data) => {
+              if (apiType === "bank") {
+                return data.filter((one) => {
+                  const result =
+                    one?.bankLineID == formDataRef?.current?.bankLineID;
+                  return result;
+                });
+              }
               return data;
             }}
           />

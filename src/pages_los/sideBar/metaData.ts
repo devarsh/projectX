@@ -253,38 +253,8 @@ export const metaData: NavBarMetaDataType = {
     {
       label: "Lead Management",
       icon: "tasks",
-      children: [
-        {
-          label: "Leads",
-          href: "./leads",
-          isRouterLink: true,
-          icon: "circle",
-        },
-        {
-          label: "CAM",
-          href: "./cam",
-          isRouterLink: true,
-          icon: "circle",
-        },
-        {
-          label: "Customer Interaction",
-          href: "./testApi",
-          isRouterLink: true,
-          icon: "circle",
-        },
-        {
-          label: "Mandate Status",
-          href: "./pages/mandate-status",
-          isRouterLink: true,
-          icon: "circle",
-        },
-        {
-          label: "Documents",
-          href: "./pages/documents",
-          isRouterLink: true,
-          icon: "circle",
-        },
-      ],
+      href: "./leads",
+      isRouterLink: true,
     },
     {
       label: "Workflow Management",

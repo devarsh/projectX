@@ -4,7 +4,7 @@ import { queryClient, ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { APIGrid } from "./apiGrid";
-import { APIInterfaceWrapper } from "./apiInterface";
+import { APIInterfaceWrapper } from "./perfiosApiInterface";
 import { generateExternalAPIContext, ExternalAPIProvider } from "./context";
 import { ReInitiateExternalAPI } from "./reInitiate";
 
@@ -12,6 +12,12 @@ const actions: ActionTypes[] = [
   {
     actionName: "perfiosUpload",
     actionLabel: "Perfios Upload",
+    multiple: undefined,
+    alwaysAvailable: true,
+  },
+  {
+    actionName: "corpositoryUpload",
+    actionLabel: "Corpository Upload",
     multiple: undefined,
     alwaysAvailable: true,
   },

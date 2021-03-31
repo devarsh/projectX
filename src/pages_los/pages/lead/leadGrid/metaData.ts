@@ -3,7 +3,7 @@ export const leadGridMetaData = {
     dense: false,
     pageSize: [5, 10, 20],
     defaultPageSize: "5",
-    gridLabel: "Lead Inquiries",
+    gridLabel: "Leads",
     rowIdColumn: "tran_cd",
   },
   columns: [

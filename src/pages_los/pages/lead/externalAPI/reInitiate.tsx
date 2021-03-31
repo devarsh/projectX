@@ -9,7 +9,7 @@ import {
   GSTUploadMetaData,
   BankUploadMetaData,
   ITRUploadMetaData,
-} from "../externalAPI/apiInterface/metaData";
+} from "./perfiosApiInterface/metaData";
 
 export const ReInitiateExternalAPI = ({
   moduleType,
