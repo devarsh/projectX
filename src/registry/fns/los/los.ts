@@ -455,9 +455,8 @@ const LOSAPI = () => {
   };
 
   const getRoleListForInquiryAssign = async (_, formState) => {
-    console.log("formState", formState);
     const { status, data } = await internalFetcher(
-      `./${formState.moduleType}/assign/options/role`,
+      `./${formState?.moduleType}/assign/options/role`,
       {
         body: JSON.stringify({
           request_data: {
@@ -483,7 +482,7 @@ const LOSAPI = () => {
     dependentFields2
   ) => {
     const { status, data } = await internalFetcher(
-      `./${formState.moduleType}/assign/options/team `,
+      `./${formState?.moduleType}/assign/options/team `,
       {
         body: JSON.stringify({
           request_data: {
