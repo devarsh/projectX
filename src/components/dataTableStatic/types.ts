@@ -20,6 +20,7 @@ export interface GridColumnType {
   options?: any;
   isPassword?: boolean;
   disableCachingOptions?: boolean;
+  actions?: string[] | string;
 }
 
 export interface GridConfigType {

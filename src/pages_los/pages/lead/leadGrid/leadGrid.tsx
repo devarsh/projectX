@@ -77,7 +77,7 @@ export const LeadGrid = ({ gridCode, actions }) => {
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
             />
-          ) : (currentAction?.name ?? "") === "leadInquiry" ? (
+          ) : (currentAction?.name ?? "") === "leadAssignment" ? (
             <LeadInquiry
               closeDialog={handleDialogClose}
               moduleType="lead"

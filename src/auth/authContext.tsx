@@ -6,8 +6,9 @@ import {
   useState,
 } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { AuthContextType, AuthStateType, ActionType } from "./type";
 import { LOSSDK } from "registry/fns/los";
+import { queryClient } from "cache";
+import { AuthContextType, AuthStateType, ActionType } from "./type";
 import * as API from "./api";
 
 const inititalState: AuthStateType = {
@@ -106,6 +107,7 @@ export const AuthProvider = ({ children }) => {
       payload: {},
     });
     LOSSDK.removeToken();
+    queryClient.clear();
     if (
       [
         "/los/auth/login/customer",

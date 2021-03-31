@@ -99,6 +99,8 @@ export const DataGrid = ({
       disableGroupBy: Boolean(disableGroupBy),
       updateGridData,
       gridProps,
+      singleActions,
+      setGridAction,
     },
     useGlobalFilter,
     useColumnOrder,

@@ -106,6 +106,8 @@ export const DataGrid = forwardRef<any, any>(
         localFilterManager,
         globalFiltersState,
         allowColumnReordering: allowColumnReordering,
+        singleActions,
+        setGridAction,
       },
       useColumnOrder,
       useFilters,

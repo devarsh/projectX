@@ -20,6 +20,12 @@ const actions: ActionTypes[] = [
     multiple: false,
     rowDoubleClick: false,
   },
+  {
+    actionName: "AssignInquiry",
+    actionLabel: "Assign Inquiry",
+    multiple: false,
+    rowDoubleClick: false,
+  },
 ];
 
 export const AssignedInquiry = () => {
