@@ -13,6 +13,7 @@ import { DetailsTabView } from "../detailsTabView";
 import { ExternalAPI } from "../externalAPI";
 import { Stage } from "../stages";
 import { CAM } from "../cam";
+import { LeadInquiry } from "../leadInquiry";
 
 export const LeadGrid = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -72,6 +73,13 @@ export const LeadGrid = ({ gridCode, actions }) => {
           ) : (currentAction?.name ?? "") === "stages" ? (
             <Stage
               key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+              isDataChangedRef={isDataEditedRef}
+            />
+          ) : (currentAction?.name ?? "") === "leadInquiry" ? (
+            <LeadInquiry
+              closeDialog={handleDialogClose}
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}

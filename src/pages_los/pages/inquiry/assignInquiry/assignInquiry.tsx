@@ -1,11 +1,21 @@
+import { useContext, useRef, useEffect, Fragment } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { SubmitFnType } from "packages/form";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { inquiryAssignMetadata } from "./metadata";
 import * as API from "./api";
+import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
+import {
+  AssignInquiryAPIContext,
+  AssignInquiryAPIProvider,
+  generateAssignInquiryAPIContext,
+} from "./context";
+import loaderGif from "assets/images/loader.gif";
 
 interface InsertFormDataFnType {
   data: object;
@@ -27,6 +37,25 @@ export const AssignInquiry = ({
   closeDialog,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
+  const removeCache = useContext(ClearCacheContext);
+  const { getCurrentInquiry, context } = useContext(AssignInquiryAPIContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(
+      Object.values(getCurrentInquiry.args)
+    );
+  }
+
+  useEffect(() => {
+    removeCache?.addEntry(["getCurrentAssignInquiry", wrapperKey.current]);
+  }, [removeCache]);
+
+  const queryData = useQuery<any, any, any>(
+    ["getCurrentAssignInquiry", wrapperKey.current],
+    getCurrentInquiry.fn(getCurrentInquiry.args),
+    { cacheTime: 0 }
+  );
+
   const mutation = useMutation(
     insertFormDataFnWrapper(API.assignInquiry({ moduleType, inquiry: refID })),
     {
@@ -47,6 +76,9 @@ export const AssignInquiry = ({
       },
     }
   );
+
+  inquiryAssignMetadata.form.formState = context;
+
   const onSubmitHandler: SubmitFnType = (
     data,
     displayData,
@@ -60,11 +92,34 @@ export const AssignInquiry = ({
       setFieldError,
     });
   };
-  return (
+
+  return queryData.isLoading || queryData.isFetching ? (
+    <Fragment>
+      <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </Fragment>
+  ) : queryData.isError ? (
+    <Fragment>
+      <span>{queryData.error?.error_msg ?? "Unknown error occured"}</span>
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </Fragment>
+  ) : (
     <FormWrapper
       key="assignInquiry"
       metaData={inquiryAssignMetadata as MetaDataType}
-      initialValues={{}}
+      initialValues={queryData.data}
       onSubmitHandler={onSubmitHandler}
       displayMode={"new"}
       disableGroupErrorDetection={true}
@@ -88,5 +143,25 @@ export const AssignInquiry = ({
         );
       }}
     </FormWrapper>
+  );
+};
+
+export const AssignInquiryWrapper = ({
+  moduleType,
+  refID,
+  isDataChangedRef,
+  closeDialog,
+}) => {
+  return (
+    <AssignInquiryAPIProvider
+      {...generateAssignInquiryAPIContext({ refID, moduleType })}
+    >
+      <AssignInquiry
+        moduleType={moduleType}
+        refID={refID}
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={closeDialog}
+      />
+    </AssignInquiryAPIProvider>
   );
 };

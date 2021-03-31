@@ -1,15 +1,20 @@
 import { useContext, useRef, useEffect, Fragment } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 import { useMutation, useQuery } from "react-query";
 import { useSnackbar } from "notistack";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import { SubmitFnType } from "packages/form";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
+import { leadAssignMetadata } from "./metadata";
+import * as API from "./api";
 import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
-import { priorityChangeMetaData } from "./metaData";
-import { PriorityAPIContext } from "../context";
+import {
+  LeadInquiryAPIContext,
+  LeadInquiryAPIProvider,
+  generateLeadInquiryAPIContext,
+} from "./context";
 import loaderGif from "assets/images/loader.gif";
 
 interface InsertFormDataFnType {
@@ -19,37 +24,40 @@ interface InsertFormDataFnType {
   setFieldError?: any;
 }
 
-const insertFormDataFnWrapper = (updatePriorityFn) => async ({
+const insertFormDataFnWrapper = (leadInquiryFn) => async ({
   data,
 }: InsertFormDataFnType) => {
-  return updatePriorityFn(data);
+  return leadInquiryFn(data);
 };
 
-export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
+export const LeadInquiry = ({
+  moduleType,
+  refID,
+  isDataChangedRef,
+  closeDialog,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const removeCache = useContext(ClearCacheContext);
-  const { updateCurrentPriority, getCurrentPriority } = useContext(
-    PriorityAPIContext
-  );
+  const { getCurrentLeadInquiry, context } = useContext(LeadInquiryAPIContext);
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(
-      Object.values(getCurrentPriority.args)
+      Object.values(getCurrentLeadInquiry.args)
     );
   }
-  const queryData = useQuery<any, any, any>(
-    ["getCurrentPriority", wrapperKey.current],
-    getCurrentPriority.fn(getCurrentPriority.args),
-    { cacheTime: 0 }
-  );
+
   useEffect(() => {
-    removeCache?.addEntry(["getCurrentPriority", wrapperKey.current]);
+    removeCache?.addEntry(["getCurrentAssignInquiry", wrapperKey.current]);
   }, [removeCache]);
 
+  const queryData = useQuery<any, any, any>(
+    ["getCurrentAssignInquiry", wrapperKey.current],
+    getCurrentLeadInquiry.fn(getCurrentLeadInquiry.args),
+    { cacheTime: 0 }
+  );
+
   const mutation = useMutation(
-    insertFormDataFnWrapper(
-      updateCurrentPriority.fn(updateCurrentPriority.args)
-    ),
+    insertFormDataFnWrapper(API.leadInquiry({ moduleType, inquiry: refID })),
     {
       onError: (error: any, { endSubmit }) => {
         let errorMsg = "Unknown Error occured";
@@ -61,13 +69,15 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
         isDataChangedRef.current = true;
-        enqueueSnackbar("prioirty successfully changed", {
+        enqueueSnackbar("lead successfully assigned", {
           variant: "success",
         });
         closeDialog();
       },
     }
   );
+
+  leadAssignMetadata.form.formState = context;
 
   const onSubmitHandler: SubmitFnType = (
     data,
@@ -82,6 +92,7 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
       setFieldError,
     });
   };
+
   return queryData.isLoading || queryData.isFetching ? (
     <Fragment>
       <img src={loaderGif} alt="loader" width="50px" height="50px" />
@@ -106,8 +117,8 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
     </Fragment>
   ) : (
     <FormWrapper
-      key={`changePriority-${queryData.dataUpdatedAt}`}
-      metaData={priorityChangeMetaData as MetaDataType}
+      key="leadInquiry"
+      metaData={leadAssignMetadata as MetaDataType}
       initialValues={queryData.data}
       onSubmitHandler={onSubmitHandler}
       displayMode={"new"}
@@ -132,5 +143,25 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
         );
       }}
     </FormWrapper>
+  );
+};
+
+export const LeadInquiryWrapper = ({
+  moduleType,
+  refID,
+  isDataChangedRef,
+  closeDialog,
+}) => {
+  return (
+    <LeadInquiryAPIProvider
+      {...generateLeadInquiryAPIContext({ refID, moduleType })}
+    >
+      <LeadInquiry
+        moduleType={moduleType}
+        refID={refID}
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={closeDialog}
+      />
+    </LeadInquiryAPIProvider>
   );
 };

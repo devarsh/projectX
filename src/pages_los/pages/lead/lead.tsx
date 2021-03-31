@@ -26,6 +26,12 @@ const actions: ActionTypes[] = [
     multiple: false,
     rowDoubleClick: false,
   },
+  {
+    actionName: "leadInquiry",
+    actionLabel: "Lead Inquiry",
+    multiple: false,
+    rowDoubleClick: false,
+  },
 ];
 
 export const Lead = () => <LeadGrid gridCode="TRN/003" actions={actions} />;

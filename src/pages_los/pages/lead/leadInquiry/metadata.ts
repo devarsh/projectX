@@ -1,7 +1,7 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-export const inquiryAssignMetadata: MetaDataType = {
+export const leadAssignMetadata: MetaDataType = {
   form: {
-    name: "inquiryAssignForm",
+    name: "leadAssignForm",
     label: "Assignment",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
@@ -46,7 +46,7 @@ export const inquiryAssignMetadata: MetaDataType = {
       name: "usersAssignDetails",
       removeRowFn: "deleteFormArrayFieldData",
       arrayFieldIDName: "lineNo",
-      label: "Inquiry Assignment",
+      label: "Lead Assignment",
       GridProps: {
         xs: 12,
         md: 12,
