@@ -13,18 +13,12 @@ export const PasswordField = ({
   classes,
   loginState,
   verifyPassword,
-  handlePassword,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState();
-  const currentPassword = useRef<any>(null);
-  currentPassword.current = password;
   const handleChange = useCallback((e) => setPassword(e.target.value), [
     setPassword,
   ]);
-  const handleBlur = useCallback(() => {
-    handlePassword(currentPassword.current);
-  }, [handlePassword]);
 
   return (
     <Fragment>
@@ -40,7 +34,7 @@ export const PasswordField = ({
             name="otp"
             value={password}
             onChange={handleChange}
-            onBlur={handleBlur}
+            onKeyDown={(e) => e.keyCode === 13 && verifyPassword(password)}
             error={loginState.isError}
             helperText={loginState.isError ? loginState.userMessage : ""}
             disabled={loginState.loading}
@@ -66,7 +60,7 @@ export const PasswordField = ({
             name="otp"
             value={password}
             onChange={handleChange}
-            onBlur={handleBlur}
+            onKeyDown={(e) => e.keyCode === 13 && verifyPassword(password)}
             error={loginState.isError}
             helperText={loginState.isError ? loginState.userMessage : ""}
             disabled={loginState.loading}
@@ -90,7 +84,7 @@ export const PasswordField = ({
           <Button
             endIcon={loginState.loading ? <CircularProgress size={20} /> : null}
             disabled={loginState.loading}
-            onClick={verifyPassword}
+            onClick={() => verifyPassword(password)}
           >
             Login
           </Button>
