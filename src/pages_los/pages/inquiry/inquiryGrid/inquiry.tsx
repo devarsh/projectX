@@ -10,11 +10,12 @@ import { serverGridContextGenerator } from "./context";
 import { HeaderDetails } from "../headerDetails";
 import { DetailsTabView } from "../detailsTabView";
 import { AssignBranch } from "../assignBranch";
+import { AssignInquiry } from "../assignInquiry";
 import { Priority } from "../priority";
 import { MoveToLead } from "../moveToLead";
 import { InvalidAction } from "pages_los/common/invalidAction";
 
-//All actions = [AssignBranch,ViewDetails,Priority,AssignInquiry,ViewStatus,]
+//All actions = [ViewDetails,AssignBranch,Priority,MoveToLead,AssignInquiry]
 
 export const Inquiry = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -39,7 +40,9 @@ export const Inquiry = ({ gridCode, actions }) => {
       </ServerGridContextProvider>
       <Dialog
         fullScreen={
-          ["ViewDetails", "Priority"].indexOf(currentAction?.name) >= 0
+          ["ViewDetails", "ViewDetailsReadOnly", "Priority"].indexOf(
+            currentAction?.name
+          ) >= 0
             ? true
             : false
         }
@@ -62,6 +65,19 @@ export const Inquiry = ({ gridCode, actions }) => {
                 isDataChangedRef={isDataChangedRef}
               />
             </Fragment>
+          ) : (currentAction?.name ?? "") === "ViewDetailsReadOnly" ? (
+            <Fragment key={currentAction?.rows[0].id}>
+              <HeaderDetails
+                productData={currentAction?.rows[0]}
+                handleDialogClose={handleDialogClose}
+              />
+              <DetailsTabView
+                moduleType="inquiry"
+                refID={currentAction?.rows[0].id}
+                isDataChangedRef={isDataChangedRef}
+                isReadOnly={true}
+              />
+            </Fragment>
           ) : (currentAction?.name ?? "") === "AssignBranch" ? (
             <AssignBranch
               key={currentAction?.rows[0].id}
@@ -82,13 +98,26 @@ export const Inquiry = ({ gridCode, actions }) => {
                 isDataChangedRef={isDataChangedRef}
               />
             </Fragment>
-          ) : (currentAction?.name ?? "") === "Move" ? (
+          ) : (currentAction?.name ?? "") === "MoveToLead" ? (
             <Fragment key={currentAction?.rows[0].id}>
               <HeaderDetails
                 productData={currentAction?.rows[0]}
                 handleDialogClose={handleDialogClose}
               />
               <MoveToLead
+                moduleType="inquiry"
+                refID={currentAction?.rows[0].id}
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
+              />
+            </Fragment>
+          ) : (currentAction?.name ?? "") === "AssignInquiry" ? (
+            <Fragment key={currentAction?.rows[0].id}>
+              <HeaderDetails
+                productData={currentAction?.rows[0]}
+                handleDialogClose={handleDialogClose}
+              />
+              <AssignInquiry
                 moduleType="inquiry"
                 refID={currentAction?.rows[0].id}
                 isDataChangedRef={isDataChangedRef}

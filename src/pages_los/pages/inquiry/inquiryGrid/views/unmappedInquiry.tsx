@@ -9,7 +9,7 @@ const actions: ActionTypes[] = [
     rowDoubleClick: false,
   },
   {
-    actionName: "ViewDetails",
+    actionName: "ViewDetailsReadOnly",
     actionLabel: "View Details",
     multiple: false,
     rowDoubleClick: true,

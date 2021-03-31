@@ -15,7 +15,7 @@ const actions: ActionTypes[] = [
     rowDoubleClick: false,
   },
   {
-    actionName: "Move",
+    actionName: "MoveToLead",
     actionLabel: "Move To Lead",
     multiple: false,
     rowDoubleClick: false,
