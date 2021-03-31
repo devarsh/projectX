@@ -44,8 +44,8 @@ export const DetailsTabView: FC<{
 //   setCurrentTab(currentTab);
 // };
 // const classes = useStyles();
-{
-  /* <Fragment>
+//{
+/* <Fragment>
       {<Tabs value={currentTab} onChange={handleChangeTab}>
         <Tab label="Inquiry" id="0" />
         <Tab label="Questionnaire" id="1" />
@@ -73,4 +73,4 @@ export const DetailsTabView: FC<{
         </Box>
       </Suspense>
     </Fragment> */
-}
+//}

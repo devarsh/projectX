@@ -4,7 +4,7 @@ import clsx from "clsx";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
+//import Badge from "@material-ui/core/Badge";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -13,11 +13,11 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+//import NotificationsIcon from "@material-ui/icons/Notifications";
 import Logo from "assets/images/logo.svg";
 import { useStyles } from "./style";
 import { AuthContext } from "auth";
-import { SearchBar } from "components/derived";
+//import { SearchBar } from "components/derived";
 
 export const MyAppBar = ({ handleDrawerOpen, open }) => {
   const authController = useContext(AuthContext);

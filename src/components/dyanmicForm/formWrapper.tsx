@@ -6,6 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext, useForm } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
@@ -35,6 +36,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
       displayMode,
       hideTitleBar = false,
       hideDisplayModeInTitle = false,
+      formHeight = "65vh",
       children,
     },
     ref
@@ -84,6 +86,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
             hideTitleBar={hideTitleBar}
             hideDisplayModeInTitle={hideDisplayModeInTitle}
             wrapperChild={children}
+            formHeight={formHeight}
           />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
@@ -107,6 +110,7 @@ const ChildFormWrapper = forwardRef<any, any>(
       hideTitleBar,
       hideDisplayModeInTitle,
       wrapperChild,
+      formHeight,
     },
     ref
   ) => {
@@ -186,6 +190,7 @@ const ChildFormWrapper = forwardRef<any, any>(
               {({ steps }) => (
                 <div
                   style={{
+                    //@ts-ignore
                     height: "65vh",
                     overflowY: "auto",
                     overflowX: "hidden",
@@ -210,7 +215,28 @@ const ChildFormWrapper = forwardRef<any, any>(
               fields={groupWiseFields}
               formRenderConfig={formRenderConfig}
               formName={formName}
-            />
+            >
+              {({ spacing, direction, fieldsToRender }) => (
+                <div
+                  style={{
+                    //@ts-ignore
+                    height: "65vh",
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                  }}
+                >
+                  <Grid
+                    container={true}
+                    spacing={spacing}
+                    direction={direction}
+                  >
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {fieldsToRender}
+                    </Suspense>
+                  </Grid>
+                </div>
+              )}
+            </SimpleForm>
           </Container>
         ) : (
           <div>RenderType {formRenderType} not available</div>
