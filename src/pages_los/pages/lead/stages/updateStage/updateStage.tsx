@@ -8,7 +8,7 @@ import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
-import { priorityChangeMetaData } from "./metaData";
+import { stageChangeMetaData } from "./metaData";
 import { StagesAPIContext } from "../context";
 import loaderGif from "assets/images/loader.gif";
 
@@ -28,7 +28,10 @@ const insertFormDataFnWrapper = (updatePriorityFn) => async ({
 export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
   const { enqueueSnackbar } = useSnackbar();
   const removeCache = useContext(ClearCacheContext);
-  const { updateCurrentStage, getCurrentStage } = useContext(StagesAPIContext);
+  const { updateCurrentStage, getCurrentStage, context } = useContext(
+    StagesAPIContext
+  );
+  stageChangeMetaData.form.formState = context;
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(
@@ -36,11 +39,12 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
     );
   }
   const queryData = useQuery<any, any, any>(
-    ["getCurrentStage", wrapperKey.current],
-    updateCurrentStage.fn(updateCurrentStage.args)
+    ["getCurrentLeadStage", wrapperKey.current],
+    getCurrentStage.fn(getCurrentStage.args),
+    { cacheTime: 0 }
   );
   useEffect(() => {
-    removeCache?.addEntry(["getCurrentStage", wrapperKey.current]);
+    removeCache?.addEntry(["getCurrentLeadStage", wrapperKey.current]);
   }, [removeCache]);
 
   const mutation = useMutation(
@@ -102,7 +106,7 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
   ) : (
     <FormWrapper
       key={`changeStages-${queryData.dataUpdatedAt}`}
-      metaData={priorityChangeMetaData as MetaDataType}
+      metaData={stageChangeMetaData as MetaDataType}
       initialValues={queryData.data}
       onSubmitHandler={onSubmitHandler}
       displayMode={"new"}

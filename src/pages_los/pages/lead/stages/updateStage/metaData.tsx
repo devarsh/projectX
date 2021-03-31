@@ -1,5 +1,5 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-export const priorityChangeMetaData: MetaDataType = {
+export const stageChangeMetaData: MetaDataType = {
   form: {
     name: "updateLeadStage",
     label: "Change Lead Stage",
@@ -43,8 +43,8 @@ export const priorityChangeMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
-      name: "priority",
-      label: "Priority",
+      name: "stageCode",
+      label: "Lead Stage",
       required: true,
       GridProps: {
         xs: 6,
@@ -52,61 +52,38 @@ export const priorityChangeMetaData: MetaDataType = {
         sm: 6,
       },
       //@ts-ignore
-      options: "getLeadPriority",
+      options: "getLeadStage",
+      validate: "getValidateValue",
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "subStageCode",
+      label: "Lead Sub Stages",
+      GridProps: {
+        xs: 12,
+        md: 6,
+        sm: 6,
+      },
+      disableCaching: true,
+      //@ts-ignore
+      dependentFields: ["stageCode"],
+      //@ts-ignore
+      options: "getLeadSubStageCode",
       validate: "getValidateValue",
     },
     {
       render: {
         componentType: "textField",
       },
-      name: "priorityRemarks",
+      name: "remarks",
       label: "Remarks",
       GridProps: {
         xs: 12,
         md: 6,
         sm: 6,
       },
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "enableHoldDays",
-      label: "Change Priority Hold Days",
-      GridProps: {
-        xs: 12,
-        md: 6,
-        sm: 6,
-      },
-      defaultValue: "N",
-      options: [
-        { label: "Yes", value: "Y" },
-        { label: "No", value: "N" },
-      ],
-    },
-    {
-      render: {
-        componentType: "numberFormat",
-      },
-      name: "priorityDays",
-      label: "Priority Hold Days",
-      required: true,
-      GridProps: {
-        xs: 12,
-        md: 6,
-        sm: 6,
-      },
-      FormatProps: {
-        format: "##",
-        isAllowed: (values) => {
-          if (values.floatValue === 0) {
-            return false;
-          }
-          return true;
-        },
-      },
-      dependentFields: ["enableHoldDays"],
-      shouldExclude: "readOnlyPriorityHoldDays",
     },
   ],
 };
