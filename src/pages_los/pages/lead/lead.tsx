@@ -27,8 +27,8 @@ const actions: ActionTypes[] = [
     rowDoubleClick: false,
   },
   {
-    actionName: "leadInquiry",
-    actionLabel: "Lead Inquiry",
+    actionName: "leadAssign",
+    actionLabel: "Lead Assign",
     multiple: false,
     rowDoubleClick: false,
   },

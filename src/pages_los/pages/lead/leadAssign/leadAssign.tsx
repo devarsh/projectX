@@ -11,9 +11,9 @@ import { leadAssignMetadata } from "./metadata";
 import * as API from "./api";
 import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
 import {
-  LeadInquiryAPIContext,
-  LeadInquiryAPIProvider,
-  generateLeadInquiryAPIContext,
+  LeadAssignAPIContext,
+  LeadAssignAPIProvider,
+  generateLeadAssignAPIContext,
 } from "./context";
 import loaderGif from "assets/images/loader.gif";
 
@@ -24,13 +24,13 @@ interface InsertFormDataFnType {
   setFieldError?: any;
 }
 
-const insertFormDataFnWrapper = (leadInquiryFn) => async ({
+const insertFormDataFnWrapper = (leadAssignFn) => async ({
   data,
 }: InsertFormDataFnType) => {
-  return leadInquiryFn(data);
+  return leadAssignFn(data);
 };
 
-export const LeadInquiry = ({
+export const LeadAssign = ({
   moduleType,
   refID,
   isDataChangedRef,
@@ -38,26 +38,26 @@ export const LeadInquiry = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const removeCache = useContext(ClearCacheContext);
-  const { getCurrentLeadInquiry, context } = useContext(LeadInquiryAPIContext);
+  const { getCurrentLeadAssign, context } = useContext(LeadAssignAPIContext);
   const wrapperKey = useRef<any>(null);
   if (wrapperKey.current === null) {
     wrapperKey.current = cacheWrapperKeyGen(
-      Object.values(getCurrentLeadInquiry.args)
+      Object.values(getCurrentLeadAssign.args)
     );
   }
 
   useEffect(() => {
-    removeCache?.addEntry(["getCurrentAssignInquiry", wrapperKey.current]);
+    removeCache?.addEntry(["getCurrentLeadAssign", wrapperKey.current]);
   }, [removeCache]);
 
   const queryData = useQuery<any, any, any>(
-    ["getCurrentAssignInquiry", wrapperKey.current],
-    getCurrentLeadInquiry.fn(getCurrentLeadInquiry.args),
+    ["getCurrentLeadAssign", wrapperKey.current],
+    getCurrentLeadAssign.fn(getCurrentLeadAssign.args),
     { cacheTime: 0 }
   );
 
   const mutation = useMutation(
-    insertFormDataFnWrapper(API.leadInquiry({ moduleType, inquiry: refID })),
+    insertFormDataFnWrapper(API.leadAssign({ moduleType, inquiry: refID })),
     {
       onError: (error: any, { endSubmit }) => {
         let errorMsg = "Unknown Error occured";
@@ -146,22 +146,22 @@ export const LeadInquiry = ({
   );
 };
 
-export const LeadInquiryWrapper = ({
+export const LeadAssignWrapper = ({
   moduleType,
   refID,
   isDataChangedRef,
   closeDialog,
 }) => {
   return (
-    <LeadInquiryAPIProvider
-      {...generateLeadInquiryAPIContext({ refID, moduleType })}
+    <LeadAssignAPIProvider
+      {...generateLeadAssignAPIContext({ refID, moduleType })}
     >
-      <LeadInquiry
+      <LeadAssign
         moduleType={moduleType}
         refID={refID}
         isDataChangedRef={isDataChangedRef}
         closeDialog={closeDialog}
       />
-    </LeadInquiryAPIProvider>
+    </LeadAssignAPIProvider>
   );
 };
