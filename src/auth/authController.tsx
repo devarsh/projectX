@@ -11,7 +11,6 @@ import logo from "assets/images/logo.svg";
 
 const inititalState = {
   username: "",
-  password: "",
   loading: false,
   isError: false,
   userMessage: "",
@@ -46,6 +45,7 @@ const reducer = (state, action) => {
         loading: false,
         currentFlow: "password",
         transactionID: action.payload.transactionID,
+        username: action.payload.username,
       };
     }
     case "passwordVerificationSuccessful": {
@@ -74,8 +74,8 @@ export const AuthLoginController = () => {
     }
   }, [navigate]);
 
-  const verifyUsername = async () => {
-    if (!Boolean(loginState.username)) {
+  const verifyUsername = async (username) => {
+    if (!Boolean(username)) {
       dispath({
         type: "usernameVerificationFailure",
         payload: { error: "This is a required" },
@@ -84,11 +84,14 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititateUserNameVerification" });
     try {
-      const result = await API.veirfyUsername(loginState.username, loginType);
+      const result = await API.veirfyUsername(username, loginType);
       if (result.status === "success") {
         dispath({
           type: "usernameVerificationSuccessful",
-          payload: { transactionID: result?.data?.transactionId },
+          payload: {
+            transactionID: result?.data?.transactionId,
+            username: username,
+          },
         });
       } else {
         dispath({
@@ -108,8 +111,8 @@ export const AuthLoginController = () => {
     }
   };
 
-  const verifyPassword = async () => {
-    if (!Boolean(loginState.password)) {
+  const verifyPassword = async (password) => {
+    if (!Boolean(password)) {
       dispath({
         type: "passwordVerificationFailure",
         payload: { error: "This is a required Field" },
@@ -121,12 +124,11 @@ export const AuthLoginController = () => {
       const result = await API.verifyPasswordAndLogin(
         loginState.transactionID,
         loginState.username,
-        loginState.password,
+        password,
         loginType
       );
       if (result.status === "success") {
         dispath({ type: "passwordVerificationSuccessful" });
-        console.log(result.data);
         authContext?.login(result.data);
       } else {
         dispath({
@@ -145,25 +147,6 @@ export const AuthLoginController = () => {
       });
     }
   };
-
-  const handleUsername = useCallback(
-    (value) => {
-      dispath({
-        type: "setUsername",
-        payload: { data: value },
-      });
-    },
-    [dispath]
-  );
-  const handlePassword = useCallback(
-    (value) => {
-      dispath({
-        type: "setPassword",
-        payload: { data: value },
-      });
-    },
-    [dispath]
-  );
 
   return (
     <Box display="flex" width={1} className={classes.wrapper}>
@@ -198,7 +181,6 @@ export const AuthLoginController = () => {
             classes={classes}
             loginState={loginState}
             verifyUsername={verifyUsername}
-            handleUsername={handleUsername}
           />
         ) : (
           <PasswordField
@@ -207,7 +189,6 @@ export const AuthLoginController = () => {
             classes={classes}
             loginState={loginState}
             verifyPassword={verifyPassword}
-            handlePassword={handlePassword}
           />
         )}
       </Box>

@@ -10,17 +10,11 @@ export const UsernameField = ({
   classes,
   loginState,
   verifyUsername,
-  handleUsername,
 }) => {
-  const [userName, setUsername] = useState(loginState?.username);
-  const currentUserName = useRef<any>(null);
-  currentUserName.current = userName;
+  const [userName, setUsername] = useState();
   const handleChange = useCallback((e) => setUsername(e.target.value), [
     setUsername,
   ]);
-  const handleBlur = useCallback(() => {
-    handleUsername(currentUserName.current);
-  }, [handleUsername]);
 
   return (
     <Fragment>
@@ -42,7 +36,7 @@ export const UsernameField = ({
           name="phoneNumber"
           value={userName}
           onChange={handleChange}
-          onBlur={handleBlur}
+          onKeyDown={(e) => e.keyCode === 13 && verifyUsername(userName)}
           error={loginState.isError}
           helperText={loginState.isError ? loginState.userMessage : ""}
           InputLabelProps={{ shrink: true }}
@@ -74,7 +68,7 @@ export const UsernameField = ({
           <Button
             disabled={loginState.loading}
             endIcon={loginState.loading ? <CircularProgress size={20} /> : null}
-            onClick={verifyUsername}
+            onClick={() => verifyUsername(userName)}
           >
             Next
           </Button>
