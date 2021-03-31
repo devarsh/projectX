@@ -186,5 +186,12 @@ registerFn("getAllRegisteredUsersList", LOSSDK.getAllRegisteredUsersList);
 registerFn("getTeamRoleList", LOSSDK.getTeamRoleList);
 registerFn("getUserListFromTeamRole", LOSSDK.getUserListFromTeamRole);
 
+//for Assign inquiry or lead inquiry
+registerFn("getRoleListForInquiryAssign", LOSSDK.getRoleListForInquiryAssign);
+registerFn(
+  "getTeamRoleListForInquiryAssign",
+  LOSSDK.getTeamRoleListForInquiryAssign
+);
+
 //for priority change form
 registerFn("readOnlyPriorityHoldDays", readOnly.priorityHoldDays);

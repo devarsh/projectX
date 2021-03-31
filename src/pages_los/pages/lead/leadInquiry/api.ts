@@ -1,6 +1,6 @@
 import { LOSSDK } from "registry/fns/los";
 
-export const assignInquiry = ({ moduleType, inquiry }) => async (formData) => {
+export const leadInquiry = ({ moduleType, inquiry }) => async (formData) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/assign/data/put`,
     {
@@ -20,7 +20,7 @@ export const assignInquiry = ({ moduleType, inquiry }) => async (formData) => {
   }
 };
 
-export const getCurrentInquiry = ({ refID, moduleType }) => async () => {
+export const getCurrentLeadInquiry = ({ refID, moduleType }) => async () => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/assign/data/get`,
     {

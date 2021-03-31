@@ -453,6 +453,57 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+
+  const getRoleListForInquiryAssign = async (_, formState) => {
+    console.log("formState", formState);
+    const { status, data } = await internalFetcher(
+      `./${formState.moduleType}/assign/options/role`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID ?? " ",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.roleCode,
+        label: one?.roleName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getTeamRoleListForInquiryAssign = async (
+    _,
+    formState,
+    dependentFields2
+  ) => {
+    const { status, data } = await internalFetcher(
+      `./${formState.moduleType}/assign/options/team `,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID ?? " ",
+            teamRole:
+              dependentFields2["usersAssignDetails.teamRole"].value ?? " ",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.userID,
+        label: one?.username,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
   return {
     inititateAPI,
     setToken,
@@ -487,6 +538,10 @@ const LOSAPI = () => {
     getAllRegisteredUsersList,
     getTeamRoleList,
     getUserListFromTeamRole,
+
+    //For Assign Inquiry or Lead Inquiry
+    getRoleListForInquiryAssign,
+    getTeamRoleListForInquiryAssign,
   };
 };
 
