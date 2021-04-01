@@ -4,9 +4,12 @@ import { queryClient, ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { APIGrid } from "./apiGrid";
-import { APIInterfaceWrapper } from "./perfiosApiInterface";
 import { generateExternalAPIContext, ExternalAPIProvider } from "./context";
-import { ReInitiateExternalAPI } from "./reInitiate";
+import {
+  APIInterfaceWrapper,
+  ReInitiateExternalAPI,
+} from "./perfiosApiInterface";
+import { CorpositoryAPIInterface } from "./corpositoryApiInterface";
 
 const actions: ActionTypes[] = [
   {
@@ -16,13 +19,13 @@ const actions: ActionTypes[] = [
     alwaysAvailable: true,
   },
   {
-    actionName: "corpositoryUpload",
-    actionLabel: "Corpository Upload",
+    actionName: "corpository",
+    actionLabel: "Corpository",
     multiple: undefined,
     alwaysAvailable: true,
   },
   {
-    actionName: "reInitiate",
+    actionName: "reInitiatePerfios",
     actionLabel: "Re-Initiate",
     multiple: false,
     shouldExclude: (rows: any) => {
@@ -83,7 +86,14 @@ export const ExternalAPI = ({ refID, moduleType }) => {
             closeDialog={closeMyDialog}
             isDataChangedRef={isMyDataChangedRef}
           />
-        ) : (currentAction?.name ?? "") === "reInitiate" ? (
+        ) : (currentAction?.name ?? "") === "corpository" ? (
+          <CorpositoryAPIInterface
+            refID={refID}
+            moduleType={moduleType}
+            closeDialog={closeMyDialog}
+            isDataChangedRef={isMyDataChangedRef}
+          />
+        ) : (currentAction?.name ?? "") === "reInitiatePerfios" ? (
           <ReInitiateExternalAPI
             refID={refID}
             moduleType={moduleType}

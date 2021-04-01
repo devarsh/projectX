@@ -3,13 +3,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
-import { perfiosReinitiate } from "./api";
+import { perfiosReinitiate } from "../../api";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import {
   GSTUploadMetaData,
   BankUploadMetaData,
   ITRUploadMetaData,
-} from "./perfiosApiInterface/metaData";
+} from "../metaData";
 
 export const ReInitiateExternalAPI = ({
   moduleType,

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import { RecoilRoot } from "recoil";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -19,7 +19,7 @@ import { useSnackbar } from "notistack";
 import { useMutation } from "react-query";
 import { APIInterfaceForm, BankAPIInterfaceWrapper } from "./apiInterfaceForms";
 import { DocumentsPreviewWrapper } from "./docsPreview";
-import { documentUploadInitiate } from "../api";
+import { perfiosUploadInitiate } from "../api";
 import {
   GSTUploadMetaData,
   BankUploadMetaData,
@@ -54,7 +54,7 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
     [setApiType]
   );
   const inititateAPIMutation = useMutation(
-    InititateDocumentUploadAPI(documentUploadInitiate),
+    InititateDocumentUploadAPI(perfiosUploadInitiate),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
@@ -75,11 +75,11 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
   };
 
   return (
-    <div>
+    <Fragment>
       <AppBar position="relative" color="secondary">
         <Toolbar>
           <Typography component="div" variant="h6">
-            API Calling Interface
+            Perfios Upload API Calling Interface
           </Typography>
           <Box flexGrow={1} />
           {Boolean(apiType) ? (
@@ -221,7 +221,7 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
           />
         </DialogContent>
       </Dialog>
-    </div>
+    </Fragment>
   );
 };
 
