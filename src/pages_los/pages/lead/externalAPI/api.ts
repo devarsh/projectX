@@ -61,6 +61,19 @@ export const perfiosReinitiate = async (docType, formData: any, moduleType) => {
   }
 };
 
+export const generateDocumentDownloadURL = (
+  moduleType,
+  requestType,
+  docUUID
+) => {
+  return new URL(
+    ["GST_UPLOAD", "BANK_UPLOAD", "ITR_UPLOAD"].indexOf(requestType) >= 0
+      ? `./${moduleType}/perfios/data/download?docUUID=${docUUID}&tokenID=${LOSSDK.getToken()}`
+      : `./${moduleType}/corpository/data/download?docUUID=${docUUID}&tokenID=${LOSSDK.getToken()}`,
+    LOSSDK.getBaseURL() as URL
+  ).href;
+};
+
 export const corpositoryCompanySearch = async (
   moduleType: string,
   refID: string,

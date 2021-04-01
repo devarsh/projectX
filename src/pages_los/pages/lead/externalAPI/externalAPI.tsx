@@ -10,6 +10,7 @@ import {
   ReInitiateExternalAPI,
 } from "./perfiosApiInterface";
 import { CorpositoryAPIInterface } from "./corpositoryApiInterface";
+import { Download } from "./download";
 
 const actions: ActionTypes[] = [
   {
@@ -32,6 +33,21 @@ const actions: ActionTypes[] = [
       let exclude = false;
       for (let i = 0; i < rows.length; i++) {
         if (["ERROR", "FAILED"].indexOf(rows[i].data?.status) < 0) {
+          exclude = true;
+          break;
+        }
+      }
+      return exclude;
+    },
+  },
+  {
+    actionName: "download",
+    actionLabel: "Download",
+    multiple: false,
+    shouldExclude: (rows: any) => {
+      let exclude = false;
+      for (let i = 0; i < rows.length; i++) {
+        if (["SUCCESS"].indexOf(rows[i].data?.status) < 0) {
           exclude = true;
           break;
         }
@@ -100,6 +116,12 @@ export const ExternalAPI = ({ refID, moduleType }) => {
             closeDialog={closeMyDialog}
             row={currentAction?.rows[0] ?? undefined}
             isDataChangedRef={isMyDataChangedRef}
+          />
+        ) : (currentAction?.name ?? "") === "download" ? (
+          <Download
+            moduleType={moduleType}
+            closeDialog={closeMyDialog}
+            row={currentAction?.rows[0] ?? undefined}
           />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
