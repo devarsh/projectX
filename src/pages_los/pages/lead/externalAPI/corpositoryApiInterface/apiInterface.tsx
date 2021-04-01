@@ -16,7 +16,6 @@ import GridWrapper from "components/dataTableStatic";
 import { CompanyListGrid } from "./metadata";
 import { GridMetaDataType } from "components/dataTableStatic";
 import { ActionTypes } from "components/dataTable";
-import loaderGif from "assets/images/loader.gif";
 import * as API from "../api";
 import Alert from "@material-ui/lab/Alert";
 
