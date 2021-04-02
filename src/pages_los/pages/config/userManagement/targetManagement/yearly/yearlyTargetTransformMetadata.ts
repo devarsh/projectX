@@ -1,7 +1,8 @@
-export const metaData = {
+import { MetaDataType } from "components/dyanmicForm/types";
+export const yearlyTargetTransformMetadata: MetaDataType = {
   form: {
     name: "123456",
-    label: "Yearly Target Details",
+    label: "Target Details",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
@@ -15,8 +16,8 @@ export const metaData = {
       gridConfig: {
         item: {
           xs: 12,
-          sm: 4,
-          md: 4,
+          sm: 3,
+          md: 3,
         },
         container: {
           direction: "row",
@@ -51,12 +52,13 @@ export const metaData = {
       name: "targetYear",
       label: "Target Year",
       placeholder: "Target Year",
+      //@ts-ignore
       options: "getTargetYears",
       defaultValue: "",
       GridProps: {
         xs: 12,
-        md: 4,
-        sm: 4,
+        md: 3,
+        sm: 3,
       },
     },
     {
@@ -68,8 +70,8 @@ export const metaData = {
       label: "Partner Volume",
       GridProps: {
         xs: 12,
-        md: 4,
-        sm: 4,
+        md: 3,
+        sm: 3,
       },
     },
     {
@@ -81,8 +83,8 @@ export const metaData = {
       label: "Partner Count",
       GridProps: {
         xs: 12,
-        md: 4,
-        sm: 4,
+        md: 3,
+        sm: 3,
       },
     },
     {
@@ -216,32 +218,4 @@ export const metaData = {
       },
     },
   ],
-};
-
-let myMetaDataTransformer = (myProducts) => {
-  const productTypes = [
-    "retailVolume",
-    "smeVolume",
-    "infraVolume",
-    "unsecuredVolume",
-    "insuranceVolume",
-  ];
-  let inititalValue: any = {
-    my: [],
-    cross: [],
-  };
-  const splitProductTypes = productTypes.reduce((accum, one) => {
-    if (
-      myProducts.findIndex((current) => {
-        console.log(current, one, current.indexOf(one));
-        return current.indexOf(one) >= 0;
-      })
-    ) {
-      accum.my.push(one);
-    } else {
-      accum.cross.push(one);
-    }
-    return accum;
-  }, inititalValue);
-  console.log(splitProductTypes);
 };

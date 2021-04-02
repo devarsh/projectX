@@ -1,5 +1,7 @@
 import { LOSSDK } from "registry/fns/los";
+import { transFormData } from "./transformMetadataNew";
 import { YearlyTargetGridMetaData } from "./yearlyTargetGridMetadata";
+import { yearlyTargetTransformMetadata } from "./yearlyTargetTransformMetadata";
 
 export interface TargetCRUDTYPE {
   moduleType: string;
@@ -103,7 +105,9 @@ export const updateYearlyTargetData = ({
 
 export const getGridFormMetaData = () => async () => YearlyTargetGridMetaData;
 
-export const getFormMetaData = ({
+export const getFormMetaData = () => async () => yearlyTargetTransformMetadata;
+
+export const getFormMetaData1 = ({
   moduleType,
   productType,
   userID,
@@ -127,65 +131,10 @@ export const getFormMetaData = ({
       "insuranceVolume",
     ];
     const ownProducts = ["retailVolume", "smeVolume"];
-    transFormData(data?.response_data, productTypes, ownProducts);
+    var test = transFormData(data?.response_data, ownProducts);
 
-    return transFormData;
+    return test;
   } else {
     throw data?.error_data;
   }
-};
-
-const transFormData = (metadata, others, ownProducts) => {
-  let fields = metadata?.fields;
-  let crossMetadata: any = [];
-
-  let myMetaData = others.filter(function (myNew) {
-    if (ownProducts.indexOf(myNew) >= 0) {
-      return true;
-    } else {
-      crossMetadata.push(myNew);
-      return false;
-    }
-  });
-  let myNewMetadata = fields.filter((one) => {
-    if (myMetaData.indexOf(one.name) >= 0) {
-      return true;
-    }
-  });
-  let crosNewMetadata = fields.filter((one) => {
-    if (crossMetadata.indexOf(one.name) >= 0) {
-      return true;
-    }
-  });
-  let otherData = fields.filter((one) => {
-    if (
-      myNewMetadata.indexOf(one) === -1 &&
-      crosNewMetadata.indexOf(one) === -1
-    ) {
-      return true;
-    }
-  });
-
-  var crossMetadataGroup = crosNewMetadata.map((someValue) => {
-    someValue.render.group = 2;
-    return someValue;
-  });
-
-  let finalFields: any = [
-    ...myNewMetadata,
-    ...crossMetadataGroup,
-    ...otherData,
-  ];
-  let finalMetaData = {
-    form: metadata?.form,
-    fields: finalFields,
-  };
-  if (crosNewMetadata.length > 0) {
-    finalMetaData.form.render.groups = {
-      ...finalMetaData.form.render.groups,
-      2: "Cross",
-    };
-  }
-  console.log(finalMetaData);
-  return finalFields;
 };

@@ -3,7 +3,7 @@ import { MetaDataType } from "components/dyanmicForm";
 const GeneralDetailsMetaData: MetaDataType = {
   form: {
     name: "123456",
-    label: "General Details",
+    label: "Target Details",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
@@ -11,13 +11,15 @@ const GeneralDetailsMetaData: MetaDataType = {
       ordering: "auto",
       renderType: "tabs",
       groups: {
-        "0": "Address Details",
+        "0": "Business By Direct Team",
+        "1": "Lead Target",
+        "2": "Cross",
       },
       gridConfig: {
         item: {
           xs: 12,
-          sm: 4,
-          md: 4,
+          sm: 3,
+          md: 3,
         },
         container: {
           direction: "row",

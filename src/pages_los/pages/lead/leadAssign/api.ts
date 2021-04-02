@@ -38,3 +38,25 @@ export const getCurrentLeadAssign = ({ refID, moduleType }) => async () => {
     throw data?.error_data;
   }
 };
+
+export const deleteLeadAssign = ({ refID, moduleType }) => async (
+  lineNo: string
+) => {
+  const { data, status } = await LOSSDK.internalFetcher(
+    `./${moduleType}/assign/usersassigndetails/delete`,
+    {
+      body: JSON.stringify({
+        request_data: {
+          refID: refID,
+          lineNo: lineNo,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
