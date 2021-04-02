@@ -44,7 +44,7 @@ export const leadAssignMetadata: MetaDataType = {
         componentType: "arrayField",
       },
       name: "usersAssignDetails",
-      removeRowFn: "deleteFormArrayFieldData",
+      removeRowFn: "deleteAssignArrayFieldData",
       arrayFieldIDName: "lineNo",
       label: "Lead Assignment",
       GridProps: {

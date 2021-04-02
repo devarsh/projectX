@@ -44,7 +44,7 @@ export const inquiryAssignMetadata: MetaDataType = {
         componentType: "arrayField",
       },
       name: "usersAssignDetails",
-      removeRowFn: "deleteFormArrayFieldData",
+      removeRowFn: "deleteAssignArrayFieldData",
       arrayFieldIDName: "lineNo",
       label: "Inquiry Assignment",
       GridProps: {
