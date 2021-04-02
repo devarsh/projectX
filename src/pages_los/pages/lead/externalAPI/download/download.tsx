@@ -5,7 +5,7 @@ import { generateDocumentDownloadURL } from "../api";
 
 export const Download = ({ closeDialog, row, moduleType }) => {
   const requestType = row?.data?.requestType;
-  const transactionID = row?.data?.transactionID;
+  const transactionID = row?.data?.perfiosTransactionID;
   useEffect(() => {
     let url = generateDocumentDownloadURL(
       moduleType,

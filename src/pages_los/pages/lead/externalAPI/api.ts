@@ -68,8 +68,8 @@ export const generateDocumentDownloadURL = (
 ) => {
   return new URL(
     ["GST_UPLOAD", "BANK_UPLOAD", "ITR_UPLOAD"].indexOf(requestType) >= 0
-      ? `./${moduleType}/perfios/data/download?docUUID=${docUUID}&tokenID=${LOSSDK.getToken()}`
-      : `./${moduleType}/corpository/data/download?docUUID=${docUUID}&tokenID=${LOSSDK.getToken()}`,
+      ? `./${moduleType}/external/perfios/data/download?docUUID=${docUUID}&tokenID=${LOSSDK.getToken()}`
+      : `./${moduleType}/external/corpository/data/download?docUUID=${docUUID}&tokenID=${LOSSDK.getToken()}`,
     LOSSDK.getBaseURL() as URL
   ).href;
 };
