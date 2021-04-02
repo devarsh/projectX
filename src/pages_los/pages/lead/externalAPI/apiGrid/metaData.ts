@@ -1,6 +1,24 @@
 import { GridMetaDataType } from "components/dataTableStatic";
 
 export const GridMetaData: GridMetaDataType = {
+  gridConfig: {
+    dense: true,
+    gridLabel: "API Progress",
+    rowIdColumn: "transactionID",
+    defaultColumnConfig: {
+      width: 150,
+      maxWidth: 250,
+      minWidth: 100,
+    },
+    allowColumnReordering: false,
+    disableSorting: false,
+    disableGroupBy: false,
+    disableRowSelect: true,
+    containerHeight: {
+      min: "40vh",
+      max: "50vh",
+    },
+  },
   columns: [
     {
       columnName: "Transaction ID",
@@ -62,22 +80,4 @@ export const GridMetaData: GridMetaDataType = {
       alignment: "left",
     },
   ],
-
-  gridConfig: {
-    dense: true,
-    gridLabel: "API Progress",
-    rowIdColumn: "transactionID",
-    defaultColumnConfig: {
-      width: 150,
-      maxWidth: 250,
-      minWidth: 100,
-    },
-    allowColumnReordering: false,
-    disableSorting: false,
-    disableGroupBy: false,
-    containerHeight: {
-      min: "40vh",
-      max: "50vh",
-    },
-  },
 };

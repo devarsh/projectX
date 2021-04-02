@@ -22,6 +22,7 @@ import {
   AllTextareaAutosizeFieldProps,
   AllHiddenFieldProps,
   AllTypographyFieldProps,
+  AllTransferListProps,
 } from "./typesFields";
 import {
   TextFieldPropsOptional,
@@ -142,6 +143,7 @@ export type FieldMetaDataTypeX =
   | AllTextareaAutosizeFieldProps
   | AllTypographyFieldProps
   | AllHiddenFieldProps
+  | AllTransferListProps
   | ArrayFieldProps;
 
 export type FieldMetaDataType = Merge<

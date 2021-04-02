@@ -164,10 +164,10 @@ export const attachMethodsToMetaData = (
     const retVal = registrationFnInstance.getFn(one[1], one[3]);
     newMetaData = setIn(newMetaData, one[0], retVal);
     //to get options registered function name to be used in react-query for caching options
-    if (one[2] === "options") {
+    if (["options", "leftOptions", "rightOptions"].indexOf(`${one[2]}`) >= 0) {
       const pathSplit = one[0].split(".");
       const prev = pathSplit.slice(0, pathSplit.length - 1);
-      const newPath = [...prev, "_optionsKey"].join(".");
+      const newPath = [...prev, `_${one[2]}Key`].join(".");
       newMetaData = setIn(newMetaData, newPath, one[1]);
     }
   }

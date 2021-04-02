@@ -24,6 +24,7 @@ import { ArrayField2Props } from "components/common/arrayField";
 import { TextareaAutosizeFieldProps } from "components/common/textarea";
 import { TypographyProps } from "components/common/typograhpy";
 import { HiddenFieldProps } from "components/common/hidden";
+import { TransferListProps } from "components/common/transferList";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
@@ -167,4 +168,9 @@ export type AllHiddenFieldProps = Merge<
 export type AllTypographyFieldProps = Merge<
   Omitted<TypographyProps>,
   FieldMetaData<"typography">
+>;
+
+export type AllTransferListProps = Merge<
+  Omitted<TransferListProps>,
+  FieldMetaData<"transferList">
 >;

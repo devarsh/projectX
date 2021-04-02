@@ -27,6 +27,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 import { CAMLOSWrapper } from "./pages/cam";
 import TestForm from "components/dyanmicForm/test";
+import TransferListTest from "components/common/transferList/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -76,6 +77,7 @@ const DashbordPages = () => {
             <Route path="/cam" element={<CAMLOSWrapper />} />
             {/*dummy routes*/}
             <Route path="/testForm" element={<TestForm />} />
+            <Route path="/transfer" element={<TransferListTest />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

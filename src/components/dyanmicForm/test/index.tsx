@@ -18,7 +18,11 @@ const TestForm = () => {
         endSubmit(true);
       }}
       displayMode="edit"
-    />
+    >
+      {({ handleSubmit }) => {
+        return <button onClick={handleSubmit}>Save</button>;
+      }}
+    </FormWrapper>
   );
 };
 

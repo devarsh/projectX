@@ -63,6 +63,8 @@ const TextareaField = lazy(() => import("components/common/textarea"));
 const HiddenField = lazy(() => import("components/common/hidden"));
 const Typography = lazy(() => import("components/common/typograhpy"));
 
+const TransferList = lazy(() => import("components/common/transferList"));
+
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
 };
@@ -141,6 +143,9 @@ export const renderField: RenderFunctionType = (
       break;
     case "hidden":
       Component = HiddenField;
+      break;
+    case "transferList":
+      Component = TransferList;
       break;
     default:
       Component = EmptyComponent;

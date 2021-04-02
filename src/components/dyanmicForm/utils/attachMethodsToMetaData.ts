@@ -46,6 +46,8 @@ const getFixedRowsCount = (fieldKey) => (value) => {
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.options$/, optionsMethodNotFound],
+  [/^fields.*.leftOptions$/, optionsMethodNotFound],
+  [/^fields.*.rightOptions$/, optionsMethodNotFound],
   [/^fields.*.validate$/, validateMethodNotFound],
   [
     /^fields.*.postValidationSetCrossFieldValues$/,
