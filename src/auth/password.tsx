@@ -15,7 +15,7 @@ export const PasswordField = ({
   verifyPassword,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState("");
   const handleChange = useCallback((e) => setPassword(e.target.value), [
     setPassword,
   ]);

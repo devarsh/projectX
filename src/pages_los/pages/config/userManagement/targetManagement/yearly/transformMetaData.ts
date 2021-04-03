@@ -1,4 +1,4 @@
-export const transFormData = (metadata, ownProducts) => {
+export const transformMetaData = (metadata, ownProducts) => {
   let fields = metadata?.fields;
   let crossMetadata: any = [];
 

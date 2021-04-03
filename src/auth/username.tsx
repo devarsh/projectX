@@ -11,7 +11,7 @@ export const UsernameField = ({
   loginState,
   verifyUsername,
 }) => {
-  const [userName, setUsername] = useState();
+  const [userName, setUsername] = useState("");
   const handleChange = useCallback((e) => setUsername(e.target.value), [
     setUsername,
   ]);

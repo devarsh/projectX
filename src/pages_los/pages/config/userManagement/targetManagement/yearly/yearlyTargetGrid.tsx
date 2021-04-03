@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
-import { FormNew } from "pages_los/pages/config/userManagement/targetManagement/common/formNew";
+import { FormNew } from "./formNew";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { CRUDContextProvider } from "pages_los/common";
 import { TargetAPICrudProviderGenerator } from "./context";
@@ -79,7 +79,6 @@ export const YearlyTargetGrid: FC<{
         >
           {(currentAction?.name ?? "") === "Add" ? (
             <FormNew
-              userID={userID}
               successAction={closeMyDialog}
               cancelAction={closeMyDialog}
               isDataChangedRef={isMyDataChangedRef}

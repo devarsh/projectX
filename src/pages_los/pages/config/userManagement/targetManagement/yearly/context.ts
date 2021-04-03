@@ -12,7 +12,7 @@ export const TargetAPICrudProviderGenerator = (
     userID,
   },
   insertFormData: {
-    fn: API.insertUserData,
+    fn: API.insertYearlyTargetData,
     args: { moduleType, productType, userID },
   },
   checkFormDataExist: {

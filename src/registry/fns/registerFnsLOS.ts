@@ -94,7 +94,6 @@ registerFn("deleteFormArrayFieldData", LOSSDK.deleteFormArrayFieldData);
 registerFn("deleteAssignArrayFieldData", LOSSDK.deleteAssignArrayFieldData);
 registerFn("getProductTypeForProductName", LOSSDK.getProductTypeForProductName);
 registerFn("getManagementPersonnel", LOSSDK.getManagementPersonnel);
-registerFn("getUserBranchList", LOSSDK.getUserBranchList);
 registerFn("getPropertyTypeCAM", LOSSDK.getPropertyTypeCAM("12300002"));
 registerFn("getLRDPropertyTypeCAM", LOSSDK.getPropertyTypeCAM("12300003"));
 registerFn("retailCalculateEligibleEMI", retail.eligibleEMI);

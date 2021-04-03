@@ -1,7 +1,7 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-export const yearlyTargetTransformMetadata: MetaDataType = {
+export const yearlyTargetFormMetaData: MetaDataType = {
   form: {
-    name: "123456",
+    name: "yearlyTargetForm",
     label: "Target Details",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",

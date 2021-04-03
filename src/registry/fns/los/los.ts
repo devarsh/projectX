@@ -527,34 +527,6 @@ const LOSAPI = () => {
     }
   };
 
-  const getUserBranchList = async (userID: any) => {
-    const { status, data } = await internalFetcher(
-      `./users/employee/options/registered/branch`,
-      {
-        body: JSON.stringify({
-          request_data: {
-            userID: userID,
-          },
-        }),
-      }
-    );
-    if (status === "success" && Array.isArray(data?.response_data)) {
-      const newArray = data?.response_data.map((one) => ({
-        value: one?.branchCode,
-        label: one?.branchName,
-      }));
-      const otherValues = data?.response_data?.map((data) => {
-        return data?.ownProductList;
-      });
-      const data1 = otherValues.filter((element) => {
-        return element !== undefined;
-      });
-      return { options: newArray, others: data1 };
-    } else {
-      throw data?.error_data;
-    }
-  };
-
   return {
     inititateAPI,
     setToken,
@@ -595,7 +567,6 @@ const LOSAPI = () => {
     getTeamRoleListForInquiryAssign,
 
     deleteAssignArrayFieldData,
-    getUserBranchList,
   };
 };
 

@@ -1,7 +1,6 @@
 import { LOSSDK } from "registry/fns/los";
-import { transFormData } from "./transformMetadataNew";
-import { YearlyTargetGridMetaData } from "./yearlyTargetGridMetadata";
-import { yearlyTargetTransformMetadata } from "./yearlyTargetTransformMetadata";
+import { yearlyTargetFormMetaData } from "./metaData";
+import { YearlyTargetGridMetaData } from "./gridMetaData";
 
 export interface TargetCRUDTYPE {
   moduleType: string;
@@ -10,7 +9,7 @@ export interface TargetCRUDTYPE {
   serialNo?: string;
 }
 
-export const insertUserData = ({
+export const insertYearlyTargetData = ({
   moduleType,
   productType,
   userID,
@@ -105,35 +104,26 @@ export const updateYearlyTargetData = ({
 
 export const getGridFormMetaData = () => async () => YearlyTargetGridMetaData;
 
-export const getFormMetaData = () => async () => yearlyTargetTransformMetadata;
+export const getFormMetaData = () => async () => yearlyTargetFormMetaData;
 
-export const getFormMetaData1 = ({
-  moduleType,
-  productType,
-  userID,
-}: TargetCRUDTYPE) => async (metadataType: any) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    `./${moduleType}/${productType}/metadata/${metadataType}`,
+export const getUserBranchList = async (userID: any) => {
+  const { status, data } = await LOSSDK.internalFetcher(
+    `./users/employee/options/registered/branch`,
     {
       body: JSON.stringify({
         request_data: {
-          refID: userID,
+          userID: userID,
         },
       }),
     }
   );
-  if (status === "success") {
-    const productTypes = [
-      "retailVolume",
-      "smeVolume",
-      "infraVolume",
-      "unsecuredVolume",
-      "insuranceVolume",
-    ];
-    const ownProducts = ["retailVolume", "smeVolume"];
-    var test = transFormData(data?.response_data, ownProducts);
-
-    return test;
+  if (status === "success" && Array.isArray(data?.response_data)) {
+    const newArray = data?.response_data.map((one) => ({
+      value: one?.branchCode,
+      label: one?.branchName,
+      products: one?.ownProductList ?? [],
+    }));
+    return newArray;
   } else {
     throw data?.error_data;
   }
