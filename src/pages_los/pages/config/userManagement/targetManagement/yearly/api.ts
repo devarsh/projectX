@@ -1,6 +1,10 @@
 import { LOSSDK } from "registry/fns/los";
-import { yearlyTargetFormMetaData } from "./metaData";
-import { YearlyTargetGridMetaData } from "./gridMetaData";
+import {
+  yearlyTargetFormMetaDataEdit,
+  yearlyTargetFormMetaDataNew,
+  yearlyTargetFormMetaDataView,
+  YearlyTargetGridMetaData,
+} from "./metaData";
 
 export interface TargetCRUDTYPE {
   moduleType: string;
@@ -104,9 +108,42 @@ export const updateYearlyTargetData = ({
 
 export const getGridFormMetaData = () => async () => YearlyTargetGridMetaData;
 
-export const getFormMetaData = () => async () => yearlyTargetFormMetaData;
+export const getFormMetaData = () => (metaDataType) => {
+  if (metaDataType === "new") {
+    return yearlyTargetFormMetaDataNew;
+  } else if (metaDataType === "edit") {
+    return yearlyTargetFormMetaDataEdit;
+  } else if (metaDataType === "view") {
+    return yearlyTargetFormMetaDataView;
+  } else {
+    return yearlyTargetFormMetaDataView;
+  }
+};
 
-export const getUserBranchList = async (userID: any) => {
+export const getYearlyTargetFormData = ({
+  moduleType,
+  productType,
+  userID,
+}: TargetCRUDTYPE) => async (serialNo?: string) => {
+  const { data, status } = await LOSSDK.internalFetcher(
+    `./${moduleType}/${productType}/data/get`,
+    {
+      body: JSON.stringify({
+        request_data: {
+          userID: userID,
+          serialNo: serialNo,
+        },
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const getYearlyTargetUserBranchList = async (userID: any) => {
   const { status, data } = await LOSSDK.internalFetcher(
     `./users/employee/options/registered/branch`,
     {

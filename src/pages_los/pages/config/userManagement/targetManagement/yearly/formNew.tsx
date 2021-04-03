@@ -1,6 +1,5 @@
-import { FC, useRef, Fragment, useState, useContext, useEffect } from "react";
+import { FC, useRef, Fragment, useState, useContext } from "react";
 import { useQuery, useMutation } from "react-query";
-import Grid from "@material-ui/core/Grid";
 import Alert from "@material-ui/lab/Alert";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -12,13 +11,12 @@ import { SelectRenderOnly } from "components/common/select";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { useSnackbar } from "notistack";
 import * as API from "./api";
-import { yearlyTargetFormMetaData } from "./metaData";
 import { transformMetaData } from "./transformMetaData";
 import loaderGif from "assets/images/loader.gif";
 import { CRUDContext } from "pages_los/common";
+import { getValidateValue } from "registry/fns/misc/others";
 
 const insertFormDataFnWrapper = (insertFormData) => async (data) => {
-  console.log(data);
   return insertFormData(data);
 };
 
@@ -27,17 +25,19 @@ export const FormNew: FC<{
   successAction: any;
   cancelAction: any;
 }> = ({ isDataChangedRef, successAction, cancelAction }) => {
-  const { context } = useContext(CRUDContext);
+  const { context, getFormMetaData, insertFormData } = useContext(CRUDContext);
   const formRef = useRef<any>(null);
   const endSubmitRef = useRef<any>(null);
   const [currentBranch, setCurrentBranch] = useState<any>(null);
+  const [currentBranchError, setCurrentBranchError] = useState<any>("");
   const [currentProduct, setCurrentProduct] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const result = useQuery<any, any, any>(
-    ["getUserBranchList", context.userID],
-    () => API.getUserBranchList(context.userID)
+    ["getYearlyTargetUserBranchList", context.userID],
+    () => API.getYearlyTargetUserBranchList(context.userID)
   );
+  const formNewMetaData = getFormMetaData.fn(getFormMetaData.args)("new");
 
   const handleBranchChange = (e) => {
     setCurrentBranch(e.target.value);
@@ -50,13 +50,7 @@ export const FormNew: FC<{
   };
 
   const inititateAPIMutation = useMutation(
-    insertFormDataFnWrapper(
-      API.insertYearlyTargetData({
-        moduleType: context.moduleType,
-        productType: context.productType,
-        userID: context.userID,
-      })
-    ),
+    insertFormDataFnWrapper(insertFormData.fn(insertFormData.args)),
     {
       onError: (error: any) => {
         endSubmitRef.current(false);
@@ -85,7 +79,7 @@ export const FormNew: FC<{
               Perfios Upload API Calling Interface
             </Typography>
             <Box flexGrow={1} />
-            {Boolean(currentBranch) ? (
+            {Boolean(currentBranch) && !Boolean(currentBranchError) ? (
               <Button
                 onClick={(e) => {
                   formRef?.current?.handleSubmit?.(e);
@@ -121,15 +115,31 @@ export const FormNew: FC<{
             value={currentBranch ?? ""}
             autoComplete="off"
             handleChange={handleBranchChange}
+            handleBlur={async () => {
+              let result = await getValidateValue({ value: currentBranch });
+              if (Boolean(result)) {
+                setCurrentBranchError(result);
+              } else {
+                setCurrentBranchError("");
+              }
+            }}
             disabled={isSubmitting}
+            error={currentBranchError}
+            touched={true}
           />
           <Box flexGrow={1} />
         </Box>
         {currentBranch !== null && currentBranch !== "00" ? (
           <FormWrapper
             ref={formRef}
-            metaData={yearlyTargetFormMetaData as MetaDataType}
+            metaData={transformMetaData(
+              formNewMetaData as MetaDataType,
+              currentProduct
+            )}
             onSubmitHandler={(data, displayData, endSubmit) => {
+              if (Boolean(currentBranchError)) {
+                endSubmit(false);
+              }
               endSubmitRef.current = endSubmit;
               inititateAPIMutation.mutate({
                 ...data,
@@ -147,13 +157,3 @@ export const FormNew: FC<{
     );
   return renderResult;
 };
-
-/*
-let newMetaData = yearlyTargetFormMetaData as MetaDataType;
-  if (currentBranch !== "") {
-    newMetaData = transformMetaData(
-      yearlyTargetFormMetaData,
-      result?.data?.others
-    );
-  }
-*/

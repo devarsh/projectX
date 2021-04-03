@@ -46,9 +46,7 @@ export const RoleGridMetaData = {
       minWidth: 100,
     },
     allowColumnReordering: true,
-    disableSorting: true,
     hideHeader: false,
-    disableGroupBy: true,
     containerHeight: {
       min: "40vh",
       max: "50vh",

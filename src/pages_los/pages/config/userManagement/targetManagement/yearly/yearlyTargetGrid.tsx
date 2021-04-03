@@ -9,6 +9,7 @@ import { InvalidAction } from "pages_los/common/invalidAction";
 import { CRUDContextProvider } from "pages_los/common";
 import { TargetAPICrudProviderGenerator } from "./context";
 import { MonthlyTargetGrid } from "../monthly";
+import { FormViewEdit } from "./formViewEdit";
 
 const actions: ActionTypes[] = [
   {
@@ -85,6 +86,12 @@ export const YearlyTargetGrid: FC<{
             />
           ) : (currentAction?.name ?? "") === "Monthly" ? (
             <MonthlyTargetGrid
+              serialNo={currentAction?.rows[0]?.id}
+              closeDialog={closeMyDialog}
+              isDataChangedRef={isMyDataChangedRef}
+            />
+          ) : (currentAction?.name ?? "") === "View" ? (
+            <FormViewEdit
               serialNo={currentAction?.rows[0]?.id}
               closeDialog={closeMyDialog}
               isDataChangedRef={isMyDataChangedRef}

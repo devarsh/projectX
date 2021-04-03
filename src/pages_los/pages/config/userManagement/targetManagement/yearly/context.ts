@@ -32,7 +32,7 @@ export const TargetAPICrudProviderGenerator = (
     args: { moduleType, productType, userID },
   },
   getFormData: {
-    fn: CRUD2API.getFormData,
+    fn: API.getYearlyTargetFormData,
     args: { moduleType, productType, userID },
   },
   getGridFormMetaData: {
