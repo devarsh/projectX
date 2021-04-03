@@ -23,7 +23,7 @@ import {
   useRecoilCallback,
   useRecoilValue,
 } from "recoil";
-import { getIn } from "./util";
+import { getIn, setIn } from "./util";
 import { FormContext } from "./context";
 
 export const useFieldArray = ({
@@ -206,6 +206,41 @@ export const useFieldArray = ({
   });
 
   //end of new should exclude logic
+
+  const getAllRowsValues = useRecoilCallback(
+    ({ snapshot }) => (templateFieldRows: TemplateFieldRowType[]) => {
+      const allKeysToGetValuesFrom: string[] = [];
+      for (let i = 0; i < templateFieldRows.length; i++) {
+        let keys = Object.keys(templateFieldRows[i]?.cells);
+        for (let j = 0; j < keys.length; j++) {
+          const currentFieldKey = templateFieldRows[i].cells[keys[j]].key;
+          allKeysToGetValuesFrom.push(
+            `${formContext.formName}/${currentFieldKey}`
+          );
+        }
+      }
+      let resultValues: any = {};
+      for (let itr = 0; itr < allKeysToGetValuesFrom.length; itr++) {
+        const fieldLoadable = snapshot.getLoadable(
+          formFieldAtom(allKeysToGetValuesFrom[itr])
+        );
+        if (fieldLoadable.state === "hasValue") {
+          const readOnlyFieldState = fieldLoadable.contents;
+          if (readOnlyFieldState.excluded === true) {
+            continue;
+          } else {
+            resultValues = setIn(
+              resultValues,
+              readOnlyFieldState.name.replace(`${formContext.formName}/`, ""),
+              readOnlyFieldState.value
+            );
+          }
+        }
+      }
+      return resultValues;
+    },
+    [formContext.formName]
+  );
 
   //_insert adds a new field to the fieldArray with a new key
   const _insert = useCallback(
@@ -564,10 +599,16 @@ export const useFieldArray = ({
     [setFieldRows, arrayFieldName]
   );
 
+  const getAllRowsValuesFn = useCallback(
+    () => getAllRowsValues(fieldRowsRef.current.templateFieldRows),
+    [getAllRowsValues]
+  );
+
   return {
     fieldRows,
     templateFieldNames: templateFieldNamesRef.current,
     clearFieldArray,
+    getAllRowsValues: getAllRowsValuesFn,
     unshift,
     push,
     insert,

@@ -16,6 +16,7 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { renderField } from "components/dyanmicForm/utils/fieldRenderer";
@@ -39,6 +40,7 @@ export interface ArrayField2Props {
   _fields: FieldMetaDataType[];
   componentProps?: any;
   removeRowFn?: any;
+  addRowFn?: any;
   arrayFieldIDName?: string;
   dependentFields?: string | string[];
   shouldExclude?: any;
@@ -61,6 +63,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   enableGrid,
   componentProps = {},
   removeRowFn,
+  addRowFn,
   arrayFieldIDName,
   dependentFields,
   shouldExclude,
@@ -71,6 +74,8 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     JSON.stringify(_fields)
   ) as FieldMetaDataType[];
   const classes = useStyles();
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [dialogMsg, setDialogMsg] = useState("");
   let metaData = { form: {}, fields: currentFieldsMeta } as MetaDataType;
   const transformedMetaData = useRef<MetaDataType | null>(null);
   if (transformedMetaData.current === null) {
@@ -92,6 +97,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
 
   const {
     renderRows,
+    getAllRowsValues,
     unshift,
     isSubmitting,
     formState,
@@ -104,6 +110,30 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     shouldExclude: shouldExclude,
     getFixedRowsCount: getFixedRowsCount,
   });
+
+  const addNewRow = useCallback(() => {
+    if (typeof addRowFn === "function") {
+      let result = addRowFn(getAllRowsValues());
+      let allow = false;
+      let reason = "Cannot add a new Row";
+      if (typeof result === "boolean") {
+        allow = result;
+      }
+      if (typeof result === "object") {
+        allow = result?.allow ?? false;
+        reason = result?.reason ?? "Cannot add a new Row";
+      }
+      if (allow) {
+        unshift();
+      } else {
+        setShowAddDialog(true);
+        setDialogMsg(reason);
+      }
+    } else {
+      unshift();
+    }
+  }, [unshift, getAllRowsValues]);
+
   if (excluded) {
     return null;
   }
@@ -154,7 +184,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
           title={label}
           action={
             !Boolean(fixedRows) ? (
-              <IconButton onClick={unshift} disabled={isSubmitting}>
+              <IconButton onClick={addNewRow} disabled={isSubmitting}>
                 <AddCircleOutlineIcon />
               </IconButton>
             ) : null
@@ -171,6 +201,24 @@ export const ArrayField2: FC<ArrayField2Props> = ({
           </Grid>
         </CardContent>
       </Card>
+      <Dialog
+        open={showAddDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>{dialogMsg}</DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowAddDialog(false);
+              setDialogMsg("");
+            }}
+            color="primary"
+          >
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
   if (Boolean(enableGrid)) {
