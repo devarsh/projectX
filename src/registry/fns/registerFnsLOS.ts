@@ -186,7 +186,11 @@ registerFn("getRoleList", LOSSDK.getRoleList);
 registerFn("getAllUnRegisteredUsersList", LOSSDK.getAllUnRegisteredUsersList);
 registerFn("getAllRegisteredUsersList", LOSSDK.getAllRegisteredUsersList);
 registerFn("getTeamRoleList", LOSSDK.getTeamRoleList);
-registerFn("getUserListFromTeamRole", LOSSDK.getUserListFromTeamRole);
+registerFn("getUserListFromTeamRole", LOSSDK.getPendingUserListForTeamRole);
+registerFn(
+  "getAssignedUserListForTeamRole",
+  LOSSDK.getAssignedUserListForTeamRole
+);
 
 //for Assign inquiry or lead inquiry
 registerFn("getRoleListForInquiryAssign", LOSSDK.getRoleListForInquiryAssign);

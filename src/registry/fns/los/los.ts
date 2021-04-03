@@ -370,6 +370,7 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+
   const getAllUnRegisteredUsersList = async () => {
     const { status, data } = await internalFetcher(
       `./users/employee/options/new`,
@@ -389,6 +390,7 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+
   const getAllRegisteredUsersList = async () => {
     const { status, data } = await internalFetcher(
       `./users/employee/options/all`,
@@ -431,7 +433,11 @@ const LOSAPI = () => {
     }
   };
 
-  const getUserListFromTeamRole = async (_, formState, dependentFields2) => {
+  const getPendingUserListForTeamRole = async (
+    _,
+    formState,
+    dependentFields2
+  ) => {
     const { status, data } = await internalFetcher(
       `./users/employee/team/options/unregistered`,
       {
@@ -439,6 +445,34 @@ const LOSAPI = () => {
           request_data: {
             teamRole: dependentFields2["userTeamDetails.teamRole"].value ?? " ",
             branchCode: formState?.branchCode ?? " ",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.userID,
+        label: one?.username,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getAssignedUserListForTeamRole = async (
+    _,
+    formState,
+    dependentFields2
+  ) => {
+    const { status, data } = await internalFetcher(
+      `./users/employee/team/options/registered`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            teamRole: dependentFields2["userTeamDetails.teamRole"].value ?? " ",
+            branchCode: formState?.branchCode ?? " ",
+            userID: formState?.refID ?? "",
           },
         }),
       }
@@ -588,7 +622,8 @@ const LOSAPI = () => {
     getAllUnRegisteredUsersList,
     getAllRegisteredUsersList,
     getTeamRoleList,
-    getUserListFromTeamRole,
+    getPendingUserListForTeamRole,
+    getAssignedUserListForTeamRole,
 
     //For Assign Inquiry or Lead Inquiry
     getRoleListForInquiryAssign,
