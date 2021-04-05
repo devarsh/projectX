@@ -58,6 +58,7 @@ export const FormViewEdit: FC<{
   const removeCache = useContext(ClearCacheContext);
   const [formMode, setFormMode] = useState(defaultView);
   const [currentProduct, setCurrentProduct] = useState<any>(null);
+  const [currentBranchCode, setCurrentBranchCode] = useState<any>(null);
   const { enqueueSnackbar } = useSnackbar();
   const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
@@ -201,6 +202,7 @@ export const FormViewEdit: FC<{
       const branchCode = formEditData["branchCode"];
       const branchOptions: any = result[3].data;
       let currProd = branchOptions.filter((one) => one.value == branchCode);
+      setCurrentBranchCode(currProd[0]?.value);
       setCurrentProduct(currProd[0]?.products);
     }
   }, [result[0].isSuccess, result[3].isSuccess]);
@@ -231,7 +233,10 @@ export const FormViewEdit: FC<{
     <FormWrapper
       key={`${wrapperKey.current}-${dataUniqueKey}-${formMode}`}
       metaData={transformMetaData(viewMetaData as MetaDataType, currentProduct)}
-      initialValues={formEditData as InitialValuesType}
+      initialValues={{
+        ...(formEditData as InitialValuesType),
+        branchCode: currentBranchCode,
+      }}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore
       displayMode={formMode}
@@ -247,7 +252,10 @@ export const FormViewEdit: FC<{
     <FormWrapper
       key={`${wrapperKey.current}-${dataUniqueKey}-${formMode}`}
       metaData={transformMetaData(editMetaData as MetaDataType, currentProduct)}
-      initialValues={formEditData as InitialValuesType}
+      initialValues={{
+        ...(formEditData as InitialValuesType),
+        branchCode: currentBranchCode,
+      }}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore
       displayMode={formMode}

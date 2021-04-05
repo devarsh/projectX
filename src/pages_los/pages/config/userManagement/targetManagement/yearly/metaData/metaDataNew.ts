@@ -55,6 +55,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       //@ts-ignore
       options: "getTargetYears",
       defaultValue: "",
+      required: true,
       GridProps: {
         xs: 12,
         md: 3,
@@ -68,6 +69,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "partnersVolume",
       label: "Partner Volume",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -81,6 +83,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "partnerCount",
       label: "Partner Count",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -94,6 +97,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "retailVolume",
       label: "Retail Volume",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -107,6 +111,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "smeVolume",
       label: "SME Volume",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -120,6 +125,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "infraVolume",
       label: "Infra Volume",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -133,6 +139,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "unsecuredVolume",
       label: "Unsecured Volume",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -146,6 +153,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "insuranceVolume",
       label: "Insurance Volume",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -159,6 +167,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "retailLeadInfoCount",
       label: "Retail Lead Count",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -172,6 +181,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "smeLeadInfoCount",
       label: "SME Lead Count",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -185,6 +195,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "infraLeadInfoCount",
       label: "Infra Lead Count",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -198,6 +209,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "unsecuredLeadInfoCount",
       label: "Unsecured Lead Count",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,
@@ -211,6 +223,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       },
       name: "insuranceLeadInfoCount",
       label: "Insurance Lead Count",
+      type: "number",
       GridProps: {
         xs: 12,
         md: 3,

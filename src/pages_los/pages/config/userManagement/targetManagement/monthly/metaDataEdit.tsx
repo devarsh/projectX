@@ -1,18 +1,14 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-export const yearlyTargetFormMetaDataEdit: MetaDataType = {
+export const monthlyTargetFormMetaDataEdit: MetaDataType = {
   form: {
-    name: "yearlyTargetForm",
-    label: "Target Details",
+    name: "monthlyTargetForm",
+    label: "Monthly Details",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
     render: {
       ordering: "auto",
-      renderType: "tabs",
-      groups: {
-        0: "Business By Direct Team",
-        1: "Lead Target",
-      },
+      renderType: "simple",
       gridConfig: {
         item: {
           xs: 12,
@@ -46,33 +42,27 @@ export const yearlyTargetFormMetaDataEdit: MetaDataType = {
   fields: [
     {
       render: {
-        componentType: "select",
+        componentType: "hidden",
         group: 0,
       },
-      name: "branchCode",
-      label: "Branch",
-      placeholder: "Branch",
-      //@ts-ignore
-      options: "getYearlyTargetUserBranchList",
-      disableCaching: true,
-      defaultValue: "",
+      name: "lineNo",
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
       },
-      isReadOnly: true,
     },
     {
       render: {
         componentType: "select",
         group: 0,
       },
-      name: "targetYear",
-      label: "Target Year",
-      placeholder: "Target Year",
+      name: "targetMonth",
+      label: "Target Month",
+      placeholder: "Target Month",
       //@ts-ignore
-      options: "getTargetYears",
+      options: "getTargetMonth",
+      required: true,
       defaultValue: "",
       GridProps: {
         xs: 12,
@@ -100,7 +90,7 @@ export const yearlyTargetFormMetaDataEdit: MetaDataType = {
         componentType: "textField",
         group: 0,
       },
-      name: "partnerCount",
+      name: "partnersCount",
       label: "Partner Count",
       type: "number",
       GridProps: {
@@ -243,6 +233,19 @@ export const yearlyTargetFormMetaDataEdit: MetaDataType = {
       name: "insuranceLeadInfoCount",
       label: "Insurance Lead Count",
       type: "number",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: 0,
+      },
+      name: "remarks",
+      label: "Remarks",
       GridProps: {
         xs: 12,
         md: 3,

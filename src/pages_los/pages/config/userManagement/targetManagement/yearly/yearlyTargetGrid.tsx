@@ -10,6 +10,7 @@ import { CRUDContextProvider } from "pages_los/common";
 import { TargetAPICrudProviderGenerator } from "./context";
 import { MonthlyTargetGrid } from "../monthly";
 import { FormViewEdit } from "./formViewEdit";
+import { DeleteAction } from "pages_los/common/crud2/delete";
 
 const actions: ActionTypes[] = [
   {
@@ -93,6 +94,12 @@ export const YearlyTargetGrid: FC<{
           ) : (currentAction?.name ?? "") === "View" ? (
             <FormViewEdit
               serialNo={currentAction?.rows[0]?.id}
+              closeDialog={closeMyDialog}
+              isDataChangedRef={isMyDataChangedRef}
+            />
+          ) : (currentAction?.name ?? "") === "Delete" ? (
+            <DeleteAction
+              serialNo={currentAction?.rows.map((one) => one.id)}
               closeDialog={closeMyDialog}
               isDataChangedRef={isMyDataChangedRef}
             />

@@ -49,6 +49,24 @@ export const yearlyTargetFormMetaDataView: MetaDataType = {
         componentType: "select",
         group: 0,
       },
+      name: "branchCode",
+      label: "Branch",
+      placeholder: "Branch",
+      //@ts-ignore
+      options: "getYearlyTargetUserBranchList",
+      defaultValue: "",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+      isReadOnly: true,
+    },
+    {
+      render: {
+        componentType: "select",
+        group: 0,
+      },
       name: "targetYear",
       label: "Target Year",
       placeholder: "Target Year",
