@@ -43,7 +43,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "hidden",
-        group: 0,
       },
       name: "lineNo",
       GridProps: {
@@ -55,7 +54,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "select",
-        group: 0,
       },
       name: "targetMonth",
       label: "Target Month",
@@ -74,7 +72,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "partnersVolume",
       label: "Partner Volume",
@@ -88,7 +85,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "partnersCount",
       label: "Partner Count",
@@ -102,7 +98,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "retailVolume",
       label: "Retail Volume",
@@ -116,7 +111,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "smeVolume",
       label: "SME Volume",
@@ -130,7 +124,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "infraVolume",
       label: "Infra Volume",
@@ -144,7 +137,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "unsecuredVolume",
       label: "Unsecured Volume",
@@ -158,7 +150,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "insuranceVolume",
       label: "Insurance Volume",
@@ -172,7 +163,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
       },
       name: "retailLeadInfoCount",
       label: "Retail Lead Count",
@@ -186,7 +176,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
       },
       name: "smeLeadInfoCount",
       label: "SME Lead Count",
@@ -200,7 +189,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
       },
       name: "infraLeadInfoCount",
       label: "Infra Lead Count",
@@ -214,7 +202,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
       },
       name: "unsecuredLeadInfoCount",
       label: "Unsecured Lead Count",
@@ -228,7 +215,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 1,
       },
       name: "insuranceLeadInfoCount",
       label: "Insurance Lead Count",
@@ -242,7 +228,6 @@ export const monthlyTargetFormMetaDataEdit: MetaDataType = {
     {
       render: {
         componentType: "textField",
-        group: 0,
       },
       name: "remarks",
       label: "Remarks",
