@@ -9,7 +9,6 @@ import { useQuery } from "react-query";
 import GridWrapper from "components/dataTableStatic";
 import { ActionTypes, GridMetaDataType } from "components/dataTable";
 import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
-import loaderGif from "assets/images/loader.gif";
 import { GridMetaData } from "./metaData";
 import { ExternalAPIContext } from "../context";
 
@@ -25,7 +24,7 @@ export const APIGrid = forwardRef<any, GridWrapperType>(
     const wrapperKeyDataRef = useRef(
       cacheWrapperKeyGen(Object.values(getAPIGridStatusData.args))
     );
-    const result = useQuery(
+    const result = useQuery<any, any, any>(
       ["getAPIGridStatusData", wrapperKeyDataRef.current],
       () => getAPIGridStatusData.fn(getAPIGridStatusData.args)
     );
@@ -34,28 +33,23 @@ export const APIGrid = forwardRef<any, GridWrapperType>(
     }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result.refetch(),
-      // refetch: () => result[1].refetch(),
     }));
     const loading = result.isLoading || result.isFetching;
-    let isError = result.isError;
-    //@ts-ignore
-    let errorMsg = `${result.error?.error_msg}`;
-    errorMsg = !Boolean(errorMsg) ? "unknown error occured" : errorMsg;
-    const renderResult = loading ? (
-      <img src={loaderGif} alt="loader" width="50px" height="50px" />
-    ) : isError === true ? (
-      <span>{errorMsg}</span>
-    ) : (
-      <GridWrapper
-        key={`externalAPIGridStatusListing`}
-        finalMetaData={GridMetaData as GridMetaDataType}
-        data={result.data ?? []}
-        setData={() => null}
-        actions={actions}
-        setAction={setAction}
-        loading={loading}
-      />
-    );
+    const renderResult =
+      result.isError === true ? (
+        <span>{result?.error?.error_msg ?? "unknown error occured"}</span>
+      ) : (
+        <GridWrapper
+          key={`externalAPIGridStatusListing`}
+          finalMetaData={GridMetaData as GridMetaDataType}
+          data={result.data ?? []}
+          setData={() => null}
+          refetchData={() => result.refetch()}
+          actions={actions}
+          setAction={setAction}
+          loading={loading}
+        />
+      );
     return renderResult;
   }
 );

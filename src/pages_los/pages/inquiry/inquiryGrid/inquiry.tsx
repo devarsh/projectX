@@ -51,6 +51,8 @@ export const Inquiry = ({ gridCode, actions }) => {
         TransitionComponent={Transition}
         onClose={handleDialogClose}
         key={currentAction?.rows[0].id}
+        maxWidth="md"
+        PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
         <ClearCacheProvider key={currentAction?.rows[0].id}>
           {(currentAction?.name ?? "") === "ViewDetails" ? (

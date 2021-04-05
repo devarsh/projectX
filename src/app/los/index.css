@@ -2,12 +2,12 @@
   --theme-color1: #0063a3;
   --theme-color2: #26a456;
   --white: #ffffff;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
+  /* font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important; */
 }
 
 body {
   margin: 0;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
+  /* font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #393939 !important;
@@ -20,10 +20,10 @@ body,
 input,
 textarea,
 select,
-.MuiInputBase-root,
+/* .MuiInputBase-root,
 .MuiMenuItem-root {
   font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
-}
+} */
 html {
   font-size: 14px;
 }
@@ -71,7 +71,7 @@ h5,
 h6 {
   line-height: 1.4 !important;
   margin: 4px 0;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
+  /* font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important; */
 }
 h2 {
   color: var(--theme-color2);

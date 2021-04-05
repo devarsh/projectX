@@ -65,6 +65,7 @@ export const DataGrid = ({
   pageSizes,
   defaultPageSize,
   enablePagination,
+  refetchData,
 }) => {
   //@ts-ignore
   const {
@@ -184,6 +185,7 @@ export const DataGrid = ({
           setGridAction={setGridAction} //for always Actions
           selectedFlatRows={selectedFlatRows}
           disableGlobalFilter={Boolean(disableGlobalFilter)}
+          refetchData={refetchData}
         />
       )}
       <TableActionToolbar

@@ -6,7 +6,6 @@ export interface CAMProviderType {
   generateCAM: CRUDFNType;
   viewCAM: CRUDFNType;
   downloadCAM: CRUDFNType;
-  getGridCAMMetaData: CRUDFNType;
   getGridCAMData: CRUDFNType;
 }
 
@@ -22,7 +21,6 @@ export const CAMContextProvider: FC<CAMProviderType> = ({
   generateCAM,
   viewCAM,
   downloadCAM,
-  getGridCAMMetaData,
   getGridCAMData,
   context,
 }) => {
@@ -33,7 +31,6 @@ export const CAMContextProvider: FC<CAMProviderType> = ({
         generateCAM,
         viewCAM,
         downloadCAM,
-        getGridCAMMetaData,
         getGridCAMData,
       }}
     >
@@ -48,5 +45,4 @@ export const generateCAMAPIContext = ({ refID }): CAMProviderType => ({
   viewCAM: { fn: API.generateCAM_URL, args: { refID, download: false } },
   downloadCAM: { fn: API.generateCAM_URL, args: { refID, download: true } },
   getGridCAMData: { fn: API.getCAMGridData, args: { refID } },
-  getGridCAMMetaData: { fn: API.getCAMGridMetaData, args: { refID } },
 });

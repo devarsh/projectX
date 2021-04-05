@@ -5,11 +5,10 @@ import {
   useEffect,
   useRef,
 } from "react";
-import { useQueries } from "react-query";
+import { useQuery } from "react-query";
 import GridWrapper from "components/dataTableStatic";
 import { ActionTypes, GridMetaDataType } from "components/dataTable";
-import loaderGif from "assets/images/loader.gif";
-import { CAMContext } from "./context";
+import { CAMContext } from "../context";
 import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
 import { MetaData } from "./metaData";
 
@@ -20,56 +19,35 @@ type GridWrapperType = {
 
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
   ({ actions, setAction }, ref) => {
-    const { getGridCAMMetaData, getGridCAMData } = useContext(CAMContext);
+    const { getGridCAMData } = useContext(CAMContext);
     const removeCache = useContext(ClearCacheContext);
-    const wrapperKeyMetaRef = useRef(
-      cacheWrapperKeyGen(Object.values(getGridCAMMetaData.args))
-    );
     const wrapperKeyDataRef = useRef(
       cacheWrapperKeyGen(Object.values(getGridCAMData.args))
     );
-    const result = useQueries([
-      {
-        queryKey: ["getGridCAMMetaData", wrapperKeyMetaRef.current],
-        queryFn: () => getGridCAMMetaData.fn(getGridCAMMetaData.args),
-      },
-      {
-        queryKey: ["getGridCAMData", wrapperKeyDataRef.current],
-        queryFn: () => getGridCAMData.fn(getGridCAMData.args),
-      },
-    ]);
+    const result = useQuery<any, any, any>(
+      ["getGridCAMData", wrapperKeyDataRef.current],
+      () => getGridCAMData.fn(getGridCAMData.args)
+    );
     useEffect(() => {
-      removeCache?.addEntry("getGridCAMMetaData", wrapperKeyMetaRef.current);
       removeCache?.addEntry("getGridCAMData", wrapperKeyDataRef.current);
     }, [removeCache]);
     useImperativeHandle(ref, () => ({
-      refetch: () => result[1].refetch(),
+      refetch: () => result.refetch(),
     }));
-    const loading =
-      result[0].isLoading ||
-      result[1].isLoading ||
-      result[0].isFetching ||
-      result[1].isFetching;
-    let isError = result[0].isError || result[1].isError;
-    //@ts-ignore
-    let errorMsg = `${result[0].error?.error_msg} ${result[1].error?.error_msg}`
-      .trimStart()
-      .trimEnd();
-    errorMsg = !Boolean(errorMsg) ? "unknown error occured" : errorMsg;
-    const renderResult = loading ? (
-      <img src={loaderGif} alt="loader" width="50px" height="50px" />
-    ) : isError === true ? (
-      <span>{errorMsg}</span>
+    const loading = result.isLoading || result.isFetching;
+
+    const renderResult = result.isError ? (
+      <span>{result.error?.error_msg ?? "unknown error occured"}</span>
     ) : (
       <GridWrapper
         key={`camGridListing`}
-        //finalMetaData={result[0].data as GridMetaDataType}
         finalMetaData={MetaData as GridMetaDataType}
-        data={transformData(result[1].data ?? [])}
+        data={transformData(result.data ?? [])}
         setData={() => null}
         actions={actions}
         setAction={setAction}
         loading={loading}
+        refetchData={() => result.refetch()}
       />
     );
     return renderResult;

@@ -23,7 +23,16 @@ import { DataGrid } from "./grid";
 
 export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
   (
-    { finalMetaData, data, setData, actions, setAction, loading, gridProps },
+    {
+      finalMetaData,
+      data,
+      setData,
+      actions,
+      setAction,
+      loading,
+      gridProps,
+      refetchData,
+    },
     ref
   ) => {
     const metaDataRef = useRef<any>(null);
@@ -174,6 +183,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         defaultPageSize={metaData?.gridConfig?.defaultPageSize ?? 10}
         enablePagination={metaData?.gridConfig?.enablePagination ?? false}
         gridProps={gridProps}
+        refetchData={refetchData}
       />
     );
   }

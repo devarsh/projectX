@@ -10,7 +10,6 @@ import GridWrapper from "components/dataTableStatic";
 import { ActionTypes, GridMetaDataType } from "components/dataTable";
 import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
 import { StagesAPIContext } from "../context";
-import loaderGif from "assets/images/loader.gif";
 import { PriorityGridMetaData } from "./metaData";
 
 type GridWrapperType = {
@@ -25,7 +24,7 @@ export const StagesGrid = forwardRef<any, GridWrapperType>(
     const wrapperKeyDataRef = useRef(
       cacheWrapperKeyGen(Object.values(getGridData.args))
     );
-    const result = useQuery(
+    const result = useQuery<any, any, any>(
       ["getStagesGridData", wrapperKeyDataRef.current],
       () => getGridData.fn(getGridData.args)()
     );
@@ -36,25 +35,22 @@ export const StagesGrid = forwardRef<any, GridWrapperType>(
       refetch: () => result.refetch(),
     }));
     const loading = result.isLoading || result.isFetching;
-    let isError = result.isError;
-    //@ts-ignore
-    let errorMsg = `${result.error?.error_msg}`;
-    errorMsg = !Boolean(errorMsg) ? "unknown error occured" : errorMsg;
-    const renderResult = loading ? (
-      <img src={loaderGif} alt="loader" width="50px" height="50px" />
-    ) : isError === true ? (
-      <span>{errorMsg}</span>
-    ) : (
-      <GridWrapper
-        key={`leadStagesListing`}
-        finalMetaData={PriorityGridMetaData as GridMetaDataType}
-        data={result.data ?? []}
-        setData={() => null}
-        actions={actions}
-        setAction={setAction}
-        loading={loading}
-      />
-    );
+
+    const renderResult =
+      result.isError === true ? (
+        <span>{result.error?.error_msg ?? "unknown error occured"}</span>
+      ) : (
+        <GridWrapper
+          key={`leadStagesListing`}
+          finalMetaData={PriorityGridMetaData as GridMetaDataType}
+          data={result.data ?? []}
+          setData={() => null}
+          actions={actions}
+          setAction={setAction}
+          loading={loading}
+          refetchData={() => result.refetch()}
+        />
+      );
     return renderResult;
   }
 );

@@ -65,6 +65,7 @@ export interface GridWrapperPropTypes {
   setAction?: any;
   loading?: any;
   gridProps?: any;
+  refetchData?: any;
 }
 
 export interface YupSchemaMetaDataType {
