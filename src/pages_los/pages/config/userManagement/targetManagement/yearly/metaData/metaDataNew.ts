@@ -7,7 +7,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
     validationRun: "onBlur",
     submitAction: "home",
     render: {
-      ordering: "auto",
+      ordering: "sequence",
       renderType: "tabs",
       groups: {
         0: "Business By Direct Team",
@@ -48,6 +48,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "select",
         group: 0,
+        sequence: 1,
       },
       name: "targetYear",
       label: "Target Year",
@@ -66,6 +67,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 2,
       },
       name: "partnersVolume",
       label: "Partner Volume",
@@ -80,6 +82,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 3,
       },
       name: "partnerCount",
       label: "Partner Count",
@@ -94,6 +97,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 4,
       },
       name: "retailVolume",
       label: "Retail Volume",
@@ -108,6 +112,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 5,
       },
       name: "smeVolume",
       label: "SME Volume",
@@ -122,6 +127,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 6,
       },
       name: "infraVolume",
       label: "Infra Volume",
@@ -136,6 +142,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 7,
       },
       name: "unsecuredVolume",
       label: "Unsecured Volume",
@@ -150,6 +157,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 0,
+        sequence: 8,
       },
       name: "insuranceVolume",
       label: "Insurance Volume",
@@ -164,6 +172,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 1,
+        sequence: 9,
       },
       name: "retailLeadInfoCount",
       label: "Retail Lead Count",
@@ -178,6 +187,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 1,
+        sequence: 10,
       },
       name: "smeLeadInfoCount",
       label: "SME Lead Count",
@@ -192,6 +202,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 1,
+        sequence: 11,
       },
       name: "infraLeadInfoCount",
       label: "Infra Lead Count",
@@ -206,6 +217,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 1,
+        sequence: 12,
       },
       name: "unsecuredLeadInfoCount",
       label: "Unsecured Lead Count",
@@ -220,6 +232,7 @@ export const yearlyTargetFormMetaDataNew: MetaDataType = {
       render: {
         componentType: "textField",
         group: 1,
+        sequence: 13,
       },
       name: "insuranceLeadInfoCount",
       label: "Insurance Lead Count",
