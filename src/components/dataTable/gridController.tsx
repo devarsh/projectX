@@ -14,6 +14,7 @@ import { GridContext } from "./context";
 
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
+import { useSnackbar } from "notistack";
 
 interface GridControllerType {
   metaData: GridMetaDataType;
@@ -22,6 +23,7 @@ interface GridControllerType {
 export const GirdController = forwardRef<GridControllerType, any>(
   ({ metaData }, ref) => {
     const context = useContext(GridContext);
+    const { enqueueSnackbar } = useSnackbar();
     /* eslint-disable react-hooks/exhaustive-deps */
     const columns = useMemo(() => metaData.columns, []);
     const defaultColumn = useMemo(
@@ -75,9 +77,20 @@ export const GirdController = forwardRef<GridControllerType, any>(
                 setTotalRecords(Number(result?.data?.total_count ?? 1));
                 setLoading(false);
               } else {
+                console.log(result);
+                enqueueSnackbar(
+                  result?.data?.error_msg ??
+                    "Unknown error occured while fetching data",
+                  {
+                    variant: "error",
+                  }
+                );
                 setLoading(false);
               }
             }
+          })
+          .catch((e) => {
+            setLoading(false);
           });
       },
       [setTotalRecords, setLoading, setData, globalFiltersState, context]
