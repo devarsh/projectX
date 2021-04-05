@@ -25,9 +25,7 @@ import { NewInquiry } from "./pages/newInquiry";
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
-import { CAMLOSWrapper } from "./pages/cam";
 import TestForm from "components/dyanmicForm/test";
-import TransferListTest from "components/common/transferList/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -74,10 +72,8 @@ const DashbordPages = () => {
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cam" element={<CAMLOSWrapper />} />
             {/*dummy routes*/}
             <Route path="/testForm" element={<TestForm />} />
-            <Route path="/transfer" element={<TransferListTest />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>

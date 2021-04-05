@@ -1,5 +1,4 @@
 import { Fragment, useContext } from "react";
-import { CAMLOSWrapper } from "pages_los/pages/cam";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -7,19 +6,27 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Alert from "@material-ui/lab/Alert";
 import Close from "@material-ui/icons/Close";
+import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { CAMContext } from "./context";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useSnackbar } from "notistack";
+import { CAM } from "pages_los/pages/cam";
+import * as CAMAPI from "pages_los/pages/cam/api";
+import loaderGif from "assets/images/loader.gif";
 
-const generateCAMRequest = (generateFn) => () => {
-  return generateFn();
+const generateCAMRequest = (generateFn) => (data) => {
+  return generateFn(data);
 };
 
 export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
   const { context, generateCAM } = useContext(CAMContext);
   const { enqueueSnackbar } = useSnackbar();
   const { refID } = context;
+
+  const result = useQuery<any, any, any>(["getCAMData", refID], () =>
+    CAMAPI.getCAMData({ refID })
+  );
 
   const mutation = useMutation<any, any>(
     generateCAMRequest(generateCAM.fn(generateCAM.args)),
@@ -30,17 +37,27 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
         enqueueSnackbar("CAM generated successfully ", {
           variant: "success",
         });
+        closeDialog();
       },
     }
   );
+  let errorMsg = `${result.error?.error_msg} ${mutation.error?.error_msg}`;
+  errorMsg = Boolean(errorMsg.trim()) ? errorMsg : "Unknown error occured";
 
-  return (
+  return result.isLoading || result.isFetching ? (
     <Fragment>
-      {mutation.isError ? (
-        <Alert severity="error">
-          {mutation.error?.error_msg ?? "Unknown error occured"}
-        </Alert>
-      ) : null}
+      <Box display="flex">
+        <img src={loaderGif} height="50px" width="50px" alt="loader" />
+        <Box flexGrow={1} />
+        <Button onClick={closeDialog}>Close</Button>
+      </Box>
+    </Fragment>
+  ) : result.isError || mutation.isError ? (
+    <Alert severity="error" onClose={closeDialog}>
+      {errorMsg}
+    </Alert>
+  ) : (
+    <Fragment>
       <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
         <Typography variant="h6" color="textSecondary">
           LeadNo
@@ -48,7 +65,7 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
         <Typography variant="h6">{refID}</Typography>
         <div style={{ flexGrow: 1 }}></div>
         <Button
-          onClick={() => mutation.mutate()}
+          onClick={() => mutation.mutate(result.data)}
           disabled={mutation.isLoading}
           endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
         >
@@ -65,7 +82,7 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
         ) : null}
       </DialogActions>
       <DialogContent>
-        <CAMLOSWrapper refID={refID} />
+        <CAM camData={result.data} />
       </DialogContent>
     </Fragment>
   );

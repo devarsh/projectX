@@ -38,11 +38,12 @@ export const getCAMGridMetaData = async ({ refID }) => {
   }
 };
 
-export const generateCAM = ({ refID }) => async () => {
+export const generateCAM = ({ refID }) => async (camJSON) => {
   const { data, status } = await LOSSDK.internalFetcher(`./lead/cam/generate`, {
     body: JSON.stringify({
       request_data: {
         refID: refID,
+        CAMJson: camJSON,
       },
       channel: "W",
     }),
