@@ -38,6 +38,10 @@ registerFn(
 
 registerFn("getLeadSubStageCode", LOSSDK.getLeadSubStageCode);
 registerFn("getLeadEmploymentType", LOSSDK.getLeadEmploymentType);
+registerFn(
+  "getYearlyTargetUserBranchList",
+  LOSSDK.getYearlyTargetUserBranchList
+);
 
 registerFn(
   "shouldExcludesShowSMELAPSubProductTypeField",

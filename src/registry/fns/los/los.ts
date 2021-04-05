@@ -561,6 +561,29 @@ const LOSAPI = () => {
     }
   };
 
+  const getYearlyTargetUserBranchList = async (_, formState) => {
+    const { status, data } = await LOSSDK.internalFetcher(
+      `./users/employee/options/registered/branch`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            userID: formState?.userID ?? "",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.branchCode,
+        label: one?.branchName,
+        products: one?.ownProductList ?? [],
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -602,6 +625,7 @@ const LOSAPI = () => {
     getTeamRoleListForInquiryAssign,
 
     deleteAssignArrayFieldData,
+    getYearlyTargetUserBranchList,
   };
 };
 

@@ -1,70 +1,65 @@
-export const transformMetaData = (metadata, ownProducts) => {
-  let fields = metadata?.fields;
-  let crossMetadata: any = [];
+import { MetaDataType } from "components/dyanmicForm";
 
-  let ownProductsNew: any[] = [];
+export const transformMetaData = (
+  metaData: MetaDataType,
+  ownProducts: string[] = []
+) => {
+  let fields = metaData?.fields ?? [];
+
+  let allProducts = fields
+    .filter((one) => {
+      if (one.name.indexOf("Volume") >= 0) {
+        return true;
+      }
+    })
+    .map((one) => one?.name ?? "");
+
   if (Array.isArray(ownProducts) && ownProducts.length > 0) {
-    ownProductsNew = ownProducts.flat().map((someValue) => {
-      return someValue?.toLowerCase?.() + "Volume";
+    ownProducts = ownProducts.map((product) => {
+      return product?.toLowerCase?.() + "Volume";
     });
   }
 
-  let others = fields.filter((one) => {
-    if (one.name.indexOf("Volume") >= 0) {
-      return true;
-    }
-  });
+  let crossProducts = allProducts.filter((currentProduct) =>
+    ownProducts.indexOf(currentProduct) < 0 ? true : false
+  );
 
-  let othersName = others.map((name) => {
-    return name?.name;
-  });
+  console.log(allProducts, crossProducts, ownProducts);
 
-  let myMetaData = othersName.filter(function (myNew) {
-    if (ownProductsNew.indexOf(myNew) >= 0) {
-      return true;
-    } else {
-      crossMetadata.push(myNew);
-      return false;
-    }
-  });
-  let myNewMetadata = fields.filter((one) => {
-    if (myMetaData.indexOf(one.name) >= 0) {
-      return true;
-    }
-  });
-  let crosNewMetadata = fields.filter((one) => {
-    if (crossMetadata.indexOf(one.name) >= 0) {
-      return true;
-    }
-  });
-  let otherData = fields.filter((one) => {
-    if (
-      myNewMetadata.indexOf(one) === -1 &&
-      crosNewMetadata.indexOf(one) === -1
-    ) {
-      return true;
-    }
-  });
+  let otherFields = fields.filter((one) =>
+    allProducts.indexOf(one.name) < 0 ? true : false
+  );
 
-  var crossMetadataGroup = crosNewMetadata.map((someValue) => {
-    someValue.render.group = 2;
-    return someValue;
-  });
+  let ownFields = fields.filter((one) =>
+    ownProducts.indexOf(one.name) >= 0 ? true : false
+  );
+  let crossFields = fields.filter((one) =>
+    crossProducts.indexOf(one.name) >= 0 ? true : false
+  );
 
-  let finalFields: any = [
-    ...myNewMetadata,
-    ...crossMetadataGroup,
-    ...otherData,
-  ];
-  let finalMetaData = {
-    form: metadata?.form,
-    fields: finalFields,
-  };
-  if (crosNewMetadata.length > 0) {
-    finalMetaData.form.render.groups = {
-      ...finalMetaData.form.render.groups,
-      2: "Cross",
+  if (crossFields.length > 0) {
+    crossFields.map((one) => (one.render.group = 1));
+    otherFields.map((one) => {
+      if (one.render.group === 1) {
+        one.render.group = 2;
+      }
+    });
+  }
+  const allFields = [...otherFields, ...ownFields, ...crossFields];
+  if (crossFields.length > 0) {
+    metaData.form.render.groups = {
+      0: "Business By Direct Team",
+      1: "Cross Products",
+      2: "Lead Target",
+    };
+    return {
+      form: metaData?.form,
+      fields: allFields,
+    };
+  } else {
+    return {
+      form: metaData?.form,
+      fields: allFields,
     };
   }
-  return finalMetaData;
 };

@@ -28,11 +28,11 @@ export const TargetAPICrudProviderGenerator = (
     args: { moduleType, productType, serialNo },
   },
   getFormMetaData: {
-    fn: CRUD2API.getFormMetaData,
+    fn: API.getFormMetaData,
     args: { moduleType, productType, serialNo },
   },
   getFormData: {
-    fn: API.getTargetGridData,
+    fn: API.getMonthlyTargetFormData,
     args: { moduleType, productType, serialNo },
   },
   getGridFormMetaData: {
