@@ -32,7 +32,7 @@ interface InititateCorpositoryAPIType {
   companyName: string;
 }
 
-const InititateCorpositoryAPIType = (initiateCorpositoryFn) => async ({
+const InititateCorpositoryAPI = (initiateCorpositoryFn) => async ({
   companyID,
   companyName,
 }: InititateCorpositoryAPIType) => {
@@ -68,9 +68,7 @@ export const CorpositoryAPIInterface = ({
     }
   };
   const initializeAPI = useMutation(
-    InititateCorpositoryAPIType(
-      API.corpositoryInititate({ refID, moduleType })
-    ),
+    InititateCorpositoryAPI(API.corpositoryInititate({ refID, moduleType })),
     {
       onError: (error: any) => {},
       onSuccess: (data) => {
