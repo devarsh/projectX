@@ -25,6 +25,7 @@ export const PasswordField = ({
       <div className={classes.formWrap}>
         {loginType === "customer" ? (
           <TextField
+            autoFocus={true}
             key="customer"
             label="OTP"
             placeholder="Enter OTP Sent to your mobile No"
@@ -49,6 +50,7 @@ export const PasswordField = ({
           />
         ) : (
           <TextField
+            autoFocus={true}
             key="employee/Partner"
             label="Enter Password"
             placeholder="Enter Password"

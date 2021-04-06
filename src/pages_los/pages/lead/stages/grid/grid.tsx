@@ -38,7 +38,7 @@ export const StagesGrid = forwardRef<any, GridWrapperType>(
 
     const renderResult =
       result.isError === true ? (
-        <span>{result.error?.error_msg ?? "unknown error occured"}</span>
+        <span>{result?.error?.error_msg ?? "unknown error occured"}</span>
       ) : (
         <GridWrapper
           key={`leadStagesListing`}

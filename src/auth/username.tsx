@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState, useRef } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { TextField } from "components/styledComponent/textfield";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
@@ -25,6 +25,7 @@ export const UsernameField = ({
       </div>
       <div className={classes.formWrap}>
         <TextField
+          autoFocus={true}
           label={
             ["employee", "partner"].indexOf(loginType) >= 0
               ? "User ID"
