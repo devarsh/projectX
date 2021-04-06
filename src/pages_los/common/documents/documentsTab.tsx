@@ -4,73 +4,12 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
-import { DOCCRUDContextProvider } from "./context";
-import { LOSSDK } from "registry/fns/los";
-import { makeStyles } from "@material-ui/core/styles";
+import { DOCCRUDContextProvider, DocAPICrudProviderGenerator } from "./context";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
-
-export const useStyles = makeStyles((theme) => ({
-  tabPanel: {
-    border: "1px solid #e8e8e8",
-    borderTop: "0",
-    padding: theme.spacing(2),
-    backgroundColor: "#fff",
-    boxShadow:
-      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-  },
-}));
-
-const DocAPICrud = (moduleType, productType, docCategory, refID, serialNo) => ({
-  context: {
-    moduleType,
-    productType,
-    docCategory,
-    refID,
-    serialNo,
-  },
-  uploadDocuments: {
-    fn: LOSSDK.uploadDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  getDocumentsGridData: {
-    fn: LOSSDK.listDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  deleteDocuments: {
-    fn: LOSSDK.deleteDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  updateDocument: {
-    fn: LOSSDK.updateDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  verifyDocuments: {
-    fn: LOSSDK.verifyDocuments,
-    args: { moduleType, docCategory, productType, refID, serialNo },
-  },
-  getDocumentListingGridMetaData: {
-    fn: LOSSDK.getDocumentGridMetaData,
-    args: { moduleType, docCategory, metaDataType: "grid" },
-  },
-  getDocumentUploadAddtionalFieldsMetaData: {
-    fn: LOSSDK.getDocumentGridMetaData,
-    args: { moduleType, docCategory, metaDataType: "upload" },
-  },
-  getDocumentEditGridMetaData: {
-    fn: LOSSDK.getDocumentGridMetaData,
-    args: { moduleType, docCategory, metaDataType: "edit" },
-  },
-  generateDocumentDownloadURL: {
-    fn: LOSSDK.generateDocumentDownloadURL,
-    args: { moduleType, productType, docCategory },
-  },
-  previewDocument: {
-    fn: LOSSDK.previewDocument,
-    args: { moduleType, productType, docCategory },
-  },
-});
+import { useStyles } from "../style";
+import * as API from "./api";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -95,7 +34,7 @@ export const DocumentGridCRUD: FC<{
   const queryResult = useQuery(
     ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
     () =>
-      LOSSDK.getDocumentCRUDTabsMetadata({
+      API.getDocumentCRUDTabsMetadata({
         moduleType,
         productType,
         refID,
@@ -118,10 +57,12 @@ export const DocumentGridCRUD: FC<{
     queryResult.error?.error_msg ?? "unknown error occured"
   ) : (
     <Fragment>
-      <Tabs value={currentTab} onChange={handleChangeTab}>
-        {tabs.map((one) => (
-          <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
-        ))}
+      <Box display="flex">
+        <Tabs value={currentTab} onChange={handleChangeTab}>
+          {tabs.map((one) => (
+            <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
+          ))}
+        </Tabs>
         {typeof onClose === "function" ? (
           <>
             <Box flexGrow={1} />
@@ -130,7 +71,7 @@ export const DocumentGridCRUD: FC<{
             </Button>
           </>
         ) : null}
-      </Tabs>
+      </Box>
       <Box py={2} className={classes.tabPanel}>
         {tabs.map((one) => (
           <TabPanel
@@ -140,7 +81,7 @@ export const DocumentGridCRUD: FC<{
           >
             <DOCCRUDContextProvider
               key={one.docType}
-              {...DocAPICrud(
+              {...DocAPICrudProviderGenerator(
                 moduleType,
                 productType,
                 one.docType,

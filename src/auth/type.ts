@@ -4,6 +4,7 @@ export interface AuthStateType {
   isLoggedIn: any;
   user: {
     branch: string;
+    branchCode: string;
     lastLogin: string;
     type: string;
     firstName: string;

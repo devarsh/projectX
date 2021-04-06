@@ -6,9 +6,10 @@ import {
   useState,
 } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { AuthContextType, AuthStateType, ActionType } from "./type";
-import { AuthSDK } from "registry/fns/auth";
 import { LOSSDK } from "registry/fns/los";
+import { queryClient } from "cache";
+import { AuthContextType, AuthStateType, ActionType } from "./type";
+import * as API from "./api";
 
 const inititalState: AuthStateType = {
   token: "",
@@ -19,6 +20,7 @@ const inititalState: AuthStateType = {
     firstName: "",
     lastLogin: "",
     branch: "",
+    branchCode: "",
     type: "",
   },
 };
@@ -41,6 +43,7 @@ const authReducer = (
           firstName: "",
           lastLogin: "",
           branch: "",
+          branchCode: "",
           type: "",
         },
       };
@@ -58,7 +61,6 @@ export const AuthProvider = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-
   //Cannot add location.pathName
   /*eslint-disable react-hooks/exhaustive-deps*/
   const login = useCallback(
@@ -70,19 +72,53 @@ export const AuthProvider = ({ children }) => {
       LOSSDK.setToken(payload.token);
       localStorage.setItem("authDetails", JSON.stringify(payload));
       if (!Boolean(stopNavigation)) {
-        navigate(location.pathname);
+        if (
+          [
+            "/los/auth/login/customer",
+            "/los/auth/login/employee",
+            "/los/auth/login/partner",
+          ].indexOf(location.pathname) >= 0
+        ) {
+          navigate("/los");
+        } else {
+          navigate(location.pathname);
+        }
       }
     },
     [dispatch, navigate]
   );
   const logout = useCallback(() => {
+    let result = localStorage.getItem("authDetails");
+    let outPath = "/crm";
+    let currentAuthState: AuthStateType | any = null;
+    if (result !== null) {
+      currentAuthState = JSON.parse(result);
+    }
+    if (currentAuthState?.user?.type === "customer") {
+      outPath = "/los/auth/login/customer";
+    } else if (currentAuthState?.user?.type === "employee") {
+      outPath = "/los/auth/login/employee";
+    } else if (currentAuthState?.user?.type === "partner") {
+      outPath = "/los/auth/login/partner";
+    }
     localStorage.removeItem("authDetails");
     dispatch({
       type: "logout",
       payload: {},
     });
     LOSSDK.removeToken();
-    navigate("/los");
+    queryClient.clear();
+    if (
+      [
+        "/los/auth/login/customer",
+        "/los/auth/login/employee",
+        "/los/auth/login/partner",
+      ].indexOf(location.pathname) >= 0
+    ) {
+      navigate(location.pathname);
+    } else {
+      navigate(outPath);
+    }
   }, [dispatch, navigate]);
 
   const isLoggedIn = () => {
@@ -104,7 +140,7 @@ export const AuthProvider = ({ children }) => {
         Boolean(localStorageAuthState?.token ?? "") &&
         Boolean(localStorageAuthState?.user.type ?? "")
       ) {
-        AuthSDK.verifyToken(
+        API.verifyToken(
           localStorageAuthState.user.type,
           localStorageAuthState.token
         ).then((result) => {

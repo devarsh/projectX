@@ -39,9 +39,15 @@ const setValueOnDependentFieldsChangeNotFound = (fieldKey) => (value) => {
   console.log(`no method for removeRowFn found at ${fieldKey}`);
   return "";
 };
+const getFixedRowsCount = (fieldKey) => (value) => {
+  console.log(`no method for getFixedRowsCount found at ${fieldKey}`);
+  return 0;
+};
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.options$/, optionsMethodNotFound],
+  [/^fields.*.leftOptions$/, optionsMethodNotFound],
+  [/^fields.*.rightOptions$/, optionsMethodNotFound],
   [/^fields.*.validate$/, validateMethodNotFound],
   [
     /^fields.*.postValidationSetCrossFieldValues$/,
@@ -55,6 +61,7 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
     /^fields.*.setValueOnDependentFieldsChange$/,
     setValueOnDependentFieldsChangeNotFound,
   ],
+  [/^fields.*.getFixedRowsCount$/, getFixedRowsCount],
 ];
 
 //do not walk for arrayFields _fields as well we will run it seperately

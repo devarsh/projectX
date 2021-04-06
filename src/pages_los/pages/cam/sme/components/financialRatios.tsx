@@ -1,7 +1,11 @@
-import { printTDS } from "./utils";
+import { printTDS } from "pages_los/pages/cam/utils";
+
 export const FinancialRatios = ({ finance }) => {
   return (
     <>
+      <tr className="page-break">
+        <th></th>
+      </tr>
       <tr>
         <th colSpan={9} className="form-heading">
           Financial Ratios

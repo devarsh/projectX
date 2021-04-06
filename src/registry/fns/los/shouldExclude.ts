@@ -92,3 +92,119 @@ export const mainDetailsdeveloperOrContactor = (_, dependentValues) => {
   }
   return true;
 };
+export const showSMELAPSubProductTypeField = (_, dependentValues) => {
+  if (dependentValues["productId"]?.value === "12300009") {
+    return false;
+  }
+  return true;
+};
+
+export const showInfraSubProduct2TypeField = (_, dependentValues) => {
+  if (
+    dependentValues?.["subProduct1"]?.value === "123400021" ||
+    dependentValues?.["subProduct1"]?.value === "123400022" ||
+    dependentValues?.["subProduct1"]?.value === "123400026" ||
+    dependentValues?.["subProduct1"]?.value === "123400027"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const shouldShowRetailHomeLAPSalariedField = (_, dependentValues) => {
+  if (dependentValues?.["employeeCode"]?.value === "02") {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailHomeEmployementField = (_, dependentValues) => {
+  if (dependentValues?.["employeeCode"]?.value !== "02") {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailHomeLAPEmployementField = (_, dependentValues) => {
+  if (
+    dependentValues?.["employeeCode"]?.value !== "02" &&
+    dependentValues?.["productId"]?.value === "12300002"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const externalAPIManagementDetails = (_, dependentValues) => {
+  if (dependentValues?.entityType?.value === "L") {
+    return true;
+  }
+  return false;
+};
+
+//should exclude for external Bank API
+
+export const sanctionLimitVariableAmountDocumentUploadBankDetails = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["bankFacility"].value === "Overdraft" &&
+    dependentFields["sanctionLimitFixed"].value === "N"
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const sanctionLimitOptionsExternalAPIBank = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["bankFacility"].value === "Overdraft" ||
+    dependentFields["bankFacility"].value === "Cash Credit"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const sanctionLimitFixedAmountExternalAPIBank = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["sanctionLimitType"].value === "fixed" &&
+    (dependentFields["bankFacility"].value === "Overdraft" ||
+      dependentFields["bankFacility"].value === "Cash Credit")
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const sanctionLimitVariableAmountExternalAPIBank = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["sanctionLimitType"].value === "variable" &&
+    (dependentFields["bankFacility"].value === "Overdraft" ||
+      dependentFields["bankFacility"].value === "Cash Credit")
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const drawingPowerVariableAmountExternalAPIBank = async (
+  _,
+  dependentFields
+) => {
+  if (dependentFields["bankFacility"].value === "Cash Credit") {
+    return false;
+  }
+  return true;
+};

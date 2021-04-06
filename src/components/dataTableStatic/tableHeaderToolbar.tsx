@@ -1,5 +1,7 @@
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { GlobalFilter } from "./components/filters";
 import { RenderActions } from "components/dataTable/tableActionToolbar";
@@ -27,6 +29,7 @@ export const TableHeaderToolbar = ({
   setGridAction,
   selectedFlatRows,
   disableGlobalFilter,
+  refetchData,
 }) => {
   const classes = useStyles();
   return (
@@ -39,6 +42,17 @@ export const TableHeaderToolbar = ({
       >
         {label}
       </Typography>
+      {typeof refetchData === "function" ? (
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          //@ts-ignore
+          onClick={refetchData}
+        >
+          <RefreshIcon />
+        </IconButton>
+      ) : null}
       {disableGlobalFilter ? null : (
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}

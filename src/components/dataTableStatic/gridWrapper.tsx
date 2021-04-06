@@ -23,7 +23,16 @@ import { DataGrid } from "./grid";
 
 export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
   (
-    { finalMetaData, data, setData, actions, setAction, loading, gridProps },
+    {
+      finalMetaData,
+      data,
+      setData,
+      actions,
+      setAction,
+      loading,
+      gridProps,
+      refetchData,
+    },
     ref
   ) => {
     const metaDataRef = useRef<any>(null);
@@ -38,7 +47,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
     dataRef.current = data;
     let metaData = metaDataRef.current;
     /* eslint-disable react-hooks/exhaustive-deps */
-    const columns = useMemo(() => metaData.columns, []);
+    const columns = useMemo(() => metaData.columns ?? [], []);
     const columnsValidator = useMemo(() => {
       return columns.reduce((accum, one) => {
         accum[one.accessor] = one.validation;
@@ -49,7 +58,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
       return columns.reduce((accum, one) => {
         accum[one.accessor] = "";
         return accum;
-      });
+      }, {});
     }, [columns]);
     const defaultColumn = useMemo(
       () => ({
@@ -174,6 +183,7 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         defaultPageSize={metaData?.gridConfig?.defaultPageSize ?? 10}
         enablePagination={metaData?.gridConfig?.enablePagination ?? false}
         gridProps={gridProps}
+        refetchData={refetchData}
       />
     );
   }

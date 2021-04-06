@@ -6,6 +6,10 @@ import {
   greaterThanInclusiveString,
   lessThanInclusiveString,
   lessThanString,
+  greaterThanInclusiveDate,
+  geaterThanDate,
+  lessThanDate,
+  lessThanInclusiveDate,
 } from "registry/rulesEngine";
 
 export interface CustomRuleType {
@@ -20,6 +24,10 @@ export const ruleEngine = (rule: CustomRuleType) => async (
 ) => {
   const { success, failure, conditions } = rule;
   let engine = new Engine();
+  engine.addOperator("greaterThanInclusiveDate", greaterThanInclusiveDate);
+  engine.addOperator("geaterThanDate", geaterThanDate);
+  engine.addOperator("lessThanDate", lessThanDate);
+  engine.addOperator("lessThanInclusiveDate", lessThanInclusiveDate);
   engine.addOperator("greaterThanString", greaterThanString);
   engine.addOperator("greaterThanInclusiveString", greaterThanInclusiveString);
   engine.addOperator("lessThanInclusiveString", lessThanInclusiveString);
@@ -32,6 +40,7 @@ export const ruleEngine = (rule: CustomRuleType) => async (
   };
   engine.addRule(extendRule);
   const result = await engine.run({ currentField: fieldData, dependentFields });
+
   engine.stop();
   if (result.events.length > 0) {
     return success;

@@ -1,134 +1,167 @@
-import { useEffect, useState } from "react";
-import { useQuery, useMutation } from "react-query";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import Alert from "@material-ui/lab/Alert";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import { useContext, useRef, useEffect, Fragment } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import { useMutation, useQuery } from "react-query";
+import { useSnackbar } from "notistack";
+import { SubmitFnType } from "packages/form";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
+import FormWrapper, { MetaDataType } from "components/dyanmicForm";
+import { inquiryAssignMetadata } from "./metadata";
+import * as API from "./api";
+import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
+import {
+  AssignInquiryAPIContext,
+  AssignInquiryAPIProvider,
+  generateAssignInquiryAPIContext,
+} from "./context";
+import loaderGif from "assets/images/loader.gif";
 
-import { APISDK } from "registry/fns/sdk";
-import { useStyles } from "./style";
-
-interface AssignLeadType {
-  refID: string;
-  employeeID: string;
-  inquiryStatus: string;
+interface InsertFormDataFnType {
+  data: object;
+  displayData?: object;
+  endSubmit?: any;
+  setFieldError?: any;
 }
 
-const assignLead = async ({
-  refID,
-  employeeID,
-  inquiryStatus,
-}: AssignLeadType) => {
-  return await APISDK.inquiryAssignToLead(refID, employeeID, inquiryStatus);
+const insertFormDataFnWrapper = (assignInquiryFn) => async ({
+  data,
+}: InsertFormDataFnType) => {
+  return assignInquiryFn(data);
 };
 
-export const AssignInquiry = ({ refID }) => {
-  let branchCode = "0";
-  let inquiryStatus = "C";
-  const classes = useStyles();
-  const [employeeID, setEmployeeID] = useState("");
-  const [userMessage, setUserMessage] = useState<null | any>(null);
+export const AssignInquiry = ({
+  moduleType,
+  refID,
+  isDataChangedRef,
+  closeDialog,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const removeCache = useContext(ClearCacheContext);
+  const { getCurrentInquiry, context } = useContext(AssignInquiryAPIContext);
+  const wrapperKey = useRef<any>(null);
+  if (wrapperKey.current === null) {
+    wrapperKey.current = cacheWrapperKeyGen(
+      Object.values(getCurrentInquiry.args)
+    );
+  }
 
   useEffect(() => {
-    if (userMessage !== null) {
-      setTimeout(() => {
-        setUserMessage(null);
-      }, 4000);
-    }
-  }, [userMessage]);
+    removeCache?.addEntry(["getCurrentAssignInquiry", wrapperKey.current]);
+  }, [removeCache]);
 
-  const employeeListQuery = useQuery(["employeeList", branchCode], () =>
-    APISDK.getEmployeeListToAssignLead(branchCode)
+  const queryData = useQuery<any, any, any>(
+    ["getCurrentAssignInquiry", wrapperKey.current],
+    getCurrentInquiry.fn(getCurrentInquiry.args),
+    { cacheTime: 0 }
   );
-  let employeeListOptions: any = [];
-  if (
-    employeeListQuery.isLoading === false &&
-    employeeListQuery.isError === false
-  ) {
-    employeeListOptions = transformOptions(employeeListQuery.data);
-  }
 
-  const mutation = useMutation(assignLead, {
-    onError: (error: any) => {
-      if (typeof error === "object") {
-        setUserMessage({ type: "error", message: error?.error_msg });
-      }
-    },
-    onSuccess: () => {
-      setUserMessage({ type: "success", message: "Data Successfully saved" });
-    },
-  });
+  const mutation = useMutation(
+    insertFormDataFnWrapper(API.assignInquiry({ moduleType, inquiry: refID })),
+    {
+      onError: (error: any, { endSubmit }) => {
+        let errorMsg = "Unknown Error occured";
+        if (typeof error === "object") {
+          errorMsg = error?.error_msg ?? errorMsg;
+        }
+        endSubmit(false, errorMsg);
+      },
+      onSuccess: (data, { endSubmit }) => {
+        endSubmit(true, "");
+        isDataChangedRef.current = true;
+        enqueueSnackbar("inquiries successfully assigned to branch", {
+          variant: "success",
+        });
+        closeDialog();
+      },
+    }
+  );
 
-  return (
-    <div>
-      {userMessage !== null && (
-        <Alert severity={userMessage.type}>{userMessage?.message}</Alert>
-      )}
-      <h3>Assign Lead</h3>
-      <Grid container spacing={2}>
-        <Grid item xs={6} sm={6} md={6}>
-          <TextField
-            select
-            label="Lead Assign to Employee"
-            placeholder="Select Employee"
-            fullWidth
-            required
-            name="leadAssign"
-            autoComplete="off"
-            onChange={(e) => setEmployeeID(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={employeeID}
-            InputProps={{
-              endAdornment: employeeListQuery.isLoading ? (
-                <InputAdornment position="end">
-                  <CircularProgress color="primary" variant="indeterminate" />
-                </InputAdornment>
-              ) : null,
-            }}
-            error={employeeListQuery.isError}
-            helperText={
-              employeeListQuery.isError ? "error loading options" : ""
-            }
-          >
-            <MenuItem value={0}>Select Employee</MenuItem>
-            {employeeListOptions.map((data) => {
-              return (
-                <MenuItem key={data.value} value={data.value}>
-                  {data.label}
-                </MenuItem>
-              );
-            })}
-          </TextField>
-        </Grid>
-      </Grid>
-      <Button color="primary" className={classes.backBtn}>
-        Reject
-      </Button>
-      <Button
-        color="primary"
-        autoFocus
-        className={classes.submit}
-        onClick={() => mutation.mutate({ refID, employeeID, inquiryStatus })}
-        endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
-      >
-        Assign
-      </Button>
-    </div>
+  inquiryAssignMetadata.form.formState = context;
+
+  const onSubmitHandler: SubmitFnType = (
+    data,
+    displayData,
+    endSubmit,
+    setFieldError
+  ) => {
+    mutation.mutate({
+      data,
+      displayData,
+      endSubmit,
+      setFieldError,
+    });
+  };
+
+  return queryData.isLoading || queryData.isFetching ? (
+    <Fragment>
+      <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </Fragment>
+  ) : queryData.isError ? (
+    <Fragment>
+      <span>{queryData.error?.error_msg ?? "Unknown error occured"}</span>
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </Fragment>
+  ) : (
+    <FormWrapper
+      key="assignInquiry"
+      metaData={inquiryAssignMetadata as MetaDataType}
+      initialValues={queryData.data}
+      onSubmitHandler={onSubmitHandler}
+      displayMode={"new"}
+      disableGroupErrorDetection={true}
+      disableGroupExclude={true}
+      hideDisplayModeInTitle={true}
+    >
+      {({ isSubmitting, handleSubmit }) => {
+        return (
+          <>
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
+            >
+              Save
+            </Button>
+            <Button onClick={closeDialog} disabled={isSubmitting}>
+              Cancel
+            </Button>
+          </>
+        );
+      }}
+    </FormWrapper>
   );
 };
 
-const transformOptions = (options) => {
-  if (Array.isArray(options)) {
-    let result = options.map((one) => ({
-      label: one.fullname,
-      value: one.empID,
-    }));
-    return result;
-  }
-  return [];
+export const AssignInquiryWrapper = ({
+  moduleType,
+  refID,
+  isDataChangedRef,
+  closeDialog,
+}) => {
+  return (
+    <AssignInquiryAPIProvider
+      {...generateAssignInquiryAPIContext({ refID, moduleType })}
+    >
+      <AssignInquiry
+        moduleType={moduleType}
+        refID={refID}
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={closeDialog}
+      />
+    </AssignInquiryAPIProvider>
+  );
 };

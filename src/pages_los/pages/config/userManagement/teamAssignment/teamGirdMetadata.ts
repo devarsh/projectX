@@ -1,0 +1,71 @@
+export const TeamGridMetaData = {
+  columns: [
+    {
+      columnName: "Serial No",
+      componentType: "default",
+      accessor: "serialNo",
+      sequence: 0,
+      alignment: "left",
+    },
+    {
+      columnName: "User ID",
+      componentType: "default",
+      accessor: "userID",
+      sequence: 1,
+      alignment: "left",
+    },
+    {
+      columnName: "User Name",
+      componentType: "default",
+      accessor: "userName",
+      sequence: 2,
+      alignment: "left",
+    },
+    {
+      columnName: "Branch Code",
+      componentType: "default",
+      accessor: "branchCode",
+      sequence: 3,
+      alignment: "left",
+    },
+    {
+      columnName: "Branch Name",
+      componentType: "default",
+      accessor: "branchName",
+      sequence: 4,
+      alignment: "left",
+    },
+    {
+      columnName: "Role",
+      componentType: "default",
+      accessor: "role",
+      sequence: 5,
+      alignment: "left",
+    },
+    {
+      columnName: "Team Assigned",
+      componentType: "default",
+      accessor: "teamAssign",
+      sequence: 6,
+      alignment: "left",
+    },
+  ],
+  gridConfig: {
+    dense: true,
+    gridLabel: "Employee Team Assignment ",
+    rowIdColumn: "serialNo",
+    defaultColumnConfig: {
+      width: 150,
+      maxWidth: 250,
+      minWidth: 100,
+    },
+    allowColumnReordering: true,
+    disableSorting: true,
+    hideHeader: false,
+    disableGroupBy: true,
+    containerHeight: {
+      min: "40vh",
+      max: "50vh",
+    },
+  },
+};

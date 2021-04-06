@@ -21,6 +21,7 @@ export interface GridColumnType {
   isVisible?: boolean;
   sortDescFirst?: boolean;
   dateFormat?: string;
+  actions?: string[] | string;
 }
 
 export interface GridConfigType {

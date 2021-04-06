@@ -75,6 +75,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
       }
       //@ts-ignore
       if (!isNaN(result)) {
+        result = new Date(result?.toString()?.slice(0, 24));
         handleChange(result);
       }
     }
@@ -93,7 +94,9 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
   const isError = touched && (error ?? "") !== "";
   const customDateChangeHandler = useCallback(
     (date) => {
-      handleChange(date);
+      let result = date;
+      result = new Date(result?.toString()?.slice(0, 24));
+      handleChange(result);
     },
     [handleChange]
   );

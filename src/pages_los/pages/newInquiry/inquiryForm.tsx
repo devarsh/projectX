@@ -1,12 +1,11 @@
 import { Fragment } from "react";
 import { useQuery, useMutation } from "react-query";
-import { CRMSDK } from "registry/fns/crm";
 import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import * as API from "./api";
 interface InsertFormDataFnType {
   submitAction: string;
   data: object;
@@ -21,12 +20,7 @@ const insertFormDataFnWrapper = async ({
   navigationProps,
   refID,
 }: InsertFormDataFnType) => {
-  return CRMSDK.submitInquiryQuestionData2(
-    "inquiry",
-    data,
-    navigationProps,
-    refID
-  );
+  return API.submitInquiryQuestionData("inquiry", data, navigationProps, refID);
 };
 
 export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {
@@ -63,7 +57,7 @@ export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {
     //@ts-ignore
     ["inquiryOrQuestion", "new", navigationState?.metaProps],
     //@ts-ignore
-    () => CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
+    () => API.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
     {
       cacheTime: 0,
     }

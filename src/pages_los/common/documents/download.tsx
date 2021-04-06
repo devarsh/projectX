@@ -3,6 +3,7 @@ import { DOCCRUDContext } from "./context";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import { downloadFile } from "../download";
 
 export const Download = ({ docData, closeDialog, maxDownloadLimit = 3 }) => {
   const { generateDocumentDownloadURL } = useContext(DOCCRUDContext);
@@ -37,19 +38,4 @@ export const Download = ({ docData, closeDialog, maxDownloadLimit = 3 }) => {
       </DialogActions>
     </Fragment>
   ) : null;
-};
-
-const downloadFile = (url: string, fileName: string) => {
-  const a = document.createElement("a");
-  a.href = String(url);
-  a.download = fileName;
-  const clickHandler = () => {
-    setTimeout(() => {
-      URL.revokeObjectURL(String(url));
-      a.removeEventListener("click", clickHandler);
-    }, 150);
-  };
-  a.target = "_blank";
-  a.addEventListener("click", clickHandler, false);
-  a.click();
 };

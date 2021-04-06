@@ -38,7 +38,6 @@ export const FileViewer: FC<{
     docUUID,
     fileType,
   });
-  console.log(loading, blob, error, success);
   const urlObj = useRef<any>("");
   if (success) {
     urlObj.current = URL.createObjectURL(blob);

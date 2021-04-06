@@ -12,17 +12,20 @@ import { Drawer } from "./drawer";
 import { Content } from "./content";
 import { Dashboard } from "./pages/dashboard";
 import { Profile } from "./pages/profile";
-import { Inquiry } from "./pages/inquiry";
+import {
+  CrossInquiry,
+  AssignedInquiry,
+  IncomingInquiry,
+  UnmappedInqiry,
+} from "./pages/inquiry";
 import { Lead } from "./pages/lead";
 import { DetailsTabViewBank } from "./pages/config/bank";
+import { UserManagement } from "./pages/config/userManagement";
 import { NewInquiry } from "./pages/newInquiry";
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
-
-import { CAM } from "./pages/cam";
-import { Form } from "registry/metaData/test";
-//import TestForm from "components/dyanmicForm/test";
+import TestForm from "components/dyanmicForm/test";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -40,6 +43,7 @@ const DashbordPages = () => {
           <Routes>
             <Route path="/" element={<RedirectComponent />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            {/*New Inquiries */}
             <Route
               path="/newInquiry/*"
               element={<NewInquiry key="inquiryx" />}
@@ -48,13 +52,28 @@ const DashbordPages = () => {
               path="/newInquiryQuestion"
               element={<NewInquiry key="question" />}
             />
-            <Route path="/inquiries" element={<Inquiry />} />
+
+            {/* Inquiries */}
+            <Route
+              path="/inquiry/assignedInquiries"
+              element={<AssignedInquiry />}
+            />
+            <Route path="/inquiry/crossInquiries" element={<CrossInquiry />} />
+            <Route
+              path="/inquiry/incomingInquiries"
+              element={<IncomingInquiry />}
+            />
+            <Route
+              path="/inquiry/unmappedInquiries"
+              element={<UnmappedInqiry />}
+            />
+
             <Route path="/leads" element={<Lead />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
+            <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cam" element={<CAM />} />
             {/*dummy routes*/}
-            <Route path="/testForm" element={<Form />} />
+            <Route path="/testForm" element={<TestForm />} />
             <Route path="/pages/:id" element={<Dummy />} />
           </Routes>
         </Content>
@@ -67,6 +86,7 @@ const EntryPoint = () => (
   <Fragment>
     <AuthProvider>
       <Routes>
+        <Route path="/auth/login/:type" element={<AuthLoginController />} />
         <Route
           path="/*"
           element={
@@ -75,7 +95,6 @@ const EntryPoint = () => (
             </ProtectedRoutes>
           }
         />
-        <Route path="/auth/login/:type" element={<AuthLoginController />} />
       </Routes>
     </AuthProvider>
   </Fragment>

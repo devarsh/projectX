@@ -1,16 +1,16 @@
-import { useReducer, useContext } from "react";
+import { useReducer, useContext, useEffect } from "react";
 import Box from "@material-ui/core/Box";
-import { AuthSDK } from "registry/fns/auth";
 import { useParams, useNavigate } from "react-router-dom";
 import loginImg from "assets/images/login.svg";
 import { useStyles } from "./style";
 import { UsernameField } from "./username";
 import { PasswordField } from "./password";
 import { AuthContext } from "./authContext";
+import * as API from "./api";
+import logo from "assets/images/logo.svg";
 
 const inititalState = {
   username: "",
-  password: "",
   loading: false,
   isError: false,
   userMessage: "",
@@ -45,6 +45,7 @@ const reducer = (state, action) => {
         loading: false,
         currentFlow: "password",
         transactionID: action.payload.transactionID,
+        username: action.payload.username,
       };
     }
     case "passwordVerificationSuccessful": {
@@ -64,19 +65,17 @@ export const AuthLoginController = () => {
   const [loginState, dispath] = useReducer(reducer, inititalState);
   const loginType = params["type"];
 
-  //redirect the user to LOS if already logged in
-  if (authContext?.isLoggedIn()) {
-    setTimeout(() => navigate("/los"), 1);
-    return null;
-  }
+  useEffect(() => {
+    if (["customer", "employee", "partner"].indexOf(loginType) < 0) {
+      navigate("/crm", { replace: true });
+    }
+    if (authContext?.isLoggedIn()) {
+      navigate("/los");
+    }
+  }, [navigate]);
 
-  if (["customer", "employee"].indexOf(loginType) < 0) {
-    setTimeout(() => navigate("/crm", { replace: true }), 1);
-    return null;
-  }
-
-  const verifyUsername = async () => {
-    if (!Boolean(loginState.username)) {
+  const verifyUsername = async (username) => {
+    if (!Boolean(username)) {
       dispath({
         type: "usernameVerificationFailure",
         payload: { error: "This is a required" },
@@ -85,14 +84,14 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititateUserNameVerification" });
     try {
-      const result = await AuthSDK.veirfyUsername(
-        loginState.username,
-        loginType
-      );
+      const result = await API.veirfyUsername(username, loginType);
       if (result.status === "success") {
         dispath({
           type: "usernameVerificationSuccessful",
-          payload: { transactionID: result?.data?.transactionId },
+          payload: {
+            transactionID: result?.data?.transactionId,
+            username: username,
+          },
         });
       } else {
         dispath({
@@ -112,8 +111,8 @@ export const AuthLoginController = () => {
     }
   };
 
-  const verifyPassword = async () => {
-    if (!Boolean(loginState.password)) {
+  const verifyPassword = async (password) => {
+    if (!Boolean(password)) {
       dispath({
         type: "passwordVerificationFailure",
         payload: { error: "This is a required Field" },
@@ -122,10 +121,10 @@ export const AuthLoginController = () => {
     }
     dispath({ type: "inititatePasswordVerification" });
     try {
-      const result = await AuthSDK.verifyPasswordAndLogin(
+      const result = await API.verifyPasswordAndLogin(
         loginState.transactionID,
         loginState.username,
-        loginState.password,
+        password,
         loginType
       );
       if (result.status === "success") {
@@ -149,19 +148,6 @@ export const AuthLoginController = () => {
     }
   };
 
-  const handleUsername = (e) => {
-    dispath({
-      type: "setUsername",
-      payload: { data: e.target.value },
-    });
-  };
-  const handlePassword = (e) => {
-    dispath({
-      type: "setPassword",
-      payload: { data: e.target.value },
-    });
-  };
-
   return (
     <Box display="flex" width={1} className={classes.wrapper}>
       <Box
@@ -178,21 +164,31 @@ export const AuthLoginController = () => {
         width={1 / 2}
         className={classes.loginRight}
       >
+        <img src={logo} alt="Logo" width="100px" height="100px" />
+        <h2>
+          {loginType === "employee"
+            ? "Employee Login"
+            : loginType === "customer"
+            ? "Customer Login"
+            : loginType === "partner"
+            ? "Partner Login"
+            : "ERRR!!"}
+        </h2>
         {loginState.currentFlow === "username" ? (
           <UsernameField
+            key="username"
             loginType={loginType}
             classes={classes}
             loginState={loginState}
             verifyUsername={verifyUsername}
-            handleUsername={handleUsername}
           />
         ) : (
           <PasswordField
+            key="password"
             loginType={loginType}
             classes={classes}
             loginState={loginState}
             verifyPassword={verifyPassword}
-            handlePassword={handlePassword}
           />
         )}
       </Box>

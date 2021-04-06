@@ -1,4 +1,4 @@
-import { printTDS } from "./utils";
+import { printTDS } from "pages_los/pages/cam/utils";
 export const IncomeDetails = ({ income }) => {
   if (!Array.isArray(income) || income.length <= 0) {
     return null;

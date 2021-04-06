@@ -22,6 +22,23 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  searchRoot2: {
+    fontFamily: theme.typography.fontFamily,
+    position: "relative",
+    boxShadow:
+      "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    borderRadius: 40,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+  },
+  searchError: {
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(6),
+  },
   search: {
     width: theme.spacing(6),
     height: "100%",

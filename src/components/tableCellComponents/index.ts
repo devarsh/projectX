@@ -7,11 +7,12 @@ import { EditableSelect } from "./editableSelect";
 import { EditableTextField } from "./editableTextField";
 import { EditableMaskInputField } from "./editableMaskInputField";
 import { EditableNumberFormat } from "./editableNumberFormat";
-
+import { ActionCellRenderer } from "./actionCellRenderer";
 export type CellComponentType =
   | "currency"
   | "date"
   | "default"
+  | "action"
   | "editableAutocomplete"
   | "editableSelect"
   | "editableTextField"
@@ -49,4 +50,8 @@ singletonFunctionRegisrationFactoryForTableCells.registerFn(
 singletonFunctionRegisrationFactoryForTableCells.registerFn(
   "editableNumberFormat",
   EditableNumberFormat
+);
+singletonFunctionRegisrationFactoryForTableCells.registerFn(
+  "action",
+  ActionCellRenderer
 );

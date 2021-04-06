@@ -1,3 +1,5 @@
+import { differenceInMonths, endOfMonth, startOfMonth } from "date-fns";
+
 export const AutoFillGender = (field) => {
   if (typeof field.value === "string") {
     field.value = field.value.trim();
@@ -29,7 +31,6 @@ export const AutoFillGender = (field) => {
 };
 
 export const getGenderValue = async (field) => {
-  console.log(field.value);
   if (field.value === "00") {
     return {
       gender: {
@@ -94,35 +95,6 @@ export const getValidateValue = async (fieldData) => {
   }
 };
 
-//dropdown value - dynamic form
-export const getSubProductDtl = (getProductType) => async (fieldData) => {
-  if (fieldData.value.length !== 0) {
-    try {
-      let codes = await getProductType(null, { formCode: fieldData.value });
-      return {
-        subProductType: {
-          options: codes,
-          value: "00",
-        },
-      };
-    } catch (e) {
-      return {
-        subProductType: {
-          options: [],
-          value: "",
-        },
-      };
-    }
-  } else if (fieldData.value === "") {
-    return {
-      subProductType: {
-        options: [],
-        value: "",
-      },
-    };
-  }
-};
-
 export const setValueOnDependentFieldsChangeOne = (dependentFields) => {
   if (typeof dependentFields === "object") {
     let result = Object.values(dependentFields);
@@ -134,4 +106,70 @@ export const setValueOnDependentFieldsChangeOne = (dependentFields) => {
       return total;
     }
   }
+};
+
+export const setLTVValue = async (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    minLTV: {
+      value: fieldValues?.minLTV,
+    },
+    maxLTV: {
+      value: fieldValues?.maxLTV,
+    },
+  };
+};
+
+export const setNewLTVValue = async (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    newltvCondition: {
+      value: fieldValues?.maxLTV,
+    },
+  };
+};
+
+export const setLTVValueForCAM = async (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    ltv: {
+      value: fieldValues?.maxLTV,
+    },
+  };
+};
+
+//Dummy only for testing
+export const shouldExcludeDummy = async (_, dependentFields, formState) => {
+  if (dependentFields["dummy"].value === "1") {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const getMonthDifferenceInRows = (_, dependentFields, formState) => {
+  let from = dependentFields["fromDate"]?.value;
+  let to = dependentFields["toDate"]?.value;
+  let result = -1;
+  if (from instanceof Date && to instanceof Date) {
+    from = startOfMonth(from);
+    to = endOfMonth(to);
+    result = differenceInMonths(to, from);
+  }
+  if (isNaN(result)) {
+    return -1;
+  } else if (result < 0) {
+    return -1;
+  } else {
+    return result + 1;
+  }
+};
+
+export const setBankFacilityValue = (fieldData) => {
+  const fieldValues = fieldData.incomingMessage?.others[fieldData.value];
+  return {
+    bankFacility: {
+      value: fieldValues?.facility,
+    },
+  };
 };

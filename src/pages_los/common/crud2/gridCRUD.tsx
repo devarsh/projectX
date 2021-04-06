@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, Fragment, useEffect, FC } from "react";
+import { useContext, useRef, useState, Fragment, FC } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { FormNew } from "./formNew";
@@ -7,6 +7,7 @@ import { DeleteAction } from "./delete";
 import { MyGridWrapper } from "./gridWrapper";
 import { CRUDContext } from "./context";
 import { DocumentGridCRUD } from "../documents/documentsTab";
+import { InvalidAction } from "pages_los/common/invalidAction";
 const actions: ActionTypes[] = [
   {
     actionName: "View",
@@ -31,7 +32,16 @@ const actions: ActionTypes[] = [
 export const GridCRUD: FC<{
   isDataChangedRef: any;
   showDocuments?: boolean;
-}> = ({ isDataChangedRef, showDocuments }) => {
+  rowData?: any;
+  disableActions?: string | string[];
+  setEditFormStateFromInitValues?: any;
+}> = ({
+  isDataChangedRef,
+  showDocuments,
+  rowData,
+  disableActions,
+  setEditFormStateFromInitValues,
+}) => {
   let allActions = useRef<any>(null);
   if (allActions.current === null) {
     allActions.current = [...actions];
@@ -41,6 +51,19 @@ export const GridCRUD: FC<{
         actionLabel: "Document Details",
         multiple: false,
         rowDoubleClick: false,
+      });
+    }
+    let disableActionsArray: string[];
+    if (typeof disableActions === "string") {
+      disableActionsArray = [disableActions];
+    } else if (Array.isArray(disableActions)) {
+      disableActionsArray = disableActions;
+    } else {
+      disableActionsArray = [];
+    }
+    if (Array.isArray(disableActionsArray)) {
+      allActions.current = allActions.current.filter((one) => {
+        return disableActionsArray?.indexOf(one.actionName) >= 0 ? false : true;
       });
     }
   }
@@ -84,6 +107,7 @@ export const GridCRUD: FC<{
             isDataChangedRef={isMyDataChangedRef}
             closeDialog={closeMyDialog}
             serialNo={currentAction?.rows[0]?.id}
+            setEditFormStateFromInitValues={setEditFormStateFromInitValues}
           />
         ) : (currentAction?.name ?? "") === "Delete" ? (
           <DeleteAction
@@ -105,11 +129,4 @@ export const GridCRUD: FC<{
       </Dialog>
     </Fragment>
   );
-};
-
-const InvalidAction = ({ closeDialog }) => {
-  useEffect(() => {
-    closeDialog();
-  }, [closeDialog]);
-  return null;
 };

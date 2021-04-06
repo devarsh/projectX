@@ -1,4 +1,5 @@
 import { IncomeDetails } from "./incomeDetails";
+import { convertIntoCurrency } from "pages_los/pages/cam/utils";
 
 export const ManagementDetails = ({ management }) => {
   if (!Array.isArray(management) || management.length <= 0) {
@@ -10,15 +11,19 @@ export const ManagementDetails = ({ management }) => {
   }
   return (
     <>
+      <br />
+      <tr className="page-break">
+        <th></th>
+      </tr>
       <tr>
         <th colSpan={9} className="form-heading">
           Management Details
         </th>
       </tr>
-      {management.map((data: any) => {
+      {management.map((data: any, index) => {
         return (
           <>
-            <tr>
+            <tr key={index}>
               <th colSpan={2}>Name of the Partner/Director</th>
               <td colSpan={7}>{"ABC"}</td>
             </tr>
@@ -48,7 +53,11 @@ export const ManagementDetails = ({ management }) => {
             </tr>
             <tr>
               <th colSpan={2}>Networth</th>
-              <td colSpan={7}>{data.netWorth}</td>
+              <td colSpan={7}>
+                {convertIntoCurrency({
+                  amount: data.netWorth,
+                })}
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Resposnibilities Handled in the Comapany</th>

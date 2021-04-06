@@ -1,39 +1,64 @@
 import { lazy, Suspense } from "react";
-import { LOSSDK } from "registry/fns/los";
-import { useQuery } from "react-query";
-import loaderGif from "assets/images/loader.gif";
 import "./styles.css";
 
 const SME = lazy(() =>
   import("./sme").then((module) => ({ default: module.SME }))
 );
 
-export const CAM = () => {
-  const result = useQuery(["getViewData", "lead", "cam"], () =>
-    LOSSDK.getCAMData("89")
-  );
-  console.log(result);
-  let ComponentToRender;
-  if (result.isSuccess) {
-    //put condition in case of multipleCam
-    ComponentToRender = SME;
-  }
-  const renderResult = result.isLoading ? (
-    <img src={loaderGif} height="50px" width="50px" alt="loader" />
-  ) : result.isError ? (
-    <span>
-      {
-        //@ts-ignore
-        result.error?.error_msg ?? "unknown error occured"
-      }
-    </span>
-  ) : (
+const Infra = lazy(() =>
+  import("./infra").then((module) => ({ default: module.Infra }))
+);
+
+const Unsecured = lazy(() =>
+  import("./unsecured").then((module) => ({
+    default: module.Unsecured,
+  }))
+);
+
+const RetailHome = lazy(() =>
+  import("./retailHome").then((module) => ({ default: module.RetailHome }))
+);
+
+export const CAM = ({ camData }) => {
+  let ComponentToRender = selectComponent(camData);
+  return (
     <Suspense fallback={<span>loading..</span>}>
-      <ComponentToRender
-        data={result.data?.data}
-        others={result?.data?.others}
-      />
+      <ComponentToRender data={camData?.data} others={camData?.others} />
     </Suspense>
   );
-  return renderResult;
+};
+
+const selectComponent = ({ others }) => {
+  const { productID } = others;
+  switch (productID) {
+    case "12300001":
+    case "12300002":
+    case "12300003":
+    case "12300004": {
+      return RetailHome;
+    }
+    case "12300005":
+    case "12300006":
+    case "12300007":
+    case "12300008":
+    case "12300009":
+    case "123000010": {
+      return SME;
+    }
+    case "123000011":
+    case "123000012": {
+      return Infra;
+    }
+    case "123000013":
+    case "123000014": {
+      return Unsecured;
+    }
+    default: {
+      return CAM_NOT_AVAILABLE;
+    }
+  }
+};
+
+const CAM_NOT_AVAILABLE = ({ others: { productID } }) => {
+  return <div>No CAM avaiable for productID {productID}</div>;
 };

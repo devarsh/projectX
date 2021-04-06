@@ -2,18 +2,18 @@ import { useState, useRef, memo, Fragment, useCallback } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CRMSDK } from "registry/fns/crm";
-import { navigationFlowDecisionMaker } from "../utils/navHelpers";
-import loaderGif from "assets/images/loader.gif";
 import { useStyleFormWrapper } from "./style";
 import FormWrapper, {
   ViewFormWrapper,
   isMetaDataValid,
   MetaDataType,
 } from "components/dyanmicForm";
+import { navigationFlowDecisionMaker } from "../utils/navHelpers";
 import { ConfirmationBox } from "./confirmationBox";
-import { useQuery } from "react-query";
+import loaderGif from "assets/images/loader.gif";
+import * as API from "./api";
 
 const MemoizedFormWrapper = memo(FormWrapper);
 
@@ -62,7 +62,7 @@ export const InquiryFormWrapper = () => {
       }
     }
     setIsSubmitting(true);
-    const result = await CRMSDK.submitInquiryQuestionData(
+    const result = await API.submitInquiryQuestionData(
       metaData?.current?.form.submitAction ?? "NO_ACTION_FOUND",
       {
         ...formData,
@@ -109,7 +109,7 @@ export const InquiryFormWrapper = () => {
     //@ts-ignore
     ["inquiryOrQuestion", "new", navigationState?.metaProps],
     //@ts-ignore
-    () => CRMSDK.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
+    () => API.getInquiryQuestionMetaData(navigationState?.metaProps ?? {}),
     {
       cacheTime: 0,
     }

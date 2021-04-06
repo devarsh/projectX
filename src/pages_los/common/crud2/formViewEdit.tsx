@@ -40,11 +40,15 @@ export const FormViewEdit: FC<{
   closeDialog?: any;
   defaultView?: "view" | "edit";
   serialNo?: string; //need to find another way to pass it (its a little hardcoded)
+  setEditFormStateFromInitValues?: any;
+  readOnly?: boolean;
 }> = ({
   isDataChangedRef,
   closeDialog,
   defaultView = "view",
   serialNo = "1",
+  setEditFormStateFromInitValues,
+  readOnly = false,
 }) => {
   const { updateFormData, getFormData, getFormMetaData, context } = useContext(
     CRUDContext
@@ -111,23 +115,14 @@ export const FormViewEdit: FC<{
     {
       queryKey: ["getFormData", wrapperKey.current, serialNo],
       queryFn: () => getFormData.fn(getFormData.args)(serialNo),
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
     {
       queryKey: ["getFormMetaData", wrapperKey.current, "view"],
       queryFn: () => getFormMetaData.fn(getFormMetaData.args)("view"),
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
     {
       queryKey: ["getFormMetaData", wrapperKey.current, "edit"],
       queryFn: () => getFormMetaData.fn(getFormMetaData.args)("edit"),
-      cacheTime: 100000000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
   ]);
 
@@ -161,12 +156,17 @@ export const FormViewEdit: FC<{
   let viewMetaData: MetaDataType = {} as MetaDataType;
 
   if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
+    const formStateFromInitValues =
+      typeof setEditFormStateFromInitValues === "function"
+        ? setEditFormStateFromInitValues(result[0].data)
+        : undefined;
     editMetaData = JSON.parse(JSON.stringify(result[2].data)) as MetaDataType;
     viewMetaData = JSON.parse(JSON.stringify(result[1].data)) as MetaDataType;
     editMetaData.form.formState = {
       ...context,
       serialNo,
       formCode: editMetaData.form.name,
+      ...formStateFromInitValues,
     };
     editMetaData.form.name = `${editMetaData.form.name}-edit`;
     if (editMetaData?.form?.render?.renderType === "stepper") {
@@ -176,6 +176,7 @@ export const FormViewEdit: FC<{
       ...context,
       serialNo,
       formCode: viewMetaData.form.name,
+      ...formStateFromInitValues,
     };
     viewMetaData.form.name = `${viewMetaData.form.name}-view`;
     if (viewMetaData?.form?.render?.renderType === "stepper") {
@@ -216,7 +217,7 @@ export const FormViewEdit: FC<{
       disableGroupErrorDetection={false}
       disableGroupExclude={true}
     >
-      <Button onClick={moveToEditMode}>Edit</Button>
+      {!readOnly ? <Button onClick={moveToEditMode}>Edit</Button> : null}
       {typeof closeDialog === "function" ? (
         <Button onClick={closeDialog}>Cancel</Button>
       ) : null}

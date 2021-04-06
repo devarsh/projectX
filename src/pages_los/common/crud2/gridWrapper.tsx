@@ -34,16 +34,10 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       {
         queryKey: ["getGridFormMetaData", wrapperKey.current],
         queryFn: () => getGridFormMetaData.fn(getGridFormMetaData.args)(),
-        cacheTime: 100000000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
       },
       {
         queryKey: ["getStaticGridData", wrapperKey.current],
         queryFn: () => getGridFormData.fn(getGridFormData.args)(),
-        cacheTime: 100000000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
       },
     ]);
     useEffect(() => {
@@ -60,7 +54,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       result[1].isFetching;
     let isError = result[0].isError || result[1].isError;
     //@ts-ignore
-    let errorMsg = `${result[0].error?.error_msg} ${result[0].error?.error_msg}`
+    let errorMsg = `${result[0].error?.error_msg} ${result[1].error?.error_msg}`
       .trimStart()
       .trimEnd();
     errorMsg = !Boolean(errorMsg) ? "unknown error occured" : errorMsg;

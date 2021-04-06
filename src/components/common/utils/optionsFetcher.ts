@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useQuery } from "react-query";
+import { cacheWrapperKeyGen } from "cache";
 import { transformDependentFieldsState } from "packages/form";
 
 const computeDependentKey = (dependentValues = {}) => {
@@ -25,12 +26,18 @@ export const useOptionsFetcher = (
 ): { loadingOptions: boolean } => {
   let loadingOptions = false;
   let queryKey: any[] = [];
+  const formStateKeys = cacheWrapperKeyGen(
+    Object.values(
+      typeof formState === "object" && formState !== null
+        ? formState
+        : { none: true }
+    )
+  );
   if (Boolean(disableCaching)) {
     const dependentKeys = computeDependentKey(dependentValues);
-    //const formStateKeys = computeFormStateKey(formState);
-    queryKey = [_optionsKey, dependentKeys];
+    queryKey = [_optionsKey, formStateKeys, dependentKeys];
   } else {
-    queryKey = [_optionsKey];
+    queryKey = [_optionsKey, formStateKeys];
   }
   const queryOptions = useQuery(
     queryKey,

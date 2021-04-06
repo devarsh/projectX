@@ -10,9 +10,9 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       thousandSeparator: true,
       prefix: "₹",
       thousandsGroupStyle: "lakh",
-      allowNegative: false,
+      allowNegative: true,
       allowLeadingZeros: false,
-      decimalScale: 0,
+      decimalScale: 2,
       maxLength: 13,
       isAllowed: (values) => {
         if (values.floatValue === 0) {
@@ -156,7 +156,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       suffix: "%",
       decimalScale: 2,
       fixedDecimalScale: true,
-      allowNegative: false,
+      allowNegative: true,
       allowEmptyFormatting: true,
       isAllowed: (values) => {
         //@ts-ignore
@@ -169,8 +169,8 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     schemaValidation: {
       type: "string",
       rules: [
-        { name: "typeError", params: ["Please enter existing loan interest"] },
-        { name: "required", params: ["Please enter existing loan interest"] },
+        { name: "typeError", params: ["This field is required"] },
+        { name: "required", params: ["This field is required"] },
       ],
     },
   },
@@ -231,6 +231,36 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
           params: [new Date(), "Future Date not allowed."],
         },
       ],
+    },
+  },
+  minAge: {
+    render: {
+      componentType: "numberFormat",
+    },
+    schemaValidation: {
+      type: "number",
+      rules: [
+        { name: "required", params: ["Min Age is required"] },
+        { name: "min", params: [25, "Min age should be 25 years"] },
+      ],
+    },
+    FormatProps: {
+      format: "##",
+    },
+  },
+  maxAge: {
+    render: {
+      componentType: "numberFormat",
+    },
+    schemaValidation: {
+      type: "number",
+      rules: [
+        { name: "required", params: ["Max Age is required"] },
+        { name: "max", params: [65, "Max age should be 65 years"] },
+      ],
+    },
+    FormatProps: {
+      format: "##",
     },
   },
 };

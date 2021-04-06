@@ -13,6 +13,9 @@ import {
   formArrayFieldRegistryAtom,
   formFieldsErrorWatcherRemoveSelector,
   formAtom,
+  formFieldAtom,
+  subscribeToFormFieldsSelector,
+  formFieldRegistryAtom,
 } from "./atoms";
 import {
   useRecoilState,
@@ -20,12 +23,15 @@ import {
   useRecoilCallback,
   useRecoilValue,
 } from "recoil";
-import { getIn } from "./util";
+import { getIn, setIn } from "./util";
 import { FormContext } from "./context";
 
 export const useFieldArray = ({
   arrayFieldName,
   template,
+  shouldExclude,
+  dependentFields,
+  getFixedRowsCount,
 }: UseFieldArrayHookProps) => {
   //fromContext provides formName for scoping
   const formContext = useContext(FormContext);
@@ -82,6 +88,158 @@ export const useFieldArray = ({
       }
     },
     [formContext.formName, formArrayFieldRegisterSelector]
+  );
+
+  //New logic for should exclude and fixed Row Count set
+  const dependentFieldsState = useRecoilValue(
+    subscribeToFormFieldsSelector({
+      formName:
+        typeof shouldExclude === "function"
+          ? formContext.formName
+          : `${formContext.formName}-NOTEXIST`,
+      fields: dependentFields,
+    })
+  );
+
+  const clearArrayFieldRows = useRecoilCallback(
+    ({ reset, snapshot, set }) => (
+      templateFieldRows: TemplateFieldRowType[]
+    ) => {
+      const allKeysToRemove: string[] = [];
+      for (let i = 0; i < templateFieldRows.length; i++) {
+        let keys = Object.keys(templateFieldRows[i]?.cells);
+        for (let j = 0; j < keys.length; j++) {
+          const currentFieldKey = templateFieldRows[i].cells[keys[j]].key;
+          reset(formFieldAtom(`${formContext.formName}/${currentFieldKey}`));
+          allKeysToRemove.push(`${formContext.formName}/${currentFieldKey}`);
+        }
+      }
+      const fields = snapshot.getLoadable(
+        formFieldRegistryAtom(formContext.formName)
+      );
+      if (fields.state === "hasValue") {
+        let allFields = fields.getValue();
+        let newAllFields = allFields.filter((one) =>
+          allKeysToRemove.indexOf(one) >= 0 ? false : true
+        );
+        set(formFieldRegistryAtom(formContext.formName), newAllFields);
+      }
+    },
+    []
+  );
+
+  const lastShouldExcludePromise = useRef<Promise<any> | null>(null);
+  useEffect(() => {
+    if (typeof shouldExclude === "function") {
+      const currentShouldExcludePromise = Promise.resolve(
+        shouldExclude({} as any, dependentFieldsState, formContext.formState)
+      );
+      lastShouldExcludePromise.current = currentShouldExcludePromise;
+      currentShouldExcludePromise.then((result) => {
+        if (currentShouldExcludePromise === lastShouldExcludePromise.current) {
+          if (result === true && fieldRows.excluded === false) {
+            setFieldRows((old) => ({ ...old, excluded: true }));
+            clearArrayFieldRows(fieldRows.templateFieldRows);
+            clearFieldArray();
+          } else if (result === false && fieldRows.excluded === true) {
+            setFieldRows((old) => ({ ...old, excluded: false }));
+          }
+        }
+      });
+    }
+  });
+  useEffect(() => {
+    if (
+      typeof getFixedRowsCount === "function" &&
+      fieldRows.excluded === false
+    ) {
+      let currentRowCount = getFixedRowsCount(
+        fieldRows,
+        dependentFieldsState,
+        formContext.formState
+      );
+      if (currentRowCount < 0) {
+        currentRowCount = 0;
+      }
+      if (fieldRows.templateFieldRows.length !== currentRowCount) {
+        let diff = currentRowCount - fieldRows.templateFieldRows.length;
+        if (diff > 0) {
+          //add new rows
+          let index: number = fieldRows.templateFieldRows.length;
+          let rowBuf: any = fieldRows.templateFieldRows;
+          let lastInsertIndex = fieldRows.lastInsertIndex;
+          while (diff > 0) {
+            let result = _insert(
+              index,
+              rowBuf,
+              lastInsertIndex,
+              templateFieldNamesRef.current
+            );
+            rowBuf = result?.newRows;
+            lastInsertIndex = result?.lastIndex ?? -1;
+            index++;
+            diff--;
+          }
+          if (Array.isArray(rowBuf)) {
+            setFieldRows((old) => ({
+              ...old,
+              lastInsertIndex: lastInsertIndex,
+              templateFieldRows: rowBuf,
+            }));
+          }
+        } else {
+          let indexToRemoveFrom = fieldRows.templateFieldRows.length + diff;
+          let currentTemplateRows = fieldRows.templateFieldRows.slice(
+            0,
+            indexToRemoveFrom
+          );
+          let removeRows = fieldRows.templateFieldRows.slice(indexToRemoveFrom);
+          clearArrayFieldRows(removeRows);
+          setFieldRows((oldValues) => ({
+            ...oldValues,
+            templateFieldRows: currentTemplateRows,
+            lastInsertIndex: oldValues.lastInsertIndex,
+          }));
+        }
+      }
+    }
+  });
+
+  //end of new should exclude logic
+
+  const getAllRowsValues = useRecoilCallback(
+    ({ snapshot }) => (templateFieldRows: TemplateFieldRowType[]) => {
+      const allKeysToGetValuesFrom: string[] = [];
+      for (let i = 0; i < templateFieldRows.length; i++) {
+        let keys = Object.keys(templateFieldRows[i]?.cells);
+        for (let j = 0; j < keys.length; j++) {
+          const currentFieldKey = templateFieldRows[i].cells[keys[j]].key;
+          allKeysToGetValuesFrom.push(
+            `${formContext.formName}/${currentFieldKey}`
+          );
+        }
+      }
+      let resultValues: any = {};
+      for (let itr = 0; itr < allKeysToGetValuesFrom.length; itr++) {
+        const fieldLoadable = snapshot.getLoadable(
+          formFieldAtom(allKeysToGetValuesFrom[itr])
+        );
+        if (fieldLoadable.state === "hasValue") {
+          const readOnlyFieldState = fieldLoadable.contents;
+          if (readOnlyFieldState.excluded === true) {
+            continue;
+          } else {
+            resultValues = setIn(
+              resultValues,
+              readOnlyFieldState.name.replace(`${formContext.formName}/`, ""),
+              readOnlyFieldState.value
+            );
+          }
+        }
+      }
+      return resultValues;
+    },
+    [formContext.formName]
   );
 
   //_insert adds a new field to the fieldArray with a new key
@@ -441,10 +599,16 @@ export const useFieldArray = ({
     [setFieldRows, arrayFieldName]
   );
 
+  const getAllRowsValuesFn = useCallback(
+    () => getAllRowsValues(fieldRowsRef.current.templateFieldRows),
+    [getAllRowsValues]
+  );
+
   return {
     fieldRows,
     templateFieldNames: templateFieldNamesRef.current,
     clearFieldArray,
+    getAllRowsValues: getAllRowsValuesFn,
     unshift,
     push,
     insert,
@@ -453,6 +617,7 @@ export const useFieldArray = ({
     swap,
     move,
     renderRows,
+    excluded: fieldRows.excluded,
     isSubmitting: formState.isSubmitting,
     formState: formContext.formState,
     formName: formContext.formName,

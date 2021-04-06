@@ -3,7 +3,7 @@ import { MetaDataType } from "components/dyanmicForm";
 const GeneralDetailsMetaData: MetaDataType = {
   form: {
     name: "123456",
-    label: "General Details",
+    label: "Target Details",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     submitAction: "home",
@@ -11,13 +11,15 @@ const GeneralDetailsMetaData: MetaDataType = {
       ordering: "auto",
       renderType: "tabs",
       groups: {
-        "0": "Address Details",
+        "0": "Business By Direct Team",
+        "1": "Lead Target",
+        "2": "Cross",
       },
       gridConfig: {
         item: {
           xs: 12,
-          sm: 4,
-          md: 4,
+          sm: 3,
+          md: 3,
         },
         container: {
           direction: "row",
@@ -49,7 +51,8 @@ const GeneralDetailsMetaData: MetaDataType = {
         componentType: "arrayField",
         group: 0,
       },
-      name: "addressDetails",
+      name: "Wowsa",
+      label: "",
       GridProps: {
         xs: 12,
         md: 12,
@@ -58,76 +61,30 @@ const GeneralDetailsMetaData: MetaDataType = {
       _fields: [
         {
           render: {
-            componentType: "textField",
+            componentType: "transferList",
+            group: 0,
           },
-          name: "value1",
-          label: "Value1",
-          placeholder: "Value1",
+          name: "dummy",
+          label: "dummy",
+          //@ts-ignore
+          leftOptions: "getBankDocType",
+          //@ts-ignore
+          rightOptions: "getITRDocType",
+          leftOptionsLabel: "From",
+          rightOptionsLabel: "To",
+          valueSide: "right",
           GridProps: {
             xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-          },
-          name: "value2",
-          label: "Value2",
-          placeholder: "Value2",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-        {
-          render: {
-            componentType: "textField",
-          },
-          name: "value3",
-          label: "Value3",
-          placeholder: "Value3",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-        {
-          render: {
-            //@ts-ignore
-            componentType: "currency",
-          },
-          name: "total",
-          label: "Total",
-          placeholder: "Total",
-          dependentFields: ["value1", "value2", "value3"],
-          setValueOnDependentFieldsChange: "setValueOnDependentFieldsChangeOne",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
-          },
-        },
-        {
-          render: {
-            componentType: "textField",
-          },
-          name: "country",
-          label: "Country",
-          placeholder: "Country",
-          GridProps: {
-            xs: 12,
-            md: 3,
-            sm: 3,
+            md: 6,
+            sm: 6,
           },
         },
       ],
     },
   ],
 };
-
 export default GeneralDetailsMetaData;
+
+/*
+
+*/

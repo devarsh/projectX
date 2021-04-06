@@ -17,6 +17,8 @@ export type AccumulatorType = [
 
 const defaultBooleanFunction = (value) => () => value;
 
+const defaultNumberFunction = (value) => () => Number(value);
+
 const patternMatch = (patters: AttachMethodArrayType[], value: string) => {
   for (const currentPattern of patters) {
     if (currentPattern[0] instanceof RegExp) {
@@ -37,8 +39,15 @@ const JSONWalkerFinalPath = (
 ) => {
   let result = patternMatch(interestedValues, currentPath);
   if (result.found) {
-    //attach a function that returns boolean
-    if (currentObj === "true")
+    if (lastKey === "getFixedRowsCount" && !isNaN(Number(currentObj))) {
+      accumulator.push([
+        currentPath,
+        "NUMBERIC_FUNCTION_TO_ATTACH_FOR_FIXED_ROW_COUNT",
+        lastKey,
+        defaultNumberFunction(currentObj),
+      ]);
+    } //attach a function that returns boolean
+    else if (currentObj === "true")
       accumulator.push([
         currentPath,
         "BOOLEAN_FUNCTION_TO_ATTACH_FOR_BOOLEAN_VALUES",
@@ -155,10 +164,10 @@ export const attachMethodsToMetaData = (
     const retVal = registrationFnInstance.getFn(one[1], one[3]);
     newMetaData = setIn(newMetaData, one[0], retVal);
     //to get options registered function name to be used in react-query for caching options
-    if (one[2] === "options") {
+    if (["options", "leftOptions", "rightOptions"].indexOf(`${one[2]}`) >= 0) {
       const pathSplit = one[0].split(".");
       const prev = pathSplit.slice(0, pathSplit.length - 1);
-      const newPath = [...prev, "_optionsKey"].join(".");
+      const newPath = [...prev, `_${one[2]}Key`].join(".");
       newMetaData = setIn(newMetaData, newPath, one[1]);
     }
   }

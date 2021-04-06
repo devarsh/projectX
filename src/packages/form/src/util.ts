@@ -68,7 +68,7 @@ export function setIn(obj: any, path: string, value: any): any {
 
 const validationConfig = {
   abortEarly: false,
-  strict: true,
+  strict: false,
 };
 
 export const yupValidationHelper = (

@@ -47,13 +47,19 @@ registerFn("getOtherDocType", miscSDK.getMiscVal("OTHER_DOC_TYPE"));
 registerFn("getGSTDocType", miscSDK.getMiscVal("GST_DOC_TYPE"));
 registerFn("getLeadStage", miscSDK.getMiscVal("LEAD_STAGE"));
 registerFn("getNomineeRelation", miscSDK.getMiscVal("NOMINI_RELATION"));
+registerFn("getSMEDepartment", miscSDK.getMiscVal("SME_DEPARTMENT"));
+registerFn("getAcceptancePolicy", miscSDK.getMiscVal("ACCEPT_POLICY"));
+registerFn("getTargetYears", miscSDK.getMiscVal("TARGET_YEARS"));
+registerFn("getTargetMonth", miscSDK.getMiscVal("TARGET_MONTH"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
+registerFn("getBankSubProductType", miscSDK.getBankSubProductType);
+registerFn("getBankSubProductType2", miscSDK.getBankSubProductType2);
 registerFn("getPropertyCity", miscSDK.getPropertyCity);
 registerFn("getBankList", miscSDK.getBankList);
 registerFn("getIndustryType", miscSDK.getIndustryType);
 registerFn("getIndustrySubType", miscSDK.getIndustrySubType);
-registerFn("getsubProductDtl", others.getSubProductDtl(miscSDK.getProductType));
+registerFn("getCRMSubProductType", miscSDK.getCRMSubProductType);
 registerFn("getPerfiosBankList", miscSDK.getPerfiosBankList);
 registerFn("getBranchList", miscSDK.getBranchList);
 registerFn("getSourcelist", miscSDK.getSourcelist);
@@ -64,6 +70,9 @@ registerFn("getYesOrNoOptions", others.getYesOrNoOptions);
 registerFn("AutoFillGender", others.AutoFillGender);
 registerFn("getValidateValue", others.getValidateValue);
 registerFn("getGenderValue", others.getGenderValue);
+registerFn("setLTVValue", others.setLTVValue);
+registerFn("setNewLTVValue", others.setNewLTVValue);
+registerFn("setLTVValueForCAM", others.setLTVValueForCAM);
 
 registerFn(
   "getMonthlyEmiPayValidateValue",
@@ -100,3 +109,9 @@ registerFn(
   "setValueOnDependentFieldsChangeOne",
   others.setValueOnDependentFieldsChangeOne
 );
+
+//Dummy only for testing
+registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
+registerFn("getMonthDifferenceInRows", others.getMonthDifferenceInRows);
+registerFn("setBankFacilityValue", others.setBankFacilityValue);
+//End of Dummy only for testing

@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { forwardRef } from "react";
 import { GridMetaDataType, ActionTypes } from "./types";
 import {
   attachCellComponentsToMetaData,
@@ -12,47 +12,48 @@ import {
 import { GirdController } from "./gridController";
 import { GridProvider } from "./context";
 
-export const GridWrapper: FC<{
+interface GridWrapperPropsType {
   gridCode: any;
   getGridData: any;
   getGridColumnFilterData: any;
   metaData: GridMetaDataType;
   actions?: ActionTypes[];
   setAction: any;
-  gridRefresh?: boolean;
-  setGridRefresh?: any;
-}> = ({
-  gridCode,
-  getGridColumnFilterData,
-  getGridData,
-  metaData,
-  actions,
-  setAction,
-  gridRefresh = false,
-  setGridRefresh = () => false,
-}) => {
-  let finalData = transformMetaData({
-    metaData,
-    actions,
-    setAction,
-  });
-  //We dont know if setGridRefresh is memozied or not
-  /*eslint-disable react-hooks/exhaustive-deps*/
-  setGridRefresh = useCallback(setGridRefresh, []);
-  return (
-    <GridProvider
-      gridCode={gridCode}
-      getGridData={getGridData}
-      getGridColumnFilterData={getGridColumnFilterData}
-    >
-      <GirdController
-        metaData={finalData as GridMetaDataType}
-        gridRefresh={gridRefresh}
-        setGridRefresh={setGridRefresh}
-      />
-    </GridProvider>
-  );
-};
+}
+
+export const GridWrapper = forwardRef<GridWrapperPropsType, any>(
+  (
+    {
+      gridCode,
+      getGridColumnFilterData,
+      getGridData,
+      metaData,
+      actions,
+      setAction,
+    },
+    ref
+  ) => {
+    let finalData = transformMetaData({
+      metaData,
+      actions,
+      setAction,
+    });
+
+    return (
+      <GridProvider
+        gridCode={gridCode}
+        getGridData={getGridData}
+        getGridColumnFilterData={getGridColumnFilterData}
+      >
+        <GirdController
+          //@ts-ignore
+          ref={ref}
+          metaData={finalData as GridMetaDataType}
+        />
+      </GridProvider>
+    );
+  }
+);
 
 const transformMetaData = ({
   metaData: freshMetaData,
