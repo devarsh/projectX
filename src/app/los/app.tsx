@@ -4,7 +4,7 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { ReactQueryDevtools } from "react-query-devtools";
 import { SnackbarProvider } from "notistack";
 import { queryClient } from "cache";
 import "registry/fns/registerFnsLOS";
@@ -22,8 +22,10 @@ export const App = () => {
         <QueryClientProvider client={queryClient}>
           <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
             <IndexPage />
-            <ReactQueryDevtools />
           </SnackbarProvider>
+          {process.env.NODE_ENV !== "production" ? (
+            <ReactQueryDevtools />
+          ) : null}
         </QueryClientProvider>
       </ThemeProvider>
     </Fragment>
