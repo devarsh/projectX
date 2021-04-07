@@ -9,6 +9,7 @@ import Close from "@material-ui/icons/Close";
 import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { CAMContext } from "./context";
+import { HeaderDetails } from "./headerDetails";
 import { useMutation, useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { CAM } from "pages_los/pages/cam";
@@ -59,10 +60,8 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
   ) : (
     <Fragment>
       <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
-        <Typography variant="h6" color="textSecondary">
-          LeadNo
-        </Typography>
-        <Typography variant="h6">{refID}</Typography>
+        <HeaderDetails rowData={result?.data?.others ?? ""} />
+
         <div style={{ flexGrow: 1 }}></div>
         <Button
           onClick={() => mutation.mutate(result.data)}
