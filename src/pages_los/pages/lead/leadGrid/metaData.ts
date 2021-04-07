@@ -54,9 +54,23 @@ export const leadGridMetaData = {
       isVisible: true,
     },
     {
+      accessor: "inquiry_tran_cd",
+      columnName: "Inquiry CD",
+      sequence: 3,
+      width: 150,
+      minWidth: 100,
+      maxWidth: 200,
+      alignment: "right",
+      componentType: "default",
+      disableSortBy: false,
+      disableFilters: false,
+      filterComponentType: "valueFilter",
+      isVisible: true,
+    },
+    {
       accessor: "branch_cd",
       columnName: "Branch",
-      sequence: 3,
+      sequence: 4,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -72,7 +86,7 @@ export const leadGridMetaData = {
     {
       accessor: "category_id",
       columnName: "Category",
-      sequence: 3,
+      sequence: 5,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -88,7 +102,7 @@ export const leadGridMetaData = {
     {
       accessor: "product_cd",
       columnName: "Product CD",
-      sequence: 4,
+      sequence: 6,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -104,7 +118,7 @@ export const leadGridMetaData = {
     {
       accessor: "stage_cd",
       columnName: "Stage",
-      sequence: 5,
+      sequence: 7,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -117,7 +131,7 @@ export const leadGridMetaData = {
     {
       accessor: "sub_stage_cd",
       columnName: "Sub Stage",
-      sequence: 6,
+      sequence: 8,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -130,7 +144,7 @@ export const leadGridMetaData = {
     {
       accessor: "active_flag",
       columnName: "Active",
-      sequence: 7,
+      sequence: 9,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -143,7 +157,7 @@ export const leadGridMetaData = {
     {
       accessor: "first_name",
       columnName: "First Name",
-      sequence: 8,
+      sequence: 10,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -156,7 +170,7 @@ export const leadGridMetaData = {
     {
       accessor: "middle_name",
       columnName: "Middle Name",
-      sequence: 9,
+      sequence: 11,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -169,7 +183,7 @@ export const leadGridMetaData = {
     {
       accessor: "last_name",
       columnName: "Last Name",
-      sequence: 10,
+      sequence: 12,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -182,7 +196,7 @@ export const leadGridMetaData = {
     {
       accessor: "gender",
       columnName: "Gender",
-      sequence: 11,
+      sequence: 13,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -195,7 +209,7 @@ export const leadGridMetaData = {
     {
       accessor: "mobile",
       columnName: "Moibile",
-      sequence: 12,
+      sequence: 14,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -208,7 +222,7 @@ export const leadGridMetaData = {
     {
       accessor: "e_mail_id",
       columnName: "Email ID",
-      sequence: 13,
+      sequence: 15,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -221,7 +235,7 @@ export const leadGridMetaData = {
     {
       accessor: "remarks",
       columnName: "Remarks",
-      sequence: 14,
+      sequence: 16,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -233,7 +247,7 @@ export const leadGridMetaData = {
     {
       accessor: "sub_product1",
       columnName: "Sub Product-1",
-      sequence: 15,
+      sequence: 17,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -245,7 +259,7 @@ export const leadGridMetaData = {
     {
       accessor: "sub_product2",
       columnName: "Sub Product-2",
-      sequence: 16,
+      sequence: 18,
       width: 150,
       minWidth: 100,
       maxWidth: 200,
@@ -312,19 +326,6 @@ export const leadGridMetaData = {
       filterComponentType: "valueFilter",
       isVisible: true,
     },
-    {
-      accessor: "inquiry_tran_cd",
-      columnName: "Inquiry CD",
-      sequence: 32,
-      width: 150,
-      minWidth: 100,
-      maxWidth: 200,
-      alignment: "right",
-      componentType: "default",
-      disableSortBy: false,
-      disableFilters: false,
-      filterComponentType: "valueFilter",
-      isVisible: true,
-    },
+    
 
 */
