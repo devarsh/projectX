@@ -55,9 +55,14 @@ export const TeamAssignment: FC<{
           actions={actions}
           setAction={setCurrentAction}
         />
-        <Dialog open={Boolean(currentAction)} maxWidth="xl">
+        <Dialog
+          open={Boolean(currentAction)}
+          maxWidth="xl"
+          PaperProps={{ style: { width: "100%", height: "100%" } }}
+        >
           {(currentAction?.name ?? "") === "View" ? (
             <FormViewEdit
+              key="teamAssignment"
               isDataChangedRef={isMyDataChangedRef}
               closeDialog={closeMyDialog}
               serialNo={currentAction?.rows[0]?.id}

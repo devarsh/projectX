@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import Alert from "@material-ui/lab/Alert";
 import Button from "@material-ui/core/Button";
 import { perfiosReinitiate } from "../../api";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
@@ -25,7 +26,7 @@ export const ReInitiateExternalAPI = ({
   const currentMetaData =
     requestType === "GST_UPLOAD"
       ? GSTUploadMetaData
-      : requestType === "BANK_UPLOAD"
+      : requestType === "STMT_UPLOAD"
       ? BankUploadMetaData
       : requestType === "ITR_UPLOAD"
       ? ITRUploadMetaData
@@ -33,7 +34,7 @@ export const ReInitiateExternalAPI = ({
   const docType =
     requestType === "GST_UPLOAD"
       ? "gst"
-      : requestType === "BANK_UPLOAD"
+      : requestType === "STMT_UPLOAD"
       ? "bank"
       : requestType === "ITR_UPLOAD"
       ? "itr"
@@ -47,7 +48,11 @@ export const ReInitiateExternalAPI = ({
   if (currentMetaData?.form) {
     currentMetaData.form.formState = { refID: refID };
   }
-  return (
+  return !Boolean(currentMetaData) ? (
+    <Alert severity="error" onClose={closeDialog}>
+      Error fiding Request Type to Reinititate the request
+    </Alert>
+  ) : (
     <Fragment>
       <DialogTitle id="alert-dialog-title">
         Re-Initiate Upload With Following Details
@@ -55,7 +60,7 @@ export const ReInitiateExternalAPI = ({
       <DialogContent>
         <FormWrapper
           metaData={currentMetaData as MetaDataType}
-          initialValues={formData}
+          initialValues={formData ?? {}}
           onSubmitHandler={() => null}
           displayMode={"view"}
           disableGroupErrorDetection={true}
