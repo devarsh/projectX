@@ -46,7 +46,7 @@ export const ReInitiateExternalAPI = ({
     closeDialog();
   };
   if (currentMetaData?.form) {
-    currentMetaData.form.formState = { refID: refID };
+    currentMetaData.form.formState = { refID: refID, moduleType: moduleType };
   }
   return !Boolean(currentMetaData) ? (
     <Alert severity="error" onClose={closeDialog}>
