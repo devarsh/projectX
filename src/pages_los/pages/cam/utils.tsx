@@ -7,22 +7,29 @@ export const printTDS = ({ obj, key }) => {
 };
 
 export const dateFormatter = ({ val }) => {
-  const options = {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  };
   let date = new Date(val);
   //@ts-ignore
-  let formatter = new Intl.DateTimeFormat("en-IN", options);
-  return formatter.format(date);
+  if (isNaN(date)) {
+    return "Invalid Date";
+  } else {
+    let formatter = new Intl.DateTimeFormat("en-IN", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+    return formatter.format(date);
+  }
 };
 
 export const getAge = ({ date }) => {
-  var today = new Date();
-  var birthDate = new Date(date);
-  var age = today.getFullYear() - birthDate.getFullYear();
-  return age;
+  try {
+    var today = new Date();
+    var birthDate = new Date(date);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    return age;
+  } catch (e) {
+    return "-9999";
+  }
 };
 
 export const convertIntoCurrency = ({ amount }) => {
@@ -31,7 +38,11 @@ export const convertIntoCurrency = ({ amount }) => {
     style: "currency",
     currency: "INR",
   });
-  return formatter.format(Number(amount));
+  try {
+    return formatter.format(Number(amount));
+  } catch (e) {
+    return "NAN";
+  }
 };
 
 export const convertIntoPrcentage = ({ amount }) => {
