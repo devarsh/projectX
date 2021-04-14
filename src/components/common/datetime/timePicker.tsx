@@ -75,7 +75,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
       }
       //@ts-ignore
       if (!isNaN(result)) {
-        result = new Date(result?.toString()?.slice(0, 24));
+        //result = new Date(result?.toString()?.slice(0, 24));
         handleChange(result);
       }
     }
@@ -94,7 +94,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   const customDateChangeHandler = useCallback(
     (date) => {
       let result = date;
-      result = new Date(result?.toString()?.slice(0, 24));
+      //result = new Date(result?.toString()?.slice(0, 24));
       handleChange(result);
     },
     [handleChange]

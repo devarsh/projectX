@@ -40,7 +40,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   InputProps,
   inputProps,
   runValidationOnDependentFieldsChange,
-  disableTimestamp,
+  //disableTimestamp,
   ...others
 }) => {
   const {
@@ -66,7 +66,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
-  disableTimestamp = Boolean(disableTimestamp);
+  //disableTimestamp = Boolean(disableTimestamp);
   useEffect(() => {
     if (typeof value === "string") {
       let result = parseJSON(value);
@@ -76,13 +76,16 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
       }
       //@ts-ignore
       if (!isNaN(result)) {
-        result = disableTimestamp
-          ? new Date(result?.toJSON()?.slice(0, 10))
-          : new Date(result?.toString()?.slice(0, 24));
+        result = new Date(
+          result.getTime() - result.getTimezoneOffset() * 60000
+        );
+        // result = disableTimestamp
+        //   ? new Date(result?.toJSON()?.slice(0, 10))
+        //   : new Date(result?.toString()?.slice(0, 24));
         handleChange(result);
       }
     }
-  }, [value, handleChange, disableTimestamp]);
+  }, [value, handleChange]);
 
   const focusRef = useRef();
   useEffect(() => {
@@ -98,13 +101,13 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   const customDateChangeHandler = useCallback(
     (date) => {
       let result = date;
-
-      result = disableTimestamp
-        ? new Date(result?.toJSON()?.slice(0, 10))
-        : new Date(result?.toString()?.slice(0, 24));
+      result = new Date(result.getTime() - result.getTimezoneOffset() * 60000);
+      // result = disableTimestamp
+      //   ? new Date(result?.toJSON()?.slice(0, 10))
+      //   : new Date(result?.toString()?.slice(0, 24));
       handleChange(result);
     },
-    [handleChange, disableTimestamp]
+    [handleChange]
   );
   if (excluded) {
     return null;
