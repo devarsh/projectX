@@ -79,9 +79,6 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
         result = new Date(
           result.getTime() - result.getTimezoneOffset() * 60000
         );
-        // result = disableTimestamp
-        //   ? new Date(result?.toJSON()?.slice(0, 10))
-        //   : new Date(result?.toString()?.slice(0, 24));
         handleChange(result);
       }
     }
@@ -101,10 +98,12 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
   const customDateChangeHandler = useCallback(
     (date) => {
       let result = date;
-      result = new Date(result.getTime() - result.getTimezoneOffset() * 60000);
-      // result = disableTimestamp
-      //   ? new Date(result?.toJSON()?.slice(0, 10))
-      //   : new Date(result?.toString()?.slice(0, 24));
+      //@ts-ignore
+      if (result instanceof Date && !isNaN(result)) {
+        result = new Date(
+          result.getTime() - result.getTimezoneOffset() * 60000
+        );
+      }
       handleChange(result);
     },
     [handleChange]
