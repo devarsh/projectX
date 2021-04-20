@@ -54,7 +54,11 @@ export const MonthlyTargetGrid: FC<{
           actions={actions}
           setAction={setCurrentAction}
         />
-        <Dialog open={Boolean(currentAction)} maxWidth="xl">
+        <Dialog
+          open={Boolean(currentAction)}
+          maxWidth="xl"
+          PaperProps={{ style: { width: "100%", height: "100%" } }}
+        >
           {(currentAction?.name ?? "") === "View" ? (
             <FormViewEdit
               isDataChangedRef={isMyDataChangedRef}

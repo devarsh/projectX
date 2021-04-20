@@ -89,11 +89,7 @@ export const ExternalAPI = ({ refID, moduleType }) => {
       <Dialog
         open={Boolean(currentAction)}
         maxWidth="xl"
-        PaperProps={
-          currentAction === "Delete"
-            ? {}
-            : { style: { width: "100%", height: "100%" } }
-        }
+        PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
         {(currentAction?.name ?? "") === "perfiosUpload" ? (
           <APIInterfaceWrapper

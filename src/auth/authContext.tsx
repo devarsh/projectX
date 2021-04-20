@@ -15,6 +15,7 @@ const inititalState: AuthStateType = {
   token: "",
   tokenType: "",
   isLoggedIn: false,
+  role: [],
   user: {
     lastName: "",
     firstName: "",
@@ -38,6 +39,7 @@ const authReducer = (
         token: "",
         tokenType: "",
         isLoggedIn: false,
+        role: [],
         user: {
           lastName: "",
           firstName: "",

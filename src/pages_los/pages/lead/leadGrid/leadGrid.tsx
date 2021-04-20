@@ -14,6 +14,7 @@ import { ExternalAPI } from "../externalAPI";
 import { Stage } from "../stages";
 import { CAM } from "../cam";
 import { LeadAssign } from "../leadAssign";
+import { Verification } from "../verification";
 
 export const LeadGrid = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -83,6 +84,12 @@ export const LeadGrid = ({ gridCode, actions }) => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
+            />
+          ) : (currentAction?.name ?? "") === "verification" ? (
+            <Verification
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
             />
           ) : (
             <InvalidAction closeDialog={handleDialogClose} />

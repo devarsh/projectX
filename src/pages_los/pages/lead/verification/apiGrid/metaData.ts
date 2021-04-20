@@ -78,8 +78,6 @@ export const GridMetaData: GridMetaDataType = {
       accessor: "remarks",
       sequence: 7,
       alignment: "left",
-      showTooltip: true,
-      maxWidth: 500,
     },
   ],
 };

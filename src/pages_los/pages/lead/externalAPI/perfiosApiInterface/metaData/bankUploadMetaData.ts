@@ -72,6 +72,10 @@ export const BankUploadMetaData: MetaDataType = {
         type: "date",
         rules: [
           {
+            name: "typeError",
+            params: ["Not a valid date"],
+          },
+          {
             name: "required",
             params: ["required field"],
           },
@@ -89,6 +93,10 @@ export const BankUploadMetaData: MetaDataType = {
       schemaValidation: {
         type: "date",
         rules: [
+          {
+            name: "typeError",
+            params: ["Not a valid date"],
+          },
           {
             name: "required",
             params: ["required field"],
