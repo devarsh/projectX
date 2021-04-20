@@ -208,3 +208,35 @@ export const drawingPowerVariableAmountExternalAPIBank = async (
   }
   return true;
 };
+
+export const showOtherIncomeAmountField = async (_, dependentFields) => {
+  if (dependentFields["incomeDetails.sourceIncomeOther"].value !== "00") {
+    return false;
+  }
+  return true;
+};
+
+export const showReraNoField = async (_, dependentFields) => {
+  if (dependentFields["reraReceived"].value === "Y") {
+    return false;
+  }
+  return true;
+};
+
+export const showCostOfProject = async (_, dependentFields) => {
+  if (
+    dependentFields["projectParticularDetails.particularType"].value === "01"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const showMeansOfFinance = async (_, dependentFields) => {
+  if (
+    dependentFields["projectParticularDetails.particularType"].value === "02"
+  ) {
+    return false;
+  }
+  return true;
+};

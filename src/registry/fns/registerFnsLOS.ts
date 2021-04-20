@@ -88,6 +88,9 @@ registerFn(
   "shouldExcludeDrawingPowerVariableAmountExternalAPIBank",
   shouldExclude.drawingPowerVariableAmountExternalAPIBank
 );
+registerFn("shouldExcludeShowCostOfProject", shouldExclude.showCostOfProject);
+
+registerFn("shouldExcludeShowMeansOfFinance", shouldExclude.showMeansOfFinance);
 
 //END of Bank API
 registerFn(
@@ -204,3 +207,8 @@ registerFn(
 
 //for priority change form
 registerFn("readOnlyPriorityHoldDays", readOnly.priorityHoldDays);
+registerFn(
+  "ShouldExcludeShowOtherIncomeAmountField",
+  shouldExclude.showOtherIncomeAmountField
+);
+registerFn("ShouldExcludeShowReraNoField", shouldExclude.showReraNoField);
