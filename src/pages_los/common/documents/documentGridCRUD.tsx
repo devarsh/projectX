@@ -1,6 +1,7 @@
-import { useState, Fragment, useRef, useCallback } from "react";
+import { useState, Fragment, useRef, useCallback, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
+import { queryClient } from "cache";
 import { MyGridWrapper } from "./gridWrapper";
 import { DeleteAction } from "./delete";
 import { VerifyDocumentAction } from "./verify";
@@ -66,6 +67,14 @@ export const DocumentGridCRUD = () => {
       dataChangedRef.current = false;
     }
   }, [setCurrentAction]);
+  //Remove Bank List from caching - when upload unmounts
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries(["getBankListForLeadDocuments"], {
+        exact: false,
+      });
+    };
+  }, []);
 
   return (
     <Fragment>

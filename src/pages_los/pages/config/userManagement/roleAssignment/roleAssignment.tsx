@@ -1,4 +1,4 @@
-import { useRef, useState, Fragment } from "react";
+import { useRef, useState, Fragment, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { FormNew } from "pages_los/common/crud2/formNew";
@@ -7,6 +7,7 @@ import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { TeamAssignment } from "../teamAssignment";
 import { YearlyTargetGrid } from "../targetManagement";
+import { queryClient } from "cache";
 
 const actions: ActionTypes[] = [
   {
@@ -57,46 +58,66 @@ export const RoleAssignment = () => {
         maxWidth="xl"
         PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
-        {(currentAction?.name ?? "") === "Add" ? (
-          <FormNew
-            successAction={closeMyDialog}
-            cancelAction={closeMyDialog}
-            isDataChangedRef={isMyDataChangedRef}
-          />
-        ) : (currentAction?.name ?? "") === "View" ? (
-          <FormViewEdit
-            isDataChangedRef={isMyDataChangedRef}
-            closeDialog={closeMyDialog}
-            serialNo={currentAction?.rows[0]?.id}
-            setEditFormStateFromInitValues={(initialValues) => {
-              const { userID } = initialValues;
-              return { userID };
-            }}
-          />
-        ) : (currentAction?.name ?? "") === "Team" ? (
-          <TeamAssignment
-            isDataChangedRef={isMyDataChangedRef}
-            closeDialog={closeMyDialog}
-            serialNo={currentAction?.rows[0]?.id}
-            setEditFormStateFromInitValues={(initialValues) => {
-              const { teamDesignationCode, branchCode } = initialValues;
-              return { teamDesignationCode, branchCode };
-            }}
-          />
-        ) : (currentAction?.name ?? "") === "Target" ? (
-          <YearlyTargetGrid
-            isDataChangedRef={isMyDataChangedRef}
-            closeDialog={closeMyDialog}
-            userID={currentAction?.rows[0]?.id}
-            setEditFormStateFromInitValues={(initialValues) => {
-              const { userID } = initialValues;
-              return { userID };
-            }}
-          />
-        ) : (
-          <InvalidAction closeDialog={closeMyDialog} />
-        )}
+        <ComponentPicker
+          currentAction={currentAction}
+          closeMyDialog={closeMyDialog}
+          isMyDataChangedRef={isMyDataChangedRef}
+        />
       </Dialog>
     </Fragment>
+  );
+};
+
+const ComponentPicker = ({
+  currentAction,
+  closeMyDialog,
+  isMyDataChangedRef,
+}) => {
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries("getAllUnRegisteredUsersList", {
+        exact: false,
+      });
+    };
+  }, []);
+
+  return (currentAction?.name ?? "") === "Add" ? (
+    <FormNew
+      successAction={closeMyDialog}
+      cancelAction={closeMyDialog}
+      isDataChangedRef={isMyDataChangedRef}
+    />
+  ) : (currentAction?.name ?? "") === "View" ? (
+    <FormViewEdit
+      isDataChangedRef={isMyDataChangedRef}
+      closeDialog={closeMyDialog}
+      serialNo={currentAction?.rows[0]?.id}
+      setEditFormStateFromInitValues={(initialValues) => {
+        const { userID } = initialValues;
+        return { userID };
+      }}
+    />
+  ) : (currentAction?.name ?? "") === "Team" ? (
+    <TeamAssignment
+      isDataChangedRef={isMyDataChangedRef}
+      closeDialog={closeMyDialog}
+      serialNo={currentAction?.rows[0]?.id}
+      setEditFormStateFromInitValues={(initialValues) => {
+        const { teamDesignationCode, branchCode } = initialValues;
+        return { teamDesignationCode, branchCode };
+      }}
+    />
+  ) : (currentAction?.name ?? "") === "Target" ? (
+    <YearlyTargetGrid
+      isDataChangedRef={isMyDataChangedRef}
+      closeDialog={closeMyDialog}
+      userID={currentAction?.rows[0]?.id}
+      setEditFormStateFromInitValues={(initialValues) => {
+        const { userID } = initialValues;
+        return { userID };
+      }}
+    />
+  ) : (
+    <InvalidAction closeDialog={closeMyDialog} />
   );
 };
