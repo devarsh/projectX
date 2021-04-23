@@ -16,7 +16,7 @@ import GridWrapper from "components/dataTableStatic";
 import { CompanyListGrid } from "./metadata";
 import { GridMetaDataType } from "components/dataTableStatic";
 import { ActionTypes } from "components/dataTable";
-import * as API from "../api";
+import * as API from "../../api";
 import Alert from "@material-ui/lab/Alert";
 
 const actions: ActionTypes[] = [

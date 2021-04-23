@@ -1,9 +1,9 @@
 import { MetaDataType } from "components/dyanmicForm";
 
-export const BankUploadMetaData: MetaDataType = {
+export const BankAnalysisMetaData: MetaDataType = {
   form: {
-    name: "bankUploadAPI",
-    label: "Bank Upload Request Interface",
+    name: "bankAnalysis",
+    label: "Bank Analysis",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -157,7 +157,7 @@ export const BankUploadMetaData: MetaDataType = {
     {
       render: {
         //@ts-ignore
-        componentType: "currencyWithoutWords",
+        componentType: "hidden",
       },
       name: "loanAmount",
       label: "Loan Amount",
@@ -167,7 +167,7 @@ export const BankUploadMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "textField",
+        componentType: "hidden",
       },
       name: "loanDuration",
       type: "number",
@@ -179,7 +179,7 @@ export const BankUploadMetaData: MetaDataType = {
     {
       render: {
         //@ts-ignore
-        componentType: "textField",
+        componentType: "hidden",
       },
       name: "loanType",
       label: "Loan Type",

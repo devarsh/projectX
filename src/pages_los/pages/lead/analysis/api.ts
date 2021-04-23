@@ -1,6 +1,6 @@
 import { LOSSDK } from "registry/fns/los";
 
-export const getAPIStatusGridData = async ({ refID }) => {
+export const getAnalysisAPIStatusData = async ({ refID }) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./lead/external/grid/data`,
     {

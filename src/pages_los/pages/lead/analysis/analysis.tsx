@@ -1,27 +1,32 @@
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect, Fragment } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { queryClient, ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { APIGrid } from "./apiGrid";
-import { generateExternalAPIContext, ExternalAPIProvider } from "./context";
-import {
-  APIInterfaceWrapper,
-  ReInitiateExternalAPI,
-} from "./perfiosApiInterface";
-import { CorpositoryAPIInterface } from "./corpositoryApiInterface";
+import { generateAnalysisAPIContext, AnalysisAPIProvider } from "./context";
+import { ReInitiateExternalAPI } from "./reInititate";
 import { Download } from "./download";
+import { BankAPIInterface } from "./bank";
+import { GSTAPIInterface } from "./gst";
+import { ITRInterface } from "./itr";
 
 const actions: ActionTypes[] = [
   {
-    actionName: "perfiosUpload",
-    actionLabel: "Perfios Upload",
+    actionName: "Bank",
+    actionLabel: "Bank",
     multiple: undefined,
     alwaysAvailable: true,
   },
   {
-    actionName: "corpository",
-    actionLabel: "Corpository",
+    actionName: "Financial",
+    actionLabel: "Financial",
+    multiple: undefined,
+    alwaysAvailable: true,
+  },
+  {
+    actionName: "GST",
+    actionLabel: "GST",
     multiple: undefined,
     alwaysAvailable: true,
   },
@@ -57,7 +62,7 @@ const actions: ActionTypes[] = [
   },
 ];
 
-export const ExternalAPI = ({ refID, moduleType }) => {
+export const Analysis = ({ refID, moduleType }) => {
   const [currentAction, setCurrentAction] = useState<any>(null);
   const removeCache = useContext(ClearCacheContext);
   const gridRef = useRef<any>(null);
@@ -79,27 +84,53 @@ export const ExternalAPI = ({ refID, moduleType }) => {
   }, [removeCache, moduleType, refID]);
 
   return (
-    <ExternalAPIProvider {...generateExternalAPIContext({ refID, moduleType })}>
-      <APIGrid
-        ref={gridRef}
-        key="grid"
-        actions={actions}
-        setAction={setCurrentAction}
-      />
+    <Fragment>
+      <AnalysisAPIProvider
+        {...generateAnalysisAPIContext({ refID, moduleType })}
+      >
+        <APIGrid
+          ref={gridRef}
+          key="grid"
+          actions={actions}
+          setAction={setCurrentAction}
+          transformData={(data) => {
+            return data.map((one) => ({
+              ...one,
+              requestTypeDisplay:
+                one?.requestType === "STMT_UPLOAD"
+                  ? "Bank"
+                  : one?.requestType === "GST_UPLOAD"
+                  ? "GST"
+                  : one?.requestType === "ITR_UPLOAD"
+                  ? "Financial"
+                  : one?.requestType === "CORPOSITORY(creditOrder)"
+                  ? "Financial"
+                  : "Invalid",
+            }));
+          }}
+        />
+      </AnalysisAPIProvider>
       <Dialog
         open={Boolean(currentAction)}
         maxWidth="xl"
         PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
-        {(currentAction?.name ?? "") === "perfiosUpload" ? (
-          <APIInterfaceWrapper
+        {(currentAction?.name ?? "") === "Bank" ? (
+          <BankAPIInterface
             refID={refID}
             moduleType={moduleType}
             closeDialog={closeMyDialog}
             isDataChangedRef={isMyDataChangedRef}
           />
-        ) : (currentAction?.name ?? "") === "corpository" ? (
-          <CorpositoryAPIInterface
+        ) : (currentAction?.name ?? "") === "GST" ? (
+          <GSTAPIInterface
+            refID={refID}
+            moduleType={moduleType}
+            closeDialog={closeMyDialog}
+            isDataChangedRef={isMyDataChangedRef}
+          />
+        ) : (currentAction?.name ?? "") === "Financial" ? (
+          <ITRInterface
             refID={refID}
             moduleType={moduleType}
             closeDialog={closeMyDialog}
@@ -123,6 +154,6 @@ export const ExternalAPI = ({ refID, moduleType }) => {
           <InvalidAction closeDialog={closeMyDialog} />
         )}
       </Dialog>
-    </ExternalAPIProvider>
+    </Fragment>
   );
 };

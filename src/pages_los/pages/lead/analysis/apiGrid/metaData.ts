@@ -42,9 +42,9 @@ export const GridMetaData: GridMetaDataType = {
       alignment: "left",
     },
     {
-      columnName: "Request Type",
+      columnName: "Analysis",
       componentType: "default",
-      accessor: "requestType",
+      accessor: "requestTypeDisplay",
       sequence: 3,
       alignment: "left",
     },

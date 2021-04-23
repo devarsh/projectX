@@ -1,9 +1,9 @@
 import { MetaDataType } from "components/dyanmicForm";
 
-export const GSTUploadMetaData: MetaDataType = {
+export const GSTAnalysisMetaData: MetaDataType = {
   form: {
-    name: "gstAPI",
-    label: "GST Upload Request Interface",
+    name: "gstAnalysisAPI",
+    label: "GST Analysis Request Interface",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -52,6 +52,10 @@ export const GSTUploadMetaData: MetaDataType = {
         type: "date",
         rules: [
           {
+            name: "typeError",
+            params: ["Not a valid date"],
+          },
+          {
             name: "required",
             params: ["required field"],
           },
@@ -69,6 +73,10 @@ export const GSTUploadMetaData: MetaDataType = {
       schemaValidation: {
         type: "date",
         rules: [
+          {
+            name: "typeError",
+            params: ["Not a valid date"],
+          },
           {
             name: "required",
             params: ["required field"],

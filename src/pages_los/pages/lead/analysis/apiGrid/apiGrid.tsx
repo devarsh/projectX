@@ -4,53 +4,62 @@ import {
   useImperativeHandle,
   useEffect,
   useRef,
+  Fragment,
 } from "react";
+import Alert from "@material-ui/lab/Alert";
 import { useQuery } from "react-query";
 import GridWrapper from "components/dataTableStatic";
 import { ActionTypes, GridMetaDataType } from "components/dataTable";
 import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
 import { GridMetaData } from "./metaData";
-import { ExternalAPIContext } from "../context";
+import { AnalysisAPIContext } from "../context";
 
 type GridWrapperType = {
   actions: ActionTypes[];
   setAction: any;
+  transformData?: any;
 };
 
 export const APIGrid = forwardRef<any, GridWrapperType>(
-  ({ actions, setAction }, ref) => {
+  ({ actions, setAction, transformData = (data) => data }, ref) => {
     const removeCache = useContext(ClearCacheContext);
-    const { getAPIGridStatusData } = useContext(ExternalAPIContext);
+    const { getAnalysisAPIStatusData } = useContext(AnalysisAPIContext);
     const wrapperKeyDataRef = useRef(
-      cacheWrapperKeyGen(Object.values(getAPIGridStatusData.args))
+      cacheWrapperKeyGen(Object.values(getAnalysisAPIStatusData.args))
     );
     const result = useQuery<any, any, any>(
       ["getAPIGridStatusData", wrapperKeyDataRef.current],
-      () => getAPIGridStatusData.fn(getAPIGridStatusData.args)
+      () => getAnalysisAPIStatusData.fn(getAnalysisAPIStatusData.args)
     );
     useEffect(() => {
-      removeCache?.addEntry("getAPIGridStatusData", wrapperKeyDataRef.current);
+      removeCache?.addEntry(
+        "getAnalysisAPIStatusData",
+        wrapperKeyDataRef.current
+      );
     }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result.refetch(),
     }));
-    const loading = result.isLoading || result.isFetching;
-    const renderResult =
-      result.isError === true ? (
-        <span>{result?.error?.error_msg ?? "unknown error occured"}</span>
-      ) : (
+
+    return (
+      <Fragment>
+        {result.isError ? (
+          <Alert severity="error">
+            {result.error?.error_msg ?? "Unkown error occured"}
+          </Alert>
+        ) : null}
         <GridWrapper
-          key={`externalAPIGridStatusListing`}
+          key="AnalysisAPIGridStatusListing"
           finalMetaData={GridMetaData as GridMetaDataType}
-          data={result.data ?? []}
+          data={transformData(result.data ?? [])}
           setData={() => null}
           refetchData={() => result.refetch()}
           actions={actions}
           setAction={setAction}
-          loading={loading}
+          loading={result.isLoading || result.isFetching}
         />
-      );
-    return renderResult;
+      </Fragment>
+    );
   }
 );
 APIGrid.displayName = "ExternalAPIStatusGridWrapper";

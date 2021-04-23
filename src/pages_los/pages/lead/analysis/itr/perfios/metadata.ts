@@ -1,9 +1,9 @@
 import { MetaDataType } from "components/dyanmicForm";
 
-export const ITRUploadMetaData: MetaDataType = {
+export const ITRAnalysisMetaData: MetaDataType = {
   form: {
     name: "itrAPI",
-    label: "ITR Upload Request Interface",
+    label: "ITR Analysis Request Interface",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {

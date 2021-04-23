@@ -48,7 +48,7 @@ export const leadGridMetaData = {
       width: 150,
       minWidth: 100,
       maxWidth: 200,
-      alignment: "right",
+      alignment: "left",
       componentType: "date",
       disableSortBy: false,
       isVisible: true,
