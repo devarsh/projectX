@@ -29,10 +29,15 @@ export const DocumentGridCRUD: FC<{
   };
   const classes = useStyles();
   useEffect(() => {
-    removeCache?.addEntry(["getDocumentCRUDTabsMetadata", moduleType, refID]);
+    removeCache?.addEntry([
+      "getDocumentCRUDTabsMetadata",
+      moduleType,
+      productType ?? "legal",
+      refID,
+    ]);
   }, [removeCache, moduleType, refID]);
   const queryResult = useQuery(
-    ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
+    ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "legal", refID],
     () =>
       API.getDocumentCRUDTabsMetadata({
         moduleType,
@@ -40,7 +45,7 @@ export const DocumentGridCRUD: FC<{
         refID,
       })
   );
-  let tabs: any[] = queryResult.data;
+  let tabs: any[] = queryResult.data as any;
   if (queryResult.isSuccess) {
     if (!Array.isArray(tabs)) {
       tabs = [];
@@ -58,7 +63,11 @@ export const DocumentGridCRUD: FC<{
   ) : (
     <Fragment>
       <Box display="flex">
-        <Tabs value={currentTab} onChange={handleChangeTab}>
+        <Tabs
+          value={currentTab}
+          onChange={handleChangeTab}
+          variant="scrollable"
+        >
           {tabs.map((one) => (
             <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
           ))}

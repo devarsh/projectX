@@ -46,7 +46,7 @@ export const UploadDocumentsApiWrapper = ({
       )
   );
   //@ts-ignore
-  let error = `${query.error?.error_msg ?? "unknown message"}`;
+  let error = `${query.error?.error_msg ?? "unknown error occured"}`;
   const renderResult = query.isLoading ? (
     <img src={loaderGif} alt="loader" width="50px" height="50px" />
   ) : query.isError === true ? (

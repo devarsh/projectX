@@ -4,6 +4,7 @@ import {
   useRef,
   forwardRef,
   useImperativeHandle,
+  Fragment,
 } from "react";
 import GridWrapper from "components/dataTableStatic";
 import { useQueries } from "react-query";
@@ -11,6 +12,7 @@ import { ClearCacheContext, cacheWrapperKeyGen } from "cache";
 import { ActionTypes, GridMetaDataType } from "components/dataTable";
 import { DOCCRUDContext } from "./context";
 import loaderGif from "assets/images/loader.gif";
+import Alert from "@material-ui/lab/Alert";
 
 type GridWrapperType = {
   actions: ActionTypes[];
@@ -63,29 +65,38 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       },
     ]);
 
-    const loading = result[1].isLoading || result[1].isFetching;
-    let isError = result[0].isError || result[1].isError;
-    //@ts-ignore
-    let errorMsg = `${result[0].error?.error_msg} ${result[0].error?.error_msg}`
-      .trimStart()
-      .trimEnd();
-    errorMsg = !Boolean(errorMsg) ? "unknown error occured" : errorMsg;
-
-    const renderResult = loading ? (
-      <img src={loaderGif} alt="loader" width="50px" height="50px" />
-    ) : isError === true ? (
-      <span>{errorMsg}</span>
-    ) : (
-      <GridWrapper
-        key={`listingDocuments`}
-        data={transformData(result[0].data ?? [])}
-        finalMetaData={result[1].data as GridMetaDataType}
-        setData={() => null}
-        actions={actions}
-        setAction={setAction}
-        loading={result[0].isFetching || result[0].isLoading}
-      />
-    );
+    const renderResult =
+      result[1].isLoading || result[1].isFetching ? (
+        <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      ) : result[1].isError ? (
+        <span>
+          {
+            //@ts-ignore
+            result[1]?.error?.error_msg ?? "Unknown Error occured"
+          }
+        </span>
+      ) : (
+        <Fragment>
+          {result[0].isError ? (
+            <Alert severity="error">
+              {
+                //@ts-ignore
+                result[0]?.error?.error_msg ?? "Unknown Error occured"
+              }
+            </Alert>
+          ) : null}
+          <GridWrapper
+            key={`listingDocuments`}
+            data={transformData(result[0].data ?? [])}
+            finalMetaData={result[1].data as GridMetaDataType}
+            setData={() => null}
+            actions={actions}
+            setAction={setAction}
+            loading={result[0].isFetching || result[0].isLoading}
+            refetchData={() => result[0].refetch()}
+          />
+        </Fragment>
+      );
     return renderResult;
   }
 );

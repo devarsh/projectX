@@ -1,4 +1,10 @@
 import { LOSSDK, DOCCRUDTYPE } from "registry/fns/los";
+import { tabsLegal, tabsManagement } from "./metaData/tabs";
+import { bankEdit, bankGrid, bankUpload } from "./metaData/bank";
+import { GSTEdit, GSTGrid, GSTUpload } from "./metaData/gst";
+import { ITREdit, ITRGrid, ITRUpload } from "./metaData/itr";
+import { KYCEdit, KYCGrid, KYCUpload } from "./metaData/kyc";
+import { othersEdit, othersGrid, OthersUpload } from "./metaData/others";
 
 export const uploadDocuments = ({
   moduleType,
@@ -175,28 +181,6 @@ export const verifyDocuments = ({
   }
 };
 
-export const getDocumentGridMetaData = async ({
-  moduleType,
-  productType,
-  docCategory,
-  metaDataType,
-}) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    `./${moduleType}/document/${docCategory}/metaData/${metaDataType}`,
-    {
-      body: JSON.stringify({
-        request_data: {},
-        channel: "W",
-      }),
-    }
-  );
-  if (status === "success") {
-    return data?.response_data;
-  } else {
-    throw data?.error_data;
-  }
-};
-
 export const generateDocumentDownloadURL = ({
   moduleType,
   productType,
@@ -257,21 +241,83 @@ export const getDocumentCRUDTabsMetadata = async ({
   productType,
   refID,
 }) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    Boolean(productType)
-      ? `./${moduleType}/${productType}/document/metaData/tabs`
-      : `./${moduleType}/document/metaData/tabs`,
-    {
-      body: JSON.stringify({
-        request_data: {
-          refID: refID,
-        },
-      }),
+  return Boolean(productType) ? tabsManagement : tabsLegal;
+};
+
+// export const getDocumentMetaData = async ({
+//   moduleType,
+//   productType,
+//   docCategory,
+//   metaDataType,
+// }) => {
+//   const { data, status } = await LOSSDK.internalFetcher(
+//     `./${moduleType}/document/${docCategory}/metaData/${metaDataType}`,
+//     {
+//       body: JSON.stringify({
+//         request_data: {},
+//         channel: "W",
+//       }),
+//     }
+//   );
+//   if (status === "success") {
+//     return data?.response_data;
+//   } else {
+//     throw data?.error_data;
+//   }
+// };
+
+export const getDocumentMetaData = async ({
+  moduleType,
+  productType,
+  docCategory,
+  metaDataType,
+}) => {
+  if (metaDataType === "grid") {
+    switch (docCategory) {
+      case "bank":
+        return bankGrid;
+      case "itr":
+        return ITRGrid;
+      case "gst":
+        return GSTGrid;
+      case "other":
+        return othersGrid;
+      case "kyc":
+        return KYCGrid;
+      default:
+        throw new Error("Invalid docCategory");
     }
-  );
-  if (status === "success") {
-    return data?.response_data;
+  } else if (metaDataType === "upload") {
+    switch (docCategory) {
+      case "bank":
+        return bankUpload;
+      case "itr":
+        return ITRUpload;
+      case "gst":
+        return GSTUpload;
+      case "other":
+        return OthersUpload;
+      case "kyc":
+        return KYCUpload;
+      default:
+        throw new Error("Invalid docCategory");
+    }
+  } else if (metaDataType === "edit") {
+    switch (docCategory) {
+      case "bank":
+        return bankEdit;
+      case "itr":
+        return ITREdit;
+      case "gst":
+        return GSTEdit;
+      case "other":
+        return othersEdit;
+      case "kyc":
+        return KYCEdit;
+      default:
+        throw new Error("Invalid docCategory");
+    }
   } else {
-    throw data?.error_data;
+    throw new Error("Invalid MetaData Type requested");
   }
 };
