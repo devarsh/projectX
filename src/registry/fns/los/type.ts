@@ -1,7 +1,7 @@
 export interface DOCCRUDTYPE {
   moduleType: string;
   productType?: string;
-  docCategory: string;
+  docCategory?: string;
   refID: string;
   serialNo?: string;
 }

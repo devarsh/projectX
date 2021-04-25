@@ -28,6 +28,8 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       getDocumentListingGridMetaData,
       context,
     } = useContext(DOCCRUDContext);
+    const docType = context.docCategory.filter((one) => one.primary === true)[0]
+      .type;
     const wrapperKey = useRef<any>(null);
     if (wrapperKey.current === null) {
       wrapperKey.current = cacheWrapperKeyGen(
@@ -38,9 +40,13 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
       removeCache?.addEntry([
         "getDocumentListingGridMetaData",
         context.refID,
-        context.docCategory,
+        docType,
       ]);
-      removeCache?.addEntry(["getDocumentsGridData", wrapperKey.current]);
+      removeCache?.addEntry([
+        "getDocumentsGridData",
+        wrapperKey.current,
+        docType,
+      ]);
     }, [removeCache, context]);
 
     useImperativeHandle(ref, () => ({
@@ -49,19 +55,16 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
 
     const result = useQueries([
       {
-        queryKey: ["getDocumentsGridData", wrapperKey.current],
-        queryFn: () => getDocumentsGridData.fn(getDocumentsGridData.args),
+        queryKey: ["getDocumentsGridData", wrapperKey.current, docType],
+        queryFn: () =>
+          getDocumentsGridData.fn(getDocumentsGridData.args)(docType),
       },
       {
-        queryKey: [
-          "getDocumentListingGridMetaData",
-          context.refID,
-          context.docCategory,
-        ],
+        queryKey: ["getDocumentListingGridMetaData", context.refID, docType],
         queryFn: () =>
           getDocumentListingGridMetaData.fn(
             getDocumentListingGridMetaData.args
-          ),
+          )(docType),
       },
     ]);
 

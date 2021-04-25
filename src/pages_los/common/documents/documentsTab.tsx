@@ -82,26 +82,28 @@ export const DocumentGridCRUD: FC<{
         ) : null}
       </Box>
       <Box py={2} className={classes.tabPanel}>
-        {tabs.map((one) => (
-          <TabPanel
-            value={currentTab}
-            index={`${one.sequence}`}
-            key={one.sequence}
-          >
-            <DOCCRUDContextProvider
-              key={one.docType}
-              {...DocAPICrudProviderGenerator(
-                moduleType,
-                productType,
-                one.docType,
-                refID,
-                serialNo
-              )}
+        {tabs.map((one) => {
+          return (
+            <TabPanel
+              value={currentTab}
+              index={`${one.sequence}`}
+              key={one.sequence}
             >
-              <DocGrid />
-            </DOCCRUDContextProvider>
-          </TabPanel>
-        ))}
+              <DOCCRUDContextProvider
+                key={one.docType.filter((one) => one?.primary === true)[0].type}
+                {...DocAPICrudProviderGenerator(
+                  moduleType,
+                  productType,
+                  one.docType,
+                  refID,
+                  serialNo
+                )}
+              >
+                <DocGrid />
+              </DOCCRUDContextProvider>
+            </TabPanel>
+          );
+        })}
       </Box>
     </Fragment>
   );

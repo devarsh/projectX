@@ -1,4 +1,11 @@
-import { useState, Fragment, useRef, useCallback, useEffect } from "react";
+import {
+  useState,
+  Fragment,
+  useRef,
+  useCallback,
+  useEffect,
+  useContext,
+} from "react";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { queryClient } from "cache";
@@ -10,14 +17,9 @@ import { UploadDocumentsApiWrapper } from "./upload";
 import { Download } from "./download";
 import { PreviewWrapper } from "./view";
 import { InvalidAction } from "pages_los/common/invalidAction";
+import { DOCCRUDContext } from "./context";
 
 const actions: ActionTypes[] = [
-  {
-    actionName: "Add",
-    actionLabel: "Add Documents",
-    multiple: undefined,
-    alwaysAvailable: true,
-  },
   {
     actionName: "Verify",
     actionLabel: "Verify",
@@ -57,6 +59,17 @@ const actions: ActionTypes[] = [
 ];
 
 export const DocumentGridCRUD = () => {
+  const { context } = useContext(DOCCRUDContext);
+  const allActions = useRef<any>(null);
+  if (allActions.current === null) {
+    let newAddActions = context.docCategory.map((one) => ({
+      actionName: `Add_${one.type}`,
+      actionLabel: one.label,
+      multiple: undefined,
+      alwaysAvailable: true,
+    }));
+    allActions.current = [...newAddActions, ...actions];
+  }
   const [currentAction, setCurrentAction] = useState<any>(null);
   const gridRef = useRef<any>(null);
   const dataChangedRef = useRef(false);
@@ -75,13 +88,14 @@ export const DocumentGridCRUD = () => {
       });
     };
   }, []);
+  let selectedAction = currentAction?.name ?? "";
 
   return (
     <Fragment>
       <MyGridWrapper
         ref={gridRef}
         key={`documentListing`}
-        actions={actions}
+        actions={allActions.current}
         setAction={setCurrentAction}
       />
       <Dialog
@@ -89,38 +103,41 @@ export const DocumentGridCRUD = () => {
         maxWidth="xl"
         PaperProps={{
           style:
-            currentAction?.name === "Add" || currentAction?.name === "View"
+            selectedAction.indexOf("Add") >= 0 || selectedAction === "View"
               ? { width: "100%", height: "100%" }
-              : currentAction?.name === "Verify"
+              : selectedAction === "Verify"
               ? { width: "40%" }
               : {},
         }}
       >
-        {(currentAction?.name ?? "") === "Add" ? (
+        {selectedAction.indexOf("Add") >= 0 ? (
           <UploadDocumentsApiWrapper
             onClose={closeMyDialog}
             editableFileName={false}
             dataChangedRef={dataChangedRef}
+            currentAction={selectedAction.slice(
+              selectedAction.indexOf("Add_") + "Add_".length
+            )}
           />
-        ) : (currentAction?.name ?? "") === "Delete" ? (
-          <DeleteAction
-            docUUID={currentAction?.rows.map((one) => one.id)}
-            closeDialog={closeMyDialog}
-            dataChangedRef={dataChangedRef}
-          />
-        ) : (currentAction?.name ?? "") === "Verify" ? (
-          <VerifyDocumentAction
-            docUUID={currentAction?.rows.map((one) => one.id)}
-            closeDialog={closeMyDialog}
-            dataChangedRef={dataChangedRef}
-          />
-        ) : (currentAction?.name ?? "") === "Update" ? (
+        ) : selectedAction === "Update" ? (
           <UpdateDocumentData
             row={currentAction?.rows[0]}
             closeDialog={closeMyDialog}
             dataChangedRef={dataChangedRef}
           />
-        ) : (currentAction?.name ?? "") === "Download" ? (
+        ) : selectedAction === "Delete" ? (
+          <DeleteAction
+            docUUID={currentAction?.rows.map((one) => one.id)}
+            closeDialog={closeMyDialog}
+            dataChangedRef={dataChangedRef}
+          />
+        ) : selectedAction === "Verify" ? (
+          <VerifyDocumentAction
+            docUUID={currentAction?.rows.map((one) => one.id)}
+            closeDialog={closeMyDialog}
+            dataChangedRef={dataChangedRef}
+          />
+        ) : selectedAction === "Download" ? (
           <Download
             closeDialog={closeMyDialog}
             docData={currentAction?.rows.map((one) => ({
@@ -128,7 +145,7 @@ export const DocumentGridCRUD = () => {
               name: one.data?.fileName,
             }))}
           />
-        ) : (currentAction?.name ?? "") === "View" ? (
+        ) : selectedAction === "View" ? (
           <PreviewWrapper
             closeDialog={closeMyDialog}
             docUUID={currentAction?.rows[0]?.id}

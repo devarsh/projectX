@@ -9,17 +9,21 @@ import { DOCCRUDContext } from "./context";
 import { useSnackbar } from "notistack";
 
 interface DeleteFormDataType {
+  docType: string;
   docUUID?: string;
 }
 
 const DeleteDocumentDataFnWrapper = (deleteDocuments) => async ({
+  docType,
   docUUID,
 }: DeleteFormDataType) => {
-  return deleteDocuments(docUUID);
+  return deleteDocuments(docType, docUUID);
 };
 
 export const DeleteAction = ({ dataChangedRef, closeDialog, docUUID }) => {
-  const { deleteDocuments } = useContext(DOCCRUDContext);
+  const { deleteDocuments, context } = useContext(DOCCRUDContext);
+  const docType = context.docCategory.filter((one) => one.primary === true)[0]
+    .type;
   const { enqueueSnackbar } = useSnackbar();
   const mutation = useMutation(
     DeleteDocumentDataFnWrapper(deleteDocuments.fn(deleteDocuments.args)),
@@ -54,7 +58,7 @@ export const DeleteAction = ({ dataChangedRef, closeDialog, docUUID }) => {
         </Button>
         <Button
           color="primary"
-          onClick={() => mutation.mutate({ docUUID })}
+          onClick={() => mutation.mutate({ docType: docType, docUUID })}
           disabled={mutation.isLoading}
         >
           Yes

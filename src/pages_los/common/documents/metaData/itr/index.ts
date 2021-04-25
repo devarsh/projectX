@@ -1,3 +1,5 @@
-export * from "./edit";
+export * from "./analysis/edit";
 export * from "./grid";
-export * from "./upload";
+export * from "./analysis/upload";
+export * from "./others/edit";
+export * from "./others/upload";

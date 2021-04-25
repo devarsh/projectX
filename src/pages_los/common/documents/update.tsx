@@ -13,13 +13,15 @@ import loaderGif from "assets/images/loader.gif";
 import { useSnackbar } from "notistack";
 
 interface DeleteFormDataType {
+  docType: string;
   data?: any;
 }
 
 const updateDocumentDataFnWrapper = (updateDocuments) => async ({
+  docType,
   data,
 }: DeleteFormDataType) => {
-  return updateDocuments(data);
+  return updateDocuments(docType, data);
 };
 
 export const UpdateDocumentData = ({
@@ -31,6 +33,10 @@ export const UpdateDocumentData = ({
   const { updateDocument, getDocumentEditGridMetaData, context } = useContext(
     DOCCRUDContext
   );
+
+  const primaryDocType = context.docCategory.filter(
+    (one) => one.primary === true
+  )[0].type;
   const removeCache = useContext(ClearCacheContext);
   const { enqueueSnackbar } = useSnackbar();
   const gridRef = useRef<any>(null);
@@ -38,12 +44,15 @@ export const UpdateDocumentData = ({
     removeCache?.addEntry([
       "getDocumentEditGridMetaData",
       context.moduleType,
-      context.docCategory,
+      primaryDocType,
     ]);
   }, [removeCache, context]);
   const query = useQuery(
-    ["getDocumentEditGridMetaData", context.moduleType, context.docCategory],
-    () => getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args)
+    ["getDocumentEditGridMetaData", context.moduleType, primaryDocType],
+    () =>
+      getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args)(
+        primaryDocType
+      )
   );
 
   const mutation = useMutation(
@@ -64,7 +73,7 @@ export const UpdateDocumentData = ({
       setGridData(data);
     } else {
       let result = gridRef?.current?.cleanData?.();
-      await mutation.mutate({ data: result });
+      await mutation.mutate({ docType: primaryDocType, data: result });
     }
   };
   //@ts-ignore
