@@ -216,6 +216,23 @@ export const showOtherIncomeAmountField = async (_, dependentFields) => {
   return true;
 };
 
+export const showRetailOtherIncomeAmountField = async (_, dependentFields) => {
+  if (
+    dependentFields["returnFilingDetails.otherIncome"].value === "00" ||
+    dependentFields["returnFilingDetails.otherIncome"].value === "06"
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const showRetailOtherIncomeTypeField = async (_, dependentFields) => {
+  if (dependentFields["returnFilingDetails.otherIncome"].value !== "05") {
+    return true;
+  }
+  return false;
+};
+
 export const showReraNoField = async (_, dependentFields) => {
   if (dependentFields["reraReceived"].value === "Y") {
     return false;
@@ -236,6 +253,44 @@ export const showMeansOfFinance = async (_, dependentFields) => {
   if (
     dependentFields["projectParticularDetails.particularType"].value === "02"
   ) {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailSalaryOtherIncomeAmountField = async (
+  _,
+  dependentFields
+) => {
+  if (
+    dependentFields["salaryDetails.otherIncome"].value === "00" ||
+    dependentFields["salaryDetails.otherIncome"].value === "06"
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const showRetailSalaryOtherIncomeTypeField = async (
+  _,
+  dependentFields
+) => {
+  if (dependentFields["salaryDetails.otherIncome"].value !== "05") {
+    return true;
+  }
+  return false;
+};
+
+export const showRetailCoApplicantSelEmployeed = async (_, dependentFields) => {
+  console.log(dependentFields);
+  if (dependentFields["employementType"].value === "01") {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailCoApplicantSalaried = async (_, dependentFields) => {
+  if (dependentFields["employementType"].value === "02") {
     return false;
   }
   return true;

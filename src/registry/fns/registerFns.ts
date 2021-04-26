@@ -52,6 +52,7 @@ registerFn("getAcceptancePolicy", miscSDK.getMiscVal("ACCEPT_POLICY"));
 registerFn("getTargetYears", miscSDK.getMiscVal("TARGET_YEARS"));
 registerFn("getTargetMonth", miscSDK.getMiscVal("TARGET_MONTH"));
 registerFn("getNewTakeover", miscSDK.getMiscVal("NEW_TAKEOVER"));
+registerFn("getFinancialSource", miscSDK.getMiscVal("FIN_SOURCE"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
 registerFn("getBankSubProductType", miscSDK.getBankSubProductType);

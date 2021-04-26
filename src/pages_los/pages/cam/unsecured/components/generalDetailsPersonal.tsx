@@ -17,6 +17,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
       </>
     );
   }
+  console.log(general);
   return (
     <>
       <tr>
