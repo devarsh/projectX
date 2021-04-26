@@ -40,8 +40,8 @@ export const Lead = () => {
       },
     },
     {
-      actionName: "external",
-      actionLabel: "External API",
+      actionName: "analysis",
+      actionLabel: "Analysis",
       multiple: false,
       rowDoubleClick: false,
       shouldExclude: (rows) => {

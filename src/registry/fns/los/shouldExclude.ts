@@ -282,7 +282,6 @@ export const showRetailSalaryOtherIncomeTypeField = async (
 };
 
 export const showRetailCoApplicantSelEmployeed = async (_, dependentFields) => {
-  console.log(dependentFields);
   if (dependentFields["employementType"].value === "01") {
     return false;
   }

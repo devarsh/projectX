@@ -42,6 +42,7 @@ registerFn("projectParticularType", miscSDK.getMiscVal("PARTICULAR_TYPE"));
 registerFn("bankFacilityType", miscSDK.getMiscVal("ACCOUNT_TYPE"));
 registerFn("getBankDocType", miscSDK.getMiscVal("BANK_DOC_TYPE"));
 registerFn("getITRDocType", miscSDK.getMiscVal("ITR_DOC_TYPE"));
+registerFn("getITRDocTypeOther", miscSDK.getMiscVal("ITR_DOC_TYPE_O"));
 registerFn("getKYCDocType", miscSDK.getMiscVal("KYC_DOC_TYPE"));
 registerFn("getOtherDocType", miscSDK.getMiscVal("OTHER_DOC_TYPE"));
 registerFn("getGSTDocType", miscSDK.getMiscVal("GST_DOC_TYPE"));

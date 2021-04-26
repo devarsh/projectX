@@ -11,21 +11,24 @@ import { DOCCRUDContext } from "./context";
 import { useSnackbar } from "notistack";
 
 interface VerifyFormDataType {
+  docType: string;
   docUUID?: string;
   remarks?: string;
 }
 
 const ConfirmDocumentDataFnWrapper = (verifyDocuments) => async ({
+  docType,
   docUUID,
   remarks,
 }: VerifyFormDataType) => {
-  return verifyDocuments(docUUID, remarks, "Verify");
+  return verifyDocuments(docType, docUUID, remarks, "Verify");
 };
 const RejectDocumentDataFnWrapper = (verifyDocuments) => async ({
+  docType,
   docUUID,
   remarks,
 }: VerifyFormDataType) => {
-  return verifyDocuments(docUUID, remarks, "Rejected");
+  return verifyDocuments(docType, docUUID, remarks, "Rejected");
 };
 
 export const VerifyDocumentAction = ({
@@ -33,7 +36,9 @@ export const VerifyDocumentAction = ({
   closeDialog,
   docUUID,
 }) => {
-  const { verifyDocuments } = useContext(DOCCRUDContext);
+  const { verifyDocuments, context } = useContext(DOCCRUDContext);
+  const docType = context.docCategory.filter((one) => one.primary === true)[0]
+    .type;
   const [remarks, setRemarks] = useState("");
   const [error, setError] = useState("");
   const { enqueueSnackbar } = useSnackbar();
@@ -98,7 +103,7 @@ export const VerifyDocumentAction = ({
           color="primary"
           onClick={() => {
             if (Boolean(remarks)) {
-              verifyMutation.mutate({ docUUID, remarks });
+              verifyMutation.mutate({ docType, docUUID, remarks });
             } else {
               setError("This is a required field");
             }
@@ -111,7 +116,7 @@ export const VerifyDocumentAction = ({
           color="primary"
           onClick={() => {
             if (Boolean(remarks)) {
-              rejectMutation.mutate({ docUUID, remarks });
+              rejectMutation.mutate({ docType, docUUID, remarks });
             } else {
               setError("This is a required filed");
             }
