@@ -44,11 +44,17 @@ export const UpdateDocumentData = ({
     removeCache?.addEntry([
       "getDocumentEditGridMetaData",
       context.moduleType,
+      context.productType ?? "legal",
       primaryDocType,
     ]);
   }, [removeCache, context]);
   const query = useQuery(
-    ["getDocumentEditGridMetaData", context.moduleType, primaryDocType],
+    [
+      "getDocumentEditGridMetaData",
+      context.moduleType,
+      context.productType ?? "legal",
+      primaryDocType,
+    ],
     () =>
       getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args)(
         primaryDocType

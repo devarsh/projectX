@@ -1,7 +1,7 @@
-export const KYCEdit = {
+export const GSTOtherEdit = {
   gridConfig: {
     dense: true,
-    gridLabel: "KYC Document Update",
+    gridLabel: "GST Document Update",
     rowIdColumn: "docUUID",
     defaultColumnConfig: { width: 150, maxWidth: 250, minWidth: 100 },
     allowColumnReordering: true,
@@ -35,7 +35,7 @@ export const KYCEdit = {
       accessor: "docTypeID",
       sequence: 5,
       alignment: "left",
-      options: "getKYCDocType",
+      options: "getGSTDocTypeOther",
       schemaValidation: {
         type: "string",
         rules: [{ name: "required", params: ["required"] }],

@@ -35,6 +35,19 @@ export const GSTAnalysisMetaData: MetaDataType = {
       render: {
         componentType: "select",
       },
+      name: "processFor",
+      label: "Entity",
+      defaultValue: "ALL",
+      options: [
+        { value: "ALL", label: "ALL" },
+        { value: "GSTR1", label: "GSTR1" },
+        { value: "GSTR3", label: "GSTR3" },
+      ],
+    },
+    {
+      render: {
+        componentType: "select",
+      },
       name: "entityType",
       label: "Entity",
       defaultValue: "L",
