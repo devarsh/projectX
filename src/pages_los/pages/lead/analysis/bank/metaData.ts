@@ -147,12 +147,11 @@ export const BankAnalysisMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "select",
+        componentType: "hidden",
       },
       name: "acceptancePolicy",
       label: "Acceptance Policy",
-      //@ts-ignore
-      options: "getAcceptancePolicy",
+      defaultValue: "atLeastOneTransactionInRange",
     },
     {
       render: {

@@ -100,7 +100,7 @@ export const tabsManagement = [
       { label: "ITR", type: "itr", primary: true, categoryCD: "ITR_DOC_TYPE" },
       {
         label: "Others",
-        type: "itr2",
+        type: "itrOther",
         primary: false,
         categoryCD: "ITR_DOC_TYPE_O",
       },
@@ -108,7 +108,7 @@ export const tabsManagement = [
   },
   {
     label: "Others",
-    sequence: 4,
+    sequence: 3,
     docType: [
       {
         label: "Add Documents",

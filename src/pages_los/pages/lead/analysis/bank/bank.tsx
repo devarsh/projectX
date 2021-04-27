@@ -155,7 +155,14 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
             refID={refID}
             serialNo={formDataRef.current?.management}
             isManagement={Boolean(formDataRef.current?.management)}
-            docCateg={apiType}
+            docCateg={[
+              {
+                label: "Add Documents",
+                type: "bank",
+                primary: true,
+                categoryCD: "BANK_DOC_TYPE",
+              },
+            ]}
             transformData={(data) => {
               return data.filter((one) => {
                 const result =
