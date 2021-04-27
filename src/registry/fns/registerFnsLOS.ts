@@ -211,4 +211,28 @@ registerFn(
   "ShouldExcludeShowOtherIncomeAmountField",
   shouldExclude.showOtherIncomeAmountField
 );
+registerFn(
+  "ShouldExcludeShowRetailOtherIncomeAmountField",
+  shouldExclude.showRetailOtherIncomeAmountField
+);
+registerFn(
+  "ShouldExcludeShowRetailOtherIncomeTypeField",
+  shouldExclude.showRetailOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowRetailSalaryOtherIncomeAmountField",
+  shouldExclude.showRetailSalaryOtherIncomeAmountField
+);
+registerFn(
+  "ShouldExcludeShowRetailSalaryOtherIncomeTypeField",
+  shouldExclude.showRetailSalaryOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowRetailCoApplicantSelEmployeed",
+  shouldExclude.showRetailCoApplicantSelEmployeed
+);
+registerFn(
+  "ShouldExcludeShowRetailCoApplicantSalaried",
+  shouldExclude.showRetailCoApplicantSalaried
+);
 registerFn("ShouldExcludeShowReraNoField", shouldExclude.showReraNoField);
