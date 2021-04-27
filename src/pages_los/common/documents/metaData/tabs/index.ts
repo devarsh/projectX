@@ -7,7 +7,7 @@ export const tabsLegal = [
         label: "Add Documents",
         type: "kyc",
         primary: true,
-        categoryCD: "KYC_DOC_TYPE",
+        categoryCD: "KYC_DOC_TYPE_CO",
       },
     ],
   },
