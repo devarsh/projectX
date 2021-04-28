@@ -17,9 +17,11 @@ export const UploadDocumentsApiWrapper = ({
     getDocumentUploadAddtionalFieldsMetaData,
     context,
   } = useContext(DOCCRUDContext);
-  const docType = context.docCategory.filter(
+  const currentDoc = context.docCategory.filter(
     (one) => one.type === currentAction
-  )[0].type;
+  )[0];
+  const docType = currentDoc.type;
+  const categoryCD = currentDoc.categoryCD;
   const primaryDocType = context.docCategory.filter(
     (one) => one.primary === true
   )[0].type;
@@ -38,11 +40,17 @@ export const UploadDocumentsApiWrapper = ({
     removeCache?.addEntry([
       "getDocumentUploadAddtionalFieldsMetaData",
       context.moduleType,
+      context.productType,
       docType,
     ]);
   }, [context, removeCache]);
   const query = useQuery(
-    ["getDocumentUploadAddtionalFieldsMetaData", context.moduleType, docType],
+    [
+      "getDocumentUploadAddtionalFieldsMetaData",
+      context.moduleType,
+      context.productType,
+      docType,
+    ],
     () =>
       getDocumentUploadAddtionalFieldsMetaData.fn(
         getDocumentUploadAddtionalFieldsMetaData.args
@@ -63,8 +71,9 @@ export const UploadDocumentsApiWrapper = ({
       onUpload={uploadDocuments.fn({
         ...uploadDocuments.args,
         docCategory: primaryDocType,
+        categoryCD: categoryCD,
       })}
-      gridProps={context}
+      gridProps={{ ...context, docCategory: docType }}
       maxAllowedSize={1024 * 1204 * 10} //10Mb file
       allowedExtensions={["pdf"]}
     />

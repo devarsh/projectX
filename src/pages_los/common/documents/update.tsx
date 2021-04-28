@@ -33,6 +33,9 @@ export const UpdateDocumentData = ({
   const { updateDocument, getDocumentEditGridMetaData, context } = useContext(
     DOCCRUDContext
   );
+  const docType = context.docCategory.filter(
+    (one) => one.categoryCD === data.docCategory
+  )[0].type;
 
   const primaryDocType = context.docCategory.filter(
     (one) => one.primary === true
@@ -44,15 +47,19 @@ export const UpdateDocumentData = ({
     removeCache?.addEntry([
       "getDocumentEditGridMetaData",
       context.moduleType,
-      primaryDocType,
+      context.productType ?? "legal",
+      docType,
     ]);
   }, [removeCache, context]);
   const query = useQuery(
-    ["getDocumentEditGridMetaData", context.moduleType, primaryDocType],
+    [
+      "getDocumentEditGridMetaData",
+      context.moduleType,
+      context.productType ?? "legal",
+      docType,
+    ],
     () =>
-      getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args)(
-        primaryDocType
-      )
+      getDocumentEditGridMetaData.fn(getDocumentEditGridMetaData.args)(docType)
   );
 
   const mutation = useMutation(

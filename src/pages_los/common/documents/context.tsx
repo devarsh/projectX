@@ -95,15 +95,15 @@ export const DocAPICrudProviderGenerator = (
   },
   getDocumentListingGridMetaData: {
     fn: API.getDocumentMetaData,
-    args: { moduleType, metaDataType: "grid" },
+    args: { moduleType, productType, metaDataType: "grid" },
   },
   getDocumentUploadAddtionalFieldsMetaData: {
     fn: API.getDocumentMetaData,
-    args: { moduleType, metaDataType: "upload" },
+    args: { moduleType, productType, metaDataType: "upload" },
   },
   getDocumentEditGridMetaData: {
     fn: API.getDocumentMetaData,
-    args: { moduleType, metaDataType: "edit" },
+    args: { moduleType, productType, metaDataType: "edit" },
   },
   generateDocumentDownloadURL: {
     fn: API.generateDocumentDownloadURL,

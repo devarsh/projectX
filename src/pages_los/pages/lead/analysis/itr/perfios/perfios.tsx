@@ -138,8 +138,20 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
             refID={refID}
             serialNo={formDataRef.current?.management}
             isManagement={Boolean(formDataRef.current?.management)}
-            docCateg={apiType}
-            transformData={(data) => data}
+            docCateg={[
+              {
+                label: "ITR",
+                type: "itr",
+                primary: true,
+                categoryCD: "ITR_DOC_TYPE",
+              },
+            ]}
+            transformData={(data) => {
+              if (Array.isArray(data)) {
+                return data.filter((one) => one.docCategory === "ITR_DOC_TYPE");
+              }
+              return data;
+            }}
           />
         </DialogContent>
       </Dialog>

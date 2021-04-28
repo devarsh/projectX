@@ -138,8 +138,37 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
             refID={refID}
             serialNo={formDataRef.current?.management}
             isManagement={Boolean(formDataRef.current?.management)}
-            docCateg={apiType}
-            transformData={(data) => data}
+            docCateg={[
+              {
+                label: "Analysis",
+                type: "gst",
+                primary: true,
+                categoryCD: "GST_DOC_TYPE",
+              },
+            ]}
+            transformData={(data) => {
+              if (Array.isArray(data)) {
+                const currentDocType =
+                  formDataRef.current?.processFor === "GSTR1"
+                    ? "GSTR1"
+                    : formDataRef.current?.processFor === "GSTR3"
+                    ? "GSTR-3B"
+                    : "All";
+                return data.filter((one) => {
+                  if (one.docCategory === "GST_DOC_TYPE") {
+                    if (currentDocType === "All") {
+                      return true;
+                    } else if (one.docType === currentDocType) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }
+                  return false;
+                });
+              }
+              return data;
+            }}
           />
         </DialogContent>
       </Dialog>

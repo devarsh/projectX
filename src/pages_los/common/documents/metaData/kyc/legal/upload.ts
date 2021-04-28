@@ -1,11 +1,11 @@
-export const KYCUpload = [
+export const KYCLegalUpload = [
   {
     columnName: "Document Type",
     componentType: "editableSelect",
     accessor: "docTypeID",
     sequence: 5,
     alignment: "left",
-    options: "getKYCDocType",
+    options: "getKYCDocTypeLegal",
     schemaValidation: {
       type: "string",
       rules: [{ name: "required", params: ["required"] }],

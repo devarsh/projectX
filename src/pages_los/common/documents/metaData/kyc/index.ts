@@ -1,3 +1,5 @@
-export * from "./edit";
+export * from "./management/edit";
 export * from "./grid";
-export * from "./upload";
+export * from "./management/upload";
+export * from "./legal/edit";
+export * from "./legal/upload";

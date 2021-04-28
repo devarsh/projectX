@@ -1,7 +1,13 @@
 import { LOSSDK, DOCCRUDTYPE } from "registry/fns/los";
 import { tabsLegal, tabsManagement } from "./metaData/tabs";
 import { bankEdit, bankGrid, bankUpload } from "./metaData/bank";
-import { GSTEdit, GSTGrid, GSTUpload } from "./metaData/gst";
+import {
+  GSTEdit,
+  GSTGrid,
+  GSTUpload,
+  GSTOtherEdit,
+  GSTOtherUpload,
+} from "./metaData/gst";
 import {
   ITREdit,
   ITRGrid,
@@ -9,13 +15,20 @@ import {
   ITROtherEdit,
   ITROtherUpload,
 } from "./metaData/itr";
-import { KYCEdit, KYCGrid, KYCUpload } from "./metaData/kyc";
+import {
+  KYCLegalEdit,
+  KYCGrid,
+  KYCLegalUpload,
+  KYCManagementEdit,
+  KYCManagementUpload,
+} from "./metaData/kyc";
 import { othersEdit, othersGrid, OthersUpload } from "./metaData/others";
 
 export const uploadDocuments = ({
   moduleType,
   productType,
   docCategory,
+  categoryCD,
   refID,
   serialNo,
 }: DOCCRUDTYPE) => async (
@@ -36,6 +49,7 @@ export const uploadDocuments = ({
     LOSSDK.getBaseURL() as URL
   ).href;
   let xhr = new XMLHttpRequest();
+  data.append("categoryCD", categoryCD ?? "");
   data.append("refID", refID);
   data.append("serialNo", serialNo ?? "");
   xhr.open("POST", newURL, true);
@@ -293,14 +307,20 @@ export const getDocumentMetaData = ({
         return bankUpload;
       case "itr":
         return ITRUpload;
-      case "itr2":
+      case "itrOther":
         return ITROtherUpload;
       case "gst":
         return GSTUpload;
+      case "gstOther":
+        return GSTOtherUpload;
       case "other":
         return OthersUpload;
       case "kyc":
-        return KYCUpload;
+        if (productType === "management") {
+          return KYCManagementUpload;
+        } else {
+          return KYCLegalUpload;
+        }
       default:
         throw { error_msg: "Invalid docCategory" };
     }
@@ -310,14 +330,20 @@ export const getDocumentMetaData = ({
         return bankEdit;
       case "itr":
         return ITREdit;
-      case "itr2":
+      case "itrOther":
         return ITROtherEdit;
       case "gst":
         return GSTEdit;
+      case "gstOther":
+        return GSTOtherEdit;
       case "other":
         return othersEdit;
       case "kyc":
-        return KYCEdit;
+        if (productType === "management") {
+          return KYCManagementEdit;
+        } else {
+          return KYCLegalEdit;
+        }
       default:
         throw { error_msg: "Invalid docCategory" };
     }
