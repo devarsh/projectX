@@ -17,7 +17,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
       </>
     );
   }
-  console.log(general);
+  console.log("to test the git access");
   return (
     <>
       <tr>
