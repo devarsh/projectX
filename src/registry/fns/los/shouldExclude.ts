@@ -263,7 +263,6 @@ export const showRetailSalaryOtherIncomeAmountField = async (
   dependentFields
 ) => {
   let optionsValue = dependentFields["salaryDetails.otherIncome"].value;
-  console.log(optionsValue);
   if (!Array.isArray(optionsValue)) {
     optionsValue = [optionsValue];
   }
@@ -282,6 +281,9 @@ export const showRetailSalaryOtherIncomeTypeField = async (
     optionsValue = [optionsValue];
   }
   if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
     return optionsValue.indexOf("05") >= 0 ? false : true;
   }
   return true;
