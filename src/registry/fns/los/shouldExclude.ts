@@ -262,11 +262,12 @@ export const showRetailSalaryOtherIncomeAmountField = async (
   _,
   dependentFields
 ) => {
-  if (
-    dependentFields["salaryDetails.otherIncome"].value === "00" ||
-    dependentFields["salaryDetails.otherIncome"].value === "06"
-  ) {
-    return true;
+  let optionsValue = dependentFields["salaryDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
   }
   return false;
 };
@@ -275,10 +276,17 @@ export const showRetailSalaryOtherIncomeTypeField = async (
   _,
   dependentFields
 ) => {
-  if (dependentFields["salaryDetails.otherIncome"].value !== "05") {
-    return true;
+  let optionsValue = dependentFields["salaryDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
   }
-  return false;
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
 };
 
 export const showRetailCoApplicantSelEmployeed = async (_, dependentFields) => {
