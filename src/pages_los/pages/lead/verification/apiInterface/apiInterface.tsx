@@ -39,6 +39,9 @@ export const APIInterfaceForm = ({
   const formHandleSubmit = (formData, displayFormData, endSubmit) => {
     inititateAPIMutation.mutate({ formData, endSubmit: endSubmit });
   };
+  if (verificationInitateFormMetaData.form) {
+    verificationInitateFormMetaData.form.formState = { refID };
+  }
 
   return (
     <FormWrapper
@@ -57,7 +60,7 @@ export const APIInterfaceForm = ({
               disabled={isSubmitting}
               endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
             >
-              Save
+              Inititate
             </Button>
             <Button onClick={closeDialog} disabled={isSubmitting}>
               Cancel

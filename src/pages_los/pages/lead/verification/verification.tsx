@@ -52,7 +52,7 @@ export const Verification = ({ refID, moduleType }) => {
         maxWidth="xl"
         PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
-        {(currentAction?.name ?? "") === "detailView" ? (
+        {(currentAction?.name ?? "") === "inititate" ? (
           <APIInterfaceForm
             refID={refID}
             moduleType={moduleType}
