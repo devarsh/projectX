@@ -294,3 +294,20 @@ export const showRetailCoApplicantSalaried = async (_, dependentFields) => {
   }
   return true;
 };
+
+export const showPurposeOfLoanOtherTextfield = async (_, dependentFields) => {
+  if (dependentFields["purposeLoan"].value === "04") {
+    return false;
+  }
+  return true;
+};
+
+export const showProjectPromoterAndFirmNameField = async (
+  _,
+  dependentFields
+) => {
+  if (dependentFields["landDetails"].value === "O") {
+    return false;
+  }
+  return true;
+};

@@ -236,3 +236,11 @@ registerFn(
   shouldExclude.showRetailCoApplicantSalaried
 );
 registerFn("ShouldExcludeShowReraNoField", shouldExclude.showReraNoField);
+registerFn(
+  "ShouldExcludeShowPurposeOfLoanOtherTextfield",
+  shouldExclude.showPurposeOfLoanOtherTextfield
+);
+registerFn(
+  "ShouldExcludeShowProjectPromoterAndFirmNameField",
+  shouldExclude.showProjectPromoterAndFirmNameField
+);
