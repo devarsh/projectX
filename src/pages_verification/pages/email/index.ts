@@ -1,1 +1,1 @@
-export * from "./email";
+export { EmailIDVerificationWrapper as default } from "./email";

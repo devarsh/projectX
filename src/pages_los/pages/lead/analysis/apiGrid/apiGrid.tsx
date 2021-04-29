@@ -28,7 +28,7 @@ export const APIGrid = forwardRef<any, GridWrapperType>(
       cacheWrapperKeyGen(Object.values(getAnalysisAPIStatusData.args))
     );
     const result = useQuery<any, any, any>(
-      ["getAPIGridStatusData", wrapperKeyDataRef.current],
+      ["getAnalysisAPIStatusData", wrapperKeyDataRef.current],
       () => getAnalysisAPIStatusData.fn(getAnalysisAPIStatusData.args)
     );
     useEffect(() => {

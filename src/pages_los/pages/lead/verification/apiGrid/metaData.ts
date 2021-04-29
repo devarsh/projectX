@@ -26,6 +26,8 @@ export const GridMetaData: GridMetaDataType = {
       accessor: "tokenID",
       sequence: 0,
       alignment: "left",
+      showTooltip: true,
+      maxWidth: 800,
     },
     {
       columnName: "Initiated At",
@@ -44,7 +46,7 @@ export const GridMetaData: GridMetaDataType = {
     {
       columnName: "Entity Type",
       componentType: "default",
-      accessor: "entity_type",
+      accessor: "entityType",
       sequence: 4,
       alignment: "left",
     },
@@ -58,9 +60,17 @@ export const GridMetaData: GridMetaDataType = {
     },
 
     {
-      columnName: "Current Status",
+      columnName: "Status",
       componentType: "default",
-      accessor: "tokenStatus",
+      accessor: "status",
+      sequence: 6,
+      alignment: "left",
+    },
+    {
+      columnName: "Remarks",
+      componentType: "default",
+      accessor: "remarks",
+      showTooltip: true,
       sequence: 6,
       alignment: "left",
     },

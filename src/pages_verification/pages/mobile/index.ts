@@ -1,1 +1,1 @@
-export * from "./mobile";
+export { MobileNumberVerificationWrapper as default } from "./mobile";

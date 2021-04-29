@@ -25,13 +25,19 @@ export const APIInterfaceForm = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const inititateAPIMutation = useMutation(
-    InititateDocumentUploadAPI(initiateVerificationAPI({ moduleType, refID })),
+    InititateDocumentUploadAPI(initiateVerificationAPI({ refID })),
     {
-      onError: (error: any) => {},
-      onSuccess: (data) => {
+      onError: (error: any, { endSubmit }) => {
+        let errorMsg = error?.error_msg ?? "Unknown Error occured";
+        endSubmit(false, errorMsg);
+      },
+      onSuccess: (data, { endSubmit }) => {
+        endSubmit(true, "");
+        isDataChangedRef.current = true;
         enqueueSnackbar("API Successfully Initialized", {
           variant: "success",
         });
+        closeDialog();
       },
     }
   );
@@ -47,7 +53,7 @@ export const APIInterfaceForm = ({
     <FormWrapper
       metaData={verificationInitateFormMetaData as MetaDataType}
       initialValues={{}}
-      onSubmitHandler={null}
+      onSubmitHandler={formHandleSubmit}
       displayMode={"new"}
       disableGroupErrorDetection={true}
       disableGroupExclude={true}

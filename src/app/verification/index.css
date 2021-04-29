@@ -25,7 +25,7 @@ select,
   font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
 }
 html {
-  font-size: 16px;
+  font-size: 14px;
 }
 .theme-color1 {
   color: var(--theme-color1);

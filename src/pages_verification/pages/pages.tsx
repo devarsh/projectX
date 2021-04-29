@@ -1,7 +1,7 @@
 import Box from "@material-ui/core/Box";
 import { Routes, Route } from "react-router-dom";
-import { MobileNumberVerification } from "./mobile";
-import { EmailVerification } from "./email";
+import MobileNumberVerification from "./mobile";
+import EmailVerification from "./email";
 import { useStyles } from "./style";
 
 export const Pages = () => {
