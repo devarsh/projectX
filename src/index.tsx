@@ -8,6 +8,7 @@ import CRM from "app/crm";
 import LOS from "app/los";
 import ErrorPage from "app/error";
 import Middleware from "app/middleware";
+import Verification from "app/verification";
 import "typeface-roboto";
 import "registry"; //register functions to be used across application
 import { DndProvider } from "react-dnd";
@@ -32,6 +33,7 @@ const App = () => (
           <Routes>
             <Route path="/los/*" element={<LOS />} />
             <Route path="/crm/*" element={<CRM />} />
+            <Route path="/verification/*" element={<Verification />} />
             <Route path="/error/*" element={<ErrorPage />} />
             <Route path="/middleware/:refID" element={<Middleware />} />
             <Route path="*" element={<Redirect />} />
