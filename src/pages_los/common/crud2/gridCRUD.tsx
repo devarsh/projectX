@@ -91,7 +91,7 @@ export const GridCRUD: FC<{
         open={Boolean(currentAction)}
         maxWidth="xl"
         PaperProps={
-          currentAction === "Delete"
+          currentAction?.name === "Delete"
             ? {}
             : { style: { width: "100%", height: "100%" } }
         }
