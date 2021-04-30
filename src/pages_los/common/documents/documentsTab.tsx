@@ -21,7 +21,7 @@ export const DocumentGridCRUD: FC<{
   refID: string;
   serialNo?: string;
   onClose?: any;
-}> = ({ moduleType, productType, refID, serialNo, onClose }) => {
+}> = ({ moduleType, productType = "legal", refID, serialNo, onClose }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -35,7 +35,7 @@ export const DocumentGridCRUD: FC<{
       productType ?? "legal",
       refID,
     ]);
-  }, [removeCache, moduleType, refID]);
+  }, [removeCache, moduleType, refID, productType]);
   const queryResult = useQuery(
     ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "legal", refID],
     () =>

@@ -81,6 +81,7 @@ export const CorpositoryAPIInterface = ({
   const cancelInitialization = () => {
     setCurrentAction(null);
   };
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     if (companyName.isSuccess) {
       setSearchTerm(companyName.data);

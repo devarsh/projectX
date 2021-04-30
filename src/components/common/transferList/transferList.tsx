@@ -81,6 +81,7 @@ export const TransferList: FC<TransferListProps> = ({
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     setLeft(leftOptions);
     setRight(rightOptions);

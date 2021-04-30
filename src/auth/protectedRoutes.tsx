@@ -9,7 +9,7 @@ export const ProtectedRoutes = ({ children, unauthenticatedRoute }) => {
     if (!(authContext !== null && authContext.isLoggedIn())) {
       navigate(unauthenticatedRoute ?? "/los/auth/login/customer");
     }
-  }, []);
+  }, [navigate, authContext, unauthenticatedRoute]);
   if (authContext !== null && authContext.isLoggedIn()) {
     return children;
   }

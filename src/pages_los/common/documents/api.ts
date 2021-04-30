@@ -299,6 +299,7 @@ export const getDocumentMetaData = ({
       case "kyc":
         return KYCGrid;
       default:
+        /*eslint-disable no-throw-literal*/
         throw { error_msg: "Invalid docCategory" };
     }
   } else if (metaDataType === "upload") {

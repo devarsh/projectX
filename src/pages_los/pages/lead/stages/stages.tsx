@@ -36,7 +36,7 @@ export const Stage = ({ refID, moduleType, isDataChangedRef }) => {
         queryClient.removeQueries(one);
       });
     };
-  }, []);
+  }, [removeCache]);
 
   return (
     <StagesAPIProvider {...generateStagesAPIContext({ refID, moduleType })}>

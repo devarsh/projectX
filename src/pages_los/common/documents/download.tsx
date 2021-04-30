@@ -37,7 +37,13 @@ export const Download = ({ docData, closeDialog, maxDownloadLimit = 3 }) => {
       downloadFile(url, `download-${new Date().getUTCMilliseconds()}`);
     }
     closeDialog();
-  }, [maxDownloadLimit, docData, closeDialog, generateDocumentDownloadURL]);
+  }, [
+    maxDownloadLimit,
+    docData,
+    docType,
+    closeDialog,
+    generateDocumentDownloadURL,
+  ]);
   return Boolean(error) ? (
     <Fragment>
       <DialogTitle>{error}</DialogTitle>

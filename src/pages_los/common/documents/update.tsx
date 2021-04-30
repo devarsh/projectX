@@ -50,7 +50,7 @@ export const UpdateDocumentData = ({
       context.productType ?? "legal",
       docType,
     ]);
-  }, [removeCache, context]);
+  }, [removeCache, context, docType]);
   const query = useQuery(
     [
       "getDocumentEditGridMetaData",
