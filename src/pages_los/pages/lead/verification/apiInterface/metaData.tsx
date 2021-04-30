@@ -37,16 +37,16 @@ export const verificationInitateFormMetaData: MetaDataType = {
       },
       name: "apiType",
       label: "API Type",
-      defaultValue: "M",
+      defaultValue: "mobile",
       options: [
-        { value: "M", label: "Mobile" },
-        { value: "E", label: "Email" },
+        { value: "mobile", label: "Mobile" },
+        { value: "email", label: "Email" },
         {
-          value: "C",
+          value: "cibil",
           label: "CIBIL",
         },
         {
-          value: "A",
+          value: "aadhar",
           label: "Aadhar",
         },
       ],

@@ -2,6 +2,7 @@ import { MiscSDK } from "./fns/misc";
 import { CRMSDK } from "./fns/crm";
 import { AuthSDK } from "./fns/auth";
 import { LOSSDK } from "./fns/los";
+import { VerificationSDK } from "./fns/verification";
 import "./fns/registerFns";
 import "./yup";
 MiscSDK.inititateAPI(
@@ -15,4 +16,7 @@ AuthSDK.inititateAPI(
 );
 LOSSDK.inititateAPI(
   `${new URL("./los/", process.env.REACT_APP_API_URL).href}` ?? ""
+);
+VerificationSDK.inititateAPI(
+  `${new URL("./external/", process.env.REACT_APP_API_URL).href}` ?? ""
 );

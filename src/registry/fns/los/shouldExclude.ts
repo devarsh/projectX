@@ -217,20 +217,28 @@ export const showOtherIncomeAmountField = async (_, dependentFields) => {
 };
 
 export const showRetailOtherIncomeAmountField = async (_, dependentFields) => {
-  if (
-    dependentFields["returnFilingDetails.otherIncome"].value === "00" ||
-    dependentFields["returnFilingDetails.otherIncome"].value === "06"
-  ) {
-    return true;
+  let optionsValue = dependentFields["returnFilingDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
   }
   return false;
 };
 
 export const showRetailOtherIncomeTypeField = async (_, dependentFields) => {
-  if (dependentFields["returnFilingDetails.otherIncome"].value !== "05") {
-    return true;
+  let optionsValue = dependentFields["returnFilingDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
   }
-  return false;
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
 };
 
 export const showReraNoField = async (_, dependentFields) => {

@@ -270,7 +270,7 @@ header li > div.dropdown-toggle {
   }
 }
 
-@media screen and (max-width: 767px) {
+/* @media screen and (max-width: 767px) {
   .navigation-links {
     width: 100%;
     margin-top: 0;
@@ -278,7 +278,7 @@ header li > div.dropdown-toggle {
   .BrandLogo {
     margin-top: -40px;
   }
-}
+} */
 @media screen and (max-width: 320px) {
 }
 

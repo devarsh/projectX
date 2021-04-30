@@ -66,7 +66,7 @@ export const Lead = () => {
     },
     {
       actionName: "verification",
-      actionLabel: "Verification API",
+      actionLabel: "Verification",
       multiple: false,
       rowDoubleClick: false,
     },

@@ -3,8 +3,8 @@ import { GridMetaDataType } from "components/dataTableStatic";
 export const GridMetaData: GridMetaDataType = {
   gridConfig: {
     dense: true,
-    gridLabel: "API Progress",
-    rowIdColumn: "transactionID",
+    gridLabel: "Verification API Status",
+    rowIdColumn: "tokenID",
     defaultColumnConfig: {
       width: 150,
       maxWidth: 250,
@@ -23,21 +23,16 @@ export const GridMetaData: GridMetaDataType = {
     {
       columnName: "Transaction ID",
       componentType: "default",
-      accessor: "transactionID",
+      accessor: "tokenID",
       sequence: 0,
       alignment: "left",
+      showTooltip: true,
+      maxWidth: 800,
     },
     {
-      columnName: "3rd Party TransactionID",
-      componentType: "default",
-      accessor: "perfiosTransactionID",
-      sequence: 1,
-      alignment: "left",
-    },
-    {
-      columnName: "Transaction Initiated At",
+      columnName: "Initiated At",
       componentType: "date",
-      accessor: "InitateDate",
+      accessor: "initateDate",
       sequence: 2,
       alignment: "left",
     },
@@ -65,18 +60,18 @@ export const GridMetaData: GridMetaDataType = {
     },
 
     {
-      columnName: "Current Status",
+      columnName: "Status",
       componentType: "default",
       accessor: "status",
       sequence: 6,
       alignment: "left",
     },
-
     {
-      columnName: "Status Result",
+      columnName: "Remarks",
       componentType: "default",
       accessor: "remarks",
-      sequence: 7,
+      showTooltip: true,
+      sequence: 6,
       alignment: "left",
     },
   ],

@@ -3,7 +3,7 @@ import * as API from "./api";
 
 export interface VerificationAPIProviderType {
   context: any;
-  getAPIGridStatusData: CRUDFNType;
+  getVerificationAPIGridStatusData: CRUDFNType;
 }
 
 export const VerificationAPIContext = createContext<VerificationAPIProviderType>(
@@ -17,14 +17,14 @@ interface CRUDFNType {
 
 export const ExternalAPIProvider: FC<VerificationAPIProviderType> = ({
   children,
-  getAPIGridStatusData,
+  getVerificationAPIGridStatusData,
   context,
 }) => {
   return (
     <VerificationAPIContext.Provider
       value={{
         context,
-        getAPIGridStatusData,
+        getVerificationAPIGridStatusData,
       }}
     >
       {children}
@@ -35,8 +35,8 @@ export const ExternalAPIProvider: FC<VerificationAPIProviderType> = ({
 export const generateVerificationAPIContext = ({ refID, moduleType }) => {
   return {
     context: { refID, moduleType },
-    getAPIGridStatusData: {
-      fn: API.getAPIStatusGridData,
+    getVerificationAPIGridStatusData: {
+      fn: API.getVerificationAPIGridStatusData,
       args: { refID, moduleType },
     },
   };

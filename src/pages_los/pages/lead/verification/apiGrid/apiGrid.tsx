@@ -20,16 +20,24 @@ type GridWrapperType = {
 export const APIGrid = forwardRef<any, GridWrapperType>(
   ({ actions, setAction }, ref) => {
     const removeCache = useContext(ClearCacheContext);
-    const { getAPIGridStatusData } = useContext(VerificationAPIContext);
+    const { getVerificationAPIGridStatusData } = useContext(
+      VerificationAPIContext
+    );
     const wrapperKeyDataRef = useRef(
-      cacheWrapperKeyGen(Object.values(getAPIGridStatusData.args))
+      cacheWrapperKeyGen(Object.values(getVerificationAPIGridStatusData.args))
     );
     const result = useQuery<any, any, any>(
-      ["getAPIGridStatusData", wrapperKeyDataRef.current],
-      () => getAPIGridStatusData.fn(getAPIGridStatusData.args)
+      ["getVerificationAPIGridStatusData", wrapperKeyDataRef.current],
+      () =>
+        getVerificationAPIGridStatusData.fn(
+          getVerificationAPIGridStatusData.args
+        )
     );
     useEffect(() => {
-      removeCache?.addEntry("getAPIGridStatusData", wrapperKeyDataRef.current);
+      removeCache?.addEntry(
+        "getVerificationAPIGridStatusData",
+        wrapperKeyDataRef.current
+      );
     }, [removeCache]);
     useImperativeHandle(ref, () => ({
       refetch: () => result.refetch(),
