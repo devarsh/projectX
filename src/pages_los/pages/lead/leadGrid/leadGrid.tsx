@@ -56,7 +56,6 @@ export const LeadGrid = ({ gridCode, actions }) => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
-              rowData={currentAction?.rows[0]}
             />
           ) : (currentAction?.name ?? "") === "cam" ? (
             <CAM

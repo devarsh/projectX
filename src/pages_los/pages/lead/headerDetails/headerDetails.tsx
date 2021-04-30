@@ -7,7 +7,7 @@ export const HeaderDetails = ({ rowData, handleDialogClose }) => {
   const classes = useStyles();
   let dateValue;
   try {
-    dateValue = format(new Date(rowData?.original?.tran_dt), "dd/MM/yyyy");
+    dateValue = format(new Date(rowData?.data?.generation_dt), "dd/MM/yyyy");
   } catch (e) {
     dateValue = "Invalid Date";
   }
@@ -22,25 +22,35 @@ export const HeaderDetails = ({ rowData, handleDialogClose }) => {
       width={1}
     >
       <Box display="flex" flexDirection="row" width={1} mb={2}>
-        <Box pr={3}>
+        <Box pr={2}>
           <div className={classes.labelText}>Lead No.</div>
           <div className={classes.valueText}>{rowData?.id}</div>
         </Box>
-        <Box px={3}>
-          <div className={classes.labelText}>Product</div>
-          <div className={classes.valueText}>
-            {rowData?.original?.product_cd}
-          </div>
+        <Box pr={2}>
+          <div className={classes.labelText}>Branch </div>
+          <div className={classes.valueText}>{rowData?.data?.branch_name}</div>
         </Box>
-        <Box px={3}>
+        <Box px={2}>
+          <div className={classes.labelText}>Category</div>
+          <div className={classes.valueText}>{rowData?.data?.category_id}</div>
+        </Box>
+        <Box px={2}>
+          <div className={classes.labelText}>Product</div>
+          <div className={classes.valueText}>{rowData?.data?.product_cd}</div>
+        </Box>
+        <Box px={2}>
           <div className={classes.labelText}>Generated On</div>
           <div className={classes.valueText}>{dateValue}</div>
         </Box>
-        <Box px={3}>
-          <div className={classes.labelText}>Current Status</div>
-          <div className={classes.valueText}>{rowData?.original?.status}</div>
+        <Box px={2}>
+          <div className={classes.labelText}>Current Stage</div>
+          <div className={classes.valueText}>{rowData?.data?.stage_cd}</div>
         </Box>
-        <Box flexGrow={1} px={3} />
+        <Box px={2}>
+          <div className={classes.labelText}>Current Sub Stage</div>
+          <div className={classes.valueText}>{rowData?.data?.sub_stage_cd}</div>
+        </Box>
+        <Box flexGrow={1} />
         <Button onClick={handleDialogClose}>Close</Button>
       </Box>
     </Box>

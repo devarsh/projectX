@@ -28,7 +28,6 @@ export const CRUDComponentPicker = ({
   isDataChangedRef,
   dataAlwaysExists,
   showDocuments,
-  rowData = {},
 }) => {
   return componentType === "simple" ? (
     <CRUDContextProvider
@@ -46,7 +45,6 @@ export const CRUDComponentPicker = ({
       <GridCRUD
         isDataChangedRef={isDataChangedRef}
         showDocuments={showDocuments}
-        rowData={rowData}
       />
     </CRUDContextProvider>
   ) : componentType === "document" ? (

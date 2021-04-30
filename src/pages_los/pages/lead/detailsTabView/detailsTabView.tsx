@@ -17,8 +17,7 @@ export const DetailsTabView: FC<{
   refID: string;
   moduleType: string;
   isDataChangedRef: any;
-  rowData?: any;
-}> = ({ refID, moduleType, isDataChangedRef, rowData }) => {
+}> = ({ refID, moduleType, isDataChangedRef = { current: false } }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -82,7 +81,6 @@ export const DetailsTabView: FC<{
                 isDataChangedRef={isDataChangedRef}
                 dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                 showDocuments={one?.document}
-                rowData={rowData}
               />
             </TabPanel>
           ))}

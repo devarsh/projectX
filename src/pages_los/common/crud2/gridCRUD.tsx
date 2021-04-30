@@ -32,13 +32,11 @@ const actions: ActionTypes[] = [
 export const GridCRUD: FC<{
   isDataChangedRef: any;
   showDocuments?: boolean;
-  rowData?: any;
   disableActions?: string | string[];
   setEditFormStateFromInitValues?: any;
 }> = ({
   isDataChangedRef,
   showDocuments,
-  rowData,
   disableActions,
   setEditFormStateFromInitValues,
 }) => {
