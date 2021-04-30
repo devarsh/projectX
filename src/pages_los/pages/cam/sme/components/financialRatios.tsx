@@ -151,7 +151,7 @@ export const FinancialRatios = ({ finance }) => {
       </tr>
       <tr>
         <td colSpan={9}>
-          *Estimated and Projected turnover for the next two years is Rs.23,000
+          *Estimated and Projected turnover for the next two years is Rs.20,000
           in 2019 and Rs.25,000 in 2020...
         </td>
       </tr>

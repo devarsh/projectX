@@ -16,7 +16,7 @@ export const AddressDetails = ({ address }) => {
       {address?.map((addressData, index) => {
         return (
           <>
-            <tr key={index}>
+            <tr key={index + 1}>
               <th colSpan={2}>{addressData?.addressType ?? ""} Address</th>
               <td colSpan={7}>
                 {addressData?.address1 ?? ""},{addressData?.address2 ?? ""},
