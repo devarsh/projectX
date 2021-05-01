@@ -6,6 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import Chip from "@material-ui/core/Chip";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext, useForm } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
@@ -143,9 +144,17 @@ const ChildFormWrapper = forwardRef<any, any>(
             <Toolbar>
               <Typography component="div" variant="h6">
                 {formDisplayLabel}
-                {Boolean(displayMode) && !Boolean(hideDisplayModeInTitle)
-                  ? `-${displayMode}`
-                  : ""}
+                {Boolean(displayMode) && !Boolean(hideDisplayModeInTitle) ? (
+                  <Chip
+                    style={{ color: "white", marginLeft: "8px" }}
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    label={`${displayMode} mode`}
+                  />
+                ) : (
+                  ""
+                )}
               </Typography>
               <div className={classes.formControlLabelSpacer} />
               {typeof wrapperChild === "function"
