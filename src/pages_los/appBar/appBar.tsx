@@ -130,15 +130,6 @@ export const MyAppBar = ({ handleDrawerOpen, open }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                navigate("/los/iframe");
-                handleClose();
-              }}
-            >
-              <AccountCircleIcon color="primary" />
-              <span className={classes.vTop}>Iframe</span>
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
                 authController?.logout();
                 handleClose();
               }}

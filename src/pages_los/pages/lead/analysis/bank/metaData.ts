@@ -172,6 +172,7 @@ export const BankAnalysisMetaData: MetaDataType = {
       type: "number",
       label: "Loan Duration",
       placeholder: "Loan Duration",
+      defaultValue: 12,
       maxLength: 2,
       required: true,
     },

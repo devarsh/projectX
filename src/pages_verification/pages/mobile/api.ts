@@ -46,7 +46,7 @@ export const verifyOTP = async (
 
 export const verifyToken = async (tokenID: number | string) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/token/verify",
+    "./otp/mobile-token/verify",
     {
       body: JSON.stringify({
         request_data: {
