@@ -1,6 +1,5 @@
 import { Fragment, FC, useState, useRef } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { ActionTypes } from "components/dataTable";
 import { MyGridWrapper } from "pages_los/common/crud2/gridWrapper";
@@ -37,10 +36,10 @@ export const MonthlyTargetGrid: FC<{
   };
   return (
     <Fragment>
-      <Box display="flex">
-        <Box flexGrow={1} />
+      <div style={{ display: "flex" }}>
+        <div style={{ flexGrow: 1 }} />
         <Button onClick={closeDialog}>Close</Button>
-      </Box>
+      </div>
       <CRUDContextProvider
         {...TargetAPICrudProviderGenerator(
           "users/employee",

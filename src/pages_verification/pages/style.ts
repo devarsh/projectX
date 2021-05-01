@@ -12,6 +12,8 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 200px)",
     },
+    display: "flex",
+    width: "100%",
   },
   paper: {
     margin: theme.spacing(3, 3, 0, 3),

@@ -3,7 +3,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -95,7 +94,7 @@ export const CorpositoryAPIInterface = ({
           <Typography component="div" variant="h6">
             Corpository API Calling Interface
           </Typography>
-          <Box flexGrow={1} />
+          <div style={{ flexGrow: 1 }} />
           <Button onClick={closeDialog}>Close</Button>
         </Toolbar>
       </AppBar>

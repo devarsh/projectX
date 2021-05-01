@@ -5,7 +5,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import IconButton from "@material-ui/core/IconButton";
 import Alert from "@material-ui/lab/Alert";
 import Close from "@material-ui/icons/Close";
-import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { CAMContext } from "./context";
 import { HeaderDetails } from "./headerDetails";
@@ -46,11 +45,11 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
 
   return result.isLoading || result.isFetching ? (
     <Fragment>
-      <Box display="flex">
+      <div style={{ display: "flex" }}>
         <img src={loaderGif} height="50px" width="50px" alt="loader" />
-        <Box flexGrow={1} />
+        <div style={{ flexGrow: 1 }} />
         <Button onClick={closeDialog}>Close</Button>
-      </Box>
+      </div>
     </Fragment>
   ) : result.isError || mutation.isError ? (
     <Alert severity="error" onClose={closeDialog}>

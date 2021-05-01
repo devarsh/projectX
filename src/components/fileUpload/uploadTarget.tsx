@@ -2,20 +2,17 @@ import { FC, CSSProperties, useRef } from "react";
 import { NativeTypes } from "react-dnd-html5-backend";
 import { useDrop } from "react-dnd";
 import { TargetBoxType } from "./type";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { useStyles } from "./style";
 
 const style = ({ disabled }): CSSProperties => ({
-  backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%232538584A' stroke-width='4' stroke-dasharray='8' stroke-dashoffset='4' stroke-linecap='square'/%3e%3c/svg%3e")`,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
   pointerEvents: disabled ? "none" : "all",
   opacity: disabled ? 0.5 : 1,
 });
 
 export const UploadTarget: FC<TargetBoxType> = (props) => {
+  const classes = useStyles();
   const { onDrop, disabled, existingFiles } = props;
   const fileUploadControl = useRef<any | null>(null);
   const handleFileSelect = (e) => {
@@ -39,11 +36,10 @@ export const UploadTarget: FC<TargetBoxType> = (props) => {
 
   const isActive = canDrop && isOver;
   return (
-    <Box
-      //@ts-ignore
+    <div
       ref={drop}
       style={style({ disabled: Boolean(disabled) })}
-      padding={4}
+      className={classes.uploadWrapper}
     >
       {isActive ? (
         <Typography>Drop Files here</Typography>
@@ -70,6 +66,6 @@ export const UploadTarget: FC<TargetBoxType> = (props) => {
           />
         </>
       )}
-    </Box>
+    </div>
   );
 };

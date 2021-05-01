@@ -1,14 +1,13 @@
 import { Fragment, useState, FC, useContext, useEffect } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
 import { DOCCRUDContextProvider, DocAPICrudProviderGenerator } from "./context";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
-import { useStyles } from "../style";
+import { useStyles } from "./style";
 import * as API from "./api";
 
 const TabPanel = ({ value, index, children }) => {
@@ -63,7 +62,7 @@ export const DocumentGridCRUD: FC<{
     queryResult.error?.error_msg ?? "unknown error occured"
   ) : (
     <Fragment>
-      <Box display="flex">
+      <div style={{ display: "flex" }}>
         <Tabs
           value={currentTab}
           onChange={handleChangeTab}
@@ -74,15 +73,15 @@ export const DocumentGridCRUD: FC<{
           ))}
         </Tabs>
         {typeof onClose === "function" ? (
-          <>
-            <Box flexGrow={1} />
+          <Fragment>
+            <div style={{ flexGrow: 1 }} />
             <Button variant="text" onClick={onClose}>
               Close
             </Button>
-          </>
+          </Fragment>
         ) : null}
-      </Box>
-      <Box py={2} className={classes.tabPanel}>
+      </div>
+      <div className={classes.tabPanel}>
         {tabs.map((one) => {
           return (
             <TabPanel
@@ -105,7 +104,7 @@ export const DocumentGridCRUD: FC<{
             </TabPanel>
           );
         })}
-      </Box>
+      </div>
     </Fragment>
   );
   return renderResult;

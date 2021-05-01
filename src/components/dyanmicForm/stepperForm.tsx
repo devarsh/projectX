@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -34,20 +33,20 @@ export const MyStepper = ({
           );
         })}
       </Stepper>
-      <Box width={1} display="flex" justifyContent="flex-start">
+      <div className={classes.stepperLabel}>
         <Typography component="h4" className={classes.subTitle}>
           {typeof formRenderConfig.groups === "object"
             ? formRenderConfig.groups[fieldGroups.current[activeStep]]
             : defaultGroupName}
         </Typography>
-      </Box>
+      </div>
       {typeof stepsRenderer === "function" ? (
         stepsRenderer({ steps })
       ) : (
         <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
       )}
 
-      <Box width={1} display="flex" justifyContent="flex-end">
+      <div className={classes.stepper}>
         {activeStep === 0 ? null : (
           <Button
             type="button"
@@ -70,7 +69,7 @@ export const MyStepper = ({
             {formRenderConfig?.labels?.complete ?? "Submit"}
           </Button>
         )}
-      </Box>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { Fragment, useState } from "react";
-import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -17,7 +16,7 @@ export const ITRInterface = ({
   const [apiType, setApiType] = useState("");
   return (
     <Fragment>
-      <Box display="flex" margin="0px 16px">
+      <div style={{ display: "flex", margin: "0px 16px" }}>
         <FormControl
           component="fieldset"
           size="small"
@@ -44,8 +43,8 @@ export const ITRInterface = ({
             />
           </RadioGroup>
         </FormControl>
-        <Box flexGrow={1} />
-      </Box>
+        <div style={{ flexGrow: 1 }} />
+      </div>
       {apiType === "perfios" ? (
         <ITRAPIInterface
           refID={refID}

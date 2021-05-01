@@ -3,7 +3,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import Alert from "@material-ui/lab/Alert";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -148,7 +147,7 @@ const ChildFormWrapper = forwardRef<any, any>(
                   ? `-${displayMode}`
                   : ""}
               </Typography>
-              <Box flexGrow={1} />
+              <div className={classes.formControlLabelSpacer} />
               {typeof wrapperChild === "function"
                 ? wrapperChild({ isSubmitting, handleSubmit })
                 : wrapperChild}
