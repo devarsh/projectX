@@ -154,7 +154,14 @@ export const renderField: RenderFunctionType = (
   if (Component === EmptyComponent) {
     return <Component componentType={render.componentType} />;
   } else if (Component === Spacer || Component === Typography) {
-    return <Component key={`${formName}/${others.name}`} {...others} />;
+    return (
+      <Component
+        key={`${formName}/${others.name}`}
+        {...others}
+        enableGrid={true}
+        GridProps={{ item: true, ...others?.GridProps }}
+      />
+    );
   } else {
     const currentComponentTypeProps = componentProps[render.componentType];
     const allProps = { ...currentComponentTypeProps, ...others };

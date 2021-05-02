@@ -1,6 +1,6 @@
 import { MetaDataType } from "components/dyanmicForm";
 
-const GeneralDetailsMetaData: MetaDataType = {
+const GeneralDetailsMetaData = {
   form: {
     name: "123456",
     label: "Target Details",
@@ -47,6 +47,15 @@ const GeneralDetailsMetaData: MetaDataType = {
   },
   fields: [
     {
+      render: { componentType: "textField", group: 0 },
+      name: "condition",
+      type: "text",
+      label: "Condition",
+      placeholder: "Condition",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+      setColor: "red",
+    },
+    {
       render: {
         componentType: "arrayField",
         group: 0,
@@ -79,12 +88,25 @@ const GeneralDetailsMetaData: MetaDataType = {
             sm: 6,
           },
         },
+        {
+          render: { componentType: "textField", group: 0 },
+          name: "condition",
+          type: "text",
+          label: "Condition",
+          placeholder: "Condition",
+          GridProps: { xs: 12, md: 3, sm: 3 },
+          setColor: "dummyColor",
+        },
+        {
+          render: { componentType: "rateOfInt", group: 0 },
+          name: "clfr",
+          label: "CLFR",
+          placeholder: "CLFR",
+          isReadOnly: true,
+          GridProps: { xs: 12, md: 3, sm: 3 },
+        },
       ],
     },
   ],
 };
 export default GeneralDetailsMetaData;
-
-/*
-
-*/

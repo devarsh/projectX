@@ -43,9 +43,14 @@ const getFixedRowsCount = (fieldKey) => (value) => {
   console.log(`no method for getFixedRowsCount found at ${fieldKey}`);
   return 0;
 };
+const setColorMethodNotFound = (fieldKey) => () => {
+  console.log(`no method for setColorMethodNotFound found at ${fieldKey}`);
+  return "";
+};
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.options$/, optionsMethodNotFound],
+  [/^fields.*.setColor$/, setColorMethodNotFound],
   [/^fields.*.leftOptions$/, optionsMethodNotFound],
   [/^fields.*.rightOptions$/, optionsMethodNotFound],
   [/^fields.*.validate$/, validateMethodNotFound],
@@ -69,6 +74,7 @@ const skipWalkingForKeys = [
   "validate",
   "isReadOnly",
   "shouldExclude",
+  "setColor",
   "_fields",
 ];
 
