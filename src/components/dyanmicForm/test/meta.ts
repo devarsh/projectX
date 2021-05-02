@@ -1,5 +1,3 @@
-import { MetaDataType } from "components/dyanmicForm";
-
 const GeneralDetailsMetaData = {
   form: {
     name: "123456",
@@ -98,11 +96,37 @@ const GeneralDetailsMetaData = {
           setColor: "dummyColor",
         },
         {
-          render: { componentType: "rateOfInt", group: 0 },
+          render: { componentType: "numberFormat", group: 0 },
           name: "clfr",
           label: "CLFR",
           placeholder: "CLFR",
-          isReadOnly: true,
+          formattedValue: false,
+          FormatProps: {
+            suffix: "%",
+            decimalScale: 2,
+            fixedDecimalScale: true,
+            allowNegative: true,
+            allowEmptyFormatting: true,
+            isAllowed: (values) => {
+              //@ts-ignore
+              if (values.floatValue <= 99.99) {
+                return true;
+              }
+              return false;
+            },
+          },
+          GridProps: { xs: 12, md: 3, sm: 3 },
+        },
+        {
+          render: { componentType: "inputMask", group: 0 },
+          name: "clfr2",
+          label: "CLFR",
+          placeholder: "CLFR",
+          formattedValue: false,
+          MaskProps: {
+            mask: "0000` 0000` 0000",
+            lazy: true,
+          },
           GridProps: { xs: 12, md: 3, sm: 3 },
         },
       ],

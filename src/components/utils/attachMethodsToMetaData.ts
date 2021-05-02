@@ -164,14 +164,12 @@ export const attachMethodsToMetaData = (
     if (one[2] === "setColor") {
       const retVal = registrationFnInstance.getFn(one[1], one[3]);
       if (retVal === one[3]) {
-        console.log("notFound", one);
         if (one[1].indexOf("FUNCTION_TO_ATTACH") >= 0) {
           newMetaData = setIn(newMetaData, one[0], "");
         } else {
           newMetaData = setIn(newMetaData, one[0], one[1]);
         }
       } else {
-        console.log("founc", one);
         newMetaData = setIn(newMetaData, one[0], retVal);
       }
     } else {

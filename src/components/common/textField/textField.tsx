@@ -96,7 +96,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
         setCurrentColor(result);
       }
     }
-  }, [value]);
+  }, [value, setColor]);
 
   const customHandleChange = useCallback(
     (e) => {
