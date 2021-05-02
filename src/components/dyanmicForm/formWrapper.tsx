@@ -181,7 +181,12 @@ const ChildFormWrapper = forwardRef<any, any>(
         ) : formRenderType === "tabs" ? (
           <Container
             maxWidth="lg"
-            style={{ background: "white" }}
+            style={{
+              background: "white",
+              height: "70vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
             key={`${formName}-grouped-tabs`}
           >
             <GroupedForm
@@ -197,12 +202,12 @@ const ChildFormWrapper = forwardRef<any, any>(
             >
               {({ steps }) => (
                 <div
-                  style={{
-                    //@ts-ignore
-                    height: "65vh",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                  }}
+                // style={{
+                //   //@ts-ignore
+                //   height: "60vh",
+                //   overflowY: "auto",
+                //   overflowX: "hidden",
+                // }}
                 >
                   <br />
                   <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
@@ -213,7 +218,12 @@ const ChildFormWrapper = forwardRef<any, any>(
         ) : formRenderType === "simple" ? (
           <Container
             maxWidth="lg"
-            style={{ background: "white" }}
+            style={{
+              background: "white",
+              height: "70vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
             key={`${formName}-simple`}
           >
             <br />
@@ -226,12 +236,12 @@ const ChildFormWrapper = forwardRef<any, any>(
             >
               {({ spacing, direction, fieldsToRender }) => (
                 <div
-                  style={{
-                    //@ts-ignore
-                    height: "65vh",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                  }}
+                // style={{
+                //   //@ts-ignore
+                //   height: "60vh",
+                //   overflowY: "auto",
+                //   overflowX: "hidden",
+                // }}
                 >
                   <Grid
                     container={true}
