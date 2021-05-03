@@ -27,7 +27,7 @@ export const initiateVerificationAPI = ({ refID }) => async (formData) => {
       ? "./lead/external/otp/email/initiate"
       : apiType === "mobile"
       ? "./lead/external/otp/mobile/initiate"
-      : apiType === "cibil"
+      : apiType === "credit"
       ? "./lead/external/equifax/request/initiate"
       : undefined;
   if (currentURL === undefined) {

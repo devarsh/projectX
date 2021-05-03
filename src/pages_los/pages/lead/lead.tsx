@@ -41,12 +41,16 @@ export const Lead = () => {
     },
     {
       actionName: "analysis",
-      actionLabel: "Analysis",
+      actionLabel: "Ratnaafin Analysis",
       multiple: false,
       rowDoubleClick: false,
       shouldExclude: (rows) => {
         let exclude = false;
         for (let i = 0; i < rows.length; i++) {
+          if (rows[i].data?.category_id === "Retail Loans") {
+            exclude = true;
+            break;
+          }
           let currentBranchCode = `${rows[i].data?.branch_cd}`.trim();
           if (Array.isArray(role) && role.length > 0) {
             let currentRole = role.find(
@@ -66,9 +70,19 @@ export const Lead = () => {
     },
     {
       actionName: "verification",
-      actionLabel: "Verification",
+      actionLabel: "Verification and Credit Score",
       multiple: false,
       rowDoubleClick: false,
+      shouldExclude: (rows) => {
+        let exclude = false;
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].data?.product_cd === "Retail APF") {
+            exclude = true;
+            break;
+          }
+        }
+        return exclude;
+      },
     },
     {
       actionName: "stages",
