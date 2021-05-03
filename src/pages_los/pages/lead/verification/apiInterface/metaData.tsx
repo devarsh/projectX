@@ -43,7 +43,7 @@ export const verificationInitateFormMetaData: MetaDataType = {
         { value: "email", label: "Email" },
         {
           value: "credit",
-          label: "creditScore",
+          label: "Credit Score",
         },
         {
           value: "aadhar",
