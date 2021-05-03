@@ -111,6 +111,7 @@ export const ArrayField2: FC<ArrayField2Props> = ({
     getFixedRowsCount: getFixedRowsCount,
   });
 
+  /*eslint-disable react-hooks/exhaustive-deps*/
   const addNewRow = useCallback(() => {
     if (typeof addRowFn === "function") {
       let result = addRowFn(getAllRowsValues());

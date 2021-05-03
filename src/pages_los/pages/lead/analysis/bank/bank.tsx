@@ -165,6 +165,7 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
             ]}
             transformData={(data) => {
               return data.filter((one) => {
+                /*eslint-disable eqeqeq*/
                 const result =
                   one?.bankLineID == formDataRef?.current?.bankLineID;
                 return result;

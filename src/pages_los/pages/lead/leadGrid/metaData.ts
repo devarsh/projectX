@@ -116,6 +116,22 @@ export const leadGridMetaData = {
       isVisible: true,
     },
     {
+      accessor: "employee_type",
+      columnName: "Employee Type",
+      sequence: 6.5,
+      width: 150,
+      minWidth: 100,
+      maxWidth: 200,
+      alignment: "left",
+      componentType: "default",
+      disableSortBy: false,
+      filterComponentType: "optionsFilter",
+      filterComponentProps: {
+        selectType: "multiple",
+      },
+      isVisible: true,
+    },
+    {
       accessor: "stage_cd",
       columnName: "Stage",
       sequence: 7,

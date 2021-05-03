@@ -1,9 +1,7 @@
 import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { RecoilRoot } from "recoil";
 import * as serviceWorker from "./serviceWorker";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import CRM from "app/crm";
 import LOS from "app/los";
 import ErrorPage from "app/error";
@@ -27,19 +25,16 @@ const Redirect = () => {
 const App = () => (
   <StrictMode>
     <DndProvider backend={HTML5Backend}>
-      <RecoilRoot>
-        <CssBaseline />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/los/*" element={<LOS />} />
-            <Route path="/crm/*" element={<CRM />} />
-            <Route path="/verification/*" element={<Verification />} />
-            <Route path="/error/*" element={<ErrorPage />} />
-            <Route path="/middleware/:refID" element={<Middleware />} />
-            <Route path="*" element={<Redirect />} />
-          </Routes>
-        </BrowserRouter>
-      </RecoilRoot>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/los/*" element={<LOS />} />
+          <Route path="/crm/*" element={<CRM />} />
+          <Route path="/verification/*" element={<Verification />} />
+          <Route path="/error/*" element={<ErrorPage />} />
+          <Route path="/middleware/:refID" element={<Middleware />} />
+          <Route path="*" element={<Redirect />} />
+        </Routes>
+      </BrowserRouter>
     </DndProvider>
   </StrictMode>
 );

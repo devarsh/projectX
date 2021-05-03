@@ -1,4 +1,3 @@
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import SuccessImg from "assets/images/success.svg";
 import { useNavigate } from "react-router";
@@ -11,17 +10,12 @@ export const ErrorPage = () => {
     navigate("/crm");
   };
   return (
-    <Box
-      className={classes.wrapper}
-      display="flex"
-      justifyContent="center"
-      flexDirection="column"
-    >
+    <div className={classes.wrapper}>
       <img alt="" src={SuccessImg} className={classes.successImg} />
-      <Box className={classes.center} mt={3} mb={3}>
+      <div className={classes.center}>
         <h3 className="theme-color2">Something Unexpected Happend</h3>
-      </Box>
+      </div>
       <Button onClick={returnToHomePage}>Return to Home Page</Button>
-    </Box>
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 export const useTimer = ({ maxTime }) => {
   const [timer, setTimer] = useState(maxTime);
@@ -16,10 +16,10 @@ export const useTimer = ({ maxTime }) => {
   useEffect(() => {
     return () => clearInterval(intervalRef.current);
   }, []);
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     clearInterval(intervalRef.current);
     setTimer(maxTime);
     intervalRef.current = setInterval(reduceTimer, 1000);
-  };
+  }, [setTimer, maxTime]);
   return { startTimer, timer };
 };

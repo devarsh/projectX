@@ -155,6 +155,7 @@ const useBlobLoader = ({ docUUID, fileType }) => {
     docUUID,
     fileType,
     previewDocument,
+    docType,
   ]);
   return {
     success,

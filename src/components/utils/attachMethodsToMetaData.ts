@@ -161,8 +161,21 @@ export const attachMethodsToMetaData = (
   JSONWalker(metaData, interestedFields, accumKeys, skipWalkingForKeys);
   let newMetaData = { ...metaData };
   for (const one of accumKeys) {
-    const retVal = registrationFnInstance.getFn(one[1], one[3]);
-    newMetaData = setIn(newMetaData, one[0], retVal);
+    if (one[2] === "setColor") {
+      const retVal = registrationFnInstance.getFn(one[1], one[3]);
+      if (retVal === one[3]) {
+        if (one[1].indexOf("FUNCTION_TO_ATTACH") >= 0) {
+          newMetaData = setIn(newMetaData, one[0], "");
+        } else {
+          newMetaData = setIn(newMetaData, one[0], one[1]);
+        }
+      } else {
+        newMetaData = setIn(newMetaData, one[0], retVal);
+      }
+    } else {
+      const retVal = registrationFnInstance.getFn(one[1], one[3]);
+      newMetaData = setIn(newMetaData, one[0], retVal);
+    }
     //to get options registered function name to be used in react-query for caching options
     if (["options", "leftOptions", "rightOptions"].indexOf(`${one[2]}`) >= 0) {
       const pathSplit = one[0].split(".");

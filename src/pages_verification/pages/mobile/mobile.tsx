@@ -61,11 +61,11 @@ export const MobileNumberVerification = ({ token }) => {
     if (requestOTP.isSuccess) {
       startTimer();
     }
-  }, [requestOTP.isSuccess]);
+  }, [requestOTP.isSuccess, startTimer]);
 
   const loading = requestOTP.isLoading || requestOTP.isFetching;
   const result = loading ? (
-    <img src={loaderGif} width="50px" height="50px" />
+    <img src={loaderGif} width="50px" height="50px" alt="loader" />
   ) : requestOTP.isError ? (
     <span>{requestOTP.error?.error_msg ?? "unknown Error occured"}</span>
   ) : success === true ? (
@@ -155,7 +155,7 @@ export const MobileNumberVerificationWrapper = () => {
     }
   );
   return verifyToken.isFetching || verifyToken.isLoading ? (
-    <img src={loaderGif} width="50px" height="50px" />
+    <img src={loaderGif} width="50px" height="50px" alt="loader" />
   ) : verifyToken.isError ? (
     <span>{verifyToken.error?.error_msg ?? "unknown Error occured"}</span>
   ) : (

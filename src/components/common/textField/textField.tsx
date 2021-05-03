@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useCallback } from "react";
+import { FC, useEffect, useRef, useCallback, useState } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { TextFieldProps } from "@material-ui/core/TextField";
 import { TextField } from "components/styledComponent";
@@ -21,6 +21,7 @@ interface MyGridExtendedProps {
   CircularProgressProps?: CircularProgressProps;
   enableGrid: boolean;
   setValueOnDependentFieldsChange?: any;
+  setColor?: any;
 }
 
 type MyTextFieldAllProps = Merge<TextFieldProps, MyGridExtendedProps>;
@@ -50,6 +51,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   isFieldFocused,
   maxLength = -1,
   setValueOnDependentFieldsChange,
+  setColor,
   ...others
 }) => {
   const {
@@ -81,6 +83,20 @@ const MyTextField: FC<MyTextFieldProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
+
+  const [currentColor, setCurrentColor] = useState<string>(
+    typeof setColor === "string" ? setColor : ""
+  );
+  useEffect(() => {
+    if (typeof setColor === "function") {
+      let result = setColor(value);
+      if (typeof result !== "string") {
+        setCurrentColor("");
+      } else {
+        setCurrentColor(result);
+      }
+    }
+  }, [value, setColor]);
 
   const customHandleChange = useCallback(
     (e) => {
@@ -144,7 +160,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
       }
     }
   } catch (e) {
-    myError = "oops...i don't know how to spell this";
+    myError = "";
     myTouch = true;
   }
   /*fix for numberFormat*/
@@ -194,6 +210,10 @@ const MyTextField: FC<MyTextFieldProps> = ({
       }}
       //@ts-ignore
       InputProps={{
+        style:
+          !isSubmitting && Boolean(currentColor)
+            ? { color: currentColor, fontWeight: "bold" }
+            : {},
         endAdornment: validationRunning ? (
           <InputAdornment position="end">
             <CircularProgress

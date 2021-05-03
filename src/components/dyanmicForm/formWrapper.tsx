@@ -3,10 +3,10 @@ import DateFnsUtils from "@date-io/date-fns";
 import Alert from "@material-ui/lab/Alert";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import Chip from "@material-ui/core/Chip";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext, useForm } from "packages/form";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
@@ -144,11 +144,19 @@ const ChildFormWrapper = forwardRef<any, any>(
             <Toolbar>
               <Typography component="div" variant="h6">
                 {formDisplayLabel}
-                {Boolean(displayMode) && !Boolean(hideDisplayModeInTitle)
-                  ? `-${displayMode}`
-                  : ""}
+                {Boolean(displayMode) && !Boolean(hideDisplayModeInTitle) ? (
+                  <Chip
+                    style={{ color: "white", marginLeft: "8px" }}
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    label={`${displayMode} mode`}
+                  />
+                ) : (
+                  ""
+                )}
               </Typography>
-              <Box flexGrow={1} />
+              <div className={classes.formControlLabelSpacer} />
               {typeof wrapperChild === "function"
                 ? wrapperChild({ isSubmitting, handleSubmit })
                 : wrapperChild}
@@ -173,7 +181,12 @@ const ChildFormWrapper = forwardRef<any, any>(
         ) : formRenderType === "tabs" ? (
           <Container
             maxWidth="lg"
-            style={{ background: "white" }}
+            style={{
+              background: "white",
+              height: "70vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
             key={`${formName}-grouped-tabs`}
           >
             <GroupedForm
@@ -189,12 +202,12 @@ const ChildFormWrapper = forwardRef<any, any>(
             >
               {({ steps }) => (
                 <div
-                  style={{
-                    //@ts-ignore
-                    height: "65vh",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                  }}
+                // style={{
+                //   //@ts-ignore
+                //   height: "60vh",
+                //   overflowY: "auto",
+                //   overflowX: "hidden",
+                // }}
                 >
                   <br />
                   <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
@@ -205,7 +218,12 @@ const ChildFormWrapper = forwardRef<any, any>(
         ) : formRenderType === "simple" ? (
           <Container
             maxWidth="lg"
-            style={{ background: "white" }}
+            style={{
+              background: "white",
+              height: "70vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
             key={`${formName}-simple`}
           >
             <br />
@@ -218,12 +236,12 @@ const ChildFormWrapper = forwardRef<any, any>(
             >
               {({ spacing, direction, fieldsToRender }) => (
                 <div
-                  style={{
-                    //@ts-ignore
-                    height: "65vh",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                  }}
+                // style={{
+                //   //@ts-ignore
+                //   height: "60vh",
+                //   overflowY: "auto",
+                //   overflowX: "hidden",
+                // }}
                 >
                   <Grid
                     container={true}

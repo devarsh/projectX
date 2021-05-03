@@ -1,12 +1,39 @@
 import { VerificationSDK } from "registry/fns/verification";
 
-export const requestOTP = async (tokenID: number | string) => {
+export const requestEquifaxScore = async (
+  tokenID: number | string,
+  consent: string
+) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/mobile/send",
+    "./equifax/request/send",
     {
       body: JSON.stringify({
         request_data: {
           tokenID: tokenID,
+          consent: consent,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const requestOTP = async (
+  tokenID: number | string,
+  mobileNo: string
+) => {
+  const { data, status } = await VerificationSDK.internalFetcher(
+    "./equifax-otp/mobile/send",
+    {
+      body: JSON.stringify({
+        request_data: {
+          tokenID: tokenID,
+          mobileNo: mobileNo,
         },
         channel: "W",
       }),
@@ -25,7 +52,7 @@ export const verifyOTP = async (
   otp: string
 ) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/mobile/verify",
+    "./equifax-otp/mobile/verify",
     {
       body: JSON.stringify({
         request_data: {
@@ -46,7 +73,7 @@ export const verifyOTP = async (
 
 export const verifyToken = async (tokenID: number | string) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/mobile-token/verify",
+    "./equifax/token/verify",
     {
       body: JSON.stringify({
         request_data: {

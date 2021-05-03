@@ -136,22 +136,17 @@ export const FormViewEdit: FC<{
     result[2].isFetching;
   let isError = result[0].isError || result[1].isError || result[2].isError;
   //@ts-ignore
-  let errorMsg = `${result[0].error?.error_msg ?? "Unknown error occured"} ${
+  let errorMsg = `${result[0].error?.error_msg} ${
     //@ts-ignore
-    result[1].error?.error_msg ?? "Unknown error occured"
-  }${
+    result[1].error?.error_msg
+  } ${
     //@ts-ignore
-    result[2].error?.error_msg ?? "Unknown error occured"
+    result[2].error?.error_msg
   }`;
+  errorMsg = Boolean(errorMsg.trim()) ? errorMsg : "Unknown error occured";
 
   let formEditData = result[0].data;
-  if (loading === false && isError === false) {
-    // isError = !isMetaDataValid(metaData);
-    if (isError === false) {
-    } else {
-      errorMsg = "Error loading form";
-    }
-  }
+
   let editMetaData: MetaDataType = {} as MetaDataType;
   let viewMetaData: MetaDataType = {} as MetaDataType;
 

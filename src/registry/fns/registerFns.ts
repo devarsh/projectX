@@ -118,4 +118,5 @@ registerFn(
 registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
 registerFn("getMonthDifferenceInRows", others.getMonthDifferenceInRows);
 registerFn("setBankFacilityValue", others.setBankFacilityValue);
+registerFn("dummyColor", (value) => (value === "44" ? "blue" : "green"));
 //End of Dummy only for testing

@@ -47,7 +47,7 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
         wrapperKey.current,
         docType,
       ]);
-    }, [removeCache, context]);
+    }, [removeCache, context, docType]);
 
     useImperativeHandle(ref, () => ({
       refetch: () => result[0].refetch(),

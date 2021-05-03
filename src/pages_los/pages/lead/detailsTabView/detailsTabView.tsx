@@ -1,13 +1,12 @@
 import { useState, FC, Fragment, useEffect, useContext, Suspense } from "react";
-import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { useQuery } from "react-query";
 import { queryClient, ClearCacheContext } from "cache";
-import { useStyles } from "pages_los/common";
 import { API } from "pages_los/common/crud2";
 import loaderGif from "assets/images/loader.gif";
 import { CRUDComponentPicker } from "./crud";
+import { useStyles } from "./style";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -17,8 +16,7 @@ export const DetailsTabView: FC<{
   refID: string;
   moduleType: string;
   isDataChangedRef: any;
-  rowData?: any;
-}> = ({ refID, moduleType, isDataChangedRef, rowData }) => {
+}> = ({ refID, moduleType, isDataChangedRef = { current: false } }) => {
   const removeCache = useContext(ClearCacheContext);
   const [currentTab, setCurrentTab] = useState(0);
   const handleChangeTab = (_, currentTab) => {
@@ -67,7 +65,7 @@ export const DetailsTabView: FC<{
         ))}
       </Tabs>
       <Suspense fallback={"loading..."}>
-        <Box py={2} className={classes.tabPanel}>
+        <div className={classes.tabPanel}>
           {tabs.map((one) => (
             <TabPanel
               value={currentTab}
@@ -82,11 +80,10 @@ export const DetailsTabView: FC<{
                 isDataChangedRef={isDataChangedRef}
                 dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                 showDocuments={one?.document}
-                rowData={rowData}
               />
             </TabPanel>
           ))}
-        </Box>
+        </div>
       </Suspense>
     </Fragment>
   );
