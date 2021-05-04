@@ -115,6 +115,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
     incomingMessage,
     whenToRunValidation,
     value,
+    readOnly,
     setIncomingMessage,
   } = useField({
     name: fieldName,
@@ -244,7 +245,7 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
           }
         }}
         onBlur={handleBlur}
-        disabled={isSubmitting}
+        disabled={readOnly || isSubmitting}
         filterOptions={
           Boolean(CreateFilterOptionsConfig) &&
           typeof CreateFilterOptionsConfig === "object"

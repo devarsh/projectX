@@ -94,6 +94,7 @@ const GeneralDetailsMetaData = {
           placeholder: "Condition",
           GridProps: { xs: 12, md: 3, sm: 3 },
           setColor: "dummyColor",
+          isReadOnly: true,
         },
         {
           render: { componentType: "inputMask", group: 0 },
