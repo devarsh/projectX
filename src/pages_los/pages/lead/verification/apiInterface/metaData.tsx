@@ -42,8 +42,8 @@ export const verificationInitateFormMetaData: MetaDataType = {
         { value: "mobile", label: "Mobile" },
         { value: "email", label: "Email" },
         {
-          value: "cibil",
-          label: "CIBIL",
+          value: "credit",
+          label: "Credit Score",
         },
         {
           value: "aadhar",
