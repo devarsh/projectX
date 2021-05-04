@@ -327,3 +327,34 @@ export const showProjectPromoterAndFirmNameField = async (
   }
   return true;
 };
+
+export const showUnsecureSalaryOtherIncomeTypeField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["incomeDetails.sourceIncomeOther"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
+};
+
+export const showUnsecureOtherIncomeAmountField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["incomeDetails.sourceIncomeOther"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
+  }
+  return false;
+};

@@ -244,3 +244,11 @@ registerFn(
   "ShouldExcludeShowProjectPromoterAndFirmNameField",
   shouldExclude.showProjectPromoterAndFirmNameField
 );
+registerFn(
+  "ShouldExcludeShowUnsecureSalaryOtherIncomeTypeField",
+  shouldExclude.showUnsecureSalaryOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowUnsecureOtherIncomeAmountField",
+  shouldExclude.showUnsecureOtherIncomeAmountField
+);

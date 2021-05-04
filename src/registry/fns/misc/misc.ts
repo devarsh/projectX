@@ -82,6 +82,26 @@ const MiscAPI = () => {
     }
   };
 
+  const getUnsecuredEmployementCode = async (
+    _: any,
+    formState: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(`./data/UNSECURED_EMPL`, {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      if (["123000013"].indexOf(formState?.formCode) >= 0) {
+        return newArray.filter((one) => one.value !== "02");
+      } else {
+        return newArray;
+      }
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   //dropdown value - dynamic form
   const getProductType = async (
     _: any,
@@ -360,6 +380,7 @@ const MiscAPI = () => {
     getSourcelist,
     getCRMSubProductType,
     getRetailEmployementCode,
+    getUnsecuredEmployementCode,
   };
 };
 
