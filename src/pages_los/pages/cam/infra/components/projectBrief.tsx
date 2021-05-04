@@ -23,7 +23,7 @@ export const BreifeAboutProject = ({ project }) => {
       {project.map((projectDetail, index) => {
         return (
           <>
-            <tr key={index}>
+            <tr key={index + 1}>
               <td colSpan={2}></td>
               <td>{projectDetail.units}</td>
               <td colSpan={2}>{projectDetail.carpetArea}</td>

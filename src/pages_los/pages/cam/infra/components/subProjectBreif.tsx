@@ -18,7 +18,7 @@ export const BreifeAboutProjectSubDetails = ({ subProject }) => {
       {subProject.map((projectSubDetail, index) => {
         return (
           <>
-            <tr key={index}>
+            <tr key={index + 1}>
               <td colSpan={2}></td>
               <td style={{ textAlign: "center" }}>{index}</td>
               <td>{projectSubDetail.particulars}</td>

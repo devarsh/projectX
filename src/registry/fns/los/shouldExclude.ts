@@ -310,3 +310,51 @@ export const showRetailCoApplicantSalaried = async (_, dependentFields) => {
   }
   return true;
 };
+
+export const showPurposeOfLoanOtherTextfield = async (_, dependentFields) => {
+  if (dependentFields["purposeLoan"].value === "04") {
+    return false;
+  }
+  return true;
+};
+
+export const showProjectPromoterAndFirmNameField = async (
+  _,
+  dependentFields
+) => {
+  if (dependentFields["landDetails"].value === "O") {
+    return false;
+  }
+  return true;
+};
+
+export const showUnsecureSalaryOtherIncomeTypeField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["incomeDetails.sourceIncomeOther"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
+};
+
+export const showUnsecureOtherIncomeAmountField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["incomeDetails.sourceIncomeOther"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
+  }
+  return false;
+};

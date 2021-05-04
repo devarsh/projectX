@@ -236,3 +236,19 @@ registerFn(
   shouldExclude.showRetailCoApplicantSalaried
 );
 registerFn("ShouldExcludeShowReraNoField", shouldExclude.showReraNoField);
+registerFn(
+  "ShouldExcludeShowPurposeOfLoanOtherTextfield",
+  shouldExclude.showPurposeOfLoanOtherTextfield
+);
+registerFn(
+  "ShouldExcludeShowProjectPromoterAndFirmNameField",
+  shouldExclude.showProjectPromoterAndFirmNameField
+);
+registerFn(
+  "ShouldExcludeShowUnsecureSalaryOtherIncomeTypeField",
+  shouldExclude.showUnsecureSalaryOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowUnsecureOtherIncomeAmountField",
+  shouldExclude.showUnsecureOtherIncomeAmountField
+);
