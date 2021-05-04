@@ -96,24 +96,14 @@ const GeneralDetailsMetaData = {
           setColor: "dummyColor",
         },
         {
-          render: { componentType: "numberFormat", group: 0 },
-          name: "clfr",
-          label: "CLFR",
-          placeholder: "CLFR",
-          formattedValue: false,
-          FormatProps: {
-            suffix: "%",
-            decimalScale: 2,
-            fixedDecimalScale: true,
-            allowNegative: true,
-            allowEmptyFormatting: true,
-            isAllowed: (values) => {
-              //@ts-ignore
-              if (values.floatValue <= 99.99) {
-                return true;
-              }
-              return false;
-            },
+          render: { componentType: "inputMask", group: 0 },
+          name: "yaer",
+          label: "yearMasked",
+          placeholder: "yyyy-yyyy",
+          formattedValue: true,
+          MaskProps: {
+            mask: "0000`-0000`",
+            lazy: true,
           },
           GridProps: { xs: 12, md: 3, sm: 3 },
         },
