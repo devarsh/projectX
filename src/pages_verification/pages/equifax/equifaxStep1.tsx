@@ -22,7 +22,7 @@ interface verifyOTPType {
   tokenID: any;
   transactionID: any;
   otp: any;
-  consent: boolean;
+  consent: string;
 }
 
 interface requestOTPType {
@@ -119,7 +119,7 @@ export const Verification1 = ({
         otp: OTP,
         transactionID: transactionID,
         tokenID: token,
-        consent: consent,
+        consent: consent ? "Y" : "N",
       });
     }
   };

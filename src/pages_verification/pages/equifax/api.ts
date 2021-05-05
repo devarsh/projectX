@@ -69,7 +69,7 @@ export const verifyOTP = async (
   tokenID: number | string,
   transactionID: string,
   otp: string,
-  consent: boolean
+  consent: string
 ) => {
   const { data, status } = await VerificationSDK.internalFetcher(
     "./equifax-otp/mobile/verify",
