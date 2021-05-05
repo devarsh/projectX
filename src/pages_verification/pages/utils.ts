@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 export const useTimer = ({ maxTime }) => {
-  const [timer, setTimer] = useState(maxTime);
+  const [timer, setTimer] = useState(0);
   let intervalRef = useRef<any>(null);
   const reduceTimer = () => {
     setTimer((prev) => {

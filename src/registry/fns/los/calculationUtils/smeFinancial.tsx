@@ -1,5 +1,3 @@
-import { values } from "lodash";
-
 export const calculateEBITDA = (dependentFields) => {
   const depreciation = Number(dependentFields?.depreciation?.value);
   const ebit = Number(dependentFields?.ebit?.value);

@@ -1,8 +1,10 @@
 import { VerificationSDK } from "registry/fns/verification";
 
-export const requestOTP = async (tokenID: number | string) => {
+export const requestOTP = (apiType: string) => async (
+  tokenID: number | string
+) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/mobile/send",
+    `./otp/${apiType}/send`,
     {
       body: JSON.stringify({
         request_data: {
@@ -19,13 +21,13 @@ export const requestOTP = async (tokenID: number | string) => {
   }
 };
 
-export const verifyOTP = async (
+export const verifyOTP = (apiType) => async (
   tokenID: number | string,
   transactionID: string,
   otp: string
 ) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/mobile/verify",
+    `./otp/${apiType}/verify`,
     {
       body: JSON.stringify({
         request_data: {
@@ -44,9 +46,9 @@ export const verifyOTP = async (
   }
 };
 
-export const verifyToken = async (tokenID: number | string) => {
+export const verifyToken = (apiType) => async (tokenID: number | string) => {
   const { data, status } = await VerificationSDK.internalFetcher(
-    "./otp/mobile-token/verify",
+    `./otp/${apiType}-token/verify`,
     {
       body: JSON.stringify({
         request_data: {
