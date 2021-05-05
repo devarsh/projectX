@@ -23,17 +23,36 @@ export const requestEquifaxScore = async (
   }
 };
 
-export const requestOTP = async (
-  tokenID: number | string,
-  mobileNo: string
-) => {
+export const requestOTP = async (tokenID: number | string) => {
   const { data, status } = await VerificationSDK.internalFetcher(
     "./equifax-otp/mobile/send",
     {
       body: JSON.stringify({
         request_data: {
           tokenID: tokenID,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const requestOTPForAlternateMobile = async (
+  tokenID: number | string,
+  mobileNo: string
+) => {
+  const { data, status } = await VerificationSDK.internalFetcher(
+    "./equifax-otp/mobile/resend",
+    {
+      body: JSON.stringify({
+        request_data: {
           mobileNo: mobileNo,
+          tokenID: tokenID,
         },
         channel: "W",
       }),
@@ -49,7 +68,8 @@ export const requestOTP = async (
 export const verifyOTP = async (
   tokenID: number | string,
   transactionID: string,
-  otp: string
+  otp: string,
+  consent: boolean
 ) => {
   const { data, status } = await VerificationSDK.internalFetcher(
     "./equifax-otp/mobile/verify",
@@ -59,6 +79,7 @@ export const verifyOTP = async (
           tokenID: tokenID,
           otp: otp,
           transactionID: transactionID,
+          consent: consent,
         },
         channel: "W",
       }),
