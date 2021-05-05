@@ -275,7 +275,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       allowEmptyFormatting: true,
       isAllowed: (values) => {
         //@ts-ignore
-        if (values.floatValue <= 99.99) {
+        if (values.floatValue <= 999.99) {
           return true;
         }
         return false;
