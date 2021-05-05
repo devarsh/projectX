@@ -128,7 +128,7 @@ export const Verification = ({
 
   useEffect(() => {
     requestOTPMutation.mutate({ tokenID: token });
-  }, [token, requestOTPMutation]);
+  }, []);
 
   return (
     <Fragment>
@@ -148,10 +148,10 @@ export const Verification = ({
           <Typography variant="subtitle2">
             {apiType === "mobile"
               ? `Dear customer, Enter OTP sent to your registered ${apiName} number
-            ending with ${requestOTPMutation.data?.mobile}`
+            ending with ${requestOTPMutation.data?.mobile ?? ""}`
               : apiType === "email"
               ? `Dear customer, Enter OTP sent to your registered ${apiName}
-          address ${requestOTPMutation.data?.email}`
+          address ${requestOTPMutation.data?.email ?? ""}`
               : ""}
           </Typography>
           {timer > 0 ? (
