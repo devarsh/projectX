@@ -4,6 +4,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
 import { useMutation } from "react-query";
 import * as API from "./api";
 import { useTimer } from "../utils";
@@ -18,6 +22,7 @@ interface verifyOTPType {
   tokenID: any;
   transactionID: any;
   otp: any;
+  consent: boolean;
 }
 
 interface requestOTPType {
@@ -28,8 +33,9 @@ const verifyOTPFn = (verfiyOTPAPI) => async ({
   tokenID,
   transactionID,
   otp,
+  consent,
 }: verifyOTPType) => {
-  return verfiyOTPAPI(tokenID, transactionID, otp);
+  return verfiyOTPAPI(tokenID, transactionID, otp, consent);
 };
 
 const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
@@ -44,6 +50,8 @@ export const Verification1 = ({
   setRegisteredNumberScreen,
 }) => {
   const [OTP, setOTP] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState("");
   const [otpVerificationError, setOtpVerificationError] = useState("");
   const [otpDeliveryError, setOtpDeliveryError] = useState("");
   const [OTPDelivered, setOTPDelivered] = useState(false);
@@ -104,11 +112,14 @@ export const Verification1 = ({
       setOtpVerificationError("OTP cannot be blank");
     } else if (String(OTP).length !== otpLength) {
       setOtpVerificationError(`OPT must be ${otpLength} digits long`);
+    } else if (consent !== true) {
+      setConsentError("This is required");
     } else {
       verifyOTPMutation.mutate({
         otp: OTP,
         transactionID: transactionID,
         tokenID: token,
+        consent: consent,
       });
     }
   };
@@ -141,8 +152,7 @@ export const Verification1 = ({
           <h2>Credit Score</h2>
           <Typography variant="subtitle2">
             Dear customer, Enter OTP sent to your registered mobile Number
-            ending with {requestOTPMutation.data?.mobile ?? ""} to provide
-            consent to fetch your credit score
+            ending with {requestOTPMutation.data?.mobile ?? ""}
           </Typography>
           {timer > 0 ? (
             <Fragment>
@@ -178,6 +188,27 @@ export const Verification1 = ({
               },
             }}
           />
+          <FormControl component="fieldset" error={Boolean(consentError)}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={consent}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setConsentError("");
+                    }
+                    setConsent(e.target.checked);
+                  }}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="I consent to fetch my credit score"
+            />
+            {Boolean(consentError) ? (
+              <FormHelperText error={true}>{consentError}</FormHelperText>
+            ) : null}
+          </FormControl>
           <br />
           <br />
           <div style={{ display: "flex" }}>
