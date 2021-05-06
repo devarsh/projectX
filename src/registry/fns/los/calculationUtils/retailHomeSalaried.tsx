@@ -305,8 +305,8 @@ export const calculateLoanAmountBasedOnRent = (dependentFields) => {
       calBalanceForRent = calBalanceForRent * incrementFactor;
     }
     calDiscounting = Number(1 / Math.pow(1 + rate / 12, NoOfMonths));
-    calAmountAfterTDS = Math.round(calBalanceForRent * TDSRate);
-    calculateAmount = Math.round(calAmountAfterTDS * calDiscounting);
+    calAmountAfterTDS = calBalanceForRent * TDSRate;
+    calculateAmount = calAmountAfterTDS * calDiscounting;
     calculatePrinicipal = calculatePrinicipal + calculateAmount;
     //calculateDiscountedEMI = Math.round(calculateAmount * calDiscounting);
   }
