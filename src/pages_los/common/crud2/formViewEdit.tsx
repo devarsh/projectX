@@ -50,7 +50,7 @@ export const FormViewEdit: FC<{
   serialNo = "1",
   setEditFormStateFromInitValues,
   readOnly = false,
-  disableCache = true,
+  disableCache = false,
 }) => {
   const { updateFormData, getFormData, getFormMetaData, context } = useContext(
     CRUDContext
