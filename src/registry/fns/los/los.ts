@@ -583,6 +583,50 @@ const LOSAPI = () => {
       throw data?.error_data;
     }
   };
+  const getEntityType = async (dependentField, formState) => {
+    const { status, data } = await LOSSDK.internalFetcher(
+      "./lead/options/getEntityType",
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID ?? "",
+            processType: dependentField?.apiType?.value ?? "",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+  const getApplicants = async (dependentField, formState) => {
+    const { status, data } = await LOSSDK.internalFetcher(
+      "./lead/options/getApplicants",
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID ?? "",
+            processType: dependentField?.entityType?.value ?? "",
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data?.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
 
   return {
     inititateAPI,
@@ -626,6 +670,10 @@ const LOSAPI = () => {
 
     deleteAssignArrayFieldData,
     getYearlyTargetUserBranchList,
+
+    //For Validation API calling
+    getEntityType,
+    getApplicants,
   };
 };
 

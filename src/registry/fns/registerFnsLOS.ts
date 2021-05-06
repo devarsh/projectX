@@ -278,3 +278,6 @@ registerFn("calculateNetWorthQuasi", sme.calculateNetWorthQuasi);
 registerFn("calculateLongTermDebtEquity", sme.calculateLongTermDebtEquity);
 registerFn("calculateTolTnvQuasi", sme.calculateTolTnvQuasi);
 registerFn("calculateCurrentRatio", sme.calculateCurrentRatio);
+
+registerFn("getEntityType", LOSSDK.getEntityType);
+registerFn("getApplicants", LOSSDK.getApplicants);
