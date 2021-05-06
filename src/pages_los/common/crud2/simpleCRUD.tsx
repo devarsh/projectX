@@ -7,7 +7,14 @@ export const SimpleCRUD: FC<{
   dataAlwaysExists: any;
   closeDialog?: any;
   readOnly?: boolean;
-}> = ({ isDataChangedRef, closeDialog, dataAlwaysExists, readOnly }) => {
+  disableCache?: boolean;
+}> = ({
+  isDataChangedRef,
+  closeDialog,
+  dataAlwaysExists,
+  readOnly,
+  disableCache,
+}) => {
   const [dataExist, setDataExist] = useState(Boolean(dataAlwaysExists));
 
   return dataExist ? (
@@ -15,6 +22,7 @@ export const SimpleCRUD: FC<{
       isDataChangedRef={isDataChangedRef}
       closeDialog={closeDialog}
       readOnly={readOnly}
+      disableCache={disableCache}
     />
   ) : (
     <FormNewExistsIfNotCreate
