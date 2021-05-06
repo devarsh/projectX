@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { SelectProps } from "@material-ui/core/Select";
 import { TextFieldProps } from "@material-ui/core/TextField";
-import { TextField } from "components/styledComponent";
+import { TextFieldForSelect as TextField } from "components/styledComponent";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import CircularProgress, {
   CircularProgressProps,
