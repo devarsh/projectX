@@ -86,7 +86,13 @@ export const verifyOTP = async (
     }
   );
   if (status === "success") {
-    return data?.response_data;
+    if (
+      data?.response_data?.Error?.ErrorDesc === "CCRResponse Field found empty"
+    ) {
+      throw { errorMsg: "CCRResponse Field found empty" };
+    } else {
+      return data?.response_data;
+    }
   } else {
     throw data?.error_data;
   }
