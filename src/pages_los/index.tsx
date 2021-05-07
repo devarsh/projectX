@@ -68,7 +68,7 @@ const DashbordPages = () => {
               element={<UnmappedInqiry />}
             />
 
-            <Route path="/leads" element={<Lead />} />
+            <Route path="/leads/*" element={<Lead />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/profile" element={<Profile />} />
