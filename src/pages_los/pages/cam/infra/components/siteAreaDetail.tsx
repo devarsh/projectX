@@ -40,7 +40,7 @@ export const SiteAreaDetails = ({ siteArea }) => {
       {others.map((projectDetail, index) => {
         return (
           <>
-            <tr key={index}>
+            <tr key={index + 1}>
               <td colSpan={2}></td>
               <td>{index}</td>
               <td>{projectDetail.siteFloor}</td>

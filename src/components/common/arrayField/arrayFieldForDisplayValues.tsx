@@ -5,9 +5,9 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import { renderValue } from "components/dyanmicForm/utils/valueRenderer";
 import { FieldMetaDataType } from "components/dyanmicForm/";
-import { MoveSequenceToRender } from "components/dyanmicForm/utils/fixSequenceInMetaData";
+//import { MoveSequenceToRender } from "components/dyanmicForm/utils/fixSequenceInMetaData";
 import { attachValuesToMetaData } from "components/dyanmicForm/utils/attachValuesToMetaData";
-import { MetaDataType } from "components/dyanmicForm";
+//import { MetaDataType } from "components/dyanmicForm";
 import { useStyles } from "./style";
 export interface ArrayField2Props {
   fieldKey: string;
@@ -22,23 +22,23 @@ export interface ArrayField2Props {
   arrayFieldIDName?: string;
 }
 
-const sortMetaData = (metaData: MetaDataType) => {
-  if (Array.isArray(metaData.fields) && metaData?.fields.length > 0) {
-    let sortedFields = metaData.fields.sort((prev, next) => {
-      if ((prev?.render?.sequence ?? -1) > (next?.render?.sequence ?? -1)) {
-        return 1;
-      } else if (
-        prev?.render?.sequence ??
-        -1 < (next?.render?.sequence ?? -1)
-      ) {
-        return -1;
-      }
-      return 0;
-    });
-    return { form: metaData.form, fields: sortedFields };
-  }
-  return metaData;
-};
+// const sortMetaData = (metaData: MetaDataType) => {
+//   if (Array.isArray(metaData.fields) && metaData?.fields.length > 0) {
+//     let sortedFields = metaData.fields.sort((prev, next) => {
+//       if ((prev?.render?.sequence ?? -1) > (next?.render?.sequence ?? -1)) {
+//         return 1;
+//       } else if (
+//         prev?.render?.sequence ??
+//         -1 < (next?.render?.sequence ?? -1)
+//       ) {
+//         return -1;
+//       }
+//       return 0;
+//     });
+//     return { form: metaData.form, fields: sortedFields };
+//   }
+//   return metaData;
+// };
 
 export const ArrayFieldValues: FC<ArrayField2Props & { defaultValue: any }> = ({
   name,
@@ -53,9 +53,9 @@ export const ArrayFieldValues: FC<ArrayField2Props & { defaultValue: any }> = ({
     JSON.stringify(_fields)
   ) as FieldMetaDataType[];
   const classes = useStyles();
-  let metaData = { form: {}, fields: currentFieldsMeta } as MetaDataType;
-  metaData = MoveSequenceToRender(metaData);
-  metaData = sortMetaData(metaData);
+  // let metaData = { form: {}, fields: currentFieldsMeta } as MetaDataType;
+  // metaData = MoveSequenceToRender(metaData);
+  // metaData = sortMetaData(metaData);
 
   if (!Array.isArray(defaultValue)) {
     return <div>Invalid data for arrayField</div>;

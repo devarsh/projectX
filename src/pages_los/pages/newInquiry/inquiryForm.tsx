@@ -32,7 +32,7 @@ export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {
       if (typeof error === "object") {
         errorMsg = error?.error_msg ?? errorMsg;
       }
-      endSubmit(false, errorMsg);
+      endSubmit(false, errorMsg, error?.error_detail ?? "");
     },
     onSuccess: (data, { endSubmit, refID }) => {
       endSubmit(true, "");

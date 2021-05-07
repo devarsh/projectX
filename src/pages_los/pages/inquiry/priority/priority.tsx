@@ -36,7 +36,7 @@ export const Priority = ({ refID, moduleType, isDataChangedRef }) => {
         queryClient.removeQueries(one);
       });
     };
-  }, []);
+  }, [removeCache]);
 
   return (
     <PriorityAPIProvider {...generatePriorityAPIContext({ refID, moduleType })}>

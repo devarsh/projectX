@@ -3,6 +3,7 @@ import { useMutation } from "react-query";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import { Alert } from "components/common/alert";
 import DialogContent from "@material-ui/core/DialogContent";
 import { CRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
@@ -44,7 +45,11 @@ export const DeleteAction = ({ isDataChangedRef, closeDialog, serialNo }) => {
         <DialogContent>Deleting...</DialogContent>
       ) : mutation?.isError ? (
         <DialogContent>
-          {mutation.error?.error_msg ?? "Unknown Error occured"}
+          <Alert
+            severity="error"
+            errorMsg={mutation.error?.error_msg ?? "Unknown Error occured"}
+            errorDetail={mutation.error?.error_detail ?? ""}
+          />
         </DialogContent>
       ) : mutation.isSuccess ? (
         <DialogContent>All Records successfully deleted</DialogContent>

@@ -1,12 +1,12 @@
 import { useRef, Fragment, useContext, useState, useEffect } from "react";
-import Box from "@material-ui/core/Box";
 import { Tab } from "components/styledComponent/tab";
 import { Tabs } from "components/styledComponent/tabs";
 import { ClearCacheContext } from "cache";
-import { GridCRUD, CRUDContextProvider, useStyles } from "pages_los/common";
+import { GridCRUD, CRUDContextProvider } from "pages_los/common";
 import * as API from "./api";
 import { API as CRUD2API } from "pages_los/common/crud2";
 import { queryClient, ClearCacheProvider } from "cache";
+import { useStyles } from "./style";
 
 const TabPanel = ({ value, index, children }) => {
   return Number(value) === Number(index) ? children : null;
@@ -82,7 +82,7 @@ export const DetailsTabView = () => {
         <Tab label="Retail-APF" id="5" />
         <Tab label="Unsecured" id="6" />
       </Tabs>
-      <Box py={2} className={classes.tabPanel}>
+      <div className={classes.tabPanel}>
         <TabPanel value={currentTab} index="0" key={0}>
           <CRUDContextProvider
             {...bankCrudAPIArgs("config/bank", "sme", null, "12000002")}
@@ -132,7 +132,7 @@ export const DetailsTabView = () => {
             <GridCRUD isDataChangedRef={isDataEditedRef} />
           </CRUDContextProvider>
         </TabPanel>
-      </Box>
+      </div>
     </Fragment>
   );
 };

@@ -1,12 +1,10 @@
-//remove this to support
-//number.toLocaleString('en-IN', { maximumFracationDigits:2, style:'currency', currency:'INR' })
 import NumberFormat, { NumberFormatProps } from "react-number-format";
 import { TextField, TextFieldProps } from "components/common/textField";
 import { Merge } from "components/common/types";
 
 export function NumberFormatCustom(props) {
   const { inputRef, onChange, FormatProps, ...other } = props;
-
+  const { formattedValue, ...others } = FormatProps;
   return (
     <NumberFormat
       {...other}
@@ -16,26 +14,30 @@ export function NumberFormatCustom(props) {
           {
             target: {
               name: props.name,
-              value: values.value,
+              value: Boolean(formattedValue)
+                ? values.formattedValue
+                : values.value,
               formattedValue: values.formattedValue,
             },
           },
           values.formattedValue
         );
       }}
-      {...FormatProps}
+      {...others}
     />
   );
 }
 
 interface extendedProps {
   FormatProps: NumberFormatProps;
+  formattedValue?: boolean;
 }
 
 export type AllNumberFormatProps = Merge<TextFieldProps, extendedProps>;
 
 const MyNumberFormat: React.FC<AllNumberFormatProps> = ({
   FormatProps,
+  formattedValue,
   ...others
 }) => {
   return (
@@ -43,7 +45,7 @@ const MyNumberFormat: React.FC<AllNumberFormatProps> = ({
       {...others}
       InputProps={{
         inputComponent: NumberFormatCustom,
-        inputProps: { FormatProps: FormatProps },
+        inputProps: { FormatProps: { ...FormatProps, formattedValue } },
       }}
     />
   );

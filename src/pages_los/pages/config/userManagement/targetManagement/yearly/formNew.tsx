@@ -1,10 +1,9 @@
 import { FC, useRef, Fragment, useState, useContext } from "react";
 import { useQuery, useMutation } from "react-query";
-import Alert from "@material-ui/lab/Alert";
+import { Alert } from "components/common/alert";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { SelectRenderOnly } from "components/common/select";
@@ -78,7 +77,7 @@ export const FormNew: FC<{
             <Typography component="div" variant="h6">
               Perfios Upload API Calling Interface
             </Typography>
-            <Box flexGrow={1} />
+            <div style={{ flexGrow: 1 }} />
             {Boolean(currentBranch) && !Boolean(currentBranchError) ? (
               <Button
                 onClick={(e) => {
@@ -98,12 +97,16 @@ export const FormNew: FC<{
             </Button>
           </Toolbar>
           {inititateAPIMutation.isError ? (
-            <Alert severity="error">
-              {inititateAPIMutation.error?.error_msg ?? "Uknown Error occured"}
-            </Alert>
+            <Alert
+              severity="error"
+              errorMsg={
+                inititateAPIMutation.error?.error_msg ?? "Uknown Error occured"
+              }
+              errorDetail={inititateAPIMutation.error?.error_detail ?? ""}
+            />
           ) : null}
         </AppBar>
-        <Box display="flex" margin="0px 16px">
+        <div style={{ display: "flex", margin: "0px 16px" }}>
           <SelectRenderOnly
             name="branch"
             size="small"
@@ -127,8 +130,8 @@ export const FormNew: FC<{
             error={currentBranchError}
             touched={true}
           />
-          <Box flexGrow={1} />
-        </Box>
+          <div style={{ flexGrow: 1 }} />
+        </div>
         {currentBranch !== null && currentBranch !== "00" ? (
           <FormWrapper
             ref={formRef}

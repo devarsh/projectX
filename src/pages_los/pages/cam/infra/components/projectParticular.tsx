@@ -24,7 +24,7 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
         <th colSpan={2}>% of Total Cost </th>
       </tr>
       {costOfProject.map((projectDetail, index) => (
-        <tr key={index}>
+        <tr key={index + 1}>
           <td colSpan={2}></td>
           <td>{projectDetail.particulars}</td>
           <td>{projectDetail.totalCost}</td>

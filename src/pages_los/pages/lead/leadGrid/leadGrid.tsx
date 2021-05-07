@@ -10,10 +10,11 @@ import { InvalidAction } from "pages_los/common/invalidAction";
 import { serverGridContextGenerator } from "./context";
 import { HeaderDetails } from "../headerDetails";
 import { DetailsTabView } from "../detailsTabView";
-import { ExternalAPI } from "../externalAPI";
+import { Analysis } from "../analysis";
 import { Stage } from "../stages";
 import { CAM } from "../cam";
 import { LeadAssign } from "../leadAssign";
+import { Verification } from "../verification";
 
 export const LeadGrid = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -55,7 +56,6 @@ export const LeadGrid = ({ gridCode, actions }) => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
-              rowData={currentAction?.rows[0]}
             />
           ) : (currentAction?.name ?? "") === "cam" ? (
             <CAM
@@ -64,8 +64,8 @@ export const LeadGrid = ({ gridCode, actions }) => {
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
             />
-          ) : (currentAction?.name ?? "") === "external" ? (
-            <ExternalAPI
+          ) : (currentAction?.name ?? "") === "analysis" ? (
+            <Analysis
               key={currentAction?.rows[0].id}
               moduleType="lead"
               refID={currentAction?.rows[0].id}
@@ -83,6 +83,12 @@ export const LeadGrid = ({ gridCode, actions }) => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
+            />
+          ) : (currentAction?.name ?? "") === "verification" ? (
+            <Verification
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
             />
           ) : (
             <InvalidAction closeDialog={handleDialogClose} />

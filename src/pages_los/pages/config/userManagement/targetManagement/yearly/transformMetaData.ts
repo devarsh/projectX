@@ -11,6 +11,7 @@ export const transformMetaData = (
       if (one.name.indexOf("Volume") >= 0) {
         return true;
       }
+      return false;
     })
     .map((one) => one?.name ?? "");
 
@@ -43,6 +44,7 @@ export const transformMetaData = (
       if (one.render.group === 1) {
         one.render.group = 2;
       }
+      return one;
     });
   }
   const allFields = [...otherFields, ...ownFields, ...crossFields];

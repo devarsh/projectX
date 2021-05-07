@@ -208,3 +208,153 @@ export const drawingPowerVariableAmountExternalAPIBank = async (
   }
   return true;
 };
+
+export const showOtherIncomeAmountField = async (_, dependentFields) => {
+  if (dependentFields["incomeDetails.sourceIncomeOther"].value !== "00") {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailOtherIncomeAmountField = async (_, dependentFields) => {
+  let optionsValue = dependentFields["returnFilingDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
+  }
+  return false;
+};
+
+export const showRetailOtherIncomeTypeField = async (_, dependentFields) => {
+  let optionsValue = dependentFields["returnFilingDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
+};
+
+export const showReraNoField = async (_, dependentFields) => {
+  if (dependentFields["reraReceived"].value === "Y") {
+    return false;
+  }
+  return true;
+};
+
+export const showCostOfProject = async (_, dependentFields) => {
+  if (
+    dependentFields["projectParticularDetails.particularType"].value === "01"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const showMeansOfFinance = async (_, dependentFields) => {
+  if (
+    dependentFields["projectParticularDetails.particularType"].value === "02"
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailSalaryOtherIncomeAmountField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["salaryDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
+  }
+  return false;
+};
+
+export const showRetailSalaryOtherIncomeTypeField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["salaryDetails.otherIncome"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
+};
+
+export const showRetailCoApplicantSelEmployeed = async (_, dependentFields) => {
+  if (dependentFields["employementType"].value === "01") {
+    return false;
+  }
+  return true;
+};
+
+export const showRetailCoApplicantSalaried = async (_, dependentFields) => {
+  if (dependentFields["employementType"].value === "02") {
+    return false;
+  }
+  return true;
+};
+
+export const showPurposeOfLoanOtherTextfield = async (_, dependentFields) => {
+  if (dependentFields["purposeLoan"].value === "04") {
+    return false;
+  }
+  return true;
+};
+
+export const showProjectPromoterAndFirmNameField = async (
+  _,
+  dependentFields
+) => {
+  if (dependentFields["landDetails"].value === "O") {
+    return false;
+  }
+  return true;
+};
+
+export const showUnsecureSalaryOtherIncomeTypeField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["incomeDetails.sourceIncomeOther"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    if (optionsValue.indexOf("06") >= 0) {
+      return true;
+    }
+    return optionsValue.indexOf("05") >= 0 ? false : true;
+  }
+  return true;
+};
+
+export const showUnsecureOtherIncomeAmountField = async (
+  _,
+  dependentFields
+) => {
+  let optionsValue = dependentFields["incomeDetails.sourceIncomeOther"].value;
+  if (!Array.isArray(optionsValue)) {
+    optionsValue = [optionsValue];
+  }
+  if (Array.isArray(optionsValue)) {
+    return optionsValue.indexOf("06") >= 0 ? true : false;
+  }
+  return false;
+};

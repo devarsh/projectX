@@ -2,13 +2,12 @@ import { Fragment, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Alert from "@material-ui/lab/Alert";
 import Close from "@material-ui/icons/Close";
-import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { CAMContext } from "./context";
+import { HeaderDetails } from "./headerDetails";
 import { useMutation, useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { CAM } from "pages_los/pages/cam";
@@ -46,11 +45,11 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
 
   return result.isLoading || result.isFetching ? (
     <Fragment>
-      <Box display="flex">
+      <div style={{ display: "flex" }}>
         <img src={loaderGif} height="50px" width="50px" alt="loader" />
-        <Box flexGrow={1} />
+        <div style={{ flexGrow: 1 }} />
         <Button onClick={closeDialog}>Close</Button>
-      </Box>
+      </div>
     </Fragment>
   ) : result.isError || mutation.isError ? (
     <Alert severity="error" onClose={closeDialog}>
@@ -59,10 +58,8 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
   ) : (
     <Fragment>
       <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
-        <Typography variant="h6" color="textSecondary">
-          LeadNo
-        </Typography>
-        <Typography variant="h6">{refID}</Typography>
+        <HeaderDetails rowData={result?.data?.others ?? ""} />
+
         <div style={{ flexGrow: 1 }}></div>
         <Button
           onClick={() => mutation.mutate(result.data)}

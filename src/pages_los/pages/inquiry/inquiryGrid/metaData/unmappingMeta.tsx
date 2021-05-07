@@ -35,7 +35,7 @@ export const unmappedMetaData = {
       width: 150,
       minWidth: 100,
       maxWidth: 200,
-      alignment: "right",
+      alignment: "left",
       componentType: "default",
       disableSortBy: false,
       disableFilters: false,
@@ -61,7 +61,7 @@ export const unmappedMetaData = {
       dateFormat: "dd/MM/yyyy",
     },
     {
-      accessor: "branch_cd",
+      accessor: "branch_name",
       columnName: "Branch",
       sequence: 3,
       width: 150,

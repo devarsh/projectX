@@ -1,14 +1,13 @@
 import { Fragment, useState, FC, useContext, useEffect } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { DocumentGridCRUD as DocGrid } from "./documentGridCRUD";
 import { DOCCRUDContextProvider, DocAPICrudProviderGenerator } from "./context";
 import { useQuery } from "react-query";
 import { ClearCacheContext } from "cache";
 import loaderGif from "assets/images/loader.gif";
-import { useStyles } from "../style";
+import { useStyles } from "./style";
 import * as API from "./api";
 
 const TabPanel = ({ value, index, children }) => {
@@ -29,10 +28,16 @@ export const DocumentGridCRUD: FC<{
   };
   const classes = useStyles();
   useEffect(() => {
-    removeCache?.addEntry(["getDocumentCRUDTabsMetadata", moduleType, refID]);
+    /*eslint-disable  react-hooks/exhaustive-deps*/
+    removeCache?.addEntry([
+      "getDocumentCRUDTabsMetadata",
+      moduleType,
+      productType ?? "legal",
+      refID,
+    ]);
   }, [removeCache, moduleType, refID]);
   const queryResult = useQuery(
-    ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "XX", refID],
+    ["getDocumentCRUDTabsMetadata", moduleType, productType ?? "legal", refID],
     () =>
       API.getDocumentCRUDTabsMetadata({
         moduleType,
@@ -40,7 +45,7 @@ export const DocumentGridCRUD: FC<{
         refID,
       })
   );
-  let tabs: any[] = queryResult.data;
+  let tabs: any[] = queryResult.data as any;
   if (queryResult.isSuccess) {
     if (!Array.isArray(tabs)) {
       tabs = [];
@@ -57,43 +62,49 @@ export const DocumentGridCRUD: FC<{
     queryResult.error?.error_msg ?? "unknown error occured"
   ) : (
     <Fragment>
-      <Box display="flex">
-        <Tabs value={currentTab} onChange={handleChangeTab}>
+      <div style={{ display: "flex" }}>
+        <Tabs
+          value={currentTab}
+          onChange={handleChangeTab}
+          variant="scrollable"
+        >
           {tabs.map((one) => (
             <Tab label={one.label} id={`${one.sequence}`} key={one.sequence} />
           ))}
         </Tabs>
         {typeof onClose === "function" ? (
-          <>
-            <Box flexGrow={1} />
+          <Fragment>
+            <div style={{ flexGrow: 1 }} />
             <Button variant="text" onClick={onClose}>
               Close
             </Button>
-          </>
+          </Fragment>
         ) : null}
-      </Box>
-      <Box py={2} className={classes.tabPanel}>
-        {tabs.map((one) => (
-          <TabPanel
-            value={currentTab}
-            index={`${one.sequence}`}
-            key={one.sequence}
-          >
-            <DOCCRUDContextProvider
-              key={one.docType}
-              {...DocAPICrudProviderGenerator(
-                moduleType,
-                productType,
-                one.docType,
-                refID,
-                serialNo
-              )}
+      </div>
+      <div className={classes.tabPanel}>
+        {tabs.map((one) => {
+          return (
+            <TabPanel
+              value={currentTab}
+              index={`${one.sequence}`}
+              key={one.sequence}
             >
-              <DocGrid />
-            </DOCCRUDContextProvider>
-          </TabPanel>
-        ))}
-      </Box>
+              <DOCCRUDContextProvider
+                key={one.docType.filter((one) => one?.primary === true)[0].type}
+                {...DocAPICrudProviderGenerator(
+                  moduleType,
+                  productType,
+                  one.docType,
+                  refID,
+                  serialNo
+                )}
+              >
+                <DocGrid />
+              </DOCCRUDContextProvider>
+            </TabPanel>
+          );
+        })}
+      </div>
     </Fragment>
   );
   return renderResult;

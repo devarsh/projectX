@@ -16,8 +16,9 @@ registerFn("getExperianceyears", miscSDK.getMiscVal("EXPERI_YEARS"));
 registerFn("getPropertyType", miscSDK.getMiscVal("PROPERTY_TYPE"));
 registerFn("getGenderList", miscSDK.getMiscVal("GENDER"));
 registerFn("getRelationship", miscSDK.getMiscVal("RELATIONSHIP"));
-registerFn("getRetailEmployee", miscSDK.getMiscVal("RETAIL_EMPL"));
-registerFn("getUnsecuredEmployee", miscSDK.getMiscVal("UNSECURED_EMPL"));
+registerFn("getRetailEmployee", miscSDK.getRetailEmployementCode);
+registerFn("getUnsecuredEmployee", miscSDK.getUnsecuredEmployementCode);
+// registerFn("getUnsecuredEmployee", miscSDK.getMiscVal("UNSECURED_EMPL"));
 registerFn("getSMEEmployee", miscSDK.getMiscVal("SME_EMPL"));
 registerFn("getSMEBusinessEmployee", miscSDK.getMiscVal("SME_EMPL_01"));
 registerFn("getLoanPurpose", miscSDK.getMiscVal("LOAN_PURPOSE"));
@@ -42,15 +43,21 @@ registerFn("projectParticularType", miscSDK.getMiscVal("PARTICULAR_TYPE"));
 registerFn("bankFacilityType", miscSDK.getMiscVal("ACCOUNT_TYPE"));
 registerFn("getBankDocType", miscSDK.getMiscVal("BANK_DOC_TYPE"));
 registerFn("getITRDocType", miscSDK.getMiscVal("ITR_DOC_TYPE"));
+registerFn("getITRDocTypeOther", miscSDK.getMiscVal("ITR_DOC_TYPE_O"));
 registerFn("getKYCDocType", miscSDK.getMiscVal("KYC_DOC_TYPE"));
+registerFn("getKYCDocTypeLegal", miscSDK.getMiscVal("KYC_DOC_TYPE_CO"));
 registerFn("getOtherDocType", miscSDK.getMiscVal("OTHER_DOC_TYPE"));
 registerFn("getGSTDocType", miscSDK.getMiscVal("GST_DOC_TYPE"));
+registerFn("getGSTDocTypeOther", miscSDK.getMiscVal("GST_DOC_TYPE_O"));
 registerFn("getLeadStage", miscSDK.getMiscVal("LEAD_STAGE"));
 registerFn("getNomineeRelation", miscSDK.getMiscVal("NOMINI_RELATION"));
 registerFn("getSMEDepartment", miscSDK.getMiscVal("SME_DEPARTMENT"));
 registerFn("getAcceptancePolicy", miscSDK.getMiscVal("ACCEPT_POLICY"));
 registerFn("getTargetYears", miscSDK.getMiscVal("TARGET_YEARS"));
 registerFn("getTargetMonth", miscSDK.getMiscVal("TARGET_MONTH"));
+registerFn("getNewTakeover", miscSDK.getMiscVal("NEW_TAKEOVER"));
+registerFn("getFinancialSource", miscSDK.getMiscVal("FIN_SOURCE"));
+registerFn("getBusinessAddressType", miscSDK.getMiscVal("BUSSIN_ADD_TYPE"));
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
 registerFn("getBankSubProductType", miscSDK.getBankSubProductType);
@@ -109,9 +116,9 @@ registerFn(
   "setValueOnDependentFieldsChangeOne",
   others.setValueOnDependentFieldsChangeOne
 );
-
 //Dummy only for testing
 registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
 registerFn("getMonthDifferenceInRows", others.getMonthDifferenceInRows);
 registerFn("setBankFacilityValue", others.setBankFacilityValue);
+registerFn("dummyColor", (value) => (value === "44" ? "blue" : "green"));
 //End of Dummy only for testing

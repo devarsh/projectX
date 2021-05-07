@@ -74,7 +74,7 @@ export const FormViewEdit: FC<{
         if (typeof error === "object") {
           errorMsg = error?.error_msg ?? errorMsg;
         }
-        endSubmit(false, errorMsg);
+        endSubmit(false, errorMsg, error?.error_detail ?? "");
       },
       onSuccess: (data, { serialNo }) => {
         queryClient.refetchQueries([
@@ -196,11 +196,12 @@ export const FormViewEdit: FC<{
       viewMetaData.form.render.renderType = "tabs";
     }
   }
-
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     if (result[0].isSuccess && result[3].isSuccess) {
       const branchCode = formEditData["branchCode"];
       const branchOptions: any = result[3].data;
+      /*eslint-disable eqeqeq*/
       let currProd = branchOptions.filter((one) => one.value == branchCode);
       setCurrentBranchCode(currProd[0]?.value);
       setCurrentProduct(currProd[0]?.products);

@@ -1,6 +1,5 @@
 import { useRef, useState, Fragment, FC } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { ActionTypes } from "components/dataTable";
 import { FormViewEdit } from "pages_los/common/crud2/formViewEdit";
@@ -42,10 +41,10 @@ export const TeamAssignment: FC<{
   };
   return (
     <Fragment>
-      <Box display="flex">
-        <Box flexGrow={1} />
+      <div style={{ display: "flex" }}>
+        <div style={{ flexGrow: 1 }} />
         <Button onClick={closeDialog}>Close</Button>
-      </Box>
+      </div>
       <CRUDContextProvider
         {...createTeamAssignmentContext("users/employee", "team", serialNo)}
       >
@@ -55,9 +54,14 @@ export const TeamAssignment: FC<{
           actions={actions}
           setAction={setCurrentAction}
         />
-        <Dialog open={Boolean(currentAction)} maxWidth="xl">
+        <Dialog
+          open={Boolean(currentAction)}
+          maxWidth="xl"
+          PaperProps={{ style: { width: "100%", height: "100%" } }}
+        >
           {(currentAction?.name ?? "") === "View" ? (
             <FormViewEdit
+              key="teamAssignment"
               isDataChangedRef={isMyDataChangedRef}
               closeDialog={closeMyDialog}
               serialNo={currentAction?.rows[0]?.id}

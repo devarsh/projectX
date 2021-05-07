@@ -16,6 +16,7 @@ export interface GridColumnType {
   dateFormat?: string;
   isVisible?: boolean;
   validation?: any;
+  showTooltip?: boolean;
   schemaValidation?: YupSchemaMetaDataType;
   options?: any;
   isPassword?: boolean;

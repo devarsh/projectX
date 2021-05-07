@@ -23,7 +23,7 @@ export const PromoterDetails = ({ promoter }) => {
       {promoter.map((promoterData, index) => {
         return (
           <>
-            <tr key={index}>
+            <tr key={index + 1}>
               <td colSpan={2}></td>
               <td colSpan={1} style={{ textAlign: "center" }}>
                 {index}

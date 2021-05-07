@@ -1,4 +1,4 @@
-import { shouldExclude, LOSSDK, retail, readOnly } from "./los";
+import { shouldExclude, LOSSDK, retail, readOnly, sme } from "./los";
 
 import { singletonFunctionRegisrationFactory } from "components/utils";
 const { registerFn } = singletonFunctionRegisrationFactory;
@@ -88,6 +88,9 @@ registerFn(
   "shouldExcludeDrawingPowerVariableAmountExternalAPIBank",
   shouldExclude.drawingPowerVariableAmountExternalAPIBank
 );
+registerFn("shouldExcludeShowCostOfProject", shouldExclude.showCostOfProject);
+
+registerFn("shouldExcludeShowMeansOfFinance", shouldExclude.showMeansOfFinance);
 
 //END of Bank API
 registerFn(
@@ -204,3 +207,77 @@ registerFn(
 
 //for priority change form
 registerFn("readOnlyPriorityHoldDays", readOnly.priorityHoldDays);
+registerFn(
+  "ShouldExcludeShowOtherIncomeAmountField",
+  shouldExclude.showOtherIncomeAmountField
+);
+registerFn(
+  "ShouldExcludeShowRetailOtherIncomeAmountField",
+  shouldExclude.showRetailOtherIncomeAmountField
+);
+registerFn(
+  "ShouldExcludeShowRetailOtherIncomeTypeField",
+  shouldExclude.showRetailOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowRetailSalaryOtherIncomeAmountField",
+  shouldExclude.showRetailSalaryOtherIncomeAmountField
+);
+registerFn(
+  "ShouldExcludeShowRetailSalaryOtherIncomeTypeField",
+  shouldExclude.showRetailSalaryOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowRetailCoApplicantSelEmployeed",
+  shouldExclude.showRetailCoApplicantSelEmployeed
+);
+registerFn(
+  "ShouldExcludeShowRetailCoApplicantSalaried",
+  shouldExclude.showRetailCoApplicantSalaried
+);
+registerFn("ShouldExcludeShowReraNoField", shouldExclude.showReraNoField);
+registerFn(
+  "ShouldExcludeShowPurposeOfLoanOtherTextfield",
+  shouldExclude.showPurposeOfLoanOtherTextfield
+);
+registerFn(
+  "ShouldExcludeShowProjectPromoterAndFirmNameField",
+  shouldExclude.showProjectPromoterAndFirmNameField
+);
+registerFn(
+  "ShouldExcludeShowUnsecureSalaryOtherIncomeTypeField",
+  shouldExclude.showUnsecureSalaryOtherIncomeTypeField
+);
+registerFn(
+  "ShouldExcludeShowUnsecureOtherIncomeAmountField",
+  shouldExclude.showUnsecureOtherIncomeAmountField
+);
+
+//Calculation for SME Finance
+
+registerFn("calculateEBITDA", sme.calculateEBITDA);
+registerFn("calculateEBIT", sme.calculateEBIT);
+registerFn("calculateEBI", sme.calculateEBT);
+registerFn("calculateCashProfit", sme.calculateCashProfit);
+registerFn("calculateEBITDAPercentage", sme.calculateEBITDAPercentage);
+registerFn("calculateEBTPercentage", sme.calculateEBTPercentage);
+registerFn("calculatePatPercentage", sme.calculatePatPercentage);
+registerFn("calculateCashProfitPercentage", sme.calculateCashProfitPercentage);
+registerFn("calculateAdjustedPat", sme.calculateAdjustedPat);
+registerFn("calculateAdjustedCashProfit", sme.calculateAdjustedCashProfit);
+registerFn(
+  "calculateAdjustedPatPercentage",
+  sme.calculateAdjustedPatPercentage
+);
+registerFn(
+  "calculateAdjustedCashProfitPercentage",
+  sme.calculateAdjustedCashProfitPercentage
+);
+registerFn("calculateNetWorth", sme.calculateNetWorth);
+registerFn("calculateNetWorthQuasi", sme.calculateNetWorthQuasi);
+registerFn("calculateLongTermDebtEquity", sme.calculateLongTermDebtEquity);
+registerFn("calculateTolTnvQuasi", sme.calculateTolTnvQuasi);
+registerFn("calculateCurrentRatio", sme.calculateCurrentRatio);
+
+registerFn("getEntityType", LOSSDK.getEntityType);
+registerFn("getApplicants", LOSSDK.getApplicants);

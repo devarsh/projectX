@@ -20,7 +20,7 @@ export const PromoterDetails = ({ promoter }) => {
         return (
           <>
             <tr key={index}>
-              <td style={{ textAlign: "center" }}>{index}</td>
+              <td style={{ textAlign: "center" }}>{index + 1}</td>
               <td colSpan={2}>{promoterData.salutation}</td>
               <td colSpan={2}>{promoterData.firstName}</td>
               <td colSpan={2}>{promoterData.middleName}</td>

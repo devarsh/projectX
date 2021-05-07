@@ -152,7 +152,7 @@ export const FileUploadControl = ({
               dataChangedRef.current = true;
               onClose();
             } else {
-              setError("unknown error occured");
+              setError(data?.error_msg ?? "unknown error occured");
             }
             setLoading(false);
           }

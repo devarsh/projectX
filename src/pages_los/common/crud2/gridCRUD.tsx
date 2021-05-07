@@ -32,13 +32,11 @@ const actions: ActionTypes[] = [
 export const GridCRUD: FC<{
   isDataChangedRef: any;
   showDocuments?: boolean;
-  rowData?: any;
   disableActions?: string | string[];
   setEditFormStateFromInitValues?: any;
 }> = ({
   isDataChangedRef,
   showDocuments,
-  rowData,
   disableActions,
   setEditFormStateFromInitValues,
 }) => {
@@ -91,7 +89,7 @@ export const GridCRUD: FC<{
         open={Boolean(currentAction)}
         maxWidth="xl"
         PaperProps={
-          currentAction === "Delete"
+          currentAction?.name === "Delete"
             ? {}
             : { style: { width: "100%", height: "100%" } }
         }

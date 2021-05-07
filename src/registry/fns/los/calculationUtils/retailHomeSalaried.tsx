@@ -132,7 +132,9 @@ export const calculateSENPCLFR = (dependentFields) => {
 export const calcualteSENPEligibleEMI = (dependentFields) => {
   const totalIncome = Number(dependentFields?.totalIncome?.value);
   const foir = Number(dependentFields?.foir?.value);
-  const totalObligations = Number(dependentFields?.totalObligations?.value);
+  const totalObligations = Number(
+    dependentFields?.totalActualObligations?.value
+  );
   const result = totalIncome * (foir / 100);
   return result - totalObligations;
 };
@@ -205,7 +207,7 @@ export const calculateSENPNewLTV = (dependentFields) => {
   const loanAmountBasedOnFOIR = Number(
     dependentFields?.loanAmountBasedOnFOIR?.value
   );
-  return Math.floor((loanAmountBasedOnFOIR / propertyMarketValue) * 100);
+  return Math.ceil((loanAmountBasedOnFOIR / propertyMarketValue) * 100);
 };
 
 export const calculateSENPNewFOIR = (dependentFields) => {
@@ -213,7 +215,9 @@ export const calculateSENPNewFOIR = (dependentFields) => {
   const tenur = Number(dependentFields?.tenur?.value);
   const amount = Number(dependentFields?.amount?.value) * -1;
   const totalIncome = Number(dependentFields?.totalIncome?.value);
-  const totalObligations = Number(dependentFields?.totalObligations?.value);
+  const totalObligations = Number(
+    dependentFields?.totalActualObligations?.value
+  );
   const PMTResult = Math.abs(PMT(rateValue, tenur, amount));
   const result = ((PMTResult + totalObligations) / totalIncome) * 100;
   return Math.round(result);
@@ -301,11 +305,12 @@ export const calculateLoanAmountBasedOnRent = (dependentFields) => {
       calBalanceForRent = calBalanceForRent * incrementFactor;
     }
     calDiscounting = Number(1 / Math.pow(1 + rate / 12, NoOfMonths));
-    calAmountAfterTDS = Math.round(calBalanceForRent * TDSRate);
-    calculateAmount = Math.round(calAmountAfterTDS * calDiscounting);
+    calAmountAfterTDS = calBalanceForRent * TDSRate;
+    calculateAmount = calAmountAfterTDS * calDiscounting;
     calculatePrinicipal = calculatePrinicipal + calculateAmount;
     //calculateDiscountedEMI = Math.round(calculateAmount * calDiscounting);
   }
+  console.log("calculatePrinicipal", calculatePrinicipal);
   let calculateEligibleAmount = 0;
   if (calculatePrinicipal > 0) {
     calculateEligibleAmount = Math.round(

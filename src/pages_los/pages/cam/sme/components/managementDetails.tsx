@@ -25,7 +25,10 @@ export const ManagementDetails = ({ management }) => {
           <>
             <tr key={index}>
               <th colSpan={2}>Name of the Partner/Director</th>
-              <td colSpan={7}>{"ABC"}</td>
+              <td colSpan={7}>
+                {data.salutation} {data.firstName} {data.middleName}{" "}
+                {data.lastName}
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>PAN No</th>

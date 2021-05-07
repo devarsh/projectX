@@ -2,6 +2,7 @@ export interface AuthStateType {
   token: any;
   tokenType: any;
   isLoggedIn: any;
+  role: any[];
   user: {
     branch: string;
     branchCode: string;

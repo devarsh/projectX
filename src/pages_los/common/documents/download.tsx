@@ -6,7 +6,9 @@ import Button from "@material-ui/core/Button";
 import { downloadFile } from "../download";
 
 export const Download = ({ docData, closeDialog, maxDownloadLimit = 3 }) => {
-  const { generateDocumentDownloadURL } = useContext(DOCCRUDContext);
+  const { generateDocumentDownloadURL, context } = useContext(DOCCRUDContext);
+  const docType = context.docCategory.filter((one) => one.primary === true)[0]
+    .type;
   const [error, setError] = useState("");
   const closeMe = () => {
     setError("");
@@ -20,16 +22,28 @@ export const Download = ({ docData, closeDialog, maxDownloadLimit = 3 }) => {
     if (docData.length === 1) {
       const url = generateDocumentDownloadURL.fn(
         generateDocumentDownloadURL.args
-      )(docData.map((one) => one.id));
+      )(
+        docType,
+        docData.map((one) => one.id)
+      );
       downloadFile(url, docData[0].name);
     } else if (docData.length > 1) {
       const url = generateDocumentDownloadURL.fn(
         generateDocumentDownloadURL.args
-      )(docData.map((one) => one.id));
+      )(
+        docType,
+        docData.map((one) => one.id)
+      );
       downloadFile(url, `download-${new Date().getUTCMilliseconds()}`);
     }
     closeDialog();
-  }, [maxDownloadLimit, docData, closeDialog, generateDocumentDownloadURL]);
+  }, [
+    maxDownloadLimit,
+    docData,
+    docType,
+    closeDialog,
+    generateDocumentDownloadURL,
+  ]);
   return Boolean(error) ? (
     <Fragment>
       <DialogTitle>{error}</DialogTitle>

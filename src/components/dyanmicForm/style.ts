@@ -71,4 +71,17 @@ export const useStyles = makeStyles((theme) => ({
   buttonWrapper: {
     position: "relative",
   },
+  stepper: {
+    width: theme.spacing(1),
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  stepperLabel: {
+    width: theme.spacing(1),
+    display: "flex",
+    justifyContent: "flex-start",
+  },
+  formControlLabelSpacer: {
+    flexGrow: 1,
+  },
 }));

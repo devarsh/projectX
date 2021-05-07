@@ -1,8 +1,9 @@
-import { Fragment } from "react";
 import {
   unstable_createMuiStrictModeTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { RecoilRoot } from "recoil";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
 import { SnackbarProvider } from "notistack";
@@ -17,8 +18,9 @@ const themeObj = unstable_createMuiStrictModeTheme(theme);
 
 export const App = () => {
   return (
-    <Fragment>
+    <RecoilRoot>
       <ThemeProvider theme={themeObj}>
+        <CssBaseline />
         <QueryClientProvider client={queryClient}>
           <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
             <IndexPage />
@@ -28,6 +30,6 @@ export const App = () => {
           ) : null}
         </QueryClientProvider>
       </ThemeProvider>
-    </Fragment>
+    </RecoilRoot>
   );
 };

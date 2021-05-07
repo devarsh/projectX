@@ -37,6 +37,7 @@ export const formAtom = atomFamily<FormAtomType, string>({
     isSubmitting: false,
     submitSuccessful: false,
     serverSentError: "",
+    serverSentErrorDetail: "",
   },
 });
 

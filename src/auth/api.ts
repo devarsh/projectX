@@ -44,6 +44,7 @@ export const verifyPasswordAndLogin = async (
       data: {
         token: data?.response_data?.token?.access_token,
         tokenType: data?.response_data?.token?.token_type,
+        role: data?.response_data?.roleDetails ?? [],
         user: {
           branch: data?.response_data?.user?.baseBranchName,
           branchCode: data?.response_data?.user?.baseBranchCode,

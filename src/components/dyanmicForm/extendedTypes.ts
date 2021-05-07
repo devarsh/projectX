@@ -263,4 +263,23 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       format: "##",
     },
   },
+  rateOfIntWithoutValidation: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      suffix: "%",
+      decimalScale: 2,
+      fixedDecimalScale: true,
+      allowNegative: true,
+      allowEmptyFormatting: true,
+      isAllowed: (values) => {
+        //@ts-ignore
+        if (values.floatValue <= 999.99) {
+          return true;
+        }
+        return false;
+      },
+    },
+  },
 };

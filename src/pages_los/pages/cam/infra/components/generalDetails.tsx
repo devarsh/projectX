@@ -24,7 +24,7 @@ export const GeneralDetails = ({
         </tr>
         {generalDetailsLabels?.map((res, index) => {
           return general[res?.name] ? (
-            <tr key={index}>
+            <tr key={index + 1}>
               <th colSpan={2}>{res?.label ?? "N/A"}</th>
               <td colSpan={7}>{general[res?.name] ?? "N/A"}</td>
             </tr>

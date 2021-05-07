@@ -114,11 +114,13 @@ const useBlobLoader = ({ docUUID, fileType }) => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const { previewDocument } = useContext(DOCCRUDContext);
+  const { previewDocument, context } = useContext(DOCCRUDContext);
+  const docType = context.docCategory.filter((one) => one.primary === true)[0]
+    .type;
   const [blob, setBlob] = useState<Blob | null>(null);
   useEffect(() => {
     previewDocument
-      .fn(previewDocument.args)(docUUID)
+      .fn(previewDocument.args)(docType, docUUID)
       .then((blob) => {
         if (blob instanceof Error) {
           setError(blob.message);
@@ -153,6 +155,7 @@ const useBlobLoader = ({ docUUID, fileType }) => {
     docUUID,
     fileType,
     previewDocument,
+    docType,
   ]);
   return {
     success,

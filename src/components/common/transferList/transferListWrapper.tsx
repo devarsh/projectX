@@ -45,13 +45,11 @@ export const MyTransferList: FC<MyAllTransferListProps> = ({
   valueSide,
 }) => {
   const {
-    value,
     error,
     touched,
     handleChange,
     handleBlur,
     runValidation,
-    validationRunning,
     isSubmitting,
     fieldKey,
     name,

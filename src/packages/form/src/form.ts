@@ -125,7 +125,11 @@ export const useForm = ({ onSubmit, readOnly = false }: UseFormHookProps) => {
   }, [startSubmit, readOnly]);
 
   const endSubmit = useRecoilCallback(
-    ({ set }) => (submitSuccessful: boolean = false, message: string = "") => {
+    ({ set }) => (
+      submitSuccessful: boolean = false,
+      message: string = "",
+      messageDetail: string = ""
+    ) => {
       if (typeof message !== "string") {
         message = "";
       }
@@ -134,6 +138,7 @@ export const useForm = ({ onSubmit, readOnly = false }: UseFormHookProps) => {
         isSubmitting: false,
         submitSuccessful,
         serverSentError: message,
+        serverSentErrorDetail: messageDetail,
       }));
     },
     []
