@@ -6,6 +6,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import { CorpositoryAPIInterface } from "./corpository";
 import { ITRAPIInterface } from "./perfios";
+import { Button } from "@material-ui/core";
 
 export const ITRInterface = ({
   refID,
@@ -34,16 +35,17 @@ export const ITRInterface = ({
             <FormControlLabel
               value="perfios"
               control={<Radio />}
-              label="Perfios"
+              label="ITR Analysis"
             />
             <FormControlLabel
               value="corpository"
               control={<Radio />}
-              label="Corpositroy"
+              label="MCA Analysis"
             />
           </RadioGroup>
         </FormControl>
         <div style={{ flexGrow: 1 }} />
+        <Button onClick={closeDialog}>Close</Button>
       </div>
       {apiType === "perfios" ? (
         <ITRAPIInterface
