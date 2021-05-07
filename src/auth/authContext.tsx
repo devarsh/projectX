@@ -10,6 +10,7 @@ import { LOSSDK } from "registry/fns/los";
 import { queryClient } from "cache";
 import { AuthContextType, AuthStateType, ActionType } from "./type";
 import * as API from "./api";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const inititalState: AuthStateType = {
   token: "",
@@ -169,7 +170,7 @@ export const AuthProvider = ({ children }) => {
   }, [login, logout, setAuthenticating]);
 
   return authenticating ? (
-    <div>loading...</div>
+    <LinearProgress color="secondary" />
   ) : (
     <AuthContext.Provider
       value={{
