@@ -42,12 +42,8 @@ export const verificationInitateFormMetaData: MetaDataType = {
         { value: "mobile", label: "Mobile" },
         { value: "email", label: "Email" },
         {
-          value: "credit",
+          value: "credit-score",
           label: "Credit Score",
-        },
-        {
-          value: "aadhar",
-          label: "Aadhar",
         },
       ],
     },
@@ -58,10 +54,10 @@ export const verificationInitateFormMetaData: MetaDataType = {
       name: "entityType",
       label: "Entity",
       defaultValue: "L",
-      options: [
-        { value: "L", label: "Legal" },
-        { value: "I", label: "Individual" },
-      ],
+      dependentFields: ["apiType"],
+      //@ts-ignore
+      options: "getEntityType",
+      disableCaching: true,
     },
     {
       render: {
@@ -73,6 +69,7 @@ export const verificationInitateFormMetaData: MetaDataType = {
       options: "getManagementPersonnel",
       dependentFields: ["entityType"],
       shouldExclude: "shouldExcludeExternalAPIManagementDetails",
+      disableCaching: true,
     },
   ],
 };

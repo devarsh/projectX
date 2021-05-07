@@ -42,6 +42,7 @@ export const FormViewEdit: FC<{
   serialNo?: string; //need to find another way to pass it (its a little hardcoded)
   setEditFormStateFromInitValues?: any;
   readOnly?: boolean;
+  disableCache?: boolean;
 }> = ({
   isDataChangedRef,
   closeDialog,
@@ -49,6 +50,7 @@ export const FormViewEdit: FC<{
   serialNo = "1",
   setEditFormStateFromInitValues,
   readOnly = false,
+  disableCache = false,
 }) => {
   const { updateFormData, getFormData, getFormMetaData, context } = useContext(
     CRUDContext
@@ -112,10 +114,16 @@ export const FormViewEdit: FC<{
   }, [removeCache, serialNo]);
 
   const result = useQueries([
-    {
-      queryKey: ["getFormData", wrapperKey.current, serialNo],
-      queryFn: () => getFormData.fn(getFormData.args)(serialNo),
-    },
+    disableCache
+      ? {
+          queryKey: ["getFormData", wrapperKey.current, serialNo],
+          queryFn: () => getFormData.fn(getFormData.args)(serialNo),
+          cacheTime: 0,
+        }
+      : {
+          queryKey: ["getFormData", wrapperKey.current, serialNo],
+          queryFn: () => getFormData.fn(getFormData.args)(serialNo),
+        },
     {
       queryKey: ["getFormMetaData", wrapperKey.current, "view"],
       queryFn: () => getFormMetaData.fn(getFormMetaData.args)("view"),

@@ -2,7 +2,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { withStyles } from "@material-ui/core/styles";
 
-const StyledTextField = withStyles({
+const StyledTextField2 = withStyles({
   root: {
     "& .MuiInputLabel-formControl": {
       color: "#736f6f",
@@ -25,7 +25,6 @@ const StyledTextField = withStyles({
 
     "& .MuiInputBase-root": {
       border: "1px solid #BABABA",
-      marginTop: "26px",
       borderRadius: 5,
       backgroundColor: "#fff",
       "@media (max-width: 1200px)": {
@@ -82,4 +81,4 @@ const StyledTextField = withStyles({
   },
 })(TextField);
 
-export default StyledTextField;
+export default StyledTextField2;

@@ -1,1 +1,1 @@
-export {} from "./equifax";
+export { EquifaxVerificationWrapper as default } from "./equifax";

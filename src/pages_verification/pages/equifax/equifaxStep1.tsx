@@ -3,15 +3,15 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { useParams } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
-import * as API from "./api";
-import loaderGif from "assets/images/loader.gif";
-import { useTimer } from "../utils";
-import { useStyles } from "../style";
-import logo from "assets/images/logo.svg";
-import Box from "@material-ui/core/Box";
 import Alert from "@material-ui/lab/Alert";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
+import { useMutation } from "react-query";
+import * as API from "./api";
+import { useTimer } from "../utils";
+import logo from "assets/images/logo.svg";
 import { InputMaskCustom } from "components/derived/inputMask";
 
 const computeTemplateForOTP = (length: number) => {
@@ -22,6 +22,7 @@ interface verifyOTPType {
   tokenID: any;
   transactionID: any;
   otp: any;
+  consent: string;
 }
 
 interface requestOTPType {
@@ -32,22 +33,25 @@ const verifyOTPFn = (verfiyOTPAPI) => async ({
   tokenID,
   transactionID,
   otp,
+  consent,
 }: verifyOTPType) => {
-  return verfiyOTPAPI(tokenID, transactionID, otp);
+  return verfiyOTPAPI(tokenID, transactionID, otp, consent);
 };
 
 const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
   return requestOTPAPI(tokenID);
 };
 
-export const Verification = ({
+export const Verification1 = ({
   token,
-  apiType,
   otpLength = 6,
   maxResendCount = 3,
   otpResendInterval = 30,
+  setRegisteredNumberScreen,
 }) => {
   const [OTP, setOTP] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState("");
   const [otpVerificationError, setOtpVerificationError] = useState("");
   const [otpDeliveryError, setOtpDeliveryError] = useState("");
   const [OTPDelivered, setOTPDelivered] = useState(false);
@@ -56,9 +60,7 @@ export const Verification = ({
   const [resendCount, setResendCount] = useState(1);
   const { timer, startTimer } = useTimer({ maxTime: otpResendInterval });
 
-  const apiName = `${apiType}`.charAt(0).toUpperCase() + `${apiType}`.slice(1);
-
-  const verifyOTPMutation = useMutation(verifyOTPFn(API.verifyOTP(apiType)), {
+  const verifyOTPMutation = useMutation(verifyOTPFn(API.verifyOTP), {
     onMutate: () => {
       setOtpVerificationError("");
     },
@@ -70,7 +72,7 @@ export const Verification = ({
     },
   });
 
-  const requestOTPMutation = useMutation(requestOTP(API.requestOTP(apiType)), {
+  const requestOTPMutation = useMutation(requestOTP(API.requestOTP), {
     onMutate: () => {
       setOTPDelivered(false);
       setOtpDeliveryError("");
@@ -84,7 +86,7 @@ export const Verification = ({
     },
   });
 
-  const resendtOTPMutation = useMutation(requestOTP(API.requestOTP(apiType)), {
+  const resendtOTPMutation = useMutation(requestOTP(API.requestOTP), {
     onMutate: () => {
       setOTPDelivered(false);
       setOtpDeliveryError("");
@@ -110,11 +112,14 @@ export const Verification = ({
       setOtpVerificationError("OTP cannot be blank");
     } else if (String(OTP).length !== otpLength) {
       setOtpVerificationError(`OPT must be ${otpLength} digits long`);
+    } else if (consent !== true) {
+      setConsentError("This is required");
     } else {
       verifyOTPMutation.mutate({
         otp: OTP,
         transactionID: transactionID,
         tokenID: token,
+        consent: consent ? "Y" : "N",
       });
     }
   };
@@ -133,7 +138,7 @@ export const Verification = ({
   return (
     <Fragment>
       {success ? (
-        <Alert>{apiName} Verification Successful</Alert>
+        <Alert>Credit Score Consent Recieved Successful</Alert>
       ) : (
         <Fragment>
           <img src={logo} alt="Logo" width="100px" height="100px" />
@@ -144,15 +149,10 @@ export const Verification = ({
           ) : (
             <Alert severity="error">{otpDeliveryError}</Alert>
           )}
-          <h2> {apiName} Verification</h2>
+          <h2>Credit Score</h2>
           <Typography variant="subtitle2">
-            {apiType === "mobile"
-              ? `Dear customer, Enter OTP sent to your registered ${apiName} number
-            ending with ${requestOTPMutation.data?.mobile ?? ""}`
-              : apiType === "email"
-              ? `Dear customer, Enter OTP sent to your registered ${apiName}
-          address ${requestOTPMutation.data?.email ?? ""}`
-              : ""}
+            Dear customer, Enter OTP sent to your registered mobile Number
+            ending with {requestOTPMutation.data?.mobile ?? ""}
           </Typography>
           {timer > 0 ? (
             <Fragment>
@@ -188,6 +188,27 @@ export const Verification = ({
               },
             }}
           />
+          <FormControl component="fieldset" error={Boolean(consentError)}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={consent}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setConsentError("");
+                    }
+                    setConsent(e.target.checked);
+                  }}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="I consent to fetch my credit score"
+            />
+            {Boolean(consentError) ? (
+              <FormHelperText error={true}>{consentError}</FormHelperText>
+            ) : null}
+          </FormControl>
           <br />
           <br />
           <div style={{ display: "flex" }}>
@@ -236,34 +257,5 @@ export const Verification = ({
         </Fragment>
       )}
     </Fragment>
-  );
-};
-
-export const OTPVerificationWrapper = ({ apiType }) => {
-  const classes = useStyles();
-  const { token } = useParams();
-  const verifyToken = useQuery<any, any, any>(
-    "verifyToken",
-    () => API.verifyToken(apiType)(token),
-    {
-      cacheTime: 0,
-      retry: 0,
-    }
-  );
-  return verifyToken.isFetching || verifyToken.isLoading ? (
-    <img src={loaderGif} width="50px" height="50px" alt="loader" />
-  ) : verifyToken.isError ? (
-    <span>{verifyToken.error?.error_msg ?? "unknown Error occured"}</span>
-  ) : (
-    <Box display="flex" width={1} className={classes.wrapper}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        width={1 / 2}
-        className={classes.loginRight}
-      >
-        <Verification token={token} apiType={apiType} />
-      </Box>
-    </Box>
   );
 };
