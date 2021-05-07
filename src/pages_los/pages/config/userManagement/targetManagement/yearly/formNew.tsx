@@ -1,6 +1,6 @@
 import { FC, useRef, Fragment, useState, useContext } from "react";
 import { useQuery, useMutation } from "react-query";
-import Alert from "@material-ui/lab/Alert";
+import { Alert } from "components/common/alert";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -97,9 +97,13 @@ export const FormNew: FC<{
             </Button>
           </Toolbar>
           {inititateAPIMutation.isError ? (
-            <Alert severity="error">
-              {inititateAPIMutation.error?.error_msg ?? "Uknown Error occured"}
-            </Alert>
+            <Alert
+              severity="error"
+              errorMsg={
+                inititateAPIMutation.error?.error_msg ?? "Uknown Error occured"
+              }
+              errorDetail={inititateAPIMutation.error?.error_detail ?? ""}
+            />
           ) : null}
         </AppBar>
         <div style={{ display: "flex", margin: "0px 16px" }}>

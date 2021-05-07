@@ -6,7 +6,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogAction from "@material-ui/core/DialogActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "@material-ui/lab/Alert";
+import { Alert } from "components/common/alert";
+
 import { useSnackbar } from "notistack";
 import { useMutation } from "react-query";
 import { DocumentsPreviewWrapper } from "../docsPreview";
@@ -116,9 +117,13 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
         PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
         {inititateAPIMutation?.isError ? (
-          <Alert severity="error">
-            {inititateAPIMutation.error?.error_msg ?? "Unknown error occured"}
-          </Alert>
+          <Alert
+            severity="error"
+            errorMsg={
+              inititateAPIMutation.error?.error_msg ?? "Unknown error occured"
+            }
+            errorDetail={inititateAPIMutation.error?.error_detail ?? ""}
+          />
         ) : null}
         <DialogAction style={{ display: "flex", padding: "8px 24px" }}>
           <Typography variant="h6" color="textSecondary">

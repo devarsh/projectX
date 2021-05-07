@@ -40,6 +40,7 @@ export interface FormAtomType {
   isSubmitting: boolean;
   submitSuccessful: boolean;
   serverSentError: string;
+  serverSentErrorDetail: string;
 }
 
 export interface FormFieldAtomType {

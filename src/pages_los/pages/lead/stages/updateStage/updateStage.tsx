@@ -55,7 +55,7 @@ export const UpdatePriority = ({ isDataChangedRef, closeDialog }) => {
         if (typeof error === "object") {
           errorMsg = error?.error_msg ?? errorMsg;
         }
-        endSubmit(false, errorMsg);
+        endSubmit(false, errorMsg, error?.error_detail ?? "");
       },
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");

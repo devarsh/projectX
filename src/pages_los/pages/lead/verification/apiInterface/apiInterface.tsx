@@ -29,7 +29,7 @@ export const APIInterfaceForm = ({
     {
       onError: (error: any, { endSubmit }) => {
         let errorMsg = error?.error_msg ?? "Unknown Error occured";
-        endSubmit(false, errorMsg);
+        endSubmit(false, errorMsg, error?.error_detail ?? "");
       },
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");

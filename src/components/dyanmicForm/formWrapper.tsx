@@ -1,6 +1,6 @@
 import { forwardRef, Suspense, useImperativeHandle } from "react";
 import DateFnsUtils from "@date-io/date-fns";
-import Alert from "@material-ui/lab/Alert";
+import { Alert } from "components/common/alert";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -118,6 +118,7 @@ const ChildFormWrapper = forwardRef<any, any>(
       handleSubmit,
       handleSubmitPartial,
       serverSentError,
+      serverSentErrorDetail,
       isSubmitting,
     } = useForm({
       onSubmit: submitFn,
@@ -162,7 +163,11 @@ const ChildFormWrapper = forwardRef<any, any>(
                 : wrapperChild}
             </Toolbar>
             {!isSubmitting && Boolean(serverSentError) ? (
-              <Alert severity="error">{serverSentError}</Alert>
+              <Alert
+                severity="error"
+                errorMsg={serverSentError}
+                errorDetail={serverSentErrorDetail}
+              />
             ) : null}
           </AppBar>
         ) : null}
