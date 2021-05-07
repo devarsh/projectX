@@ -86,7 +86,7 @@ registerFn(
   others.getMonthlyEmiPayValidateValue
 );
 
-registerFn("getPincode", miscSDK.getPincodeExternal);
+registerFn("getPincode", miscSDK.getPincode);
 
 // Post validation hooks
 registerFn("postValidationSetPincodeDtl", pincode.postValidationSetPincodeDtl);

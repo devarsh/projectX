@@ -8,7 +8,8 @@ const MiscAPI = () => {
   };
   const internalFetcher = async (
     url: string,
-    payload: any
+    payload: any,
+    overrideMethod?: any
   ): Promise<CommonFetcherResponse> => {
     try {
       if (baseURL === null) {
@@ -18,7 +19,7 @@ const MiscAPI = () => {
         };
       }
       let response = await fetch(new URL(url, baseURL).href, {
-        method: "GET",
+        method: Boolean(overrideMethod) ? overrideMethod : "GET",
         ...payload,
         headers: new Headers({
           "Content-Type": "application/json",
@@ -205,6 +206,73 @@ const MiscAPI = () => {
     }
   };
 
+  const getPincode = async (
+    _: any,
+    __: any,
+    dependentFields2: any
+  ): Promise<{ options: OptionsProps[]; others: any }> => {
+    let result = Object.keys(dependentFields2);
+    let key =
+      result.find((one) => one.toLocaleLowerCase().indexOf("pincode") >= 0) ??
+      "";
+    if (!Boolean(key)) {
+      return {
+        options: [{ label: "Error fetching pincode", value: "0" }],
+        others: null,
+      };
+    }
+    if (
+      !Boolean(dependentFields2?.[key]?.error) &&
+      dependentFields2?.[key]?.value.length === 6
+    ) {
+      const { status, data } = await internalFetcher(
+        "./external/pincode/getlocation",
+        {
+          body: JSON.stringify({
+            request_data: {
+              pinCode: dependentFields2?.[key]?.value,
+            },
+            channel: "W",
+          }),
+        },
+        "POST"
+      );
+      if (
+        status === "success" &&
+        Array.isArray(data?.response_data?.locationList) &&
+        data?.response_data?.locationList?.length >= 1
+      ) {
+        let result = data?.response_data?.locationList;
+        let areaArray = result.map((dtl) => ({
+          value: dtl?.Name,
+          label: dtl?.Name,
+        }));
+        areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
+        const otherValues = result.reduce((accumlator, current) => {
+          const val = {
+            city: current?.Block,
+            district: current?.District,
+            state: current?.State,
+            country: current?.Country,
+          };
+          accumlator[current.Name] = val;
+          return accumlator;
+        }, {});
+        return { options: areaArray, others: otherValues };
+      } else {
+        return {
+          options: [{ label: "Error fetching pincode", value: "0" }],
+          others: null,
+        };
+      }
+    } else {
+      return {
+        options: [],
+        others: null,
+      };
+    }
+  };
+
   const getPincodeExternal = async (
     _: any,
     __: any,
@@ -373,6 +441,7 @@ const MiscAPI = () => {
     getPropertyCity,
     getBankList,
     getPincodeExternal,
+    getPincode,
     getIndustryType,
     getIndustrySubType,
     getPerfiosBankList,
