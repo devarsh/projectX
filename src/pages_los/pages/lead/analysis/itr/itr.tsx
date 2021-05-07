@@ -24,7 +24,7 @@ export const ITRInterface = ({
           margin="dense"
           fullWidth={true}
         >
-          <FormLabel component="legend">Select API</FormLabel>
+          <FormLabel component="legend">Select Analysis</FormLabel>
           <RadioGroup
             row
             aria-label="Select API"
