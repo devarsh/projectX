@@ -87,10 +87,17 @@ export const verifyOTP = async (
   );
   if (status === "success") {
     if (data?.response_data?.Status === "99") {
-      throw {
-        errorMsg:
-          data?.response_data?.Error?.ErrorDesc ?? "Unknown error occured",
-      };
+      if (
+        ["GSWDOE999", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        1
+      ) {
+        return data?.response_data;
+      } else {
+        throw {
+          errorMsg:
+            data?.response_data?.Error?.ErrorDesc ?? "Unknown error occured",
+        };
+      }
     } else {
       return data?.response_data;
     }
