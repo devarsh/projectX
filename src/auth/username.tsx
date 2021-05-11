@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useState } from "react";
 import { TextField } from "components/styledComponent/textfield";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
+import { GradientButton } from "components/styledComponent/button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { NumberFormatCustom } from "components/derived/numberFormat";
 
@@ -20,7 +20,7 @@ export const UsernameField = ({
     <Fragment>
       <div className="text">
         {["employee", "partner"].indexOf(loginType) >= 0
-          ? "Login with your registere userID"
+          ? "Login with your registered userID"
           : "Login with your registered Mobile Number"}
       </div>
       <div className={classes.formWrap}>
@@ -65,14 +65,20 @@ export const UsernameField = ({
               : {}
           }
         />
-        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-          <Button
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            marginTop: "8px",
+          }}
+        >
+          <GradientButton
             disabled={loginState.loading}
             endIcon={loginState.loading ? <CircularProgress size={20} /> : null}
             onClick={() => verifyUsername(userName)}
           >
             Next
-          </Button>
+          </GradientButton>
         </div>
       </div>
     </Fragment>

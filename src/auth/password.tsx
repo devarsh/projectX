@@ -2,7 +2,7 @@ import { Fragment, useState, useCallback } from "react";
 import { TextField } from "components/styledComponent/textfield";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
+import { GradientButton } from "components/styledComponent/button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -82,14 +82,20 @@ export const PasswordField = ({
             }}
           />
         )}
-        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-          <Button
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            marginTop: "8px",
+          }}
+        >
+          <GradientButton
             endIcon={loginState.loading ? <CircularProgress size={20} /> : null}
             disabled={loginState.loading}
             onClick={() => verifyPassword(password)}
           >
             Login
-          </Button>
+          </GradientButton>
         </div>
       </div>
     </Fragment>

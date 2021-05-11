@@ -12,4 +12,12 @@ export const useStyles = makeStyles((theme) => ({
     letterSpacing: "1px",
     color: theme.palette.secondary.main,
   },
+  printLayout: {
+    width: "210mm",
+    margin: "0mm auto",
+    border: "1px #D3D3D3 solid",
+    borderRadius: "5px",
+    background: "#fff",
+    boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+  },
 }));

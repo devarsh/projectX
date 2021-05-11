@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     "& $inputInput": {
       transition: theme.transitions.create("width"),
-      width: 120,
+      width: 146,
       "&:focus": {
         width: 170,
       },
