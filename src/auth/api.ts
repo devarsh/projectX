@@ -42,6 +42,7 @@ export const verifyPasswordAndLogin = async (
     return {
       status,
       data: {
+        userId: username,
         token: data?.response_data?.token?.access_token,
         tokenType: data?.response_data?.token?.token_type,
         role: data?.response_data?.roleDetails ?? [],

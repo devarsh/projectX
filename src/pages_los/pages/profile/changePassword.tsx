@@ -1,4 +1,3 @@
-import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
@@ -8,13 +7,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useStyles } from "./style";
 
-export const ChangePassword = () => {
+export const ChangePassword = ({ onClose }) => {
   const classes = useStyles();
-  const [, setOpenDialog] = React.useState(false);
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
   return (
     <>
       <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
@@ -69,19 +63,11 @@ export const ChangePassword = () => {
         </Grid>
       </DialogContent>
       <DialogActions className="mb-30">
-        <Button
-          onClick={handleCloseDialog}
-          color="primary"
-          className={classes.backBtn}
-        >
+        <Button onClick={onClose} color="primary" className={classes.backBtn}>
           Cancel
         </Button>
-        <Button
-          onClick={handleCloseDialog}
-          color="primary"
-          className={classes.submit}
-        >
-          Submit
+        <Button color="primary" className={classes.submit}>
+          Change Password
         </Button>
       </DialogActions>
     </>
