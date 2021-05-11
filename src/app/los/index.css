@@ -112,6 +112,6 @@ h2 {
 }
 @media screen and (max-height: 768px) {
   .MuiContainer-maxWidthLg {
-    padding: 16px !important;
+    padding: 10px !important;
   }
 }

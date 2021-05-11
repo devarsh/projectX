@@ -114,7 +114,7 @@ export const OptionsFilter = (props) => {
         }
         style={{ padding: "0px" }}
       >
-        <ListItemIcon>
+        <ListItemIcon style={{ minWidth: "30px" }}>
           <Checkbox
             style={{ padding: "0px" }}
             checked={Array.isArray(value) && value.indexOf(menuItem.value) >= 0}

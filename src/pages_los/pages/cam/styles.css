@@ -20,7 +20,8 @@ table td {
   padding: 0 8px !important;
   border: 1px solid lightgrey !important;
   min-width: 100px !important;
-  font-family: "Montserrat", Helvetica, Arial, Lucida, sans-serif !important;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  font-weight: 500;
 }
 
 table tr th:first-child,

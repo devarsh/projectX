@@ -9,7 +9,7 @@ const GradientButton = withStyles({
     border: 0,
     color: "#fff !important",
     fontWeight: 700,
-    minWidth: "120px",
+    minWidth: "80px",
     letterSpacing: "0.02857em",
     boxShadow: "none",
     textTransform: "capitalize",

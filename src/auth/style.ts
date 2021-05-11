@@ -63,6 +63,7 @@ export const useStyles = makeStyles((theme) => ({
   loginLeft: {
     display: "flex",
     justifyContent: "center",
+    padding: "2rem",
     background:
       "linear-gradient(0deg, rgba(94,231,131,1) 0%, rgba(70,199,165,1) 44%, rgba(33,150,218,1) 100%)",
     [theme.breakpoints.down("sm")]: {
@@ -79,6 +80,9 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: "8px",
     [theme.breakpoints.down("sm")]: {
       width: "100%",
+    },
+    "& img": {
+      alignSelf: "center",
     },
   },
   loginImg: {

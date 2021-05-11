@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useContext } from "react";
+import { useStyles } from "./style";
 import Dialog from "@material-ui/core/Dialog";
 import { ActionTypes } from "components/dataTable";
 import { queryClient, ClearCacheContext } from "cache";
@@ -64,6 +65,7 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
       isMyDataChangedRef.current = false;
     }
   };
+  const classes = useStyles();
   useEffect(() => {
     return () => {
       let entries = removeCache?.getEntries() as any[];
@@ -84,8 +86,10 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
       <Dialog
         open={Boolean(currentAction)}
         maxWidth="xl"
+        className={classes.printLayout}
+        scroll="paper"
         PaperProps={{
-          style: { width: "100%", height: "100%" },
+          style: { margin: "0", maxHeight: "100vh", padding: "8px 0" },
         }}
       >
         {currentAction?.name === "Download" ? (

@@ -35,6 +35,7 @@ const StyledTextField = withStyles({
       "& input": {
         padding: "6px 7px ",
         height: "22px",
+        color: "#000",
         "&::placeholder": {
           color: "#000",
           fontSize: "0.875rem",

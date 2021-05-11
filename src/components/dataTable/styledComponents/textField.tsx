@@ -29,8 +29,8 @@ export const StyledTextField = withStyles({
       transform: "translate(0, 1.5px) scale(1)",
     },
     "& .MuiSelect-selectMenu": {
-      minHeight: "18px",
-      lineHeight: "18px",
+      minHeight: "9px",
+      lineHeight: "9px",
       fontSize: 12,
     },
   },
