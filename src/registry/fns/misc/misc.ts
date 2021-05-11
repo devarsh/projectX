@@ -250,7 +250,7 @@ const MiscAPI = () => {
         areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
         const otherValues = result.reduce((accumlator, current) => {
           const val = {
-            city: current?.Block,
+            city: current?.["City/block"],
             district: current?.District,
             state: current?.State,
             country: current?.Country,
