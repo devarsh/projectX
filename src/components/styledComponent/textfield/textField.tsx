@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 const StyledTextField = withStyles({
   root: {
     "& .MuiInputLabel-formControl": {
-      color: "#736f6f",
+      //color: "#736f6f",
       fontWeight: 600,
       textTransform: "capitalize",
       fontSize: "1rem",
@@ -20,7 +20,7 @@ const StyledTextField = withStyles({
       transform: "translate(0, 1.5px) scale(1)",
     },
     "& label.Mui-focused": {
-      color: "#26A456",
+      //color: "#26A456",
     },
 
     "& .MuiInputBase-root": {
@@ -35,10 +35,10 @@ const StyledTextField = withStyles({
       "& input": {
         padding: "6px 7px ",
         height: "22px",
-        color: "#000",
+        //color: "#000",
         "&::placeholder": {
-          color: "#000",
-          fontSize: "0.875rem",
+          //color: "#000",
+          //fontSize: "0.875rem",
         },
         "@media (max-width: 1200px)": {
           height: "18px",
@@ -58,15 +58,17 @@ const StyledTextField = withStyles({
       borderBottom: "0",
     },
     "& .MuiInput-underline:after": {
-      borderBottom: "2px solid #3f51b5",
+      borderBottom: "3px solid #3f51b5",
       transition: "transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
     },
     "&:hover .MuiInput-underline:before": {
-      borderBottom: "0 !important",
+      //borderBottom: "0 !important",
+      borderBottom: "0",
     },
 
     "& .MuiInputAdornment-positionStart": {
-      borderRight: "1px solid #BABABA !important",
+      //borderRight: "1px solid #BABABA !important",
+      borderRight: "1px solid #BABABA",
       height: "36px",
       maxHeight: "36px",
       padding: "0 1rem",

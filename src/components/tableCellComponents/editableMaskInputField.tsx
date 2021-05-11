@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IMaskInput as IMask } from "react-imask";
-import TextField from "@material-ui/core/TextField";
+import { TextFieldForSelect as TextField } from "components/styledComponent/textfield";
 
 function InputMaskCustom({ inputRef, onChange, MaskProps, ...other }) {
   return (

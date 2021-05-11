@@ -168,7 +168,7 @@ const MySelect: FC<MySelectAllProps> = ({
       helperText={!isSubmitting && isError ? error : null}
       onChange={handleChangeInterceptor}
       onBlur={handleBlur}
-      disabled={readOnly || isSubmitting}
+      disabled={isSubmitting}
       SelectProps={{
         ...SelectProps,
         native: false,

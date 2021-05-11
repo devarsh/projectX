@@ -1,6 +1,6 @@
 import { useState } from "react";
 import NumberFormat from "react-number-format";
-import TextField from "@material-ui/core/TextField";
+import { TextFieldForSelect as TextField } from "components/styledComponent/textfield";
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, FormatProps, ...other } = props;

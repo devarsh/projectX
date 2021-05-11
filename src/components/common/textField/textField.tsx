@@ -247,7 +247,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
         ...inputProps,
       }}
       onBlur={handleBlur}
-      disabled={readOnly || isSubmitting}
+      disabled={isSubmitting}
     />
   );
   if (Boolean(enableGrid)) {
