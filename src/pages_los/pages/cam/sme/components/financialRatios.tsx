@@ -189,10 +189,10 @@ export const FinancialRatios = ({ finance }) => {
       <tr>
         <td colSpan={9}>
           *Estimated and Projected turnover for the next two years is{" "}
-          {convertIntoCurrency({ amount: finance[0]?.revenue })} in{" "}
-          {finance[0]?.financialYear} and{" "}
-          {convertIntoCurrency({ amount: finance[1]?.revenue })} in{" "}
-          {finance[1]?.financialYear}...
+          {convertIntoCurrency({ amount: finance[0]?.revenue ?? "" })} in{" "}
+          {finance[0]?.financialYear ?? ""} and{" "}
+          {convertIntoCurrency({ amount: finance[1]?.revenue ?? "" })} in{" "}
+          {finance[1]?.financialYear ?? ""}...
         </td>
       </tr>
     </>
