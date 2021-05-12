@@ -1,3 +1,50 @@
+import { Amount, Percentage } from "pages_los/pages/cam/components";
+export const printTDSForAmount = ({ obj, key }: any) => {
+  return [
+    <td colSpan={2}>
+      {
+        //@ts-ignore
+        <Amount value={obj[0]?.[key]} />
+      }
+    </td>,
+    <td colSpan={2}>
+      {
+        //@ts-ignore
+        <Amount value={obj[1]?.[key]} />
+      }
+    </td>,
+    <td colSpan={2}>
+      {
+        //@ts-ignore
+        <Amount value={obj[2]?.[key]} />
+      }
+    </td>,
+  ];
+};
+
+export const printTDSForPercentage = ({ obj, key }: any) => {
+  return [
+    <td colSpan={2}>
+      {
+        //@ts-ignore
+        <Percentage value={obj[0]?.[key]} />
+      }
+    </td>,
+    <td colSpan={2}>
+      {
+        //@ts-ignore
+        <Percentage value={obj[1]?.[key]} />
+      }
+    </td>,
+    <td colSpan={2}>
+      {
+        //@ts-ignore
+        <Percentage value={obj[2]?.[key]} />
+      }
+    </td>,
+  ];
+};
+
 export const printTDS = ({ obj, key }) => {
   return [
     <td colSpan={2}>{obj[0]?.[key]}</td>,

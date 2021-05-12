@@ -1,11 +1,33 @@
 export const AddressDetails = ({ address }) => {
   if (!Array.isArray(address) || address.length <= 0) {
-    return (
-      <tr>
-        <td>Invalid data</td>
-      </tr>
-    );
+    return null;
   }
+
+  var addressFinalDetails: any = [];
+  var filterAdessType: any = [];
+  const transformAddressData = (addressData: any) => {
+    addressData
+      .map((data: any) => {
+        var filteredAddressData: any = [];
+        filterAdessType.push(data.addressType);
+        for (var key in data) {
+          if (data[key] !== null && data[key] !== "") {
+            filteredAddressData.push(data[key]);
+          }
+        }
+        return filteredAddressData;
+      })
+      .map((i, idx) => {
+        addressFinalDetails.push({
+          th: filterAdessType[idx],
+          td: i.join(),
+        });
+      });
+  };
+  //@ts-ignore
+  let addressDetails: any = {};
+  addressDetails = transformAddressData(address);
+
   return (
     <>
       <tr>
@@ -13,20 +35,14 @@ export const AddressDetails = ({ address }) => {
           Address Details
         </th>
       </tr>
-      {address?.map((addressData, index) => {
+      {addressFinalDetails?.map((addressData, index) => {
         return (
-          <>
-            <tr key={index}>
-              <th colSpan={2}>{addressData?.addressType ?? ""} Address</th>
-              <td colSpan={7}>
-                {addressData?.address1 ?? ""},{addressData?.address2 ?? ""},
-                {addressData?.landmark ?? ""},{addressData?.location ?? ""},
-                {addressData?.city ?? ""},{addressData?.district ?? ""},
-                {addressData?.state ?? ""},{addressData?.country ?? ""}-
-                {addressData?.pincode ?? ""}.
-              </td>
-            </tr>
-          </>
+          <tr key={index}>
+            <th colSpan={2}>
+              {addressData?.th ?? "Address Type Not Available"} Address
+            </th>
+            <td colSpan={7}>{addressData?.td ?? "No data Found"}</td>
+          </tr>
         );
       }) ?? ""}
     </>
