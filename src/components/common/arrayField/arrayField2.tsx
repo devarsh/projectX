@@ -310,7 +310,7 @@ export const ArrayFieldRow = ({
 
   return (
     <Fragment key={row.fieldIndexKey}>
-      <Typography gutterBottom>
+      <Typography gutterBottom className={classes.arrayRowCount}>
         {rowIndex + 1} of {totalRows}
       </Typography>
       <Grid

@@ -188,7 +188,7 @@ const ChildFormWrapper = forwardRef<any, any>(
             maxWidth="lg"
             style={{
               background: "white",
-              height: "70vh",
+              height: "calc(100vh - 230px)",
               overflowY: "auto",
               overflowX: "hidden",
             }}
@@ -225,7 +225,7 @@ const ChildFormWrapper = forwardRef<any, any>(
             maxWidth="lg"
             style={{
               background: "white",
-              height: "70vh",
+              height: "calc(100vh - 230px)",
               overflowY: "auto",
               overflowX: "hidden",
             }}
