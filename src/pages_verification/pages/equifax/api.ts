@@ -106,6 +106,50 @@ export const verifyOTP = async (
   }
 };
 
+export const alternateNumberVerifyOTP = async (
+  tokenID: number | string,
+  transactionID: string,
+  otp: string,
+  consent: string,
+  mobileNo: string
+) => {
+  const { data, status } = await VerificationSDK.internalFetcher(
+    "./equifax-otp/mobile/re-verify",
+    {
+      body: JSON.stringify({
+        request_data: {
+          mobileNo: mobileNo,
+          tokenID: tokenID,
+          otp: otp,
+          transactionID: transactionID,
+          consent: consent,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    if (data?.response_data?.Status === "99") {
+      console.log("i am inside", data?.response_data?.Error?.ErrorCode);
+      if (
+        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        0
+      ) {
+        return data?.response_data;
+      } else {
+        throw {
+          errorMsg:
+            data?.response_data?.Error?.ErrorDesc ?? "Unknown error occured",
+        };
+      }
+    } else {
+      return data?.response_data;
+    }
+  } else {
+    throw data?.error_data;
+  }
+};
+
 export const verifyToken = async (tokenID: number | string) => {
   const { data, status } = await VerificationSDK.internalFetcher(
     "./equifax/token/verify",

@@ -65,9 +65,11 @@ export const Verification1 = ({
       setOtpVerificationError("");
     },
     onError: (error: any) => {
+      console.log(error);
       setOtpVerificationError(error?.error_msg ?? "Uknown error occured");
     },
     onSuccess: (data) => {
+      console.log(data);
       setSuccess(true);
     },
   });
@@ -152,7 +154,7 @@ export const Verification1 = ({
           <h2>Credit Score</h2>
           <Typography variant="subtitle2">
             Dear customer, Enter OTP sent to your registered mobile Number
-            ending with {requestOTPMutation.data?.mobile ?? ""}
+            ending with {requestOTPMutation.data?.maskedMobileNo ?? ""}
           </Typography>
           {timer > 0 ? (
             <Fragment>
