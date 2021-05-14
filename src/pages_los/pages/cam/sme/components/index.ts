@@ -7,3 +7,5 @@ export * from "./generalDetails";
 export * from "./incomeDetails";
 export * from "./managementDetails";
 export * from "./promoterDetails";
+export * from "./facilityPresent";
+export * from "./facilityProposed";

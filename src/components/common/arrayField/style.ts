@@ -20,4 +20,9 @@ export const useStyles = makeStyles((theme) => ({
   arrayRowCardContent: {
     paddingLeft: "32px",
   },
+  arrayRowCount: {
+    display: "flex",
+    width: "100%",
+    margin: "0 0 16px -8px",
+  },
 }));

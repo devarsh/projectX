@@ -21,7 +21,6 @@ export const SME = ({ data, others }) => {
     personalGuaranteeSecurity,
   } = data;
   let { productID } = others;
-  console.log(productID);
 
   return (
     <table className="page">

@@ -1,4 +1,9 @@
-import { printTDS } from "pages_los/pages/cam/utils";
+import {
+  printTDS,
+  printTDSForAmount,
+  printTDSForPercentage,
+  convertIntoCurrency,
+} from "pages_los/pages/cam/utils";
 
 export const FinancialRatios = ({ finance }) => {
   return (
@@ -11,135 +16,167 @@ export const FinancialRatios = ({ finance }) => {
           Financial Ratios
         </th>
       </tr>
-
+      <tr>
+        <th colSpan={9}>
+          <h6>PROFIT & LOSS DETAILS</h6>
+        </th>
+      </tr>
       <tr>
         <th colSpan={2}>Particulars</th>
         {printTDS({ obj: finance, key: "financialYear" })}
       </tr>
       <tr>
-        <th colSpan={9}>
-          <h5>PROFIT & LOSS DETAILS</h5>
-        </th>
-      </tr>
-
-      <tr>
         <th colSpan={2}>Revenue</th>
-        {printTDS({ obj: finance, key: "revenue" })}
+        {printTDSForAmount({ obj: finance, key: "revenue" })}
       </tr>
 
       <tr>
         <th colSpan={2}>EBITDA</th>
-        {printTDS({ obj: finance, key: "ebitDa" })}
+        {printTDSForAmount({ obj: finance, key: "ebitDa" })}
       </tr>
       <tr>
         <th colSpan={2}>Depreciation</th>
-        {printTDS({ obj: finance, key: "depreciation" })}
+        {printTDSForAmount({ obj: finance, key: "depreciation" })}
       </tr>
       <tr>
         <th colSpan={2}>EBIT</th>
-        {printTDS({ obj: finance, key: "ebit" })}
+        {printTDSForAmount({ obj: finance, key: "ebit" })}
       </tr>
       <tr>
         <th colSpan={2}>Interest Expenses</th>
-        {printTDS({ obj: finance, key: "interestExpenses" })}
+        {printTDSForAmount({ obj: finance, key: "interestExpenses" })}
       </tr>
       <tr>
         <th colSpan={2}>EBT</th>
-        {printTDS({ obj: finance, key: "ebt" })}
+        {printTDSForAmount({ obj: finance, key: "ebt" })}
       </tr>
       <tr>
         <th colSpan={2}>Tax</th>
-        {printTDS({ obj: finance, key: "tax" })}
+        {printTDSForPercentage({ obj: finance, key: "tax" })}
       </tr>
       <tr>
         <th colSpan={2}>PAT</th>
-        {printTDS({ obj: finance, key: "pat" })}
+        {printTDSForAmount({ obj: finance, key: "pat" })}
       </tr>
       <tr>
         <th colSpan={2}>Cash Profit</th>
-        {printTDS({ obj: finance, key: "cashProfit" })}
+        {printTDSForAmount({ obj: finance, key: "cashProfit" })}
       </tr>
       <tr>
         <th colSpan={2}>EBITDA (%)</th>
-        {printTDS({ obj: finance, key: "ebitDaPercentage" })}
+        {printTDSForPercentage({
+          obj: finance,
+          key: "ebitDaPercentage",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>EBT (%)</th>
-        {printTDS({ obj: finance, key: "ebtPercentage" })}
+        {printTDSForPercentage({ obj: finance, key: "ebtPercentage" })}
       </tr>
       <tr>
         <th colSpan={2}>PAT (%)</th>
-        {printTDS({ obj: finance, key: "patPercentage" })}
+        {printTDSForPercentage({ obj: finance, key: "patPercentage" })}
       </tr>
       <tr>
         <th colSpan={2}>Cash Profit (%)</th>
-        {printTDS({ obj: finance, key: "cashProfitPercentage" })}
+        {printTDSForPercentage({
+          obj: finance,
+          key: "cashProfitPercentage",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Directors / Partners Remuneration</th>
-        {printTDS({ obj: finance, key: "directorsOrPartnersRemuneration" })}
+        {printTDSForAmount({
+          obj: finance,
+          key: "directorsOrPartnersRemuneration",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Interest on Capital</th>
-        {printTDS({ obj: finance, key: "interestOnCapital" })}
+        {printTDSForPercentage({
+          obj: finance,
+          key: "interestOnCapital",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Adjusted PAT</th>
-        {printTDS({ obj: finance, key: "adjustedPat" })}
+        {printTDSForAmount({ obj: finance, key: "adjustedPat" })}
       </tr>
       <tr>
         <th colSpan={2}>Adjusted Cash Profit</th>
-        {printTDS({ obj: finance, key: "adjustedCashProfit" })}
+        {printTDSForAmount({
+          obj: finance,
+          key: "adjustedCashProfit",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Adjusted PAT (%)</th>
-        {printTDS({ obj: finance, key: "adjustedPatPercentage" })}
+        {printTDSForPercentage({
+          obj: finance,
+          key: "adjustedPatPercentage",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Adjusted Cash Profit (%)</th>
-        {printTDS({ obj: finance, key: "adjustedCashProfitPercentage" })}
+        {printTDSForPercentage({
+          obj: finance,
+          key: "adjustedCashProfitPercentage",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>DSCR</th>
-        {printTDS({ obj: finance, key: "dscr" })}
+        {printTDSForAmount({ obj: finance, key: "dscr" })}
       </tr>
       <tr>
         <th colSpan={9}>
-          <h5>BALANCE SHEET DETAILS</h5>
+          <h6>BALANCE SHEET DETAILS</h6>
         </th>
+      </tr>
+      <tr>
+        <th colSpan={2}>Particulars</th>
+        {printTDS({ obj: finance, key: "financialYear" })}
       </tr>
 
       <tr>
         <th colSpan={2}>Share Capital</th>
-        {printTDS({ obj: finance, key: "shareCapital" })}
+        {printTDSForAmount({ obj: finance, key: "shareCapital" })}
       </tr>
       <tr>
         <th colSpan={2}>Net Worth (Quasi)</th>
-        {printTDS({ obj: finance, key: "netWorth" })}
+        {printTDSForAmount({ obj: finance, key: "netWorth" })}
       </tr>
       <tr>
         <th colSpan={2}>Long Term Debt Fund</th>
-        {printTDS({ obj: finance, key: "longTermDebtFund" })}
+        {printTDSForAmount({ obj: finance, key: "longTermDebtFund" })}
       </tr>
       <tr>
         <th colSpan={2}>Short Term Debt Fund</th>
-        {printTDS({ obj: finance, key: "shortTermDebtFund" })}
+        {printTDSForAmount({
+          obj: finance,
+          key: "shortTermDebtFund",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Long Term Debt / Equity</th>
-        {printTDS({ obj: finance, key: "longTermDebtEquity" })}
+        {printTDSForAmount({
+          obj: finance,
+          key: "longTermDebtEquity",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>TOL / TNW</th>
-        {printTDS({ obj: finance, key: "tolTnw" })}
+        {printTDSForAmount({ obj: finance, key: "tolTnw" })}
       </tr>
       <tr>
         <th colSpan={2}>Current Assets</th>
-        {printTDS({ obj: finance, key: "currentAssets" })}
+        {printTDSForAmount({ obj: finance, key: "currentAssets" })}
       </tr>
       <tr>
         <th colSpan={2}>Current Liabilities</th>
-        {printTDS({ obj: finance, key: "currentLiabilities" })}
+        {printTDSForAmount({
+          obj: finance,
+          key: "currentLiabilities",
+        })}
       </tr>
       <tr>
         <th colSpan={2}>Current Ratio</th>
@@ -151,8 +188,11 @@ export const FinancialRatios = ({ finance }) => {
       </tr>
       <tr>
         <td colSpan={9}>
-          *Estimated and Projected turnover for the next two years is Rs.20,000
-          in 2019 and Rs.25,000 in 2020...
+          *Estimated and Projected turnover for the next two years is{" "}
+          {convertIntoCurrency({ amount: finance[0]?.revenue })} in{" "}
+          {finance[0]?.financialYear} and{" "}
+          {convertIntoCurrency({ amount: finance[1]?.revenue })} in{" "}
+          {finance[1]?.financialYear}...
         </td>
       </tr>
     </>

@@ -57,7 +57,10 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
     </Alert>
   ) : (
     <Fragment>
-      <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
+      <DialogActions
+        style={{ display: "flex", padding: "8px 24px" }}
+        className="hideForPrint"
+      >
         <HeaderDetails rowData={result?.data?.others ?? ""} />
 
         <div style={{ flexGrow: 1 }}></div>

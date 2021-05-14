@@ -1,4 +1,4 @@
-import { printTDS } from "pages_los/pages/cam/utils";
+import { printTDS, printTDSForAmount } from "pages_los/pages/cam/utils";
 export const IncomeDetails = ({ income }) => {
   if (!Array.isArray(income) || income.length <= 0) {
     return null;
@@ -17,7 +17,7 @@ export const IncomeDetails = ({ income }) => {
 
       <tr>
         <th colSpan={2}>Income Amount</th>
-        {printTDS({ obj: income, key: "incomeAmount" })}
+        {printTDSForAmount({ obj: income, key: "incomeAmount" })}
       </tr>
     </>
   );
