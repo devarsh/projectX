@@ -88,8 +88,8 @@ export const verifyOTP = async (
   if (status === "success") {
     if (data?.response_data?.Status === "99") {
       if (
-        ["GSWDOE999", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
-        1
+        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        0
       ) {
         return data?.response_data;
       } else {
@@ -129,22 +129,7 @@ export const alternateNumberVerifyOTP = async (
     }
   );
   if (status === "success") {
-    if (data?.response_data?.Status === "99") {
-      console.log("i am inside", data?.response_data?.Error?.ErrorCode);
-      if (
-        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
-        0
-      ) {
-        return data?.response_data;
-      } else {
-        throw {
-          errorMsg:
-            data?.response_data?.Error?.ErrorDesc ?? "Unknown error occured",
-        };
-      }
-    } else {
-      return data?.response_data;
-    }
+    return data?.response_data;
   } else {
     throw data?.error_data;
   }

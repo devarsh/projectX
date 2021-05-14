@@ -193,7 +193,7 @@ export const calculateSENPltvCondition = (dependentFields) => {
   const ltv = Number(dependentFields?.ltv?.value);
   const newltvcondition = Number(dependentFields?.newltvCondition?.value);
   const newclfr = Number(dependentFields?.newclfr?.value);
-  if (ltv > newltvcondition && newclfr <= 145) {
+  if (ltv <= newltvcondition && newclfr <= 145) {
     return "Fine";
   } else {
     return "Revise LTV";

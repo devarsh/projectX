@@ -56,6 +56,7 @@ export const Verification1 = ({
   const [otpDeliveryError, setOtpDeliveryError] = useState("");
   const [OTPDelivered, setOTPDelivered] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [secondFlow, setSecondFlow] = useState(false);
   const [maxLimitReached, setMaxLimitReached] = useState(false);
   const [resendCount, setResendCount] = useState(1);
   const { timer, startTimer } = useTimer({ maxTime: otpResendInterval });
@@ -69,8 +70,14 @@ export const Verification1 = ({
       setOtpVerificationError(error?.error_msg ?? "Uknown error occured");
     },
     onSuccess: (data) => {
-      console.log(data);
-      setSuccess(true);
+      if (
+        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        0
+      ) {
+        setSecondFlow(true);
+      } else {
+        setSuccess(true);
+      }
     },
   });
 
@@ -139,7 +146,9 @@ export const Verification1 = ({
 
   return (
     <Fragment>
-      {success ? (
+      {secondFlow ? (
+        <div>Second Flow</div>
+      ) : success ? (
         <Alert>Credit Score Consent Recieved Successful</Alert>
       ) : (
         <Fragment>
