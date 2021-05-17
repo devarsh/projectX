@@ -1,3 +1,4 @@
+import { Default, DateFormat } from "pages_los/pages/cam/components";
 export const BusinessDetails = ({ business }) => {
   if (typeof business === "object") {
     return (
@@ -16,9 +17,11 @@ export const BusinessDetails = ({ business }) => {
             <tr>
               <th colSpan={2}>{res?.label ?? "N/A"}</th>
               <td colSpan={7}>
-                <span className="content-text">
-                  {business[res?.name] ?? "N/A"}
-                </span>
+                {res?.componentType === "dateFormat" ? (
+                  <DateFormat value={business[res?.name]} />
+                ) : (
+                  <Default value={business[res?.name]} />
+                )}
               </td>
             </tr>
           ) : null;
@@ -41,47 +44,84 @@ export const BusinessDetails = ({ business }) => {
 };
 
 const businessDetailsLabels = [
-  { label: "Brief history of the Company", name: "companyHistory" },
+  {
+    label: "Brief history of the Company",
+    name: "companyHistory",
+    componentType: "default",
+  },
   {
     label: "Existing Products / Services of the company",
     name: "companyService",
+    componentType: "default",
   },
-  { label: "End Use of the Products", name: "companyEndUseProducts" },
-  { label: "Name of Raw Materials", name: "companyMaterialsName" },
-  { label: "Name of Major Suppliers", name: "companySuppliersName" },
+  {
+    label: "End Use of the Products",
+    name: "companyEndUseProducts",
+    componentType: "default",
+  },
+  {
+    label: "Name of Raw Materials",
+    name: "companyMaterialsName",
+    componentType: "default",
+  },
+  {
+    label: "Name of Major Suppliers",
+    name: "companySuppliersName",
+    componentType: "default",
+  },
   {
     label: "Payment Terms with Suppliers",
     name: "companyPaymentTermSuppliers",
+    componentType: "default",
   },
-  { label: "Name of Major Customers", name: "companyCustomersName" },
-  { label: "Payment terms with Customers", name: "companyPaymentTerm" },
   {
-    label: "Current Order Book Position ",
-    name: "companyOrderBookPosition",
+    label: "Name of Major Customers",
+    name: "companyCustomersName",
+    componentType: "default",
   },
-  { label: "Marketing & Distribution Policy/Strategy", name: "companyPolicy" },
+  {
+    label: "Payment terms with Customers",
+    name: "companyPaymentTerm",
+    componentType: "default",
+  },
+  {
+    label: "Current Order Book Position",
+    name: "companyOrderBookPosition",
+    componentType: "default",
+  },
+  {
+    label: "Marketing & Distribution Policy/Strategy",
+    name: "companyPolicy",
+    componentType: "default",
+  },
   {
     label: "Name of Competitors",
     name: "companyCompetitors",
+    componentType: "default",
   },
   {
     label: "Name of Major Countries where Exporting",
     name: "companyExportCountry",
+    componentType: "default",
   },
   {
     label: "Domestic and export sales ratio",
     name: "companyExportRatio",
+    componentType: "default",
   },
   {
     label: "No. of Employees",
     name: "companyEmployeeCount",
+    componentType: "default",
   },
   {
     label: "Other Industry specific approvals / license",
     name: "companyLicence",
+    componentType: "default",
   },
   {
     label: "Any awards / Recognition received",
     name: "companyAwards",
+    componentType: "default",
   },
 ];

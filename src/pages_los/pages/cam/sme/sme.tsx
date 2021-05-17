@@ -38,8 +38,8 @@ export const SME = ({ data, others }) => {
         <FinancialRatios finance={financialDetails} />
         <CollateralDetails
           collateral={collateralSecurity}
-          primary={primaryCollateralSecurity}
-          personal={personalGuaranteeSecurity}
+          // primary={primaryCollateralSecurity}
+          // personal={personalGuaranteeSecurity}
         />
       </tbody>
     </table>

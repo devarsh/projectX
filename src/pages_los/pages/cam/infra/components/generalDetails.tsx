@@ -30,7 +30,7 @@ export const GeneralDetails = ({
             </tr>
           ) : null;
         }) ?? "No data found"}
-        <AddressDetails address={address} />;
+        <AddressDetails address={address} />
         <PromoterDetails promoter={promoter} />
         <BankDetails bank={bank} />
         <BreifeAboutProject project={project} />

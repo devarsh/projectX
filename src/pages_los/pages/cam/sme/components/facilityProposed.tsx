@@ -1,4 +1,4 @@
-import { convertIntoPrcentage, convertIntoCurrency } from "../../utils";
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 export const NatureofFacilityProposedDetails = ({
   natureOfFacilityProposed,
 }) => {
@@ -27,17 +27,23 @@ export const NatureofFacilityProposedDetails = ({
           <>
             <tr key={index}>
               <td style={{ textAlign: "center" }}>{index + 1}</td>
-              <td colSpan={2}>{proposedDetails.facilityName}</td>
-              <td colSpan={2}>{proposedDetails.newTakeover}</td>
               <td colSpan={2}>
-                {convertIntoPrcentage({
-                  amount: proposedDetails.rateOfInterest,
-                })}
+                {<Default value={proposedDetails.facilityName} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={proposedDetails.newTakeover} />}
+              </td>
+              <td colSpan={2}>
+                {
+                  //@ts-ignore
+                  <Percentage value={proposedDetails.rateOfInterest} />
+                }
               </td>
               <td colSpan={1}>
-                {convertIntoCurrency({
-                  amount: proposedDetails.amount,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={proposedDetails.amount} />
+                }
               </td>
             </tr>
           </>

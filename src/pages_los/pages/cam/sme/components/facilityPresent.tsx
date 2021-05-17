@@ -1,8 +1,10 @@
 import {
-  dateFormatter,
-  convertIntoPrcentage,
-  convertIntoCurrency,
-} from "../../utils";
+  Default,
+  DateFormat,
+  Amount,
+  Percentage,
+} from "pages_los/pages/cam/components";
+
 export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
   if (
     !Array.isArray(natureOfFacilityPresent) ||
@@ -30,20 +32,24 @@ export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
           <>
             <tr key={index}>
               <td style={{ textAlign: "center" }}>{index + 1}</td>
-              <td colSpan={2}>{presentDetails.facilityName}</td>
-              <td colSpan={2}>{presentDetails.bankName}</td>
+              <td colSpan={2}>
+                {<Default value={presentDetails.facilityName} />}
+              </td>
+              <td colSpan={2}>{<Default value={presentDetails.bankName} />}</td>
               <td colSpan={1}>
-                {dateFormatter({ val: presentDetails.outstandingOn })}
+                {<DateFormat value={presentDetails.outstandingOn} />}
               </td>
               <td colSpan={1}>
-                {convertIntoCurrency({
-                  amount: presentDetails.outstandingBalance,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={presentDetails.outstandingBalance} />
+                }
               </td>
               <td colSpan={2}>
-                {convertIntoPrcentage({
-                  amount: presentDetails.rateOfInterest,
-                })}
+                {
+                  //@ts-ignore
+                  <Percentage value={presentDetails.rateOfInterest} />
+                }
               </td>
             </tr>
           </>
