@@ -42,12 +42,12 @@ const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
   return requestOTPAPI(tokenID);
 };
 
-export const Verification1 = ({
+export const Verification = ({
   token,
   otpLength = 6,
   maxResendCount = 3,
   otpResendInterval = 30,
-  setRegisteredNumberScreen,
+  setFlow,
 }) => {
   const [OTP, setOTP] = useState("");
   const [consent, setConsent] = useState(false);
@@ -56,7 +56,6 @@ export const Verification1 = ({
   const [otpDeliveryError, setOtpDeliveryError] = useState("");
   const [OTPDelivered, setOTPDelivered] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [secondFlow, setSecondFlow] = useState(false);
   const [maxLimitReached, setMaxLimitReached] = useState(false);
   const [resendCount, setResendCount] = useState(1);
   const { timer, startTimer } = useTimer({ maxTime: otpResendInterval });
@@ -74,7 +73,10 @@ export const Verification1 = ({
         ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
         0
       ) {
-        setSecondFlow(true);
+        setFlow({
+          screen: "Mobile",
+          data: data?.response_data?.Error?.ErrorCode,
+        });
       } else {
         setSuccess(true);
       }
@@ -146,9 +148,7 @@ export const Verification1 = ({
 
   return (
     <Fragment>
-      {secondFlow ? (
-        <div>Second Flow</div>
-      ) : success ? (
+      {success ? (
         <Alert>Credit Score Consent Recieved Successful</Alert>
       ) : (
         <Fragment>
