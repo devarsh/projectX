@@ -42,12 +42,12 @@ const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
   return requestOTPAPI(tokenID);
 };
 
-export const Verification1 = ({
+export const Verification = ({
   token,
   otpLength = 6,
   maxResendCount = 3,
   otpResendInterval = 30,
-  setRegisteredNumberScreen,
+  setFlow,
 }) => {
   const [OTP, setOTP] = useState("");
   const [consent, setConsent] = useState(false);
@@ -65,10 +65,21 @@ export const Verification1 = ({
       setOtpVerificationError("");
     },
     onError: (error: any) => {
+      console.log(error);
       setOtpVerificationError(error?.error_msg ?? "Uknown error occured");
     },
     onSuccess: (data) => {
-      setSuccess(true);
+      if (
+        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        0
+      ) {
+        setFlow({
+          screen: "Mobile",
+          data: data?.response_data?.Error?.ErrorCode,
+        });
+      } else {
+        setSuccess(true);
+      }
     },
   });
 
@@ -152,7 +163,7 @@ export const Verification1 = ({
           <h2>Credit Score</h2>
           <Typography variant="subtitle2">
             Dear customer, Enter OTP sent to your registered mobile Number
-            ending with {requestOTPMutation.data?.mobile ?? ""}
+            ending with {requestOTPMutation.data?.maskedMobileNo ?? ""}
           </Typography>
           {timer > 0 ? (
             <Fragment>

@@ -247,7 +247,7 @@ export const BankAnalysisMetaData: MetaDataType = {
         componentType: "arrayField",
       },
       name: "sanctionLimitVariableAmount",
-      label: "Sancation Limit For Each Month",
+      label: "Sanction Limit For Each Month",
       dependentFields: [
         "bankFacility",
         "sanctionLimitType",
@@ -269,7 +269,7 @@ export const BankAnalysisMetaData: MetaDataType = {
             componentType: "currency",
           },
           name: "sanctionAmount",
-          label: "Sancation Limit Amount",
+          label: "Sanction Limit Amount",
           required: true,
           GridProps: {
             xs: 12,

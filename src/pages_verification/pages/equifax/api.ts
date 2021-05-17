@@ -88,8 +88,8 @@ export const verifyOTP = async (
   if (status === "success") {
     if (data?.response_data?.Status === "99") {
       if (
-        ["GSWDOE999", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
-        1
+        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        0
       ) {
         return data?.response_data;
       } else {
@@ -101,6 +101,35 @@ export const verifyOTP = async (
     } else {
       return data?.response_data;
     }
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const alternateNumberVerifyOTP = async (
+  tokenID: number | string,
+  transactionID: string,
+  otp: string,
+  consent: string,
+  mobileNo: string
+) => {
+  const { data, status } = await VerificationSDK.internalFetcher(
+    "./equifax-otp/mobile/re-verify",
+    {
+      body: JSON.stringify({
+        request_data: {
+          mobileNo: mobileNo,
+          tokenID: tokenID,
+          otp: otp,
+          transactionID: transactionID,
+          consent: consent,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
   } else {
     throw data?.error_data;
   }

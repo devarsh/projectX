@@ -262,7 +262,7 @@ export const DataGrid = ({
             {rowsToDisplay.length <= 0 && loading === false ? (
               <div
                 style={{
-                  height: "calc(100vh - 35*8px)",
+                  height: "calc(100vh - 375px)",
                   width: "100%",
                   display: "flex",
 

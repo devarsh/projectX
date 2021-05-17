@@ -4,9 +4,8 @@ table {
   font-size: 12px;
   border-collapse: collapse;
   margin: 0px auto;
-  /* max-width: 2480px; */
+  max-width: 210mm;
   width: 100%;
-  /* max-width: 60%; */
 }
 table th,
 table tfoot th {
@@ -15,13 +14,20 @@ table tfoot th {
   font-weight: 700 !important;
   font-size: 12px !important;
 }
+table tr {
+  width: 100%;
+}
 table th,
 table td {
-  padding: 0 8px !important;
+  padding: 0px 8px !important;
   border: 1px solid lightgrey !important;
-  min-width: 100px !important;
+  min-width: 20mm !important;
+  max-width: 130mm;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
   font-weight: 500;
+  vertical-align: top;
+  word-break: break-word;
+  text-align: justify;
 }
 
 table tr th:first-child,
@@ -48,10 +54,22 @@ table tr td:first-child {
   display: block !important;
   max-width: 100%;
 }
+
 @media print {
   .page-break {
-    page-break-before: always;
-    display: block;
+    /* page-break-before: always;
+    display: block; */
+  }
+  .hideForPrint {
+    display: none !important;
+  }
+  .MuiBackdrop-root {
+    background-color: #fff !important;
+  }
+  div {
+    height: auto !important;
+    min-height: unset !important;
+    max-height: unset !important;
   }
 }
 

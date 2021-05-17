@@ -5,11 +5,20 @@ import loaderGif from "assets/images/loader.gif";
 import Box from "@material-ui/core/Box";
 import * as API from "./api";
 import { useStyles } from "../style";
-import { Verification1 } from "./equifaxStep1";
+import { Verification } from "./step1";
+import { Alternate } from "./step2";
+import { Mobile } from "./mobileNo";
+
+interface flowType {
+  screen: "INIT" | "Mobile" | "Alternate";
+  data?: any;
+}
 
 export const EquifaxVerificationWrapper = () => {
   const classes = useStyles();
-  const [registeredNumberScreen, setRegisteredNumberScreen] = useState(true);
+  const [flow, setFlow] = useState<flowType>({
+    screen: "INIT",
+  });
   const { token } = useParams();
   const verifyToken = useQuery<any, any, any>(
     "verifyToken",
@@ -31,11 +40,12 @@ export const EquifaxVerificationWrapper = () => {
         width={1 / 2}
         className={classes.loginRight}
       >
-        {registeredNumberScreen ? (
-          <Verification1
-            token={token}
-            setRegisteredNumberScreen={setRegisteredNumberScreen}
-          />
+        {flow.screen === "INIT" ? (
+          <Verification token={token} setFlow={setFlow} />
+        ) : flow.screen === "Mobile" ? (
+          <Mobile setFlow={setFlow} flow={flow} />
+        ) : flow.screen === "Alternate" ? (
+          <Alternate token={token} flow={flow} />
         ) : null}
       </Box>
     </Box>
