@@ -13,8 +13,10 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       allowNegative: true,
       allowLeadingZeros: false,
       decimalScale: 2,
-      maxLength: 13,
       isAllowed: (values) => {
+        if (values?.value?.length > 10) {
+          return false;
+        }
         if (values.floatValue === 0) {
           return false;
         }
@@ -22,6 +24,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       },
     },
     enableNumWords: true,
+    maxLength: 10,
   },
   currencyWithoutWords: {
     render: {
@@ -34,8 +37,10 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       allowNegative: false,
       allowLeadingZeros: false,
       decimalScale: 0,
-      maxLength: 13,
       isAllowed: (values) => {
+        if (values?.value?.length > 10) {
+          return false;
+        }
         if (values.floatValue === 0) {
           return false;
         }
@@ -43,6 +48,7 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       },
     },
     enableNumWords: false,
+    maxLength: 10,
   },
   dob: {
     render: {
