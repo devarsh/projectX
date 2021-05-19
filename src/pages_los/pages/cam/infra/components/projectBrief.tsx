@@ -1,5 +1,5 @@
 import { BreifeAboutProjectSubDetails } from "./subProjectBreif";
-import { convertIntoCurrency } from "pages_los/pages/cam/utils";
+import { Default, Amount } from "pages_los/pages/cam/components";
 
 export const BreifeAboutProject = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
@@ -25,14 +25,19 @@ export const BreifeAboutProject = ({ project }) => {
           <>
             <tr key={index + 1}>
               <td colSpan={2}></td>
-              <td>{projectDetail.units}</td>
-              <td colSpan={2}>{projectDetail.carpetArea}</td>
-              <td colSpan={2}>{projectDetail.saleableArea}</td>
-              <td>{projectDetail.ratePerSquareFeet}</td>
+              <td>{<Default value={projectDetail.units} />}</td>
+              <td colSpan={2}>
+                {<Default value={projectDetail.carpetArea} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={projectDetail.saleableArea} />}
+              </td>
+              <td>{<Default value={projectDetail.ratePerSquareFeet} />}</td>
               <td>
-                {convertIntoCurrency({
-                  amount: projectDetail.amount,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={projectDetail.amount} />
+                }
               </td>
             </tr>
             <BreifeAboutProjectSubDetails

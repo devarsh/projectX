@@ -9,7 +9,6 @@ export const NomineeDetails = ({ nominee }) => {
           <>
             <tr key={index}>
               {index + 1}
-              {"-"}
               {nomineeData.salutation} {nomineeData.firstName}{" "}
               {nomineeData.middleName} {nomineeData.lastName}
             </tr>

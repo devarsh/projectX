@@ -1,3 +1,5 @@
+import { filter } from "lodash";
+
 export const AddressDetails = ({ address }) => {
   if (!Array.isArray(address) || address.length <= 0) {
     return (
@@ -29,13 +31,7 @@ export const AddressDetails = ({ address }) => {
 
   var addressFinalDetails: any = [];
   addressFinalDetails = addressArray.map((data: any) => {
-    var filteredAddressData: any = [];
-    for (var key in data) {
-      if (data[key] !== null && data[key] !== "") {
-        filteredAddressData.push(data[key]);
-      }
-    }
-    return filteredAddressData;
+    return data.filter((item) => item !== "").join(",");
   });
 
   return (
@@ -54,7 +50,7 @@ export const AddressDetails = ({ address }) => {
                 "No Address Type"}{" "}
               Address
             </th>
-            <td colSpan={7}>{addressData.join(", ")}</td>
+            <td colSpan={7}>{addressData}</td>
           </tr>
         );
       })}

@@ -1,4 +1,4 @@
-import { convertIntoCurrency } from "pages_los/pages/cam/utils";
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 
 export const CollateralDetails = ({ primary, collateral, personal }) => {
   if (!Array.isArray(primary) || primary.length <= 0) {
@@ -15,35 +15,7 @@ export const CollateralDetails = ({ primary, collateral, personal }) => {
           Collateral Details
         </th>
       </tr>
-      <tr>
-        <th colSpan={2} className="form-sub-heading">
-          PRIMARY SECURITY
-        </th>
-      </tr>
-      <tr>
-        <th colSpan={3}>Address of the Property</th>
-        <th colSpan={2}>Area of the Property</th>
-        <th colSpan={2}>Owner</th>
-        <th colSpan={2}>Market Value (Rs. In Crore)</th>
-      </tr>
-      {primary?.map((primaryData) => {
-        return (
-          <>
-            <tr>
-              <td colSpan={3}>{primaryData.propertyAddress}</td>
-              <td colSpan={2}>{primaryData.propertyArea}</td>
-              <td colSpan={2}>{primaryData.owner}</td>
-              <td>
-                {convertIntoCurrency({
-                  amount: primaryData.marketValue,
-                })}
-              </td>
-            </tr>
-          </>
-        );
-      }) ?? ""}
       <CollateralSecurity collateral={collateral} />
-      <PersonalGuarantee personal={personal} />
     </>
   );
 };
@@ -70,13 +42,18 @@ const CollateralSecurity = ({ collateral }) => {
         return (
           <>
             <tr>
-              <td colSpan={3}>{collateralData.propertyAddress}</td>
-              <td colSpan={2}>{collateralData.propertyArea}</td>
-              <td colSpan={2}>{collateralData.owner}</td>
+              <td colSpan={3}>
+                {<Default value={collateralData.propertyAddress} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={collateralData.propertyArea} />}
+              </td>
+              <td colSpan={2}>{<Default value={collateralData.owner} />}</td>
               <td>
-                {convertIntoCurrency({
-                  amount: collateralData.marketValue,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={collateralData.marketValue} />
+                }
               </td>
             </tr>
           </>
@@ -124,12 +101,15 @@ const PersonalGuarantee = ({ personal }) => {
         return (
           <>
             <tr>
-              <td colSpan={2}>{personalData.guarantorName}</td>
-              <td colSpan={2}>{personalData.panNumber}</td>
+              <td colSpan={2}>
+                {<Default value={personalData.guarantorName} />}
+              </td>
+              <td colSpan={2}>{<Default value={personalData.panNumber} />}</td>
               <td>
-                {convertIntoCurrency({
-                  amount: personalData.netWorth,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={personalData.netWorth} />
+                }
               </td>
             </tr>
           </>

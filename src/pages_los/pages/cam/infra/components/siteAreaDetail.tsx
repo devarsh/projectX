@@ -1,3 +1,4 @@
+import { Default, Amount } from "pages_los/pages/cam/components";
 export const SiteAreaDetails = ({ siteArea }) => {
   if (typeof siteArea !== "object") {
     return null;
@@ -14,19 +15,21 @@ export const SiteAreaDetails = ({ siteArea }) => {
       <tr>
         <th colSpan={2}></th>
         <td colSpan={6}>Land Area :(In Sq. feet)</td>
-        <td colSpan={1}>{siteArea.landArea}</td>
+        <td colSpan={1}>{<Default value={siteArea.landArea} />}</td>
       </tr>
       <tr>
         <th colSpan={2}></th>
         <td colSpan={6}>
           Construction Area as per Commencement Certificate (CC):
         </td>
-        <td colSpan={1}>{siteArea.commencementCertificate}</td>
+        <td colSpan={1}>
+          {<Default value={siteArea.commencementCertificate} />}
+        </td>
       </tr>
       <tr>
         <th colSpan={2}></th>
         <td colSpan={6}>Block:</td>
-        <td colSpan={1}>{siteArea.siteBlock}</td>
+        <td colSpan={1}>{<Default value={siteArea.siteBlock} />}</td>
       </tr>
       <br />
       <tr>
@@ -40,13 +43,15 @@ export const SiteAreaDetails = ({ siteArea }) => {
       {others.map((projectDetail, index) => {
         return (
           <>
-            <tr key={index + 1}>
+            <tr key={index}>
               <td colSpan={2}></td>
-              <td>{index}</td>
-              <td>{projectDetail.siteFloor}</td>
-              <td colSpan={2}>{projectDetail.buildUpArea}</td>
-              <td>{projectDetail.siteUsage}</td>
-              <td colSpan={2}>{projectDetail.units}</td>
+              <td>{index + 1}</td>
+              <td>{<Default value={projectDetail.siteFloor} />}</td>
+              <td colSpan={2}>
+                {<Default value={projectDetail.buildUpArea} />}
+              </td>
+              <td>{<Default value={projectDetail.siteUsage} />}</td>
+              <td colSpan={2}>{<Default value={projectDetail.units} />}</td>
             </tr>
           </>
         );
