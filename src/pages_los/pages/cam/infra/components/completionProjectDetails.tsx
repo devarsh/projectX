@@ -1,5 +1,5 @@
 import { OnGoingProjectDetails } from "./onGoingProjectDetails";
-import { dateFormatter } from "pages_los/pages/cam/utils";
+import { Default, DateFormat } from "pages_los/pages/cam/components";
 
 export const CompletionProjectDetails = ({ projectCompletion }) => {
   if (!Array.isArray(projectCompletion) || projectCompletion.length <= 0) {
@@ -33,17 +33,19 @@ export const CompletionProjectDetails = ({ projectCompletion }) => {
       {completedProject.map((completedProjectDetails) => {
         return (
           <tr>
-            <td>{completedProjectDetails.projectName}</td>
-            <td>{completedProjectDetails.companyName}</td>
-            <td>{completedProjectDetails.projectType}</td>
-            <td>{completedProjectDetails.totalUnits}</td>
-            <td>{completedProjectDetails.location}</td>
-            <td>{completedProjectDetails.totalBuildUpArea}</td>
-            <td>{dateFormatter({ val: completedProjectDetails.startDate })}</td>
+            <td>{<Default value={completedProjectDetails.projectName} />}</td>
+            <td>{<Default value={completedProjectDetails.companyName} />}</td>
+            <td>{<Default value={completedProjectDetails.projectType} />}</td>
+            <td>{<Default value={completedProjectDetails.totalUnits} />}</td>
+            <td>{<Default value={completedProjectDetails.location} />}</td>
             <td>
-              {dateFormatter({ val: completedProjectDetails.completionDate })}
+              {<Default value={completedProjectDetails.totalBuildUpArea} />}
             </td>
-            <td>{completedProjectDetails.groupName}</td>
+            <td>{<DateFormat value={completedProjectDetails.startDate} />}</td>
+            <td>
+              {<DateFormat value={completedProjectDetails.completionDate} />}
+            </td>
+            <td>{<Default value={completedProjectDetails.groupName} />}</td>
           </tr>
         );
       })}

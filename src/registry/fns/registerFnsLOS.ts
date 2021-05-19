@@ -1,4 +1,4 @@
-import { shouldExclude, LOSSDK, retail, readOnly, sme } from "./los";
+import { shouldExclude, LOSSDK, retail, readOnly, sme, infra } from "./los";
 
 import { singletonFunctionRegisrationFactory } from "components/utils";
 const { registerFn } = singletonFunctionRegisrationFactory;
@@ -278,6 +278,8 @@ registerFn("calculateNetWorthQuasi", sme.calculateNetWorthQuasi);
 registerFn("calculateLongTermDebtEquity", sme.calculateLongTermDebtEquity);
 registerFn("calculateTolTnvQuasi", sme.calculateTolTnvQuasi);
 registerFn("calculateCurrentRatio", sme.calculateCurrentRatio);
+
+registerFn("calculateTotalObligation", infra.calculateTotalObligation);
 
 registerFn("getEntityType", LOSSDK.getEntityType);
 registerFn("getApplicants", LOSSDK.getApplicants);

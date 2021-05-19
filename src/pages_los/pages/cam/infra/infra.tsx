@@ -26,7 +26,7 @@ export const Infra = ({ data, others }) => {
           general={generalDetails}
           promoter={promotersDetails}
           address={addressDetails}
-          bank={managementDetails}
+          // bank={managementDetails}
           project={projectOthersDetails}
           projectParticular={projectParticularDetails}
           siteArea={siteAreaDetails}
