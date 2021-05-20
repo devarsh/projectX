@@ -22,6 +22,7 @@ interface MyGridExtendedProps {
   enableGrid: boolean;
   setValueOnDependentFieldsChange?: any;
   setColor?: any;
+  showMaxLength?: boolean;
 }
 
 type MyTextFieldAllProps = Merge<TextFieldProps, MyGridExtendedProps>;
@@ -52,6 +53,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
   maxLength = -1,
   setValueOnDependentFieldsChange,
   setColor,
+  showMaxLength = true,
   ...others
 }) => {
   const {
@@ -189,7 +191,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
               ? validationAPIResult
               : numWordsVar}
           </FormHelperText>
-          {maxLength > 0 && (
+          {maxLength > 0 && Boolean(showMaxLength) ? (
             <FormHelperText
               error={false}
               style={{
@@ -201,7 +203,7 @@ const MyTextField: FC<MyTextFieldProps> = ({
             >
               {value.length}/{maxLength}
             </FormHelperText>
-          )}
+          ) : null}
         </div>
       }
       FormHelperTextProps={{

@@ -45,7 +45,7 @@ const GeneralDetailsMetaData = {
   },
   fields: [
     {
-      render: { componentType: "textField", group: 0 },
+      render: { componentType: "currency", group: 0 },
       name: "condition",
       type: "text",
       label: "Condition",
