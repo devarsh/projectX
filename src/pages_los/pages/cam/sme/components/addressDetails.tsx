@@ -1,32 +1,38 @@
+import { filter } from "lodash";
+
 export const AddressDetails = ({ address }) => {
   if (!Array.isArray(address) || address.length <= 0) {
-    return null;
+    return (
+      <tr>
+        <td>Invalid data</td>
+      </tr>
+    );
   }
 
+  let addressArray: any = [];
+  addressArray = address.map((addressData) => {
+    return [
+      addressData.address1,
+      addressData.address2,
+      addressData.landmark,
+      addressData.location,
+      addressData.district,
+      addressData.city,
+      addressData.state,
+      addressData.country,
+      addressData.pincode,
+    ];
+  });
+
+  let addressType: any = [];
+  addressType = address.map((data) => {
+    return data.addressType;
+  });
+
   var addressFinalDetails: any = [];
-  var filterAdessType: any = [];
-  const transformAddressData = (addressData: any) => {
-    addressData
-      .map((data: any) => {
-        var filteredAddressData: any = [];
-        filterAdessType.push(data.addressType);
-        for (var key in data) {
-          if (data[key] !== null && data[key] !== "") {
-            filteredAddressData.push(data[key]);
-          }
-        }
-        return filteredAddressData;
-      })
-      .map((i, idx) => {
-        addressFinalDetails.push({
-          th: filterAdessType[idx],
-          td: i.join(),
-        });
-      });
-  };
-  //@ts-ignore
-  let addressDetails: any = {};
-  addressDetails = transformAddressData(address);
+  addressFinalDetails = addressArray.map((data: any) => {
+    return data.filter((item) => item !== "").join(",");
+  });
 
   return (
     <>
@@ -35,16 +41,19 @@ export const AddressDetails = ({ address }) => {
           Address Details
         </th>
       </tr>
-      {addressFinalDetails?.map((addressData, index) => {
+      {addressFinalDetails.map((addressData, index) => {
         return (
-          <tr key={index}>
+          <tr>
             <th colSpan={2}>
-              {addressData?.th ?? "Address Type Not Available"} Address
+              {addressData?.index?.addressType ??
+                addressType[index] ??
+                "No Address Type"}{" "}
+              Address
             </th>
-            <td colSpan={7}>{addressData?.td ?? "No data Found"}</td>
+            <td colSpan={7}>{addressData}</td>
           </tr>
         );
-      }) ?? ""}
+      })}
     </>
   );
 };

@@ -1,3 +1,5 @@
+import { Default } from "pages_los/pages/cam/components";
+
 export const BreifeAboutProjectSubDetails = ({ subProject }) => {
   if (!Array.isArray(subProject) || subProject.length <= 0) {
     return null;
@@ -20,12 +22,14 @@ export const BreifeAboutProjectSubDetails = ({ subProject }) => {
           <>
             <tr key={index + 1}>
               <td colSpan={2}></td>
-              <td style={{ textAlign: "center" }}>{index}</td>
-              <td>{projectSubDetail.particulars}</td>
-              <td>{projectSubDetail.units}</td>
-              <td colSpan={2}>{projectSubDetail.saleableArea}</td>
-              <td>{projectSubDetail.carpetArea}</td>
-              <td>{projectSubDetail.constructionArea}</td>
+              <td style={{ textAlign: "center" }}>{index + 1}</td>
+              <td>{<Default value={projectSubDetail.particulars} />}</td>
+              <td>{<Default value={projectSubDetail.units} />}</td>
+              <td colSpan={2}>
+                {<Default value={projectSubDetail.saleableArea} />}
+              </td>
+              <td>{<Default value={projectSubDetail.carpetArea} />}</td>
+              <td>{<Default value={projectSubDetail.constructionArea} />}</td>
             </tr>
           </>
         );

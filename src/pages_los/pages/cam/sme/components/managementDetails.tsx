@@ -1,5 +1,5 @@
 import { IncomeDetails } from "./incomeDetails";
-import { convertIntoCurrency } from "pages_los/pages/cam/utils";
+import { Default, Percentage, Amount } from "pages_los/pages/cam/components";
 
 export const ManagementDetails = ({ management }) => {
   if (!Array.isArray(management) || management.length <= 0) {
@@ -32,43 +32,51 @@ export const ManagementDetails = ({ management }) => {
             </tr>
             <tr>
               <th colSpan={2}>PAN No</th>
-              <td colSpan={7}>{data.panNumber}</td>
+              <td colSpan={7}>{<Default value={data.panNumber} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>DIN / LLPIN No</th>
-              <td colSpan={7}>{data.dinLlPinNo}</td>
+              <td colSpan={7}>{<Default value={data.dinLlPinNo} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>
-              <td colSpan={7}>{data.educationQalification}</td>
+              <td colSpan={7}>
+                {<Default value={data.educationQalification} />}
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Experience</th>
-              <td colSpan={7}>{data.experience}</td>
+              <td colSpan={7}>{<Default value={data.experience} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Associate Companies</th>
-              <td colSpan={7}>{data.associatedCompany}</td>
+              <td colSpan={7}>{<Default value={data.associatedCompany} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Profit Sharing / Shareholding %</th>
-              <td colSpan={7}>{data.profitSharing}</td>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Percentage value={data.profitSharing} />
+                }
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Networth</th>
               <td colSpan={7}>
-                {convertIntoCurrency({
-                  amount: data.netWorth,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={data.netWorth} />
+                }
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Resposnibilities Handled in the Comapany</th>
-              <td colSpan={7}>{data.responsibility}</td>
+              <td colSpan={7}>{<Default value={data.responsibility} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Credit Score</th>
-              <td colSpan={7}>{data.associatedCompany}</td>
+              <td colSpan={7}>{<Default value={data.associatedCompany} />}</td>
             </tr>
 
             <IncomeDetails income={data.incomeDetails} />
