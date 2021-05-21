@@ -41,17 +41,21 @@ const GeneralDetailsMetaData = {
       inputMask: {
         fullWidth: true,
       },
+      searchField: {
+        fullWidth: true,
+      },
     },
   },
   fields: [
     {
-      render: { componentType: "currency", group: 0 },
-      name: "condition",
+      render: { componentType: "searchField", group: 0 },
+      name: "lead",
       type: "text",
-      label: "Condition",
-      placeholder: "Condition",
+      label: "Search Lead",
+      placeholder: "Lead",
       GridProps: { xs: 12, md: 3, sm: 3 },
       setColor: "red",
+      searchComponent: "searchComponent",
     },
     {
       render: {

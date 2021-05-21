@@ -65,6 +65,8 @@ const Typography = lazy(() => import("components/common/typograhpy"));
 
 const TransferList = lazy(() => import("components/common/transferList"));
 
+const SearchField = lazy(() => import("components/common/search"));
+
 const EmptyComponent: FC<{ componentType: string }> = ({ componentType }) => {
   return <div>No Component of type: ${componentType}</div>;
 };
@@ -146,6 +148,9 @@ export const renderField: RenderFunctionType = (
       break;
     case "transferList":
       Component = TransferList;
+      break;
+    case "searchField":
+      Component = SearchField;
       break;
     default:
       Component = EmptyComponent;

@@ -1,5 +1,14 @@
 import FormWrapper, { MetaDataType } from "../index";
 import metaData from "./meta";
+import { singletonFunctionRegisrationFactory } from "components/utils";
+
+const { registerFn } = singletonFunctionRegisrationFactory;
+
+const MyComponent = ({ onAccept, value }) => {
+  return <button onClick={() => onAccept("wowow")}>Errr</button>;
+};
+
+registerFn("searchComponent", MyComponent);
 
 const TestForm = () => {
   return (
