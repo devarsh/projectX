@@ -18,7 +18,7 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
             </tr>
           ) : null;
         }) ?? "No data found"}
-        <AddressDetails address={address} />;
+        <AddressDetails address={address} />
         <PromoterDetails promoter={promoter} />
       </>
     );

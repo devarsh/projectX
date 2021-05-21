@@ -48,7 +48,7 @@ const generalDetailsLabels = [
   {
     label: "Name of the Unit",
     name: "entityName",
-    componentType: "amount",
+    componentType: "default",
   },
   {
     label: "Constitution of Business",

@@ -1,3 +1,4 @@
+import { Default, Amount } from "pages_los/pages/cam/components";
 export const ProjectParticularDetails = ({ projectParticular }) => {
   if (!Array.isArray(projectParticular) || projectParticular.length <= 0) {
     return null;
@@ -25,12 +26,32 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
       </tr>
       {costOfProject.map((projectDetail, index) => (
         <tr key={index + 1}>
-          <td colSpan={2}></td>
-          <td>{projectDetail.particulars}</td>
-          <td>{projectDetail.totalCost}</td>
-          <td>{projectDetail.costIncurred}</td>
-          <td colSpan={2}>{projectDetail.costPerSquareFeet}</td>
-          <td colSpan={2}>{projectDetail.totalCostPercentage}</td>
+          <td colSpan={2}>{index + 1}</td>
+          <td>{<Default value={projectDetail.particulars} />}</td>
+          <td>
+            {
+              //@ts-ignore
+              <Amount value={projectDetail.totalCost} />
+            }
+          </td>
+          <td>
+            {
+              //@ts-ignore
+              <Amount value={projectDetail.costIncurred} />
+            }
+          </td>
+          <td colSpan={2}>
+            {
+              //@ts-ignore
+              <Amount value={projectDetail.costPerSquareFeet} />
+            }
+          </td>
+          <td colSpan={2}>
+            {
+              //@ts-ignore
+              <Amount value={projectDetail.totalCostPercentage} />
+            }
+          </td>
         </tr>
       ))}
       <MeansOfFinnaceProjectDetails projectParticular={meansOfFiance} />
@@ -39,6 +60,7 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
 };
 
 export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
+  console.log(projectParticular);
   if (!Array.isArray(projectParticular) || projectParticular.length <= 0) {
     return null;
   }
@@ -58,11 +80,28 @@ export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
       </tr>
       {projectParticular.map((projectDetail, index) => (
         <tr key={index}>
-          <td colSpan={2}></td>
-          <td colSpan={1}>{projectDetail.particulars}</td>
-          <td colSpan={2}>{projectDetail.totalAmount}</td>
-          <td colSpan={2}>{projectDetail.fundInfused}</td>
-          <td colSpan={2}>{projectDetail.totalCostPercentage}</td>
+          <td colSpan={2}>{<Default value={index + 1} />}</td>
+          <td colSpan={1}>
+            {<Default value={projectDetail.meansOfFinanceParticulars} />}
+          </td>
+          <td colSpan={2}>
+            {
+              //@ts-ignore
+              <Amount value={projectDetail.totalAmount} />
+            }
+          </td>
+          <td colSpan={2}>
+            {
+              //@ts-ignore
+              <Amount vaue={projectDetail.fundInfused} />
+            }
+          </td>
+          <td colSpan={2}>
+            {
+              //@ts-ignore
+              <Amount value={projectDetail.totalCostPercentage} />
+            }
+          </td>
         </tr>
       ))}
     </>
