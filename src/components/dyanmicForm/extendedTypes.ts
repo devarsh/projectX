@@ -288,4 +288,31 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       },
     },
   },
+
+  rateOfIntUptoThreeDigits: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      suffix: "%",
+      decimalScale: 2,
+      fixedDecimalScale: true,
+      allowNegative: true,
+      allowEmptyFormatting: true,
+      isAllowed: (values) => {
+        //@ts-ignore
+        if (values.floatValue <= 999.99) {
+          return true;
+        }
+        return false;
+      },
+    },
+    schemaValidation: {
+      type: "string",
+      rules: [
+        { name: "typeError", params: ["This field is required"] },
+        { name: "required", params: ["This field is required"] },
+      ],
+    },
+  },
 };

@@ -1,6 +1,7 @@
 import { AddressDetails } from "./addressDetails";
 import { BankDetails } from "./bankingArrangements";
 import { IncomeSummaryDetails } from "./incomeSummary";
+import { getAge } from "../../utils";
 
 export const GeneralDetailsPersonal = ({ general }) => {
   if (!Array.isArray(general) || general.length <= 0) {
@@ -17,7 +18,6 @@ export const GeneralDetailsPersonal = ({ general }) => {
       </>
     );
   }
-  console.log("to test the git access");
   return (
     <>
       <tr>
@@ -34,7 +34,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
             </tr>
             <tr>
               <th colSpan={2}>Age </th>
-              <td colSpan={7}>{}</td>
+              <td colSpan={7}>{getAge({ date: personlaDetail.dob })}</td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>
