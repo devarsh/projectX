@@ -54,13 +54,18 @@ export const loanAmountBasedOnLTV = (dependentFields) => {
 };
 
 export const loanAmountBasedOnFOIRLTV = (dependentFields) => {
+  const loanAmount = Number(dependentFields?.loanAmount?.value);
   const loanAmountBasedOnFOIR = Number(
     dependentFields?.loanAmountBasedOnFOIR?.value
   );
   const loanAmountBasedOnLTV = Number(
     dependentFields?.loanAmountBasedOnLTV?.value
   );
-  const result = Math.min(loanAmountBasedOnFOIR, loanAmountBasedOnLTV);
+  const result = Math.min(
+    loanAmount,
+    loanAmountBasedOnFOIR,
+    loanAmountBasedOnLTV
+  );
   return Math.round(result);
 };
 
@@ -104,10 +109,12 @@ export const eligibileLoanAmountDifference = (dependentFields) => {
   const loanAmountBasedOnFOIRLTV = Number(
     dependentFields?.loanAmountBasedOnFOIRLTV?.value
   );
-
-  const differencePercentage =
-    (loanAmount - loanAmountBasedOnFOIRLTV) / loanAmount;
-  return Math.ceil(differencePercentage * 100);
+  if (loanAmount > 0 && loanAmountBasedOnFOIRLTV > 0) {
+    const differencePercentage =
+      (loanAmount - loanAmountBasedOnFOIRLTV) / loanAmount;
+    return Math.ceil(differencePercentage * 100);
+  }
+  return 0;
 };
 
 export const calculateNewLTVCondition = (dependentFields) => {
@@ -207,7 +214,7 @@ export const calculateSENPNewLTV = (dependentFields) => {
   const loanAmountBasedOnFOIR = Number(
     dependentFields?.loanAmountBasedOnFOIR?.value
   );
-  return Math.ceil((loanAmountBasedOnFOIR / propertyMarketValue) * 100);
+  return Math.round((loanAmountBasedOnFOIR / propertyMarketValue) * 100);
 };
 
 export const calculateSENPNewFOIR = (dependentFields) => {
@@ -234,13 +241,17 @@ export const calculateSENPLoanAmountBasedOnLTV = (dependentFields) => {
 };
 
 export const calculateSENPEligibleLoanAmount = (dependentFields) => {
+  const loanAmount = Number(dependentFields?.loanAmount?.value);
   const loanAmountBasedOnFOIRCondition = Number(
     dependentFields?.loanAmountBasedOnFOIRCondition?.value
   );
   const loanAmountBasedOnLTV = Number(
     dependentFields?.loanAmountBasedOnLTV?.value
   );
-  const result = Math.max(loanAmountBasedOnFOIRCondition, loanAmountBasedOnLTV);
+  const result = Math.min(
+    loanAmount,
+    Math.max(loanAmountBasedOnFOIRCondition, loanAmountBasedOnLTV)
+  );
   return Math.round(result);
 };
 
@@ -321,13 +332,16 @@ export const calculateLoanAmountBasedOnRent = (dependentFields) => {
 };
 
 export const calculateMinimumLoanAmountBasedOnLTVRent = (dependentFields) => {
+  const loanAmount = Number(dependentFields?.loanAmount?.value);
   const loanAmountBasedOnLTV = Number(
     dependentFields?.loanAmountBasedOnLTV?.value
   );
   const eligibleAmountBasedOnRent = Number(
     dependentFields?.eligibleAmountBasedOnRent?.value
   );
-  return Math.round(Math.min(loanAmountBasedOnLTV, eligibleAmountBasedOnRent));
+  return Math.round(
+    Math.min(loanAmount, loanAmountBasedOnLTV, eligibleAmountBasedOnRent)
+  );
 };
 
 export const calculateLRDEligibleEMI = (dependentFields) => {
@@ -344,4 +358,28 @@ export const calculateLRDEligibleEMI = (dependentFields) => {
 
 export const calculateLRDEligibleLoanAmount = (dependentFields) => {
   return Number(dependentFields?.minimunLoanLTVRent?.value);
+};
+
+export const calculateSENPLAPCondition = (dependentFields) => {
+  const newltvcondition = Number(dependentFields?.newltvCondition?.value);
+  const newltv = Number(dependentFields?.newltv?.value);
+  const clfr = Number(dependentFields?.clfr?.value);
+  if (newltv <= newltvcondition || clfr <= 145) {
+    return "Fine";
+  } else {
+    return "Revise FOIR";
+  }
+};
+
+export const calculateSENPLAPLoanAmountCondition = (dependentFields) => {
+  const LTVPercentage = Number(dependentFields?.newltvCondition?.value);
+  return `Put LTV Up to ${LTVPercentage}%`;
+};
+
+export const calculateSalariedEligibleEMI = (dependentFields) => {
+  const rateValue = Number(dependentFields?.rate?.value) / 100 / 12;
+  const tenur = Number(dependentFields?.tenur?.value);
+  const eligibleAmount =
+    Number(dependentFields?.eligibleLoanAmount?.value) * -1;
+  return Math.round(Math.abs(PMT(rateValue, tenur, eligibleAmount)));
 };
