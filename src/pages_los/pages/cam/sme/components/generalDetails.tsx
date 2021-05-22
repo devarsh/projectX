@@ -13,23 +13,93 @@ export const GeneralDetails = ({ general, promoter, address }) => {
             General Details
           </th>
         </tr>
-        {generalDetailsLabels?.map((res, index) => {
-          return general[res?.name] ? (
-            <tr key={index + 1}>
-              <th colSpan={2}>{res?.label ?? "N/A"}</th>
-              <td colSpan={7}>
-                {res?.componentType === "amount" ? (
-                  //@ts-ignore
-                  <Amount value={general[res?.name]} />
-                ) : res?.componentType === "dateFormat" ? (
-                  <DateFormat value={general[res?.name]} />
-                ) : (
-                  <Default value={general[res?.name]} />
-                )}
-              </td>
-            </tr>
-          ) : null;
-        }) ?? "No data found"}
+        <tr>
+          <th colSpan={2}>Name of the Unit</th>
+          <td colSpan={7}>{<Default value={general.entityName} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Constitution of Business</th>
+          <td colSpan={7}>{<Default value={general.entityType} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Ownership of Factory / Business Premises</th>
+          <td colSpan={7}>{<Default value={general.ownershipType} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Date of incorporation</th>
+          <td colSpan={7}>{<DateFormat value={general.inceptionDate} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Existing Type of Industry</th>
+          <td colSpan={7}>{<Default value={general.typeOfIndustry} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Nature of Existing Business</th>
+          <td colSpan={7}>{<Default value={general.businessNature} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Proposed business</th>
+          <td colSpan={7}>{<Default value={general.businessProposed} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>External credit rating</th>
+          <td colSpan={7}>{<Default value={general.rankExternal} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>MSME</th>
+          <td colSpan={7}>{<Default value={general.businessSize} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>PAN No</th>
+          <td colSpan={7}>{<Default value={general.panNumber} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Udhyam No</th>
+          <td colSpan={7}>{<Default value={general.udhyogNumber} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>CMR Ranking</th>
+          <td colSpan={7}>{<Default value={general.crmRank} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Name of Promoters / Directors</th>
+          <td colSpan={7}>{<Default value={"not specified"} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Purpose of loan</th>
+          <td colSpan={7}>{<Default value={general.purposeLoan} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Turnover in current financial year</th>
+          <td colSpan={7}>
+            {
+              //@ts-ignore
+              <Amount value={general.turnOverAmount} />
+            }
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>
+            Last 12 Months average Bank Balance & Average Utilisation of Working
+            Capital Limits
+          </th>
+          <td colSpan={7}>
+            {
+              //@ts-ignore
+              <Amount value={general.averageBankBal} />
+            }
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Credit Summation in Bank in Last 12 months</th>
+          <td colSpan={7}>{<Default value={general.chequeBounces} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>
+            Inward cheque bounces, if any and % of total Cheque bounce
+          </th>
+          <td colSpan={7}>{<Default value={general.chequeBouncesPer} />}</td>
+        </tr>
         <AddressDetails address={address} />
         <PromoterDetails promoter={promoter} />
         <NatureofFacilityPresentDetails
@@ -43,89 +113,3 @@ export const GeneralDetails = ({ general, promoter, address }) => {
   }
   return null;
 };
-
-const generalDetailsLabels = [
-  {
-    label: "Name of the Unit",
-    name: "entityName",
-    componentType: "default",
-  },
-  {
-    label: "Constitution of Business",
-    name: "entityType",
-    componentType: "default",
-  },
-  {
-    label: "Ownership of Factory / Business Premises",
-    name: "ownershipType",
-    componentType: "default",
-  },
-  {
-    label: "Date of incorporation:",
-    name: "inceptionDate",
-    componentType: "dateFormat",
-  },
-  {
-    label: "Existing Type of Industry:",
-    name: "typeOfIndustry",
-    componentType: "default",
-  },
-  {
-    label: "Nature of Existing Business:",
-    name: "businessNature",
-    componentType: "default",
-  },
-  {
-    label: "Proposed business:",
-    name: "businessProposed",
-    componentType: "default",
-  },
-  {
-    label: "External credit rating:",
-    name: "rankExternal",
-    componentType: "default",
-  },
-  {
-    label: "MSME",
-    name: "businessSize",
-    componentType: "default",
-  },
-  { label: "PAN No:", name: "panNumber", componentType: "default" },
-  {
-    label: "Udhyam No:",
-    name: "udhyogNumber",
-    componentType: "default",
-  },
-  {
-    label: "CMR Ranking :",
-    name: "crmRank",
-    componentType: "default",
-  },
-  {
-    label: "Name of Promoters / Directors",
-    name: "Null",
-    componentType: "default",
-  },
-  { label: "Purpose of loan:", name: "purposeLoan", componentType: "default" },
-  {
-    label: "Turnover in current financial year",
-    name: "turnOverAmount",
-    componentType: "default",
-  },
-  {
-    label:
-      "Last 12 Months average Bank Balance & Average Utilisation  of Working Capital Limits",
-    name: "averageBankBal",
-    componentType: "default",
-  },
-  {
-    label: "Credit Summation in Bank in Last 12 months",
-    name: "chequeBounces",
-    componentType: "default",
-  },
-  {
-    label: "Inward cheque bounces, if any and % of total Cheque bounce",
-    name: "chequeBouncesPer",
-    componentType: "default",
-  },
-];
