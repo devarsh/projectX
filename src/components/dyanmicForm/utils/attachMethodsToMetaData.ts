@@ -47,6 +47,10 @@ const setColorMethodNotFound = (fieldKey) => () => {
   console.log(`no method for setColorMethodNotFound found at ${fieldKey}`);
   return "";
 };
+const searchComponentNotFound = (fieldKey) => () => {
+  console.log(`no method for searchComponentNotFound found at ${fieldKey}`);
+  return "Component not found";
+};
 
 export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
   [/^fields.*.options$/, optionsMethodNotFound],
@@ -67,6 +71,7 @@ export const defaultFieldsToAttachMethods: AttachMethodArrayType[] = [
     setValueOnDependentFieldsChangeNotFound,
   ],
   [/^fields.*.getFixedRowsCount$/, getFixedRowsCount],
+  [/^fields.*.searchComponent$/, searchComponentNotFound],
 ];
 
 //do not walk for arrayFields _fields as well we will run it seperately

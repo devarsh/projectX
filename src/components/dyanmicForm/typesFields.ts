@@ -25,6 +25,7 @@ import { TextareaAutosizeFieldProps } from "components/common/textarea";
 import { TypographyProps } from "components/common/typograhpy";
 import { HiddenFieldProps } from "components/common/hidden";
 import { TransferListProps } from "components/common/transferList";
+import { SearchFieldProps } from "components/common/search";
 export interface FieldRenderProps<T> {
   componentType: T;
   group?: number;
@@ -174,3 +175,10 @@ export type AllTransferListProps = Merge<
   Omitted<TransferListProps>,
   FieldMetaData<"transferList">
 >;
+
+export type AllSearchFieldProps = Merge<
+  Omitted<SearchFieldProps>,
+  FieldMetaData<"searchField">
+>;
+
+export type SearchFieldPropsOptional = Optional<AllSearchFieldProps>;

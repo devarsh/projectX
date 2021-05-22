@@ -182,6 +182,9 @@ export const attachMethodsToMetaData = (
       const prev = pathSplit.slice(0, pathSplit.length - 1);
       const newPath = [...prev, `_${one[2]}Key`].join(".");
       newMetaData = setIn(newMetaData, newPath, one[1]);
+    } else {
+      const retVal = registrationFnInstance.getFn(one[1], one[3]);
+      newMetaData = setIn(newMetaData, one[0], retVal);
     }
   }
   return newMetaData;

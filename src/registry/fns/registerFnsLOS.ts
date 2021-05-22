@@ -283,3 +283,25 @@ registerFn("calculateTotalObligation", infra.calculateTotalObligation);
 
 registerFn("getEntityType", LOSSDK.getEntityType);
 registerFn("getApplicants", LOSSDK.getApplicants);
+
+registerFn("retailCalculateSENPLAPCondition", retail.calculateSENPLAPCondition);
+
+registerFn(
+  "retailCalculateSENPLAPLoanAmountCondition",
+  retail.calculateSENPLAPLoanAmountCondition
+);
+
+registerFn(
+  "retailCalculateSalariedEligibleEMI",
+  retail.calculateSalariedEligibleEMI
+);
+
+registerFn(
+  "ShouldExcludeShowLoanAmountBasedFOIR",
+  shouldExclude.showLoanAmountBasedFOIR
+);
+
+registerFn(
+  "ShouldExcludeShowLoanAmountBasedLTV",
+  shouldExclude.showLoanAmountBasedLTV
+);

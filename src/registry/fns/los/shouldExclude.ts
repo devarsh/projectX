@@ -358,3 +358,17 @@ export const showUnsecureOtherIncomeAmountField = async (
   }
   return false;
 };
+
+export const showLoanAmountBasedFOIR = async (_, dependentFields) => {
+  if (dependentFields["condition"].value === "Fine") {
+    return false;
+  }
+  return true;
+};
+
+export const showLoanAmountBasedLTV = async (_, dependentFields) => {
+  if (dependentFields["ltvCondition"].value === "Fine") {
+    return false;
+  }
+  return true;
+};

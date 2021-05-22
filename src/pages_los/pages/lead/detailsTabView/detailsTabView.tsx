@@ -76,6 +76,7 @@ export const DetailsTabView: FC<{
                 componentType={one.componentType}
                 productType={one.productType}
                 moduleType={moduleType}
+                secondaryProduct={one?.secondaryProductType}
                 refID={refID}
                 isDataChangedRef={isDataChangedRef}
                 dataAlwaysExists={Boolean(one.dataAlwaysExists)}

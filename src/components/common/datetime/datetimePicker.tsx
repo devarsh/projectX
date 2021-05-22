@@ -115,6 +115,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
       onChange={customDateChangeHandler}
       onBlur={handleBlur}
       disabled={isSubmitting}
+      readOnly={readOnly}
       InputProps={{
         readOnly: readOnly,
         ...InputProps,
