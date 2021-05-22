@@ -7,7 +7,9 @@ import { DeleteAction } from "./delete";
 import { MyGridWrapper } from "./gridWrapper";
 import { CRUDContext } from "./context";
 import { DocumentGridCRUD } from "../documents/documentsTab";
+import { SimpleCRUD } from "./simpleCRUD";
 import { InvalidAction } from "pages_los/common/invalidAction";
+import { CRUDContextProvider, crudAPIContextGenerator } from "./context";
 const actions: ActionTypes[] = [
   {
     actionName: "View",
@@ -34,11 +36,17 @@ export const GridCRUD: FC<{
   showDocuments?: boolean;
   disableActions?: string | string[];
   setEditFormStateFromInitValues?: any;
+  secondaryProduct?: string;
+  secondaryProductDataExist?: boolean;
+  secondaryProductDisableCache?: boolean;
 }> = ({
   isDataChangedRef,
   showDocuments,
   disableActions,
   setEditFormStateFromInitValues,
+  secondaryProduct,
+  secondaryProductDataExist,
+  secondaryProductDisableCache,
 }) => {
   let allActions = useRef<any>(null);
   if (allActions.current === null) {
@@ -49,6 +57,14 @@ export const GridCRUD: FC<{
         actionLabel: "Document Details",
         multiple: false,
         rowDoubleClick: false,
+      });
+    }
+    if (Boolean(secondaryProduct)) {
+      allActions.current.push({
+        actionName: "Detail",
+        actionLabel: "Master",
+        multiple: undefined,
+        alwaysAvailable: true,
       });
     }
     let disableActionsArray: string[];
@@ -121,6 +137,22 @@ export const GridCRUD: FC<{
             serialNo={currentAction?.rows[0]?.id}
             onClose={closeMyDialog}
           />
+        ) : (currentAction?.name ?? "") === "Detail" ? (
+          <CRUDContextProvider
+            {...crudAPIContextGenerator(
+              context?.moduleType,
+              secondaryProduct,
+              context?.refID
+            )}
+          >
+            <SimpleCRUD
+              isDataChangedRef={isMyDataChangedRef}
+              dataAlwaysExists={secondaryProductDataExist}
+              closeDialog={closeMyDialog}
+              readOnly={false}
+              disableCache={secondaryProductDisableCache}
+            />
+          </CRUDContextProvider>
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
         )}

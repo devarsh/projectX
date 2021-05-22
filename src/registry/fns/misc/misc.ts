@@ -244,18 +244,18 @@ const MiscAPI = () => {
       ) {
         let result = data?.response_data?.locationList;
         let areaArray = result.map((dtl) => ({
-          value: dtl?.Name,
-          label: dtl?.Name,
+          value: dtl?.name,
+          label: dtl?.name,
         }));
         areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
         const otherValues = result.reduce((accumlator, current) => {
           const val = {
-            city: current?.Block,
-            district: current?.District,
-            state: current?.State,
-            country: current?.Country,
+            city: current?.circle,
+            district: current?.district,
+            state: current?.state,
+            country: current?.country,
           };
-          accumlator[current.Name] = val;
+          accumlator[current.name] = val;
           return accumlator;
         }, {});
         return { options: areaArray, others: otherValues };

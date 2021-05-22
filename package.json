@@ -29,7 +29,6 @@
     "match-sorter": "^5.0.0",
     "namor": "^2.0.2",
     "notistack": "^1.0.5",
-    "num-words": "^1.2.0",
     "prettier": "^2.1.2",
     "react": "^17.0.1",
     "react-d3-speedometer": "^1.0.1",

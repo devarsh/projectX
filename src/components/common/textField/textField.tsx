@@ -8,7 +8,7 @@ import CircularProgress, {
   CircularProgressProps,
 } from "@material-ui/core/CircularProgress";
 import { Merge } from "../types";
-import numWords from "num-words";
+import { numWords } from "components/common/utils";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { transformDependentFieldsState } from "packages/form";
 
@@ -194,11 +194,11 @@ const MyTextField: FC<MyTextFieldProps> = ({
           {maxLength > 0 && Boolean(showMaxLength) ? (
             <FormHelperText
               error={false}
+              disabled={isSubmitting}
               style={{
                 flex: 1,
                 textAlign: "right",
                 margin: "5px 15px 0 0",
-                color: "black",
               }}
             >
               {value.length}/{maxLength}

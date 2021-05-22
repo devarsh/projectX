@@ -114,6 +114,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
       onChange={customDateChangeHandler}
       onBlur={handleBlur}
       disabled={isSubmitting}
+      readOnly={readOnly}
       InputProps={{
         readOnly: readOnly,
         tabIndex: readOnly ? -1 : undefined,

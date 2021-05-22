@@ -127,6 +127,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
       InputLabelProps={{
         shrink: true,
       }}
+      readOnly={readOnly}
       inputRef={focusRef}
       InputProps={{
         readOnly: readOnly,
