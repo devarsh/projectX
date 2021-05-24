@@ -315,4 +315,27 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       ],
     },
   },
+
+  squareFeetFormat: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      thousandSeparator: true,
+      thousandsGroupStyle: "lakh",
+      allowNegative: false,
+      allowLeadingZeros: false,
+      isAllowed: (values) => {
+        if (values?.value?.length > 20) {
+          return false;
+        }
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
+    },
+    maxLength: 20,
+    showMaxLength: false,
+  },
 };
