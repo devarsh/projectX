@@ -39,7 +39,7 @@ export const Profile = () => {
   ) : (
     <Fragment>
       <FormWrapper
-        key="leadInquiry"
+        key="Profile"
         metaData={UserProfileMetaData as MetaDataType}
         initialValues={queryData.data}
         onSubmitHandler={() => {}}

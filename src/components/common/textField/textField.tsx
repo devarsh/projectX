@@ -23,6 +23,7 @@ interface MyGridExtendedProps {
   setValueOnDependentFieldsChange?: any;
   setColor?: any;
   showMaxLength?: boolean;
+  allowToggleVisiblity?: boolean;
 }
 
 type MyTextFieldAllProps = Merge<TextFieldProps, MyGridExtendedProps>;

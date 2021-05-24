@@ -228,6 +228,7 @@ export interface FormWrapperProps {
   disableGroupErrorDetection?: boolean;
   hideTitleBar?: boolean;
   hideDisplayModeInTitle?: boolean;
+  formStyle?: any;
 }
 
 export interface FormProps {

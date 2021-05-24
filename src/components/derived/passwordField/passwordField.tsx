@@ -5,7 +5,10 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 
-const PasswordField: React.FC<TextFieldProps> = ({ ...others }) => {
+const PasswordField: React.FC<TextFieldProps> = ({
+  allowToggleVisiblity,
+  ...others
+}) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const handleVisibility = useCallback(() => {
     setPasswordVisibility((old) => !old);
@@ -15,7 +18,7 @@ const PasswordField: React.FC<TextFieldProps> = ({ ...others }) => {
       {...others}
       type={passwordVisibility ? "text" : "password"}
       InputProps={{
-        endAdornment: (
+        endAdornment: Boolean(allowToggleVisiblity) ? (
           <InputAdornment position="end">
             <IconButton
               aria-label="toggle password visibility"
@@ -26,7 +29,7 @@ const PasswordField: React.FC<TextFieldProps> = ({ ...others }) => {
               {passwordVisibility ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>
-        ),
+        ) : null,
       }}
     />
   );

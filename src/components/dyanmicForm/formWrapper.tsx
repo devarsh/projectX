@@ -37,7 +37,12 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
       displayMode,
       hideTitleBar = false,
       hideDisplayModeInTitle = false,
-      formHeight = "65vh",
+      formStyle = {
+        background: "white",
+        height: "calc(100vh - 230px)",
+        overflowY: "auto",
+        overflowX: "hidden",
+      },
       children,
     },
     ref
@@ -55,7 +60,6 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
     );
     const yupValidationSchema = constructYupSchema(metaData.fields);
     const formName = metaData.form.name ?? "NO_NAME";
-    console.log(freshMetaData, metaData);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <FormContext.Provider
@@ -89,7 +93,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
             hideTitleBar={hideTitleBar}
             hideDisplayModeInTitle={hideDisplayModeInTitle}
             wrapperChild={children}
-            formHeight={formHeight}
+            formStyle={formStyle}
           />
         </FormContext.Provider>
       </MuiPickersUtilsProvider>
@@ -113,7 +117,7 @@ const ChildFormWrapper = forwardRef<any, any>(
       hideTitleBar,
       hideDisplayModeInTitle,
       wrapperChild,
-      formHeight,
+      formStyle,
     },
     ref
   ) => {
@@ -189,12 +193,7 @@ const ChildFormWrapper = forwardRef<any, any>(
         ) : formRenderType === "tabs" ? (
           <Container
             maxWidth="lg"
-            style={{
-              background: "white",
-              height: "calc(100vh - 230px)",
-              overflowY: "auto",
-              overflowX: "hidden",
-            }}
+            style={formStyle}
             key={`${formName}-grouped-tabs`}
           >
             <GroupedForm
@@ -209,14 +208,7 @@ const ChildFormWrapper = forwardRef<any, any>(
               handleSubmitPartial={handleSubmitPartial}
             >
               {({ steps }) => (
-                <div
-                // style={{
-                //   //@ts-ignore
-                //   height: "60vh",
-                //   overflowY: "auto",
-                //   overflowX: "hidden",
-                // }}
-                >
+                <div>
                   <br />
                   <Suspense fallback={<div>Loading...</div>}>{steps}</Suspense>
                 </div>
@@ -224,16 +216,7 @@ const ChildFormWrapper = forwardRef<any, any>(
             </GroupedForm>
           </Container>
         ) : formRenderType === "simple" ? (
-          <Container
-            maxWidth="lg"
-            style={{
-              background: "white",
-              height: "calc(100vh - 230px)",
-              overflowY: "auto",
-              overflowX: "hidden",
-            }}
-            key={`${formName}-simple`}
-          >
+          <Container maxWidth="lg" style={formStyle} key={`${formName}-simple`}>
             <br />
             <br />
             <SimpleForm
@@ -243,14 +226,7 @@ const ChildFormWrapper = forwardRef<any, any>(
               formName={formName}
             >
               {({ spacing, direction, fieldsToRender }) => (
-                <div
-                // style={{
-                //   //@ts-ignore
-                //   height: "60vh",
-                //   overflowY: "auto",
-                //   overflowX: "hidden",
-                // }}
-                >
+                <div>
                   <Grid
                     container={true}
                     spacing={spacing}

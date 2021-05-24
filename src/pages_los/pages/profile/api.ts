@@ -31,7 +31,7 @@ export const changeEmployeePassword = async ({
         request_data: {
           userId: userID,
           currentPassword: currentPassword,
-          newPassword: password,
+          password: password,
         },
         channel: "W",
       }),
