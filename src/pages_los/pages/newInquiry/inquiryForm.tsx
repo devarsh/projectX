@@ -6,6 +6,7 @@ import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import * as API from "./api";
+import { cloneDeep } from "lodash-es";
 interface InsertFormDataFnType {
   submitAction: string;
   data: object;
@@ -64,7 +65,9 @@ export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {
   );
   let metaData: MetaDataType = {} as MetaDataType;
   if (result.isSuccess) {
-    metaData = JSON.parse(JSON.stringify(result.data)) as MetaDataType;
+    //metaData = JSON.parse(JSON.stringify(result.data)) as MetaDataType;
+    metaData = cloneDeep(result.data) as MetaDataType;
+
     if (metaData?.form?.render?.renderType === "stepper") {
       metaData.form.render.renderType = "tabs";
     }

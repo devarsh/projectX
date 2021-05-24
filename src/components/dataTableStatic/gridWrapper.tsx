@@ -5,6 +5,7 @@ import {
   useImperativeHandle,
   forwardRef,
 } from "react";
+import { cloneDeep } from "lodash-es";
 import {
   attachAlignmentProps,
   sortColumnsBySequence,
@@ -196,7 +197,8 @@ const transformMetaData = ({
   actions,
   setAction,
 }): GridMetaDataType => {
-  let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
+  let metaData = cloneDeep(freshMetaData) as GridMetaDataType;
+  //let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
   let newMetaData = attachMethodsToMetaData(metaData as GridMetaDataType);
   let columns = newMetaData.columns as any;
   const hiddenColumns = extractHiddenColumns(columns);

@@ -30,6 +30,7 @@ import { MetaDataType } from "components/dyanmicForm";
 import { useStyles } from "./style";
 import { useRecoilCallback } from "recoil";
 import { formFieldAtom } from "packages/form";
+import { cloneDeep } from "lodash-es";
 export interface ArrayField2Props {
   fieldKey: string;
   name: string;
@@ -70,9 +71,10 @@ export const ArrayField2: FC<ArrayField2Props> = ({
   fixedRows,
   getFixedRowsCount,
 }) => {
-  let currentFieldsMeta = JSON.parse(
-    JSON.stringify(_fields)
-  ) as FieldMetaDataType[];
+  // let currentFieldsMeta = JSON.parse(
+  //   JSON.stringify(_fields)
+  // ) as FieldMetaDataType[];
+  let currentFieldsMeta = cloneDeep(_fields) as FieldMetaDataType[];
   const classes = useStyles();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [dialogMsg, setDialogMsg] = useState("");
