@@ -4,7 +4,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import { renderValue } from "components/dyanmicForm/utils/valueRenderer";
-import { FieldMetaDataType } from "components/dyanmicForm/";
+import { FieldMetaDataType } from "components/dyanmicForm";
+import { cloneDeep } from "lodash-es";
 //import { MoveSequenceToRender } from "components/dyanmicForm/utils/fixSequenceInMetaData";
 import { attachValuesToMetaData } from "components/dyanmicForm/utils/attachValuesToMetaData";
 //import { MetaDataType } from "components/dyanmicForm";
@@ -49,9 +50,10 @@ export const ArrayFieldValues: FC<ArrayField2Props & { defaultValue: any }> = ({
   defaultValue,
   componentProps = {},
 }) => {
-  let currentFieldsMeta = JSON.parse(
-    JSON.stringify(_fields)
-  ) as FieldMetaDataType[];
+  // let currentFieldsMeta = JSON.parse(
+  //   JSON.stringify(_fields)
+  // ) as FieldMetaDataType[];
+  let currentFieldsMeta = cloneDeep(_fields) as FieldMetaDataType[];
   const classes = useStyles();
   // let metaData = { form: {}, fields: currentFieldsMeta } as MetaDataType;
   // metaData = MoveSequenceToRender(metaData);

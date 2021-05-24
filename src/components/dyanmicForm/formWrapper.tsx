@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { FormContext, useForm } from "packages/form";
+import { cloneDeep } from "lodash-es";
 import { renderFieldsByGroup } from "./utils/groupWiserenderer";
 import {
   constructInitialValue,
@@ -42,7 +43,8 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
     ref
   ) => {
     //this line is very important to preserve our metaData across render - deep clone hack
-    let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
+    let metaData = cloneDeep(freshMetaData) as MetaDataType;
+    //let metaData = JSON.parse(JSON.stringify(freshMetaData)) as MetaDataType;
     metaData = extendFieldTypes(metaData, extendedMetaData);
     metaData = attachMethodsToMetaData(metaData);
     metaData = MoveSequenceToRender(metaData);
@@ -53,6 +55,7 @@ export const FormWrapper = forwardRef<FormWrapperProps, any>(
     );
     const yupValidationSchema = constructYupSchema(metaData.fields);
     const formName = metaData.form.name ?? "NO_NAME";
+    console.log(freshMetaData, metaData);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <FormContext.Provider

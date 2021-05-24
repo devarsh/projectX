@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { cloneDeep } from "lodash-es";
 import { GridMetaDataType, ActionTypes } from "./types";
 import {
   attachCellComponentsToMetaData,
@@ -60,7 +61,8 @@ const transformMetaData = ({
   actions,
   setAction,
 }): GridMetaDataType => {
-  let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
+  let metaData = cloneDeep(freshMetaData) as GridMetaDataType;
+  //let metaData = JSON.parse(JSON.stringify(freshMetaData)) as GridMetaDataType;
 
   let columns = metaData.columns as any;
   //make sure extract functions are called before attach and lastly sort

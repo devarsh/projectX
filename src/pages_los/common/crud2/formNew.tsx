@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "react-query";
 import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { cacheWrapperKeyGen, ClearCacheContext } from "cache";
+import { cloneDeep } from "lodash-es";
 import loaderGif from "assets/images/loader.gif";
 import { CRUDContext } from "./context";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -84,7 +85,8 @@ export const FormNew: FC<{
   let errorMsg = `${result.error?.error_msg ?? "unknown error occured"}`;
   let newMetaData = {} as MetaDataType;
   if (result.isSuccess) {
-    newMetaData = JSON.parse(JSON.stringify(result.data)) as MetaDataType;
+    //newMetaData = JSON.parse(JSON.stringify(result.data)) as MetaDataType;
+    newMetaData = cloneDeep(result.data) as MetaDataType;
     newMetaData.form.formState = {
       ...context,
       formCode: newMetaData?.form?.name,

@@ -97,8 +97,7 @@ const GeneralDetailsMetaData = {
           label: "Condition",
           placeholder: "Condition",
           GridProps: { xs: 12, md: 3, sm: 3 },
-          setColor: "dummyColor",
-          isReadOnly: true,
+          setColor: (value) => (value === "44" ? "blue" : "green"),
         },
         {
           render: { componentType: "inputMask", group: 0 },

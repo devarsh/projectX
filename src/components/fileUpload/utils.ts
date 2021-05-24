@@ -1,4 +1,5 @@
 import fileTypeDetect, { FileTypeResult } from "file-type/browser";
+import { cloneDeep } from "lodash-es";
 import { FileObjectType } from "./type";
 import { GridColumnType, GridMetaDataType } from "components/dataTableStatic";
 
@@ -78,7 +79,8 @@ export const transformMetaDataByMutating = (
   additionalColumns?: GridColumnType[],
   editableFileName?: boolean
 ): GridMetaDataType => {
-  const newMetaData = JSON.parse(JSON.stringify(metaData));
+  //const newMetaData = JSON.parse(JSON.stringify(metaData));
+  const newMetaData = cloneDeep(metaData);
   if (Boolean(editableFileName)) {
     for (let i = 0; i < newMetaData.columns.length; i++) {
       if (newMetaData.columns[i].accessor === "name") {

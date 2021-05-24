@@ -14,10 +14,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { SubmitFnType, InitialValuesType } from "packages/form";
 import { useMutation, useQueries } from "react-query";
-import { queryClient } from "cache";
-import { ClearCacheContext } from "cache";
+import { queryClient, cacheWrapperKeyGen, ClearCacheContext } from "cache";
+import { cloneDeep } from "lodash-es";
 import { CRUDContext } from "pages_los/common";
-import { cacheWrapperKeyGen } from "cache";
 import { useSnackbar } from "notistack";
 import * as API from "./api";
 import { transformMetaData } from "./transformMetaData";
@@ -173,8 +172,10 @@ export const FormViewEdit: FC<{
       typeof setEditFormStateFromInitValues === "function"
         ? setEditFormStateFromInitValues(result[0].data)
         : undefined;
-    editMetaData = JSON.parse(JSON.stringify(result[2].data)) as MetaDataType;
-    viewMetaData = JSON.parse(JSON.stringify(result[1].data)) as MetaDataType;
+    viewMetaData = cloneDeep(result[1].data) as MetaDataType;
+    editMetaData = cloneDeep(result[2].data) as MetaDataType;
+    //editMetaData = JSON.parse(JSON.stringify(result[2].data)) as MetaDataType;
+    //viewMetaData = JSON.parse(JSON.stringify(result[1].data)) as MetaDataType;
     editMetaData.form.formState = {
       ...context,
       serialNo,
