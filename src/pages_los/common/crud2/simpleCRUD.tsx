@@ -29,6 +29,7 @@ export const SimpleCRUD: FC<{
       isDataChangedRef={isDataChangedRef}
       successAction={() => setDataExist(true)}
       readOnly={readOnly}
+      closeDialog={closeDialog}
     />
   );
 };

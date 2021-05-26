@@ -14,11 +14,14 @@ import Button from "@material-ui/core/Button";
 import { FormNew } from "./formNew";
 import { CRUDContext } from "./context";
 import { cacheWrapperKeyGen } from "cache";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 
 export const FormNewExistsIfNotCreate = ({
   isDataChangedRef,
   successAction,
   readOnly,
+  closeDialog,
 }) => {
   const removeCache = useContext(ClearCacheContext);
   const { checkFormDataExist } = useContext(CRUDContext);
@@ -59,15 +62,34 @@ export const FormNewExistsIfNotCreate = ({
   }, [dataExist, successActionAlways]);
 
   return loading ? (
-    <img src={loaderGif} alt="loader" width="50px" height="50px" />
+    <>
+      <img src={loaderGif} alt="loader" width="50px" height="50px" />
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : isError ? (
-    //@ts-ignore
-    <div>{result?.error?.error_msg ?? "Unknown error occured"} </div>
+    <>
+      {/*@ts-ignore*/}
+      <div>{result?.error?.error_msg ?? "Unknown error occured"} </div>
+      {typeof closeDialog === "function" ? (
+        <div style={{ position: "absolute", right: 0, top: 0 }}>
+          <IconButton onClick={closeDialog}>
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        </div>
+      ) : null}
+    </>
   ) : !dataExist ? (
     <CreateFormConfirmation
       successAction={successAction}
       isDataChangedRef={isDataChangedRef}
       readOnly={readOnly}
+      closeDialog={closeDialog}
     />
   ) : null;
 };
@@ -76,10 +98,14 @@ export const CreateFormConfirmation = ({
   successAction,
   isDataChangedRef,
   readOnly,
+  closeDialog,
 }) => {
   const [showAsk, setShowAsk] = useState(true);
   const cancleFormSubmit = useCallback(() => {
     setShowAsk(true);
+    if (typeof closeDialog === "function") {
+      closeDialog();
+    }
   }, [setShowAsk]);
   return showAsk ? (
     <Fragment>
