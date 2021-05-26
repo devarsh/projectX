@@ -6,6 +6,20 @@ import {
 } from "pages_los/pages/cam/utils";
 
 export const FinancialRatios = ({ finance }) => {
+  if (!Array.isArray(finance) || finance.length <= 0) {
+    return (
+      <tr>
+        <tr>
+          <th colSpan={9} className="form-heading">
+            Financial Ratios
+          </th>
+        </tr>
+        <tr>
+          <td>No Data Found</td>
+        </tr>
+      </tr>
+    );
+  }
   return (
     <>
       <tr className="page-break">

@@ -58,6 +58,13 @@ registerFn("getTargetMonth", miscSDK.getMiscVal("TARGET_MONTH"));
 registerFn("getNewTakeover", miscSDK.getMiscVal("NEW_TAKEOVER"));
 registerFn("getFinancialSource", miscSDK.getMiscVal("FIN_SOURCE"));
 registerFn("getBusinessAddressType", miscSDK.getMiscVal("BUSSIN_ADD_TYPE"));
+
+registerFn("getCCODFacilityProposed", miscSDK.getMiscVal("PROPOSEDFACILIT"));
+registerFn("getPurposeOfLoanForSME", miscSDK.getMiscVal("SMEPURPOSE"));
+registerFn("getPurposeOfLoanForUnsecure", miscSDK.getMiscVal("UNSPURPOSE"));
+registerFn("getTotalCostOfProject", miscSDK.getMiscVal("COSTPROJECT"));
+registerFn("getMeansOfFinance", miscSDK.getMiscVal("MEANSFINANCE"));
+
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
 registerFn("getBankSubProductType", miscSDK.getBankSubProductType);
