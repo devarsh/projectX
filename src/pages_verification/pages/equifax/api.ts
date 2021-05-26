@@ -42,29 +42,6 @@ export const requestOTP = async (tokenID: number | string) => {
   }
 };
 
-export const requestOTPForAlternateMobile = async (
-  tokenID: number | string,
-  mobileNo: string
-) => {
-  const { data, status } = await VerificationSDK.internalFetcher(
-    "./equifax-otp/mobile/resend",
-    {
-      body: JSON.stringify({
-        request_data: {
-          mobileNo: mobileNo,
-          tokenID: tokenID,
-        },
-        channel: "W",
-      }),
-    }
-  );
-  if (status === "success") {
-    return data?.response_data;
-  } else {
-    throw data?.error_data;
-  }
-};
-
 export const verifyOTP = async (
   tokenID: number | string,
   transactionID: string,
@@ -94,13 +71,36 @@ export const verifyOTP = async (
         return data?.response_data;
       } else {
         throw {
-          errorMsg:
+          error_msg:
             data?.response_data?.Error?.ErrorDesc ?? "Unknown error occured",
         };
       }
     } else {
       return data?.response_data;
     }
+  } else {
+    throw data?.error_data;
+  }
+};
+
+export const requestOTPForAlternateMobile = async (
+  tokenID: number | string,
+  mobileNo: string
+) => {
+  const { data, status } = await VerificationSDK.internalFetcher(
+    "./equifax-otp/mobile/resend",
+    {
+      body: JSON.stringify({
+        request_data: {
+          mobileNo: mobileNo,
+          tokenID: tokenID,
+        },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return data?.response_data;
   } else {
     throw data?.error_data;
   }
@@ -129,7 +129,23 @@ export const alternateNumberVerifyOTP = async (
     }
   );
   if (status === "success") {
-    return data?.response_data;
+    if (data?.response_data?.Status === "99") {
+      if (
+        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
+        0
+      ) {
+        throw {
+          error_msg: "Couldnt fetch your credit score",
+        };
+      } else {
+        throw {
+          error_msg:
+            data?.response_data?.Error?.ErrorDesc ?? "Unknown error occured",
+        };
+      }
+    } else {
+      return data?.response_data;
+    }
   } else {
     throw data?.error_data;
   }
