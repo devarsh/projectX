@@ -1,6 +1,7 @@
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { getAge, dateFormatter } from "pages_los/pages/cam/utils";
+import { Age } from "pages_los/pages/cam/components";
+import { dateFormatter } from "pages_los/pages/cam/utils";
 
 export const CoApplicantDetails = ({ coApplicant }) => {
   if (!Array.isArray(coApplicant) || coApplicant.length <= 0) {
@@ -33,7 +34,10 @@ export const CoApplicantDetails = ({ coApplicant }) => {
             <tr>
               <th colSpan={2}>Age</th>
               <td colSpan={7}>
-                {getAge({ date: coApplicantDetails.birthDate })}
+                {
+                  //@ts-ignore
+                  <Age value={coApplicantDetails.birthDate} />
+                }
               </td>
             </tr>
             <ReturnFilingDetails

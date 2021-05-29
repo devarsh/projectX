@@ -68,17 +68,6 @@ export const dateFormatter = ({ val }) => {
   }
 };
 
-export const getAge = ({ date }) => {
-  try {
-    var today = new Date();
-    var birthDate = new Date(date);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    return age;
-  } catch (e) {
-    return "-9999";
-  }
-};
-
 export const convertIntoCurrency = ({ amount }) => {
   let formatter = new Intl.NumberFormat("en-IN", {
     maximumSignificantDigits: 3,

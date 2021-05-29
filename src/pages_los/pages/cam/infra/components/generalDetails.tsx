@@ -22,23 +22,84 @@ export const GeneralDetails = ({
             General Details
           </th>
         </tr>
-        {generalDetailsLabels?.map((res, index) => {
-          return general[res?.name] ? (
-            <tr key={index + 1}>
-              <th colSpan={2}>{res?.label ?? "N/A"}</th>
-              <td colSpan={7}>
-                {res?.componentType === "amount" ? (
-                  //@ts-ignore
-                  <Amount value={general[res?.name]} />
-                ) : res?.componentType === "dateFormat" ? (
-                  <DateFormat value={general[res?.name]} />
-                ) : (
-                  <Default value={general[res?.name]} />
-                )}
-              </td>
-            </tr>
-          ) : null;
-        }) ?? "No data found"}
+        <tr>
+          <th colSpan={2}>Name of the Firm</th>
+          <td colSpan={7}>{<Default value={general.entityName} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Project Name</th>
+          <td colSpan={7}>{<Default value={general.projectName} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Constitution</th>
+          <td colSpan={7}>{<Default value={general.constitution} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Date of incorporation</th>
+          <td colSpan={7}>
+            {<DateFormat value={general.incorporationDate} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>RERA Received</th>
+          <td colSpan={7}>{<Default value={general.reraReceived} />}</td>
+        </tr>
+        {general.reraReceived === "Yes" ? (
+          <tr>
+            <th colSpan={2}>RERA No</th>
+            <td colSpan={7}>{<Default value={general.reraNo} />}</td>
+          </tr>
+        ) : null}
+        <tr>
+          <th colSpan={2}>Project Start Date</th>
+          <td colSpan={7}>{<DateFormat value={general.projectStartDate} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Project End Date</th>
+          <td colSpan={7}>{<DateFormat value={general.projectEndDate} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Type of the project</th>
+          <td colSpan={7}>{<Default value={general.projectType} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>External credit rating</th>
+          <td colSpan={7}>{<Default value={general.rankExternal} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>CMR Ranking</th>
+          <td colSpan={7}>{<Default value={general.crmRank} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Construction Stage of the Project</th>
+          <td colSpan={7}>
+            {<Default value={general.projectConstructionStage} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Booking Status of the Project</th>
+          <td colSpan={7}>
+            {<Default value={general.projectBookingStatus} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Proposed Loan Amount</th>
+          <td colSpan={7}>
+            {
+              //@ts-ignore
+              <Amount value={general.proposedLoanAmount} />
+            }
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Brief Abount the Group</th>
+          <td colSpan={7}>{<Default value={general.briefAboutGroup} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Brief About the promoters</th>
+          <td colSpan={7}>{<Default value={general.briefAboutPromoters} />}</td>
+        </tr>
+
         <AddressDetails address={address} />
         <PromoterDetails promoter={promoter} />
         {/* <BankDetails bank={bank} /> */}
@@ -56,68 +117,8 @@ export const GeneralDetails = ({
         </th>
       </tr>
       <tr>
-        <th>Invalid data</th>
+        <th>No Data Found</th>
       </tr>
     </>
   );
 };
-
-const generalDetailsLabels = [
-  { label: "Name of the Firm", name: "entityName", componentType: "default" },
-  { label: "Project Name", name: "projectName", componentType: "default" },
-  { label: "Constitution", name: "constitution", componentType: "default" },
-  {
-    label: "Date of incorporation",
-    name: "incorporationDate",
-    componentType: "dateFormat",
-  },
-  { label: "RERA Received", name: "reraReceived", componentType: "default" },
-  { label: "RERA No.", name: "reraNo", componentType: "default" },
-  {
-    label: "Project Start Date",
-    name: "projectStartDate",
-    componentType: "dateFormat",
-  },
-  {
-    label: "Project End Date",
-    name: "projectEndDate",
-    componentType: "dateFormat",
-  },
-  {
-    label: "Type of the project",
-    name: "projectType",
-    componentType: "default",
-  },
-  {
-    label: "External credit rating",
-    name: "rankExternal",
-    componentType: "default",
-  },
-  { label: "CMR Ranking", name: "crmRank", componentType: "default" },
-  // { label: "RF Rating", name: "rfRank" },
-  {
-    label: "Construction Stage of the Project",
-    name: "projectConstructionStage",
-    componentType: "default",
-  },
-  {
-    label: "Booking Status of the Project",
-    name: "projectBookingStatus",
-    componentType: "default",
-  },
-  {
-    label: "Proposed Loan Amount",
-    name: "proposedLoanAmount",
-    componentType: "amount",
-  },
-  {
-    label: "Brief Abount the Group",
-    name: "briefAboutGroup",
-    componentType: "default",
-  },
-  {
-    label: "Brief About the promoters",
-    name: "briefAboutPromoters",
-    componentType: "default",
-  },
-];

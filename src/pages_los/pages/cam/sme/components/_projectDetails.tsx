@@ -18,6 +18,7 @@ export const ProjectDetails = ({ project }) => {
       {project.map((projectsData) => {
         return (
           <>
+            <br />
             <ProjectParticulaDetails
               projectParticular={projectsData.projectParticularDetails}
             />
@@ -172,6 +173,7 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
         );
       })}
       <MeansOfFinance meandOfFinanceDetails={meansOfFinance} />
+      <br />
     </>
   );
 };
