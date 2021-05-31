@@ -19,6 +19,11 @@ export const IncomeDetails = ({ income }) => {
         <th colSpan={2}>Income Amount</th>
         {printTDSForAmount({ obj: income, key: "incomeAmount" })}
       </tr>
+
+      {/* <tr>
+        <th colSpan={2}>Total Obligation</th>
+        {printTDSForAmount({ obj: income, key: "actualObligations" })}
+      </tr> */}
     </>
   );
 };

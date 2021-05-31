@@ -1,6 +1,7 @@
 import { OtherEmployeesReturnFilingDetails } from "./otherEmployeesReturnFilingDetails";
 import { OtherEmployeesSalaryDetails } from "./otherEmployeesSalaryDetails";
-import { getAge, dateFormatter } from "pages_los/pages/cam/utils";
+import { dateFormatter } from "pages_los/pages/cam/utils";
+import { Age } from "pages_los/pages/cam/components";
 
 export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
   if (typeof applicant !== "object") {
@@ -31,7 +32,12 @@ export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
       </tr>
       <tr>
         <th colSpan={2}>Age</th>
-        <td colSpan={7}>{getAge({ date: applicant.birthDate })}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Age value={applicant.birthDate} />
+          }
+        </td>
       </tr>
       {applicant.emplCode === "01" || "03" || "04" ? (
         <OtherEmployeesReturnFilingDetails

@@ -2,7 +2,8 @@ import { BankDetails } from "./bankDetails";
 import { ContactDetails } from "./contactDetails";
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { getAge, convertIntoPrcentage } from "pages_los/pages/cam/utils";
+import { Age } from "pages_los/pages/cam/components";
+import { convertIntoPrcentage } from "pages_los/pages/cam/utils";
 
 export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
   if (typeof applicant !== "object") {
@@ -42,7 +43,12 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
       </tr>
       <tr>
         <th colSpan={2}>Age</th>
-        <td colSpan={7}>{getAge({ date: applicant.dob })}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Age value={applicant.dob} />
+          }
+        </td>
       </tr>
 
       <BankDetails bank={applicant.bankDetails} />

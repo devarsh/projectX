@@ -1,8 +1,12 @@
-import { AddressDetails } from "./addressDetails";
 import { PromoterDetails } from "./promoterDetails";
 import { NatureofFacilityPresentDetails } from "./facilityPresent";
 import { NatureofFacilityProposedDetails } from "./facilityProposed";
-import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  Amount,
+  Address,
+} from "pages_los/pages/cam/components";
 
 export const GeneralDetails = ({ general, promoter, address }) => {
   if (typeof general === "object") {
@@ -20,6 +24,10 @@ export const GeneralDetails = ({ general, promoter, address }) => {
         <tr>
           <th colSpan={2}>Constitution of Business</th>
           <td colSpan={7}>{<Default value={general.entityType} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Credit Score</th>
+          <td colSpan={7}>{/* {<Default value={general.entityType} />} */}</td>
         </tr>
         <tr>
           <th colSpan={2}>Ownership of Factory / Business Premises</th>
@@ -61,14 +69,14 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           <th colSpan={2}>CMR Ranking</th>
           <td colSpan={7}>{<Default value={general.crmRank} />}</td>
         </tr>
-        <tr>
+        {/* <tr>
           <th colSpan={2}>Name of Promoters / Directors</th>
-          <td colSpan={7}>{<Default value={"not specified"} />}</td>
+          <td colSpan={7}>{<Default value={"Not Specified"} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>Purpose of loan</th>
           <td colSpan={7}>{<Default value={general.purposeLoan} />}</td>
-        </tr>
+        </tr> */}
         <tr>
           <th colSpan={2}>Turnover in current financial year</th>
           <td colSpan={7}>
@@ -79,10 +87,16 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           </td>
         </tr>
         <tr>
-          <th colSpan={2}>
-            Last 12 Months average Bank Balance & Average Utilisation of Working
-            Capital Limits
-          </th>
+          <th colSpan={2}>Last 12 Months average Bank Balance</th>
+          <td colSpan={7}>
+            {
+              //@ts-ignore
+              <Amount value={general.averageBankBal} />
+            }
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Average Utilisation of Working Capital Limits</th>
           <td colSpan={7}>
             {
               //@ts-ignore
@@ -100,7 +114,8 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           </th>
           <td colSpan={7}>{<Default value={general.chequeBouncesPer} />}</td>
         </tr>
-        <AddressDetails address={address} />
+
+        <Address value={address} />
         <PromoterDetails promoter={promoter} />
         <NatureofFacilityPresentDetails
           natureOfFacilityPresent={general.presentNatureOfFacilityDetails}

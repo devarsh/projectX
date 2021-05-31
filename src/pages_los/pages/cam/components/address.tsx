@@ -1,16 +1,6 @@
-import { filter } from "lodash";
-
-export const AddressDetails = ({ address }) => {
-  if (!Array.isArray(address) || address.length <= 0) {
-    return (
-      <tr>
-        <td>Invalid data</td>
-      </tr>
-    );
-  }
-
+export const Address = ({ value }) => {
   let addressArray: any = [];
-  addressArray = address.map((addressData) => {
+  addressArray = value.map((addressData) => {
     return [
       addressData.address1,
       addressData.address2,
@@ -25,7 +15,7 @@ export const AddressDetails = ({ address }) => {
   });
 
   let addressType: any = [];
-  addressType = address.map((data) => {
+  addressType = value.map((data) => {
     return data.addressType;
   });
 

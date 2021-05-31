@@ -1,7 +1,7 @@
 import { AddressDetails } from "./addressDetails";
 import { BankDetails } from "./bankingArrangements";
 import { IncomeSummaryDetails } from "./incomeSummary";
-import { getAge } from "../../utils";
+import { Age } from "pages_los/pages/cam/components";
 
 export const GeneralDetailsPersonal = ({ general }) => {
   if (!Array.isArray(general) || general.length <= 0) {
@@ -25,28 +25,33 @@ export const GeneralDetailsPersonal = ({ general }) => {
           General Details
         </th>
       </tr>
-      {general.map((personlaDetail) => {
+      {general.map((personalDetail) => {
         return (
           <>
             <tr>
               <th colSpan={2}>Name of the Person</th>
-              <td colSpan={7}>{personlaDetail.firstName}</td>
+              <td colSpan={7}>{personalDetail.firstName}</td>
             </tr>
             <tr>
               <th colSpan={2}>Age </th>
-              <td colSpan={7}>{getAge({ date: personlaDetail.dob })}</td>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Age value={personalDetail.dob} />
+                }
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>
-              <td colSpan={7}>{personlaDetail.educationQalification}</td>
+              <td colSpan={7}>{personalDetail.educationQalification}</td>
             </tr>
             <tr>
               <th colSpan={2}>Residential Type</th>
-              <td colSpan={7}>{personlaDetail.residentialType}</td>
+              <td colSpan={7}>{personalDetail.residentialType}</td>
             </tr>
             <tr>
               <th colSpan={2}>PAN No</th>
-              <td colSpan={7}>{personlaDetail.panNumber}</td>
+              <td colSpan={7}>{personalDetail.panNumber}</td>
             </tr>
             <tr>
               <th colSpan={2}>Employment Type</th>
@@ -58,7 +63,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
             </tr>
             <tr>
               <th colSpan={2}>Total Work Experience</th>
-              <td colSpan={7}>{personlaDetail.experience}</td>
+              <td colSpan={7}>{personalDetail.experience}</td>
             </tr>
             <tr>
               <th colSpan={2}>Net Monthly Salary</th>
@@ -66,7 +71,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
             </tr>
             <tr>
               <th colSpan={2}>Any other Source of Income</th>
-              <td colSpan={7}>{personlaDetail.sourceIncomeOther}</td>
+              <td colSpan={7}>{personalDetail.sourceIncomeOther}</td>
             </tr>
             <tr>
               <th colSpan={2}>CIBIL Score</th>
@@ -82,15 +87,15 @@ export const GeneralDetailsPersonal = ({ general }) => {
             </tr>
             <tr>
               <th colSpan={2}>Purpose of loan</th>
-              <td colSpan={7}>{personlaDetail.purposeLoan}</td>
+              <td colSpan={7}>{personalDetail.purposeLoan}</td>
             </tr>
             <tr>
               <th colSpan={2}>Moratorium taken or not</th>
-              <td colSpan={7}>{personlaDetail.maratoriumTaken}</td>
+              <td colSpan={7}>{personalDetail.maratoriumTaken}</td>
             </tr>
-            <AddressDetails address={personlaDetail.contactDetails} />
-            <BankDetails bank={personlaDetail.bankDetails} />
-            <IncomeSummaryDetails income={personlaDetail.incomeDetails} />
+            <AddressDetails address={personalDetail.contactDetails} />
+            <BankDetails bank={personalDetail.bankDetails} />
+            <IncomeSummaryDetails income={personalDetail.incomeDetails} />
           </>
         );
       })}

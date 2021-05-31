@@ -1,5 +1,11 @@
 import { IncomeDetails } from "./incomeDetails";
-import { Default, Percentage, Amount } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Percentage,
+  Amount,
+  DateFormat,
+  Age,
+} from "pages_los/pages/cam/components";
 
 export const ManagementDetails = ({ management }) => {
   if (!Array.isArray(management) || management.length <= 0) {
@@ -23,11 +29,24 @@ export const ManagementDetails = ({ management }) => {
       {management.map((data: any, index) => {
         return (
           <>
-            <tr key={index}>
+            <tr>
               <th colSpan={2}>Name of the Partner/Director</th>
               <td colSpan={7}>
                 {data.salutation} {data.firstName} {data.middleName}{" "}
                 {data.lastName}
+              </td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Birth Date</th>
+              <td colSpan={7}>{<DateFormat value={data.dob} />}</td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Age</th>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Age value={data.dob} />
+                }
               </td>
             </tr>
             <tr>
@@ -37,6 +56,10 @@ export const ManagementDetails = ({ management }) => {
             <tr>
               <th colSpan={2}>DIN / LLPIN No</th>
               <td colSpan={7}>{<Default value={data.dinLlPinNo} />}</td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Credit Score</th>
+              <td colSpan={7}>{<Default value={data.associatedCompany} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>
@@ -74,11 +97,6 @@ export const ManagementDetails = ({ management }) => {
               <th colSpan={2}>Resposnibilities Handled in the Comapany</th>
               <td colSpan={7}>{<Default value={data.responsibility} />}</td>
             </tr>
-            <tr>
-              <th colSpan={2}>Credit Score</th>
-              <td colSpan={7}>{<Default value={data.associatedCompany} />}</td>
-            </tr>
-
             <IncomeDetails income={data.incomeDetails} />
 
             <br />
