@@ -18,15 +18,22 @@ const computeTemplateForOTP = (length: number) => {
   return Array(Number(length)).fill(0).join(" ");
 };
 
+const mask = (mobileNo) => {
+  let mob = `${mobileNo}`.slice(6);
+  return `******${mob}`;
+};
+
 interface verifyOTPType {
   tokenID: any;
   transactionID: any;
   otp: any;
   consent: string;
+  mobileNo: string;
 }
 
 interface requestOTPType {
   tokenID: any;
+  mobileNo: any;
 }
 
 const verifyOTPFn = (verfiyOTPAPI) => async ({
@@ -34,12 +41,16 @@ const verifyOTPFn = (verfiyOTPAPI) => async ({
   transactionID,
   otp,
   consent,
+  mobileNo,
 }: verifyOTPType) => {
-  return verfiyOTPAPI(tokenID, transactionID, otp, consent);
+  return verfiyOTPAPI(tokenID, transactionID, otp, consent, mobileNo);
 };
 
-const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
-  return requestOTPAPI(tokenID);
+const requestOTP = (requestOTPAPI) => async ({
+  tokenID,
+  mobileNo,
+}: requestOTPType) => {
+  return requestOTPAPI(tokenID, mobileNo);
 };
 
 export const Alternate = ({
@@ -60,46 +71,55 @@ export const Alternate = ({
   const [resendCount, setResendCount] = useState(1);
   const { timer, startTimer } = useTimer({ maxTime: otpResendInterval });
 
-  const verifyOTPMutation = useMutation(verifyOTPFn(API.verifyOTP), {
-    onMutate: () => {
-      setOtpVerificationError("");
-    },
-    onError: (error: any) => {
-      setOtpVerificationError(error?.error_msg ?? "Uknown error occured");
-    },
-    onSuccess: (data) => {
-      setSuccess(true);
-    },
-  });
+  const verifyOTPMutation = useMutation(
+    verifyOTPFn(API.alternateNumberVerifyOTP),
+    {
+      onMutate: () => {
+        setOtpVerificationError("");
+      },
+      onError: (error: any) => {
+        setOtpVerificationError(error?.error_msg ?? "Uknown error occured");
+      },
+      onSuccess: (data) => {
+        setSuccess(true);
+      },
+    }
+  );
 
-  const requestOTPMutation = useMutation(requestOTP(API.requestOTP), {
-    onMutate: () => {
-      setOTPDelivered(false);
-      setOtpDeliveryError("");
-    },
-    onError: (error: any) => {
-      setOtpDeliveryError(error?.error_msg ?? "Unknown error occured");
-    },
-    onSuccess: () => {
-      startTimer();
-      setOTPDelivered(true);
-    },
-  });
+  const requestOTPMutation = useMutation(
+    requestOTP(API.requestOTPForAlternateMobile),
+    {
+      onMutate: () => {
+        setOTPDelivered(false);
+        setOtpDeliveryError("");
+      },
+      onError: (error: any) => {
+        setOtpDeliveryError(error?.error_msg ?? "Unknown error occured");
+      },
+      onSuccess: () => {
+        startTimer();
+        setOTPDelivered(true);
+      },
+    }
+  );
 
-  const resendtOTPMutation = useMutation(requestOTP(API.requestOTP), {
-    onMutate: () => {
-      setOTPDelivered(false);
-      setOtpDeliveryError("");
-    },
-    onError: (error: any) => {
-      setOtpDeliveryError(error?.error_msg ?? "Unkown error occured");
-    },
-    onSuccess: () => {
-      startTimer();
-      setResendCount((count) => (count = count + 1));
-      setOTPDelivered(true);
-    },
-  });
+  const resendtOTPMutation = useMutation(
+    requestOTP(API.requestOTPForAlternateMobile),
+    {
+      onMutate: () => {
+        setOTPDelivered(false);
+        setOtpDeliveryError("");
+      },
+      onError: (error: any) => {
+        setOtpDeliveryError(error?.error_msg ?? "Unkown error occured");
+      },
+      onSuccess: () => {
+        startTimer();
+        setResendCount((count) => (count = count + 1));
+        setOTPDelivered(true);
+      },
+    }
+  );
 
   const verifyOTPHandler = () => {
     let transactionID = "";
@@ -120,19 +140,20 @@ export const Alternate = ({
         transactionID: transactionID,
         tokenID: token,
         consent: consent ? "Y" : "N",
+        mobileNo: flow?.data,
       });
     }
   };
   const resendOTPHandler = () => {
     if (resendCount <= maxResendCount) {
-      resendtOTPMutation.mutate({ tokenID: token });
+      resendtOTPMutation.mutate({ tokenID: token, mobileNo: flow?.data });
     } else {
       setMaxLimitReached(true);
     }
   };
 
   useEffect(() => {
-    requestOTPMutation.mutate({ tokenID: token });
+    requestOTPMutation.mutate({ tokenID: token, mobileNo: flow?.data });
   }, []);
 
   return (
@@ -152,7 +173,7 @@ export const Alternate = ({
           <h2>Credit Score</h2>
           <Typography variant="subtitle2">
             Dear customer, Enter OTP sent to your alternate mobile Number ending
-            with {requestOTPMutation.data?.maskedMobileNo ?? ""}
+            with {mask(flow?.data)}
           </Typography>
           {timer > 0 ? (
             <Fragment>

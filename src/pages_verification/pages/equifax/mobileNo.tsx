@@ -1,30 +1,58 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "components/styledComponent/textfield";
 import Button from "@material-ui/core/Button";
+import { InputMaskCustom } from "components/derived/inputMask";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
+const parseNumber = (string) => {
+  let result: any = `${string}`.split("~");
+  result = result.filter((one) => one.indexOf("Phones") >= 0);
+  result = result[0].split(":");
+  result = result[1];
+  result = result.split("|");
+  result = result.map((one) => one.replaceAll("*", ""));
+  result = result.map((one) => one.replaceAll("X", ""));
+  result = result.filter((one) => Boolean(one));
+  return result;
+};
 
 export const Mobile = ({ flow, setFlow }) => {
   const [mobile, setMobile] = useState("");
   const [mobileError, setMobileError] = useState("");
+  const registeredNumbers = useRef<any>(null);
+  if (registeredNumbers.current === null) {
+    registeredNumbers.current = parseNumber(flow?.data);
+  }
   const handleMobileNumberSubmit = () => {
     if (!Boolean(mobile)) {
       setMobileError("This field is required");
+    } else if (registeredNumbers?.current?.indexOf(mobile.slice(6)) < 0) {
+      setMobileError(
+        "The entered number does not match the numbers in our records"
+      );
     } else {
+      setMobileError("");
       setFlow({
         screen: "Alternate",
         data: mobile,
       });
     }
   };
+
   return (
     <Fragment>
       <h2>Credit Score</h2>
       <Typography variant="subtitle2">
-        Dear customer, we couldnt find credit information for your registered
-        mobile no, but the following numbers are registered under your pan
-        {flow?.data}
+        Dear customer, we couldn't find credit information for your registered
+        MobileNo
       </Typography>
-
+      <br />
+      <Typography variant="subtitle2">
+        We found the numbers ending with{" "}
+        <b>{registeredNumbers.current.join(", ")}</b> registered under your PAN.
+      </Typography>
+      <br />
       <TextField
         autoFocus
         id="mobile"
@@ -41,6 +69,16 @@ export const Mobile = ({ flow, setFlow }) => {
         value={mobile}
         error={Boolean(mobileError)}
         helperText={mobileError}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">+91</InputAdornment>,
+          inputComponent: InputMaskCustom,
+          inputProps: {
+            MaskProps: {
+              mask: "00000 00000",
+              lazy: true,
+            },
+          },
+        }}
       />
       <br />
       <br />

@@ -65,17 +65,13 @@ export const Verification = ({
       setOtpVerificationError("");
     },
     onError: (error: any) => {
-      console.log(error);
       setOtpVerificationError(error?.error_msg ?? "Uknown error occured");
     },
     onSuccess: (data) => {
-      if (
-        ["GSWDOE116", "E0773"].indexOf(data?.response_data?.Error?.ErrorCode) >=
-        0
-      ) {
+      if (["GSWDOE116", "E0773"].indexOf(data?.Error?.ErrorCode) >= 0) {
         setFlow({
           screen: "Mobile",
-          data: data?.response_data?.Error?.ErrorCode,
+          data: data?.Error?.ErrorDesc,
         });
       } else {
         setSuccess(true);
