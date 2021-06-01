@@ -18,7 +18,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TableFilterStatusBar = ({ dense, filters, setAllFilters }) => {
+export const TableFilterStatusBar = ({
+  dense,
+  filters,
+  setAllFilters,
+  gotoPage,
+  setSortBy,
+}) => {
   const classes = useStyles();
   if (Array.isArray(filters) && filters.length <= 0) {
     return null;
@@ -26,6 +32,8 @@ export const TableFilterStatusBar = ({ dense, filters, setAllFilters }) => {
   const handleDelete = (id) => {
     let newFilter = filters.filter((one) => one.id !== id);
     setAllFilters(newFilter);
+    gotoPage(0);
+    setSortBy([]);
   };
 
   return (

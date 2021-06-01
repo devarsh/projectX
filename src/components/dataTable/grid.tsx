@@ -253,6 +253,8 @@ export const DataGrid = forwardRef<any, any>(
           dense={dense}
           setAllFilters={setAllFilters}
           filters={filters}
+          gotoPage={gotoPage}
+          setSortBy={setSortBy}
         />
 
         {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
