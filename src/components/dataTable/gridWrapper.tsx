@@ -7,7 +7,6 @@ import {
   attachAlignmentProps,
   extractHiddenColumns,
   sortColumnsBySequence,
-  transformHeaderFilters,
   SplitActions,
 } from "./utils";
 import { GirdController } from "./gridController";
@@ -16,24 +15,13 @@ import { GridProvider } from "./context";
 interface GridWrapperPropsType {
   gridCode: any;
   getGridData: any;
-  getGridColumnFilterData: any;
   metaData: GridMetaDataType;
   actions?: ActionTypes[];
   setAction: any;
 }
 
 export const GridWrapper = forwardRef<GridWrapperPropsType, any>(
-  (
-    {
-      gridCode,
-      getGridColumnFilterData,
-      getGridData,
-      metaData,
-      actions,
-      setAction,
-    },
-    ref
-  ) => {
+  ({ gridCode, getGridData, metaData, actions, setAction }, ref) => {
     let finalData = transformMetaData({
       metaData,
       actions,
@@ -41,11 +29,7 @@ export const GridWrapper = forwardRef<GridWrapperPropsType, any>(
     });
 
     return (
-      <GridProvider
-        gridCode={gridCode}
-        getGridData={getGridData}
-        getGridColumnFilterData={getGridColumnFilterData}
-      >
+      <GridProvider gridCode={gridCode} getGridData={getGridData}>
         <GirdController
           //@ts-ignore
           ref={ref}
@@ -71,13 +55,12 @@ const transformMetaData = ({
   columns = attachFilterComponentToMetaData(columns);
   columns = attachAlignmentProps(columns);
   columns = sortColumnsBySequence(columns);
-  let headerFilters = transformHeaderFilters(metaData?.headerFilters);
+
   const splittedActions = SplitActions(actions ?? null);
   return {
     columns: columns,
     gridConfig: metaData.gridConfig,
     hiddenColumns: hiddenColumns,
-    headerFilters: headerFilters,
     setAction: setAction,
     ...splittedActions,
   };

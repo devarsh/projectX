@@ -10,23 +10,6 @@ export const leadGridMetaData = {
     allowColumnHiding: true,
     allowKeyboardNavigation: true,
   },
-  headerFilters: [
-    // {
-    //   accessor: "status",
-    //   filterComponentType: "groupByFilter",
-    //   filterComponentProps: {
-    //     selectType: "single",
-    //   },
-    //   columnName: "Status",
-    //   level: 2,
-    // },
-    {
-      accessor: "generation_dt",
-      filterComponentType: "daysFilter",
-      columnName: "Inquiry Date",
-      level: 1,
-    },
-  ],
   columns: [
     {
       accessor: "tran_cd",
@@ -52,6 +35,10 @@ export const leadGridMetaData = {
       componentType: "date",
       disableSortBy: false,
       isVisible: true,
+      filterComponentType: "rangeFilter",
+      filterComponentProps: {
+        type: "date",
+      },
     },
     {
       accessor: "inquiry_tran_cd",
@@ -79,7 +66,7 @@ export const leadGridMetaData = {
       disableSortBy: true,
       filterComponentType: "optionsFilter",
       filterComponentProps: {
-        selectType: "multiple",
+        options: "getBranchList",
       },
       isVisible: true,
     },
@@ -93,10 +80,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "optionsFilter",
-      filterComponentProps: {
-        selectType: "multiple",
-      },
       isVisible: true,
     },
     {
@@ -109,10 +92,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "optionsFilter",
-      filterComponentProps: {
-        selectType: "multiple",
-      },
       isVisible: true,
     },
     {
@@ -125,10 +104,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "optionsFilter",
-      filterComponentProps: {
-        selectType: "multiple",
-      },
       isVisible: true,
     },
     {
@@ -141,7 +116,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -154,7 +128,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -167,7 +140,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -180,7 +152,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -193,7 +164,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -206,7 +176,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -219,7 +188,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -232,7 +200,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {
@@ -245,7 +212,6 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
       isVisible: true,
     },
     {

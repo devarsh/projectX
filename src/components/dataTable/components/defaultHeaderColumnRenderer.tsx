@@ -1,8 +1,5 @@
-import { useState, useRef, MouseEvent } from "react";
+import { useRef, Fragment } from "react";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Popover from "@material-ui/core/Popover";
-import IconButton from "@material-ui/core/IconButton";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import { useDrag, useDrop } from "react-dnd";
 
 export const DefaultHeaderColumnRenderer = ({
@@ -11,16 +8,6 @@ export const DefaultHeaderColumnRenderer = ({
   setColumnOrder,
   allowColumnReordering,
 }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) =>
-    setAnchorEl(event.currentTarget);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? column.id : undefined;
-  //Column change order using drag and drop
   const [{ isDragging }, drag] = useDrag({
     item: { type: "Column" },
     collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
@@ -53,7 +40,7 @@ export const DefaultHeaderColumnRenderer = ({
   const dragDropRef = useRef(null);
   drag(drop(dragDropRef));
   return (
-    <>
+    <Fragment>
       <TableSortLabel
         active={column.isSorted}
         direction={column.isSortedDesc ? "desc" : "asc"}
@@ -92,22 +79,6 @@ export const DefaultHeaderColumnRenderer = ({
           {column.columnName}
         </span>
       </TableSortLabel>
-      {column.canFilter ? (
-        <IconButton
-          aria-label="filter"
-          aria-controls="popover"
-          aria-haspopup="true"
-          style={{
-            position: "absolute",
-            right: "15px",
-            padding: "0",
-            color: open || Boolean(column.filterValue) ? "red" : "inherit",
-          }}
-          onClick={handleClick}
-        >
-          <FilterListIcon />
-        </IconButton>
-      ) : null}
       <div
         {...column.getResizerProps([
           {
@@ -130,22 +101,6 @@ export const DefaultHeaderColumnRenderer = ({
           }}
         ></div>
       </div>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        {column.render("Filter", { handleClose })}
-      </Popover>
-    </>
+    </Fragment>
   );
 };

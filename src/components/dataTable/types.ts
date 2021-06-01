@@ -34,6 +34,7 @@ export interface GridConfigType {
   allowColumnHiding?: boolean;
   allowKeyboardNavigation?: boolean;
   allowGlobalFilter?: boolean;
+  allowFilter?: boolean;
   defaultColumnConfig: {
     width?: number;
     maxWidth?: number;
@@ -95,5 +96,4 @@ export interface TableActionType {
 export interface GridContextType {
   gridCode: any;
   getGridData: any;
-  getGridColumnFilterData: any;
 }

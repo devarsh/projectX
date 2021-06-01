@@ -1,7 +1,11 @@
-import { FC, useState } from "react";
+import { FC, useState, useCallback } from "react";
 import { SelectProps } from "@material-ui/core/Select";
 import { TextFieldProps } from "@material-ui/core/TextField";
-import { TextFieldForSelect as TextField } from "components/styledComponent";
+import {
+  TextFieldForSelect,
+  TextField3,
+  TextField,
+} from "components/styledComponent";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import CircularProgress, {
   CircularProgressProps,
@@ -28,6 +32,7 @@ interface MySelectExtendedProps {
   value?: any;
   disableCaching?: boolean;
   optionsProps?: any;
+  selectVariant?: "default" | "andornment" | "regular";
 }
 type MySelectProps = Merge<TextFieldProps, MySelectExtendedProps>;
 
@@ -50,8 +55,18 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   _optionsKey,
   disableCaching,
   optionsProps,
+  selectVariant = "default",
   ...others
 }) => {
+  let TextFieldToRender: any;
+  if (selectVariant === "andornment") {
+    TextFieldToRender = TextField3;
+  } else if (selectVariant === "regular") {
+    TextFieldToRender = TextField;
+  } else {
+    TextFieldToRender = TextFieldForSelect;
+  }
+
   const [_options, setOptions] = useState<OptionsProps[]>([]);
   const isTouched = Boolean(touched);
   const isError = isTouched && Boolean(error);
@@ -61,6 +76,19 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
     _optionsKey,
     disableCaching,
     optionsProps
+  );
+  const getLabelFromValuesForOptions = useCallback(
+    (values) => getLabelFromValues(_options)(values),
+    [_options]
+  );
+  const handleChangeInterceptor = useCallback(
+    (e) => {
+      const value = typeof e === "object" ? e?.target?.value ?? "" : e;
+      let result = getLabelFromValuesForOptions(value);
+      result = multiple ? result : result[0];
+      handleChange(e, result as any);
+    },
+    [handleChange, getLabelFromValuesForOptions, multiple]
   );
   const menuItems = _options.map((menuItem, index) => {
     return (
@@ -86,13 +114,13 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
     );
   });
   return (
-    <TextField
+    <TextFieldToRender
       {...others}
       select={true}
       value={multiple && !Array.isArray(value) ? [value] : value}
       error={isError}
       helperText={isError ? error : null}
-      onChange={handleChange}
+      onChange={handleChangeInterceptor}
       onBlur={handleBlur}
       SelectProps={{
         ...SelectProps,
@@ -124,6 +152,6 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
       }}
     >
       {menuItems}
-    </TextField>
+    </TextFieldToRender>
   );
 };
