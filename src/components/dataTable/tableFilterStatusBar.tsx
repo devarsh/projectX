@@ -1,6 +1,7 @@
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,9 @@ export const TableFilterStatusBar = ({ dense, filters, setAllFilters }) => {
       className={classes.root}
       variant={dense ? "dense" : "regular"}
     >
+      <li>
+        <Typography variant="h6">Applied Filters: </Typography>
+      </li>
       {filters.map((one: any) => {
         return (
           <li key={one?.id}>
