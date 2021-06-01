@@ -9,7 +9,6 @@ interface CRUDFNType {
 interface ServerGridProviderType {
   getGridMetaData: CRUDFNType;
   getGridData: CRUDFNType;
-  getGridColumnFilterData: CRUDFNType;
 }
 
 export const ServerGridContext = createContext<ServerGridProviderType>(
@@ -19,13 +18,10 @@ export const ServerGridContext = createContext<ServerGridProviderType>(
 export const ServerGridContextProvider: FC<ServerGridProviderType> = ({
   children,
   getGridMetaData,
-  getGridColumnFilterData,
   getGridData,
 }) => {
   return (
-    <ServerGridContext.Provider
-      value={{ getGridMetaData, getGridColumnFilterData, getGridData }}
-    >
+    <ServerGridContext.Provider value={{ getGridMetaData, getGridData }}>
       {children}
     </ServerGridContext.Provider>
   );
@@ -34,8 +30,4 @@ export const ServerGridContextProvider: FC<ServerGridProviderType> = ({
 export const serverGridContextGenerator = (gridCode) => ({
   getGridData: { fn: API.getGridData, args: { gridCode } },
   getGridMetaData: { fn: API.getGridMetaData, args: { gridCode } },
-  getGridColumnFilterData: {
-    fn: API.getGridColumnFilterData,
-    args: { gridCode },
-  },
 });

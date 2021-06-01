@@ -6,19 +6,14 @@ export const GridContext = createContext<GridContextType | null>(null);
 export const GridProvider: FC<GridContextType> = ({
   gridCode,
   getGridData,
-  getGridColumnFilterData,
+
   children,
 }) => {
-  if (
-    typeof getGridData !== "function" ||
-    typeof getGridColumnFilterData !== "function"
-  ) {
+  if (typeof getGridData !== "function") {
     return <div>Invalid Grid FNS passed</div>;
   }
   return (
-    <GridContext.Provider
-      value={{ getGridColumnFilterData, getGridData, gridCode }}
-    >
+    <GridContext.Provider value={{ getGridData, gridCode }}>
       {children}
     </GridContext.Provider>
   );

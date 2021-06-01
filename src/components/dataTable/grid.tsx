@@ -18,35 +18,30 @@ import {
 } from "react-table";
 
 import Paper from "@material-ui/core/Paper";
-import { TableHeaderToolbar } from "./tableHeaderToolbar";
-
+import LinearProgress from "@material-ui/core/LinearProgress";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
-import { StickyTableHead } from "./stickyTableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
-import { MyTableRow } from "./focusableTableRow";
 import TablePagination from "@material-ui/core/TablePagination";
+import { TableHeaderToolbar } from "./tableHeaderToolbar";
+import { StickyTableHead } from "./stickyTableHead";
+import { MyTableRow } from "./focusableTableRow";
 import { TablePaginationActions } from "./tablePaginationToolbar";
-import { TableHeaderFilterToolbar } from "./tableHeaderFilterToolbar";
 import { TableActionToolbar, ActionContextMenu } from "./tableActionToolbar";
-
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { LinearProgressBarSpacer } from "./linerProgressBarSpacer";
-
 import { CustomBackdrop } from "./backdrop";
 import { useCheckboxColumn } from "./components";
 import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
 import { filterAction } from "./utils";
+import { TableFilterStatusBar } from "./tableFilterStatusBar";
 
 export const DataGrid = forwardRef<any, any>(
   (
     {
       label,
       dense,
-      localFilterManager,
-      globalFiltersState,
       columns,
       defaultColumn,
       data,
@@ -61,13 +56,12 @@ export const DataGrid = forwardRef<any, any>(
       allowColumnReordering,
       allowColumnHiding,
       allowKeyboardNavigation,
-      allowGlobalFilter,
-      globalFilterMeta,
       setGridAction,
       multipleActions,
       singleActions,
       doubleClickAction,
       alwaysAvailableAction,
+      allowFilter,
     },
     ref
   ) => {
@@ -103,8 +97,6 @@ export const DataGrid = forwardRef<any, any>(
         autoResetSortBy: false,
         manualFilters: true,
         autoResetFilters: false,
-        localFilterManager,
-        globalFiltersState,
         allowColumnReordering: allowColumnReordering,
         singleActions,
         setGridAction,
@@ -217,20 +209,6 @@ export const DataGrid = forwardRef<any, any>(
       setPageSize(Number(event.target.value));
     };
 
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    useEffect(() => {
-      setAllFilters([]);
-      setSortBy([]);
-      gotoPage(0);
-      localFilterManager.clearFilterState();
-    }, [
-      globalFiltersState, //this is important do not remove
-      setAllFilters,
-      setSortBy,
-      gotoPage,
-      localFilterManager.clearFilterState,
-    ]);
-
     return (
       <Paper
         style={{
@@ -247,6 +225,10 @@ export const DataGrid = forwardRef<any, any>(
           alwaysAvailableAction={alwaysAvailableAction}
           setGridAction={setGridAction}
           selectedFlatRows={selectedFlatRows}
+          allowFilter={allowFilter}
+          setAllFilters={setAllFilters}
+          gotoPage={gotoPage}
+          setSortBy={setSortBy}
         />
         <TableActionToolbar
           dense={dense}
@@ -266,9 +248,13 @@ export const DataGrid = forwardRef<any, any>(
           mouseY={contextMenuPosition?.mouseY ?? null}
           handleClose={handleContextMenuClose}
         />
-        {allowGlobalFilter ? (
-          <TableHeaderFilterToolbar dense={dense} filters={globalFilterMeta} />
-        ) : null}
+
+        <TableFilterStatusBar
+          dense={dense}
+          setAllFilters={setAllFilters}
+          filters={filters}
+        />
+
         {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
         <TableContainer
           style={{
