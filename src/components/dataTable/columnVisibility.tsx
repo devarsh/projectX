@@ -4,7 +4,7 @@ import { StyledMenuItem } from "./styledComponents";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Paper from "@material-ui/core/Paper";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ViewColumnOutlinedIcon from "@material-ui/icons/ViewColumnOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 
@@ -53,7 +53,7 @@ export const ColumnVisibility = ({ visibleColumns, defaultHiddenColumns }) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon />
+        <ViewColumnOutlinedIcon />
       </IconButton>
       <Popover
         id={"columnVisibility"}

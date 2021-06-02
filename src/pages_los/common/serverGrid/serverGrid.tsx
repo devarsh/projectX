@@ -17,16 +17,7 @@ interface ServerGridType {
 
 export const ServerGrid = forwardRef<ServerGridType, any>(
   ({ gridCode, actions, setAction }, myRef) => {
-    const {
-      getGridColumnFilterData,
-      getGridData,
-      getGridMetaData,
-    } = useContext(ServerGridContext);
-    /* eslint-disable react-hooks/exhaustive-deps */
-    const getGridColumnFilterDataFn = useCallback(
-      getGridColumnFilterData.fn(getGridColumnFilterData.args),
-      [gridCode]
-    );
+    const { getGridData, getGridMetaData } = useContext(ServerGridContext);
     /* eslint-disable react-hooks/exhaustive-deps */
     const getGridDataFn = useCallback(getGridData.fn(getGridData.args), [
       gridCode,
@@ -59,7 +50,6 @@ export const ServerGrid = forwardRef<ServerGridType, any>(
         metaData={result.data}
         gridCode={gridCode}
         getGridData={getGridDataFn}
-        getGridColumnFilterData={getGridColumnFilterDataFn}
         actions={actions}
         setAction={setAction}
       />

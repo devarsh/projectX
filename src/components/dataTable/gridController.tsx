@@ -6,15 +6,12 @@ import {
   useContext,
   forwardRef,
 } from "react";
+import { useSnackbar } from "notistack";
 import { GridMetaDataType } from "./types";
-import { formatSortBy, formatFilterBy, useLocalFilterState } from "./utils";
-import { useRecoilValue } from "recoil";
-import { filtersAtom } from "./atoms";
+import { formatSortBy, formatFilterBy } from "./utils";
 import { GridContext } from "./context";
-
 import { DefaultHeaderColumnRenderer } from "./components";
 import { DataGrid } from "./grid";
-import { useSnackbar } from "notistack";
 
 interface GridControllerType {
   metaData: GridMetaDataType;
@@ -45,10 +42,6 @@ export const GirdController = forwardRef<GridControllerType, any>(
     const [totalRecords, setTotalRecords] = useState(0);
     const [pageCount, setPageCount] = useState(0);
     const fetchIdCounterRef = useRef(0);
-    const localFilterManager = useLocalFilterState();
-    const globalFiltersState = useRecoilValue(
-      filtersAtom(context?.gridCode ?? "noCode")
-    );
 
     const fetchData = useCallback(
       ({ pageSize, pageIndex, sortBy, filters }) => {
@@ -56,15 +49,9 @@ export const GirdController = forwardRef<GridControllerType, any>(
         const currentFetchId = ++fetchIdCounterRef.current;
         const startRow = Number(pageSize) * Number(pageIndex) + 1;
         const endRow = Number(startRow) + Number(pageSize) - 1;
-        let localFilters = formatFilterBy(filters);
-        let headerFilters: any[] = [];
-        if (globalFiltersState !== null) {
-          headerFilters = Object.values(globalFiltersState);
-        }
-        let combinedFilters = [...headerFilters, ...localFilters];
-
+        let childFilter = formatFilterBy(filters);
         context
-          ?.getGridData(startRow, endRow, formatSortBy(sortBy), combinedFilters)
+          ?.getGridData(startRow, endRow, formatSortBy(sortBy), childFilter)
           .then((result) => {
             if (currentFetchId === fetchIdCounterRef.current) {
               if (result.status === "success") {
@@ -77,7 +64,6 @@ export const GirdController = forwardRef<GridControllerType, any>(
                 setTotalRecords(Number(result?.data?.total_count ?? 1));
                 setLoading(false);
               } else {
-                console.log(result);
                 enqueueSnackbar(
                   result?.data?.error_msg ??
                     "Unknown error occured while fetching data",
@@ -93,7 +79,7 @@ export const GirdController = forwardRef<GridControllerType, any>(
             setLoading(false);
           });
       },
-      [setTotalRecords, setLoading, setData, globalFiltersState, context]
+      [setTotalRecords, setLoading, setData, context]
     );
 
     return (
@@ -101,15 +87,12 @@ export const GirdController = forwardRef<GridControllerType, any>(
         //@ts-ignore
         ref={ref}
         label={metaData.gridConfig?.gridLabel ?? "NO_NAME"}
-        globalFilterMeta={metaData?.headerFilters}
+        dense={true}
         multipleActions={metaData?.multipleActions}
         singleActions={metaData?.singleActions}
         doubleClickAction={metaData?.doubleClickAction}
         alwaysAvailableAction={metaData?.alwaysAvailableAction}
         setGridAction={metaData?.setAction}
-        dense={true}
-        localFilterManager={localFilterManager}
-        globalFiltersState={globalFiltersState}
         getRowId={getRowId}
         columns={columns}
         defaultColumn={defaultColumn}
@@ -128,7 +111,7 @@ export const GirdController = forwardRef<GridControllerType, any>(
         allowKeyboardNavigation={
           metaData.gridConfig?.allowKeyboardNavigation ?? false
         }
-        allowGlobalFilter={metaData.gridConfig?.allowGlobalFilter ?? false}
+        allowFilter={metaData.gridConfig?.allowFilter ?? true}
       />
     );
   }

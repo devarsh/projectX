@@ -1,68 +1,62 @@
 import { GridColumnType } from "../types";
 import {
   ValueFilter,
-  RangeFilterWrapper,
   OptionsFilter,
-} from "../components/filters";
+  RangeFilter,
+} from "../components/filters2";
+import { singletonFunctionRegisrationFactory } from "components/utils";
+
+const optionsMethodNotFound = (fieldKey) => () => {
+  console.log(`no method found for options at ${fieldKey}`);
+  return [{ label: "Oops error occured", value: "" }];
+};
 
 export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
-      const {
-        filterComponentType,
-        filterComponentProps,
-        accessor,
-        ...others
-      } = column;
+      const { filterComponentType, filterComponentProps, ...others } = column;
       switch (filterComponentType) {
-        case "valueFilter":
+        case "valueFilter": {
           return {
             ...others,
-            accessor,
-            filterComponentProps,
             Filter: ValueFilter,
-            filter: "valueFilter",
-            id: accessor,
+            filterComponentProps,
           };
+        }
+        case "optionsFilter": {
+          //@ts-ignore
+          const { options, ...filterOthers } = filterComponentProps;
+          if (typeof options === "string") {
+            const myOptions = singletonFunctionRegisrationFactory.getFn(
+              options ?? "NOT_EXIST_OPTIONS_FN",
+              optionsMethodNotFound
+            );
+            return {
+              ...others,
+              Filter: OptionsFilter,
+              filterComponentProps: {
+                options: myOptions,
+                _optionsKey: options,
+                ...filterOthers,
+              },
+            };
+          } else {
+            return {
+              ...others,
+              Filter: OptionsFilter,
+              filterComponentProps,
+            };
+          }
+        }
         case "rangeFilter":
           return {
             ...others,
-            Filter: RangeFilterWrapper,
-            filter: "rangeFilter",
-            accessor,
-            id: accessor,
-            filterComponentProps: {
-              ...filterComponentProps,
-              query: {
-                accessor: accessor,
-                result_type: "getRange",
-                filter_conditions: [],
-              },
-            },
-          };
-        case "optionsFilter":
-          return {
-            ...others,
-            Filter: OptionsFilter,
-            //filter:'optionsFilter'
-            accessor,
-            id: accessor,
-            filterComponentProps: {
-              ...filterComponentProps,
-              query: {
-                accessor: accessor,
-                result_type: "getGroups",
-                filter_conditions: [],
-              },
-            },
+            Filter: RangeFilter,
+            filterComponentProps,
           };
         default:
           return {
             ...others,
-            accessor,
-            filterComponentProps,
-            Filter: ValueFilter,
-            filter: "valueFilter",
           };
       }
     });

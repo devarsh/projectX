@@ -1,10 +1,11 @@
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
-import RefreshIcon from "@material-ui/icons/Refresh";
 import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import { makeStyles } from "@material-ui/core/styles";
 import { ColumnVisibility } from "./columnVisibility";
 import { RenderActions } from "./tableActionToolbar";
+import { TableFilterComponent } from "./tableFilterComponent";
 import { forwardRef } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,10 @@ export const TableHeaderToolbar = forwardRef<any, any>(
       setGridAction,
       selectedFlatRows,
       alwaysAvailableAction,
+      allowFilter,
+      setAllFilters,
+      gotoPage,
+      setSortBy,
     },
     ref
   ) => {
@@ -46,11 +51,19 @@ export const TableHeaderToolbar = forwardRef<any, any>(
           {label}
         </Typography>
         <RenderActions
-          key="multipleFilters"
+          key="alwaysRender"
           actions={alwaysAvailableAction ?? []}
           setAction={setGridAction}
           selectedRows={selectedFlatRows}
         />
+        {allowFilter ? (
+          <TableFilterComponent
+            setAllFilters={setAllFilters}
+            columns={visibleColumns}
+            gotoPage={gotoPage}
+            setSortBy={setSortBy}
+          />
+        ) : null}
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
