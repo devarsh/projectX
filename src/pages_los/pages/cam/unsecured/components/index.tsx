@@ -1,4 +1,3 @@
-export * from "./addressDetails";
 export * from "./bankingArrangements";
 export * from "./businessDetails";
 export * from "./generalDetailsPersonal";
@@ -7,3 +6,6 @@ export * from "./managementDetails";
 export * from "./personalGurantee";
 export * from "./promoterDetail";
 export * from "./generalDetailsBusiness";
+export * from "./financialRatios";
+export * from "./facilityPresent";
+export * from "./facilityProposed";

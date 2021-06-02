@@ -7,6 +7,6 @@ export const Amount = ({ value }: any) => {
   if (value !== undefined) {
     return formatter.format(Number(value));
   } else {
-    return null;
+    return formatter.format(Number(0));
   }
 };

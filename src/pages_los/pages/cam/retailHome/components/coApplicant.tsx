@@ -1,7 +1,6 @@
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { Age } from "pages_los/pages/cam/components";
-import { dateFormatter } from "pages_los/pages/cam/utils";
+import { Age, DateFormat } from "pages_los/pages/cam/components";
 
 export const CoApplicantDetails = ({ coApplicant }) => {
   if (!Array.isArray(coApplicant) || coApplicant.length <= 0) {
@@ -21,14 +20,13 @@ export const CoApplicantDetails = ({ coApplicant }) => {
             <tr key={index}>
               <th colSpan={2}>Name</th>
               <td colSpan={7}>
-                {coApplicantDetails.firstName}
-                {coApplicantDetails.lastName}
+                {coApplicantDetails.firstName} {coApplicantDetails.lastName}
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Date of Birth</th>
               <td colSpan={7}>
-                {dateFormatter({ val: coApplicantDetails.birthDate })}
+                {<DateFormat value={coApplicantDetails.birthDate} />}
               </td>
             </tr>
             <tr>

@@ -2,15 +2,15 @@ export const Address = ({ value }) => {
   let addressArray: any = [];
   addressArray = value.map((addressData) => {
     return [
-      addressData.address1,
-      addressData.address2,
-      addressData.landmark,
-      addressData.location,
-      addressData.district,
-      addressData.city,
-      addressData.state,
-      addressData.country,
-      addressData.pincode,
+      addressData?.address1 ?? addressData?.addressLine1 ?? "",
+      addressData.address2 ?? addressData?.addressLine2 ?? "",
+      addressData?.landmark ?? "",
+      addressData?.location ?? "",
+      addressData?.district ?? "",
+      addressData?.city ?? "",
+      addressData?.state ?? "",
+      addressData?.country ?? "",
+      addressData?.pincode ?? "",
     ];
   });
 
@@ -21,7 +21,7 @@ export const Address = ({ value }) => {
 
   var addressFinalDetails: any = [];
   addressFinalDetails = addressArray.map((data: any) => {
-    return data.filter((item) => item !== "").join(",");
+    return data.filter((item) => (item !== "" ? true : false)).join(",");
   });
 
   return (

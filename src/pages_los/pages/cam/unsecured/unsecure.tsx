@@ -4,6 +4,7 @@ import {
   ManagementDetails,
   PersonalGuarantee,
   GeneralDetailsBusiness,
+  FinancialRatios,
 } from "./components";
 
 export const Unsecured = ({ data, others }) => {
@@ -14,6 +15,7 @@ export const Unsecured = ({ data, others }) => {
     addressDetails,
     businessOtherDetails,
     personalGuaranteeSecurity,
+    financialDetails,
   } = data;
 
   let { productID } = others;
@@ -30,7 +32,8 @@ export const Unsecured = ({ data, others }) => {
             />
             <BusinessDetails business={businessOtherDetails} />
             <ManagementDetails management={managementDetails} />
-            <PersonalGuarantee personal={personalGuaranteeSecurity} />
+            <FinancialRatios finance={financialDetails} />
+            {/* <PersonalGuarantee personal={personalGuaranteeSecurity} /> */}
           </>
         ) : productID === "123000014" ? (
           <>

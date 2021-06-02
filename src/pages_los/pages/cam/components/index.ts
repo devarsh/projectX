@@ -4,3 +4,4 @@ export * from "./default";
 export * from "./percentage";
 export * from "./address";
 export * from "./ageCalculate";
+export * from "./squareFeetValueFormat";
