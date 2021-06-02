@@ -1,3 +1,5 @@
+import { Default, Amount, DateFormat } from "pages_los/pages/cam/components";
+
 export const SalaryDetails = ({ salary }) => {
   if (!Array.isArray(salary) || salary.length <= 0) {
     return null;
@@ -15,39 +17,78 @@ export const SalaryDetails = ({ salary }) => {
           <>
             <tr>
               <th colSpan={2}>Salary (Monthly)</th>
-              <td colSpan={7}>{salaryDetails.salaryMonth}</td>
+              <td colSpan={7}>
+                {<DateFormat value={salaryDetails.salaryMonth} />}
+              </td>
             </tr>
             <tr>
-              <th colSpan={2}>Net Salary</th>
-              <td colSpan={7}>{salaryDetails.netSalary}</td>
+              <th colSpan={2}>Net Salary (Fixed) - 100%</th>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.netSalary} />
+                }
+              </td>
             </tr>
             <tr>
-              <th colSpan={2}>Variable Pay</th>
-              <td colSpan={7}>{salaryDetails.variablePay}</td>
+              <th colSpan={2}>Variable Pay - 50%</th>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.variablePay} />
+                }
+              </td>
             </tr>
             <tr>
-              <th colSpan={2}>Bonus</th>
-              <td colSpan={7}>{salaryDetails.bonus}</td>
+              <th colSpan={2}>Bonus - 50% Of CY</th>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.bonus} />
+                }
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Incentive</th>
-              <td colSpan={7}>{salaryDetails.incentive}</td>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.incentive} />
+                }
+              </td>
             </tr>
             <tr>
-              <th colSpan={2}>Agriculture Income</th>
-              <td colSpan={7}>{salaryDetails.agricultureIncome}</td>
+              <th colSpan={2}>Agriculture Income - 20%</th>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.agricultureIncome} />
+                }
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Other Allowances</th>
-              <td colSpan={7}>{salaryDetails.otherAllowances}</td>
+              <td colSpan={7}>
+                {<Default value={salaryDetails.otherAllowances} />}
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Other Income</th>
-              <td colSpan={7}>{salaryDetails.otherIncome}</td>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.otherIncome} />
+                }
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Total Income</th>
-              <td colSpan={7}>{salaryDetails.totalIncome}</td>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.totalIncome} />
+                }
+              </td>
             </tr>
           </>
         );

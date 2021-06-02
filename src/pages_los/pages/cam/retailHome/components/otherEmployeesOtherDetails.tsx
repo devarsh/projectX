@@ -1,3 +1,4 @@
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 export const OtherEmployeesOtherDetails = ({ other }) => {
   if (typeof other !== "object" || other.length <= 0) {
     return (
@@ -12,79 +13,163 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       <br />
       <tr>
         <th colSpan={2}>Tenure</th>
-        <td colSpan={7}>{other.tenur}</td>
+        <td colSpan={7}>{<Default value={other.tenur} />}</td>
       </tr>
       <tr>
-        <th colSpan={2}>Rate</th>
-        <td colSpan={7}>{other.rate}</td>
+        <th colSpan={2}>Rate of Interest</th>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.rate} />
+          }
+        </td>
+      </tr>
+      <tr>
+        <th colSpan={2}>Property Type</th>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Default value={other.propertyType} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Market Value of Property</th>
-        <td colSpan={7}>{other.propertyMarketValue}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.propertyMarketValue} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>FOIR</th>
-        <td colSpan={7}>{other.foir}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.foir} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Condition</th>
-        <td colSpan={7}>{other.condition}</td>
+        <td colSpan={7}>{<Default value={other.condition} />}</td>
       </tr>
       <tr>
         <th colSpan={2}>LTV Condition</th>
-        <td colSpan={7}>{other.condition}</td>
+        <td colSpan={7}>{<Default value={other.ltvCondition} />}</td>
       </tr>
       <tr>
         <th colSpan={2}>New LTV</th>
-        <td colSpan={7}>{other.newltv}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.newltv} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>CLFR</th>
-        <td colSpan={7}>{other.clfr}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.clfr} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Eligible EMI</th>
-        <td colSpan={7}>{other.eligibleEMI}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.eligibleEMI} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount Based on FOIR</th>
-        <td colSpan={7}>{other.loanAmountBasedOnFOIR}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.loanAmountBasedOnFOIR} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount Based on FOIR Based on Condition</th>
-        <td colSpan={7}>{other.loanAmountBasedOnFOIRCondition}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.loanAmountBasedOnFOIRCondition} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount</th>
-        <td colSpan={7}>{other.loanAmountBasedOnFOIRCondition}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.loanAmountBasedOnFOIRCondition} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>LTV</th>
-        <td colSpan={7}>{other.newltv}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.newltv} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Condition</th>
-        <td colSpan={7}>{other.ltvCondition}</td>
+        <td colSpan={7}>{<Default value={other.ltvCondition} />}</td>
       </tr>
       <tr>
         <th colSpan={2}>CLFR</th>
-        <td colSpan={7}>{other.newclfr}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.newclfr} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Amount</th>
-        <td colSpan={7}>{other.amount}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.amount} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>FOIR</th>
-        <td colSpan={7}>{other.newfoir}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={other.newfoir} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount Based on LTV</th>
-        <td colSpan={7}>{other.newfoir}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.newfoir} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Eligible Loan Amount</th>
-        <td colSpan={7}>{other.eligibleLoanAmount}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={other.eligibleLoanAmount} />
+          }
+        </td>
       </tr>
       <br />
       <br />

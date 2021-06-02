@@ -1,4 +1,9 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  SquareFeetFormat,
+  Percentage,
+} from "pages_los/pages/cam/components";
 
 export const CollateralDetails = ({ primary, collateral, personal }) => {
   if (!Array.isArray(primary) || primary.length <= 0) {
@@ -46,7 +51,10 @@ const CollateralSecurity = ({ collateral }) => {
                 {<Default value={collateralData.propertyAddress} />}
               </td>
               <td colSpan={2}>
-                {<Default value={collateralData.propertyArea} />}
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={collateralData.propertyArea} />
+                }
               </td>
               <td colSpan={2}>{<Default value={collateralData.owner} />}</td>
               <td>
@@ -63,19 +71,34 @@ const CollateralSecurity = ({ collateral }) => {
         <th colSpan={8} style={{ textAlign: "end" }}>
           Collateral Coverage
         </th>
-        <td>{collateral[0].collateralCoverage}</td>
+        <td>
+          {
+            //@ts-ignore
+            <Percentage value={collateral[0].collateralCoverage} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={8} style={{ textAlign: "end" }}>
           FACR
         </th>
-        <td>{collateral[0].facr}</td>
+        <td>
+          {
+            //@ts-ignore
+            <Percentage value={collateral[0].facr} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={8} style={{ textAlign: "end" }}>
           ACR
         </th>
-        <td>{collateral[0].acr}</td>
+        <td>
+          {
+            //@ts-ignore
+            <Percentage value={collateral[0].acr} />
+          }
+        </td>
       </tr>
     </>
   );

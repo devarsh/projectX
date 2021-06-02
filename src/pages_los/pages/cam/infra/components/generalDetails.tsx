@@ -1,10 +1,13 @@
-import { AddressDetails } from "./addressDetails";
 import { PromoterDetails } from "./partnerDetails";
-import { BankDetails } from "./bankDetails";
 import { BreifeAboutProject } from "./projectBrief";
 import { ProjectParticularDetails } from "./projectParticular";
 import { SiteAreaDetails } from "./siteAreaDetail";
-import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  Amount,
+  Address,
+} from "pages_los/pages/cam/components";
 
 export const GeneralDetails = ({
   general,
@@ -100,7 +103,7 @@ export const GeneralDetails = ({
           <td colSpan={7}>{<Default value={general.briefAboutPromoters} />}</td>
         </tr>
 
-        <AddressDetails address={address} />
+        <Address value={address} />
         <PromoterDetails promoter={promoter} />
         {/* <BankDetails bank={bank} /> */}
         <BreifeAboutProject project={project} />

@@ -100,7 +100,7 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           <td colSpan={7}>
             {
               //@ts-ignore
-              <Amount value={general.averageBankBal} />
+              <Amount value={general.limitBal} />
             }
           </td>
         </tr>

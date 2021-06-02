@@ -1,4 +1,4 @@
-import { convertIntoCurrency } from "pages_los/pages/cam/utils";
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 
 export const BankDetails = ({ bank }) => {
   if (!Array.isArray(bank) || bank.length <= 0) {
@@ -31,13 +31,14 @@ export const BankDetails = ({ bank }) => {
         return (
           <tr key={index}>
             <td colSpan={2}></td>
-            <td colSpan={2}>{bankDetail.bankName}</td>
-            <td colSpan={2}>{bankDetail.address}</td>
-            <td colSpan={2}>{bankDetail.accountNo}</td>
+            <td colSpan={2}>{<Default value={bankDetail.bankName} />}</td>
+            <td colSpan={2}>{<Default value={bankDetail.address} />}</td>
+            <td colSpan={2}>{<Default value={bankDetail.accountNo} />}</td>
             <td colSpan={1}>
-              {convertIntoCurrency({
-                amount: bankDetail.averageBalance,
-              })}
+              {
+                //@ts-ignore
+                <Amount value={bankDetail.averageBalance} />
+              }
             </td>
           </tr>
         );
@@ -67,15 +68,23 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
         return (
           <tr key={index}>
             <td colSpan={2}></td>
-            <td colSpan={1}>{bankDetail.accountType}</td>
-            <td colSpan={2}>{bankDetail.bankName}</td>
-            <td colSpan={2}>{bankDetail.outstandingAmountAsOn}</td>
-            <td colSpan={1}>
-              {convertIntoCurrency({
-                amount: bankDetail.outstandingAmount,
-              })}
+            <td colSpan={1}>{<Default value={bankDetail.accountType} />}</td>
+            <td colSpan={2}>{<Default value={bankDetail.bankName} />}</td>
+            <td colSpan={2}>
+              {<Default value={bankDetail.outstandingAmountAsOn} />}
             </td>
-            <td colSpan={1}>{bankDetail.rateOfInterest}</td>
+            <td colSpan={1}>
+              {
+                //@ts-ignore
+                <Amount value={bankDetail.outstandingAmount} />
+              }
+            </td>
+            <td colSpan={1}>
+              {
+                //@ts-ignore
+                <Percentage value={bankDetail.rateOfInterest} />
+              }
+            </td>
           </tr>
         );
       })}

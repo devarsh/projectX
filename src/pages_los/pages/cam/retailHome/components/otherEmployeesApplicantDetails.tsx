@@ -1,7 +1,6 @@
 import { OtherEmployeesReturnFilingDetails } from "./otherEmployeesReturnFilingDetails";
 import { OtherEmployeesSalaryDetails } from "./otherEmployeesSalaryDetails";
-import { dateFormatter } from "pages_los/pages/cam/utils";
-import { Age } from "pages_los/pages/cam/components";
+import { Age, DateFormat } from "pages_los/pages/cam/components";
 
 export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
   if (typeof applicant !== "object") {
@@ -28,7 +27,7 @@ export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
       </tr>
       <tr>
         <th colSpan={2}>Date of Birth</th>
-        <td colSpan={7}>{dateFormatter({ val: applicant.dob })}</td>
+        <td colSpan={7}>{<DateFormat value={applicant.dob} />}</td>
       </tr>
       <tr>
         <th colSpan={2}>Age</th>

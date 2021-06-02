@@ -1,9 +1,10 @@
-import { Default } from "pages_los/pages/cam/components";
+import { Default, SquareFeetFormat } from "pages_los/pages/cam/components";
 
 export const BreifeAboutProjectSubDetails = ({ subProject }) => {
   if (!Array.isArray(subProject) || subProject.length <= 0) {
     return null;
   }
+
   return (
     <>
       <br />
@@ -20,16 +21,29 @@ export const BreifeAboutProjectSubDetails = ({ subProject }) => {
       {subProject.map((projectSubDetail, index) => {
         return (
           <>
-            <tr key={index + 1}>
+            <tr key={index}>
               <td colSpan={2}></td>
               <td style={{ textAlign: "center" }}>{index + 1}</td>
               <td>{<Default value={projectSubDetail.particulars} />}</td>
               <td>{<Default value={projectSubDetail.units} />}</td>
               <td colSpan={2}>
-                {<Default value={projectSubDetail.saleableArea} />}
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={projectSubDetail.saleableArea} />
+                }
               </td>
-              <td>{<Default value={projectSubDetail.carpetArea} />}</td>
-              <td>{<Default value={projectSubDetail.constructionArea} />}</td>
+              <td>
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={projectSubDetail.carpetArea} />
+                }
+              </td>
+              <td>
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={projectSubDetail.constructionArea} />
+                }
+              </td>
             </tr>
           </>
         );
