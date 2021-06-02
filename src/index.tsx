@@ -1,16 +1,21 @@
-import { StrictMode, useEffect } from "react";
+import { StrictMode, useEffect, lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
-import CRM from "app/crm";
-import LOS from "app/los";
-import ErrorPage from "app/error";
-import Middleware from "app/middleware";
-import Verification from "app/verification";
+//import CRM from "app/crm";
+//import LOS from "app/los";
+//import ErrorPage from "app/error";
+//import Middleware from "app/middleware";
+//import Verification from "app/verification";
 import "typeface-roboto";
 import "registry"; //register functions to be used across application
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+const LOS = lazy(() => import("app/los"));
+const CRM = lazy(() => import("app/crm"));
+const ErrorPage = lazy(() => import("app/error"));
+const Middleware = lazy(() => import("app/middleware"));
+const Verification = lazy(() => import("app/verification"));
 
 require("dotenv").config();
 
@@ -26,14 +31,16 @@ const App = () => (
   <StrictMode>
     <DndProvider backend={HTML5Backend}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/los/*" element={<LOS />} />
-          <Route path="/crm/*" element={<CRM />} />
-          <Route path="/verification/*" element={<Verification />} />
-          <Route path="/error/*" element={<ErrorPage />} />
-          <Route path="/middleware/:refID" element={<Middleware />} />
-          <Route path="*" element={<Redirect />} />
-        </Routes>
+        <Suspense fallback={<div>loading...</div>}>
+          <Routes>
+            <Route path="/los/*" element={<LOS />} />
+            <Route path="/crm/*" element={<CRM />} />
+            <Route path="/verification/*" element={<Verification />} />
+            <Route path="/error/*" element={<ErrorPage />} />
+            <Route path="/middleware/:refID" element={<Middleware />} />
+            <Route path="*" element={<Redirect />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </DndProvider>
   </StrictMode>

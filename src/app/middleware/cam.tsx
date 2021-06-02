@@ -29,7 +29,11 @@ export const CAMMiddlewareWrapper = () => {
         background: "#fff",
       }}
     >
-      <img src={logo} style={{ display: "flex", margin: "0 auto 10px auto" }} />
+      <img
+        src={logo}
+        style={{ display: "flex", margin: "0 auto 10px auto" }}
+        alt="logo"
+      />
       <CAM camData={result.data} />
     </div>
   );
