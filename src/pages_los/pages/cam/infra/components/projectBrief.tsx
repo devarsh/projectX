@@ -1,10 +1,22 @@
 import { BreifeAboutProjectSubDetails } from "./subProjectBreif";
-import { Default, Amount } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  SquareFeetFormat,
+} from "pages_los/pages/cam/components";
 
 export const BreifeAboutProject = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
     return null;
   }
+
+  let projectSubDetailsArray: any = [];
+  project?.map((data: any) => {
+    data.projectOtherSubDtl?.map((newData) => {
+      return projectSubDetailsArray.push(newData);
+    });
+  });
+
   return (
     <>
       <tr>
@@ -14,8 +26,9 @@ export const BreifeAboutProject = ({ project }) => {
       </tr>
       <tr>
         <th colSpan={2}></th>
+        <th colSpan={1}>Particulars</th>
         <th>No. of Units</th>
-        <th colSpan={2}>Carpet Area(In Sq. Feet)</th>
+        <th colSpan={1}>Carpet Area(In Sq. Feet)</th>
         <th colSpan={2}>Salable Area / Super Build Up Area (In Sq. feet)</th>
         <th>Rate per Sq. Feet </th>
         <th>Amount in Rs. Lakhs </th>
@@ -25,12 +38,21 @@ export const BreifeAboutProject = ({ project }) => {
           <>
             <tr key={index + 1}>
               <td colSpan={2}></td>
+              <td colSpan={1}>
+                {<Default value={projectDetail.particulars} />}
+              </td>
               <td>{<Default value={projectDetail.units} />}</td>
-              <td colSpan={2}>
-                {<Default value={projectDetail.carpetArea} />}
+              <td colSpan={1}>
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={projectDetail.carpetArea} />
+                }
               </td>
               <td colSpan={2}>
-                {<Default value={projectDetail.saleableArea} />}
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={projectDetail.saleableArea} />
+                }
               </td>
               <td>{<Default value={projectDetail.ratePerSquareFeet} />}</td>
               <td>
@@ -40,12 +62,10 @@ export const BreifeAboutProject = ({ project }) => {
                 }
               </td>
             </tr>
-            <BreifeAboutProjectSubDetails
-              subProject={projectDetail.projectOtherSubDtl}
-            />
           </>
         );
       })}
+      <BreifeAboutProjectSubDetails subProject={projectSubDetailsArray} />
     </>
   );
 };

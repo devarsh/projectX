@@ -1,10 +1,15 @@
 import { OnGoingProjectDetails } from "./onGoingProjectDetails";
-import { Default, DateFormat } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  SquareFeetFormat,
+} from "pages_los/pages/cam/components";
 
 export const CompletionProjectDetails = ({ projectCompletion }) => {
   if (!Array.isArray(projectCompletion) || projectCompletion.length <= 0) {
     return null;
   }
+
   const completedProject = projectCompletion.filter(
     (one) => one.projectStatus === "Completed"
   );
@@ -39,7 +44,12 @@ export const CompletionProjectDetails = ({ projectCompletion }) => {
             <td>{<Default value={completedProjectDetails.totalUnits} />}</td>
             <td>{<Default value={completedProjectDetails.location} />}</td>
             <td>
-              {<Default value={completedProjectDetails.totalBuildUpArea} />}
+              {
+                //@ts-ignore
+                <SquareFeetFormat
+                  value={completedProjectDetails.totalBuildUpArea}
+                />
+              }
             </td>
             <td>{<DateFormat value={completedProjectDetails.startDate} />}</td>
             <td>

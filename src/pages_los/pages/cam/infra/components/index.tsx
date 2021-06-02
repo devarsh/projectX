@@ -1,4 +1,3 @@
-export * from "./addressDetails";
 export * from "./generalDetails";
 export * from "./partnerDetails";
 export * from "./bankDetails";

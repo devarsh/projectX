@@ -26,7 +26,7 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
       </tr>
       {costOfProject.map((projectDetail, index) => (
         <tr key={index + 1}>
-          <td colSpan={2}>{index + 1}</td>
+          <td colSpan={2}></td>
           <td>{<Default value={projectDetail.particulars} />}</td>
           <td>
             {
@@ -60,7 +60,6 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
 };
 
 export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
-  console.log(projectParticular);
   if (!Array.isArray(projectParticular) || projectParticular.length <= 0) {
     return null;
   }
@@ -80,7 +79,7 @@ export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
       </tr>
       {projectParticular.map((projectDetail, index) => (
         <tr key={index}>
-          <td colSpan={2}>{<Default value={index + 1} />}</td>
+          <td colSpan={2}></td>
           <td colSpan={1}>
             {<Default value={projectDetail.meansOfFinanceParticulars} />}
           </td>

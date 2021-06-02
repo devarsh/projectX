@@ -1,7 +1,4 @@
-import {
-  convertIntoCurrency,
-  convertIntoPrcentage,
-} from "pages_los/pages/cam/utils";
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 
 export const OtherDetails = ({ others }) => {
   if (typeof others !== "object") {
@@ -13,63 +10,94 @@ export const OtherDetails = ({ others }) => {
       <br />
       <tr>
         <th colSpan={2}>Tenure</th>
-        <td colSpan={7}>{others.tenur}</td>
+        <td colSpan={7}>{<Default value={others.tenur} />}</td>
       </tr>
       <tr>
-        <th colSpan={2}>Rate</th>
-        <td colSpan={7}>{convertIntoPrcentage({ amount: others.rate })}</td>
+        <th colSpan={2}>Rate of Interest</th>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={others.rate} />
+          }
+        </td>
       </tr>
       {others?.propertyType !== "" ? (
         <tr>
           <th colSpan={2}>Property Type</th>
-          <td colSpan={7}>{others.propertyType}</td>
+          <td colSpan={7}>{<Default value={others.propertyType} />}</td>
         </tr>
       ) : null}
 
       <tr>
         <th colSpan={2}>Market Value of Property</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.propertyMarketValue })}
+          {
+            //@ts-ignore
+            <Amount value={others.propertyMarketValue} />
+          }
         </td>
       </tr>
       <tr>
         <th colSpan={2}>Eligible EMI</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.eligibleEMI })}
+          {
+            //@ts-ignore
+            <Amount value={others.eligibleEMI} />
+          }
         </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount Based on FOIR</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.loanAmountBasedOnFOIR })}
+          {
+            //@ts-ignore
+            <Amount value={others.loanAmountBasedOnFOIR} />
+          }
         </td>
       </tr>
       <tr>
         <th colSpan={2}>LTV</th>
-        <td colSpan={7}>{others.ltv}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Percentage value={others.ltv} />
+          }
+        </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount Based on LTV</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.loanAmountBasedOnLTV })}
+          {
+            //@ts-ignore
+            <Amount value={others.loanAmountBasedOnLTV} />
+          }
         </td>
       </tr>
       <tr>
         <th colSpan={2}>Loan Amount Based on min of FOIR and LTV</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.loanAmountBasedOnFOIRLTV })}
+          {
+            //@ts-ignore
+            <Amount value={others.loanAmountBasedOnFOIRLTV} />
+          }
         </td>
       </tr>
       <tr>
         <th colSpan={2}>Difference Between Applied and Eligible Loan Amount</th>
         <td colSpan={7}>
-          {convertIntoPrcentage({ amount: others.difApplliedEligibleAmount })}
+          {
+            //@ts-ignore
+            <Percentage value={others.difApplliedEligibleAmount} />
+          }
         </td>
       </tr>
       <tr>
         <th colSpan={2}>Eligible Loan Amount</th>
         <td colSpan={7}>
-          {convertIntoCurrency({ amount: others.eligibleLoanAmount })}
+          {
+            //@ts-ignore
+            <Amount value={others.eligibleLoanAmount} />
+          }
         </td>
       </tr>
     </>

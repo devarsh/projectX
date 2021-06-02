@@ -1,28 +1,93 @@
+import { Default } from "pages_los/pages/cam/components";
 export const BusinessDetails = ({ business }) => {
-  if (typeof business === "object" || business.length > 0) {
+  if (typeof business === "object") {
     return (
       <>
-        <br />
-        <tr className="page-break">
-          <th></th>
-        </tr>
         <tr>
           <th colSpan={9} className="form-heading">
             Business Details
           </th>
         </tr>
-        {businessDetailsLabels?.map((res) => {
-          return business[res?.name] ? (
-            <tr>
-              <th colSpan={2}>{res?.label ?? "N/A"}</th>
-              <td colSpan={7}>
-                <span className="content-text">
-                  {business[res?.name] ?? "N/A"}
-                </span>
-              </td>
-            </tr>
-          ) : null;
-        }) ?? "No data found"}
+        <tr>
+          <th colSpan={2}>Brief history of the Company</th>
+          <td colSpan={7}>{<Default value={business.companyHistory} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Existing Products / Services of the company</th>
+          <td colSpan={7}>{<Default value={business.companyService} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>End Use of the Products</th>
+          <td colSpan={7}>
+            {<Default value={business.companyEndUseProducts} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Name of Raw Materials</th>
+          <td colSpan={7}>
+            {<Default value={business.companyMaterialsName} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Name of Major Suppliers</th>
+          <td colSpan={7}>
+            {<Default value={business.companySuppliersName} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Payment Terms with Suppliers</th>
+          <td colSpan={7}>
+            {<Default value={business.companyPaymentTermSuppliers} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Name of Major Customers</th>
+          <td colSpan={7}>
+            {<Default value={business.companyCustomersName} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Payment terms with Customers</th>
+          <td colSpan={7}>{<Default value={business.companyPaymentTerm} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Current Order Book Position</th>
+          <td colSpan={7}>
+            {<Default value={business.companyOrderBookPosition} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Marketing & Distribution Policy/Strategy</th>
+          <td colSpan={7}>{<Default value={business.companyPolicy} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Name of Competitors</th>
+          <td colSpan={7}>{<Default value={business.companyCompetitors} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Name of Major Countries where Exporting</th>
+          <td colSpan={7}>
+            {<Default value={business.companyExportCountry} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Domestic and export sales ratio</th>
+          <td colSpan={7}>{<Default value={business.companyExportRatio} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>No. of Employees</th>
+          <td colSpan={7}>
+            {<Default value={business.companyEmployeeCount} />}
+          </td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Other Industry specific approvals / license</th>
+          <td colSpan={7}>{<Default value={business.companyLicence} />}</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Any awards / Recognition received</th>
+          <td colSpan={7}>{<Default value={business.companyAwards} />}</td>
+        </tr>
       </>
     );
   }
@@ -34,54 +99,8 @@ export const BusinessDetails = ({ business }) => {
         </th>
       </tr>
       <tr>
-        <th>Invalid data</th>
+        <th>No Data Found</th>
       </tr>
     </>
   );
 };
-
-const businessDetailsLabels = [
-  { label: "Brief history of the Company", name: "companyHistory" },
-  {
-    label: "Existing Products / Services of the company",
-    name: "companyService",
-  },
-  { label: "End Use of the Products", name: "companyEndUseProducts" },
-  { label: "Name of Raw Materials", name: "companyMaterialsName" },
-  { label: "Name of Major Suppliers", name: "companySuppliersName" },
-  {
-    label: "Payment Terms with Suppliers",
-    name: "companyPaymentTermSuppliers",
-  },
-  { label: "Name of Major Customers", name: "companyCustomersName" },
-  { label: "Payment terms with Customers", name: "companyPaymentTerm" },
-  {
-    label: "Current Order Book Position ",
-    name: "companyOrderBookPosition",
-  },
-  { label: "Marketing & Distribution Policy/Strategy", name: "companyPolicy" },
-  {
-    label: "Name of Competitors",
-    name: "companyCompetitors",
-  },
-  {
-    label: "Name of Major Countries where Exporting",
-    name: "companyExportCountry",
-  },
-  {
-    label: "Domestic and export sales ratio",
-    name: "companyExportRatio",
-  },
-  {
-    label: "No. of Employees",
-    name: "companyEmployeeCount",
-  },
-  {
-    label: "Other Industry specific approvals / license",
-    name: "companyLicence",
-  },
-  {
-    label: "Any awards / Recognition received",
-    name: "companyAwards",
-  },
-];

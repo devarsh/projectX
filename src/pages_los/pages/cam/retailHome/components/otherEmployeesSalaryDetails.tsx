@@ -1,3 +1,4 @@
+import { Amount, Default } from "pages_los/pages/cam/components";
 export const OtherEmployeesSalaryDetails = ({ salary }) => {
   if (!Array.isArray(salary) || salary.length <= 0) {
     return null;
@@ -13,8 +14,8 @@ export const OtherEmployeesSalaryDetails = ({ salary }) => {
       <tr>
         <th colSpan={2}></th>
         <th>Salary (Monthly)</th>
-        <th>Net Salary</th>
-        <th>Other Income</th>
+        <th>Net Salary (Fixed) - 100%</th>
+        <th>Other Income (Monthly)</th>
         <th>Total Income</th>
       </tr>
       {salary.map((salaryDetails) => {
@@ -22,10 +23,25 @@ export const OtherEmployeesSalaryDetails = ({ salary }) => {
           <>
             <tr>
               <th colSpan={2}></th>
-              <td>{salaryDetails.salaryMonth}</td>
-              <td>{salaryDetails.netSalary}</td>
-              <td>{salaryDetails.otherIncome}</td>
-              <td>{salaryDetails.totalIncome}</td>
+              <td>{<Default value={salaryDetails.salaryMonth} />}</td>
+              <td>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.netSalary} />
+                }
+              </td>
+              <td>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.otherIncome} />
+                }
+              </td>
+              <td>
+                {
+                  //@ts-ignore
+                  <Amount value={salaryDetails.totalIncome} />
+                }
+              </td>
             </tr>
           </>
         );

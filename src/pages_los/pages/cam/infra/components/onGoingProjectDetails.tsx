@@ -1,4 +1,8 @@
-import { Default, DateFormat } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  SquareFeetFormat,
+} from "pages_los/pages/cam/components";
 
 export const OnGoingProjectDetails = ({ onGoingProject }) => {
   if (!Array.isArray(onGoingProject) || onGoingProject.length <= 0) {
@@ -33,7 +37,12 @@ export const OnGoingProjectDetails = ({ onGoingProject }) => {
             <td>{<Default value={onGoingProjectDetails.totalUnits} />}</td>
             <td>{<Default value={onGoingProjectDetails.location} />}</td>
             <td>
-              {<Default value={onGoingProjectDetails.totalBuildUpArea} />}
+              {
+                //@ts-ignore
+                <SquareFeetFormat
+                  value={onGoingProjectDetails.totalBuildUpArea}
+                />
+              }
             </td>
             <td>{<DateFormat value={onGoingProjectDetails.startDate} />}</td>
             <td>

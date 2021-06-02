@@ -1,4 +1,9 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Percentage,
+  SquareFeetFormat,
+} from "pages_los/pages/cam/components";
 
 export const CollateralDetails = ({ collateral }) => {
   return (
@@ -43,7 +48,10 @@ const CollateralSecurity = ({ collateral }) => {
                 {<Default value={collateralData.propertyAddress} />}
               </td>
               <td colSpan={2}>
-                {<Default value={collateralData.propertyArea} />}
+                {
+                  //@ts-ignore
+                  <SquareFeetFormat value={collateralData.propertyArea} />
+                }
               </td>
               <td colSpan={2}>{<Default value={collateralData.owner} />}</td>
               <td colSpan={2}>

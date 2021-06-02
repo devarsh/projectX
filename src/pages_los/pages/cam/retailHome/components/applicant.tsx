@@ -1,9 +1,13 @@
 import { BankDetails } from "./bankDetails";
-import { ContactDetails } from "./contactDetails";
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { Age } from "pages_los/pages/cam/components";
-import { convertIntoPrcentage } from "pages_los/pages/cam/utils";
+import {
+  Age,
+  DateFormat,
+  Percentage,
+  Amount,
+  Address,
+} from "pages_los/pages/cam/components";
 
 export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
   if (typeof applicant !== "object") {
@@ -14,12 +18,22 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
     <>
       <tr>
         <th colSpan={2}>Loan Requested</th>
-        <td colSpan={7}>{loanAmount}</td>
+        <td colSpan={7}>
+          {
+            //@ts-ignore
+            <Amount value={loanAmount} />
+          }
+        </td>
       </tr>
       {others.foir !== null ? (
         <tr>
           <th colSpan={2}>FOIR or Portion of Income Considered</th>
-          <td colSpan={7}>{convertIntoPrcentage({ amount: others.foir })}</td>
+          <td colSpan={7}>
+            {
+              //@ts-ignore
+              <Percentage value={others.foir} />
+            }
+          </td>
         </tr>
       ) : (
         ""
@@ -33,13 +47,12 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
       <tr>
         <th colSpan={2}>Name</th>
         <td colSpan={7}>
-          {applicant.firstName}
-          {applicant.lastName}
+          {applicant.firstName} {applicant.lastName}
         </td>
       </tr>
       <tr>
         <th colSpan={2}>Date of Birth</th>
-        <td colSpan={7}>{applicant.dob}</td>
+        <td colSpan={7}>{<DateFormat value={applicant.dob} />}</td>
       </tr>
       <tr>
         <th colSpan={2}>Age</th>
@@ -52,7 +65,7 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
       </tr>
 
       <BankDetails bank={applicant.bankDetails} />
-      <ContactDetails contact={applicant.contactDetails} />
+      <Address value={applicant.contactDetails} />
       <ReturnFilingDetails returnFiling={applicant.returnFilingDetails} />
       <SalaryDetails salary={applicant.salaryDetails} />
     </>

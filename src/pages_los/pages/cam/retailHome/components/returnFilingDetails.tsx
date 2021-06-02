@@ -1,4 +1,4 @@
-import { convertIntoCurrency } from "pages_los/pages/cam/utils";
+import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 
 export const ReturnFilingDetails = ({ returnFiling }) => {
   if (!Array.isArray(returnFiling) || returnFiling.length <= 0) {
@@ -26,22 +26,30 @@ export const ReturnFilingDetails = ({ returnFiling }) => {
             <tr>
               <td colSpan={2}></td>
               <td>
-                {convertIntoCurrency({
-                  amount: returnFilingDetails.depreciation,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={returnFilingDetails.depreciation} />
+                }
               </td>
-              <td>{returnFilingDetails.filingDate}</td>
-              <td>{returnFilingDetails.filingYear}</td>
-              <td>{returnFilingDetails.netProfit}</td>
+              <td>{<DateFormat value={returnFilingDetails.filingDate} />}</td>
+              <td>{<Default value={returnFilingDetails.filingYear} />}</td>
               <td>
-                {convertIntoCurrency({
-                  amount: returnFilingDetails.otherIncome,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={returnFilingDetails.netProfit} />
+                }
               </td>
               <td>
-                {convertIntoCurrency({
-                  amount: returnFilingDetails.totalIncome,
-                })}
+                {
+                  //@ts-ignore
+                  <Amount value={returnFilingDetails.otherIncome} />
+                }
+              </td>
+              <td>
+                {
+                  //@ts-ignore
+                  <Amount value={returnFilingDetails.totalIncome} />
+                }
               </td>
             </tr>
           </>
