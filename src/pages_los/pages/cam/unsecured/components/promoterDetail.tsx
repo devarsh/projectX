@@ -1,3 +1,4 @@
+import { Default } from "pages_los/pages/cam/components";
 export const PromoterDetails = ({ promoter }) => {
   if (!Array.isArray(promoter) || promoter.length <= 0) {
     return null;
@@ -21,10 +22,18 @@ export const PromoterDetails = ({ promoter }) => {
           <>
             <tr key={index}>
               <td style={{ textAlign: "center" }}>{index}</td>
-              <td colSpan={2}>{promoterData.salutation}</td>
-              <td colSpan={2}>{promoterData.firstName}</td>
-              <td colSpan={2}>{promoterData.middleName}</td>
-              <td colSpan={2}>{promoterData.lastName}</td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.salutation ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.firstName ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.middleName ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.lastName ?? ""} />}
+              </td>
             </tr>
           </>
         );

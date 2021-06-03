@@ -31,13 +31,17 @@ export const BankDetails = ({ bank }) => {
         return (
           <tr key={index}>
             <td colSpan={2}></td>
-            <td colSpan={2}>{<Default value={bankDetail.bankName} />}</td>
-            <td colSpan={2}>{<Default value={bankDetail.address} />}</td>
-            <td colSpan={2}>{<Default value={bankDetail.accountNo} />}</td>
+            <td colSpan={2}>
+              {<Default value={bankDetail?.bankName ?? ""} />}
+            </td>
+            <td colSpan={2}>{<Default value={bankDetail?.address ?? ""} />}</td>
+            <td colSpan={2}>
+              {<Default value={bankDetail?.accountNo ?? ""} />}
+            </td>
             <td colSpan={1}>
               {
                 //@ts-ignore
-                <Amount value={bankDetail.averageBalance} />
+                <Amount value={bankDetail?.averageBalance ?? ""} />
               }
             </td>
           </tr>
@@ -68,21 +72,25 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
         return (
           <tr key={index}>
             <td colSpan={2}></td>
-            <td colSpan={1}>{<Default value={bankDetail.accountType} />}</td>
-            <td colSpan={2}>{<Default value={bankDetail.bankName} />}</td>
+            <td colSpan={1}>
+              {<Default value={bankDetail?.accountType ?? ""} />}
+            </td>
             <td colSpan={2}>
-              {<Default value={bankDetail.outstandingAmountAsOn} />}
+              {<Default value={bankDetail?.bankName ?? ""} />}
+            </td>
+            <td colSpan={2}>
+              {<Default value={bankDetail?.outstandingAmountAsOn ?? ""} />}
             </td>
             <td colSpan={1}>
               {
                 //@ts-ignore
-                <Amount value={bankDetail.outstandingAmount} />
+                <Amount value={bankDetail?.outstandingAmount ?? ""} />
               }
             </td>
             <td colSpan={1}>
               {
                 //@ts-ignore
-                <Percentage value={bankDetail.rateOfInterest} />
+                <Percentage value={bankDetail?.rateOfInterest ?? ""} />
               }
             </td>
           </tr>

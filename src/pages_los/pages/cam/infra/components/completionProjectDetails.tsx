@@ -11,10 +11,10 @@ export const CompletionProjectDetails = ({ projectCompletion }) => {
   }
 
   const completedProject = projectCompletion.filter(
-    (one) => one.projectStatus === "Completed"
+    (one) => one.projectType === "Completed"
   );
   const onGoingProject = projectCompletion.filter(
-    (one) => one.projectStatus === "Ongoing"
+    (one) => one.projectType === "Ongoing"
   );
 
   return (

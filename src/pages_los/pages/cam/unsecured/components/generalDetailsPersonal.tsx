@@ -1,8 +1,12 @@
 import { BankDetails } from "./bankingArrangements";
 import { IncomeSummaryDetails } from "./incomeSummary";
-import { Age, Address, Default, Amount } from "pages_los/pages/cam/components";
-import { NatureofFacilityPresentDetails } from "./facilityPresent";
-import { NatureofFacilityProposedDetails } from "./facilityProposed";
+import {
+  Age,
+  Address,
+  Default,
+  Amount,
+  DateFormat,
+} from "pages_los/pages/cam/components";
 
 export const GeneralDetailsPersonal = ({ general }) => {
   if (!Array.isArray(general) || general.length <= 0) {
@@ -32,34 +36,45 @@ export const GeneralDetailsPersonal = ({ general }) => {
             <tr>
               <th colSpan={2}>Name of the Person</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.firstName} />}
+                {personalDetail.salutation} {personalDetail?.firstName}{" "}
+                {personalDetail?.middleName} {personalDetail?.lastName}
               </td>
             </tr>
             <tr>
-              <th colSpan={2}>Age </th>
+              <th colSpan={2}>Birth Date</th>
+              <td colSpan={7}>
+                {<DateFormat value={personalDetail?.dob ?? ""} />}
+              </td>
+            </tr>
+            <tr>
+              <th colSpan={2}>Age</th>
               <td colSpan={7}>
                 {
                   //@ts-ignore
-                  <Age value={personalDetail.dob} />
+                  <Age value={personalDetail?.dob ?? ""} />
                 }
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.educationQalification} />}
+                {
+                  <Default
+                    value={personalDetail?.educationQalification ?? ""}
+                  />
+                }
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Residential Type</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.residentialType} />}
+                {<Default value={personalDetail?.residentialType ?? ""} />}
               </td>
             </tr>
             <tr>
               <th colSpan={2}>PAN No</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.panNumber} />}
+                {<Default value={personalDetail?.panNumber ?? ""} />}
               </td>
             </tr>
             <tr>
@@ -73,7 +88,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
             <tr>
               <th colSpan={2}>Total Work Experience</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.experience} />}
+                {<Default value={personalDetail?.experience ?? ""} />}
               </td>
             </tr>
             <tr>
@@ -83,7 +98,7 @@ export const GeneralDetailsPersonal = ({ general }) => {
             <tr>
               <th colSpan={2}>Any other Source of Income</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.sourceIncomeOther} />}
+                {<Default value={personalDetail?.sourceIncomeOthe ?? ""} />}
               </td>
             </tr>
             <tr>
@@ -95,28 +110,15 @@ export const GeneralDetailsPersonal = ({ general }) => {
               <td colSpan={7}>{}</td>
             </tr>
             <tr>
-              <th colSpan={2}>RF Rating</th>
-              <td colSpan={7}>{}</td>
-            </tr>
-            <tr>
               <th colSpan={2}>Purpose of loan</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.purposeLoan} />}
+                {<Default value={personalDetail?.purposeLoan ?? ""} />}
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Moratorium taken or not</th>
               <td colSpan={7}>
-                {<Default value={personalDetail.maratoriumTaken} />}s
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Turnover in current financial year</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={personalDetail.turnOverAmount} />
-                }
+                {<Default value={personalDetail?.maratoriumTaken ?? ""} />}
               </td>
             </tr>
             <tr>
@@ -124,45 +126,14 @@ export const GeneralDetailsPersonal = ({ general }) => {
               <td colSpan={7}>
                 {
                   //@ts-ignore
-                  <Amount value={personalDetail.averageBankBal} />
+                  <Amount value={personalDetail?.averageBankBal ?? ""} />
                 }
               </td>
             </tr>
-            <tr>
-              <th colSpan={2}>Average Utilisation of Working Capital Limits</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={personalDetail.limitBal} />
-                }
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Credit Summation in Bank in Last 12 months</th>
-              <td colSpan={7}>
-                {<Default value={personalDetail.chequeBounces} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>
-                Inward cheque bounces, if any and % of total Cheque bounce
-              </th>
-              <td colSpan={7}>
-                {<Default value={personalDetail.chequeBouncesPer} />}
-              </td>
-            </tr>
-            <Address value={personalDetail.contactDetails} />
-            <BankDetails bank={personalDetail.bankDetails} />
-            <IncomeSummaryDetails income={personalDetail.incomeDetails} />
-            <NatureofFacilityPresentDetails
-              natureOfFacilityPresent={
-                personalDetail.presentNatureOfFacilityDetails
-              }
-            />
-            <NatureofFacilityProposedDetails
-              natureOfFacilityProposed={
-                personalDetail.proposedNatureOfFacilityDetails
-              }
+            <Address value={personalDetail?.contactDetails ?? ""} />
+            <BankDetails bank={personalDetail?.bankDetails ?? ""} />
+            <IncomeSummaryDetails
+              income={personalDetail?.incomeDetails ?? ""}
             />
           </>
         );
