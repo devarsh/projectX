@@ -257,22 +257,30 @@ export const metaData: NavBarMetaDataType = {
       isRouterLink: true,
     },
     {
-      label: "Workflow Management",
+      label: "Task Management",
       icon: "tasks",
       children: [
         {
-          label: "Task Report",
+          label: "Assign",
           icon: "circle",
         },
         {
-          label: "Sales Report",
+          label: "Assigned",
+          icon: "circle",
+        },
+        {
+          label: "Daily Activity",
+          icon: "circle",
+        },
+        {
+          label: "Cold Calling",
           icon: "circle",
         },
       ],
     },
     {
       label: "Config Management",
-      icon: "tasks",
+      icon: "cog",
       children: [
         {
           label: "Bank",
@@ -287,31 +295,6 @@ export const metaData: NavBarMetaDataType = {
           icon: "circle",
         },
       ],
-    },
-
-    {
-      label: "Partners",
-      href: "./pages/partners",
-      isRouterLink: true,
-      icon: "users-cog",
-    },
-    {
-      label: "Employees",
-      href: "./pages/employees",
-      isRouterLink: true,
-      icon: "users-cog",
-    },
-    {
-      label: "Profile",
-      href: "./profile",
-      isRouterLink: true,
-      icon: "user-circle",
-    },
-    {
-      label: "Settings",
-      href: "./pages/settings",
-      isRouterLink: true,
-      icon: "cog",
     },
   ],
 };
