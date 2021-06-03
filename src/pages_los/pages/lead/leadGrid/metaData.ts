@@ -21,7 +21,7 @@ export const leadGridMetaData = {
       alignment: "left",
       componentType: "default",
       disableSortBy: false,
-      filterComponentType: "valueFilter",
+      filterComponentType: "multiValueFilter",
       isVisible: true,
     },
     {
@@ -36,7 +36,7 @@ export const leadGridMetaData = {
       disableSortBy: false,
       isVisible: true,
       filterComponentType: "rangeFilter",
-      filterComponentProps: {
+      filterProps: {
         type: "date",
       },
     },
@@ -52,6 +52,9 @@ export const leadGridMetaData = {
       disableSortBy: false,
       disableFilters: false,
       filterComponentType: "valueFilter",
+      filterProps: {
+        filterBy: "equal",
+      },
       isVisible: true,
     },
     {
@@ -65,7 +68,7 @@ export const leadGridMetaData = {
       componentType: "default",
       disableSortBy: true,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         options: "getBranchList",
       },
       isVisible: true,

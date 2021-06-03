@@ -10,23 +10,6 @@ export const assignedMetaData = {
     allowKeyboardNavigation: true,
     allowGlobalFilter: true,
   },
-  headerFilters: [
-    // {
-    //   accessor: "status",
-    //   filterComponentType: "groupByFilter",
-    //   filterComponentProps: {
-    //     selectType: "single",
-    //   },
-    //   columnName: "Status",
-    //   level: 2,
-    // },
-    {
-      accessor: "tran_dt",
-      filterComponentType: "daysFilter",
-      columnName: "Inquiry Date",
-      level: 1,
-    },
-  ],
   columns: [
     {
       accessor: "tran_cd",
@@ -54,7 +37,7 @@ export const assignedMetaData = {
       disableSortBy: false,
       disableFilters: false,
       filterComponentType: "rangeFilter",
-      filterComponentProps: {
+      filterProps: {
         type: "date",
       },
       isVisible: true,
@@ -72,7 +55,7 @@ export const assignedMetaData = {
       disableSortBy: true,
       disableFilters: false,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         selectType: "multiple",
       },
       isVisible: true,
@@ -89,7 +72,7 @@ export const assignedMetaData = {
       disableSortBy: true,
       disableFilters: false,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         selectType: "multiple",
       },
       isVisible: true,
@@ -106,7 +89,7 @@ export const assignedMetaData = {
       disableSortBy: true,
       disableFilters: false,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         selectType: "multiple",
       },
       isVisible: true,
@@ -123,7 +106,7 @@ export const assignedMetaData = {
       disableSortBy: true,
       disableFilters: false,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         selectType: "multiple",
       },
       isVisible: true,
@@ -154,7 +137,7 @@ export const assignedMetaData = {
       disableSortBy: true,
       disableFilters: true,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         selectType: "multiple",
       },
       isVisible: true,
@@ -256,7 +239,7 @@ export const assignedMetaData = {
       disableSortBy: true,
       disableFilters: false,
       filterComponentType: "optionsFilter",
-      filterComponentProps: {
+      filterProps: {
         selectType: "multiple",
       },
       isVisible: true,

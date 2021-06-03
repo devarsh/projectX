@@ -10,12 +10,22 @@ const options = [
   { label: "contains", value: "contains" },
 ];
 
+const isValidFilter = (filterBy) =>
+  ["startsWith", "endsWith", "equal", "contains"].indexOf(filterBy) >= 0;
+
 export const ValueFilter = ({
-  column: { filterValue, id, columnName },
+  column: { filterValue, id, columnName, filterProps },
   dispatch,
 }) => {
+  let filterBy = null;
+  if (Boolean(filterProps)) {
+    filterBy = filterProps?.filterBy;
+  }
+  const filterValid = isValidFilter(filterBy ?? "NOT_EXIST");
   const [text, setText] = useState(filterValue?.value ?? "");
-  const [condition, setCondition] = useState(filterValue?.condition ?? "equal");
+  const [condition, setCondition] = useState(
+    filterValue?.condition ?? filterValid ? filterBy : "equal"
+  );
   const handleBlur = () => {
     if (Boolean(text)) {
       dispatch({
@@ -46,23 +56,27 @@ export const ValueFilter = ({
         onBlur={handleBlur}
         fullWidth
         value={text}
-        InputProps={{
-          endAdornment: (
-            <SelectRenderOnly
-              size="small"
-              style={{ width: "50%" }}
-              touched={true}
-              error={""}
-              multiple={false}
-              handleChange={(e) => setCondition(e.target.value)}
-              handleBlur={() => true}
-              options={options}
-              disableCaching={false}
-              value={condition}
-              selectVariant="andornment"
-            />
-          ),
-        }}
+        InputProps={
+          !filterValid
+            ? {
+                endAdornment: (
+                  <SelectRenderOnly
+                    size="small"
+                    style={{ width: "50%" }}
+                    touched={true}
+                    error={""}
+                    multiple={false}
+                    handleChange={(e) => setCondition(e.target.value)}
+                    handleBlur={() => true}
+                    options={options}
+                    disableCaching={false}
+                    value={condition}
+                    selectVariant="andornment"
+                  />
+                ),
+              }
+            : undefined
+        }
       />
     </Grid>
   );

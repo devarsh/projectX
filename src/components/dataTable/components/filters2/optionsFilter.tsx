@@ -3,7 +3,7 @@ import { SelectRenderOnly } from "components/common/select/render";
 import Grid from "@material-ui/core/Grid";
 
 export const OptionsFilter = ({
-  column: { filterValue, id, columnName, filterComponentProps },
+  column: { filterValue, id, columnName, filterProps },
   dispatch,
 }) => {
   const [value, setValue] = useState(filterValue?.value ?? []);
@@ -44,8 +44,8 @@ export const OptionsFilter = ({
         multiple={true}
         handleChange={handleChange}
         handleBlur={handleBlur}
-        options={filterComponentProps?.options ?? []}
-        _optionsKey={filterComponentProps?._optionsKey ?? ""}
+        options={filterProps?.options ?? []}
+        _optionsKey={filterProps?._optionsKey ?? ""}
         optionsProps={{}}
         disableCaching={false}
         selectVariant="regular"

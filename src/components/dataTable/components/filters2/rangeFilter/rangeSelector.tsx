@@ -4,12 +4,12 @@ import Grid from "@material-ui/core/Grid";
 
 export const RangeFilter = (props) => {
   const {
-    column: { filterComponentProps },
+    column: { filterProps },
   } = props;
 
-  if (filterComponentProps?.type === "date") {
+  if (filterProps?.type === "date") {
     return <DateRange {...props} />;
-  } else if (filterComponentProps?.type === "value") {
+  } else if (filterProps?.type === "value") {
     return <ValueRange {...props} />;
   } else {
     return (

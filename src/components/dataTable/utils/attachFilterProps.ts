@@ -3,6 +3,7 @@ import {
   ValueFilter,
   OptionsFilter,
   RangeFilter,
+  MultiValueFilter,
 } from "../components/filters2";
 import { singletonFunctionRegisrationFactory } from "components/utils";
 
@@ -14,18 +15,25 @@ const optionsMethodNotFound = (fieldKey) => () => {
 export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
   if (Array.isArray(columns)) {
     return columns.map((column) => {
-      const { filterComponentType, filterComponentProps, ...others } = column;
+      const { filterComponentType, filterProps, ...others } = column;
       switch (filterComponentType) {
         case "valueFilter": {
           return {
             ...others,
             Filter: ValueFilter,
-            filterComponentProps,
+            filterProps,
+          };
+        }
+        case "multiValueFilter": {
+          return {
+            ...others,
+            Filter: MultiValueFilter,
+            filterProps,
           };
         }
         case "optionsFilter": {
           //@ts-ignore
-          const { options, ...filterOthers } = filterComponentProps;
+          const { options, ...filterOthers } = filterProps;
           if (typeof options === "string") {
             const myOptions = singletonFunctionRegisrationFactory.getFn(
               options ?? "NOT_EXIST_OPTIONS_FN",
@@ -34,7 +42,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
             return {
               ...others,
               Filter: OptionsFilter,
-              filterComponentProps: {
+              filterProps: {
                 options: myOptions,
                 _optionsKey: options,
                 ...filterOthers,
@@ -44,7 +52,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
             return {
               ...others,
               Filter: OptionsFilter,
-              filterComponentProps,
+              filterProps,
             };
           }
         }
@@ -52,7 +60,7 @@ export const attachFilterComponentToMetaData = (columns: GridColumnType[]) => {
           return {
             ...others,
             Filter: RangeFilter,
-            filterComponentProps,
+            filterProps,
           };
         default:
           return {

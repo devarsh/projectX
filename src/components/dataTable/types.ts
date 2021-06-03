@@ -7,8 +7,12 @@ export interface GridColumnType {
   componentType: CellComponentType;
   Cell?: any;
   Filter?: any;
-  filterComponentType?: "valueFilter" | "rangeFilter" | "optionsFilter";
-  filterComponentProps?: {
+  filterComponentType?:
+    | "valueFilter"
+    | "rangeFilter"
+    | "optionsFilter"
+    | "multiValueFilter";
+  filterProps?: {
     type: string;
   };
   disableFilters?: boolean;
