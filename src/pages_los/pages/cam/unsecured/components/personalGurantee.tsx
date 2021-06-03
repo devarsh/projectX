@@ -1,3 +1,4 @@
+import { Default, Amount } from "pages_los/pages/cam/components";
 export const PersonalGuarantee = ({ personal }) => {
   if (!Array.isArray(personal) || personal.length <= 0) {
     return null;
@@ -19,9 +20,18 @@ export const PersonalGuarantee = ({ personal }) => {
         return (
           <>
             <tr>
-              <td colSpan={2}>{personalData.guarantorName}</td>
-              <td colSpan={2}>{personalData.panNumber}</td>
-              <td colSpan={2}>{personalData.netWorth}</td>
+              <td colSpan={2}>
+                {<Default value={personalData?.guarantorName ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={personalData?.panNumber ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {
+                  //@ts-ignore
+                  <Amount value={personalData?.netWorth ?? ""} />
+                }
+              </td>
             </tr>
           </>
         );

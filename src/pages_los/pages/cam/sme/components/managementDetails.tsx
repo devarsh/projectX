@@ -59,7 +59,7 @@ export const ManagementDetails = ({ management }) => {
             </tr>
             <tr>
               <th colSpan={2}>Credit Score</th>
-              <td colSpan={7}>{<Default value={data.associatedCompany} />}</td>
+              <td colSpan={7}>{<Default value={data.creditScore} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>

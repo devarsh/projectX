@@ -14,8 +14,8 @@ export const Unsecured = ({ data, others }) => {
     promotersDetails,
     addressDetails,
     businessOtherDetails,
-    personalGuaranteeSecurity,
     financialDetails,
+    personalGuaranteeSecurity,
   } = data;
 
   let { productID } = others;
@@ -33,7 +33,6 @@ export const Unsecured = ({ data, others }) => {
             <BusinessDetails business={businessOtherDetails} />
             <ManagementDetails management={managementDetails} />
             <FinancialRatios finance={financialDetails} />
-            {/* <PersonalGuarantee personal={personalGuaranteeSecurity} /> */}
           </>
         ) : productID === "123000014" ? (
           <>
