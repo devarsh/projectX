@@ -33,22 +33,24 @@ export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
             <tr key={index}>
               <td style={{ textAlign: "center" }}>{index + 1}</td>
               <td colSpan={2}>
-                {<Default value={presentDetails.facilityType} />}
+                {<Default value={presentDetails?.facilityType ?? ""} />}
               </td>
-              <td colSpan={2}>{<Default value={presentDetails.bankName} />}</td>
+              <td colSpan={2}>
+                {<Default value={presentDetails?.bankName ?? ""} />}
+              </td>
               <td colSpan={1}>
-                {<DateFormat value={presentDetails.outstandingOn} />}
+                {<DateFormat value={presentDetails?.outstandingOn ?? ""} />}
               </td>
               <td colSpan={1}>
                 {
                   //@ts-ignore
-                  <Amount value={presentDetails.outstandingBalance} />
+                  <Amount value={presentDetails?.outstandingBalance ?? ""} />
                 }
               </td>
               <td colSpan={2}>
                 {
                   //@ts-ignore
-                  <Percentage value={presentDetails.rateOfInterest} />
+                  <Percentage value={presentDetails?.rateOfInterest ?? ""} />
                 }
               </td>
             </tr>

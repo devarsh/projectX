@@ -22,10 +22,18 @@ export const PromoterDetails = ({ promoter }) => {
           <>
             <tr key={index}>
               <td style={{ textAlign: "center" }}>{index + 1}</td>
-              <td colSpan={2}>{<Default value={promoterData.salutation} />}</td>
-              <td colSpan={2}>{<Default value={promoterData.firstName} />}</td>
-              <td colSpan={2}>{<Default value={promoterData.middleName} />}</td>
-              <td colSpan={2}>{<Default value={promoterData.lastName} />}</td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.salutation ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.firstName ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.middleName ?? ""} />}
+              </td>
+              <td colSpan={2}>
+                {<Default value={promoterData?.lastName ?? ""} />}
+              </td>
             </tr>
           </>
         );

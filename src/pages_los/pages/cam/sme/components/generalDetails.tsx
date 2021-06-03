@@ -19,70 +19,80 @@ export const GeneralDetails = ({ general, promoter, address }) => {
         </tr>
         <tr>
           <th colSpan={2}>Name of the Unit</th>
-          <td colSpan={7}>{<Default value={general.entityName} />}</td>
+          <td colSpan={7}>{<Default value={general?.entityName ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>Constitution of Business</th>
-          <td colSpan={7}>{<Default value={general.entityType} />}</td>
+          <td colSpan={7}>{<Default value={general?.entityType ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>Credit Score</th>
-          <td colSpan={7}>{/* {<Default value={general.entityType} />} */}</td>
+          <td colSpan={7}> {<Default value={general?.creditScore ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>Ownership of Factory / Business Premises</th>
-          <td colSpan={7}>{<Default value={general.ownershipType} />}</td>
+          <td colSpan={7}>
+            {<Default value={general?.ownershipType ?? ""} />}
+          </td>
         </tr>
         <tr>
           <th colSpan={2}>Date of incorporation</th>
-          <td colSpan={7}>{<DateFormat value={general.inceptionDate} />}</td>
+          <td colSpan={7}>
+            {<DateFormat value={general?.inceptionDate ?? ""} />}
+          </td>
         </tr>
         <tr>
           <th colSpan={2}>Existing Type of Industry</th>
-          <td colSpan={7}>{<Default value={general.typeOfIndustry} />}</td>
+          <td colSpan={7}>
+            {<Default value={general?.typeOfIndustry ?? ""} />}
+          </td>
         </tr>
         <tr>
           <th colSpan={2}>Nature of Existing Business</th>
-          <td colSpan={7}>{<Default value={general.businessNature} />}</td>
+          <td colSpan={7}>
+            {<Default value={general?.businessNature ?? ""} />}
+          </td>
         </tr>
         <tr>
           <th colSpan={2}>Proposed business</th>
-          <td colSpan={7}>{<Default value={general.businessProposed} />}</td>
+          <td colSpan={7}>
+            {<Default value={general?.businessProposed ?? ""} />}
+          </td>
         </tr>
         <tr>
           <th colSpan={2}>External credit rating</th>
-          <td colSpan={7}>{<Default value={general.rankExternal} />}</td>
+          <td colSpan={7}>{<Default value={general?.rankExternal ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>MSME</th>
-          <td colSpan={7}>{<Default value={general.businessSize} />}</td>
+          <td colSpan={7}>{<Default value={general?.businessSize ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>PAN No</th>
-          <td colSpan={7}>{<Default value={general.panNumber} />}</td>
+          <td colSpan={7}>{<Default value={general?.panNumber ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>Udhyam No</th>
-          <td colSpan={7}>{<Default value={general.udhyogNumber} />}</td>
+          <td colSpan={7}>{<Default value={general?.udhyogNumber ?? ""} />}</td>
         </tr>
         <tr>
           <th colSpan={2}>CMR Ranking</th>
-          <td colSpan={7}>{<Default value={general.crmRank} />}</td>
+          <td colSpan={7}>{<Default value={general?.crmRank ?? ""} />}</td>
         </tr>
         {/* <tr>
           <th colSpan={2}>Name of Promoters / Directors</th>
           <td colSpan={7}>{<Default value={"Not Specified"} />}</td>
-        </tr>
+        </tr>*/}
         <tr>
           <th colSpan={2}>Purpose of loan</th>
-          <td colSpan={7}>{<Default value={general.purposeLoan} />}</td>
-        </tr> */}
+          <td colSpan={7}>{<Default value={general?.purposeLoan ?? ""} />}</td>
+        </tr>
         <tr>
           <th colSpan={2}>Turnover in current financial year</th>
           <td colSpan={7}>
             {
               //@ts-ignore
-              <Amount value={general.turnOverAmount} />
+              <Amount value={general?.turnOverAmount ?? ""} />
             }
           </td>
         </tr>
@@ -91,7 +101,7 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           <td colSpan={7}>
             {
               //@ts-ignore
-              <Amount value={general.averageBankBal} />
+              <Amount value={general?.averageBankBal ?? ""} />
             }
           </td>
         </tr>
@@ -100,28 +110,36 @@ export const GeneralDetails = ({ general, promoter, address }) => {
           <td colSpan={7}>
             {
               //@ts-ignore
-              <Amount value={general.limitBal} />
+              <Amount value={general?.limitBal ?? ""} />
             }
           </td>
         </tr>
         <tr>
           <th colSpan={2}>Credit Summation in Bank in Last 12 months</th>
-          <td colSpan={7}>{<Default value={general.chequeBounces} />}</td>
+          <td colSpan={7}>
+            {<Default value={general?.chequeBounces ?? ""} />}
+          </td>
         </tr>
         <tr>
           <th colSpan={2}>
             Inward cheque bounces, if any and % of total Cheque bounce
           </th>
-          <td colSpan={7}>{<Default value={general.chequeBouncesPer} />}</td>
+          <td colSpan={7}>
+            {<Default value={general?.chequeBouncesPer ?? ""} />}
+          </td>
         </tr>
 
         <Address value={address} />
         <PromoterDetails promoter={promoter} />
         <NatureofFacilityPresentDetails
-          natureOfFacilityPresent={general.presentNatureOfFacilityDetails}
+          natureOfFacilityPresent={
+            general?.presentNatureOfFacilityDetails ?? ""
+          }
         />
         <NatureofFacilityProposedDetails
-          natureOfFacilityProposed={general.proposedNatureOfFacilityDetails}
+          natureOfFacilityProposed={
+            general?.proposedNatureOfFacilityDetails ?? ""
+          }
         />
       </>
     );

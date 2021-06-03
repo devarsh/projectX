@@ -32,55 +32,57 @@ export const ManagementDetails = ({ management }) => {
             <tr>
               <th colSpan={2}>Name of the Partner/Director</th>
               <td colSpan={7}>
-                {data.salutation} {data.firstName} {data.middleName}{" "}
-                {data.lastName}
+                {data?.salutation ?? ""} {data?.firstName ?? ""}{" "}
+                {data?.middleName ?? ""} {data?.lastName ?? ""}
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Birth Date</th>
-              <td colSpan={7}>{<DateFormat value={data.dob} />}</td>
+              <td colSpan={7}>{<DateFormat value={data?.dob ?? ""} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Age</th>
               <td colSpan={7}>
                 {
                   //@ts-ignore
-                  <Age value={data.dob} />
+                  <Age value={data?.dob ?? ""} />
                 }
               </td>
             </tr>
             <tr>
               <th colSpan={2}>PAN No</th>
-              <td colSpan={7}>{<Default value={data.panNumber} />}</td>
+              <td colSpan={7}>{<Default value={data?.panNumber ?? ""} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>DIN / LLPIN No</th>
-              <td colSpan={7}>{<Default value={data.dinLlPinNo} />}</td>
+              <td colSpan={7}>{<Default value={data?.dinLlPinNo ?? ""} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Credit Score</th>
-              <td colSpan={7}>{<Default value={data.creditScore} />}</td>
+              <td colSpan={7}>{<Default value={data?.creditScore ?? ""} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Educational Qualification</th>
               <td colSpan={7}>
-                {<Default value={data.educationQalification} />}
+                {<Default value={data?.educationQalification ?? ""} />}
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Experience</th>
-              <td colSpan={7}>{<Default value={data.experience} />}</td>
+              <td colSpan={7}>{<Default value={data?.experience ?? ""} />}</td>
             </tr>
             <tr>
               <th colSpan={2}>Associate Companies</th>
-              <td colSpan={7}>{<Default value={data.associatedCompany} />}</td>
+              <td colSpan={7}>
+                {<Default value={data?.associatedCompany ?? ""} />}
+              </td>
             </tr>
             <tr>
               <th colSpan={2}>Profit Sharing / Shareholding %</th>
               <td colSpan={7}>
                 {
                   //@ts-ignore
-                  <Percentage value={data.profitSharing} />
+                  <Percentage value={data?.profitSharing ?? ""} />
                 }
               </td>
             </tr>
@@ -89,15 +91,17 @@ export const ManagementDetails = ({ management }) => {
               <td colSpan={7}>
                 {
                   //@ts-ignore
-                  <Amount value={data.netWorth} />
+                  <Amount value={data?.netWorth ?? ""} />
                 }
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Resposnibilities Handled in the Comapany</th>
-              <td colSpan={7}>{<Default value={data.responsibility} />}</td>
+              <td colSpan={7}>
+                {<Default value={data?.responsibility ?? ""} />}
+              </td>
             </tr>
-            <IncomeDetails income={data.incomeDetails} />
+            <IncomeDetails income={data?.incomeDetails ?? ""} />
 
             <br />
             <br />
