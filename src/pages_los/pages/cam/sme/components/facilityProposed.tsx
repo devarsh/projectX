@@ -28,21 +28,21 @@ export const NatureofFacilityProposedDetails = ({
             <tr key={index}>
               <td style={{ textAlign: "center" }}>{index + 1}</td>
               <td colSpan={2}>
-                {<Default value={proposedDetails.facilityType} />}
+                {<Default value={proposedDetails?.facilityType ?? ""} />}
               </td>
               <td colSpan={2}>
-                {<Default value={proposedDetails.newTakeover} />}
+                {<Default value={proposedDetails?.newTakeover ?? ""} />}
               </td>
               <td colSpan={2}>
                 {
                   //@ts-ignore
-                  <Percentage value={proposedDetails.rateOfInterest} />
+                  <Percentage value={proposedDetails?.rateOfInterest ?? ""} />
                 }
               </td>
               <td colSpan={1}>
                 {
                   //@ts-ignore
-                  <Amount value={proposedDetails.amount} />
+                  <Amount value={proposedDetails?.amount ?? ""} />
                 }
               </td>
             </tr>

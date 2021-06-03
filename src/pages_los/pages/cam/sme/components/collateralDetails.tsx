@@ -45,19 +45,23 @@ const CollateralSecurity = ({ collateral }) => {
           <>
             <tr>
               <td colSpan={2}>
-                {<Default value={collateralData.propertyAddress} />}
+                {<Default value={collateralData?.propertyAddress ?? ""} />}
               </td>
               <td colSpan={2}>
                 {
                   //@ts-ignore
-                  <SquareFeetFormat value={collateralData.propertyArea} />
+                  <SquareFeetFormat
+                    value={collateralData?.propertyArea ?? ""}
+                  />
                 }
               </td>
-              <td colSpan={2}>{<Default value={collateralData.owner} />}</td>
+              <td colSpan={2}>
+                {<Default value={collateralData?.owner ?? ""} />}
+              </td>
               <td colSpan={2}>
                 {
                   //@ts-ignore
-                  <Amount value={collateralData.marketValue} />
+                  <Amount value={collateralData?.marketValue ?? ""} />
                 }
               </td>
             </tr>

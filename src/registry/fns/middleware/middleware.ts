@@ -61,6 +61,7 @@ const MiddlewareAPI = () => {
   };
 
   const getCAMData = async ({ refID }) => {
+    debugger;
     const { data, status } = await internalFetcher(`./lead/cam/data`, {
       body: JSON.stringify({
         request_data: {

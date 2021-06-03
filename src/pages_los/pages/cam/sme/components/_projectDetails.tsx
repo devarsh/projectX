@@ -1,9 +1,17 @@
-import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  Amount,
+  SquareFeetFormat,
+} from "pages_los/pages/cam/components";
 export const ProjectDetails = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
     return (
       <tr>
-        <td>Invalid data</td>
+        <th colSpan={9} className="form-heading">
+          Project Details
+        </th>
+        <td>Not Available</td>
       </tr>
     );
   }
@@ -35,17 +43,20 @@ export const ProjectDetails = ({ project }) => {
               </td>
             </tr>
             <tr>
-              <th colSpan={2}>Area of the Project Land and approx valuation</th>
+              <th colSpan={2}>Area of the Project Land</th>
               <td colSpan={7}>
                 {<Default value={projectsData.landAreaApproxValuation} />}
               </td>
             </tr>
-
-            {/* need to discuss with preeti mam
             <tr>
               <th colSpan={2}>Approximate valuation</th>
-              <td colSpan={7}>{<Default value={projectsData.landAreaApproximateValuation}/>}</td>
-            </tr> */}
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={projectsData.landAreaApproximateValuation} />
+                }
+              </td>
+            </tr>
             <tr>
               <th colSpan={2}>Expected Date of Commencement (DCCO)</th>
               <td colSpan={7}>
@@ -69,21 +80,9 @@ export const ProjectDetails = ({ project }) => {
               </td>
             </tr>
             <tr>
-              <th colSpan={2}>List of Machineries</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.machineryList} />}
-              </td>
-            </tr>
-            <tr>
               <th colSpan={2}>Installed Capacity</th>
               <td colSpan={7}>
                 {<Default value={projectsData.installedCapacity} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Products to be manufactured</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.productManufactured} />}
               </td>
             </tr>
             <tr>
@@ -115,11 +114,28 @@ export const ProjectDetails = ({ project }) => {
               <td colSpan={7}>{<Default value={projectsData.unitMatrix} />}</td>
             </tr>
             <tr>
-              <th colSpan={2}>Projected Turnover & Profit</th>
+              <th colSpan={2}>Projected Turnover</th>
               <td colSpan={7}>
-                {<Default value={projectsData.projectTurnover} />}
+                {
+                  //@ts-ignore
+                  <Amount value={projectsData.projectTurnover} />
+                }
               </td>
             </tr>
+            <tr>
+              <th colSpan={2}>Projected rofit</th>
+              <td colSpan={7}>
+                {
+                  //@ts-ignore
+                  <Amount value={projectsData.projectProfit} />
+                }
+              </td>
+            </tr>
+
+            <Machieneries machieneries={projectsData.machieneries} />
+            <ManufacturedProduct
+              manufacturedProduct={projectsData.manufacturedProduct}
+            />
           </>
         );
       })}
@@ -129,7 +145,7 @@ export const ProjectDetails = ({ project }) => {
 
 const ProjectParticulaDetails = ({ projectParticular }) => {
   const costOfProject = projectParticular.filter(
-    (one) => one.particularType === "Total Means of Finance"
+    (one) => one.particularType === "Total Cost of Project"
   );
 
   const meansOfFinance = projectParticular.filter(
@@ -139,7 +155,9 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
   return (
     <>
       <tr>
-        <th colSpan={9}>Total Cost of Project</th>
+        <th colSpan={9} className="form-sub-heading">
+          Total Cost of Project
+        </th>
       </tr>
       <tr>
         <th colSpan={2}></th>
@@ -183,12 +201,21 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
     !Array.isArray(meandOfFinanceDetails) ||
     meandOfFinanceDetails.length <= 0
   ) {
-    return null;
+    return (
+      <tr>
+        <th colSpan={9} className="form-sub-heading">
+          Total Means of Finance
+        </th>
+        <td>Not Available</td>
+      </tr>
+    );
   }
   return (
     <>
       <tr>
-        <th colSpan={9}>Total Means of Finance</th>
+        <th colSpan={9} className="form-sub-heading">
+          Total Means of Finance
+        </th>
       </tr>
       <tr>
         <th colSpan={2}></th>
@@ -214,6 +241,91 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
                 //@ts-ignore
                 <Amount value={meansOfFinanceData.incurredAmount} />
               }
+            </td>
+          </tr>
+        );
+      })}
+    </>
+  );
+};
+
+export const Machieneries = ({ machieneries }) => {
+  if (!Array.isArray(machieneries) || machieneries.length <= 0) {
+    return (
+      <tr>
+        <th colSpan={9} className="form-sub-heading">
+          List of Machieneries
+        </th>
+        <td>Not Available</td>
+      </tr>
+    );
+  }
+  return (
+    <>
+      <tr>
+        <th colSpan={9} className="form-sub-heading">
+          List of Machieneries
+        </th>
+      </tr>
+      <tr>
+        <th colSpan={2}></th>
+        <th colSpan={2}>Machinery Name</th>
+        <th colSpan={2}>Supplier Name</th>
+        <th colSpan={3}>Application Area</th>
+      </tr>
+      {machieneries.map((machieneriesDetails, index) => {
+        return (
+          <tr>
+            <td colSpan={2}></td>
+            <td colSpan={2}>
+              {<Default value={machieneriesDetails?.machineryName ?? ""} />}
+            </td>
+            <td colSpan={2}>
+              {<Default value={machieneriesDetails?.supplierName ?? ""} />}
+            </td>
+            <td colSpan={2}>
+              {
+                //@ts-ignore
+                <SquareFeetFormat
+                  value={machieneriesDetails?.applicationArea ?? ""}
+                />
+              }
+            </td>
+          </tr>
+        );
+      })}
+    </>
+  );
+};
+
+export const ManufacturedProduct = ({ manufacturedProduct }) => {
+  if (!Array.isArray(manufacturedProduct) || manufacturedProduct.length <= 0) {
+    return (
+      <tr>
+        <th colSpan={9} className="form-sub-heading">
+          Products to be Manufactured
+        </th>
+        <td>Not Available</td>
+      </tr>
+    );
+  }
+  return (
+    <>
+      <tr>
+        <th colSpan={9} className="form-sub-heading">
+          Products to be Manufactured
+        </th>
+      </tr>
+      <tr>
+        <th colSpan={2}></th>
+        <th colSpan={7}>Machinery Name</th>
+      </tr>
+      {manufacturedProduct.map((manufacturedProducts, index) => {
+        return (
+          <tr>
+            <td colSpan={2}></td>
+            <td colSpan={7}>
+              {<Default value={manufacturedProducts?.productName ?? ""} />}
             </td>
           </tr>
         );
