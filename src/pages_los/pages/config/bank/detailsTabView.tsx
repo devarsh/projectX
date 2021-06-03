@@ -44,11 +44,11 @@ const bankCrudAPIArgs = (moduleType, productType, refID, productCode) => ({
     args: { moduleType, productType, refID },
   },
   getFormMetaData: {
-    fn: CRUD2API.getFormMetaData,
+    fn: API.getFormMetaData,
     args: { moduleType, productType, refID },
   },
   getGridFormMetaData: {
-    fn: CRUD2API.getGridFormMetaData,
+    fn: API.getGridFormMetaData,
     args: { moduleType, productType, refID },
   },
 });

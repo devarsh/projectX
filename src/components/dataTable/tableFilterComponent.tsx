@@ -41,7 +41,6 @@ export const useFilterState = (reducer) => {
   const dispatch = useCallback((action) => {
     let newState = reducer(filterState.current, action);
     filterState.current = newState;
-    console.log(newState);
   }, []);
 
   return {
