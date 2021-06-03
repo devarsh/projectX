@@ -151,7 +151,7 @@ export const Verification = ({
             ending with ${requestOTPMutation.data?.maskedMobileNo ?? ""}`
               : apiType === "email"
               ? `Dear customer, Enter OTP sent to your registered ${apiName}
-          address ${requestOTPMutation.data?.maskEmail ?? ""}`
+          address ${requestOTPMutation.data?.maskedEmail ?? ""}`
               : ""}
           </Typography>
           {timer > 0 ? (
