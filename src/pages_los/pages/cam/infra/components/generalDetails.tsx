@@ -1,5 +1,5 @@
 import { PromoterDetails } from "./partnerDetails";
-import { BreifeAboutProject } from "./projectBrief";
+import { BriefAboutProject } from "./projectBrief";
 import { ProjectParticularDetails } from "./projectParticular";
 import { SiteAreaDetails } from "./siteAreaDetail";
 import {
@@ -21,92 +21,93 @@ export const GeneralDetails = ({
     return (
       <>
         <tr>
-          <th className="form-heading" colSpan={9}>
-            General Details
-          </th>
+          <Default
+            colspan={9}
+            className="form-heading"
+            align="center"
+            value="General Details"
+            element="th"
+          />
         </tr>
         <tr>
-          <th colSpan={2}>Name of the Firm</th>
-          <td colSpan={7}>{<Default value={general.entityName} />}</td>
+          <Default colspan={2} value="Name of the Firm" element="th" />
+          <Default colspan={7} value={general?.entityName} />
         </tr>
         <tr>
-          <th colSpan={2}>Project Name</th>
-          <td colSpan={7}>{<Default value={general.projectName} />}</td>
+          <Default colspan={2} value="Project Name" element="th" />
+          <Default colspan={7} value={general?.projectName} />
         </tr>
         <tr>
-          <th colSpan={2}>Constitution</th>
-          <td colSpan={7}>{<Default value={general.constitution} />}</td>
+          <Default colspan={2} value="Constitution" element="th" />
+          <Default colspan={7} value={general?.constitution} />
         </tr>
         <tr>
-          <th colSpan={2}>Date of incorporation</th>
-          <td colSpan={7}>
-            {<DateFormat value={general.incorporationDate} />}
-          </td>
+          <Default colspan={2} value="Date of incorporation" element="th" />
+          <DateFormat colspan={7} value={general?.incorporationDate} />
         </tr>
         <tr>
-          <th colSpan={2}>RERA Received</th>
-          <td colSpan={7}>{<Default value={general.reraReceived} />}</td>
+          <Default colspan={2} value="RERA Received" element="th" />
+          <Default colspan={7} value={general?.reraReceived} />
         </tr>
-        {general.reraReceived === "Yes" ? (
+        {general?.reraReceived === "Yes" ? (
           <tr>
-            <th colSpan={2}>RERA No</th>
-            <td colSpan={7}>{<Default value={general.reraNo} />}</td>
+            <Default colspan={2} value="RERA No" element="th" />
+            <Default colspan={7} value={general?.reraNo} />
           </tr>
         ) : null}
         <tr>
-          <th colSpan={2}>Project Start Date</th>
-          <td colSpan={7}>{<DateFormat value={general.projectStartDate} />}</td>
+          <Default colspan={2} value="Project Start Date" element="th" />
+          <DateFormat colspan={7} value={general?.projectStartDate} />
         </tr>
         <tr>
-          <th colSpan={2}>Project End Date</th>
-          <td colSpan={7}>{<DateFormat value={general.projectEndDate} />}</td>
+          <Default colspan={2} value="Project End Date" element="th" />
+          <DateFormat colspan={7} value={general?.projectEndDate} />
         </tr>
         <tr>
-          <th colSpan={2}>Type of the project</th>
-          <td colSpan={7}>{<Default value={general.projectType} />}</td>
+          <Default colspan={2} value="Type of Project" element="th" />
+          <Default colspan={7} value={general?.projectType} />
         </tr>
         <tr>
-          <th colSpan={2}>External credit rating</th>
-          <td colSpan={7}>{<Default value={general.rankExternal} />}</td>
+          <Default colspan={2} value="External Credit rating" element="th" />
+          <Default colspan={7} value={general?.rankExternal} />
         </tr>
         <tr>
-          <th colSpan={2}>CMR Ranking</th>
-          <td colSpan={7}>{<Default value={general.crmRank} />}</td>
+          <Default colspan={2} value="CMR Ranking" element="th" />
+          <Default colspan={7} value={general?.crmRank} />
         </tr>
         <tr>
-          <th colSpan={2}>Construction Stage of the Project</th>
-          <td colSpan={7}>
-            {<Default value={general.projectConstructionStage} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Construction Stage of the Project"
+            element="th"
+          />
+          <Default colspan={7} value={general?.projectConstructionStage} />
         </tr>
         <tr>
-          <th colSpan={2}>Booking Status of the Project</th>
-          <td colSpan={7}>
-            {<Default value={general.projectBookingStatus} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Booking Status of the Project"
+            element="th"
+          />
+          <Default colspan={7} value={general?.projectBookingStatus} />
         </tr>
         <tr>
-          <th colSpan={2}>Proposed Loan Amount</th>
-          <td colSpan={7}>
-            {
-              //@ts-ignore
-              <Amount value={general.proposedLoanAmount} />
-            }
-          </td>
+          <Default colspan={2} value="Proposed Loan Amount" element="th" />
+          <Amount colspan={7} value={general.proposedLoanAmount} align="left" />
         </tr>
         <tr>
-          <th colSpan={2}>Brief Abount the Group</th>
-          <td colSpan={7}>{<Default value={general.briefAboutGroup} />}</td>
+          <Default colspan={2} value="Brief About the Group" element="th" />
+          <Default colspan={7} value={general?.briefAboutGroup} />
         </tr>
         <tr>
-          <th colSpan={2}>Brief About the promoters</th>
-          <td colSpan={7}>{<Default value={general.briefAboutPromoters} />}</td>
+          <Default colspan={2} value="Brief About the Promoters" element="th" />
+          <Default colspan={7} value={general?.briefAboutPromoters} />
         </tr>
 
         <Address value={address} />
         <PromoterDetails promoter={promoter} />
         {/* <BankDetails bank={bank} /> */}
-        <BreifeAboutProject project={project} />
+        <BriefAboutProject project={project} />
         <ProjectParticularDetails projectParticular={projectParticular} />
         <SiteAreaDetails siteArea={siteArea} />
       </>

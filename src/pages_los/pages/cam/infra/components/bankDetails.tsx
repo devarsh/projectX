@@ -35,9 +35,15 @@ export const BankDetails = ({ bank }) => {
         return (
           <tr key={index + 1}>
             <td colSpan={2}></td>
-            <td colSpan={2}>{<Default value={bankDetail.bankName} />}</td>
-            <td colSpan={2}>{<Default value={bankDetail.address} />}</td>
-            <td colSpan={2}>{<Default value={bankDetail.accountNo} />}</td>
+            <td colSpan={2}>
+              <Default value={bankDetail.bankName} />
+            </td>
+            <td colSpan={2}>
+              <Default value={bankDetail.address} />
+            </td>
+            <td colSpan={2}>
+              <Default value={bankDetail.accountNo} />
+            </td>
             <td>
               {
                 //@ts-ignore

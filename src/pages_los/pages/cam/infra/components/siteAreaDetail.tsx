@@ -1,4 +1,8 @@
-import { Default, SquareFeetFormat } from "pages_los/pages/cam/components";
+import {
+  Amount,
+  Default,
+  SquareFeetFormat,
+} from "pages_los/pages/cam/components";
 export const SiteAreaDetails = ({ siteArea }) => {
   if (typeof siteArea !== "object") {
     return null;
@@ -8,61 +12,66 @@ export const SiteAreaDetails = ({ siteArea }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Site Area
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Site Area"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <td colSpan={6}>Land Area :(In Sq. feet)</td>
-        <td colSpan={1}>
-          {
-            //@ts-ignore
-            <SquareFeetFormat value={siteArea.landArea} />
-          }
-        </td>
+        <th colSpan={1} />
+        <Default colspan={6} value="Land Area (In Sq. feet):" />
+        <Amount colspan={2} skipSymbol={true} value={siteArea?.landArea} />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <td colSpan={6}>
-          Construction Area as per Commencement Certificate (CC):
-        </td>
-        <td colSpan={1}>
-          {
-            //@ts-ignore
-            <SquareFeetFormat value={siteArea.commencementCertificate} />
-          }
-        </td>
+        <th colSpan={1} />
+        <Default
+          colspan={6}
+          value="Construction Area as per Commencement Certificate (CC):"
+        />
+        <Amount
+          colspan={2}
+          skipSymbol={true}
+          value={siteArea?.commencementCertificate}
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <td colSpan={6}>Block:</td>
-        <td colSpan={1}>{<Default value={siteArea.siteBlock} />}</td>
+        <th colSpan={1} />
+        <Default colspan={6} value="Block:" />
+        <Amount colspan={2} skipSymbol={true} value={siteArea?.siteBlock} />
       </tr>
-      <br />
       <tr>
-        <th colSpan={2}></th>
-        <th>Sr. No.</th>
-        <th>Floor</th>
-        <th colSpan={2}>Build Up Area (In Sq. Feet)</th>
-        <th>Usage</th>
-        <th colSpan={2}>No. of Units</th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Project Details"
+          element="th"
+        />
+      </tr>
+      <tr>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Floor" element="th" />
+        <Default
+          colspan={3}
+          value="Build Up Area (In Sq. Feet)"
+          element="th"
+          align="right"
+        />
+        <Default colspan={1} value="Usage" element="th" />
+        <Default colspan={2} value="No. of Units" element="th" />
       </tr>
       {others.map((projectDetail, index) => {
         return (
           <>
             <tr key={index}>
-              <td colSpan={2}></td>
-              <td>{index + 1}</td>
-              <td>{<Default value={projectDetail.siteFloor} />}</td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat value={projectDetail.buildUpArea} />
-                }
-              </td>
-              <td>{<Default value={projectDetail.siteUsage} />}</td>
-              <td colSpan={2}>{<Default value={projectDetail.units} />}</td>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={2} value={projectDetail?.siteFloor} />
+              <Amount colspan={3} value={projectDetail?.buildUpArea} />
+              <Default colspan={1} value={projectDetail?.siteUsage} />
+              <Default colspan={2} value={projectDetail?.units} />
             </tr>
           </>
         );

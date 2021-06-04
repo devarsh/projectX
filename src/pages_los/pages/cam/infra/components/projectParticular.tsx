@@ -1,4 +1,4 @@
-import { Default, Amount } from "pages_los/pages/cam/components";
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 export const ProjectParticularDetails = ({ projectParticular }) => {
   if (!Array.isArray(projectParticular) || projectParticular.length <= 0) {
     return null;
@@ -12,46 +12,35 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Cost of the Project
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Cost of the Project"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th>Particulars</th>
-        <th>Total Cost</th>
-        <th>Cost Incurred</th>
-        <th colSpan={2}>Cost per Sq. feet</th>
-        <th colSpan={2}>% of Total Cost </th>
+        <Default colspan={1} element="th" value="Sr.No" />
+        <Default colspan={2} element="th" value="Particulars" />
+        <Default colspan={1} element="th" value="Total Cost" align="right" />
+        <Default colspan={1} element="th" value="Cost Incurred" align="right" />
+        <Default
+          colspan={2}
+          element="th"
+          value="Cost per Sq. feet"
+          align="right"
+        />
+        <Default colspan={2} element="th" value="% of Total Cost" />
       </tr>
       {costOfProject.map((projectDetail, index) => (
-        <tr key={index + 1}>
-          <td colSpan={2}></td>
-          <td>{<Default value={projectDetail.particulars} />}</td>
-          <td>
-            {
-              //@ts-ignore
-              <Amount value={projectDetail.totalCost} />
-            }
-          </td>
-          <td>
-            {
-              //@ts-ignore
-              <Amount value={projectDetail.costIncurred} />
-            }
-          </td>
-          <td colSpan={2}>
-            {
-              //@ts-ignore
-              <Amount value={projectDetail.costPerSquareFeet} />
-            }
-          </td>
-          <td colSpan={2}>
-            {
-              //@ts-ignore
-              <Amount value={projectDetail.totalCostPercentage} />
-            }
-          </td>
+        <tr key={index}>
+          <Default colspan={1} value={index + 1} />
+          <Default colspan={2} value={projectDetail?.particulars} />
+          <Amount colspan={1} value={projectDetail?.totalCost} />
+          <Amount colspan={1} value={projectDetail?.costIncurred} />
+          <Amount colspan={2} value={projectDetail?.costPerSquareFeet} />
+          <Percentage colspan={2} value={projectDetail?.totalCostPercentage} />
         </tr>
       ))}
       <MeansOfFinnaceProjectDetails projectParticular={meansOfFiance} />
@@ -66,41 +55,31 @@ export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Means of Finance
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Means of Finance"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={1}>Particulars</th>
-        <th colSpan={2}>Total Amount</th>
-        <th colSpan={2}>Fund Infused</th>
-        <th colSpan={2}>% of Total Cost</th>
+        <Default colspan={1} element="th" value="Sr.No" />
+        <Default colspan={2} element="th" value="Particulars" />
+        <Default colspan={2} element="th" value="Total Amount" align="right" />
+        <Default colspan={2} element="th" value="Funds Infused" align="right" />
+        <Default colspan={2} element="th" value="% of Total Cost" />
       </tr>
       {projectParticular.map((projectDetail, index) => (
         <tr key={index}>
-          <td colSpan={2}></td>
-          <td colSpan={1}>
-            {<Default value={projectDetail.meansOfFinanceParticulars} />}
-          </td>
-          <td colSpan={2}>
-            {
-              //@ts-ignore
-              <Amount value={projectDetail.totalAmount} />
-            }
-          </td>
-          <td colSpan={2}>
-            {
-              //@ts-ignore
-              <Amount vaue={projectDetail.fundInfused} />
-            }
-          </td>
-          <td colSpan={2}>
-            {
-              //@ts-ignore
-              <Amount value={projectDetail.totalCostPercentage} />
-            }
-          </td>
+          <Default colspan={1} value={index + 1} />
+          <Default
+            colspan={2}
+            value={projectDetail?.meansOfFinanceParticulars}
+          />
+          <Amount colspan={2} value={projectDetail?.totalAmount} />
+          <Amount colspan={2} vaue={projectDetail?.fundInfused} />
+          <Percentage colspan={2} value={projectDetail.totalCostPercentage} />
         </tr>
       ))}
     </>

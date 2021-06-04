@@ -5,6 +5,5 @@ export * from "./siteAreaDetail";
 export * from "./projectBrief";
 export * from "./subProjectBreif";
 export * from "./projectParticular";
-export * from "./onGoingProjectDetails";
 export * from "./completionProjectDetails";
 export * from "./collateralDetails";

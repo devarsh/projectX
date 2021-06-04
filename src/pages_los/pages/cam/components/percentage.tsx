@@ -1,6 +1,9 @@
-export const Percentage = ({ value }: any) => {
-  if (value !== "" && value !== undefined) {
-    return `${value}%`;
+import { Default } from "./default";
+
+export const Percentage = ({ value, ...others }: any) => {
+  let result = "-";
+  if (!isNaN(Number(value))) {
+    result = `${value}%`;
   }
-  return `${0}%`;
+  return <Default value={result} {...others} />;
 };

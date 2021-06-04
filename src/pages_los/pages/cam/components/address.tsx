@@ -21,7 +21,7 @@ export const Address = ({ value }) => {
 
   var addressFinalDetails: any = [];
   addressFinalDetails = addressArray.map((data: any) => {
-    return data.filter((item) => (item !== "" ? true : false)).join(",");
+    return data.filter((item) => (item !== "" ? true : false)).join(", ");
   });
 
   return (

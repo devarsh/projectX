@@ -1,6 +1,6 @@
 import {
   GeneralDetails,
-  CompletionProjectDetails,
+  ProjectDetails,
   CollateralDetails,
 } from "./components";
 
@@ -31,7 +31,7 @@ export const Infra = ({ data, others }) => {
           projectParticular={projectParticularDetails}
           siteArea={siteAreaDetails}
         />
-        <CompletionProjectDetails projectCompletion={projectDetails} />
+        <ProjectDetails projectCompletion={projectDetails} />
         <CollateralDetails
           collateral={collateralSecurity}
           primary={primaryCollateralSecurity}

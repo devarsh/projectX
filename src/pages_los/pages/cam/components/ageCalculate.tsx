@@ -1,10 +1,12 @@
-export const Age = ({ value }: any) => {
-  try {
-    var today = new Date();
-    var birthDate = new Date(value);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    return age;
-  } catch (e) {
-    return "-9999";
+import { differenceInYears } from "date-fns";
+import { Default } from "./default";
+
+export const Age = ({ value, ...others }: any) => {
+  let today = new Date();
+  let birthDate = new Date(value);
+  let result: any = Math.abs(differenceInYears(birthDate, today));
+  if (isNaN(result)) {
+    result = "-";
   }
+  return <Default value={result} {...others} />;
 };

@@ -1,51 +1,68 @@
-import { Default, SquareFeetFormat } from "pages_los/pages/cam/components";
+import { Default, Amount } from "pages_los/pages/cam/components";
 
-export const BreifeAboutProjectSubDetails = ({ subProject }) => {
+export const BriefAboutProjectSubDetails = ({ subProject }) => {
   if (!Array.isArray(subProject) || subProject.length <= 0) {
     return null;
   }
-
   return (
     <>
-      <br />
-      <br />
       <tr>
-        <th colSpan={2}></th>
-        <th style={{ textAlign: "center" }}>Sr.No</th>
-        <th>Particulars</th>
-        <th>No. of Units</th>
-        <th colSpan={2}>Saleable Area (In Sq. feet)</th>
-        <th>Carpet Area (In Sq. feet)</th>
-        <th>Construction Area (In Sq. feet)</th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Brief About the Project Sub Detail"
+          element="th"
+        />
+      </tr>
+      <tr>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={3} value="Particulars" element="th" />
+        <Default colspan={1} value="No. of Units" element="th" align="right" />
+        <Default
+          colspan={2}
+          value="Saleable Area (In Sq. feet)"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={1}
+          value="Carpet Area (In Sq. feet)"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={1}
+          value="Construction Area (In Sq. feet)"
+          element="th"
+          align="right"
+        />
       </tr>
       {subProject.map((projectSubDetail, index) => {
         return (
-          <>
-            <tr key={index}>
-              <td colSpan={2}></td>
-              <td style={{ textAlign: "center" }}>{index + 1}</td>
-              <td>{<Default value={projectSubDetail.particulars} />}</td>
-              <td>{<Default value={projectSubDetail.units} />}</td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat value={projectSubDetail.saleableArea} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat value={projectSubDetail.carpetArea} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat value={projectSubDetail.constructionArea} />
-                }
-              </td>
-            </tr>
-          </>
+          <tr key={index}>
+            <Default colspan={1} value={index + 1} />
+            <Default colspan={3} value={projectSubDetail?.particulars} />
+            <Default colspan={1} value={projectSubDetail?.units} />
+            <Amount
+              colspan={2}
+              skipSymbol={true}
+              value={projectSubDetail?.saleableArea}
+              align="right"
+            />
+            <Amount
+              colspan={1}
+              skipSymbol={true}
+              value={projectSubDetail?.carpetArea}
+              align="right"
+            />
+            <Amount
+              colspan={1}
+              skipSymbol={true}
+              value={projectSubDetail?.constructionArea}
+              align="right"
+            />
+          </tr>
         );
       })}
     </>

@@ -192,30 +192,30 @@ export const metaData: NavBarMetaDataType = {
                 },
               },
             },
-            {
-              label: "Personal Loan",
-              href: "./newInquiry/personalLoan",
-              isRouterLink: true,
-              navigationProps: {
-                metaProps: {
-                  categoryID: "12000004",
-                  productID: "123000014",
-                  action: "crm_inquiry_metaData",
-                },
-              },
-            },
-            {
-              label: "School Fee Funding",
-              href: "./newInquiry/schoolFee",
-              isRouterLink: true,
-              navigationProps: {
-                metaProps: {
-                  categoryID: "12000004",
-                  productID: "123000015",
-                  action: "crm_inquiry_metaData",
-                },
-              },
-            },
+            // {
+            //   label: "Personal Loan",
+            //   href: "./newInquiry/personalLoan",
+            //   isRouterLink: true,
+            //   navigationProps: {
+            //     metaProps: {
+            //       categoryID: "12000004",
+            //       productID: "123000014",
+            //       action: "crm_inquiry_metaData",
+            //     },
+            //   },
+            // },
+            // {
+            //   label: "School Fee Funding",
+            //   href: "./newInquiry/schoolFee",
+            //   isRouterLink: true,
+            //   navigationProps: {
+            //     metaProps: {
+            //       categoryID: "12000004",
+            //       productID: "123000015",
+            //       action: "crm_inquiry_metaData",
+            //     },
+            //   },
+            // },
           ],
         },
       ],

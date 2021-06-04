@@ -1,11 +1,7 @@
-import { BreifeAboutProjectSubDetails } from "./subProjectBreif";
-import {
-  Default,
-  Amount,
-  SquareFeetFormat,
-} from "pages_los/pages/cam/components";
+import { BriefAboutProjectSubDetails } from "./subProjectBreif";
+import { Default, Amount } from "pages_los/pages/cam/components";
 
-export const BreifeAboutProject = ({ project }) => {
+export const BriefAboutProject = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
     return null;
   }
@@ -20,52 +16,75 @@ export const BreifeAboutProject = ({ project }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Brief About the Project
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Brief About the Project"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={1}>Particulars</th>
-        <th>No. of Units</th>
-        <th colSpan={1}>Carpet Area(In Sq. Feet)</th>
-        <th colSpan={2}>Salable Area / Super Build Up Area (In Sq. feet)</th>
-        <th>Rate per Sq. Feet </th>
-        <th>Amount in Rs. Lakhs </th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Particulars" element="th" />
+        <Default colspan={1} value="No. of Units" element="th" align="right" />
+        <Default
+          colspan={1}
+          value="Carpet Area(In Sq. Feet)"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={2}
+          value="Salable Area / Super Build Up Area (In Sq. feet)"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={1}
+          value="Rate per Sq. Feet"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={1}
+          value="Amount in Rs. Lakhs"
+          element="th"
+          align="right"
+        />
       </tr>
       {project.map((projectDetail, index) => {
         return (
-          <>
-            <tr key={index + 1}>
-              <td colSpan={2}></td>
-              <td colSpan={1}>
-                {<Default value={projectDetail.particulars} />}
-              </td>
-              <td>{<Default value={projectDetail.units} />}</td>
-              <td colSpan={1}>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat value={projectDetail.carpetArea} />
-                }
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat value={projectDetail.saleableArea} />
-                }
-              </td>
-              <td>{<Default value={projectDetail.ratePerSquareFeet} />}</td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={projectDetail.amount} />
-                }
-              </td>
-            </tr>
-          </>
+          <tr key={index}>
+            <Default colspan={1} value={index + 1} />
+            <Default colspan={2} value={projectDetail?.particulars} />
+            <Amount
+              colspan={1}
+              value={projectDetail?.units}
+              skipSymbol={true}
+            />
+
+            <Amount
+              colspan={1}
+              value={projectDetail.carpetArea}
+              skipSymbol={true}
+            />
+            <Amount
+              colspan={2}
+              value={projectDetail?.saleableArea}
+              skipSymbol={true}
+            />
+            <Amount
+              colspan={1}
+              value={projectDetail?.ratePerSquareFeet}
+              skipSymbol={true}
+            />
+
+            <Amount colspan={1} value={projectDetail.amount} />
+          </tr>
         );
       })}
-      <BreifeAboutProjectSubDetails subProject={projectSubDetailsArray} />
+      <BriefAboutProjectSubDetails subProject={projectSubDetailsArray} />
     </>
   );
 };

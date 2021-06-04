@@ -1,11 +1,6 @@
-import { OnGoingProjectDetails } from "./onGoingProjectDetails";
-import {
-  Default,
-  DateFormat,
-  SquareFeetFormat,
-} from "pages_los/pages/cam/components";
+import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 
-export const CompletionProjectDetails = ({ projectCompletion }) => {
+export const ProjectDetails = ({ projectCompletion }) => {
   if (!Array.isArray(projectCompletion) || projectCompletion.length <= 0) {
     return null;
   }
@@ -19,48 +14,73 @@ export const CompletionProjectDetails = ({ projectCompletion }) => {
 
   return (
     <>
+      <ProjectDetailsRenderer
+        projectDetails={completedProject}
+        completed={true}
+      />
+      <ProjectDetailsRenderer
+        projectDetails={onGoingProject}
+        completed={false}
+      />
+    </>
+  );
+};
+
+export const ProjectDetailsRenderer = ({
+  projectDetails,
+  completed = false,
+}: any) => {
+  if (!Array.isArray(projectDetails) || projectDetails.length <= 0) {
+    return null;
+  }
+  return (
+    <>
       <tr>
-        <th className="form-heading" colSpan={9}>
-          List of Completed Projects by the Promoters / Group
-        </th>
+        <Default
+          colspan={9}
+          className="form-heading"
+          align="center"
+          value={`List of ${
+            completed ? "Completed" : "Ongoing"
+          } Projects by the Promoters / Group`}
+          element="th"
+        />
       </tr>
       <tr>
-        <th>Project Name</th>
-        <th>Company Name</th>
-        <th>Type of the Project</th>
-        <th>Total Units</th>
-        <th>Location</th>
-        <th>Total Build Up Area (Sq. feet)</th>
-        <th>Start Date</th>
-        <th>Completion Date</th>
-        <th>Name of the Group</th>
+        <Default colspan={1} value="Project Name" element="th" />
+        <Default colspan={1} value="Company Name" element="th" />
+        <Default colspan={1} value="Type of the Project" element="th" />
+        <Default colspan={1} value="Total Units" element="th" />
+        <Default colspan={1} value="Location" element="th" />
+        <Default
+          colspan={1}
+          value="Total Build Up Area (Sq. feet)"
+          element="th"
+          align="right"
+        />
+        <Default colspan={1} value="Start Date" element="th" />
+        <Default colspan={1} value="Completion Date" element="th" />
+        <Default colspan={1} value="Name of the Group" element="th" />
       </tr>
-      {completedProject.map((completedProjectDetails) => {
+      {projectDetails.map((projectDetail) => {
         return (
           <tr>
-            <td>{<Default value={completedProjectDetails.projectName} />}</td>
-            <td>{<Default value={completedProjectDetails.companyName} />}</td>
-            <td>{<Default value={completedProjectDetails.projectType} />}</td>
-            <td>{<Default value={completedProjectDetails.totalUnits} />}</td>
-            <td>{<Default value={completedProjectDetails.location} />}</td>
-            <td>
-              {
-                //@ts-ignore
-                <SquareFeetFormat
-                  value={completedProjectDetails.totalBuildUpArea}
-                />
-              }
-            </td>
-            <td>{<DateFormat value={completedProjectDetails.startDate} />}</td>
-            <td>
-              {<DateFormat value={completedProjectDetails.completionDate} />}
-            </td>
-            <td>{<Default value={completedProjectDetails.groupName} />}</td>
+            <Default colspan={1} value={projectDetail?.projectName} />
+            <Default colspan={1} value={projectDetail?.companyName} />
+            <Default colspan={1} value={projectDetail?.projectType} />
+            <Default colspan={1} value={projectDetail?.totalUnits} />
+            <Default colspan={1} value={projectDetail?.location} />
+            <Amount
+              colspan={1}
+              skipSymbol={true}
+              value={projectDetail?.totalBuildUpArea}
+            />
+            <DateFormat colspan={1} value={projectDetail?.startDate} />
+            <DateFormat colspan={1} value={projectDetail?.completionDate} />
+            <DateFormat colspan={1} value={projectDetail?.groupName} />
           </tr>
         );
       })}
-
-      <OnGoingProjectDetails onGoingProject={onGoingProject} />
     </>
   );
 };
