@@ -39,6 +39,7 @@ export interface GridConfigType {
   allowKeyboardNavigation?: boolean;
   allowGlobalFilter?: boolean;
   allowFilter?: boolean;
+  filterAlwaysVisible?: boolean;
   defaultColumnConfig: {
     width?: number;
     maxWidth?: number;

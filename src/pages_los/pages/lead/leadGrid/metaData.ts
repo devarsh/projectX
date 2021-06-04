@@ -1,14 +1,17 @@
+//import { GridMetaDataType } from "components/dataTable";
+
 export const leadGridMetaData = {
   gridConfig: {
     dense: false,
     pageSize: [20, 30, 50],
-    defaultPageSize: "20",
+    defaultPageSize: 20,
     gridLabel: "Leads",
     rowIdColumn: "tran_cd",
     allowGlobalFilter: true,
     allowColumnReordering: true,
     allowColumnHiding: true,
     allowKeyboardNavigation: true,
+    filterAlwaysVisible: true,
   },
   columns: [
     {

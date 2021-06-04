@@ -36,6 +36,7 @@ import { HeaderCellWrapper } from "./headerCellWrapper";
 import { RowCellWrapper } from "./rowCellWrapper";
 import { filterAction } from "./utils";
 import { TableFilterStatusBar } from "./tableFilterStatusBar";
+import { TableHeaderFilterComponent } from "./tableFilterHeaderComponent";
 
 export const DataGrid = forwardRef<any, any>(
   (
@@ -62,6 +63,7 @@ export const DataGrid = forwardRef<any, any>(
       doubleClickAction,
       alwaysAvailableAction,
       allowFilter,
+      filterAlwaysVisible,
     },
     ref
   ) => {
@@ -225,7 +227,7 @@ export const DataGrid = forwardRef<any, any>(
           alwaysAvailableAction={alwaysAvailableAction}
           setGridAction={setGridAction}
           selectedFlatRows={selectedFlatRows}
-          allowFilter={allowFilter}
+          allowFilter={allowFilter && !filterAlwaysVisible}
           setAllFilters={setAllFilters}
           gotoPage={gotoPage}
           setSortBy={setSortBy}
@@ -248,14 +250,25 @@ export const DataGrid = forwardRef<any, any>(
           mouseY={contextMenuPosition?.mouseY ?? null}
           handleClose={handleContextMenuClose}
         />
-
-        <TableFilterStatusBar
-          dense={dense}
-          setAllFilters={setAllFilters}
-          filters={filters}
-          gotoPage={gotoPage}
-          setSortBy={setSortBy}
-        />
+        {!filterAlwaysVisible ? (
+          <TableFilterStatusBar
+            dense={dense}
+            setAllFilters={setAllFilters}
+            filters={filters}
+            gotoPage={gotoPage}
+            setSortBy={setSortBy}
+          />
+        ) : null}
+        {filterAlwaysVisible && allowFilter ? (
+          <TableHeaderFilterComponent
+            dense={dense}
+            columns={availableColumns}
+            setAllFilters={setAllFilters}
+            filters={filters}
+            gotoPage={gotoPage}
+            setSortBy={setSortBy}
+          />
+        ) : null}
 
         {loading ? <LinearProgress /> : <LinearProgressBarSpacer />}
         <TableContainer

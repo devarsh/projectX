@@ -112,6 +112,7 @@ export const GirdController = forwardRef<GridControllerType, any>(
           metaData.gridConfig?.allowKeyboardNavigation ?? false
         }
         allowFilter={metaData.gridConfig?.allowFilter ?? true}
+        filterAlwaysVisible={metaData.gridConfig?.filterAlwaysVisible ?? false}
       />
     );
   }

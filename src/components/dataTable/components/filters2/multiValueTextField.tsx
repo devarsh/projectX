@@ -112,14 +112,9 @@ export const MultiValueFilter = ({
           }
           if (event.which !== 299) {
             switch (event.key) {
-              case ",":
               case "Enter": {
                 if (Boolean(text)) {
-                  if (event.key === ",") {
-                    setChips((all) => [...all, text.slice(0, text.length - 1)]);
-                  } else {
-                    setChips((all) => [...all, text]);
-                  }
+                  setChips((all) => [...all, text]);
                   setText("");
                 }
                 break;

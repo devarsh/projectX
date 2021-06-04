@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-const reducer = (state: any = [], action: any = {}) => {
+export const filterReducer = (state: any = [], action: any = {}) => {
   switch (action.type) {
     case "setValue": {
       const { id, ...others } = action.payload;
@@ -56,7 +56,7 @@ export const TableFilterComponent = ({
   gotoPage,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { filterState, dispatch } = useFilterState(reducer);
+  const { filterState, dispatch } = useFilterState(filterReducer);
 
   const open = Boolean(anchorEl);
 
