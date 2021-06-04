@@ -11,7 +11,7 @@ export const leadGridMetaData = {
     allowColumnReordering: true,
     allowColumnHiding: true,
     allowKeyboardNavigation: true,
-    filterAlwaysVisible: true,
+    //filterAlwaysVisible: true,
   },
   columns: [
     {

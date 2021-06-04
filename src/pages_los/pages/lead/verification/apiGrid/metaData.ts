@@ -3,7 +3,7 @@ import { GridMetaDataType } from "components/dataTableStatic";
 export const GridMetaData: GridMetaDataType = {
   gridConfig: {
     dense: true,
-    gridLabel: "Verification API Status",
+    gridLabel: "Verification Status",
     rowIdColumn: "tokenID",
     defaultColumnConfig: {
       width: 150,
