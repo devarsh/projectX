@@ -17,6 +17,18 @@ const parseNumber = (string) => {
   return result;
 };
 
+const matchNumber = (mobileNumber, registeredNumbers) => {
+  if (Array.isArray(registeredNumbers)) {
+    for (let i = 0; i < registeredNumbers.length; i++) {
+      let slice = mobileNumber.slice(10 - registeredNumbers[i].length);
+      if (slice === registeredNumbers[i]) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 export const Mobile = ({ flow, setFlow }) => {
   const [mobile, setMobile] = useState("");
   const [mobileError, setMobileError] = useState("");
@@ -27,7 +39,9 @@ export const Mobile = ({ flow, setFlow }) => {
   const handleMobileNumberSubmit = () => {
     if (!Boolean(mobile)) {
       setMobileError("This field is required");
-    } else if (registeredNumbers?.current?.indexOf(mobile.slice(6)) < 0) {
+    } else if (mobile.length !== 10) {
+      setMobileError("Mobile should be of 10 digits");
+    } else if (matchNumber(mobile, registeredNumbers.current) === false) {
       setMobileError(
         "The entered number does not match the numbers in our records"
       );
