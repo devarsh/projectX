@@ -262,10 +262,14 @@ export const metaData: NavBarMetaDataType = {
       children: [
         {
           label: "Assign",
+          href: "./task/assign",
+          isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Assigned",
+          href: "./task/assigned",
+          isRouterLink: true,
           icon: "circle",
         },
         {

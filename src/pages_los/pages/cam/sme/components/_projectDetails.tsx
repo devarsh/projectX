@@ -7,12 +7,16 @@ import {
 export const ProjectDetails = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
     return (
-      <tr>
-        <th colSpan={9} className="form-heading">
-          Project Details
-        </th>
-        <td>Not Available</td>
-      </tr>
+      <>
+        <tr>
+          <th colSpan={9} className="form-heading">
+            Project Details
+          </th>
+        </tr>
+        <tr>
+          <td colSpan={9}>Not Available</td>
+        </tr>
+      </>
     );
   }
 
@@ -202,12 +206,16 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
     meandOfFinanceDetails.length <= 0
   ) {
     return (
-      <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Total Means of Finance
-        </th>
-        <td>Not Available</td>
-      </tr>
+      <>
+        <tr>
+          <th colSpan={9} className="form-sub-heading">
+            Total Means of Finance
+          </th>
+        </tr>
+        <tr>
+          <td colSpan={9}>Not Available</td>
+        </tr>
+      </>
     );
   }
   return (
@@ -252,12 +260,16 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
 export const Machieneries = ({ machieneries }) => {
   if (!Array.isArray(machieneries) || machieneries.length <= 0) {
     return (
-      <tr>
-        <th colSpan={9} className="form-sub-heading">
-          List of Machieneries
-        </th>
-        <td>Not Available</td>
-      </tr>
+      <>
+        <tr>
+          <th colSpan={9} className="form-sub-heading">
+            List of Machieneries
+          </th>
+        </tr>
+        <tr>
+          <td colSpan={9}>Not Available</td>
+        </tr>
+      </>
     );
   }
   return (
@@ -301,12 +313,16 @@ export const Machieneries = ({ machieneries }) => {
 export const ManufacturedProduct = ({ manufacturedProduct }) => {
   if (!Array.isArray(manufacturedProduct) || manufacturedProduct.length <= 0) {
     return (
-      <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Products to be Manufactured
-        </th>
-        <td>Not Available</td>
-      </tr>
+      <>
+        <tr>
+          <th colSpan={9} className="form-sub-heading">
+            Products to be Manufactured
+          </th>
+        </tr>
+        <tr>
+          <td colSpan={9}>Not Available</td>
+        </tr>
+      </>
     );
   }
   return (
