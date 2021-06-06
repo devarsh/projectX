@@ -4,105 +4,117 @@ export const BusinessDetails = ({ business }) => {
     return (
       <>
         <tr>
-          <th colSpan={9} className="form-heading">
-            Business Details
-          </th>
+          <Default
+            colspan={9}
+            className="form-heading"
+            value="Business Details"
+            align="center"
+            element="th"
+          />
         </tr>
         <tr>
-          <th colSpan={2}>Brief history of the Company</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyHistory ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Brief history of the Company"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyHistory} />
         </tr>
         <tr>
-          <th colSpan={2}>Existing Products / Services of the company</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyService ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Existing Products / Services of the company"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyService} />
         </tr>
         <tr>
-          <th colSpan={2}>End Use of the Products</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyEndUseProducts ?? ""} />}
-          </td>
+          <Default colspan={2} value="End Use of the Products" element="th" />
+          <Default colspan={7} value={business?.companyEndUseProducts} />
         </tr>
         <tr>
-          <th colSpan={2}>Name of Raw Materials</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyMaterialsName ?? ""} />}
-          </td>
+          <Default colspan={2} value="Name of Raw Materials" element="th" />
+          <Default colspan={7} value={business?.companyMaterialsName} />
         </tr>
         <tr>
-          <th colSpan={2}>Name of Major Suppliers</th>
-          <td colSpan={7}>
-            {<Default value={business?.companySuppliersName ?? ""} />}
-          </td>
+          <Default colspan={2} value="Name of Major Suppliers" element="th" />
+          <Default colspan={7} value={business?.companySuppliersName} />
         </tr>
         <tr>
-          <th colSpan={2}>Payment Terms with Suppliers</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyPaymentTermSuppliers ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Payment Terms with Suppliers"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyPaymentTermSuppliers} />
         </tr>
         <tr>
-          <th colSpan={2}>Name of Major Customers</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyCustomersName ?? ""} />}
-          </td>
+          <Default colspan={2} value="Name of Major Customers" element="th" />
+          <Default colspan={7} value={business?.companyCustomersName} />
         </tr>
         <tr>
-          <th colSpan={2}>Payment terms with Customers</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyPaymentTerm ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Payment terms with Customers"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyPaymentTerm} />
         </tr>
         <tr>
-          <th colSpan={2}>Current Order Book Position</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyOrderBookPosition ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Current Order Book Position"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyOrderBookPosition} />
         </tr>
         <tr>
-          <th colSpan={2}>Marketing & Distribution Policy/Strategy</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyPolicy ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Marketing & Distribution Policy/Strategy"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyPolicy} />
         </tr>
         <tr>
-          <th colSpan={2}>Name of Competitors</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyCompetitors ?? ""} />}
-          </td>
+          <Default colspan={2} value="Name of Competitors" element="th" />
+          <Default colspan={7} value={business?.companyCompetitors} />
         </tr>
         <tr>
-          <th colSpan={2}>Name of Major Countries where Exporting</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyExportCountry ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Name of Major Countries where Exporting"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyExportCountry} />
         </tr>
         <tr>
-          <th colSpan={2}>Domestic and export sales ratio</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyExportRatio ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Domestic and export sales ratio"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyExportRatio} />
         </tr>
         <tr>
-          <th colSpan={2}>No. of Employees</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyEmployeeCount ?? ""} />}
-          </td>
+          <Default colspan={2} value="No. of Employees" element="th" />
+          <Default colspan={7} value={business?.companyEmployeeCount} />
         </tr>
         <tr>
-          <th colSpan={2}>Other Industry specific approvals / license</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyLicence ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Other Industry specific approvals / license"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyLicence} />
         </tr>
         <tr>
-          <th colSpan={2}>Any awards / Recognition received</th>
-          <td colSpan={7}>
-            {<Default value={business?.companyAwards ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Any awards / Recognition received"
+            element="th"
+          />
+          <Default colspan={7} value={business?.companyAwards} />
         </tr>
       </>
     );
@@ -110,12 +122,16 @@ export const BusinessDetails = ({ business }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Business Details
-        </th>
+        <Default
+          colspan={9}
+          className="form-heading"
+          value="Business Details"
+          align="center"
+          element="th"
+        />
       </tr>
       <tr>
-        <th>Invalid data</th>
+        <Default colspan={9} value="Not Available" align="center" />
       </tr>
     </>
   );

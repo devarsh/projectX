@@ -1,21 +1,16 @@
-import {
-  Default,
-  Amount,
-  Percentage,
-  SquareFeetFormat,
-} from "pages_los/pages/cam/components";
+import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 
 export const CollateralDetails = ({ collateral }) => {
   return (
     <>
-      <br />
-      <tr className="page-break">
-        <th></th>
-      </tr>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Collateral Details
-        </th>
+        <Default
+          colspan={9}
+          className="form-heading"
+          align="center"
+          value="Collateral Details"
+          element="th"
+        />
       </tr>
       <CollateralSecurity collateral={collateral} />
     </>
@@ -24,82 +19,55 @@ export const CollateralDetails = ({ collateral }) => {
 
 const CollateralSecurity = ({ collateral }) => {
   if (!Array.isArray(collateral) || collateral.length <= 0) {
-    return null;
+    return (
+      <>
+        <tr>
+          <Default colspan={9} align="center" value="Not Available" />
+        </tr>
+      </>
+    );
   }
   return (
     <>
       <tr>
-        <th colSpan={2} className="form-sub-heading">
-          COLLATERAL SECURITY
-        </th>
-      </tr>
-      <tr>
-        <th colSpan={2}>Address of the Property</th>
-        <th colSpan={2}>Area of the Property</th>
-        <th colSpan={2}>Owner</th>
-        <th colSpan={2}>Market Value (Rs. In Crore)</th>
+        <Default colspan={2} value="Address of the Property" element="th" />
+        <Default colspan={2} value="Area of the Property" element="th" />
+        <Default colspan={2} value="Owner" element="th" />
+        <Default colspan={2} value="Market Value (Rs. In Crore)" element="th" />
       </tr>
 
       {collateral.map((collateralData) => {
         return (
           <>
             <tr>
-              <td colSpan={2}>
-                {<Default value={collateralData?.propertyAddress ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <SquareFeetFormat
-                    value={collateralData?.propertyArea ?? ""}
-                  />
-                }
-              </td>
-              <td colSpan={2}>
-                {<Default value={collateralData?.owner ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <Amount value={collateralData?.marketValue ?? ""} />
-                }
-              </td>
+              <Default colspan={2} value={collateralData?.propertyAddress} />
+              <Amount
+                colspan={2}
+                skipSymbol={true}
+                value={collateralData?.propertyArea}
+              />
+              <Default colspan={2} value={collateralData?.owner} />
+              <Amount colspan={2} value={collateralData?.marketValue} />
             </tr>
           </>
         );
       })}
       <tr>
-        <th colSpan={7} style={{ textAlign: "end" }}>
-          Collateral Coverage
-        </th>
-        <td>
-          {
-            //@ts-ignore
-            <Percentage value={collateral[0].collateralCoverage} />
-          }
-        </td>
+        <Default
+          colspan={7}
+          align="end"
+          value="Collateral Coverage"
+          element="th"
+        />
+        <Percentage colspan={1} value={collateral[0]?.collateralCoverage} />
       </tr>
       <tr>
-        <th colSpan={7} style={{ textAlign: "end" }}>
-          FACR
-        </th>
-        <td>
-          {
-            //@ts-ignore
-            <Percentage value={collateral[0].facr} />
-          }
-        </td>
+        <Default colspan={7} align="end" value="FACR" element="th" />
+        <Percentage colspan={1} value={collateral[0]?.facr} />
       </tr>
       <tr>
-        <th colSpan={7} style={{ textAlign: "end" }}>
-          ACR
-        </th>
-        <td>
-          {
-            //@ts-ignore
-            <Percentage value={collateral[0].acr} />
-          }
-        </td>
+        <Default colspan={7} align="end" value="ACR" element="th" />
+        <Percentage colspan={1} value={collateral[0]?.acr} />
       </tr>
     </>
   );

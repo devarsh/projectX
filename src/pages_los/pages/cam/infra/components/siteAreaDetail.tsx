@@ -1,8 +1,4 @@
-import {
-  Amount,
-  Default,
-  SquareFeetFormat,
-} from "pages_los/pages/cam/components";
+import { Amount, Default } from "pages_los/pages/cam/components";
 export const SiteAreaDetails = ({ siteArea }) => {
   if (typeof siteArea !== "object") {
     return null;

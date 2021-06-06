@@ -1,20 +1,19 @@
-import {
-  Default,
-  DateFormat,
-  Amount,
-  SquareFeetFormat,
-} from "pages_los/pages/cam/components";
+import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 export const ProjectDetails = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
     return (
       <>
         <tr>
-          <th colSpan={9} className="form-heading">
-            Project Details
-          </th>
+          <Default
+            colspan={9}
+            className="form-heading"
+            align="center"
+            value="Project Details"
+            element="th"
+          />
         </tr>
         <tr>
-          <td colSpan={9}>Not Available</td>
+          <Default colspan={9} value="Not Available" />
         </tr>
       </>
     );
@@ -23,117 +22,125 @@ export const ProjectDetails = ({ project }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Project Details
-        </th>
+        <Default
+          colspan={9}
+          className="form-heading"
+          align="center"
+          value="Project Details"
+          element="th"
+        />
       </tr>
       {project.map((projectsData) => {
         return (
           <>
             <br />
             <ProjectParticulaDetails
-              projectParticular={projectsData.projectParticularDetails}
+              projectParticular={projectsData?.projectParticularDetails}
             />
             <tr>
-              <th colSpan={2}>Location of the project</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.landDetails} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Location of the project"
+                element="th"
+              />
+              <Default colspan={7} value={projectsData?.landDetails} />
             </tr>
             <tr>
-              <th colSpan={2}>Land Details</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.landLocation} />}
-              </td>
+              <Default colspan={2} value="Land Details" element="th" />
+              <Default colspan={7} value={projectsData?.landLocation} />
             </tr>
             <tr>
-              <th colSpan={2}>Area of the Project Land</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.landAreaApproxValuation} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Area of the Project Land"
+                element="th"
+              />
+              <Default
+                colspan={7}
+                value={projectsData?.landAreaApproxValuation}
+              />
             </tr>
             <tr>
-              <th colSpan={2}>Approximate valuation</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={projectsData.landAreaApproximateValuation} />
-                }
-              </td>
+              <Default colspan={2} value="Approximate valuation" element="th" />
+              <Amount
+                colspan={7}
+                value={projectsData?.landAreaApproximateValuation}
+              />
             </tr>
             <tr>
-              <th colSpan={2}>Expected Date of Commencement (DCCO)</th>
-              <td colSpan={7}>
-                {<DateFormat value={projectsData.commencementDate} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Expected Date of Commencement (DCCO)"
+                element="th"
+              />
+              <DateFormat colspan={7} value={projectsData?.commencementDate} />
             </tr>
             <tr>
-              <th colSpan={2}>Current Stage of Project</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.currentLandStage} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Current Stage of Project"
+                element="th"
+              />
+              <Default colspan={7} value={projectsData?.currentLandStage} />
             </tr>
             <tr>
-              <th colSpan={2}>Moratorium</th>
-              <td colSpan={7}>{<Default value={projectsData.maratorium} />}</td>
+              <Default colspan={2} value="Moratorium" element="th" />
+              <Default colspan={7} value={projectsData?.maratorium} />
             </tr>
             <tr>
-              <th colSpan={2}>Equal Installments or Balloonig</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.installmentBallooning} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Equal Installments or Balloonig"
+                element="th"
+              />
+              <Default
+                colspan={7}
+                value={projectsData?.installmentBallooning}
+              />
             </tr>
             <tr>
-              <th colSpan={2}>Installed Capacity</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.installedCapacity} />}
-              </td>
+              <Default colspan={2} value="Installed Capacity" element="th" />
+              <Default colspan={7} value={projectsData?.installedCapacity} />
             </tr>
             <tr>
-              <th colSpan={2}>Manufacturing Process</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.manufacturingProcess} />}
-              </td>
+              <Default colspan={2} value="Manufacturing Process" element="th" />
+              <Default colspan={7} value={projectsData?.manufacturingProcess} />
             </tr>
             <tr>
-              <th colSpan={2}>Requirement and arrangement of Power</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.reqArranPower} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Requirement and arrangement of Power"
+                element="th"
+              />
+              <Default colspan={7} value={projectsData?.reqArranPower} />
             </tr>
             <tr>
-              <th colSpan={2}>Requirement and arrangement of Employees</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.reqArranEmployee} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Requirement and arrangement of Employees"
+                element="th"
+              />
+              <Default colspan={7} value={projectsData?.reqArranEmployee} />
             </tr>
             <tr>
-              <th colSpan={2}>Brief about Technical Person / Plant manager</th>
-              <td colSpan={7}>
-                {<Default value={projectsData.brifTechPerson} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Brief about Technical Person / Plant manager"
+                element="th"
+              />
+              <Default colspan={7} value={projectsData?.brifTechPerson} />
             </tr>
             <tr>
-              <th colSpan={2}>Unit Matrix</th>
-              <td colSpan={7}>{<Default value={projectsData.unitMatrix} />}</td>
+              <Default colspan={2} value="Unit Matrix" element="th" />
+              <Default colspan={7} value={projectsData?.unitMatrix} />
             </tr>
             <tr>
-              <th colSpan={2}>Projected Turnover</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={projectsData.projectTurnover} />
-                }
-              </td>
+              <Default colspan={2} value="Projected Turnover" element="th" />
+              <Amount colspan={7} value={projectsData?.projectTurnover} />
             </tr>
             <tr>
-              <th colSpan={2}>Projected rofit</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={projectsData.projectProfit} />
-                }
-              </td>
+              <Default colspan={2} value="Projected rofit" element="th" />
+              <Amount colspan={7} value={projectsData?.projectProfit} />
             </tr>
 
             <Machieneries machieneries={projectsData.machieneries} />
@@ -156,40 +163,63 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
     (one) => one.particularType === "Total Means of Finance"
   );
 
+  if (!Array.isArray(costOfProject) || costOfProject.length <= 0) {
+    return (
+      <>
+        <tr>
+          <Default
+            colspan={9}
+            className="form-sub-heading"
+            value="Total Cost of Project"
+            element="th"
+            align="center"
+          />
+        </tr>
+        <tr>
+          <Default colspan={9} value="Not Available" align="center" />
+        </tr>
+      </>
+    );
+  }
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Total Cost of Project
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          value="Total Cost of Project"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={2}>Particulars</th>
-        <th colSpan={2}>Total Amount (In Lacs)</th>
-        <th colSpan={2}>Amount Incurred (In Lacs)</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Particulars" element="th" />
+        <Default
+          colspan={3}
+          value="Total Amount (In Lacs)"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={3}
+          value="Amount Incurred (In Lacs) "
+          element="th"
+          align="right"
+        />
       </tr>
 
-      {costOfProject.map((projectParticularData) => {
+      {costOfProject.map((projectParticularData, index) => {
         return (
           <>
-            <tr>
-              <td colSpan={2}></td>
-              <td colSpan={2}>
-                {<Default value={projectParticularData.particulars} />}
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <Amount value={projectParticularData.amount} />
-                }
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <Amount value={projectParticularData.incurredAmount} />
-                }
-              </td>
+            <tr key={index}>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={2} value={projectParticularData?.particulars} />
+              <Amount colspan={3} value={projectParticularData?.amount} />
+              <Amount
+                colspan={3}
+                value={projectParticularData?.incurredAmount}
+              />
             </tr>
           </>
         );
@@ -208,12 +238,16 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
     return (
       <>
         <tr>
-          <th colSpan={9} className="form-sub-heading">
-            Total Means of Finance
-          </th>
+          <Default
+            colSpan={9}
+            className="form-sub-heading"
+            value="Total Means of Finance"
+            align="center"
+            element="th"
+          />
         </tr>
         <tr>
-          <td colSpan={9}>Not Available</td>
+          <Default colSpan={9} value="Not Available" align="center" />
         </tr>
       </>
     );
@@ -221,35 +255,37 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Total Means of Finance
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Total Means of Finance"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={2}>Particulars</th>
-        <th colSpan={2}>Total Amount (In Lacs)</th>
-        <th colSpan={2}>Amount Incurred (In Lacs)</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Particulars" element="th" />
+        <Default
+          colspan={3}
+          value="Total Amount (In Lacs)"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={3}
+          value="Amount Incurred (In Lacs)"
+          element="th"
+          align="right"
+        />
       </tr>
       {meandOfFinanceDetails.map((meansOfFinanceData, index) => {
         return (
           <tr>
-            <td colSpan={2}></td>
-            <td colSpan={2}>
-              {<Default value={meansOfFinanceData.particulars} />}
-            </td>
-            <td colSpan={2}>
-              {
-                //@ts-ignore
-                <Amount value={meansOfFinanceData.amount} />
-              }
-            </td>
-            <td colSpan={2}>
-              {
-                //@ts-ignore
-                <Amount value={meansOfFinanceData.incurredAmount} />
-              }
-            </td>
+            <Default colspan={1} value={index + 1} />
+            <Default colspan={2} value={meansOfFinanceData?.particulars} />
+            <Amount colspan={3} value={meansOfFinanceData?.amount} />
+            <Amount colspan={3} value={meansOfFinanceData?.incurredAmount} />
           </tr>
         );
       })}
@@ -262,12 +298,16 @@ export const Machieneries = ({ machieneries }) => {
     return (
       <>
         <tr>
-          <th colSpan={9} className="form-sub-heading">
-            List of Machieneries
-          </th>
+          <Default
+            colspan={9}
+            className="form-sub-heading"
+            align="center"
+            value="List of Machieneries"
+            element="th"
+          />
         </tr>
         <tr>
-          <td colSpan={9}>Not Available</td>
+          <Default colspan={9} align="center" value="Not Available" />
         </tr>
       </>
     );
@@ -275,34 +315,36 @@ export const Machieneries = ({ machieneries }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          List of Machieneries
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="List of Machieneries"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={2}>Machinery Name</th>
-        <th colSpan={2}>Supplier Name</th>
-        <th colSpan={3}>Application Area</th>
+        <Default colspan={2} value="Sr.No" element="th" />
+        <Default colspan={2} value="Machinery Name" element="th" />
+        <Default colspan={2} value="Supplier Name" element="th" />
+        <Default
+          colspan={3}
+          value="Application Area"
+          element="th"
+          align="right"
+        />
       </tr>
       {machieneries.map((machieneriesDetails, index) => {
         return (
-          <tr>
-            <td colSpan={2}></td>
-            <td colSpan={2}>
-              {<Default value={machieneriesDetails?.machineryName ?? ""} />}
-            </td>
-            <td colSpan={2}>
-              {<Default value={machieneriesDetails?.supplierName ?? ""} />}
-            </td>
-            <td colSpan={2}>
-              {
-                //@ts-ignore
-                <SquareFeetFormat
-                  value={machieneriesDetails?.applicationArea ?? ""}
-                />
-              }
-            </td>
+          <tr key={index}>
+            <Default colspan={2} value={index + 1} />
+            <Default colspan={2} value={machieneriesDetails?.machineryName} />
+            <Default colspan={2} value={machieneriesDetails?.supplierName} />
+            <Amount
+              skipSymbol={true}
+              colspan={3}
+              value={machieneriesDetails?.applicationArea}
+            />
           </tr>
         );
       })}
@@ -315,12 +357,16 @@ export const ManufacturedProduct = ({ manufacturedProduct }) => {
     return (
       <>
         <tr>
-          <th colSpan={9} className="form-sub-heading">
-            Products to be Manufactured
-          </th>
+          <Default
+            colspan={9}
+            className="form-sub-heading"
+            align="center"
+            value="Products to be Manufactured"
+            element="th"
+          />
         </tr>
         <tr>
-          <td colSpan={9}>Not Available</td>
+          <Default colspan={9} align="center" value="Not Available" />
         </tr>
       </>
     );
@@ -328,21 +374,27 @@ export const ManufacturedProduct = ({ manufacturedProduct }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Products to be Manufactured
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Products to be Manufactured"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={7}>Machinery Name</th>
+        <Default colspan={2} value="Sr.No" element="th" />
+        <Default colspan={7} value="Machinery Name" element="th" />
       </tr>
       {manufacturedProduct.map((manufacturedProducts, index) => {
         return (
           <tr>
-            <td colSpan={2}></td>
-            <td colSpan={7}>
-              {<Default value={manufacturedProducts?.productName ?? ""} />}
-            </td>
+            <Default colspan={2} value={index + 1} />
+            <Default
+              colspan={7}
+              align="center"
+              value={manufacturedProducts?.productName}
+            />
           </tr>
         );
       })}

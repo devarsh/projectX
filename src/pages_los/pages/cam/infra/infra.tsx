@@ -34,8 +34,8 @@ export const Infra = ({ data, others }) => {
         <ProjectDetails projectCompletion={projectDetails} />
         <CollateralDetails
           collateral={collateralSecurity}
-          primary={primaryCollateralSecurity}
-          personal={personalGuaranteeSecurity}
+          // primary={primaryCollateralSecurity}
+          // personal={personalGuaranteeSecurity}
         />
       </tbody>
     </table>
