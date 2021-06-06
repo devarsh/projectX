@@ -1,22 +1,43 @@
 import { printTDS, printTDSForAmount } from "pages_los/pages/cam/utils";
+import { Default } from "pages_los/pages/cam/components";
+
 export const IncomeDetails = ({ income }) => {
   if (!Array.isArray(income) || income.length <= 0) {
-    return null;
+    return (
+      <>
+        <tr>
+          <Default
+            colspan={9}
+            className="form-sub-heading"
+            value=" Income Summary"
+            align="center"
+            element="th"
+          />
+        </tr>
+        <tr>
+          <Default colspan={9} value=" Not Available" align="center" />
+        </tr>
+      </>
+    );
   }
   return (
     <>
       <tr>
-        <th colSpan={2} className="form-sub-heading">
-          Income Summary
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          value=" Income Summary"
+          align="center"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}>Financial Years</th>
+        <Default colspan={2} value="Financial Years" element="th" />
         {printTDS({ obj: income, key: "incomeYear" })}
       </tr>
 
       <tr>
-        <th colSpan={2}>Income Amount</th>
+        <Default colspan={2} value="Income Amount" element="th" />
         {printTDSForAmount({ obj: income, key: "incomeAmount" })}
       </tr>
 

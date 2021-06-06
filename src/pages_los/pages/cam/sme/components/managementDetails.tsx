@@ -10,96 +10,103 @@ import {
 export const ManagementDetails = ({ management }) => {
   if (!Array.isArray(management) || management.length <= 0) {
     return (
-      <tr>
-        <td>Invalid data</td>
-      </tr>
+      <>
+        <tr>
+          <Default
+            colspan={9}
+            className="form-heading"
+            value="Management Details"
+            align="center"
+            element="th"
+          />
+        </tr>
+        <tr>
+          <Default colspan={9} value="Not Available" align="center" />
+        </tr>
+      </>
     );
   }
   return (
     <>
       <br />
-      <tr className="page-break">
-        <th></th>
-      </tr>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Management Details
-        </th>
+        <Default
+          colspan={9}
+          className="form-heading"
+          value="Management Details"
+          align="center"
+          element="th"
+        />
       </tr>
       {management.map((data: any, index) => {
         return (
           <>
             <tr>
-              <th colSpan={2}>Name of the Partner/Director</th>
+              <Default
+                colspan={2}
+                value="Name of the Partner/Director"
+                element="th"
+              />
               <td colSpan={7}>
                 {data?.salutation ?? ""} {data?.firstName ?? ""}{" "}
                 {data?.middleName ?? ""} {data?.lastName ?? ""}
               </td>
             </tr>
             <tr>
-              <th colSpan={2}>Birth Date</th>
-              <td colSpan={7}>{<DateFormat value={data?.dob ?? ""} />}</td>
+              <Default colspan={2} value="Birth Date" element="th" />
+              <DateFormat colspan={7} value={data?.dob} />
             </tr>
             <tr>
-              <th colSpan={2}>Age</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Age value={data?.dob ?? ""} />
-                }
-              </td>
+              <Default colspan={2} value="Age" element="th" />
+              <Age colspan={7} value={data?.dob} />
             </tr>
             <tr>
-              <th colSpan={2}>PAN No</th>
-              <td colSpan={7}>{<Default value={data?.panNumber ?? ""} />}</td>
+              <Default colspan={2} value="PAN No" element="th" />
+              <Default colspan={7} value={data?.panNumber} />
             </tr>
             <tr>
-              <th colSpan={2}>DIN / LLPIN No</th>
-              <td colSpan={7}>{<Default value={data?.dinLlPinNo ?? ""} />}</td>
+              <Default colspan={2} value="DIN / LLPIN No" element="th" />
+              <Default colspan={7} value={data?.dinLlPinNo} />
             </tr>
             <tr>
-              <th colSpan={2}>Credit Score</th>
-              <td colSpan={7}>{<Default value={data?.creditScore ?? ""} />}</td>
+              <Default colspan={2} value="Credit Score" element="th" />
+              <Default colspan={7} value={data?.creditScore} />
             </tr>
             <tr>
-              <th colSpan={2}>Educational Qualification</th>
-              <td colSpan={7}>
-                {<Default value={data?.educationQalification ?? ""} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Educational Qualification"
+                element="th"
+              />
+              <Default colspan={7} value={data?.educationQalification} />
             </tr>
             <tr>
-              <th colSpan={2}>Experience</th>
-              <td colSpan={7}>{<Default value={data?.experience ?? ""} />}</td>
+              <Default colspan={2} value="Experience" element="th" />
+              <Default colspan={7} value={data?.experience} />
             </tr>
             <tr>
-              <th colSpan={2}>Associate Companies</th>
-              <td colSpan={7}>
-                {<Default value={data?.associatedCompany ?? ""} />}
-              </td>
+              <Default colspan={2} value="Associate Companies" element="th" />
+              <Default colspan={7} value={data?.associatedCompany} />
             </tr>
             <tr>
-              <th colSpan={2}>Profit Sharing / Shareholding %</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Percentage value={data?.profitSharing ?? ""} />
-                }
-              </td>
+              <Default
+                colspan={2}
+                value="Profit Sharing / Shareholding %"
+                element="th"
+              />
+              <Percentage colspan={7} value={data?.profitSharing} />
             </tr>
             <tr>
-              <th colSpan={2}>Networth</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={data?.netWorth ?? ""} />
-                }
-              </td>
+              <Default colspan={2} value="Networth" element="th" />
+              <Amount colspan={7} value={data?.netWorth} />
             </tr>
             <tr>
-              <th colSpan={2}>Resposnibilities Handled in the Comapany</th>
-              <td colSpan={7}>
-                {<Default value={data?.responsibility ?? ""} />}
-              </td>
+              <Default
+                colspan={2}
+                value="Resposnibilities Handled in the Comapany"
+                element="th"
+              />
+              <Default colspan={7} value={data?.responsibility} />
             </tr>
             <IncomeDetails income={data?.incomeDetails ?? ""} />
 

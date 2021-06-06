@@ -1,7 +1,16 @@
 import { Default, Amount } from "pages_los/pages/cam/components";
 export const PersonalGuarantee = ({ personal }) => {
   if (!Array.isArray(personal) || personal.length <= 0) {
-    return null;
+    <>
+      <tr>
+        <th colSpan={2} className="form-sub-heading">
+          PERSONAL GUARANTEE
+        </th>
+      </tr>
+      <tr>
+        <th colSpan={9}>Not Availabe</th>
+      </tr>
+    </>;
   }
   return (
     <>

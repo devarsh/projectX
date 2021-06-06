@@ -13,120 +13,121 @@ export const GeneralDetails = ({ general, promoter, address }) => {
     return (
       <>
         <tr>
-          <th className="form-heading" colSpan={9}>
-            General Details
-          </th>
+          <Default
+            colspan={9}
+            className="form-heading"
+            value=" General Details"
+            align="center"
+            element="th"
+          />
         </tr>
         <tr>
-          <th colSpan={2}>Name of the Unit</th>
-          <td colSpan={7}>{<Default value={general?.entityName ?? ""} />}</td>
+          <Default colspan={2} value="Name of the Unit" element="th" />
+          <Default colspan={7} value={general?.entityName} />
         </tr>
         <tr>
-          <th colSpan={2}>Constitution of Business</th>
-          <td colSpan={7}>{<Default value={general?.entityType ?? ""} />}</td>
+          <Default colspan={2} value="Constitution of Business" element="th" />
+          <Default colspan={7} value={general?.entityType} />
         </tr>
         <tr>
-          <th colSpan={2}>Credit Score</th>
-          <td colSpan={7}> {<Default value={general?.creditScore ?? ""} />}</td>
+          <Default colspan={2} value="Credit Score" element="th" />
+          <Default colspan={7} value={general?.creditScore} />
         </tr>
         <tr>
-          <th colSpan={2}>Ownership of Factory / Business Premises</th>
-          <td colSpan={7}>
-            {<Default value={general?.ownershipType ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Ownership of Factory / Business Premises"
+            element="th"
+          />
+          <Default colspan={7} value={general?.ownershipType} />
         </tr>
         <tr>
-          <th colSpan={2}>Date of incorporation</th>
-          <td colSpan={7}>
-            {<DateFormat value={general?.inceptionDate ?? ""} />}
-          </td>
+          <Default colspan={2} value="Date of incorporation" element="th" />
+          <DateFormat colspan={7} value={general?.inceptionDate} />
         </tr>
         <tr>
-          <th colSpan={2}>Existing Type of Industry</th>
-          <td colSpan={7}>
-            {<Default value={general?.typeOfIndustry ?? ""} />}
-          </td>
+          <Default colspan={2} value="Existing Type of Industry" element="th" />
+          <Default colspan={7} value={general?.typeOfIndustry} />
         </tr>
         <tr>
-          <th colSpan={2}>Nature of Existing Business</th>
-          <td colSpan={7}>
-            {<Default value={general?.businessNature ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Nature of Existing Business"
+            element="th"
+          />
+          <Default colspan={7} value={general?.businessNature} />
         </tr>
         <tr>
-          <th colSpan={2}>Proposed business</th>
-          <td colSpan={7}>
-            {<Default value={general?.businessProposed ?? ""} />}
-          </td>
+          <Default colspan={2} value="Proposed business" element="th" />
+          <Default colspan={7} value={general?.businessProposed} />
         </tr>
         <tr>
-          <th colSpan={2}>External credit rating</th>
-          <td colSpan={7}>{<Default value={general?.rankExternal ?? ""} />}</td>
+          <Default colspan={2} value="External credit rating" element="th" />
+          <Default colspan={7} value={general?.rankExternal} />
         </tr>
         <tr>
-          <th colSpan={2}>MSME</th>
-          <td colSpan={7}>{<Default value={general?.businessSize ?? ""} />}</td>
+          <Default colspan={2} value="MSME" element="th" />
+          <Default colspan={7} value={general?.businessSize} />
         </tr>
         <tr>
-          <th colSpan={2}>PAN No</th>
-          <td colSpan={7}>{<Default value={general?.panNumber ?? ""} />}</td>
+          <Default colspan={2} value="PAN No" element="th" />
+          <Default colspan={7} value={general?.panNumber} />
         </tr>
         <tr>
-          <th colSpan={2}>Udhyam No</th>
-          <td colSpan={7}>{<Default value={general?.udhyogNumber ?? ""} />}</td>
+          <Default colspan={2} value="Udhyam No" element="th" />
+          <Default colspan={7} value={general?.udhyogNumber} />
         </tr>
         <tr>
-          <th colSpan={2}>CMR Ranking</th>
-          <td colSpan={7}>{<Default value={general?.crmRank ?? ""} />}</td>
+          <Default colspan={2} value="CMR Ranking" element="th" />
+          <Default colspan={7} value={general?.crmRank} />
         </tr>
         {/* <tr>
           <th colSpan={2}>Name of Promoters / Directors</th>
           <td colSpan={7}>{<Default value={"Not Specified"} />}</td>
         </tr>*/}
         <tr>
-          <th colSpan={2}>Purpose of loan</th>
-          <td colSpan={7}>{<Default value={general?.purposeLoan ?? ""} />}</td>
+          <Default colspan={2} value="Purpose of loan" element="th" />
+          <Default colspan={7} value={general?.purposeLoan} />
         </tr>
         <tr>
-          <th colSpan={2}>Turnover in current financial year</th>
-          <td colSpan={7}>
-            {
-              //@ts-ignore
-              <Amount value={general?.turnOverAmount ?? ""} />
-            }
-          </td>
+          <Default
+            colspan={2}
+            value="Turnover in current financial year"
+            element="th"
+          />
+          <Amount colspan={7} value={general?.turnOverAmount} />
         </tr>
         <tr>
-          <th colSpan={2}>Last 12 Months average Bank Balance</th>
-          <td colSpan={7}>
-            {
-              //@ts-ignore
-              <Amount value={general?.averageBankBal ?? ""} />
-            }
-          </td>
+          <Default
+            colspan={2}
+            value="Last 12 Months average Bank Balance"
+            element="th"
+          />
+          <Amount colspan={7} value={general?.averageBankBal} />
         </tr>
         <tr>
-          <th colSpan={2}>Average Utilisation of Working Capital Limits</th>
-          <td colSpan={7}>
-            {
-              //@ts-ignore
-              <Amount value={general?.limitBal ?? ""} />
-            }
-          </td>
+          <Default
+            colspan={2}
+            value="Average Utilisation of Working Capital Limits"
+            element="th"
+          />
+          <Amount colspan={7} value={general?.limitBal} />
         </tr>
         <tr>
-          <th colSpan={2}>Credit Summation in Bank in Last 12 months</th>
-          <td colSpan={7}>
-            {<Default value={general?.chequeBounces ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Credit Summation in Bank in Last 12 months"
+            element="th"
+          />
+          <Default colspan={7} value={general?.chequeBounces} />
         </tr>
         <tr>
-          <th colSpan={2}>
-            Inward cheque bounces, if any and % of total Cheque bounce
-          </th>
-          <td colSpan={7}>
-            {<Default value={general?.chequeBouncesPer ?? ""} />}
-          </td>
+          <Default
+            colspan={2}
+            value="Inward cheque bounces, if any and % of total Cheque bounce"
+            element="th"
+          />
+          <Default colspan={7} value={general?.chequeBouncesPer} />
         </tr>
 
         <Address value={address} />
@@ -144,5 +145,20 @@ export const GeneralDetails = ({ general, promoter, address }) => {
       </>
     );
   }
-  return null;
+  return (
+    <>
+      <tr>
+        <Default
+          colspan={9}
+          className="form-heading"
+          value=" General Details"
+          align="center"
+          element="th"
+        />
+      </tr>
+      <tr>
+        <Default colspan={9} value="Not Available" align="center" />
+      </tr>
+    </>
+  );
 };

@@ -1,7 +1,20 @@
 import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 export const ProjectParticularDetails = ({ projectParticular }) => {
   if (!Array.isArray(projectParticular) || projectParticular.length <= 0) {
-    return null;
+    <>
+      <tr>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Cost of the Project"
+          element="th"
+        />
+      </tr>
+      <tr>
+        <Default colspan={9} value="Not Available" />
+      </tr>
+    </>;
   }
   const meansOfFiance = projectParticular.filter(
     (one) => one.particularType === "Total Means of Finance"

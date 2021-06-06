@@ -1,8 +1,26 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Percentage,
+  DateFormat,
+} from "pages_los/pages/cam/components";
 
 export const BankDetails = ({ bank }) => {
   if (!Array.isArray(bank) || bank.length <= 0) {
-    return null;
+    <>
+      <tr>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Banking Arrangements"
+          element="th"
+        />
+      </tr>
+      <tr>
+        <Default colspan={9} value="Not Available" />
+      </tr>
+    </>;
   }
 
   let { savingOrCurrentAccountDetails, otherAccountDetails }: any = [];
@@ -20,36 +38,34 @@ export const BankDetails = ({ bank }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Banking Arrangements
-        </th>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          align="center"
+          value="Banking Arrangements"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={2}>Name of Bank</th>
-        <th colSpan={2}>Address</th>
-        <th colSpan={2}>Current A/C No</th>
-        <th colSpan={1}>Average Bank Balance</th>
+        <Default colspan={2} value="Sr.No" element="th" />
+        <Default colspan={2} value="Name of Bank" element="th" />
+        <Default colspan={2} value="Address" element="th" />
+        <Default colspan={2} value="Current A/C No" element="th" />
+        <Default
+          colspan={1}
+          value="Average Bank Balance"
+          element="th"
+          align="right"
+        />
       </tr>
       {savingOrCurrentAccountDetails.map((bankDetail, index) => {
         return (
-          <tr key={index + 1}>
-            <td colSpan={2}></td>
-            <td colSpan={2}>
-              <Default value={bankDetail.bankName} />
-            </td>
-            <td colSpan={2}>
-              <Default value={bankDetail.address} />
-            </td>
-            <td colSpan={2}>
-              <Default value={bankDetail.accountNo} />
-            </td>
-            <td>
-              {
-                //@ts-ignore
-                <Amount value={bankDetail.averageBalance} />
-              }
-            </td>
+          <tr key={index}>
+            <Default colspan={2} value={index + 1} />
+            <Default colspan={2} value={bankDetail?.bankName} />
+            <Default colspan={2} value={bankDetail?.address} />
+            <Default colspan={2} value={bankDetail?.accountNo} />
+            <Amount colspan={2} value={bankDetail?.averageBalance} />
           </tr>
         );
       })}
@@ -67,41 +83,34 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
       <br />
       <br />
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={1}>Nature of Facility</th>
-        <th colSpan={2}>Name of Bank</th>
-        <th colSpan={1}>O/s Amount as on</th>
-        <th colSpan={1}>O/s Amount</th>
-        <th colSpan={1}>Rate of Interest</th>
-        <th colSpan={1}>EMI of the Existing Loan</th>
+        <Default colspan={2} value="Sr.No" element="th" />
+        <Default colspan={1} value="Nature of Facility" element="th" />
+        <Default colspan={2} value="Name of Bank" element="th" />
+        <Default colspan={1} value="O/s Amount as on" element="th" />
+        <Default colspan={1} value="O/s Amount" element="th" align="right" />
+        <Default
+          colspan={1}
+          value="Rate of Interest"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={1}
+          value="EMI of the Existing Loan"
+          element="th"
+          align="right"
+        />
       </tr>
       {otherAccountDetails.map((bankDetail, index) => {
         return (
           <tr key={index}>
-            <td colSpan={2}></td>
-            <td colSpan={1}>{<Default value={bankDetail.accountType} />}</td>
-            <td colSpan={2}>{<Default value={bankDetail.bankName} />}</td>
-            <td colSpan={1}>
-              {<Default value={bankDetail.outstandingAmountAsOn} />}
-            </td>
-            <td>
-              {
-                //@ts-ignore
-                <Amount value={bankDetail.outstandingAmount} />
-              }
-            </td>
-            <td>
-              {
-                //@ts-ignore
-                <Amount value={bankDetail.existingLoanEMI} />
-              }
-            </td>
-            <td colSpan={1}>
-              {
-                //@ts-ignore
-                <Percentage value={bankDetail.rateOfInterest} />
-              }
-            </td>
+            <Default colspan={2} value={index + 1} />
+            <Default colspan={1} value={bankDetail?.accountType} />
+            <Default colspan={2} value={bankDetail.bankName} />
+            <DateFormat colspan={1} value={bankDetail?.outstandingAmountAsOn} />
+            <Amount colspan={1} value={bankDetail?.outstandingAmount} />
+            <Amount coslapn={1} value={bankDetail?.existingLoanEMI} />
+            <Percentage colspan={1} value={bankDetail?.rateOfInterest} />
           </tr>
         );
       })}
