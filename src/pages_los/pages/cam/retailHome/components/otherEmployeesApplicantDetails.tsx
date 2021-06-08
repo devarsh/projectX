@@ -1,6 +1,11 @@
 import { OtherEmployeesReturnFilingDetails } from "./otherEmployeesReturnFilingDetails";
 import { OtherEmployeesSalaryDetails } from "./otherEmployeesSalaryDetails";
-import { Age, DateFormat } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Age,
+  DateFormat,
+  Amount,
+} from "pages_los/pages/cam/components";
 
 export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
   if (typeof applicant !== "object") {
@@ -10,35 +15,34 @@ export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
   return (
     <>
       <tr>
-        <th colSpan={2}>Loan Requested</th>
-        <td colSpan={7}>{loanAmount}</td>
+        <Default colspan={2} value="Loan Requested" element="th" />
+        <Amount colspan={7} value={loanAmount} />
       </tr>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Applicant Details
-        </th>
+        <Default
+          colspan={9}
+          value="Applicant Details"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
-        <th colSpan={2}>Name</th>
-        <td colSpan={7}>
-          {applicant.firstName}
-          {applicant.lastName}
-        </td>
+        <Default colspan={2} value="Name" element="th" />
+        <Default
+          colspan={7}
+          value={`${applicant?.salutation}${" "}${applicant?.firstName}
+                ${" "}${applicant?.middleName}${" "}${applicant?.lastName}`}
+        />
       </tr>
       <tr>
-        <th colSpan={2}>Date of Birth</th>
-        <td colSpan={7}>{<DateFormat value={applicant.dob} />}</td>
+        <Default colspan={2} value="Date of Birth" element="th" />
+        <DateFormat colspan={7} value={applicant?.dob} />
       </tr>
       <tr>
-        <th colSpan={2}>Age</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Age value={applicant.birthDate} />
-          }
-        </td>
+        <Default colspan={2} value="Age" element="th" />
+        <Age colspan={7} value={applicant?.birthDate} />
       </tr>
-      {applicant.emplCode === "01" || "03" || "04" ? (
+      {applicant?.emplCode === "01" || "03" || "04" ? (
         <OtherEmployeesReturnFilingDetails
           returnFiling={applicant.returnFilingDetails}
         />

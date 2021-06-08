@@ -1,3 +1,4 @@
+import { Default } from "pages_los/pages/cam/components";
 export const Address = ({ value }) => {
   let addressArray: any = [];
   addressArray = value.map((addressData) => {
@@ -27,9 +28,13 @@ export const Address = ({ value }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Address Details
-        </th>
+        <Default
+          className="form-sub-heading"
+          colspan={9}
+          element="th"
+          value=" Address Details"
+          align="center"
+        />
       </tr>
       {addressFinalDetails.map((addressData, index) => {
         return (

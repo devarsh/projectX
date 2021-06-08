@@ -1,51 +1,51 @@
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { Age, DateFormat } from "pages_los/pages/cam/components";
+import { Default, Age, DateFormat } from "pages_los/pages/cam/components";
 
 export const CoApplicantDetails = ({ coApplicant }) => {
-  if (!Array.isArray(coApplicant) || coApplicant.length <= 0) {
-    return null;
-  }
-
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Co-Applicant Details
-        </th>
+        <Default
+          className="form-heading"
+          colspan={9}
+          value="Co-Applicant Details"
+          element="th"
+          align="center"
+        />
       </tr>
-      {coApplicant.map((coApplicantDetails, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <th colSpan={2}>Name</th>
-              <td colSpan={7}>
-                {coApplicantDetails.firstName} {coApplicantDetails.lastName}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Date of Birth</th>
-              <td colSpan={7}>
-                {<DateFormat value={coApplicantDetails.birthDate} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Age</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Age value={coApplicantDetails.birthDate} />
-                }
-              </td>
-            </tr>
-            <ReturnFilingDetails
-              returnFiling={coApplicantDetails.returnFilingDetails}
-            />
-            <SalaryDetails salary={coApplicantDetails.salaryDetails} />
-            <br />
-          </>
-        );
-      })}
+      {Array.isArray(coApplicant) &&
+        coApplicant.map((coApplicantDetails, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={2} value="Name" element="th" />
+                <Default
+                  colspan={7}
+                  value={`${coApplicantDetails?.salutation}${" "}${
+                    coApplicantDetails?.firstName
+                  }
+                ${" "}${coApplicantDetails?.middleName}${" "}${
+                    coApplicantDetails?.lastName
+                  }`}
+                />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Date of Birth" element="th" />
+                <DateFormat colspan={7} value={coApplicantDetails?.birthDate} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Age" element="th" />
+                <Age colspan={7} value={coApplicantDetails?.birthDate} />
+              </tr>
+              <ReturnFilingDetails
+                returnFiling={coApplicantDetails.returnFilingDetails}
+              />
+              <SalaryDetails salary={coApplicantDetails.salaryDetails} />
+              <br />
+            </>
+          );
+        })}
     </>
   );
 };

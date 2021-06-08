@@ -1,59 +1,43 @@
-import { Amount, DateFormat } from "pages_los/pages/cam/components";
+import { Default, Amount, DateFormat } from "pages_los/pages/cam/components";
 
 export const OtherEmployeesReturnFilingDetails = ({ returnFiling }) => {
-  if (!Array.isArray(returnFiling) || returnFiling.length <= 0) {
-    return null;
-  }
-
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Return Filing Details
-        </th>
+        <Default
+          className="form-sub-heading"
+          colspan={9}
+          align="center"
+          element="th"
+          value="Return Filing Details"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th>Date of Filing Return</th>
-        <th>Net Profit Before Tax (PBT)</th>
-        <th>Depreciation</th>
-        <th>Other Income</th>
-        <th>Total Income</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={1} value="Date of Filing Return" element="th" />
+        <Default colspan={1} value="Net Profit Before Tax (PBT)" element="th" />
+        <Default colspan={2} value="Depreciation" element="th" />
+        <Default colspan={2} value="Other Income" element="th" />
+        <Default colspan={2} value="Total Income" element="th" />
       </tr>
-      {returnFiling.map((returnFilingDetails) => {
-        return (
-          <>
-            <tr>
-              <td colSpan={2}></td>
-              <td>{<DateFormat value={returnFilingDetails.filingDate} />}</td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.netProfit} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.depreciation} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.otherIncome} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.totalIncome} />
-                }
-              </td>
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(returnFiling) &&
+        returnFiling.map((returnFilingDetails, index) => {
+          return (
+            <>
+              <tr>
+                <Default colspan={1} value={index + 1} />
+                <DateFormat
+                  colspan={1}
+                  value={returnFilingDetails?.filingDate}
+                />
+                <Amount colspan={1} value={returnFilingDetails?.netProfit} />
+                <Amount colspan={2} value={returnFilingDetails?.depreciation} />
+                <Amount colspan={2} value={returnFilingDetails?.otherIncome} />
+                <Amount colspan={2} value={returnFilingDetails?.totalIncome} />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };

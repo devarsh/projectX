@@ -31,7 +31,9 @@ export const SME = ({ data, others }) => {
           address={addressDetails}
         />
         <BusinessDetails business={businessOtherDetails} />
-        {productID === ("12300006" || "12300007") ? (
+        {productID === "12300006" ? (
+          <ProjectDetails project={projectDetails} />
+        ) : productID === "12300007" ? (
           <ProjectDetails project={projectDetails} />
         ) : null}
         <ManagementDetails management={managementDetails} />

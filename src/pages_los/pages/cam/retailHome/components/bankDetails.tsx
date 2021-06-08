@@ -18,85 +18,79 @@ export const BankDetails = ({ bank }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Banking Details
-        </th>
+        <Default
+          colspan={9}
+          value="Banking Details"
+          className="form-sub-heading"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={1}>Name of Bank</th>
-        <th colSpan={1}>Address</th>
-        <th colSpan={1}>Current A/C No</th>
-        <th colSpan={1}>Average Bank Balance</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Name of Bank" element="th" />
+        <Default colspan={2} value="Address" element="th" />
+        <Default colspan={2} value="Current A/C No" element="th" />
+        <Default colspan={2} value="Average Bank Balance" element="th" />
       </tr>
-      {savingOrCurrentAccountDetails.map((bankDetail, index) => {
-        return (
-          <tr key={index}>
-            <td colSpan={2}></td>
-            <td colSpan={1}>{<Default value={bankDetail.bankName} />}</td>
-            <td colSpan={1}>{<Default value={bankDetail.address} />}</td>
-            <td colSpan={1}>{<Default value={bankDetail.accountNo} />}</td>
-            <td>
-              {
-                //@ts-ignore
-                <Amount value={bankDetail.averageBalance} />
-              }
-            </td>
-          </tr>
-        );
-      })}
+      {Array.isArray(savingOrCurrentAccountDetails) &&
+        savingOrCurrentAccountDetails.map((bankDetail, index) => {
+          return (
+            <tr key={index}>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={2} value={bankDetail?.bankName} />
+              <Default colspan={2} value={bankDetail?.address} />
+              <Default colspan={2} value={bankDetail?.accountNo} />
+              <Amount colspan={2} value={bankDetail?.averageBalance} />
+            </tr>
+          );
+        })}
       <OtherBankAccountTypeDetails otherAccountDetails={otherAccountDetails} />
     </>
   );
 };
 
 export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
-  if (!Array.isArray(otherAccountDetails) || otherAccountDetails.length <= 0) {
-    return null;
-  }
+  // if (!Array.isArray(otherAccountDetails) || otherAccountDetails.length <= 0) {
+  //   return null;
+  // }
   return (
     <>
       <br />
       <br />
       <tr>
-        <th colSpan={2}></th>
-        <th colSpan={1}>Nature of Facility</th>
-        <th colSpan={1}>Name of Bank</th>
-        <th colSpan={1}>O/s Amount as on</th>
-        <th colSpan={1}>O/s Amount</th>
-        <th colSpan={1}>Rate of Interest</th>
-        <th colSpan={1}>EMI of the Existing Loan</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={1} value="Nature of Facility" element="th" />
+        <Default colspan={1} value="Name of Bank" element="th" />
+        <Default colspan={1} value="O/s Amount as on" element="th" />
+        <Default colspan={2} value="O/s Amount" element="th" align="right" />
+        <Default
+          colspan={1}
+          value="Rate of Interest"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={2}
+          value="EMI of the Existing Loan"
+          element="th"
+          align="right"
+        />
       </tr>
-      {otherAccountDetails.map((bankDetail, index) => {
-        return (
-          <tr key={index}>
-            <td colSpan={2}></td>
-            <td colSpan={1}>{<Default value={bankDetail.accountType} />}</td>
-            <td colSpan={1}>{<Default value={bankDetail.bankName} />}</td>
-            <td colSpan={1}>
-              {<Default value={bankDetail.outstandingAmountAsOn} />}
-            </td>
-            <td colSpan={1}>
-              {
-                //@ts-ignore
-                <Amount value={bankDetail.outstandingAmount} />
-              }
-            </td>
-            <td colSpan={1}>
-              {
-                //@ts-ignore
-                <Percentage value={bankDetail.rateOfInterest} />
-              }
-            </td>
-            <td colSpan={1}>
-              {
-                //@ts-ignore
-                <Amount value={bankDetail.existingLoanEMI} />
-              }
-            </td>
-          </tr>
-        );
-      })}
+      {Array.isArray(otherAccountDetails) &&
+        otherAccountDetails.map((bankDetail, index) => {
+          return (
+            <tr key={index}>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={1} value={bankDetail?.accountType} />
+              <Default colspan={1} value={bankDetail?.bankName} />
+              <Default colspan={1} value={bankDetail?.outstandingAmountAsOn} />
+              <Default colspan={2} value={bankDetail?.outstandingAmount} />
+              <Percentage colspan={1} value={bankDetail?.rateOfInterest} />
+              <Amount colspan={2} value={bankDetail?.existingLoanEMI} />
+            </tr>
+          );
+        })}
     </>
   );
 };

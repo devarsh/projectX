@@ -2,53 +2,46 @@ import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 export const NatureofFacilityProposedDetails = ({
   natureOfFacilityProposed,
 }) => {
-  if (
-    !Array.isArray(natureOfFacilityProposed) ||
-    natureOfFacilityProposed.length <= 0
-  ) {
-    return null;
-  }
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Proposed
-        </th>
+        <Default
+          colspan={9}
+          value="Nature of Facility Proposed"
+          className="form-sub-heading"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
-        <th style={{ textAlign: "center" }}>Sr.No</th>
-        <th colSpan={2}>Nature of Facility</th>
-        <th colSpan={2}>New / Takeover</th>
-        <th colSpan={2}>Requested ROI</th>
-        <th colSpan={2}>Amount</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Nature of Facility" element="th" />
+        <Default colspan={2} value="New / Takeover" element="th" />
+        <Default
+          colspan={2}
+          value="Requested ROI"
+          element="th"
+          align="center"
+        />
+        <Default colspan={2} value="Amount" element="th" align="center" />
       </tr>
-      {natureOfFacilityProposed.map((proposedDetails, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <td style={{ textAlign: "center" }}>{index + 1}</td>
-              <td colSpan={2}>
-                {<Default value={proposedDetails?.facilityType ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {<Default value={proposedDetails?.newTakeover ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <Percentage value={proposedDetails?.rateOfInterest ?? ""} />
-                }
-              </td>
-              <td colSpan={1}>
-                {
-                  //@ts-ignore
-                  <Amount value={proposedDetails?.amount ?? ""} />
-                }
-              </td>
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(natureOfFacilityProposed) &&
+        natureOfFacilityProposed.map((proposedDetails, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default colspan={2} value={proposedDetails?.facilityType} />
+                <Default colspan={2} value={proposedDetails?.newTakeover} />
+                <Percentage
+                  colspan={2}
+                  value={proposedDetails?.rateOfInterest}
+                />
+                <Amount colspan={2} value={proposedDetails?.amount} />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };

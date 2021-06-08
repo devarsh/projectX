@@ -2,10 +2,6 @@ import { BriefAboutProjectSubDetails } from "./subProjectBreif";
 import { Default, Amount } from "pages_los/pages/cam/components";
 
 export const BriefAboutProject = ({ project }) => {
-  if (!Array.isArray(project) || project.length <= 0) {
-    return null;
-  }
-
   let projectSubDetailsArray: any = [];
   project?.map((data: any) => {
     data.projectOtherSubDtl?.map((newData) => {
@@ -26,7 +22,7 @@ export const BriefAboutProject = ({ project }) => {
       </tr>
       <tr>
         <Default colspan={1} value="Sr.No" element="th" />
-        <Default colspan={2} value="Particulars" element="th" />
+        <Default colspan={1} value="Particulars" element="th" />
         <Default colspan={1} value="No. of Units" element="th" align="right" />
         <Default
           colspan={1}
@@ -35,55 +31,56 @@ export const BriefAboutProject = ({ project }) => {
           align="right"
         />
         <Default
-          colspan={2}
+          colspan={1}
           value="Salable Area / Super Build Up Area (In Sq. feet)"
           element="th"
           align="right"
         />
         <Default
-          colspan={1}
+          colspan={2}
           value="Rate per Sq. Feet"
           element="th"
           align="right"
         />
         <Default
-          colspan={1}
+          colspan={2}
           value="Amount in Rs. Lakhs"
           element="th"
           align="right"
         />
       </tr>
-      {project.map((projectDetail, index) => {
-        return (
-          <tr key={index}>
-            <Default colspan={1} value={index + 1} />
-            <Default colspan={2} value={projectDetail?.particulars} />
-            <Amount
-              colspan={1}
-              value={projectDetail?.units}
-              skipSymbol={true}
-            />
+      {Array.isArray(project) &&
+        project.map((projectDetail, index) => {
+          return (
+            <tr key={index}>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={1} value={projectDetail?.particulars} />
+              <Amount
+                colspan={1}
+                value={projectDetail?.units}
+                skipSymbol={true}
+              />
 
-            <Amount
-              colspan={1}
-              value={projectDetail.carpetArea}
-              skipSymbol={true}
-            />
-            <Amount
-              colspan={2}
-              value={projectDetail?.saleableArea}
-              skipSymbol={true}
-            />
-            <Amount
-              colspan={1}
-              value={projectDetail?.ratePerSquareFeet}
-              skipSymbol={true}
-            />
+              <Amount
+                colspan={1}
+                value={projectDetail.carpetArea}
+                skipSymbol={true}
+              />
+              <Amount
+                colspan={1}
+                value={projectDetail?.saleableArea}
+                skipSymbol={true}
+              />
+              <Amount
+                colspan={2}
+                value={projectDetail?.ratePerSquareFeet}
+                skipSymbol={true}
+              />
 
-            <Amount colspan={1} value={projectDetail.amount} />
-          </tr>
-        );
-      })}
+              <Amount colspan={2} value={projectDetail.amount} />
+            </tr>
+          );
+        })}
       <BriefAboutProjectSubDetails subProject={projectSubDetailsArray} />
     </>
   );

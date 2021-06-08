@@ -6,27 +6,6 @@ import {
 } from "pages_los/pages/cam/components";
 
 export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
-  if (
-    !Array.isArray(natureOfFacilityPresent) ||
-    natureOfFacilityPresent.length <= 0
-  ) {
-    return (
-      <>
-        <tr>
-          <Default
-            colspan={9}
-            className="form-sub-heading"
-            value="Nature of Facility Present"
-            align="center"
-            element="th"
-          />
-        </tr>
-        <tr>
-          <Default colspan={9} value="Not Available" align="center" />
-        </tr>
-      </>
-    );
-  }
   return (
     <>
       <tr>
@@ -49,27 +28,29 @@ export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
           element="th"
           align="right"
         />
-        <Default
-          colspan={1}
-          value="Rate of Interest"
-          element="th"
-          align="right"
-        />
+        <Default colspan={1} value="Rate of Interest" element="th" />
       </tr>
-      {natureOfFacilityPresent.map((presentDetails, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <Default colspan={1} value={index + 1} />
-              <Default colspan={2} value={presentDetails?.facilityType} />
-              <Default colspan={2} value={presentDetails?.bankName} />
-              <DateFormat colspan={1} value={presentDetails.outstandingOn} />
-              <Amount colspan={2} value={presentDetails?.outstandingBalance} />
-              <Percentage colspan={1} value={presentDetails?.rateOfInterest} />
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(natureOfFacilityPresent) &&
+        natureOfFacilityPresent?.map((presentDetails, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default colspan={2} value={presentDetails?.facilityType} />
+                <Default colspan={2} value={presentDetails?.bankName} />
+                <DateFormat colspan={1} value={presentDetails.outstandingOn} />
+                <Amount
+                  colspan={2}
+                  value={presentDetails?.outstandingBalance}
+                />
+                <Percentage
+                  colspan={1}
+                  value={presentDetails?.rateOfInterest}
+                />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };

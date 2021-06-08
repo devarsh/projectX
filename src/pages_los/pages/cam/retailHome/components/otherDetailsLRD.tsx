@@ -7,51 +7,48 @@ export const OtherLRDDetails = ({ others }) => {
   return (
     <>
       <tr>
-        <th colSpan={2}>Rent</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.rent} />
-          }
-        </td>
+        <Default colspan={2} value="Rent" element="th" />
+        <Amount colspan={7} value={others?.rent} />
       </tr>
       <tr>
-        <th colSpan={2}>Rate of Interest</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.rate} />
-          }
-        </td>
+        <Default colspan={2} value="Rate of Interest" element="th" />
+        <Percentage colspan={7} value={others?.rate} />
       </tr>
       <tr>
-        <th colSpan={2}>Increase in Rent</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.increaseRent} />
-          }
-        </td>
+        <Default colspan={2} value="Increase in Rent" element="th" />
+        <Percentage colspan={7} value={others?.increaseRent} />
       </tr>
       <tr>
-        <th colSpan={2}>Total Lease Period (In Months)</th>
-        <td colSpan={7}>{<Default value={others.totalMonthLeasePeriod} />}</td>
+        <Default
+          colspan={2}
+          value="Total Lease Period (In Months)"
+          element="th"
+        />
+        <Default colspan={7} value={others?.totalMonthLeasePeriod} />
       </tr>
       <tr>
-        <th colSpan={2}>Lease Duration Completed (In Months)</th>
-        <td colSpan={7}>{<Default value={others.momnthPassed} />}</td>
+        <Default
+          colspan={2}
+          value="Lease Duration Completed (In Months)"
+          element="th"
+        />
+        <Default colspan={7} value={others?.momnthPassed} />
       </tr>
       <tr>
-        <th colSpan={2}>Remaining Lease Period</th>
-        <td colSpan={7}>{<Default value={others.balanceLeasePeriodRem} />}</td>
+        <Default colspan={2} value="Remaining Lease Period" element="th" />
+        <Default colspan={7} value={others?.balanceLeasePeriodRem} />
       </tr>
       <tr>
-        <th colSpan={2}>Rent Revision Frequency</th>
-        <td colSpan={7}>{others.rentReviFrequency}</td>
+        <Default colspan={2} value="Rent Revision Frequency" element="th" />
+        <Default colspan={7} value={others?.rentReviFrequency} />
       </tr>
       <tr>
-        <th colSpan={2}>Rent Revision Frequency (In Months)</th>
-        <td colSpan={7}>{<Default value={others.rentReviMonth} />}</td>
+        <Default
+          colspan={2}
+          value="Rent Revision Frequency (In Months)"
+          element="th"
+        />
+        <Default colspan={7} value={others?.rentReviMonth} />
       </tr>
       {/* <tr>
         <th colSpan={2}>TDS Percentage</th>
@@ -73,84 +70,52 @@ export const OtherLRDDetails = ({ others }) => {
       </tr> */}
       {others?.propertyType !== "" ? (
         <tr>
-          <th colSpan={2}>Property Type</th>
-          <td colSpan={7}>{<Default value={others.propertyType} />}</td>
+          <Default colspan={2} value="Property Type" element="th" />
+          <Default colspan={7} value={others?.propertyType} />
         </tr>
       ) : null}
 
       <tr>
-        <th colSpan={2}>Property Value</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.propertyValue} />
-          }
-        </td>
+        <Default colspan={2} value="Property Value" element="th" />
+        <Amount colspan={7} value={others?.propertyValue} />
       </tr>
       <tr>
-        <th colSpan={2}>LTV</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.ltv} />
-          }
-        </td>
+        <Default colspan={2} value="LTV" element="th" />
+        <Amount colspan={7} value={others?.ltv} />
       </tr>
       <tr>
-        <th colSpan={2}>Loan Amount Based on LTV</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.loanAmountBasedOnLTV} />
-          }
-        </td>
+        <Default colspan={2} value="Loan Amount Based on LTV" element="th" />
+        <Amount colspan={7} value={others?.loanAmountBasedOnLTV} />
       </tr>
       <tr>
-        <th colSpan={2}>Eligible Amount Based on Rent</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignores
-            <Amount value={others.eligibleAmountBasedOnRent} />
-          }
-        </td>
+        <Default
+          colspan={2}
+          value="Eligible Amount Based on Rent"
+          element="th"
+        />
+        <Amount colspan={7} value={others?.eligibleAmountBasedOnRent} />
       </tr>
 
       <tr>
-        <th colSpan={2}>Minimum of Loan Based on LTV and Rent</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.minimunLoanLTVRent} />
-          }
-        </td>
+        <Default
+          colspan={2}
+          value="Minimum of Loan Based on LTV and Rent"
+          element="th"
+        />
+        <Amount colspan={7} value={others?.minimunLoanLTVRent} />
       </tr>
       <tr>
-        <th colSpan={2}>Eligible EMI</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.eligibleEMI} />
-          }
-        </td>
+        <Default colspan={2} value="Eligible EMI" element="th" />
+        <Amount colspan={7} value={others?.eligibleEMI} />
       </tr>
 
       <tr>
-        <th colSpan={2}>Credit Score</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Default value={others.creditScore} />
-          }
-        </td>
+        <Default colspan={2} value="Credit Score" element="th" />
+        <Default colspan={7} value={others?.creditScore} />
       </tr>
       <tr>
-        <th colSpan={2}>Eligible Loan Amount</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.eligibleLoanAmount} />
-          }
-        </td>
+        <Default colspan={2} value="Eligible Loan Amount" element="th" />
+        <Amount colspan={7} value={others?.eligibleLoanAmount} />
       </tr>
     </>
   );

@@ -1,43 +1,37 @@
 import { Default } from "pages_los/pages/cam/components";
 export const PromoterDetails = ({ promoter }) => {
-  if (!Array.isArray(promoter) || promoter.length <= 0) {
-    return null;
-  }
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Promoter Details
-        </th>
+        <Default
+          colspan={9}
+          value="Promoter Details"
+          className="form-sub-heading"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
-        <th style={{ textAlign: "center" }}>Sr.No</th>
-        <th colSpan={2}>Salutation</th>
-        <th colSpan={2}>First Name</th>
-        <th colSpan={2}>Middle Name</th>
-        <th colSpan={2}>Last Name</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Salutation" element="th" />
+        <Default colspan={2} value="First Name" element="th" />
+        <Default colspan={2} value="Middle Name" element="th" />
+        <Default colspan={2} value="Last Name" element="th" />
       </tr>
-      {promoter.map((promoterData, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <td style={{ textAlign: "center" }}>{index}</td>
-              <td colSpan={2}>
-                {<Default value={promoterData?.salutation ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {<Default value={promoterData?.firstName ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {<Default value={promoterData?.middleName ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {<Default value={promoterData?.lastName ?? ""} />}
-              </td>
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(promoter) &&
+        promoter.map((promoterData, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default colspan={2} value={promoterData?.salutation} />
+                <Default colspan={2} value={promoterData?.firstName} />
+                <Default colspan={2} value={promoterData?.middleName} />
+                <Default colspan={2} value={promoterData?.lastName} />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };

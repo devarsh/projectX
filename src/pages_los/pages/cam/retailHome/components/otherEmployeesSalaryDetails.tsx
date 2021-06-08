@@ -1,51 +1,37 @@
 import { Amount, Default } from "pages_los/pages/cam/components";
 export const OtherEmployeesSalaryDetails = ({ salary }) => {
-  if (!Array.isArray(salary) || salary.length <= 0) {
-    return null;
-  }
-
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Salary Details
-        </th>
+        <Default
+          className="form-sub-heading"
+          colspan={9}
+          align="center"
+          element="th"
+          value="Salary Details"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th>Salary (Monthly)</th>
-        <th>Net Salary (Fixed) - 100%</th>
-        <th>Other Income (Monthly)</th>
-        <th>Total Income</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Salary (Monthly)" element="th" />
+        <Default colspan={2} value="Net Salary (Fixed) - 100%" element="th" />
+        <Default colspan={2} value="Other Income (Monthly)" element="th" />
+        <Default colspan={2} value="Total Income" element="th" />
       </tr>
-      {salary.map((salaryDetails) => {
-        return (
-          <>
-            <tr>
-              <th colSpan={2}></th>
-              <td>{<Default value={salaryDetails.salaryMonth} />}</td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.netSalary} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.otherIncome} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.totalIncome} />
-                }
-              </td>
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(salary) &&
+        salary.map((salaryDetails, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default colspan={2} value={salaryDetails?.salaryMonth} />
+                <Amount colspan={2} value={salaryDetails?.netSalary} />
+                <Amount colspan={2} value={salaryDetails?.otherIncome} />
+                <Amount colspan={2} value={salaryDetails?.totalIncome} />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };

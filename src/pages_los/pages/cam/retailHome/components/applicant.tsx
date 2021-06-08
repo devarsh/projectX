@@ -7,9 +7,14 @@ import {
   Percentage,
   Amount,
   Address,
+  Default,
 } from "pages_los/pages/cam/components";
 
-export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
+export const ApplicantDetails = ({
+  applicant = {},
+  others,
+  loanAmount,
+}: any) => {
   if (typeof applicant !== "object") {
     return null;
   }
@@ -17,23 +22,17 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
   return (
     <>
       <tr>
-        <th colSpan={2}>Loan Requested</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={loanAmount} />
-          }
-        </td>
+        <Default colspan={2} value="Loan Requested" element="th" />
+        <Amount colspan={7} value={loanAmount} />
       </tr>
       {others.foir !== null ? (
         <tr>
-          <th colSpan={2}>FOIR or Portion of Income Considered</th>
-          <td colSpan={7}>
-            {
-              //@ts-ignore
-              <Percentage value={others.foir} />
-            }
-          </td>
+          <Default
+            colspan={2}
+            value="FOIR or Portion of Income Considered"
+            element="th"
+          />
+          <Percentage colspan={7} value={others?.foir} />
         </tr>
       ) : (
         ""
@@ -45,23 +44,20 @@ export const ApplicantDetails = ({ applicant, others, loanAmount }) => {
         </th>
       </tr>
       <tr>
-        <th colSpan={2}>Name</th>
-        <td colSpan={7}>
-          {applicant.firstName} {applicant.lastName}
-        </td>
+        <Default colspan={2} value="Name" element="th" />
+        <Default
+          colspan={7}
+          value={`${applicant.salutation}${" "}${applicant?.firstName}
+                ${" "}${applicant?.middleName}${" "}${applicant?.lastName}`}
+        />
       </tr>
       <tr>
-        <th colSpan={2}>Date of Birth</th>
-        <td colSpan={7}>{<DateFormat value={applicant.dob} />}</td>
+        <Default colspan={2} value="Date of Birth" element="th" />
+        <DateFormat colspan={7} value={applicant?.dob} />
       </tr>
       <tr>
-        <th colSpan={2}>Age</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Age value={applicant.dob} />
-          }
-        </td>
+        <Default colspan={2} value="Age" element="th" />
+        <Age colspan={7} value={applicant?.dob} />
       </tr>
 
       <BankDetails bank={applicant.bankDetails} />

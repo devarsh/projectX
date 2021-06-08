@@ -6,57 +6,56 @@ import {
 } from "pages_los/pages/cam/components";
 
 export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
-  if (
-    !Array.isArray(natureOfFacilityPresent) ||
-    natureOfFacilityPresent.length <= 0
-  ) {
-    return null;
-  }
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Present
-        </th>
+        <Default
+          colspan={9}
+          value="Nature of Facility Present"
+          className="form-sub-heading"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
-        <th style={{ textAlign: "center" }}>Sr.No</th>
-        <th colSpan={2}>Nature of Facility</th>
-        <th colSpan={2}>Name of Bank</th>
-        <th colSpan={1}>Outstanding as on</th>
-        <th colSpan={1}>Outstanding Amount As On</th>
-        <th colSpan={2}>Rate of Interest</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={2} value="Nature of Facility" element="th" />
+        <Default colspan={2} value="Name of Bank" element="th" />
+        <Default colspan={1} value="Outstanding as on" element="th" />
+        <Default
+          colspan={2}
+          value="Outstanding Amount As On"
+          element="th"
+          align="right"
+        />
+        <Default
+          colspan={1}
+          value="Rate of Interest"
+          element="th"
+          align="right"
+        />
       </tr>
-      {natureOfFacilityPresent.map((presentDetails, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <td style={{ textAlign: "center" }}>{index + 1}</td>
-              <td colSpan={2}>
-                {<Default value={presentDetails?.facilityType ?? ""} />}
-              </td>
-              <td colSpan={2}>
-                {<Default value={presentDetails?.bankName ?? ""} />}
-              </td>
-              <td colSpan={1}>
-                {<DateFormat value={presentDetails?.outstandingOn ?? ""} />}
-              </td>
-              <td colSpan={1}>
-                {
-                  //@ts-ignore
-                  <Amount value={presentDetails?.outstandingBalance ?? ""} />
-                }
-              </td>
-              <td colSpan={2}>
-                {
-                  //@ts-ignore
-                  <Percentage value={presentDetails?.rateOfInterest ?? ""} />
-                }
-              </td>
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(natureOfFacilityPresent) &&
+        natureOfFacilityPresent.map((presentDetails, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default colspan={2} value={presentDetails?.facilityType} />
+                <Default colspan={2} value={presentDetails?.bankName} />
+                <DateFormat colspan={1} value={presentDetails?.outstandingOn} />
+                <Amount
+                  colspan={2}
+                  value={presentDetails?.outstandingBalance}
+                />
+                <Percentage
+                  colspan={1}
+                  value={presentDetails?.rateOfInterest}
+                />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };

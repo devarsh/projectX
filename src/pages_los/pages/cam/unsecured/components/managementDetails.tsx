@@ -8,134 +8,130 @@ import {
 } from "pages_los/pages/cam/components";
 
 export const ManagementDetails = ({ management }) => {
-  if (!Array.isArray(management) || management.length <= 0) {
-    return (
-      <tr>
-        <td>Invalid data</td>
-      </tr>
-    );
-  }
   return (
     <>
       <br />
-      <tr className="page-break">
-        <th></th>
-      </tr>
       <tr>
-        <th colSpan={9} className="form-heading">
-          Management Details
-        </th>
+        <Default
+          colspan={9}
+          value="Management Details"
+          className="form-heading"
+          element="th"
+          align="center"
+        />
       </tr>
-      {management.map((data: any, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <th colSpan={2}>Name of the Partner/Director</th>
-              <td colSpan={7}>
-                {data.salutation} {data?.firstName} {data?.middleName}{" "}
-                {data?.lastName}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Birth Date</th>
-              <td colSpan={7}>{<DateFormat value={data.dob ?? ""} />}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Age</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Age value={data.dob ?? ""} />
-                }
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>PAN No</th>
-              <td colSpan={7}>{<Default value={data?.panNumber ?? ""} />}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>DIN / LLPIN No</th>
-              <td colSpan={7}>{<Default value={data?.dinLlPinNo ?? ""} />}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>CIBIL Score</th>
-              <td colSpan={7}>{data?.creditScore ?? ""}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Educational Qualification</th>
-              <td colSpan={7}>
-                {<Default value={data?.educationQalification ?? ""} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Experience</th>
-              <td colSpan={7}>{<Default value={data?.experience ?? ""} />}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Associate Companies</th>
-              <td colSpan={7}>
-                {<Default value={data?.associatedCompany ?? ""} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Profit Sharing / Shareholding %</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Percentage value={data?.profitSharing ?? ""} />
-                }
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Networth</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={data?.netWorth ?? ""} />
-                }
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Resposnibilities Handled in the Comapany</th>
-              <td colSpan={7}>
-                {<Default value={data?.responsibility ?? ""} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Any Other Source of Income</th>
-              <td colSpan={7}>
-                {<Default value={data?.sourceIncomeOther ?? ""} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Average Banking Balance</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={data?.averageBankBal ?? ""} />
-                }
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Name of existing bankers</th>
-              <td colSpan={7}>
-                {<Default value={data?.existingBankersName ?? ""} />}
-              </td>
-            </tr>
-            <tr>
-              <th colSpan={2}>Moratorium taken or not</th>
-              <td colSpan={7}>
-                {<Default value={data?.maratoriumTaken ?? ""} />}
-              </td>
-            </tr>
+      {Array.isArray(management) &&
+        management.map((data: any, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default
+                  colspan={2}
+                  value="Name of the Partner/Director"
+                  element="th"
+                />
+                <Default
+                  colspan={7}
+                  value={`${data.salutation}${" "}${data?.firstName}
+                ${" "}${data?.middleName}${" "}${data?.lastName}`}
+                />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Birth Date" element="th" />
+                <DateFormat colspan={7} value={data?.dob} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Age" element="th" />
+                <Age colspan={7} value={data?.dob} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="PAN No" element="th" />
+                <Default colspan={7} value={data?.panNumber} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="DIN / LLPIN No" element="th" />
+                <Default colspan={7} value={data?.dinLlPinNo} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="CIBIL Score" element="th" />
+                <Default colspan={7} value={data?.creditScore} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Educational Qualification"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.educationQalification} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Experience" element="th" />
+                <Default colspan={7} value={data?.experience} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Associate Companies" element="th" />
+                <Default colspan={7} value={data?.associatedCompany} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Profit Sharing / Shareholding %"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.profitSharing} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Networth" element="th" />
+                <Default colspan={7} value={data?.netWorth} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Resposnibilities Handled in the Comapany"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.responsibility} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Any Other Source of Income"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.sourceIncomeOther} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Average Banking Balance"
+                  element="th"
+                />
+                <Amount colspan={7} value={data?.averageBankBal} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Name of existing bankers"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.existingBankersName} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Moratorium taken or not"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.maratoriumTaken} />
+              </tr>
 
-            <IncomeSummaryDetails income={data?.incomeDetails ?? ""} />
+              <IncomeSummaryDetails income={data?.incomeDetails ?? ""} />
 
-            <br />
-            <br />
-          </>
-        );
-      })}
+              <br />
+              <br />
+            </>
+          );
+        })}
     </>
   );
 };

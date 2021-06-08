@@ -2,9 +2,6 @@ import { NomineeDetails } from "./nomineeDetails";
 import { Percentage, Default } from "pages_los/pages/cam/components";
 
 export const PromoterDetails = ({ promoter }) => {
-  if (!Array.isArray(promoter) || promoter.length <= 0) {
-    return null;
-  }
   return (
     <>
       <tr>
@@ -25,28 +22,31 @@ export const PromoterDetails = ({ promoter }) => {
         <Default colspan={2} value="Nominee" element="th" />
         <Default colspan={1} value="Share%" element="th" />
       </tr>
-      {promoter.map((promoterData, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <Default colspan={1} value={index + 1} />
-              <Default
-                colspan={2}
-                value={`${promoterData?.salutation} ${promoterData?.firstName} 
+      {Array.isArray(promoter) &&
+        promoter.map((promoterData, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default
+                  colspan={2}
+                  value={`${promoterData?.salutation} ${promoterData?.firstName} 
                 ${promoterData?.middleName} ${promoterData?.lastName}`}
-              />
-              <Default colspan={1} value={promoterData?.experience} />
-              <Default colspan={1} value={promoterData?.score} />
-              <Default colspan={1} value={promoterData?.obligations} />
-              <Default
-                colspan={2}
-                value={<NomineeDetails nominee={promoterData.nomineeDetails} />}
-              />
-              <Percentage colspan={1} value={promoterData.sharePercentage} />
-            </tr>
-          </>
-        );
-      })}
+                />
+                <Default colspan={1} value={promoterData?.experience} />
+                <Default colspan={1} value={promoterData?.score} />
+                <Default colspan={1} value={promoterData?.obligations} />
+                <Default
+                  colspan={2}
+                  value={
+                    <NomineeDetails nominee={promoterData.nomineeDetails} />
+                  }
+                />
+                <Percentage colspan={1} value={promoterData.sharePercentage} />
+              </tr>
+            </>
+          );
+        })}
     </>
   );
 };
