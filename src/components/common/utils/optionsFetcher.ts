@@ -22,7 +22,9 @@ export const useOptionsFetcher = (
   whenToRunValidation,
   _optionsKey,
   disableCaching,
-  setIncomingMessage
+  setIncomingMessage,
+  skipDefaultOption,
+  defaultOptionLabel
 ): { loadingOptions: boolean } => {
   let loadingOptions = false;
   let queryKey: any[] = [];
@@ -57,9 +59,21 @@ export const useOptionsFetcher = (
   /*eslint-disable */
   useEffect(() => {
     if (options === undefined) {
-      setOptions([{ label: "No Data", value: null }]);
+      setOptions([{ label: "No Data", value: null, disabled: true }]);
       loadingOptions = false;
     } else if (Array.isArray(options)) {
+      if (!Boolean(skipDefaultOption)) {
+        options = [
+          {
+            label: Boolean(defaultOptionLabel)
+              ? defaultOptionLabel
+              : "Select Option",
+            value: "00",
+            disabled: true,
+          },
+          ...options,
+        ];
+      }
       setOptions(options);
       loadingOptions = false;
     } else if (typeof options === "object") {
@@ -70,21 +84,34 @@ export const useOptionsFetcher = (
           setIncomingMessage(others);
         }
       } else {
-        setOptions([{ label: "Invalid Data", value: null }]);
+        setOptions([{ label: "Invalid Data", value: null, disabled: true }]);
       }
       loadingOptions = false;
     } else if (queryOptions.isLoading) {
-      setOptions([{ label: "loading...", value: null }]);
+      setOptions([{ label: "loading...", value: null, disabled: true }]);
       loadingOptions = true;
     } else if (queryOptions.isError) {
-      setOptions([{ label: "Couldn't fetch", value: null }]);
+      setOptions([{ label: "Couldn't fetch", value: null, disabled: true }]);
       console.log(
         `error occured while fetching data for ${_optionsKey}`,
         queryOptions.error
       );
       loadingOptions = false;
     } else if (Array.isArray(queryOptions.data)) {
-      setOptions(queryOptions.data);
+      let newOptions = queryOptions.data;
+      if (!Boolean(skipDefaultOption)) {
+        newOptions = [
+          {
+            label: Boolean(defaultOptionLabel)
+              ? defaultOptionLabel
+              : "Select Option",
+            value: "00",
+            disabled: true,
+          },
+          ...newOptions,
+        ];
+      }
+      setOptions(newOptions);
       loadingOptions = false;
     } else if (typeof queryOptions.data === "object") {
       const { options: _options, ...others } = queryOptions.data;
@@ -94,11 +121,11 @@ export const useOptionsFetcher = (
           setIncomingMessage(others);
         }
       } else {
-        setOptions([{ label: "Invalid Data", value: null }]);
+        setOptions([{ label: "Invalid Data", value: null, disabled: true }]);
       }
       loadingOptions = false;
     } else {
-      setOptions([{ label: "Couldn't fetch", value: null }]);
+      setOptions([{ label: "Couldn't fetch", value: null, disabled: true }]);
       console.log(
         `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
       );
@@ -134,7 +161,9 @@ export const useOptionsFetcherSimple = (
   setOptions,
   _optionsKey,
   disableCaching,
-  optionsProps
+  optionsProps,
+  skipDefaultOption,
+  defaultOptionLabel
 ) => {
   let loadingOptions = false;
 
@@ -150,16 +179,28 @@ export const useOptionsFetcherSimple = (
   loadingOptions = queryOptions.isLoading;
   useEffect(() => {
     if (options === undefined) {
-      setOptions([{ label: "No Data", value: null }]);
+      setOptions([{ label: "No Data", value: null, disabled: true }]);
       loadingOptions = false;
     } else if (Array.isArray(options)) {
+      if (!Boolean(skipDefaultOption)) {
+        options = [
+          {
+            label: Boolean(defaultOptionLabel)
+              ? defaultOptionLabel
+              : "Select Option",
+            value: "00",
+            disabled: true,
+          },
+          ...options,
+        ];
+      }
       setOptions(options);
       loadingOptions = false;
     } else if (queryOptions.isLoading) {
-      setOptions([{ label: "loading...", value: null }]);
+      setOptions([{ label: "loading...", value: null, disabled: true }]);
       loadingOptions = true;
     } else if (queryOptions.isError) {
-      setOptions([{ label: "Couldn't fetch", value: null }]);
+      setOptions([{ label: "Couldn't fetch", value: null, disabled: true }]);
       console.log(
         `error occured while fetching data for ${_optionsKey}`,
         queryOptions.error
@@ -167,9 +208,22 @@ export const useOptionsFetcherSimple = (
       loadingOptions = false;
     } else {
       if (Array.isArray(queryOptions.data)) {
+        let newOptions = queryOptions.data;
+        if (!Boolean(skipDefaultOption)) {
+          newOptions = [
+            {
+              label: Boolean(defaultOptionLabel)
+                ? defaultOptionLabel
+                : "Select Option",
+              value: "00",
+              disabled: true,
+            },
+            ...newOptions,
+          ];
+        }
         setOptions(queryOptions.data);
       } else {
-        setOptions([{ label: "Couldn't fetch", value: null }]);
+        setOptions([{ label: "Couldn't fetch", value: null, disabled: true }]);
         console.log(
           `expected optionsFunction:${_optionsKey} in select component to return array of OptionsType but got: ${queryOptions.data}`
         );

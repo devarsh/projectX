@@ -247,7 +247,10 @@ const MiscAPI = () => {
           value: dtl?.name,
           label: dtl?.name,
         }));
-        areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
+        areaArray = [
+          { label: "Select option", value: "00", disabled: true },
+          ...areaArray,
+        ];
         const otherValues = result.reduce((accumlator, current) => {
           const val = {
             city: current?.circle,
@@ -261,7 +264,9 @@ const MiscAPI = () => {
         return { options: areaArray, others: otherValues };
       } else {
         return {
-          options: [{ label: "Error fetching pincode", value: "0" }],
+          options: [
+            { label: "Error fetching pincode", value: "00", disabled: true },
+          ],
           others: null,
         };
       }
@@ -308,7 +313,10 @@ const MiscAPI = () => {
               value: dtl?.Name,
               label: dtl?.Name,
             }));
-            areaArray = [{ label: "Select option", value: "00" }, ...areaArray];
+            areaArray = [
+              { label: "Select option", value: "00", disabled: true },
+              ...areaArray,
+            ];
             const otherValues = result.PostOffice.reduce(
               (accumlator, current) => {
                 const val = {
@@ -326,12 +334,16 @@ const MiscAPI = () => {
           }
         }
         return {
-          options: [{ label: "Error fetching pincode", value: "0" }],
+          options: [
+            { label: "Error fetching pincode", value: "00", disabled: true },
+          ],
           others: null,
         };
       } catch (e) {
         return {
-          options: [{ label: "Error fetching pincode", value: "0" }],
+          options: [
+            { label: "Error fetching pincode", value: "00", disabled: true },
+          ],
           others: null,
         };
       }

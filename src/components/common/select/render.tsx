@@ -33,6 +33,8 @@ interface MySelectExtendedProps {
   disableCaching?: boolean;
   optionsProps?: any;
   selectVariant?: "default" | "andornment" | "regular";
+  skipDefaultOption?: boolean;
+  defaultOptionLabel?: string;
 }
 type MySelectProps = Merge<TextFieldProps, MySelectExtendedProps>;
 
@@ -56,6 +58,8 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
   disableCaching,
   optionsProps,
   selectVariant = "default",
+  skipDefaultOption,
+  defaultOptionLabel,
   ...others
 }) => {
   let TextFieldToRender: any;
@@ -75,7 +79,9 @@ export const SelectRenderOnly: FC<MySelectProps> = ({
     setOptions,
     _optionsKey,
     disableCaching,
-    optionsProps
+    optionsProps,
+    skipDefaultOption,
+    defaultOptionLabel
   );
   const getLabelFromValuesForOptions = useCallback(
     (values) => getLabelFromValues(_options)(values),

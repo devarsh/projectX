@@ -126,7 +126,9 @@ const MyCheckboxGroup: FC<MySwitchGroupAllProps> = ({
     whenToRunValidation,
     _optionsKey,
     disableCaching,
-    setIncomingMessage
+    setIncomingMessage,
+    true,
+    ""
   );
 
   if (excluded) {

@@ -19,6 +19,8 @@ interface extendedFieldProps extends UseFieldHookProps {
   disableCaching?: boolean;
   multiple?: boolean;
   showCheckbox?: boolean;
+  skipDefaultOption?: boolean;
+  defaultOptionLabel?: string;
 }
 type MySelectProps = Merge<TextFieldProps, extendedFieldProps>;
 
@@ -57,6 +59,8 @@ const MySelect: FC<MySelectAllProps> = ({
   runValidationOnDependentFieldsChange,
   _optionsKey,
   disableCaching,
+  skipDefaultOption,
+  defaultOptionLabel,
   ...others
 }) => {
   const {
@@ -124,7 +128,9 @@ const MySelect: FC<MySelectAllProps> = ({
     whenToRunValidation,
     _optionsKey,
     disableCaching,
-    setIncomingMessage
+    setIncomingMessage,
+    skipDefaultOption,
+    defaultOptionLabel
   );
 
   //dont move it to top it can mess up with hooks calling mechanism, if there is another

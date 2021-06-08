@@ -98,7 +98,9 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
     setOptions,
     _optionsKey,
     disableCaching,
-    optionsProps
+    optionsProps,
+    true,
+    ""
   );
 
   //to set the default value
