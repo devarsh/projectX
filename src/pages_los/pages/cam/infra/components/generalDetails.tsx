@@ -113,16 +113,5 @@ export const GeneralDetails = ({
       </>
     );
   }
-  return (
-    <>
-      <tr>
-        <th className="form-heading" colSpan={9}>
-          General Details
-        </th>
-      </tr>
-      <tr>
-        <th>No Data Found</th>
-      </tr>
-    </>
-  );
+  return null;
 };

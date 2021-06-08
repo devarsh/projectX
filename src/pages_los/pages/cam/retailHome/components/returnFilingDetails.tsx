@@ -7,50 +7,34 @@ export const ReturnFilingDetails = ({ returnFiling }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Return Filing Details
-        </th>
+        <Default
+          className="form-sub-heading"
+          colspan={9}
+          align="center"
+          element="th"
+          value="Return Filing Details"
+        />
       </tr>
       <tr>
-        <th colSpan={2}></th>
-        <th>Depreciation</th>
-        <th>Filing Date</th>
-        <th>Filing Year</th>
-        <th>Net Profit</th>
-        <th>Other Income</th>
-        <th>Total Income</th>
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={1} value="Depreciation" element="th" align="right" />
+        <Default colspan={1} value="Filing Date" element="th" />
+        <Default colspan={1} value="Filing Year" element="th" />
+        <Default colspan={1} value="Net Profit" element="th" />
+        <Default colspan={2} value="Other Income" element="th" align="right" />
+        <Default colspan={2} value="Total Income" element="th" align="right" />
       </tr>
-      {returnFiling.map((returnFilingDetails) => {
+      {returnFiling.map((returnFilingDetails, index) => {
         return (
           <>
-            <tr>
-              <td colSpan={2}></td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.depreciation} />
-                }
-              </td>
-              <td>{<DateFormat value={returnFilingDetails.filingDate} />}</td>
-              <td>{<Default value={returnFilingDetails.filingYear} />}</td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.netProfit} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.otherIncome} />
-                }
-              </td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={returnFilingDetails.totalIncome} />
-                }
-              </td>
+            <tr key={index}>
+              <Default colspan={1} value={index + 1} />
+              <Amount colspan={1} value={returnFilingDetails?.depreciation} />
+              <DateFormat colspan={1} value={returnFilingDetails?.filingDate} />
+              <Default colspan={1} value={returnFilingDetails.filingYear} />
+              <Amount colspan={1} value={returnFilingDetails?.netProfit} />
+              <Amount colspan={2} value={returnFilingDetails?.otherIncome} />
+              <Amount colspan={2} value={returnFilingDetails?.totalIncome} />
             </tr>
           </>
         );

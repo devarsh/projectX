@@ -18,20 +18,11 @@ export const CollateralDetails = ({ collateral }) => {
 };
 
 const CollateralSecurity = ({ collateral }) => {
-  if (!Array.isArray(collateral) || collateral.length <= 0) {
-    return (
-      <>
-        <tr>
-          <Default colspan={9} align="center" value="Not Available" />
-        </tr>
-      </>
-    );
-  }
   return (
     <>
       <tr>
         <Default colspan={2} value="Address of the Property" element="th" />
-        <Default colspan={2} value="Area of the Property" element="th" />
+        <Default colspan={3} value="Area of the Property" element="th" />
         <Default colspan={2} value="Owner" element="th" />
         <Default colspan={2} value="Market Value (Rs. In Crore)" element="th" />
       </tr>
@@ -42,7 +33,7 @@ const CollateralSecurity = ({ collateral }) => {
             <tr>
               <Default colspan={2} value={collateralData?.propertyAddress} />
               <Amount
-                colspan={2}
+                colspan={3}
                 skipSymbol={true}
                 value={collateralData?.propertyArea}
               />
@@ -54,7 +45,7 @@ const CollateralSecurity = ({ collateral }) => {
       })}
       <tr>
         <Default
-          colspan={7}
+          colspan={8}
           align="end"
           value="Collateral Coverage"
           element="th"
@@ -62,11 +53,11 @@ const CollateralSecurity = ({ collateral }) => {
         <Percentage colspan={1} value={collateral[0]?.collateralCoverage} />
       </tr>
       <tr>
-        <Default colspan={7} align="end" value="FACR" element="th" />
+        <Default colspan={8} align="end" value="FACR" element="th" />
         <Percentage colspan={1} value={collateral[0]?.facr} />
       </tr>
       <tr>
-        <Default colspan={7} align="end" value="ACR" element="th" />
+        <Default colspan={8} align="end" value="ACR" element="th" />
         <Percentage colspan={1} value={collateral[0]?.acr} />
       </tr>
     </>

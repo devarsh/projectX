@@ -49,6 +49,21 @@ table tr td:first-child {
   color: #26a456 !important;
 }
 
+.largeLabel {
+  font-size: 12px !important;
+}
+.smallFont {
+  font-size: 10px !important;
+}
+
+.skipLeftBorder {
+  border-left: 0px !important;
+}
+
+.skipRightBorder {
+  border-right: 0px !important;
+}
+
 .content-text {
   word-break: break-all;
   display: block !important;

@@ -8,87 +8,60 @@ export const SalaryDetails = ({ salary }) => {
   return (
     <>
       <tr>
-        <th colSpan={9} className="form-sub-heading">
-          Salary Details
-        </th>
+        <Default
+          className="form-sub-heading"
+          colspan={9}
+          align="center"
+          element="th"
+          value="Salary Details"
+        />
       </tr>
       {salary.map((salaryDetails) => {
         return (
           <>
             <tr>
-              <th colSpan={2}>Salary (Monthly)</th>
-              <td colSpan={7}>
-                {<DateFormat value={salaryDetails.salaryMonth} />}
-              </td>
+              <Default colspan={2} value="Salary (Monthly)" element="th" />
+              <DateFormat colspan={7} value={salaryDetails?.salaryMonth} />
             </tr>
             <tr>
-              <th colSpan={2}>Net Salary (Fixed) - 100%</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.netSalary} />
-                }
-              </td>
+              <Default
+                colspan={2}
+                value="Net Salary (Fixed) - 100%"
+                element="th"
+              />
+              <Amount colspan={7} value={salaryDetails?.netSalary} />
             </tr>
             <tr>
-              <th colSpan={2}>Variable Pay - 50%</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.variablePay} />
-                }
-              </td>
+              <Default colspan={2} value="Variable Pay - 50%" element="th" />
+              <Amount colspan={7} value={salaryDetails?.variablePay} />
             </tr>
             <tr>
-              <th colSpan={2}>Bonus - 50% Of CY</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.bonus} />
-                }
-              </td>
+              <Default colspan={2} value="Bonus - 50% Of CY" element="th" />
+              <Amount colspan={7} value={salaryDetails?.bonus} />
             </tr>
             <tr>
-              <th colSpan={2}>Incentive</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.incentive} />
-                }
-              </td>
+              <Default colspan={2} value="Incentive" element="th" />
+              <Amount colspan={7} value={salaryDetails?.incentive} />
             </tr>
             <tr>
-              <th colSpan={2}>Agriculture Income - 20%</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.agricultureIncome} />
-                }
-              </td>
+              <Default
+                colspan={2}
+                value="Agriculture Income - 20%"
+                element="th"
+              />
+              <Amount colspan={7} value={salaryDetails?.agricultureIncome} />
             </tr>
             <tr>
-              <th colSpan={2}>Other Allowances</th>
-              <td colSpan={7}>
-                {<Default value={salaryDetails.otherAllowances} />}
-              </td>
+              <Default colspan={2} value="Other Allowances" element="th" />
+              <Default colspan={7} value={salaryDetails?.otherAllowances} />
             </tr>
             <tr>
-              <th colSpan={2}>Other Income</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.otherIncome} />
-                }
-              </td>
+              <Default colspan={2} value="Other Income" element="th" />
+              <Amount colspan={7} value={salaryDetails?.otherIncome} />
             </tr>
             <tr>
-              <th colSpan={2}>Total Income</th>
-              <td colSpan={7}>
-                {
-                  //@ts-ignore
-                  <Amount value={salaryDetails.totalIncome} />
-                }
-              </td>
+              <Default colspan={2} value="Total Income" element="th" />
+              <Amount colspan={7} value={salaryDetails?.totalIncome} />
             </tr>
           </>
         );

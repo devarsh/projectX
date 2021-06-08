@@ -1,72 +1,64 @@
-import { Amount, Percentage } from "pages_los/pages/cam/components";
-export const printTDSForAmount = ({ obj, key }: any) => {
-  return [
-    <td colSpan={2}>
-      {
-        //@ts-ignore
-        <Amount value={obj[0]?.[key]} />
-      }
-    </td>,
-    <td colSpan={2}>
-      {
-        //@ts-ignore
-        <Amount value={obj[1]?.[key]} />
-      }
-    </td>,
-    <td colSpan={2}>
-      {
-        //@ts-ignore
-        <Amount value={obj[2]?.[key]} />
-      }
-    </td>,
-  ];
-};
+import { Amount, Percentage, Default } from "pages_los/pages/cam/components";
+import { Fragment } from "react";
+export const printTDSForAmount = ({ obj, key }: any) => (
+  <Fragment key={key}>
+    <Amount
+      key={0}
+      colspan={2}
+      value={obj[0]?.[key]}
+      align="right"
+      skipSymbol={true}
+    />
+    <Amount
+      key={1}
+      colspan={2}
+      value={obj[1]?.[key]}
+      align="right"
+      skipSymbol={true}
+    />
+    <Amount
+      key={2}
+      colspan={2}
+      value={obj[2]?.[key]}
+      align="right"
+      skipSymbol={true}
+    />
+    <Amount
+      key={3}
+      colspan={1}
+      value={obj[3]?.[key]}
+      align="right"
+      skipSymbol={true}
+    />
+    <Amount
+      key={4}
+      colspan={1}
+      value={obj[4]?.[key]}
+      align="right"
+      skipSymbol={true}
+    />
+  </Fragment>
+);
 
-export const printTDSForPercentage = ({ obj, key }: any) => {
-  return [
-    <td colSpan={2}>
-      {
-        //@ts-ignore
-        <Percentage value={obj[0]?.[key]} />
-      }
-    </td>,
-    <td colSpan={2}>
-      {
-        //@ts-ignore
-        <Percentage value={obj[1]?.[key]} />
-      }
-    </td>,
-    <td colSpan={2}>
-      {
-        //@ts-ignore
-        <Percentage value={obj[2]?.[key]} />
-      }
-    </td>,
-  ];
-};
+export const printTDSForPercentage = ({ obj, key }: any) => (
+  <Fragment key={key}>
+    <Percentage colspan={2} value={obj[0]?.[key]} align="right" key={0} />
+    <Percentage colspan={2} value={obj[1]?.[key]} align="right" key={1} />
+    <Percentage colspan={2} value={obj[2]?.[key]} align="right" key={2} />
+    <Percentage colspan={1} value={obj[3]?.[key]} align="right" key={3} />
+    <Percentage colspan={1} value={obj[4]?.[key]} align="right" key={4} />
+  </Fragment>
+);
 
-export const printTDS = ({ obj, key }) => {
-  return [
-    <td colSpan={2}>{obj[0]?.[key]}</td>,
-    <td colSpan={2}>{obj[1]?.[key]}</td>,
-    <td colSpan={2}>{obj[2]?.[key]}</td>,
-  ];
-};
-
-export const dateFormatter = ({ val }) => {
-  let date = new Date(val);
-  //@ts-ignore
-  if (isNaN(date)) {
-    return "Invalid Date";
-  } else {
-    let formatter = new Intl.DateTimeFormat("en-IN", {
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-    });
-    return formatter.format(date);
-  }
-};
+export const printTDS = ({ obj, key }) => (
+  <Fragment key={key}>
+    <Default colspan={2} value={obj[0]?.[key]} align="right" key={0} />
+    <Default colspan={2} value={obj[1]?.[key]} align="right" key={1} />
+    <Default colspan={2} value={obj[2]?.[key]} align="right" key={2} />
+    <Default colspan={1} value={obj[3]?.[key]} align="right" key={3} />
+    <Default colspan={1} value={obj[4]?.[key]} align="right" key={4} />
+  </Fragment>
+);
 
 export const convertIntoCurrency = ({ amount }) => {
   let formatter = new Intl.NumberFormat("en-IN", {
@@ -84,3 +76,19 @@ export const convertIntoCurrency = ({ amount }) => {
 export const convertIntoPrcentage = ({ amount }) => {
   return `${amount}%`;
 };
+
+export const DefaultTDS = ({ obj, key }: any) => (
+  <Fragment>
+    <Default colspan={2} value={obj[0]?.[key]} align="right" key={0} />
+    <Default colspan={2} value={obj[1]?.[key]} align="right" key={1} />
+    <Default colspan={3} value={obj[2]?.[key]} align="right" key={2} />
+  </Fragment>
+);
+
+export const AmountTDS = ({ obj, key }: any) => (
+  <Fragment>
+    <Amount colspan={2} value={obj[0]?.[key]} align="right" key={0} />
+    <Amount colspan={2} value={obj[1]?.[key]} align="right" key={1} />
+    <Amount colspan={3} value={obj[2]?.[key]} align="right" key={2} />
+  </Fragment>
+);

@@ -1,10 +1,6 @@
 import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 
 export const ProjectDetails = ({ projectCompletion }) => {
-  if (!Array.isArray(projectCompletion) || projectCompletion.length <= 0) {
-    return null;
-  }
-
   const completedProject = projectCompletion.filter(
     (one) => one.projectType === "Completed"
   );
@@ -30,9 +26,6 @@ export const ProjectDetailsRenderer = ({
   projectDetails,
   completed = false,
 }: any) => {
-  if (!Array.isArray(projectDetails) || projectDetails.length <= 0) {
-    return null;
-  }
   return (
     <>
       <tr>
@@ -62,25 +55,26 @@ export const ProjectDetailsRenderer = ({
         <Default colspan={1} value="Completion Date" element="th" />
         <Default colspan={1} value="Name of the Group" element="th" />
       </tr>
-      {projectDetails.map((projectDetail) => {
-        return (
-          <tr>
-            <Default colspan={1} value={projectDetail?.projectName} />
-            <Default colspan={1} value={projectDetail?.companyName} />
-            <Default colspan={1} value={projectDetail?.projectType} />
-            <Default colspan={1} value={projectDetail?.totalUnits} />
-            <Default colspan={1} value={projectDetail?.location} />
-            <Amount
-              colspan={1}
-              skipSymbol={true}
-              value={projectDetail?.totalBuildUpArea}
-            />
-            <DateFormat colspan={1} value={projectDetail?.startDate} />
-            <DateFormat colspan={1} value={projectDetail?.completionDate} />
-            <DateFormat colspan={1} value={projectDetail?.groupName} />
-          </tr>
-        );
-      })}
+      {Array.isArray(projectDetails) &&
+        projectDetails.map((projectDetail) => {
+          return (
+            <tr>
+              <Default colspan={1} value={projectDetail?.projectName} />
+              <Default colspan={1} value={projectDetail?.companyName} />
+              <Default colspan={1} value={projectDetail?.projectType} />
+              <Default colspan={1} value={projectDetail?.totalUnits} />
+              <Default colspan={1} value={projectDetail?.location} />
+              <Amount
+                colspan={1}
+                skipSymbol={true}
+                value={projectDetail?.totalBuildUpArea}
+              />
+              <DateFormat colspan={1} value={projectDetail?.startDate} />
+              <DateFormat colspan={1} value={projectDetail?.completionDate} />
+              <DateFormat colspan={1} value={projectDetail?.groupName} />
+            </tr>
+          );
+        })}
     </>
   );
 };

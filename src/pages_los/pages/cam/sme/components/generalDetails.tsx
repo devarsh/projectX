@@ -8,7 +8,11 @@ import {
   Address,
 } from "pages_los/pages/cam/components";
 
-export const GeneralDetails = ({ general, promoter, address }) => {
+export const GeneralDetails = ({
+  general = {},
+  promoter = [],
+  address = [],
+}: any) => {
   if (typeof general === "object") {
     return (
       <>
@@ -95,7 +99,7 @@ export const GeneralDetails = ({ general, promoter, address }) => {
             value="Turnover in current financial year"
             element="th"
           />
-          <Amount colspan={7} value={general?.turnOverAmount} />
+          <Amount colspan={7} value={general?.turnOverAmount} align="left" />
         </tr>
         <tr>
           <Default
@@ -103,7 +107,7 @@ export const GeneralDetails = ({ general, promoter, address }) => {
             value="Last 12 Months average Bank Balance"
             element="th"
           />
-          <Amount colspan={7} value={general?.averageBankBal} />
+          <Amount colspan={7} value={general?.averageBankBal} align="left" />
         </tr>
         <tr>
           <Default
@@ -111,7 +115,7 @@ export const GeneralDetails = ({ general, promoter, address }) => {
             value="Average Utilisation of Working Capital Limits"
             element="th"
           />
-          <Amount colspan={7} value={general?.limitBal} />
+          <Amount colspan={7} value={general?.limitBal} align="left" />
         </tr>
         <tr>
           <Default
@@ -145,20 +149,5 @@ export const GeneralDetails = ({ general, promoter, address }) => {
       </>
     );
   }
-  return (
-    <>
-      <tr>
-        <Default
-          colspan={9}
-          className="form-heading"
-          value=" General Details"
-          align="center"
-          element="th"
-        />
-      </tr>
-      <tr>
-        <Default colspan={9} value="Not Available" align="center" />
-      </tr>
-    </>
-  );
+  return null;
 };

@@ -1,5 +1,5 @@
 import { Default } from "pages_los/pages/cam/components";
-export const BusinessDetails = ({ business }) => {
+export const BusinessDetails = ({ business = {} }: any) => {
   if (typeof business === "object") {
     return (
       <>
@@ -119,20 +119,5 @@ export const BusinessDetails = ({ business }) => {
       </>
     );
   }
-  return (
-    <>
-      <tr>
-        <Default
-          colspan={9}
-          className="form-heading"
-          value="Business Details"
-          align="center"
-          element="th"
-        />
-      </tr>
-      <tr>
-        <Default colspan={9} value="Not Available" align="center" />
-      </tr>
-    </>
-  );
+  return null;
 };

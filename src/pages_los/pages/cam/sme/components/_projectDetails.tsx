@@ -1,24 +1,5 @@
 import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 export const ProjectDetails = ({ project }) => {
-  if (!Array.isArray(project) || project.length <= 0) {
-    return (
-      <>
-        <tr>
-          <Default
-            colspan={9}
-            className="form-heading"
-            align="center"
-            value="Project Details"
-            element="th"
-          />
-        </tr>
-        <tr>
-          <Default colspan={9} value="Not Available" />
-        </tr>
-      </>
-    );
-  }
-
   return (
     <>
       <tr>
@@ -34,9 +15,6 @@ export const ProjectDetails = ({ project }) => {
         return (
           <>
             <br />
-            <ProjectParticulaDetails
-              projectParticular={projectsData?.projectParticularDetails}
-            />
             <tr>
               <Default
                 colspan={2}
@@ -139,10 +117,12 @@ export const ProjectDetails = ({ project }) => {
               <Amount colspan={7} value={projectsData?.projectTurnover} />
             </tr>
             <tr>
-              <Default colspan={2} value="Projected rofit" element="th" />
+              <Default colspan={2} value="Projected Profit" element="th" />
               <Amount colspan={7} value={projectsData?.projectProfit} />
             </tr>
-
+            <ProjectParticulaDetails
+              projectParticular={projectsData?.projectParticularDetails}
+            />
             <Machieneries machieneries={projectsData.machieneries} />
             <ManufacturedProduct
               manufacturedProduct={projectsData.manufacturedProduct}
@@ -162,25 +142,6 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
   const meansOfFinance = projectParticular.filter(
     (one) => one.particularType === "Total Means of Finance"
   );
-
-  if (!Array.isArray(costOfProject) || costOfProject.length <= 0) {
-    return (
-      <>
-        <tr>
-          <Default
-            colspan={9}
-            className="form-sub-heading"
-            value="Total Cost of Project"
-            element="th"
-            align="center"
-          />
-        </tr>
-        <tr>
-          <Default colspan={9} value="Not Available" align="center" />
-        </tr>
-      </>
-    );
-  }
   return (
     <>
       <tr>
@@ -209,21 +170,25 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
         />
       </tr>
 
-      {costOfProject.map((projectParticularData, index) => {
-        return (
-          <>
-            <tr key={index}>
-              <Default colspan={1} value={index + 1} />
-              <Default colspan={2} value={projectParticularData?.particulars} />
-              <Amount colspan={3} value={projectParticularData?.amount} />
-              <Amount
-                colspan={3}
-                value={projectParticularData?.incurredAmount}
-              />
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(costOfProject) &&
+        costOfProject.map((projectParticularData, index) => {
+          return (
+            <>
+              <tr key={index}>
+                <Default colspan={1} value={index + 1} />
+                <Default
+                  colspan={2}
+                  value={projectParticularData?.particulars}
+                />
+                <Amount colspan={3} value={projectParticularData?.amount} />
+                <Amount
+                  colspan={3}
+                  value={projectParticularData?.incurredAmount}
+                />
+              </tr>
+            </>
+          );
+        })}
       <MeansOfFinance meandOfFinanceDetails={meansOfFinance} />
       <br />
     </>
@@ -231,27 +196,6 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
 };
 
 export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
-  if (
-    !Array.isArray(meandOfFinanceDetails) ||
-    meandOfFinanceDetails.length <= 0
-  ) {
-    return (
-      <>
-        <tr>
-          <Default
-            colSpan={9}
-            className="form-sub-heading"
-            value="Total Means of Finance"
-            align="center"
-            element="th"
-          />
-        </tr>
-        <tr>
-          <Default colSpan={9} value="Not Available" align="center" />
-        </tr>
-      </>
-    );
-  }
   return (
     <>
       <tr>
@@ -279,39 +223,22 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
           align="right"
         />
       </tr>
-      {meandOfFinanceDetails.map((meansOfFinanceData, index) => {
-        return (
-          <tr>
-            <Default colspan={1} value={index + 1} />
-            <Default colspan={2} value={meansOfFinanceData?.particulars} />
-            <Amount colspan={3} value={meansOfFinanceData?.amount} />
-            <Amount colspan={3} value={meansOfFinanceData?.incurredAmount} />
-          </tr>
-        );
-      })}
+      {Array.isArray(meandOfFinanceDetails) &&
+        meandOfFinanceDetails.map((meansOfFinanceData, index) => {
+          return (
+            <tr>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={2} value={meansOfFinanceData?.particulars} />
+              <Amount colspan={3} value={meansOfFinanceData?.amount} />
+              <Amount colspan={3} value={meansOfFinanceData?.incurredAmount} />
+            </tr>
+          );
+        })}
     </>
   );
 };
 
 export const Machieneries = ({ machieneries }) => {
-  if (!Array.isArray(machieneries) || machieneries.length <= 0) {
-    return (
-      <>
-        <tr>
-          <Default
-            colspan={9}
-            className="form-sub-heading"
-            align="center"
-            value="List of Machieneries"
-            element="th"
-          />
-        </tr>
-        <tr>
-          <Default colspan={9} align="center" value="Not Available" />
-        </tr>
-      </>
-    );
-  }
   return (
     <>
       <tr>
@@ -324,8 +251,8 @@ export const Machieneries = ({ machieneries }) => {
         />
       </tr>
       <tr>
-        <Default colspan={2} value="Sr.No" element="th" />
-        <Default colspan={2} value="Machinery Name" element="th" />
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={3} value="Machinery Name" element="th" />
         <Default colspan={2} value="Supplier Name" element="th" />
         <Default
           colspan={3}
@@ -334,43 +261,26 @@ export const Machieneries = ({ machieneries }) => {
           align="right"
         />
       </tr>
-      {machieneries.map((machieneriesDetails, index) => {
-        return (
-          <tr key={index}>
-            <Default colspan={2} value={index + 1} />
-            <Default colspan={2} value={machieneriesDetails?.machineryName} />
-            <Default colspan={2} value={machieneriesDetails?.supplierName} />
-            <Amount
-              skipSymbol={true}
-              colspan={3}
-              value={machieneriesDetails?.applicationArea}
-            />
-          </tr>
-        );
-      })}
+      {Array.isArray(machieneries) &&
+        machieneries.map((machieneriesDetails, index) => {
+          return (
+            <tr key={index}>
+              <Default colspan={1} value={index + 1} />
+              <Default colspan={3} value={machieneriesDetails?.machineryName} />
+              <Default colspan={2} value={machieneriesDetails?.supplierName} />
+              <Amount
+                skipSymbol={true}
+                colspan={3}
+                value={machieneriesDetails?.applicationArea}
+              />
+            </tr>
+          );
+        })}
     </>
   );
 };
 
 export const ManufacturedProduct = ({ manufacturedProduct }) => {
-  if (!Array.isArray(manufacturedProduct) || manufacturedProduct.length <= 0) {
-    return (
-      <>
-        <tr>
-          <Default
-            colspan={9}
-            className="form-sub-heading"
-            align="center"
-            value="Products to be Manufactured"
-            element="th"
-          />
-        </tr>
-        <tr>
-          <Default colspan={9} align="center" value="Not Available" />
-        </tr>
-      </>
-    );
-  }
   return (
     <>
       <tr>
@@ -383,21 +293,22 @@ export const ManufacturedProduct = ({ manufacturedProduct }) => {
         />
       </tr>
       <tr>
-        <Default colspan={2} value="Sr.No" element="th" />
-        <Default colspan={7} value="Machinery Name" element="th" />
+        <Default colspan={1} value="Sr.No" element="th" />
+        <Default colspan={8} value="Machinery Name" element="th" />
       </tr>
-      {manufacturedProduct.map((manufacturedProducts, index) => {
-        return (
-          <tr>
-            <Default colspan={2} value={index + 1} />
-            <Default
-              colspan={7}
-              align="center"
-              value={manufacturedProducts?.productName}
-            />
-          </tr>
-        );
-      })}
+      {Array.isArray(manufacturedProduct) &&
+        manufacturedProduct.map((manufacturedProducts, index) => {
+          return (
+            <tr>
+              <Default colspan={1} value={index + 1} />
+              <Default
+                colspan={8}
+                align="center"
+                value={manufacturedProducts?.productName}
+              />
+            </tr>
+          );
+        })}
     </>
   );
 };

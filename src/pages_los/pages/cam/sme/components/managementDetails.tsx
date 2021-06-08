@@ -47,10 +47,11 @@ export const ManagementDetails = ({ management }) => {
                 value="Name of the Partner/Director"
                 element="th"
               />
-              <td colSpan={7}>
-                {data?.salutation ?? ""} {data?.firstName ?? ""}{" "}
-                {data?.middleName ?? ""} {data?.lastName ?? ""}
-              </td>
+              <Default
+                colspan={7}
+                value={`${data.salutation}${" "}${data?.firstName}
+                ${" "}${data?.middleName}${" "}${data?.lastName}`}
+              />
             </tr>
             <tr>
               <Default colspan={2} value="Birth Date" element="th" />
@@ -98,7 +99,7 @@ export const ManagementDetails = ({ management }) => {
             </tr>
             <tr>
               <Default colspan={2} value="Networth" element="th" />
-              <Amount colspan={7} value={data?.netWorth} />
+              <Amount colspan={7} value={data?.netWorth} align="left" />
             </tr>
             <tr>
               <Default

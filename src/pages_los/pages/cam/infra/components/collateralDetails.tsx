@@ -18,22 +18,6 @@ export const CollateralDetails = ({ collateral }) => {
 };
 
 const CollateralSecurity = ({ collateral }) => {
-  if (!Array.isArray(collateral) || collateral.length <= 0) {
-    <>
-      <tr>
-        <Default
-          colspan={9}
-          className="form-heading"
-          align="center"
-          value="Collateral Details"
-          element="th"
-        />
-      </tr>
-      <tr>
-        <Default colspan={9} value="Not Available" element="th" />
-      </tr>
-    </>;
-  }
   return (
     <>
       <tr>
@@ -53,22 +37,23 @@ const CollateralSecurity = ({ collateral }) => {
         />
       </tr>
 
-      {collateral.map((collateralData) => {
-        return (
-          <>
-            <tr>
-              <Default colspan={3} value={collateralData?.propertyAddress} />
-              <Amount
-                skipSymbol={true}
-                colspan={2}
-                value={collateralData?.propertyArea}
-              />
-              <Default colspan={2} value={collateralData?.owner} />
-              <Amount colspan={2} value={collateralData?.marketValue} />
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(collateral) &&
+        collateral.map((collateralData) => {
+          return (
+            <>
+              <tr>
+                <Default colspan={3} value={collateralData?.propertyAddress} />
+                <Amount
+                  skipSymbol={true}
+                  colspan={2}
+                  value={collateralData?.propertyArea}
+                />
+                <Default colspan={2} value={collateralData?.owner} />
+                <Amount colspan={2} value={collateralData?.marketValue} />
+              </tr>
+            </>
+          );
+        })}
       <tr>
         <Default
           colspan={8}
