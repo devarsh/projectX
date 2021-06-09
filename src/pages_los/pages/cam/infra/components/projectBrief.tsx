@@ -32,7 +32,7 @@ export const BriefAboutProject = ({ project }) => {
         />
         <Default
           colspan={1}
-          value="Salable Area / Super Build Up Area (In Sq. feet)"
+          value="Salable Area / Super Build Up Area (In Sq. Feet)"
           element="th"
           align="right"
         />
@@ -42,12 +42,7 @@ export const BriefAboutProject = ({ project }) => {
           element="th"
           align="right"
         />
-        <Default
-          colspan={2}
-          value="Amount in Rs. Lakhs"
-          element="th"
-          align="right"
-        />
+        <Default colspan={2} value="Amount" element="th" align="right" />
       </tr>
       {Array.isArray(project) &&
         project.map((projectDetail, index) => {
@@ -71,11 +66,7 @@ export const BriefAboutProject = ({ project }) => {
                 value={projectDetail?.saleableArea}
                 skipSymbol={true}
               />
-              <Amount
-                colspan={2}
-                value={projectDetail?.ratePerSquareFeet}
-                skipSymbol={true}
-              />
+              <Amount colspan={2} value={projectDetail?.ratePerSquareFeet} />
 
               <Amount colspan={2} value={projectDetail.amount} />
             </tr>

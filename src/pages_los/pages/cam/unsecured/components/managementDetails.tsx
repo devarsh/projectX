@@ -106,7 +106,7 @@ export const ManagementDetails = ({ management }) => {
                   value="Average Banking Balance"
                   element="th"
                 />
-                <Amount colspan={7} value={data?.averageBankBal} />
+                <Amount colspan={7} value={data?.averageBankBal} align="left" />
               </tr>
               <tr>
                 <Default

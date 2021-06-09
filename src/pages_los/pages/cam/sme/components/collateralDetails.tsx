@@ -3,6 +3,7 @@ import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 export const CollateralDetails = ({ collateral }) => {
   return (
     <>
+      <br />
       <tr>
         <Default
           colspan={9}
@@ -24,7 +25,7 @@ const CollateralSecurity = ({ collateral }) => {
         <Default colspan={2} value="Address of the Property" element="th" />
         <Default colspan={3} value="Area of the Property" element="th" />
         <Default colspan={2} value="Owner" element="th" />
-        <Default colspan={2} value="Market Value (Rs. In Crore)" element="th" />
+        <Default colspan={2} value="Market Value" element="th" />
       </tr>
 
       {collateral.map((collateralData) => {

@@ -3,6 +3,7 @@ export const BusinessDetails = ({ business = {} }: any) => {
   if (typeof business === "object") {
     return (
       <>
+        <br />
         <tr>
           <Default
             colspan={9}

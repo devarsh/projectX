@@ -51,12 +51,12 @@ export const SiteAreaDetails = ({ siteArea }) => {
         <Default colspan={1} value="Sr.No" element="th" />
         <Default colspan={2} value="Floor" element="th" />
         <Default
-          colspan={3}
+          colspan={2}
           value="Build Up Area (In Sq. Feet)"
           element="th"
           align="right"
         />
-        <Default colspan={1} value="Usage" element="th" />
+        <Default colspan={2} value="Carpet Area (In Sq. Feet)" element="th" />
         <Default colspan={2} value="No. of Units" element="th" />
       </tr>
       {others.map((projectDetail, index) => {
@@ -65,8 +65,12 @@ export const SiteAreaDetails = ({ siteArea }) => {
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
               <Default colspan={2} value={projectDetail?.siteFloor} />
-              <Amount colspan={3} value={projectDetail?.buildUpArea} />
-              <Default colspan={1} value={projectDetail?.siteUsage} />
+              <Amount colspan={2} value={projectDetail?.buildUpArea} />
+              <Amount
+                colspan={2}
+                skipSymbol={true}
+                value={projectDetail?.siteUsage}
+              />
               <Default colspan={2} value={projectDetail?.units} />
             </tr>
           </>
