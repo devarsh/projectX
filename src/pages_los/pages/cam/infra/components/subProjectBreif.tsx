@@ -20,19 +20,19 @@ export const BriefAboutProjectSubDetails = ({ subProject }) => {
         <Default colspan={1} value="No. of Units" element="th" align="right" />
         <Default
           colspan={2}
-          value="Saleable Area (In Sq. feet)"
+          value="Saleable Area (In Sq. Feet)"
           element="th"
           align="right"
         />
         <Default
           colspan={2}
-          value="Carpet Area (In Sq. feet)"
+          value="Carpet Area (In Sq. Feet)"
           element="th"
           align="right"
         />
         <Default
           colspan={2}
-          value="Construction Area (In Sq. feet)"
+          value="Construction Area (In Sq. Feet)"
           element="th"
           align="right"
         />

@@ -25,7 +25,7 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
         <Default
           colspan={2}
           element="th"
-          value="Cost per Sq. feet"
+          value="Cost per Sq. Feet"
           align="right"
         />
         <Default colspan={2} element="th" value="% of Total Cost" />

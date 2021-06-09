@@ -1,5 +1,5 @@
 import { NomineeDetails } from "./nomineeDetails";
-import { Percentage, Default } from "pages_los/pages/cam/components";
+import { Percentage, Default, Amount } from "pages_los/pages/cam/components";
 
 export const PromoterDetails = ({ promoter }) => {
   return (
@@ -18,7 +18,7 @@ export const PromoterDetails = ({ promoter }) => {
         <Default colspan={2} value="Name" element="th" />
         <Default colspan={1} value="Experience" element="th" />
         <Default colspan={1} value="Credit Score" element="th" />
-        <Default colspan={1} value="Obligations" element="th" />
+        <Default colspan={1} value="Obligations" element="th" align="right" />
         <Default colspan={2} value="Nominee" element="th" />
         <Default colspan={1} value="Share%" element="th" />
       </tr>
@@ -35,7 +35,7 @@ export const PromoterDetails = ({ promoter }) => {
                 />
                 <Default colspan={1} value={promoterData?.experience} />
                 <Default colspan={1} value={promoterData?.score} />
-                <Default colspan={1} value={promoterData?.obligations} />
+                <Amount colspan={1} value={promoterData?.obligations} />
                 <Default
                   colspan={2}
                   value={

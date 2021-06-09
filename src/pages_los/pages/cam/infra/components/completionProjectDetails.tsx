@@ -47,7 +47,7 @@ export const ProjectDetailsRenderer = ({
         <Default colspan={1} value="Location" element="th" />
         <Default
           colspan={1}
-          value="Total Build Up Area (Sq. feet)"
+          value="Total Build Up Area (In Sq. Feet)"
           element="th"
           align="right"
         />

@@ -1,104 +1,83 @@
 import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 
-export const OtherDetails = ({ others }) => {
+export const OtherDetails = ({ others = {} }: any) => {
   if (typeof others !== "object") {
     return null;
   }
   return (
     <>
       <br />
-      <br />
       <tr>
-        <th colSpan={2}>Tenure</th>
-        <td colSpan={7}>{<Default value={others.tenur} />}</td>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          value="Eligibility Details"
+          align="center"
+          element="th"
+        />
       </tr>
       <tr>
-        <th colSpan={2}>Rate of Interest</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.rate} />
-          }
-        </td>
+        <Default colspan={2} value="Tenure" element="th" />
+        <Default colspan={7} value={others?.tenur} />
+      </tr>
+      <tr>
+        <Default colspan={2} value="Rate of Interest" element="th" />
+        <Percentage colspan={7} value={others?.rate} />
       </tr>
       {others?.propertyType !== "" ? (
         <tr>
-          <th colSpan={2}>Property Type</th>
-          <td colSpan={7}>{<Default value={others.propertyType} />}</td>
+          <Default colspan={2} value="Property Type" element="th" />
+          <Default colspan={7} value={others?.propertyType} />
         </tr>
       ) : null}
 
       <tr>
-        <th colSpan={2}>Market Value of Property</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.propertyMarketValue} />
-          }
-        </td>
+        <Default colspan={2} value="Market Value of Property" element="th" />
+        <Amount colspan={7} value={others?.propertyMarketValue} align="left" />
       </tr>
       <tr>
-        <th colSpan={2}>Eligible EMI</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.eligibleEMI} />
-          }
-        </td>
+        <Default colspan={2} value="Eligible EMI" element="th" />
+        <Amount colspan={7} value={others?.eligibleEMI} align="left" />
       </tr>
       <tr>
-        <th colSpan={2}>Loan Amount Based on FOIR</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.loanAmountBasedOnFOIR} />
-          }
-        </td>
+        <Default colspan={2} value="Loan Amount Based on FOIR" element="th" />
+        <Amount
+          colspan={7}
+          value={others?.loanAmountBasedOnFOIR}
+          align="left"
+        />
       </tr>
       <tr>
-        <th colSpan={2}>LTV</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.ltv} />
-          }
-        </td>
+        <Default colspan={2} value="LTV" element="th" />
+        <Percentage colspan={7} value={others?.ltv} />
       </tr>
       <tr>
-        <th colSpan={2}>Loan Amount Based on LTV</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.loanAmountBasedOnLTV} />
-          }
-        </td>
+        <Default colspan={2} value="Loan Amount Based on LTV" element="th" />
+        <Amount colspan={7} value={others?.loanAmountBasedOnLTV} align="left" />
       </tr>
       <tr>
-        <th colSpan={2}>Loan Amount Based on min of FOIR and LTV</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.loanAmountBasedOnFOIRLTV} />
-          }
-        </td>
+        <Default
+          colspan={2}
+          value="Loan Amount Based on min of FOIR and LTV"
+          element="th"
+        />
+        <Amount
+          colspan={7}
+          value={others?.loanAmountBasedOnFOIRLTV}
+          align="left"
+        />
       </tr>
       <tr>
-        <th colSpan={2}>Difference Between Applied and Eligible Loan Amount</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.difApplliedEligibleAmount} />
-          }
-        </td>
+        <Default
+          colspan={2}
+          value="Difference Between Applied and Eligible Loan Amount"
+          element="th"
+        />
+        <Percentage colspan={7} value={others?.difApplliedEligibleAmount} />
       </tr>
       <tr>
-        <th colSpan={2}>Eligible Loan Amount</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Amount value={others.eligibleLoanAmount} />
-          }
-        </td>
+        <Default colspan={2} value="Eligible Loan Amount" element="th" />
+        <Amount colspan={7} value={others?.eligibleLoanAmount} align="left" />
       </tr>
     </>
   );

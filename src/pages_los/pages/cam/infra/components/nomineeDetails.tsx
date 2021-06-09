@@ -1,17 +1,18 @@
+import { Default } from "pages_los/pages/cam/components";
 export const NomineeDetails = ({ nominee }) => {
-  if (!Array.isArray(nominee) || nominee.length <= 0) {
-    return null;
-  }
   return (
     <>
-      {nominee.map((nomineeData, index) => {
-        return (
-          <tr key={index}>
-            {nomineeData.salutation} {nomineeData.firstName}{" "}
-            {nomineeData.middleName} {nomineeData.lastName}
-          </tr>
-        );
-      })}
+      {Array.isArray(nominee) &&
+        nominee.map((nomineeData, index) => {
+          return (
+            <Default
+              colspan={2}
+              element="tr"
+              value={`${nomineeData?.salutation} ${nomineeData?.firstName} 
+                ${nomineeData?.middleName} ${nomineeData?.lastName}`}
+            />
+          );
+        })}
     </>
   );
 };

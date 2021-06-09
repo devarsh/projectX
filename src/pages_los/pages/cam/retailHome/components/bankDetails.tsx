@@ -31,7 +31,12 @@ export const BankDetails = ({ bank }) => {
         <Default colspan={2} value="Name of Bank" element="th" />
         <Default colspan={2} value="Address" element="th" />
         <Default colspan={2} value="Current A/C No" element="th" />
-        <Default colspan={2} value="Average Bank Balance" element="th" />
+        <Default
+          colspan={2}
+          value="Average Bank Balance"
+          element="th"
+          align="right"
+        />
       </tr>
       {Array.isArray(savingOrCurrentAccountDetails) &&
         savingOrCurrentAccountDetails.map((bankDetail, index) => {

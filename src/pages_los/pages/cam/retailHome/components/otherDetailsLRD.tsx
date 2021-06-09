@@ -7,8 +7,17 @@ export const OtherLRDDetails = ({ others }) => {
   return (
     <>
       <tr>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          value="Eligibility Details"
+          align="center"
+          element="th"
+        />
+      </tr>
+      <tr>
         <Default colspan={2} value="Rent" element="th" />
-        <Amount colspan={7} value={others?.rent} />
+        <Amount colspan={7} value={others?.rent} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="Rate of Interest" element="th" />
@@ -77,15 +86,15 @@ export const OtherLRDDetails = ({ others }) => {
 
       <tr>
         <Default colspan={2} value="Property Value" element="th" />
-        <Amount colspan={7} value={others?.propertyValue} />
+        <Amount colspan={7} value={others?.propertyValue} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="LTV" element="th" />
-        <Amount colspan={7} value={others?.ltv} />
+        <Amount colspan={7} value={others?.ltv} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="Loan Amount Based on LTV" element="th" />
-        <Amount colspan={7} value={others?.loanAmountBasedOnLTV} />
+        <Amount colspan={7} value={others?.loanAmountBasedOnLTV} align="left" />
       </tr>
       <tr>
         <Default
@@ -93,7 +102,11 @@ export const OtherLRDDetails = ({ others }) => {
           value="Eligible Amount Based on Rent"
           element="th"
         />
-        <Amount colspan={7} value={others?.eligibleAmountBasedOnRent} />
+        <Amount
+          colspan={7}
+          value={others?.eligibleAmountBasedOnRent}
+          align="left"
+        />
       </tr>
 
       <tr>
@@ -102,11 +115,11 @@ export const OtherLRDDetails = ({ others }) => {
           value="Minimum of Loan Based on LTV and Rent"
           element="th"
         />
-        <Amount colspan={7} value={others?.minimunLoanLTVRent} />
+        <Amount colspan={7} value={others?.minimunLoanLTVRent} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="Eligible EMI" element="th" />
-        <Amount colspan={7} value={others?.eligibleEMI} />
+        <Amount colspan={7} value={others?.eligibleEMI} align="left" />
       </tr>
 
       <tr>
@@ -115,7 +128,7 @@ export const OtherLRDDetails = ({ others }) => {
       </tr>
       <tr>
         <Default colspan={2} value="Eligible Loan Amount" element="th" />
-        <Amount colspan={7} value={others?.eligibleLoanAmount} />
+        <Amount colspan={7} value={others?.eligibleLoanAmount} align="left" />
       </tr>
     </>
   );

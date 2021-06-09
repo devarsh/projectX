@@ -7,7 +7,10 @@ import {
   Amount,
 } from "pages_los/pages/cam/components";
 
-export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
+export const OtherEmployeesApplicantDetails = ({
+  applicant = {},
+  loanAmount,
+}: any) => {
   if (typeof applicant !== "object") {
     return null;
   }
@@ -16,7 +19,7 @@ export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
     <>
       <tr>
         <Default colspan={2} value="Loan Requested" element="th" />
-        <Amount colspan={7} value={loanAmount} />
+        <Amount colspan={7} value={loanAmount} align="left" />
       </tr>
       <tr>
         <Default
@@ -24,6 +27,7 @@ export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
           value="Applicant Details"
           element="th"
           align="center"
+          className="form-heading"
         />
       </tr>
       <tr>
@@ -42,13 +46,10 @@ export const OtherEmployeesApplicantDetails = ({ applicant, loanAmount }) => {
         <Default colspan={2} value="Age" element="th" />
         <Age colspan={7} value={applicant?.birthDate} />
       </tr>
-      {applicant?.emplCode === "01" || "03" || "04" ? (
-        <OtherEmployeesReturnFilingDetails
-          returnFiling={applicant.returnFilingDetails}
-        />
-      ) : (
-        <OtherEmployeesSalaryDetails salary={applicant.salaryDetails} />
-      )}
+      <OtherEmployeesReturnFilingDetails
+        returnFiling={applicant.returnFilingDetails}
+      />
+      <OtherEmployeesSalaryDetails salary={applicant.salaryDetails} />
 
       <br />
     </>
