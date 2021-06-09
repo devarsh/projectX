@@ -1,4 +1,5 @@
-import { assignMetaData, assignedMetaData } from "./metadata";
+import { assignMetaData } from "pages_los/pages/task/assign/metadata/grid";
+import { assignedMetaData } from "pages_los/pages/task/assigned/metadata/grid";
 
 export const getGridFormMetaData = ({ gridCode }) => async () => {
   switch (gridCode) {

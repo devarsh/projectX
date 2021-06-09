@@ -1,11 +1,11 @@
+import { GeneralDetailsPersonal, ManagementDetails } from "./components";
+
 import {
-  BusinessDetails,
-  GeneralDetailsPersonal,
-  ManagementDetails,
-  PersonalGuarantee,
-  GeneralDetailsBusiness,
   FinancialRatios,
-} from "./components";
+  BusinessDetails,
+  GeneralDetails,
+  CollateralDetails,
+} from "pages_los/pages/cam/sme/components";
 
 export const Unsecured = ({ data, others }) => {
   let {
@@ -25,7 +25,7 @@ export const Unsecured = ({ data, others }) => {
       <tbody>
         {productID === "123000013" ? (
           <>
-            <GeneralDetailsBusiness
+            <GeneralDetails
               general={generalDetails}
               promoter={promotersDetails}
               address={addressDetails}
@@ -37,7 +37,7 @@ export const Unsecured = ({ data, others }) => {
         ) : productID === "123000014" ? (
           <>
             <GeneralDetailsPersonal general={generalDetails} />
-            <PersonalGuarantee personal={personalGuaranteeSecurity} />
+            <CollateralDetails collateral={personalGuaranteeSecurity} />
           </>
         ) : (
           "No recoed found"

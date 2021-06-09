@@ -29,19 +29,31 @@ export const SalaryDetails = ({ salary }) => {
                 value="Net Salary (Fixed) - 100%"
                 element="th"
               />
-              <Amount colspan={7} value={salaryDetails?.netSalary} />
+              <Amount
+                colspan={7}
+                value={salaryDetails?.netSalary}
+                align="left"
+              />
             </tr>
             <tr>
               <Default colspan={2} value="Variable Pay - 50%" element="th" />
-              <Amount colspan={7} value={salaryDetails?.variablePay} />
+              <Amount
+                colspan={7}
+                value={salaryDetails?.variablePay}
+                align="left"
+              />
             </tr>
             <tr>
               <Default colspan={2} value="Bonus - 50% Of CY" element="th" />
-              <Amount colspan={7} value={salaryDetails?.bonus} />
+              <Amount colspan={7} value={salaryDetails?.bonus} align="left" />
             </tr>
             <tr>
               <Default colspan={2} value="Incentive" element="th" />
-              <Amount colspan={7} value={salaryDetails?.incentive} />
+              <Amount
+                colspan={7}
+                value={salaryDetails?.incentive}
+                align="left"
+              />
             </tr>
             <tr>
               <Default
@@ -49,7 +61,11 @@ export const SalaryDetails = ({ salary }) => {
                 value="Agriculture Income - 20%"
                 element="th"
               />
-              <Amount colspan={7} value={salaryDetails?.agricultureIncome} />
+              <Amount
+                colspan={7}
+                value={salaryDetails?.agricultureIncome}
+                align="left"
+              />
             </tr>
             <tr>
               <Default colspan={2} value="Other Allowances" element="th" />
@@ -57,11 +73,19 @@ export const SalaryDetails = ({ salary }) => {
             </tr>
             <tr>
               <Default colspan={2} value="Other Income" element="th" />
-              <Amount colspan={7} value={salaryDetails?.otherIncome} />
+              <Amount
+                colspan={7}
+                value={salaryDetails?.otherIncome}
+                align="left"
+              />
             </tr>
             <tr>
               <Default colspan={2} value="Total Income" element="th" />
-              <Amount colspan={7} value={salaryDetails?.totalIncome} />
+              <Amount
+                colspan={7}
+                value={salaryDetails?.totalIncome}
+                align="left"
+              />
             </tr>
           </>
         );

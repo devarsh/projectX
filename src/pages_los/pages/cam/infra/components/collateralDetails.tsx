@@ -29,12 +29,7 @@ const CollateralSecurity = ({ collateral }) => {
           align="right"
         />
         <Default colspan={2} value="Owner" element="th" />
-        <Default
-          colspan={2}
-          value="Market Value (Rs. In Crore)"
-          element="th"
-          align="right"
-        />
+        <Default colspan={2} value="Market Value" element="th" align="right" />
       </tr>
 
       {Array.isArray(collateral) &&
@@ -71,44 +66,6 @@ const CollateralSecurity = ({ collateral }) => {
         <Default colspan={8} align="end" value="ACR" element="th" />
         <Percentage colspan={1} value={collateral[0]?.acr} />
       </tr>
-    </>
-  );
-};
-
-const PersonalGuarantee = ({ personal }) => {
-  if (!Array.isArray(personal) || personal.length <= 0) {
-    return null;
-  }
-  return (
-    <>
-      <tr>
-        <th colSpan={2} className="form-sub-heading">
-          PERSONAL GUARANTE
-        </th>
-      </tr>
-      <tr>
-        <th colSpan={2}>Name of Guarantor</th>
-        <th colSpan={2}>PAN No.</th>
-        <th colSpan={2}>Net Worth</th>
-      </tr>
-      {personal?.map((personalData) => {
-        return (
-          <>
-            <tr>
-              <td colSpan={2}>
-                {<Default value={personalData.guarantorName} />}
-              </td>
-              <td colSpan={2}>{<Default value={personalData.panNumber} />}</td>
-              <td>
-                {
-                  //@ts-ignore
-                  <Amount value={personalData.netWorth} />
-                }
-              </td>
-            </tr>
-          </>
-        );
-      }) ?? ""}
     </>
   );
 };

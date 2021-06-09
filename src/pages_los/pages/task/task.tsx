@@ -7,7 +7,7 @@ import {
 import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
 import { serverGridContextGenerator } from "./context";
-import { DetailsTabView } from "pages_los/pages/inquiry/detailsTabView";
+import { AssignTask } from "./assignTask";
 
 export const Task = ({ gridCode, actions }: any) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -31,6 +31,12 @@ export const Task = ({ gridCode, actions }: any) => {
         />
       </ServerGridContextProvider>
       <Dialog
+        fullScreen={
+          ["ViewDetails", "EditTask", "AddTask"].indexOf(currentAction?.name) >=
+          0
+            ? true
+            : false
+        }
         open={currentAction !== null}
         //@ts-ignore
         TransitionComponent={Transition}
@@ -40,13 +46,16 @@ export const Task = ({ gridCode, actions }: any) => {
         PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
         <ClearCacheProvider key={currentAction?.rows[0].id}>
-          <Fragment key={currentAction?.rows[0].id}>
-            <DetailsTabView
-              moduleType="task"
-              refID={currentAction?.rows[0].id}
-              isDataChangedRef={isDataChangedRef}
-            />
-          </Fragment>
+          {(currentAction?.name ?? "") === "AddTask" ? (
+            <Fragment key={currentAction?.rows[0].id}>
+              <AssignTask
+                moduleType="task"
+                refID={currentAction?.rows[0].id}
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={() => {}}
+              />
+            </Fragment>
+          ) : null}
         </ClearCacheProvider>
       </Dialog>
     </Fragment>

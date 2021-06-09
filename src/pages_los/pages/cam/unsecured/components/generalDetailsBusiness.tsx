@@ -90,7 +90,7 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
             value="Last 12 Months average Bank Balance"
             element="th"
           />
-          <Amount colspan={7} value={general?.averageBankBal} />
+          <Amount colspan={7} value={general?.averageBankBal} align="left" />
         </tr>
         <tr>
           <Default
@@ -98,7 +98,7 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
             value="Average Utilisation of Working Capital Limits"
             element="th"
           />
-          <Amount colspan={7} value={general?.limitBal} />
+          <Amount colspan={7} value={general?.limitBal} align="left" />
         </tr>
         <tr>
           <Default

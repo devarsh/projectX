@@ -1,5 +1,23 @@
 import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 export const ProjectDetails = ({ project }) => {
+  if (!Array.isArray(project) || project.length <= 0) {
+    return (
+      <>
+        <tr>
+          <Default
+            colspan={9}
+            className="form-heading"
+            align="center"
+            value="Project Details"
+            element="th"
+          />
+        </tr>
+        <tr>
+          <Default colspan={9} align="center" value="Not Available" />
+        </tr>
+      </>
+    );
+  }
   return (
     <>
       <tr>
@@ -27,15 +45,36 @@ export const ProjectDetails = ({ project }) => {
               <Default colspan={2} value="Land Details" element="th" />
               <Default colspan={7} value={projectsData?.landLocation} />
             </tr>
+            {projectsData?.landDetails === "O" ? (
+              <>
+                <tr>
+                  <Default
+                    colspan={2}
+                    value="Name of the Promoter"
+                    element="th"
+                  />
+                  <Default
+                    colspan={7}
+                    value={projectsData?.projectPromoterName}
+                  />
+                </tr>
+                <tr>
+                  <Default colspan={2} value="Name of the Firm" element="th" />
+                  <Default colspan={7} value={projectsData?.projectFirmName} />
+                </tr>
+              </>
+            ) : null}
             <tr>
               <Default
                 colspan={2}
                 value="Area of the Project Land"
                 element="th"
               />
-              <Default
+              <Amount
                 colspan={7}
+                skipSymbol={true}
                 value={projectsData?.landAreaApproxValuation}
+                align="left"
               />
             </tr>
             <tr>
@@ -43,6 +82,7 @@ export const ProjectDetails = ({ project }) => {
               <Amount
                 colspan={7}
                 value={projectsData?.landAreaApproximateValuation}
+                align="left"
               />
             </tr>
             <tr>
@@ -114,11 +154,19 @@ export const ProjectDetails = ({ project }) => {
             </tr>
             <tr>
               <Default colspan={2} value="Projected Turnover" element="th" />
-              <Amount colspan={7} value={projectsData?.projectTurnover} />
+              <Amount
+                colspan={7}
+                value={projectsData?.projectTurnover}
+                align="left"
+              />
             </tr>
             <tr>
               <Default colspan={2} value="Projected Profit" element="th" />
-              <Amount colspan={7} value={projectsData?.projectProfit} />
+              <Amount
+                colspan={7}
+                value={projectsData?.projectProfit}
+                align="left"
+              />
             </tr>
             <ProjectParticulaDetails
               projectParticular={projectsData?.projectParticularDetails}
@@ -294,7 +342,12 @@ export const ManufacturedProduct = ({ manufacturedProduct }) => {
       </tr>
       <tr>
         <Default colspan={1} value="Sr.No" element="th" />
-        <Default colspan={8} value="Machinery Name" element="th" />
+        <Default
+          colspan={8}
+          value="Machinery Name"
+          element="th"
+          align="center"
+        />
       </tr>
       {Array.isArray(manufacturedProduct) &&
         manufacturedProduct.map((manufacturedProducts, index) => {

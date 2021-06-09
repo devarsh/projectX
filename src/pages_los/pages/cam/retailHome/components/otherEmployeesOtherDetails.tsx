@@ -8,6 +8,15 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       <br />
       <br />
       <tr>
+        <Default
+          colspan={9}
+          className="form-sub-heading"
+          value="Eligibility Details"
+          align="center"
+          element="th"
+        />
+      </tr>
+      <tr>
         <Default colspan={2} value="Tenure" element="th" />
         <Default colspan={7} value={other?.tenur} />
       </tr>
@@ -21,7 +30,7 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       </tr>
       <tr>
         <Default colspan={2} value="Market Value of Property" element="th" />
-        <Amount colspan={7} value={other?.propertyMarketValue} />
+        <Amount colspan={7} value={other?.propertyMarketValue} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="FOIR" element="th" />
@@ -45,11 +54,11 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       </tr>
       <tr>
         <Default colspan={2} value="Eligible EMI" element="th" />
-        <Amount colspan={7} value={other.eligibleEMI} />
+        <Amount colspan={7} value={other.eligibleEMI} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="Loan Amount Based on FOIR" element="th" />
-        <Amount colspan={7} value={other?.loanAmountBasedOnFOIR} />
+        <Amount colspan={7} value={other?.loanAmountBasedOnFOIR} align="left" />
       </tr>
       <tr>
         <Default
@@ -57,11 +66,19 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
           value="Loan Amount Based on FOIR Based on Condition"
           element="th"
         />
-        <Amount colspan={7} value={other?.loanAmountBasedOnFOIRCondition} />
+        <Amount
+          colspan={7}
+          value={other?.loanAmountBasedOnFOIRCondition}
+          align="left"
+        />
       </tr>
       <tr>
         <Default colspan={2} value="Loan Amount" element="th" />
-        <Amount colspan={7} value={other?.loanAmountBasedOnFOIRCondition} />
+        <Amount
+          colspan={7}
+          value={other?.loanAmountBasedOnFOIRCondition}
+          align="left"
+        />
       </tr>
       <tr>
         <Default colspan={2} value="LTV" element="th" />
@@ -77,7 +94,7 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       </tr>
       <tr>
         <Default colspan={2} value="Amount" element="th" />
-        <Amount colspan={7} value={other?.amount} />
+        <Amount colspan={7} value={other?.amount} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="FOIR" element="th" />
@@ -85,11 +102,11 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       </tr>
       <tr>
         <Default colspan={2} value="Loan Amount Based on LTV" element="th" />
-        <Amount colspan={7} value={other?.newfoir} />
+        <Amount colspan={7} value={other?.newfoir} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="Eligible Loan Amount" element="th" />
-        <Amount colspan={7} value={other?.eligibleLoanAmount} />
+        <Amount colspan={7} value={other?.eligibleLoanAmount} align="left" />
       </tr>
       <br />
       <br />

@@ -1,14 +1,11 @@
 import { Default } from "./default";
 
 let currencyFormatter = new Intl.NumberFormat("en-IN", {
-  maximumSignificantDigits: 3,
   style: "currency",
   currency: "INR",
 });
 
-let numberFormatter = new Intl.NumberFormat("en-IN", {
-  maximumSignificantDigits: 3,
-});
+let numberFormatter = new Intl.NumberFormat("en-IN", {});
 
 export const Amount = ({
   value,
@@ -18,7 +15,7 @@ export const Amount = ({
 }: any) => {
   let currentFormat = Boolean(skipSymbol) ? numberFormatter : currencyFormatter;
   let result = "-";
-  if (!isNaN(Number(value))) {
+  if (value !== null && value !== "" && !isNaN(Number(value))) {
     result = currentFormat.format(value);
   }
   return <Default value={result} {...others} align={align} />;

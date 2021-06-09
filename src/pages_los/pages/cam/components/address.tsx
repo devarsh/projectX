@@ -1,5 +1,24 @@
 import { Default } from "pages_los/pages/cam/components";
 export const Address = ({ value }) => {
+  if (!Array.isArray(value) || value.length <= 0) {
+    return (
+      <>
+        <tr>
+          <Default
+            className="form-sub-heading"
+            colspan={9}
+            element="th"
+            value="Address Details"
+            align="center"
+          />
+        </tr>
+        <tr>
+          <Default colspan={9} value="Not Available" align="center" />
+        </tr>
+      </>
+    );
+  }
+
   let addressArray: any = [];
   addressArray = value.map((addressData) => {
     return [

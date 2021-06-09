@@ -17,6 +17,9 @@ export const assignMetaData = {
       sequence: 1,
       alignment: "left",
       componentType: "default",
+      filterComponentType: "gridSearch",
+      disableSortBy: false,
+      isVisible: true,
     },
     {
       accessor: "type",

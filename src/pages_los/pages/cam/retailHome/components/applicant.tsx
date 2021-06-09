@@ -23,7 +23,7 @@ export const ApplicantDetails = ({
     <>
       <tr>
         <Default colspan={2} value="Loan Requested" element="th" />
-        <Amount colspan={7} value={loanAmount} />
+        <Amount colspan={7} value={loanAmount} align="left" />
       </tr>
       {others.foir !== null ? (
         <tr>
@@ -39,9 +39,13 @@ export const ApplicantDetails = ({
       )}
 
       <tr>
-        <th colSpan={9} className="form-heading">
-          Applicant Details
-        </th>
+        <Default
+          colspan={9}
+          value="Applicant Details"
+          className="form-heading"
+          element="th"
+          align="center"
+        />
       </tr>
       <tr>
         <Default colspan={2} value="Name" element="th" />
