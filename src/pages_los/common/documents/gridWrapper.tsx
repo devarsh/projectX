@@ -18,10 +18,21 @@ type GridWrapperType = {
   actions: ActionTypes[];
   setAction: any;
   transformData?: any;
+  defaultSortOrder?: any;
+  defaultGroupBy?: any;
 };
 
 export const MyGridWrapper = forwardRef<any, GridWrapperType>(
-  ({ actions, setAction, transformData = (data) => data }, ref) => {
+  (
+    {
+      actions,
+      setAction,
+      transformData = (data) => data,
+      defaultSortOrder,
+      defaultGroupBy,
+    },
+    ref
+  ) => {
     const removeCache = useContext(ClearCacheContext);
     const {
       getDocumentsGridData,
@@ -97,6 +108,8 @@ export const MyGridWrapper = forwardRef<any, GridWrapperType>(
             setAction={setAction}
             loading={result[0].isFetching || result[0].isLoading}
             refetchData={() => result[0].refetch()}
+            defaultSortOrder={defaultSortOrder}
+            defaultGroupBy={defaultGroupBy}
           />
         </Fragment>
       );

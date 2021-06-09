@@ -67,6 +67,8 @@ export interface GridWrapperPropTypes {
   loading?: any;
   gridProps?: any;
   refetchData?: any;
+  defaultSortOrder?: any;
+  defaultGroupBy?: any;
 }
 
 export interface YupSchemaMetaDataType {
