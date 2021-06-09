@@ -33,6 +33,8 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
       loading,
       gridProps,
       refetchData,
+      defaultSortOrder = [],
+      defaultGroupBy = [],
     },
     ref
   ) => {
@@ -75,6 +77,8 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
       (row) => row[metaData?.gridConfig?.rowIdColumn],
       [metaData?.gridConfig?.rowIdColumn]
     );
+    const myDefaultSortOrder = useMemo(() => defaultSortOrder, []);
+    const myDefaultGroupBy = useMemo(() => defaultGroupBy, []);
 
     const updateGridData = useCallback(
       (rowIndex, columnID, value, touched, error) => {
@@ -167,6 +171,8 @@ export const GridWrapper = forwardRef<any, GridWrapperPropTypes>(
         allowColumnReordering={metaData.gridConfig?.allowColumnReordering}
         disableSorting={metaData?.gridConfig?.disableSorting}
         defaultHiddenColumns={metaData.hiddenColumns}
+        defaultSortOrder={myDefaultSortOrder}
+        defaultGroupBy={myDefaultGroupBy}
         multipleActions={metaData?.multipleActions}
         singleActions={metaData?.singleActions}
         doubleClickAction={metaData?.doubleClickAction}

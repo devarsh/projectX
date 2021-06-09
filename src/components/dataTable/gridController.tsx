@@ -18,7 +18,7 @@ interface GridControllerType {
 }
 
 export const GirdController = forwardRef<GridControllerType, any>(
-  ({ metaData }, ref) => {
+  ({ metaData, defaultFilter, defaultSortOrder }, ref) => {
     const context = useContext(GridContext);
     const { enqueueSnackbar } = useSnackbar();
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -32,6 +32,8 @@ export const GirdController = forwardRef<GridControllerType, any>(
       }),
       []
     );
+    const myDefaultFilter = useMemo(() => defaultFilter, []);
+    const myDefaultSortOrder = useMemo(() => defaultSortOrder, []);
     const getRowId = useCallback(
       (row) => row[metaData?.gridConfig?.rowIdColumn],
       [metaData?.gridConfig?.rowIdColumn]
@@ -97,6 +99,8 @@ export const GirdController = forwardRef<GridControllerType, any>(
         columns={columns}
         defaultColumn={defaultColumn}
         defaultHiddenColumns={metaData.hiddenColumns}
+        defaultFilter={myDefaultFilter}
+        defaultSortOrder={myDefaultSortOrder}
         loading={loading}
         data={data}
         onFetchData={fetchData}

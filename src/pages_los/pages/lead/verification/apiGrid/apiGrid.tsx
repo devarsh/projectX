@@ -15,10 +15,12 @@ import { VerificationAPIContext } from "../context";
 type GridWrapperType = {
   actions: ActionTypes[];
   setAction: any;
+  defaultSortOrder?: any;
+  defaultGroupBy?: any;
 };
 
 export const APIGrid = forwardRef<any, GridWrapperType>(
-  ({ actions, setAction }, ref) => {
+  ({ actions, setAction, defaultSortOrder, defaultGroupBy }, ref) => {
     const removeCache = useContext(ClearCacheContext);
     const { getVerificationAPIGridStatusData } = useContext(
       VerificationAPIContext
@@ -56,6 +58,8 @@ export const APIGrid = forwardRef<any, GridWrapperType>(
           actions={actions}
           setAction={setAction}
           loading={loading}
+          defaultGroupBy={defaultGroupBy}
+          defaultSortOrder={defaultSortOrder}
         />
       );
     return renderResult;

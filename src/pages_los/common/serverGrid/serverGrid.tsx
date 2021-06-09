@@ -13,10 +13,15 @@ interface ServerGridType {
   gridCode: any;
   actions?: ActionTypes[];
   setAction: any;
+  defaultSortOrder?: any;
+  defaultFilter?: any;
 }
 
 export const ServerGrid = forwardRef<ServerGridType, any>(
-  ({ gridCode, actions, setAction }, myRef) => {
+  (
+    { gridCode, actions, setAction, defaultSortOrder, defaultFilter },
+    myRef
+  ) => {
     const { getGridData, getGridMetaData } = useContext(ServerGridContext);
     /* eslint-disable react-hooks/exhaustive-deps */
     const getGridDataFn = useCallback(getGridData.fn(getGridData.args), [
@@ -52,19 +57,23 @@ export const ServerGrid = forwardRef<ServerGridType, any>(
         getGridData={getGridDataFn}
         actions={actions}
         setAction={setAction}
+        defaultSortOrder={defaultSortOrder}
+        defaultFilter={defaultFilter}
       />
     );
   }
 );
 
 export const ServerGridWrapper = forwardRef<ServerGridType, any>(
-  ({ gridCode, actions, setAction }, ref) => {
+  ({ gridCode, actions, setAction, defaultFilter, defaultSortOrder }, ref) => {
     return (
       <ServerGridContextProvider {...serverGridContextGenerator(gridCode)}>
         <ServerGrid
           gridCode={gridCode}
           actions={actions}
           setAction={setAction}
+          defaultFilter={defaultFilter}
+          defaultSortOrder={defaultSortOrder}
           ref={ref}
         />
       </ServerGridContextProvider>

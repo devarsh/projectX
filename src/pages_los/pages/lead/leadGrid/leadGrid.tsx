@@ -36,6 +36,7 @@ export const LeadGrid = ({ gridCode, actions }) => {
           actions={actions}
           setAction={setCurrentAction}
           ref={myGridRef}
+          defaultSortOrder={[{ id: "tran_cd", desc: true }]}
         />
       </ServerGridContextProvider>
       <Dialog

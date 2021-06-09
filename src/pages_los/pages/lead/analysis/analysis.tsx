@@ -93,6 +93,8 @@ export const Analysis = ({ refID, moduleType }) => {
           key="grid"
           actions={actions}
           setAction={setCurrentAction}
+          defaultGroupBy={["entityName", "requestTypeDisplay"]}
+          defaultSortOrder={[{ id: "InitateDate", desc: true }]}
           transformData={(data) => {
             return data.map((one) => ({
               ...one,

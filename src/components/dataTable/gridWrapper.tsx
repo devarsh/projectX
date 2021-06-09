@@ -18,10 +18,23 @@ interface GridWrapperPropsType {
   metaData: GridMetaDataType;
   actions?: ActionTypes[];
   setAction: any;
+  defaultFilter?: any;
+  defaultSortOrder?: any;
 }
 
 export const GridWrapper = forwardRef<GridWrapperPropsType, any>(
-  ({ gridCode, getGridData, metaData, actions, setAction }, ref) => {
+  (
+    {
+      gridCode,
+      getGridData,
+      metaData,
+      actions,
+      setAction,
+      defaultFilter = [],
+      defaultSortOrder = [],
+    },
+    ref
+  ) => {
     let finalData = transformMetaData({
       metaData,
       actions,
@@ -34,6 +47,8 @@ export const GridWrapper = forwardRef<GridWrapperPropsType, any>(
           //@ts-ignore
           ref={ref}
           metaData={finalData as GridMetaDataType}
+          defaultFilter={defaultFilter}
+          defaultSortOrder={defaultSortOrder}
         />
       </GridProvider>
     );

@@ -18,10 +18,21 @@ type GridWrapperType = {
   actions: ActionTypes[];
   setAction: any;
   transformData?: any;
+  defaultSortOrder?: any;
+  defaultGroupBy?: any;
 };
 
 export const APIGrid = forwardRef<any, GridWrapperType>(
-  ({ actions, setAction, transformData = (data) => data }, ref) => {
+  (
+    {
+      actions,
+      setAction,
+      transformData = (data) => data,
+      defaultGroupBy,
+      defaultSortOrder,
+    },
+    ref
+  ) => {
     const removeCache = useContext(ClearCacheContext);
     const { getAnalysisAPIStatusData } = useContext(AnalysisAPIContext);
     const wrapperKeyDataRef = useRef(
@@ -57,6 +68,8 @@ export const APIGrid = forwardRef<any, GridWrapperType>(
           actions={actions}
           setAction={setAction}
           loading={result.isLoading || result.isFetching}
+          defaultSortOrder={defaultSortOrder}
+          defaultGroupBy={defaultGroupBy}
         />
       </Fragment>
     );
