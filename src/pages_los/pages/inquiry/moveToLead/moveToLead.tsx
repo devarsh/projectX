@@ -40,9 +40,12 @@ export const MoveToLead = ({
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
         isDataChangedRef.current = true;
-        enqueueSnackbar("inquiries successfully assigned to branch", {
-          variant: "success",
-        });
+        enqueueSnackbar(
+          `InquiryNo. ${data?.inquiryNo} moved to Lead with LeadNo. ${data?.leadNo}`,
+          {
+            variant: "success",
+          }
+        );
         closeDialog();
       },
     }

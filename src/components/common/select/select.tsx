@@ -110,12 +110,20 @@ const MySelect: FC<MySelectAllProps> = ({
 
   const handleChangeInterceptor = useCallback(
     (e) => {
-      const value = typeof e === "object" ? e?.target?.value ?? "" : e;
+      let value = typeof e === "object" ? e?.target?.value ?? "" : e;
+      if (Array.isArray(value) && multiple) {
+        let defaultValueIndex = value.indexOf("00");
+        if (defaultValueIndex >= 0) {
+          value.splice(defaultValueIndex, 1);
+        } else if (value.length === 0 && !skipDefaultOption) {
+          value = ["00"];
+        }
+      }
       let result = getLabelFromValuesForOptions(value);
       result = multiple ? result : result[0];
-      handleChange(e, result as any);
+      handleChange(multiple ? value : e, result as any);
     },
-    [handleChange, getLabelFromValuesForOptions, multiple]
+    [handleChange, getLabelFromValuesForOptions, multiple, skipDefaultOption]
   );
   const { loadingOptions } = useOptionsFetcher(
     formState,
@@ -149,7 +157,7 @@ const MySelect: FC<MySelectAllProps> = ({
         value={menuItem.value}
         disabled={menuItem.disabled}
       >
-        {showCheckbox ? (
+        {showCheckbox && !menuItem.disabled ? (
           <Checkbox
             checked={
               Boolean(multiple)
