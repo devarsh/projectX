@@ -37,7 +37,9 @@ export const CAMMiddlewareWrapper = () => {
         alt="logo"
       />
       <div style={{ display: "flex", maxWidth: "210mm", margin: "0 auto" }}>
-        <Typography variant="subtitle2">Lead No: {refID}</Typography>
+        <Typography variant="subtitle2">
+          Lead No: {result?.data?.others?.leadNo}
+        </Typography>
 
         <div style={{ flexGrow: 1 }} />
 

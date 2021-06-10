@@ -15,7 +15,7 @@ export const HeaderDetails = ({ rowData, handleDialogClose }) => {
       <div className={classes.innerWrapper}>
         <div className={classes.spacing}>
           <div className={classes.labelText}>Lead No.</div>
-          <div className={classes.valueText}>{rowData?.id}</div>
+          <div className={classes.valueText}>{rowData?.data?.lead_no}</div>
         </div>
         <div className={classes.spacing}>
           <div className={classes.labelText}>Branch </div>
