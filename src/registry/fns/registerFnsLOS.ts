@@ -284,6 +284,8 @@ registerFn("calculateTotalObligation", infra.calculateTotalObligation);
 registerFn("getEntityType", LOSSDK.getEntityType);
 registerFn("getApplicants", LOSSDK.getApplicants);
 
+registerFn("getProductCategoryList", LOSSDK.getProductCategoryList);
+
 registerFn("retailCalculateSENPLAPCondition", retail.calculateSENPLAPCondition);
 
 registerFn(

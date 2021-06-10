@@ -1,14 +1,15 @@
 import FormWrapper, { MetaDataType } from "../index";
 import metaData from "./meta";
 import { singletonFunctionRegisrationFactory } from "components/utils";
+import { LeadSearch } from "pages_los/common/search";
 
 const { registerFn } = singletonFunctionRegisrationFactory;
 
 const MyComponent = ({ onAccept, value }) => {
   return <button onClick={() => onAccept("wowow")}>Errr</button>;
 };
-
-registerFn("searchComponent", MyComponent);
+//or registerFn("searchComponent", InquirySearch);
+registerFn("searchComponent", LeadSearch);
 
 const TestForm = () => {
   return (

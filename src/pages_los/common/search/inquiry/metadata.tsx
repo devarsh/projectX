@@ -1,31 +1,16 @@
-export const unmappedMetaData = {
+export const inquiryMetaData = {
   gridConfig: {
     dense: false,
     pageSize: [20, 30, 50],
     defaultPageSize: "20",
-    gridLabel: "Unmapped Inquiries",
+    gridLabel: "Inquiries",
     rowIdColumn: "tran_cd",
     allowColumnReordering: true,
     allowColumnHiding: true,
     allowKeyboardNavigation: true,
     allowGlobalFilter: true,
   },
-
   columns: [
-    {
-      accessor: "inquiry_no",
-      columnName: "Inquiry CD",
-      sequence: 1,
-      width: 150,
-      minWidth: 100,
-      maxWidth: 200,
-      alignment: "left",
-      componentType: "default",
-      disableSortBy: false,
-      disableFilters: false,
-      filterComponentType: "valueFilter",
-      isVisible: true,
-    },
     {
       accessor: "tran_cd",
       columnName: "Inquiry CD",
@@ -38,7 +23,7 @@ export const unmappedMetaData = {
       disableSortBy: false,
       disableFilters: false,
       filterComponentType: "valueFilter",
-      isVisible: false,
+      isVisible: true,
     },
     {
       accessor: "tran_dt",
