@@ -19,15 +19,6 @@ const RetailHome = lazy(() =>
   import("./retailHome").then((module) => ({ default: module.RetailHome }))
 );
 
-export const CAM = ({ camData }) => {
-  let ComponentToRender = selectComponent(camData);
-  return (
-    <Suspense fallback={<span>loading..</span>}>
-      <ComponentToRender data={camData?.data} others={camData?.others} />
-    </Suspense>
-  );
-};
-
 const selectComponent = ({ others }) => {
   const { productID } = others;
   switch (productID) {
@@ -61,4 +52,13 @@ const selectComponent = ({ others }) => {
 
 const CAM_NOT_AVAILABLE = ({ others: { productID } }) => {
   return <div>No CAM avaiable for productID {productID}</div>;
+};
+
+export const CAM = ({ camData }) => {
+  let ComponentToRender = selectComponent(camData);
+  return (
+    <Suspense fallback={<span>loading..</span>}>
+      <ComponentToRender data={camData?.data} others={camData?.others} />
+    </Suspense>
+  );
 };
