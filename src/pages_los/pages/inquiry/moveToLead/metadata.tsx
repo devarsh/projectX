@@ -41,15 +41,35 @@ export const moveToLeadMetaData: MetaDataType = {
   fields: [
     {
       render: {
+        componentType: "select",
+      },
+      name: "productCategory",
+      label: "Product Category",
+      defaultValue: "00",
+      //@ts-ignore
+      options: "getProductCategoryList",
+      required: true,
+      GridProps: {
+        xs: 6,
+        md: 6,
+        sm: 6,
+      },
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This is a required field"] }],
+      },
+    },
+    {
+      render: {
         componentType: "textField",
       },
       name: "remarks",
       label: "Remarks",
       required: true,
       GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
+        xs: 6,
+        md: 6,
+        sm: 6,
       },
       schemaValidation: {
         type: "string",

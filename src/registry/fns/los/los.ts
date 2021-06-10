@@ -628,6 +628,28 @@ const LOSAPI = () => {
     }
   };
 
+  const getProductCategoryList = async (_, formState: any) => {
+    const { status, data } = await internalFetcher(
+      `lead/options/productcategory`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.categoryCode,
+        label: one?.categoryName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     setToken,
@@ -674,6 +696,8 @@ const LOSAPI = () => {
     //For Validation API calling
     getEntityType,
     getApplicants,
+
+    getProductCategoryList,
   };
 };
 
