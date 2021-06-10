@@ -14,7 +14,7 @@ interface flowType {
   data?: any;
 }
 
-export const EquifaxVerificationWrapper = () => {
+export const EquifaxVerificationWrapper = ({ otpLength = 6 }) => {
   const classes = useStyles();
   const [flow, setFlow] = useState<flowType>({
     screen: "INIT",
@@ -41,11 +41,11 @@ export const EquifaxVerificationWrapper = () => {
         className={classes.loginRight}
       >
         {flow.screen === "INIT" ? (
-          <Verification token={token} setFlow={setFlow} />
+          <Verification token={token} setFlow={setFlow} otpLength={otpLength} />
         ) : flow.screen === "Mobile" ? (
           <Mobile setFlow={setFlow} flow={flow} />
         ) : flow.screen === "Alternate" ? (
-          <Alternate token={token} flow={flow} />
+          <Alternate token={token} flow={flow} otpLength={otpLength} />
         ) : null}
       </Box>
     </Box>

@@ -44,7 +44,7 @@ const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
 
 export const Verification = ({
   token,
-  otpLength = 5,
+  otpLength = 6,
   maxResendCount = 3,
   otpResendInterval = 30,
   setFlow,

@@ -239,7 +239,7 @@ export const Verification = ({
   );
 };
 
-export const OTPVerificationWrapper = ({ apiType }) => {
+export const OTPVerificationWrapper = ({ apiType, otpLength = 6 }) => {
   const classes = useStyles();
   const { token } = useParams();
   const verifyToken = useQuery<any, any, any>(
@@ -262,7 +262,7 @@ export const OTPVerificationWrapper = ({ apiType }) => {
         width={1 / 2}
         className={classes.loginRight}
       >
-        <Verification token={token} apiType={apiType} />
+        <Verification token={token} apiType={apiType} otpLength={otpLength} />
       </Box>
     </Box>
   );
