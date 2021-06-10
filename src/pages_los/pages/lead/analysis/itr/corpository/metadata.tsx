@@ -13,7 +13,7 @@ export const CompanyListGrid: GridMetaDataType = {
     allowColumnReordering: false,
     disableSorting: false,
     disableGroupBy: true,
-    disableRowSelect: true,
+    allowRowSelection: false,
     disableGlobalFilter: true,
 
     containerHeight: {

@@ -43,7 +43,7 @@ export interface GridConfigType {
   };
   pageSizes?: number[];
   defaultPageSize?: number;
-  disableRowSelect?: boolean;
+  allowRowSelection?: boolean;
   enablePagination?: boolean;
   disableGlobalFilter?: boolean;
   disableGroupBy?: boolean;

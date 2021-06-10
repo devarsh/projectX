@@ -1,18 +1,20 @@
 import Checkbox from "@material-ui/core/Checkbox";
 
-export const useCheckboxColumn = (hooks) => {
-  hooks.visibleColumns.push((columns) => [
-    {
-      id: "selectionCheckbox",
-      Header: CheckboxHeaderRenderer,
-      Cell: CheckboxCellRenderer,
-      minWidth: 20,
-      width: 20,
-      maxWidth: 20,
-      sticky: true,
-    },
-    ...columns,
-  ]);
+export const useCheckboxColumn = (visible) => (hooks) => {
+  if (Boolean(visible)) {
+    hooks.visibleColumns.push((columns) => [
+      {
+        id: "selectionCheckbox",
+        Header: CheckboxHeaderRenderer,
+        Cell: CheckboxCellRenderer,
+        minWidth: 20,
+        width: 20,
+        maxWidth: 20,
+        sticky: true,
+      },
+      ...columns,
+    ]);
+  }
 };
 
 const CheckboxCellRenderer = ({ row }) => {

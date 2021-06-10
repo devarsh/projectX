@@ -117,6 +117,7 @@ export const GirdController = forwardRef<GridControllerType, any>(
         }
         allowFilter={metaData.gridConfig?.allowFilter ?? true}
         filterAlwaysVisible={metaData.gridConfig?.filterAlwaysVisible ?? false}
+        allowRowSelection={metaData?.gridConfig?.allowRowSelection ?? true}
       />
     );
   }

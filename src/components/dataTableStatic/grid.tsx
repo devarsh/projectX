@@ -59,7 +59,6 @@ export const DataGrid = ({
   hideFooter,
   hideHeader,
   disableGlobalFilter,
-  disableRowSelect,
   disableGroupBy,
   disableLoader,
   containerHeight,
@@ -67,6 +66,7 @@ export const DataGrid = ({
   pageSizes,
   defaultPageSize,
   enablePagination,
+  allowRowSelection,
   refetchData,
 }) => {
   //@ts-ignore
@@ -116,7 +116,7 @@ export const DataGrid = ({
     useRowSelect,
     useResizeColumns,
     useBlockLayout,
-    !disableRowSelect && useCheckboxColumn
+    useCheckboxColumn(allowRowSelection)
   );
 
   const tbodyRef = useRef(null);

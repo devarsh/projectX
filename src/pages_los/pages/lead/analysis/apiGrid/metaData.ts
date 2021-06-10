@@ -13,7 +13,7 @@ export const GridMetaData: GridMetaDataType = {
     allowColumnReordering: false,
     disableSorting: false,
     disableGroupBy: false,
-    disableRowSelect: true,
+    allowRowSelection: false,
     containerHeight: {
       min: "40vh",
       max: "50vh",

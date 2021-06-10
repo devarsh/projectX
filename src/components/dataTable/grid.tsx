@@ -66,6 +66,7 @@ export const DataGrid = forwardRef<any, any>(
       alwaysAvailableAction,
       allowFilter,
       filterAlwaysVisible,
+      allowRowSelection,
     },
     ref
   ) => {
@@ -114,7 +115,7 @@ export const DataGrid = forwardRef<any, any>(
       useRowSelect,
       useResizeColumns,
       useBlockLayout,
-      useCheckboxColumn
+      useCheckboxColumn(allowRowSelection)
     );
 
     singleActions = filterAction(singleActions, selectedFlatRows);

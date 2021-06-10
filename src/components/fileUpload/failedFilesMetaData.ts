@@ -61,7 +61,7 @@ const failedFilesMetaData: GridMetaDataType = {
       minWidth: 100,
     },
     allowColumnReordering: true,
-    disableRowSelect: true,
+    allowRowSelection: false,
     disableGlobalFilter: true,
     disableSorting: true,
     disableGroupBy: true,
