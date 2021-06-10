@@ -15,7 +15,9 @@ export const HeaderDetails = ({ productData, handleDialogClose }) => {
       <div className={classes.innerWrapper}>
         <div className={classes.spacing}>
           <div className={classes.labelText}>Inquiry No</div>
-          <div className={classes.valueText}>{productData?.id}</div>
+          <div className={classes.valueText}>
+            {productData?.data?.inquiry_no}
+          </div>
         </div>
         <div className={classes.spacing}>
           <div className={classes.labelText}>Branch</div>

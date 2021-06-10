@@ -52,7 +52,7 @@ export const Task = ({ gridCode, actions }: any) => {
                 moduleType="task"
                 refID={currentAction?.rows[0].id}
                 isDataChangedRef={isDataChangedRef}
-                closeDialog={() => {}}
+                closeDialog={handleDialogClose}
               />
             </Fragment>
           ) : null}

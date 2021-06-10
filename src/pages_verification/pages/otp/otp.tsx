@@ -109,7 +109,7 @@ export const Verification = ({
     if (!Boolean(OTP)) {
       setOtpVerificationError("OTP cannot be blank");
     } else if (String(OTP).length !== otpLength) {
-      setOtpVerificationError(`OPT must be ${otpLength} digits long`);
+      setOtpVerificationError(`OTP must be ${otpLength} digits long`);
     } else {
       verifyOTPMutation.mutate({
         otp: OTP,

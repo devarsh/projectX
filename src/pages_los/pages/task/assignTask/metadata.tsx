@@ -64,7 +64,7 @@ export const taskAssignMetadata = {
       name: "completionDate",
       label: "Task Completion Date",
       placeholder: "DD/MM/YYYY",
-      fomat: "dd/MM/yyyy",
+      format: "dd/MM/yyyy",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
