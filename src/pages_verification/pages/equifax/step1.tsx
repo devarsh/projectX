@@ -44,7 +44,7 @@ const requestOTP = (requestOTPAPI) => async ({ tokenID }: requestOTPType) => {
 
 export const Verification = ({
   token,
-  otpLength = 6,
+  otpLength = 5,
   maxResendCount = 3,
   otpResendInterval = 30,
   setFlow,
@@ -118,7 +118,7 @@ export const Verification = ({
     if (!Boolean(OTP)) {
       setOtpVerificationError("OTP cannot be blank");
     } else if (String(OTP).length !== otpLength) {
-      setOtpVerificationError(`OPT must be ${otpLength} digits long`);
+      setOtpVerificationError(`OTP must be ${otpLength} digits long`);
     } else if (consent !== true) {
       setConsentError("This is required");
     } else {

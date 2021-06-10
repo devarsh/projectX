@@ -55,7 +55,7 @@ const requestOTP = (requestOTPAPI) => async ({
 
 export const Alternate = ({
   token,
-  otpLength = 6,
+  otpLength = 5,
   maxResendCount = 3,
   otpResendInterval = 30,
   flow,

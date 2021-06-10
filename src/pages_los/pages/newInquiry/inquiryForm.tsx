@@ -38,7 +38,7 @@ export const InquiryFormWrapper = ({ navigationState, onSuccess }) => {
     onSuccess: (data, { endSubmit, refID }) => {
       endSubmit(true, "");
       if (typeof onSuccess === "function") {
-        onSuccess(refID);
+        onSuccess(data?.inquiryNo);
       }
     },
   });
