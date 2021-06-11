@@ -253,8 +253,26 @@ export const metaData: NavBarMetaDataType = {
     {
       label: "Lead Management",
       icon: "tasks",
-      href: "./leads",
-      isRouterLink: true,
+      children: [
+        {
+          label: "Leads",
+          href: "./leads",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Mandate",
+          href: "./mandate",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Bank Login",
+          href: "./bankLogin",
+          isRouterLink: true,
+          icon: "circle",
+        },
+      ],
     },
     {
       label: "Task Management",

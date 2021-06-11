@@ -19,6 +19,8 @@ import {
   UnmappedInqiry,
 } from "./pages/inquiry";
 import { Lead } from "./pages/lead";
+import { Mandate } from "./pages/mandate";
+import { BankLogin } from "./pages/bankLogin";
 import { DetailsTabViewBank } from "./pages/config/bank";
 import { UserManagement } from "./pages/config/userManagement";
 import { NewInquiry } from "./pages/newInquiry";
@@ -71,6 +73,8 @@ const DashbordPages = () => {
             />
 
             <Route path="/leads/*" element={<Lead />} />
+            <Route path="/mandate/*" element={<Mandate />} />
+            <Route path="/bankLogin/*" element={<BankLogin />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/task/assign" element={<AssignTask />} />

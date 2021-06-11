@@ -1,9 +1,11 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { Routes, Route } from "react-router";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "cache";
-import { CAMMiddlewareWrapper } from "./camWrapper";
 import { MiddlewareSDK } from "registry/fns/middleware";
+import { CAMMiddlewareWrapper } from "./camWrapper";
+import { Mandate } from "./mandate/";
 
 MiddlewareSDK.inititateAPI(
   `${new URL("./middleware/", process.env.REACT_APP_API_URL).href}` ?? ""
@@ -17,7 +19,10 @@ export const App = () => {
     <ThemeProvider theme={themeObj}>
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
-        <CAMMiddlewareWrapper />
+        <Routes>
+          <Route path="/lead/:refID" element={<CAMMiddlewareWrapper />} />
+          <Route path="/mandate" element={<Mandate />} />
+        </Routes>
       </QueryClientProvider>
     </ThemeProvider>
   );

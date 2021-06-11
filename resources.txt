@@ -43,3 +43,4 @@ https://blog.logrocket.com/multiple-entry-points-in-create-react-app-without-eje
 #HTML Print CSS
 https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
 https://www.smashingmagazine.com/2019/06/create-pdf-web-application/
+https://medium.com/@Idan_Co/the-ultimate-print-html-template-with-header-footer-568f415f6d2a

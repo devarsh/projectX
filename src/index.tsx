@@ -32,7 +32,7 @@ const App = () => (
             <Route path="/crm/*" element={<CRM />} />
             <Route path="/verification/*" element={<Verification />} />
             <Route path="/error/*" element={<ErrorPage />} />
-            <Route path="/middleware/:refID" element={<Middleware />} />
+            <Route path="/middleware/*" element={<Middleware />} />
             <Route path="*" element={<Redirect />} />
           </Routes>
         </Suspense>
