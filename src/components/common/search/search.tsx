@@ -67,6 +67,7 @@ const MySearchField: FC<MySearchFieldProps> = ({
     whenToRunValidation,
     runValidation,
     validationAPIResult,
+    setIncomingMessage,
   } = useField({
     name: fieldName,
     fieldKey: fieldID,
@@ -105,7 +106,11 @@ const MySearchField: FC<MySearchFieldProps> = ({
 
   const onAcceptValue = useCallback(
     (value) => {
-      handleChange(value, value);
+      if (typeof value === "object") {
+        setIncomingMessage(value);
+      } else {
+        handleChange(value, value);
+      }
       setOpenSearch(false);
     },
     [handleChange]

@@ -1,7 +1,11 @@
 import { shouldExclude, LOSSDK, retail, readOnly, sme, infra } from "./los";
+import { LeadSearch, InquirySearch } from "pages_los/common/search";
 
 import { singletonFunctionRegisrationFactory } from "components/utils";
 const { registerFn } = singletonFunctionRegisrationFactory;
+
+registerFn("leadSearchComponent", LeadSearch);
+registerFn("inquirySearchComponent", InquirySearch);
 
 registerFn(
   "shouldExcludeGeneralDetailProposed",
