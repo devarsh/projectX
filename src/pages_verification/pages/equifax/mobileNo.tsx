@@ -70,7 +70,7 @@ export const Mobile = ({ flow, setFlow }) => {
       <TextField
         autoFocus
         id="mobile"
-        type="text"
+        type="tel"
         name="mobile"
         label="Alternate Mobile Number"
         fullWidth

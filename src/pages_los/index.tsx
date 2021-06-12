@@ -30,6 +30,7 @@ import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
 import { AssignTask, AssignedTask } from "pages_los/pages/task";
 import Editor from "components/editor";
+import { Kanban } from "components/kanban";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -84,6 +85,7 @@ const DashbordPages = () => {
             <Route path="/testForm" element={<TestForm />} />
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/editor" element={<Editor />} />
+            <Route path="/kanban" element={<Kanban />} />
           </Routes>
         </Content>
       </div>

@@ -242,7 +242,6 @@ export const DataGrid = forwardRef<any, any>(
           selectedFlatRows={selectedFlatRows}
           multipleActions={multipleActions}
           singleActions={singleActions}
-          alwaysAvailableAction={alwaysAvailableAction}
           setGridAction={setGridAction}
         />
         <ActionContextMenu

@@ -13,6 +13,8 @@ import * as API from "./api";
 import { useTimer } from "../utils";
 import logo from "assets/images/logo.svg";
 import { InputMaskCustom } from "components/derived/inputMask";
+import Collapse from "@material-ui/core/Collapse";
+import Link from "@material-ui/core/Link";
 
 const computeTemplateForOTP = (length: number) => {
   return Array(Number(length)).fill(0).join(" ");
@@ -59,6 +61,7 @@ export const Verification = ({
   const [maxLimitReached, setMaxLimitReached] = useState(false);
   const [resendCount, setResendCount] = useState(1);
   const { timer, startTimer } = useTimer({ maxTime: otpResendInterval });
+  const [expanded, setExpanded] = useState(false);
 
   const verifyOTPMutation = useMutation(verifyOTPFn(API.verifyOTP), {
     onMutate: () => {
@@ -173,7 +176,7 @@ export const Verification = ({
           <TextField
             autoFocus
             id="name"
-            type="email"
+            type="tel"
             name="otp"
             fullWidth
             InputLabelProps={{
@@ -210,14 +213,89 @@ export const Verification = ({
                   color="primary"
                 />
               }
-              label="I consent to fetch my credit score"
+              label={
+                <Typography paragraph>
+                  I hereby appoint <b>Ratnaafin</b> as my authorized
+                  representative to receive my credit information from Equifax
+                  (Bureau).
+                </Typography>
+              }
             />
             {Boolean(consentError) ? (
               <FormHelperText error={true}>{consentError}</FormHelperText>
             ) : null}
           </FormControl>
-          <br />
-          <br />
+          {!expanded ? (
+            <Link
+              color="primary"
+              onClick={(e) => {
+                e.preventDefault();
+                setExpanded(true);
+              }}
+              style={{ alignSelf: "flex-end" }}
+            >
+              More+
+            </Link>
+          ) : null}
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Typography paragraph>
+              I hereby unconditionally consent to and instruct the bureau to
+              provide my credit information to me and <b>Ratnaafin</b>.
+            </Typography>
+            <Typography paragraph>
+              By submitting this form, I hereby authorize Ratnaafin to do the
+              following:
+            </Typography>
+            <ul>
+              <li>
+                <Typography paragraph>
+                  Verify my identity and share with Equifax required personal
+                  identifiable information about me;
+                </Typography>
+              </li>
+              <li>
+                <Typography paragraph>
+                  Request and receive my credit report, and credit score from
+                  Equifax, including but not limited to a copy of my
+                  consumer/commercial credit report and score;
+                </Typography>
+              </li>
+              <li>
+                <Typography paragraph>
+                  Share my details with banking partners in order to assist me
+                  to rectify and remove negative observations from my credit
+                  information report and increase my chances of loan approval in
+                  future;
+                </Typography>
+              </li>
+              <li>
+                <Typography paragraph>
+                  To provide me with customized recommendations and personalized
+                  offers of the products and services of Ratnaafin and/or its
+                  business partners/ affiliates;
+                </Typography>
+              </li>
+              <li>
+                <Typography paragraph>
+                  To send my information / personalized offers via email, text,
+                  call or online display or other means of delivery in
+                  Ratnaafin’s reasonable sole discretion.
+                </Typography>
+              </li>
+            </ul>
+          </Collapse>
+          {expanded ? (
+            <Link
+              onClick={(e) => {
+                e.preventDefault();
+                setExpanded(false);
+              }}
+              style={{ alignSelf: "flex-end" }}
+            >
+              Less-
+            </Link>
+          ) : null}
+
           <div style={{ display: "flex" }}>
             <Button
               onClick={verifyOTPHandler}

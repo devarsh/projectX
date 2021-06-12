@@ -61,6 +61,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   logo: {
     marginBottom: theme.spacing(1),
+    alignSelf: "center",
   },
   loginLeft: {
     display: "flex",
@@ -80,7 +81,7 @@ export const useStyles = makeStyles((theme) => ({
     boxShadow: "0 0 20px rgba(0,0,0,0.06)",
     borderRadius: "8px",
     [theme.breakpoints.down("sm")]: {
-      width: "100%",
+      width: "calc(100% - 32px)",
     },
   },
   loginImg: {

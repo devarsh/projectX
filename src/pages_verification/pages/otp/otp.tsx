@@ -46,6 +46,7 @@ export const Verification = ({
   otpLength = 6,
   maxResendCount = 3,
   otpResendInterval = 30,
+  cssStyles,
 }) => {
   const [OTP, setOTP] = useState("");
   const [otpVerificationError, setOtpVerificationError] = useState("");
@@ -136,7 +137,13 @@ export const Verification = ({
         <Alert>{apiName} Verification Successful</Alert>
       ) : (
         <Fragment>
-          <img src={logo} alt="Logo" width="100px" height="100px" />
+          <img
+            src={logo}
+            alt="Logo"
+            width="100px"
+            height="100px"
+            className={cssStyles.logo}
+          />
           {requestOTPMutation.isLoading ||
           resendtOTPMutation.isLoading ||
           requestOTPMutation.isIdle ? null : OTPDelivered ? (
@@ -166,7 +173,7 @@ export const Verification = ({
           <TextField
             autoFocus
             id="name"
-            type="email"
+            type="tel"
             name="otp"
             fullWidth
             InputLabelProps={{
@@ -256,13 +263,13 @@ export const OTPVerificationWrapper = ({ apiType, otpLength = 6 }) => {
     <span>{verifyToken.error?.error_msg ?? "unknown Error occured"}</span>
   ) : (
     <Box display="flex" width={1} className={classes.wrapper}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        width={1 / 2}
-        className={classes.loginRight}
-      >
-        <Verification token={token} apiType={apiType} otpLength={otpLength} />
+      <Box display="flex" flexDirection="column" className={classes.loginRight}>
+        <Verification
+          token={token}
+          apiType={apiType}
+          otpLength={otpLength}
+          cssStyles={classes}
+        />
       </Box>
     </Box>
   );

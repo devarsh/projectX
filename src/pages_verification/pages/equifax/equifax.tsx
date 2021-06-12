@@ -34,12 +34,7 @@ export const EquifaxVerificationWrapper = ({ otpLength = 6 }) => {
     <span>{verifyToken.error?.error_msg ?? "unknown Error occured"}</span>
   ) : (
     <Box display="flex" width={1} className={classes.wrapper}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        width={1 / 2}
-        className={classes.loginRight}
-      >
+      <Box display="flex" flexDirection="column" className={classes.loginRight}>
         {flow.screen === "INIT" ? (
           <Verification token={token} setFlow={setFlow} otpLength={otpLength} />
         ) : flow.screen === "Mobile" ? (
