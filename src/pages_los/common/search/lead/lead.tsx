@@ -17,10 +17,25 @@ const actions: ActionTypes[] = [
 
 export const LeadSearch = ({ gridCode, actions, onAccept, value }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
+  let filter = Boolean(value)
+    ? [
+        {
+          id: "tran_cd",
+          value: {
+            value: value,
+            condition: "equal",
+            columnName: "Lead CD",
+          },
+        },
+      ]
+    : [];
 
   useEffect(() => {
     if (currentAction?.name === "select") {
-      onAccept(currentAction?.rows[0].id);
+      onAccept({
+        refID: currentAction?.rows[0].id,
+        value: currentAction?.rows[0]?.data?.lead_no,
+      });
     }
   }, [currentAction]);
   return (
@@ -31,16 +46,7 @@ export const LeadSearch = ({ gridCode, actions, onAccept, value }) => {
           actions={actions}
           setAction={setCurrentAction}
           defaultSortOrder={[{ id: "tran_cd", desc: true }]}
-          defaultFilter={[
-            {
-              id: "tran_cd",
-              value: {
-                value: value,
-                condition: "equal",
-                columnName: "Lead CD",
-              },
-            },
-          ]}
+          defaultFilter={filter}
         />
       </ServerGridContextProvider>
     </Fragment>

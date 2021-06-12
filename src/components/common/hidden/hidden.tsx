@@ -17,7 +17,12 @@ const MyHiddenField: FC<MyHiddenFieldProps> = ({
   setValueOnDependentFieldsChange,
   dependentFields,
 }) => {
-  const { handleBlur, handleChange, dependentValues } = useField({
+  const {
+    handleBlur,
+    handleChange,
+    dependentValues,
+    incomingMessage,
+  } = useField({
     name: fieldName,
     fieldKey: fieldID,
     dependentFields,
@@ -37,6 +42,15 @@ const MyHiddenField: FC<MyHiddenFieldProps> = ({
       }
     }
   }, [dependentValues, handleChange, setValueOnDependentFieldsChange]);
+
+  useEffect(() => {
+    if (incomingMessage !== null && typeof incomingMessage === "object") {
+      const { value } = incomingMessage;
+      if (Boolean(value) || value === "") {
+        handleChange(value);
+      }
+    }
+  }, [incomingMessage, handleChange]);
 
   return null;
 };

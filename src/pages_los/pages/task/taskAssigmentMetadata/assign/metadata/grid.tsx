@@ -1,10 +1,10 @@
-export const assignedMetaData = {
+export const assignMetaData = {
   gridConfig: {
     dense: false,
     pageSize: [20, 30, 50],
     defaultPageSize: "20",
-    gridLabel: "Assigned Task",
-    rowIdColumn: "refID",
+    gridLabel: "Assign Task",
+    rowIdColumn: "tran_cd",
     allowColumnReordering: true,
     allowColumnHiding: true,
     allowKeyboardNavigation: true,
@@ -17,16 +17,19 @@ export const assignedMetaData = {
       sequence: 1,
       alignment: "left",
       componentType: "default",
+      filterComponentType: "gridSearch",
+      disableSortBy: false,
+      isVisible: true,
     },
     {
-      accessor: "type",
+      accessor: "task_type",
       columnName: "Type of Task",
       sequence: 2,
       alignment: "left",
       componentType: "default",
     },
     {
-      accessor: "othersType",
+      accessor: "others_type",
       columnName: "Other Type of Project",
       sequence: 3,
       alignment: "left",
@@ -40,7 +43,7 @@ export const assignedMetaData = {
       componentType: "default",
     },
     {
-      accessor: "dueDate",
+      accessor: "due_date",
       columnName: "Task Due Date",
       sequence: 5,
       alignment: "left",
@@ -48,7 +51,7 @@ export const assignedMetaData = {
       format: "dd/MM/yyyy",
     },
     {
-      accessor: "completionDate",
+      accessor: "completion_date",
       columnName: "Task Completion Date",
       sequence: 6,
       alignment: "left",
@@ -63,14 +66,14 @@ export const assignedMetaData = {
       componentType: "default",
     },
     {
-      accessor: "worker",
-      columnName: "Task Assign To",
+      accessor: "entered_by",
+      columnName: "Task entered By",
       sequence: 8,
       alignment: "left",
       componentType: "default",
     },
     {
-      accessor: "enteredDate",
+      accessor: "entered_date",
       columnName: "Task Entered Date",
       sequence: 9,
       alignment: "left",
@@ -78,14 +81,14 @@ export const assignedMetaData = {
       dateFormat: "dd/MM/yyyy",
     },
     {
-      accessor: "modifiedBy",
+      accessor: "last_entered_by",
       columnName: "Modified By",
       sequence: 10,
       alignment: "left",
       componentType: "default",
     },
     {
-      accessor: "modifiedDate",
+      accessor: "last_modified_date",
       columnName: "Modified Date",
       sequence: 11,
       alignment: "left",
@@ -93,7 +96,7 @@ export const assignedMetaData = {
       format: "dd/MM/yyyy",
     },
     {
-      accessor: "taskSource",
+      accessor: "flag",
       columnName: "Source",
       sequence: 12,
       alignment: "right",
