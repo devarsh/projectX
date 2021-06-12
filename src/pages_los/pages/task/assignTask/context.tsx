@@ -1,7 +1,10 @@
 import { createContext, FC } from "react";
+import * as API from "./api";
 
 export interface AssignTaskAPIProviderType {
   context: any;
+  getTaskFormData: CRUDFNType;
+  updateTaskFormData: CRUDFNType;
 }
 
 export const AssignTaskAPIContext = createContext<AssignTaskAPIProviderType>(
@@ -16,11 +19,15 @@ interface CRUDFNType {
 export const AssignTaskAPIProvider: FC<AssignTaskAPIProviderType> = ({
   children,
   context,
+  getTaskFormData,
+  updateTaskFormData,
 }) => {
   return (
     <AssignTaskAPIContext.Provider
       value={{
         context,
+        getTaskFormData,
+        updateTaskFormData,
       }}
     >
       {children}
@@ -28,8 +35,16 @@ export const AssignTaskAPIProvider: FC<AssignTaskAPIProviderType> = ({
   );
 };
 
-export const generateAssignTaskAPIContext = ({ refID, moduleType }) => {
+export const generateAssignTaskAPIContext = ({ moduleType }) => {
   return {
-    context: { refID, moduleType },
+    context: { moduleType },
+    getTaskFormData: {
+      fn: API.getTaskFormData,
+      args: { moduleType },
+    },
+    updateTaskFormData: {
+      fn: API.updateTaskFormData,
+      args: { moduleType },
+    },
   };
 };

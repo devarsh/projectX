@@ -8,6 +8,8 @@ import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
 import { serverGridContextGenerator } from "./context";
 import { AssignTask } from "./assignTask";
+import { TaskViewEdit } from "./assignTask/viewEditTask";
+import { InvalidAction } from "pages_los/common/invalidAction";
 
 export const Task = ({ gridCode, actions }: any) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -15,7 +17,8 @@ export const Task = ({ gridCode, actions }: any) => {
   const myGridRef = useRef<any>(null);
   const handleDialogClose = () => {
     setCurrentAction(null);
-    if (isDataChangedRef.current) {
+    if (isDataChangedRef.current === true) {
+      isDataChangedRef.current = true;
       myGridRef?.current?.fetchData?.();
       isDataChangedRef.current = false;
     }
@@ -32,8 +35,7 @@ export const Task = ({ gridCode, actions }: any) => {
       </ServerGridContextProvider>
       <Dialog
         fullScreen={
-          ["ViewDetails", "EditTask", "AddTask"].indexOf(currentAction?.name) >=
-          0
+          ["ViewDetails", "AddTask"].indexOf(currentAction?.name) >= 0
             ? true
             : false
         }
@@ -41,21 +43,34 @@ export const Task = ({ gridCode, actions }: any) => {
         //@ts-ignore
         TransitionComponent={Transition}
         onClose={handleDialogClose}
-        key={currentAction?.rows[0].id}
         maxWidth="md"
         PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
-        <ClearCacheProvider key={currentAction?.rows[0].id}>
+        <ClearCacheProvider>
           {(currentAction?.name ?? "") === "AddTask" ? (
-            <Fragment key={currentAction?.rows[0].id}>
+            <Fragment>
               <AssignTask
                 moduleType="task"
-                refID={currentAction?.rows[0].id}
                 isDataChangedRef={isDataChangedRef}
                 closeDialog={handleDialogClose}
               />
             </Fragment>
-          ) : null}
+          ) : (currentAction?.name ?? "") === "ViewDetails" ? (
+            <Fragment>
+              <TaskViewEdit
+                taskID={currentAction?.rows[0].id}
+                inquiryFor={currentAction?.rows[0]?.data?.flag.toLocaleLowerCase()}
+                refID={currentAction?.rows[0].data?.ref_id}
+                moduleType="task"
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
+                readOnly={false}
+                disableCache={false}
+              />
+            </Fragment>
+          ) : (
+            <InvalidAction closeDialog={handleDialogClose} />
+          )}
         </ClearCacheProvider>
       </Dialog>
     </Fragment>

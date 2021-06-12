@@ -12,6 +12,20 @@ export const inquiryMetaData = {
   },
   columns: [
     {
+      accessor: "inquiry_no",
+      columnName: "Inquiry CD",
+      sequence: 1,
+      width: 150,
+      minWidth: 100,
+      maxWidth: 200,
+      alignment: "left",
+      componentType: "default",
+      disableSortBy: false,
+      disableFilters: false,
+      filterComponentType: "valueFilter",
+      isVisible: true,
+    },
+    {
       accessor: "tran_cd",
       columnName: "Inquiry CD",
       sequence: 1,

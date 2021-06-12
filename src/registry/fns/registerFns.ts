@@ -16,6 +16,9 @@ registerFn("getExperianceyears", miscSDK.getMiscVal("EXPERI_YEARS"));
 registerFn("getPropertyType", miscSDK.getMiscVal("PROPERTY_TYPE"));
 registerFn("getGenderList", miscSDK.getMiscVal("GENDER"));
 registerFn("getRelationship", miscSDK.getMiscVal("RELATIONSHIP"));
+
+registerFn("getTaskType", miscSDK.getMiscVal("TASK_TYPE"));
+registerFn("getTaskStatus", miscSDK.getMiscVal("TASK_STATUS"));
 registerFn("getRetailEmployee", miscSDK.getRetailEmployementCode);
 registerFn("getUnsecuredEmployee", miscSDK.getUnsecuredEmployementCode);
 // registerFn("getUnsecuredEmployee", miscSDK.getMiscVal("UNSECURED_EMPL"));

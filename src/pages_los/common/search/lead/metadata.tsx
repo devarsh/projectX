@@ -13,7 +13,7 @@ export const leadsMetaData = {
   },
   columns: [
     {
-      accessor: "tran_cd",
+      accessor: "lead_no",
       columnName: "Lead CD",
       sequence: 1,
       width: 150,
@@ -23,6 +23,18 @@ export const leadsMetaData = {
       componentType: "default",
       disableSortBy: false,
       filterComponentType: "multiValueFilter",
+      isVisible: true,
+    },
+    {
+      accessor: "tran_cd",
+      columnName: "Lead CD",
+      sequence: 1,
+      width: 150,
+      minWidth: 100,
+      maxWidth: 200,
+      alignment: "left",
+      componentType: "default",
+      disableSortBy: false,
       isVisible: true,
     },
     {
@@ -42,7 +54,7 @@ export const leadsMetaData = {
       },
     },
     {
-      accessor: "inquiry_tran_cd",
+      accessor: "inquiry_no",
       columnName: "Inquiry CD",
       sequence: 3,
       width: 150,

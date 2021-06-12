@@ -12,20 +12,9 @@ export const AssignTask = () => {
     {
       actionName: "AddTask",
       actionLabel: "Add Task",
-      multiple: false,
+      multiple: undefined,
       rowDoubleClick: false,
-    },
-    {
-      actionName: "DeleteTask",
-      actionLabel: "Delete Task",
-      multiple: true,
-      rowDoubleClick: false,
-    },
-    {
-      actionName: "EditTask",
-      actionLabel: "Edit Task",
-      multiple: false,
-      rowDoubleClick: false,
+      alwaysAvailable: true,
     },
   ];
 
