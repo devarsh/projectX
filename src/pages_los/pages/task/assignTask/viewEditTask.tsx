@@ -10,7 +10,7 @@ import { queryClient, ClearCacheContext } from "cache";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
 import * as API from "./api";
-import { useQueries, useMutation, useQuery } from "react-query";
+import { useQueries, useMutation } from "react-query";
 
 interface updateTaskDataType {
   data: object;

@@ -6,6 +6,7 @@ import {
   DateFormat,
   Amount,
   Address,
+  Percentage,
 } from "pages_los/pages/cam/components";
 
 export const GeneralDetails = ({
@@ -126,12 +127,12 @@ export const GeneralDetails = ({
           <Default colspan={7} value={general?.chequeBounces} />
         </tr>
         <tr>
-          <Default
-            colspan={2}
-            value="Inward cheque bounces, if any and % of total Cheque bounce"
-            element="th"
-          />
-          <Default colspan={7} value={general?.chequeBouncesPer} />
+          <Default colspan={2} value="Inward cheque bounces" element="th" />
+          <Default colspan={7} value={general?.chequeBounces} />
+        </tr>
+        <tr>
+          <Default colspan={2} value="Inward cheque bounces %" element="th" />
+          <Percentage colspan={7} value={general?.chequeBouncesPer} />
         </tr>
 
         <Address value={address} />

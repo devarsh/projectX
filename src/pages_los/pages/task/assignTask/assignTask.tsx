@@ -1,11 +1,9 @@
-import { useContext } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { useMutation } from "react-query";
 import { useSnackbar } from "notistack";
-import { taskAssignMetadata } from "./metadata";
-import { ClearCacheContext } from "cache";
+import { taskAssignMetadata } from "../metadata/form/metadata";
 import * as API from "./api";
 import {
   AssignTaskAPIContext,
