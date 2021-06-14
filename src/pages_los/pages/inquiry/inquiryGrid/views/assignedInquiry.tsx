@@ -33,6 +33,12 @@ export const AssignedInquiry = () => {
       },
     },
     {
+      actionName: "AssignTask",
+      actionLabel: "Assign Task",
+      multiple: false,
+      rowDoubleClick: false,
+    },
+    {
       actionName: "ViewDetails",
       actionLabel: "View Details",
       multiple: false,

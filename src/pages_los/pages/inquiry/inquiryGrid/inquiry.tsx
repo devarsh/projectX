@@ -9,6 +9,7 @@ import { Transition } from "pages_los/common";
 import { serverGridContextGenerator } from "./context";
 import { HeaderDetails } from "../headerDetails";
 import { DetailsTabView } from "../detailsTabView";
+import { AssignTask } from "pages_los/pages/task/assignTask";
 import { AssignBranch } from "../assignBranch";
 import { AssignInquiry } from "../assignInquiry";
 import { Priority } from "../priority";
@@ -89,6 +90,14 @@ export const Inquiry = ({ gridCode, actions }) => {
               isDataChangedRef={isDataChangedRef}
               closeDialog={handleDialogClose}
             />
+          ) : (currentAction?.name ?? "") === "AssignTask" ? (
+            <Fragment key={currentAction?.rows[0].id}>
+              <AssignTask
+                moduleType="task"
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
+              />
+            </Fragment>
           ) : (currentAction?.name ?? "") === "Priority" ? (
             <Fragment key={currentAction?.rows[0].id}>
               <HeaderDetails
