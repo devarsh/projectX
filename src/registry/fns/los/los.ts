@@ -612,7 +612,7 @@ const LOSAPI = () => {
         body: JSON.stringify({
           request_data: {
             refID: formState?.refID ?? "",
-            processType: dependentField?.entityType?.value ?? "",
+            entityType: dependentField?.entityType?.value ?? "",
           },
         }),
       }

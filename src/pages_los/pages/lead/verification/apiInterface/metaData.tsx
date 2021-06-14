@@ -46,6 +46,12 @@ export const verificationInitateFormMetaData: MetaDataType = {
           label: "Credit Score",
         },
       ],
+      postValidationSetCrossFieldValues: () => {
+        return {
+          entityType: { value: "00" },
+          management: { value: "00" },
+        };
+      },
     },
     {
       render: {
@@ -66,7 +72,7 @@ export const verificationInitateFormMetaData: MetaDataType = {
       name: "management",
       label: "Management Person",
       //@ts-ignore
-      options: "getManagementPersonnel",
+      options: "getApplicants",
       dependentFields: ["entityType"],
       shouldExclude: "shouldExcludeExternalAPIManagementDetails",
       disableCaching: true,
