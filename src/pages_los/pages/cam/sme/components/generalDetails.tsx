@@ -124,7 +124,7 @@ export const GeneralDetails = ({
             value="Credit Summation in Bank in Last 12 months"
             element="th"
           />
-          //value not coming from backend
+          {/* //value not coming from backend */}
           <Default colspan={7} value="" />
         </tr>
         <tr>
