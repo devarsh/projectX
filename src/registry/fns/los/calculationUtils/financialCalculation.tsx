@@ -35,7 +35,8 @@ export const calculateEBITDAPercentage = (dependentFields) => {
   const revenue = Number(dependentFields?.revenue?.value);
   if (ebitDa && revenue !== null) {
     const total = (ebitDa / revenue) * 100;
-    return Math.round(total);
+    // return Math.round(total);
+    return total;
   }
 };
 
@@ -44,7 +45,8 @@ export const calculateEBTPercentage = (dependentFields) => {
   const revenue = Number(dependentFields?.revenue?.value);
   if (ebt && revenue !== null) {
     const total = (ebt / revenue) * 100;
-    return Math.round(total);
+    // return Math.round(total);
+    return total;
   }
 };
 
@@ -52,7 +54,8 @@ export const calculatePatPercentage = (dependentFields) => {
   const pat = Number(dependentFields?.pat?.value);
   const revenue = Number(dependentFields?.revenue?.value);
   if (pat && revenue !== null) {
-    return (pat / revenue) * 100;
+    const total = (pat / revenue) * 100;
+    return total;
   }
 };
 
@@ -60,7 +63,8 @@ export const calculateCashProfitPercentage = (dependentFields) => {
   const cashProfit = Number(dependentFields?.cashProfit?.value);
   const revenue = Number(dependentFields?.revenue?.value);
   if (cashProfit && revenue !== null) {
-    return cashProfit / revenue;
+    const total = (cashProfit / revenue) * 100;
+    return total;
   }
 };
 
@@ -87,7 +91,8 @@ export const calculateAdjustedPatPercentage = (dependentFields) => {
   const adjustedPat = Number(dependentFields?.adjustedPat?.value);
   const revenue = Number(dependentFields?.revenue?.value);
   if (adjustedPat && revenue !== null) {
-    return adjustedPat / revenue;
+    const total = (adjustedPat / revenue) * 100;
+    return total;
   }
 };
 
@@ -95,7 +100,8 @@ export const calculateAdjustedCashProfitPercentage = (dependentFields) => {
   const adjustedCashProfit = Number(dependentFields?.adjustedCashProfit?.value);
   const revenue = Number(dependentFields?.revenue?.value);
   if (adjustedCashProfit && revenue !== null) {
-    return adjustedCashProfit / revenue;
+    const total = (adjustedCashProfit / revenue) * 100;
+    return total;
   }
 };
 

@@ -1,5 +1,5 @@
 import { BriefAboutProjectSubDetails } from "./subProjectBreif";
-import { Default, Amount } from "pages_los/pages/cam/components";
+import { Default, Amount, Numeric } from "pages_los/pages/cam/components";
 
 export const BriefAboutProject = ({ project }) => {
   let projectSubDetailsArray: any = [];
@@ -23,7 +23,7 @@ export const BriefAboutProject = ({ project }) => {
       <tr>
         <Default colspan={1} value="Sr.No" element="th" />
         <Default colspan={1} value="Particulars" element="th" />
-        <Default colspan={1} value="No. of Units" element="th" align="right" />
+        <Default colspan={1} value="No. of Units" element="th" />
         <Default
           colspan={1}
           value="Carpet Area(In Sq. Feet)"
@@ -50,24 +50,10 @@ export const BriefAboutProject = ({ project }) => {
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
               <Default colspan={1} value={projectDetail?.particulars} />
-              <Amount
-                colspan={1}
-                value={projectDetail?.units}
-                skipSymbol={true}
-              />
-
-              <Amount
-                colspan={1}
-                value={projectDetail.carpetArea}
-                skipSymbol={true}
-              />
-              <Amount
-                colspan={1}
-                value={projectDetail?.saleableArea}
-                skipSymbol={true}
-              />
+              <Default colspan={1} value={projectDetail?.units} />
+              <Numeric colspan={1} value={projectDetail.carpetArea} />
+              <Numeric colspan={1} value={projectDetail?.saleableArea} />
               <Amount colspan={2} value={projectDetail?.ratePerSquareFeet} />
-
               <Amount colspan={2} value={projectDetail.amount} />
             </tr>
           );

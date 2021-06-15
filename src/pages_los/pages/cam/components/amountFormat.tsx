@@ -13,10 +13,10 @@ export const Amount = ({
   align = "right",
   ...others
 }: any) => {
-  let currentFormat = Boolean(skipSymbol) ? numberFormatter : currencyFormatter;
   let result = "-";
+  let currentFormat = Boolean(skipSymbol) ? numberFormatter : currencyFormatter;
   if (value !== null && value !== "" && !isNaN(Number(value))) {
-    result = currentFormat.format(value);
+    result = `${currentFormat.format(value / 100000)}`;
   }
   return <Default value={result} {...others} align={align} />;
 };

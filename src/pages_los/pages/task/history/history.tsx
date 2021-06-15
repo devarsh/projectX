@@ -75,6 +75,11 @@ export const DetailsTabView: FC<{
     </>
   ) : (
     <Fragment>
+      <div style={{ position: "absolute", right: 0, top: 0 }}>
+        <IconButton onClick={closeDialog}>
+          <HighlightOffOutlinedIcon />
+        </IconButton>
+      </div>
       <DialogContent>
         <GridWrapper
           key={`externalAPIGridStatusListing`}
@@ -84,11 +89,6 @@ export const DetailsTabView: FC<{
           loading={loading}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={closeDialog} color="primary">
-          Cancel
-        </Button>
-      </DialogActions>
     </Fragment>
   );
   return renderResult;

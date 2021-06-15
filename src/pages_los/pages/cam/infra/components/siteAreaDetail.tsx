@@ -1,4 +1,4 @@
-import { Amount, Default } from "pages_los/pages/cam/components";
+import { Default, Numeric } from "pages_los/pages/cam/components";
 export const SiteAreaDetails = ({ siteArea }) => {
   if (typeof siteArea !== "object") {
     return null;
@@ -18,8 +18,8 @@ export const SiteAreaDetails = ({ siteArea }) => {
       </tr>
       <tr>
         <th colSpan={1} />
-        <Default colspan={6} value="Land Area (In Sq. feet):" />
-        <Amount colspan={2} skipSymbol={true} value={siteArea?.landArea} />
+        <Default colspan={6} value="Land Area (In Sq. Feet):" />
+        <Numeric colspan={2} value={siteArea?.landArea} />
       </tr>
       <tr>
         <th colSpan={1} />
@@ -27,16 +27,12 @@ export const SiteAreaDetails = ({ siteArea }) => {
           colspan={6}
           value="Construction Area as per Commencement Certificate (CC):"
         />
-        <Amount
-          colspan={2}
-          skipSymbol={true}
-          value={siteArea?.commencementCertificate}
-        />
+        <Numeric colspan={2} value={siteArea?.commencementCertificate} />
       </tr>
       <tr>
         <th colSpan={1} />
         <Default colspan={6} value="Block:" />
-        <Amount colspan={2} skipSymbol={true} value={siteArea?.siteBlock} />
+        <Numeric colspan={2} value={siteArea?.siteBlock} />
       </tr>
       <tr>
         <Default
@@ -65,16 +61,8 @@ export const SiteAreaDetails = ({ siteArea }) => {
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
               <Default colspan={2} value={projectDetail?.siteFloor} />
-              <Amount
-                colspan={2}
-                skipSymbol={true}
-                value={projectDetail?.buildUpArea}
-              />
-              <Amount
-                colspan={2}
-                skipSymbol={true}
-                value={projectDetail?.siteUsage}
-              />
+              <Numeric colspan={2} value={projectDetail?.buildUpArea} />
+              <Numeric colspan={2} value={projectDetail?.siteUsage} />
               <Default colspan={2} value={projectDetail?.units} />
             </tr>
           </>
