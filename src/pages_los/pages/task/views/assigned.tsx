@@ -10,6 +10,12 @@ export const AssignedTask = ({}) => {
       rowDoubleClick: true,
     },
     {
+      actionName: "TaskHistory",
+      actionLabel: "History",
+      multiple: false,
+      rowDoubleClick: false,
+    },
+    {
       actionName: "AddTask",
       actionLabel: "Add Task",
       multiple: undefined,

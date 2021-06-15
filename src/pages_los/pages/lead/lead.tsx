@@ -15,6 +15,12 @@ export const Lead = () => {
       rowDoubleClick: false,
     },
     {
+      actionName: "taskAssign",
+      actionLabel: "Assign Task",
+      multiple: false,
+      rowDoubleClick: false,
+    },
+    {
       actionName: "detailView",
       actionLabel: "Detail View",
       multiple: false,

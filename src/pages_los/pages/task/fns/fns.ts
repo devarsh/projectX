@@ -25,7 +25,10 @@ export const postValidationSetRefID = async (fieldData) => {
 };
 
 export const getWorkerListForTaskManag = async (dependentField) => {
-  if (!Boolean(dependentField?.taskFor?.value)) {
+  if (
+    !Boolean(dependentField?.taskFor?.value) &&
+    dependentField?.taskFor?.value !== "00"
+  ) {
     return [];
   }
   const { status, data } = await LOSSDK.internalFetcher(

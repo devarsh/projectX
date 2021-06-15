@@ -15,7 +15,7 @@ export const HeaderDetails = ({ rowData }) => {
       <Box display="flex" flexDirection="row" width={1} mb={2}>
         <Box pr={1}>
           <div className={classes.labelText}>LeadNo</div>
-          <div className={classes.valueText}>{rowData?.refID}</div>
+          <div className={classes.valueText}>{rowData?.leadNo}</div>
         </Box>
         <Box px={1}>
           <div className={classes.labelText}>Category Name</div>

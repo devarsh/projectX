@@ -8,6 +8,7 @@ import { ClearCacheProvider } from "cache";
 import { Transition } from "pages_los/common";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { serverGridContextGenerator } from "./context";
+import { AssignTask } from "pages_los/pages/task/assignTask";
 import { HeaderDetails } from "../headerDetails";
 import { DetailsTabView } from "../detailsTabView";
 import { Analysis } from "../analysis";
@@ -84,6 +85,12 @@ export const LeadGrid = ({ gridCode, actions }) => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
               isDataChangedRef={isDataEditedRef}
+            />
+          ) : (currentAction?.name ?? "") === "taskAssign" ? (
+            <AssignTask
+              moduleType="task"
+              isDataChangedRef={isDataEditedRef}
+              closeDialog={handleDialogClose}
             />
           ) : (currentAction?.name ?? "") === "verification" ? (
             <Verification

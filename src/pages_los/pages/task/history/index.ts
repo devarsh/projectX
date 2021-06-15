@@ -1,0 +1,1 @@
+export { DetailsTabView } from "./history";

@@ -1,23 +1,14 @@
-import { Default, Amount } from "pages_los/pages/cam/components";
+import { Default, Amount, Numeric } from "pages_los/pages/cam/components";
 
 export const BriefAboutProjectSubDetails = ({ subProject }) => {
   return (
     <>
       <br />
       <br />
-      {/* <tr>
-        <Default
-          colspan={9}
-          className="form-sub-heading"
-          align="center"
-          value="Brief About the Project Sub Detail"
-          element="th"
-        />
-      </tr> */}
       <tr>
         <Default colspan={1} value="Sr.No" element="th" />
         <Default colspan={1} value="Particulars" element="th" />
-        <Default colspan={1} value="No. of Units" element="th" align="right" />
+        <Default colspan={1} value="No. of Units" element="th" />
         <Default
           colspan={2}
           value="Saleable Area (In Sq. Feet)"
@@ -44,24 +35,9 @@ export const BriefAboutProjectSubDetails = ({ subProject }) => {
               <Default colspan={1} value={index + 1} />
               <Default colspan={1} value={projectSubDetail?.particulars} />
               <Default colspan={1} value={projectSubDetail?.units} />
-              <Amount
-                colspan={2}
-                skipSymbol={true}
-                value={projectSubDetail?.saleableArea}
-                align="right"
-              />
-              <Amount
-                colspan={2}
-                skipSymbol={true}
-                value={projectSubDetail?.carpetArea}
-                align="right"
-              />
-              <Amount
-                colspan={2}
-                skipSymbol={true}
-                value={projectSubDetail?.constructionArea}
-                align="right"
-              />
+              <Numeric colspan={2} value={projectSubDetail?.saleableArea} />
+              <Numeric colspan={2} value={projectSubDetail?.carpetArea} />
+              <Numeric colspan={2} value={projectSubDetail?.constructionArea} />
             </tr>
           );
         })}

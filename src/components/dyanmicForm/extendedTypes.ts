@@ -338,4 +338,24 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     maxLength: 20,
     showMaxLength: false,
   },
+  currencyWithLeadingZeros: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      thousandSeparator: true,
+      prefix: "₹",
+      thousandsGroupStyle: "lakh",
+      allowNegative: true,
+      allowLeadingZeros: false,
+      decimalScale: 2,
+      isAllowed: (values) => {
+        if (values?.value?.length > 10) {
+          return false;
+        }
+        return true;
+      },
+    },
+    maxLength: 10,
+  },
 };

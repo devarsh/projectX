@@ -90,7 +90,7 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
               <Default colspan={1} value={bankDetail?.accountType} />
               <Default colspan={1} value={bankDetail?.bankName} />
               <Default colspan={1} value={bankDetail?.outstandingAmountAsOn} />
-              <Default colspan={2} value={bankDetail?.outstandingAmount} />
+              <Amount colspan={2} value={bankDetail?.outstandingAmount} />
               <Percentage colspan={1} value={bankDetail?.rateOfInterest} />
               <Amount colspan={2} value={bankDetail?.existingLoanEMI} />
             </tr>

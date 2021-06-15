@@ -1,9 +1,9 @@
 import { LOSSDK } from "registry/fns/los";
-import { taskAssignMetadata } from "./editViewMetadata";
+import { taskAssignmentMetadata } from "../metadata/form";
 
 export const assignTask = ({ moduleType }) => async (formData) => {
   const { data, status } = await LOSSDK.internalFetcher(
-    `./${formData?.taskFor}/${moduleType}/post`,
+    `./${moduleType}/post`,
     {
       body: JSON.stringify({
         request_data: {
@@ -20,21 +20,15 @@ export const assignTask = ({ moduleType }) => async (formData) => {
   }
 };
 
-export const getTaskFormData = ({ moduleType }) => async (
-  taskID,
-  productType: any
-) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    `./${productType}/${moduleType}/get`,
-    {
-      body: JSON.stringify({
-        request_data: {
-          refID: "",
-          taskID: taskID,
-        },
-      }),
-    }
-  );
+export const getTaskFormData = ({ moduleType }) => async (taskID) => {
+  const { data, status } = await LOSSDK.internalFetcher(`./${moduleType}/get`, {
+    body: JSON.stringify({
+      request_data: {
+        refID: "",
+        taskID: taskID,
+      },
+    }),
+  });
   if (status === "success") {
     const { taskSource, ...others } = data?.response_data;
     return { ...others, taskFor: taskSource };
@@ -48,19 +42,16 @@ export const updateTaskFormData = ({
   inquiry,
   taskID,
 }: any) => async (formData) => {
-  const { data, status } = await LOSSDK.internalFetcher(
-    `./${formData?.taskFor}/${moduleType}/put`,
-    {
-      body: JSON.stringify({
-        request_data: {
-          taskID: taskID,
-          refID: inquiry,
-          ...formData,
-        },
-        channel: "W",
-      }),
-    }
-  );
+  const { data, status } = await LOSSDK.internalFetcher(`./${moduleType}/put`, {
+    body: JSON.stringify({
+      request_data: {
+        taskID: taskID,
+        refID: inquiry,
+        ...formData,
+      },
+      channel: "W",
+    }),
+  });
   if (status === "success") {
     return data?.response_data;
   } else {
@@ -68,4 +59,4 @@ export const updateTaskFormData = ({
   }
 };
 
-export const getMetadata = () => taskAssignMetadata;
+export const getMetadata = () => taskAssignmentMetadata;

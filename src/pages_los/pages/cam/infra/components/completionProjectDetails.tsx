@@ -1,4 +1,4 @@
-import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
+import { Default, DateFormat, Numeric } from "pages_los/pages/cam/components";
 
 export const ProjectDetails = ({ projectCompletion }) => {
   const completedProject = projectCompletion.filter(
@@ -64,11 +64,7 @@ export const ProjectDetailsRenderer = ({
               <Default colspan={1} value={projectDetail?.projectType} />
               <Default colspan={1} value={projectDetail?.totalUnits} />
               <Default colspan={1} value={projectDetail?.location} />
-              <Amount
-                colspan={1}
-                skipSymbol={true}
-                value={projectDetail?.totalBuildUpArea}
-              />
+              <Numeric colspan={1} value={projectDetail?.totalBuildUpArea} />
               <DateFormat colspan={1} value={projectDetail?.startDate} />
               <DateFormat colspan={1} value={projectDetail?.completionDate} />
               <DateFormat colspan={1} value={projectDetail?.groupName} />

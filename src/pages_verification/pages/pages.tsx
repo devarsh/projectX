@@ -11,7 +11,7 @@ export const Pages = () => {
       />
       <Route
         path="/email/:token"
-        element={<Verification apiType="email" otpLength={6} />}
+        element={<Verification apiType="email" otpLength={5} />}
       />
       <Route path="/credit/:token" element={<CreditScore otpLength={5} />} />
       <Route path="*" element={<div>Page not Exist</div>} />
