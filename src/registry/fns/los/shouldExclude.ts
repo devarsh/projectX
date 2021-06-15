@@ -136,7 +136,10 @@ export const showRetailHomeLAPEmployementField = (_, dependentValues) => {
 };
 
 export const externalAPIManagementDetails = (_, dependentValues) => {
-  if (dependentValues?.entityType?.value === "L") {
+  if (
+    dependentValues?.entityType?.value === "L" ||
+    dependentValues?.entityType?.value === "00"
+  ) {
     return true;
   }
   return false;

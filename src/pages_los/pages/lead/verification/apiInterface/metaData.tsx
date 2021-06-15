@@ -2,7 +2,7 @@ import { MetaDataType } from "components/dyanmicForm";
 
 export const verificationInitateFormMetaData: MetaDataType = {
   form: {
-    name: "itrAPI",
+    name: "verificationAPIForm",
     label: "Verification Inititation Request",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
@@ -37,7 +37,7 @@ export const verificationInitateFormMetaData: MetaDataType = {
       },
       name: "apiType",
       label: "API Type",
-      defaultValue: "mobile",
+      defaultValue: "00",
       options: [
         { value: "mobile", label: "Mobile" },
         { value: "email", label: "Email" },
@@ -46,6 +46,14 @@ export const verificationInitateFormMetaData: MetaDataType = {
           label: "Credit Score",
         },
       ],
+      postValidationSetCrossFieldValues: () => {
+        return {
+          entityType: { value: "00" },
+          management: { value: "00" },
+        };
+      },
+      validate: "getValidateValue",
+      required: true,
     },
     {
       render: {
@@ -53,11 +61,18 @@ export const verificationInitateFormMetaData: MetaDataType = {
       },
       name: "entityType",
       label: "Entity",
-      defaultValue: "L",
+      defaultValue: "00",
       dependentFields: ["apiType"],
       //@ts-ignore
       options: "getEntityType",
       disableCaching: true,
+      validate: "getValidateValue",
+      required: true,
+      postValidationSetCrossFieldValues: () => {
+        return {
+          management: { value: "00" },
+        };
+      },
     },
     {
       render: {
@@ -66,10 +81,13 @@ export const verificationInitateFormMetaData: MetaDataType = {
       name: "management",
       label: "Management Person",
       //@ts-ignore
-      options: "getManagementPersonnel",
+      options: "getApplicants",
+      defaultValue: "00",
       dependentFields: ["entityType"],
       shouldExclude: "shouldExcludeExternalAPIManagementDetails",
       disableCaching: true,
+      validate: "getValidateValue",
+      required: true,
     },
   ],
 };
