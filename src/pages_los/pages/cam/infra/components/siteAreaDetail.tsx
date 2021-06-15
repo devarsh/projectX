@@ -65,7 +65,11 @@ export const SiteAreaDetails = ({ siteArea }) => {
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
               <Default colspan={2} value={projectDetail?.siteFloor} />
-              <Amount colspan={2} value={projectDetail?.buildUpArea} />
+              <Amount
+                colspan={2}
+                skipSymbol={true}
+                value={projectDetail?.buildUpArea}
+              />
               <Amount
                 colspan={2}
                 skipSymbol={true}

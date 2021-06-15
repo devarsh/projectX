@@ -58,7 +58,7 @@ export const TaskViewEdit: FC<{
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
 
   useEffect(() => {
-    removeCache?.addEntry(["getFormData", moduleType, inquiryFor, taskID]);
+    removeCache?.addEntry(["getFormData", moduleType, taskID]);
     removeCache?.addEntry(["getFormMetaData", "view"]);
     removeCache?.addEntry(["getFormMetaData", "edit"]);
   }, [removeCache, taskID]);
@@ -67,14 +67,12 @@ export const TaskViewEdit: FC<{
     disableCache
       ? {
           queryKey: ["getTaskFormData", moduleType, taskID],
-          queryFn: () =>
-            API.getTaskFormData({ moduleType })(taskID, inquiryFor),
+          queryFn: () => API.getTaskFormData({ moduleType })(taskID),
           cacheTime: 0,
         }
       : {
           queryKey: ["getTaskFormData", moduleType, taskID],
-          queryFn: () =>
-            API.getTaskFormData({ moduleType })(taskID, inquiryFor),
+          queryFn: () => API.getTaskFormData({ moduleType })(taskID),
         },
     {
       queryKey: ["getFormMetaData", "view"],

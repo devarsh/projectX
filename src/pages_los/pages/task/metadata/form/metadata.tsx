@@ -133,7 +133,7 @@ export const taskAssignMetadata = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "select" },
+      render: { componentType: "autocomplete" },
       name: "worker",
       label: "Assigned",
       defaultValue: "00",
@@ -142,6 +142,7 @@ export const taskAssignMetadata = {
       validate: "getValidateValue",
       options: getWorkerListForTaskManag,
       disableCaching: true,
+      enableVirtualized: true,
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
