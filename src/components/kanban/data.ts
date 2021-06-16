@@ -1,3 +1,5 @@
+import { CardComponent1, CardComponent2, CardComponent3 } from "./components";
+
 export const data = [
   {
     id: 1,
@@ -51,17 +53,21 @@ export const columns = [
   {
     label: "Ahmedabad",
     id: "AHD",
+    component: CardComponent1,
   },
   {
     label: "Mumbai",
     id: "BOM",
-  },
-  {
-    label: "USA",
-    id: "US",
+    component: CardComponent2,
   },
   {
     label: "Canada",
     id: "CN",
+    component: CardComponent3,
+  },
+  {
+    label: "USA",
+    id: "US",
+    component: CardComponent3,
   },
 ];

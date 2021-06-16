@@ -38,6 +38,19 @@ export const Lead = () => {
             exclude = true;
             break;
           }
+          let currentBranchCode = `${rows[i].data?.branch_cd}`.trim();
+          if (Array.isArray(role) && role.length > 0) {
+            let currentRole = role.find(
+              (one) => one.branchCode === currentBranchCode
+            );
+            if (currentRole !== undefined) {
+              //role 3 & 4 is BDM & BDE
+              if ([3, 4].indexOf(currentRole?.roleTranCode) >= 0) {
+                exclude = true;
+                break;
+              }
+            }
+          }
         }
         return exclude;
       },

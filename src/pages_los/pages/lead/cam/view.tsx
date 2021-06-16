@@ -15,14 +15,14 @@ export const ViewCAM = ({ serialNo, closeDialog }) => {
     <Fragment>
       <DialogActions style={{ display: "flex", padding: "8px 24px" }}>
         <Typography variant="h6" color="textSecondary">
-          LeadNo
+          LeadNo:
         </Typography>
         <Typography variant="h6">{refID}</Typography>
         <Typography variant="h6" color="textSecondary">
-          SerialNo
+          VersionNo:
         </Typography>
         <Typography variant="h6">{serialNo}</Typography>
-        <div style={{ flexGrow: 1 }}></div>
+        <div style={{ flexGrow: 1 }} />
         {typeof closeDialog === "function" ? (
           <IconButton color="primary" onClick={closeDialog}>
             <Close />

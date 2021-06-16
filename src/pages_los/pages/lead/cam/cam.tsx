@@ -89,7 +89,13 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
         className={classes.printLayout}
         scroll="paper"
         PaperProps={{
-          style: { margin: "0", maxHeight: "100vh", padding: "8px 0" },
+          style: {
+            margin: "0",
+            maxHeight: "100vh",
+            padding: "8px 0",
+            width: "100%",
+            height: "100%",
+          },
         }}
       >
         {currentAction?.name === "Download" ? (

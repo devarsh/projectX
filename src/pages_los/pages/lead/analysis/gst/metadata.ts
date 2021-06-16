@@ -45,12 +45,12 @@ export const GSTAnalysisMetaData: MetaDataType = {
         componentType: "select",
       },
       name: "processFor",
-      label: "Profess For",
+      label: "Process For",
       defaultValue: "ALL",
       options: [
         { value: "ALL", label: "ALL" },
-        { value: "GSTR1", label: "GSTR1" },
-        { value: "GSTR3", label: "GSTR3" },
+        { value: "GSTR1", label: "GSTR-1" },
+        { value: "GSTR3", label: "GSTR-3" },
       ],
     },
     {

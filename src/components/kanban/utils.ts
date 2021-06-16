@@ -21,9 +21,10 @@ export const splitTask = (data, accessor, columns, columnAccessor) => {
       if (Array.isArray(result)) {
         return { ...one, items: result };
       } else {
-        return one;
+        return { ...one, items: [] };
       }
     });
+    m.clear();
     return newColumns;
   }
 };

@@ -1,9 +1,11 @@
+import { createElement } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import Card from "@material-ui/core/Card";
 
 const ItemWrapper = styled.div`
   margin: 8px 0px;
-  background: white;
+  background: ${(props) => (props.disabled ? "red" : "white")};
   padding: 8px;
 `;
 
@@ -22,20 +24,46 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-export const Item = ({ id, label, index }) => {
+export const Item = ({ id, label, index, loading, component }) => {
   return (
-    <Draggable key={id} draggableId={label} index={index}>
-      {(provided, snapshot) => (
-        <ItemWrapper
-          ref={provided.innerRef}
-          innerRef={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          {...getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-        >
-          {label}
-        </ItemWrapper>
-      )}
+    <Draggable
+      key={id}
+      draggableId={label}
+      index={index}
+      //isDragDisabled={Boolean(loading)}
+    >
+      {(provided, snapshot) => {
+        return (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            {...getItemStyle(
+              snapshot.isDragging,
+              provided.draggableProps.style
+            )}
+            title={label}
+          >
+            {createElement(component, { label: label })}
+          </div>
+        );
+      }}
     </Draggable>
   );
 };
+
+/*
+<ItemWrapper
+            disabled={loading}
+            ref={provided.innerRef}
+            innerRef={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            {...getItemStyle(
+              snapshot.isDragging,
+              provided.draggableProps.style
+            )}
+          >
+            {label}
+          </ItemWrapper>
+*/
