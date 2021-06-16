@@ -14,8 +14,16 @@ import { CAM } from "pages_los/pages/cam";
 import * as CAMAPI from "pages_los/pages/cam/api";
 import loaderGif from "assets/images/loader.gif";
 
-const generateCAMRequest = (generateFn) => (data) => {
-  return generateFn(data);
+interface GenerateCAMRequestType {
+  data: any;
+  amountIn: any;
+}
+
+const generateCAMRequest = (generateFn) => ({
+  data,
+  amountIn,
+}: GenerateCAMRequestType) => {
+  return generateFn(data, amountIn);
 };
 
 export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
@@ -32,7 +40,7 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
     }
   );
 
-  const mutation = useMutation<any, any>(
+  const mutation = useMutation<any, any, any, any>(
     generateCAMRequest(generateCAM.fn(generateCAM.args)),
     {
       onError: () => {},
@@ -75,7 +83,9 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
         <div style={{ flexGrow: 1 }}></div>
         <Button
           //@ts-ignore
-          onClick={() => mutation.mutate(result.data, amountIn)}
+          onClick={() =>
+            mutation.mutate({ data: result.data, amountIn: amountIn })
+          }
           disabled={mutation.isLoading}
           endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
         >

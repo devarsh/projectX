@@ -138,6 +138,15 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    //@ts-ignore
+    window.__logout = logout;
+    return () => {
+      //@ts-ignore
+      window.__logout = null;
+    };
+  }, [logout]);
+
+  useEffect(() => {
     let result = localStorage.getItem("authDetails");
     if (result !== null) {
       let localStorageAuthState: AuthStateType = JSON.parse(result);

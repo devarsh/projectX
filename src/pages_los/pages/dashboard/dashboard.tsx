@@ -172,7 +172,7 @@ export const Dashboard = () => {
         </Paper>
       </Grid>
 
-      <DashLet key="dashlet" />
+      {/*  <DashLet key="dashlet" />*/}
     </Grid>
   );
 };

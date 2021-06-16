@@ -50,6 +50,16 @@ const LOSAPI = () => {
           status: String(data.status) === "0" ? "success" : "failure",
           data: data,
         };
+      } else if (String(response.status) === "401") {
+        //@ts-ignore
+        if (typeof window.__logout === "function") {
+          //@ts-ignore
+          window.__logout();
+        }
+        return {
+          status: "failure",
+          data: "",
+        };
       } else {
         return {
           status: "failure",
