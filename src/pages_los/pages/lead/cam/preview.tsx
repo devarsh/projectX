@@ -21,10 +21,15 @@ const generateCAMRequest = (generateFn) => (data) => {
 export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
   const { context, generateCAM } = useContext(CAMContext);
   const { enqueueSnackbar } = useSnackbar();
+
   const { refID } = context;
 
-  const result = useQuery<any, any, any>(["getCAMData", refID], () =>
-    CAMAPI.getCAMData({ refID })
+  const result = useQuery<any, any, any>(
+    ["getCAMData", refID],
+    () => CAMAPI.getCAMData({ refID }),
+    {
+      cacheTime: 0,
+    }
   );
 
   const mutation = useMutation<any, any>(
