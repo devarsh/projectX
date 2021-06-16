@@ -2,66 +2,66 @@ export const data = [
   {
     id: 1,
     label: "devarsh",
-    columnID: 1,
+    columnID: "AHD",
   },
   {
     id: 2,
     label: "dvija",
-    columnID: 1,
+    columnID: "AHD",
   },
   {
     id: 3,
     label: "nirali",
-    columnID: 3,
+    columnID: "US",
   },
   {
     id: 4,
     label: "harsh",
-    columnID: 3,
+    columnID: "US",
   },
   {
     id: 5,
     label: "aayush",
-    columnID: 3,
+    columnID: "US",
   },
-  { id: 6, label: "urja", columnID: 1 },
+  { id: 6, label: "urja", columnID: "AHD" },
   {
     id: 7,
     label: "shimoli",
-    columnID: 2,
+    columnID: "BOM",
   },
   {
     id: 8,
     label: "rimoni",
-    columnID: 2,
+    columnID: "BOM",
   },
   {
     id: 9,
     label: "hriman",
-    columnID: 4,
+    columnID: "CN",
   },
   {
     id: 10,
     label: "aryaman",
-    columnID: 4,
+    columnID: "CN",
   },
 ];
 
 export const columns = [
   {
     label: "Ahmedabad",
-    id: 1,
+    id: "AHD",
   },
   {
     label: "Mumbai",
-    id: 2,
+    id: "BOM",
   },
   {
     label: "USA",
-    id: 3,
+    id: "US",
   },
   {
     label: "Canada",
-    id: 4,
+    id: "CN",
   },
 ];

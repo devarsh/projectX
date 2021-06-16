@@ -24,8 +24,12 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
   const [amountIn, setAmountIn] = useState(1);
   const { refID } = context;
 
-  const result = useQuery<any, any, any>(["getCAMData", refID], () =>
-    CAMAPI.getCAMData({ refID })
+  const result = useQuery<any, any, any>(
+    ["getCAMData", refID],
+    () => CAMAPI.getCAMData({ refID }),
+    {
+      cacheTime: 0,
+    }
   );
 
   const mutation = useMutation<any, any>(

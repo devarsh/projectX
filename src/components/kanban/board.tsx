@@ -4,7 +4,6 @@ import { Column } from "./column";
 const BoardContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 `;
 
 export const Board = ({ data }) => {
