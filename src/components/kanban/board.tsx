@@ -7,6 +7,7 @@ const BoardContainer = styled.div`
 `;
 
 export const Board = ({ data }) => {
+  throw new Error("oops");
   return (
     <BoardContainer>
       {data.map((one) => (

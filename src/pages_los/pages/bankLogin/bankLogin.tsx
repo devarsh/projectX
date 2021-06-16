@@ -1,3 +1,3 @@
-const abc = () => <div>Wow new module</div>;
+const abc = () => <div>Work in Progress</div>;
 
 export default abc;
