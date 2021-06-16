@@ -1,6 +1,9 @@
 import { Default } from "./default";
+import { useContext } from "react";
+import { AmountContext } from "../context";
 
 let currencyFormatter = new Intl.NumberFormat("en-IN", {
+  minimumFractionDigits: 2,
   style: "currency",
   currency: "INR",
 });
@@ -13,10 +16,11 @@ export const Amount = ({
   align = "right",
   ...others
 }: any) => {
+  let ctx = useContext(AmountContext);
   let result = "-";
   let currentFormat = Boolean(skipSymbol) ? numberFormatter : currencyFormatter;
   if (value !== null && value !== "" && !isNaN(Number(value))) {
-    result = `${currentFormat.format(value / 100000)}`;
+    result = `${currentFormat.format(value / ctx?.amountIn ?? 1)}`;
   }
   return <Default value={result} {...others} align={align} />;
 };

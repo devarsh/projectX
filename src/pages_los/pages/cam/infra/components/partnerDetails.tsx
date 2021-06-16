@@ -1,5 +1,10 @@
 import { NomineeDetails } from "./nomineeDetails";
-import { Percentage, Default, Amount } from "pages_los/pages/cam/components";
+import {
+  Percentage,
+  Default,
+  Amount,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 
 export const PromoterDetails = ({ promoter }) => {
   return (
@@ -22,7 +27,7 @@ export const PromoterDetails = ({ promoter }) => {
         <Default colspan={2} value="Nominee" element="th" />
         <Default colspan={1} value="Share%" element="th" />
       </tr>
-      {Array.isArray(promoter) &&
+      {Array.isArray(promoter) ? (
         promoter.map((promoterData, index) => {
           return (
             <>
@@ -46,7 +51,10 @@ export const PromoterDetails = ({ promoter }) => {
               </tr>
             </>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

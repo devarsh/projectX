@@ -3,6 +3,7 @@ import {
   DateFormat,
   Amount,
   Percentage,
+  NotAvailable,
 } from "pages_los/pages/cam/components";
 
 export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
@@ -35,7 +36,7 @@ export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(natureOfFacilityPresent) &&
+      {Array.isArray(natureOfFacilityPresent) ? (
         natureOfFacilityPresent.map((presentDetails, index) => {
           return (
             <>
@@ -55,7 +56,10 @@ export const NatureofFacilityPresentDetails = ({ natureOfFacilityPresent }) => {
               </tr>
             </>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

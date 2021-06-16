@@ -1,5 +1,10 @@
 import { BriefAboutProjectSubDetails } from "./subProjectBreif";
-import { Default, Amount, Numeric } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Numeric,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 
 export const BriefAboutProject = ({ project }) => {
   let projectSubDetailsArray: any = [];
@@ -44,7 +49,7 @@ export const BriefAboutProject = ({ project }) => {
         />
         <Default colspan={2} value="Amount" element="th" align="right" />
       </tr>
-      {Array.isArray(project) &&
+      {Array.isArray(project) ? (
         project.map((projectDetail, index) => {
           return (
             <tr key={index}>
@@ -57,7 +62,10 @@ export const BriefAboutProject = ({ project }) => {
               <Amount colspan={2} value={projectDetail.amount} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
       <BriefAboutProjectSubDetails subProject={projectSubDetailsArray} />
     </>
   );

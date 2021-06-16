@@ -77,12 +77,24 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
           <Default colspan={7} value={general?.udhyogNumber} />
         </tr>
         <tr>
+          <Default colspan={2} value="GST No" element="th" />
+          <Default colspan={7} value={general?.gstNumber} />
+        </tr>
+        <tr>
           <Default colspan={2} value="CMR Ranking" element="th" />
           <Default colspan={7} value={general?.crmRank} />
         </tr>
         <tr>
           <Default colspan={2} value="Purpose of loan" element="th" />
           <Default colspan={7} value={general?.purposeLoan} />
+        </tr>
+        <tr>
+          <Default
+            colspan={2}
+            value="Turnover in current financial year"
+            element="th"
+          />
+          <Amount colspan={7} value={general?.turnOverAmount} align="left" />
         </tr>
         <tr>
           <Default
@@ -98,7 +110,7 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
             value="Average Utilisation of Working Capital Limits"
             element="th"
           />
-          <Amount colspan={7} value={general?.limitBal} align="left" />
+          <Percentage colspan={7} value={general?.limitBal} align="left" />
         </tr>
         <tr>
           <Default
@@ -106,17 +118,21 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
             value="Credit Summation in Bank in Last 12 months"
             element="th"
           />
+          {/* //value not coming from backend */}
+          <Default colspan={7} value="" />
+        </tr>
+        <tr>
+          <Default colspan={2} value="Inward cheque bounces" element="th" />
           <Default colspan={7} value={general?.chequeBounces} />
         </tr>
         <tr>
           <Default
             colspan={2}
-            value="Inward cheque bounces, if any and % of total Cheque bounce"
+            value="Percentage of total cheque bounces"
             element="th"
           />
-          <Percentage colspan={7} value={general?.chequeBounces} />
+          <Percentage colspan={7} value={general?.chequeBouncesPer} />
         </tr>
-
         <Address value={address} />
         <PromoterDetails promoter={promoter} />
       </>

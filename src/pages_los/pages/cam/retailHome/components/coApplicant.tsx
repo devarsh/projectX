@@ -1,6 +1,11 @@
 import { ReturnFilingDetails } from "./returnFilingDetails";
 import { SalaryDetails } from "./salaryDetails";
-import { Default, Age, DateFormat } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Age,
+  DateFormat,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 
 export const CoApplicantDetails = ({ coApplicant }) => {
   if (!Array.isArray(coApplicant) || coApplicant.length <= 0) {
@@ -17,7 +22,7 @@ export const CoApplicantDetails = ({ coApplicant }) => {
           />
         </tr>
         <tr>
-          <Default colspan={9} value="Not Available" align="center" />
+          <NotAvailable />
         </tr>
       </>
     );

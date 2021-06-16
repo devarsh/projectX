@@ -1,4 +1,6 @@
+import Typography from "@material-ui/core/Typography";
 import { lazy, Suspense } from "react";
+import { AmountContextProvider } from "./context";
 import "./styles.css";
 
 const SME = lazy(() =>
@@ -54,11 +56,22 @@ const CAM_NOT_AVAILABLE = ({ others: { productID } }) => {
   return <div>No CAM avaiable for productID {productID}</div>;
 };
 
-export const CAM = ({ camData }) => {
+export const CAM = ({ camData, amountIn = 1 }) => {
   let ComponentToRender = selectComponent(camData);
   return (
     <Suspense fallback={<span>loading..</span>}>
-      <ComponentToRender data={camData?.data} others={camData?.others} />
+      <div style={{ display: "flex", maxWidth: "210mm", margin: "0 auto" }}>
+        <Typography variant="subtitle2">
+          {amountIn === 100000
+            ? "Note : All amounts are in Lacs"
+            : amountIn === 10000000
+            ? "Note : All amounts are in Crore"
+            : null}
+        </Typography>
+      </div>
+      <AmountContextProvider amountIn={amountIn}>
+        <ComponentToRender data={camData?.data} others={camData?.others} />
+      </AmountContextProvider>
     </Suspense>
   );
 };

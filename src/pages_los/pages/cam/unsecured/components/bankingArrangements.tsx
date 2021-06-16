@@ -1,4 +1,9 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Percentage,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 
 export const BankDetails = ({ bank }) => {
   const savingOrCurrentAccountDetails = bank.filter(
@@ -32,7 +37,7 @@ export const BankDetails = ({ bank }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(savingOrCurrentAccountDetails) &&
+      {Array.isArray(savingOrCurrentAccountDetails) ? (
         savingOrCurrentAccountDetails.map((bankDetail, index) => {
           return (
             <tr key={index}>
@@ -43,7 +48,10 @@ export const BankDetails = ({ bank }) => {
               <Amount colspan={2} value={bankDetail?.averageBalance} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
       <OtherBankAccountTypeDetails otherAccountDetails={otherAccountDetails} />
     </>
   );

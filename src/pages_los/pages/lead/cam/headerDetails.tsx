@@ -1,7 +1,14 @@
 import Box from "@material-ui/core/Box";
 import { useStyles } from "./style";
+import { SelectRenderOnly as Select } from "components/common/select";
 
-export const HeaderDetails = ({ rowData }) => {
+const options = [
+  { label: "Default", value: 1 },
+  { label: "Lac", value: 100000 },
+  { label: "Crore", value: 10000000 },
+];
+
+export const HeaderDetails = ({ rowData, setAmountIn, amountIn }) => {
   const classes = useStyles();
 
   return (
@@ -32,11 +39,27 @@ export const HeaderDetails = ({ rowData }) => {
           </Box>
         ) : null}
         {rowData?.subProduct2Name !== "" ? (
-          <Box pl={1}>
+          <Box px={1}>
             <div className={classes.labelText}>Sub Product2 Name</div>
             <div className={classes.valueText}>{rowData?.subProduct2Name}</div>
           </Box>
         ) : null}
+
+        <Box pl={1} style={{ width: "100px" }}>
+          <Select
+            label="Amount In"
+            size="small"
+            touched={true}
+            error={""}
+            value={amountIn}
+            handleChange={(e) => setAmountIn(e.target.value)}
+            handleBlur={() => true}
+            options={options}
+            _optionsKey={"amountIn"}
+            fullWidth={true}
+            selectVariant="regular"
+          />
+        </Box>
       </Box>
     </Box>
   );

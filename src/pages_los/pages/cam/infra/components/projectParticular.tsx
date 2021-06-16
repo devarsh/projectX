@@ -1,4 +1,9 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Percentage,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 export const ProjectParticularDetails = ({ projectParticular }) => {
   const meansOfFiance = projectParticular.filter(
     (one) => one.particularType === "Total Means of Finance"
@@ -30,7 +35,7 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
         />
         <Default colspan={2} element="th" value="% of Total Cost" />
       </tr>
-      {Array.isArray(costOfProject) &&
+      {Array.isArray(costOfProject) ? (
         costOfProject.map((projectDetail, index) => (
           <tr key={index}>
             <Default colspan={1} value={index + 1} />
@@ -43,7 +48,10 @@ export const ProjectParticularDetails = ({ projectParticular }) => {
               value={projectDetail?.totalCostPercentage}
             />
           </tr>
-        ))}
+        ))
+      ) : (
+        <NotAvailable />
+      )}
       <MeansOfFinnaceProjectDetails projectParticular={meansOfFiance} />
     </>
   );
@@ -68,7 +76,7 @@ export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
         <Default colspan={2} element="th" value="Funds Infused" align="right" />
         <Default colspan={2} element="th" value="% of Total Cost" />
       </tr>
-      {Array.isArray(projectParticular) &&
+      {Array.isArray(projectParticular) ? (
         projectParticular.map((projectDetail, index) => (
           <tr key={index}>
             <Default colspan={1} value={index + 1} />
@@ -80,7 +88,10 @@ export const MeansOfFinnaceProjectDetails = ({ projectParticular }) => {
             <Amount colspan={2} vaue={projectDetail?.fundInfused} />
             <Percentage colspan={2} value={projectDetail.totalCostPercentage} />
           </tr>
-        ))}
+        ))
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

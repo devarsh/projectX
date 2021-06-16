@@ -18,10 +18,6 @@ export const OtherEmployeesApplicantDetails = ({
   return (
     <>
       <tr>
-        <Default colspan={2} value="Loan Requested" element="th" />
-        <Amount colspan={7} value={loanAmount} align="left" />
-      </tr>
-      <tr>
         <Default
           colspan={9}
           value="Applicant Details"
@@ -45,6 +41,10 @@ export const OtherEmployeesApplicantDetails = ({
       <tr>
         <Default colspan={2} value="Age" element="th" />
         <Age colspan={7} value={applicant?.birthDate} />
+      </tr>
+      <tr>
+        <Default colspan={2} value="Loan Requested" element="th" />
+        <Amount colspan={7} value={loanAmount} align="left" />
       </tr>
       <OtherEmployeesReturnFilingDetails
         returnFiling={applicant.returnFilingDetails}

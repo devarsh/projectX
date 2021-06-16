@@ -38,7 +38,7 @@ export const OtherEmployeesSalaryDetails = ({ salary }) => {
               <Default colspan={1} value={index + 1} />
               <DateFormat colspan={2} value={salaryDetails?.salaryMonth} />
               <Amount colspan={2} value={salaryDetails?.netSalary} />
-              <Amount colspan={2} value={salaryDetails?.otherIncome} />
+              <Amount colspan={2} value={salaryDetails?.otherIncomeAmount} />
               <Amount colspan={2} value={salaryDetails?.totalIncome} />
             </tr>
           </>

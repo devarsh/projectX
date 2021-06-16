@@ -1,4 +1,9 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Percentage,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 export const NatureofFacilityProposedDetails = ({
   natureOfFacilityProposed,
 }) => {
@@ -20,7 +25,7 @@ export const NatureofFacilityProposedDetails = ({
         <Default colspan={2} value="Requested ROI" element="th" />
         <Default colspan={2} value="Amount" element="th" align="right" />
       </tr>
-      {Array.isArray(natureOfFacilityProposed) &&
+      {Array.isArray(natureOfFacilityProposed) ? (
         natureOfFacilityProposed.map((proposedDetails, index) => {
           return (
             <>
@@ -36,7 +41,10 @@ export const NatureofFacilityProposedDetails = ({
               </tr>
             </>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };
