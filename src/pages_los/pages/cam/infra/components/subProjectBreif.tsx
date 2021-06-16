@@ -1,4 +1,4 @@
-import { Default, Amount, Numeric } from "pages_los/pages/cam/components";
+import { Default, Numeric, NotAvailable } from "pages_los/pages/cam/components";
 
 export const BriefAboutProjectSubDetails = ({ subProject }) => {
   return (
@@ -28,7 +28,7 @@ export const BriefAboutProjectSubDetails = ({ subProject }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(subProject) &&
+      {Array.isArray(subProject) ? (
         subProject.map((projectSubDetail, index) => {
           return (
             <tr key={index}>
@@ -40,7 +40,10 @@ export const BriefAboutProjectSubDetails = ({ subProject }) => {
               <Numeric colspan={2} value={projectSubDetail?.constructionArea} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Default } from "pages_los/pages/cam/components";
+import { Default, NotAvailable } from "pages_los/pages/cam/components";
 import {
   printTDS,
   printTDSForAmount,
@@ -20,7 +20,7 @@ export const FinancialRatios = ({ finance }) => {
           />
         </tr>
         <tr>
-          <Default colspan={9} value="Not Available" align="center" />
+          <NotAvailable />
         </tr>
       </>
     );

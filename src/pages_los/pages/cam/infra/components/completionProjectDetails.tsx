@@ -1,4 +1,9 @@
-import { Default, DateFormat, Numeric } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  Numeric,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 
 export const ProjectDetails = ({ projectCompletion }) => {
   const completedProject = projectCompletion.filter(
@@ -55,7 +60,7 @@ export const ProjectDetailsRenderer = ({
         <Default colspan={1} value="Completion Date" element="th" />
         <Default colspan={1} value="Name of the Group" element="th" />
       </tr>
-      {Array.isArray(projectDetails) &&
+      {Array.isArray(projectDetails) ? (
         projectDetails.map((projectDetail) => {
           return (
             <tr>
@@ -67,10 +72,13 @@ export const ProjectDetailsRenderer = ({
               <Numeric colspan={1} value={projectDetail?.totalBuildUpArea} />
               <DateFormat colspan={1} value={projectDetail?.startDate} />
               <DateFormat colspan={1} value={projectDetail?.completionDate} />
-              <DateFormat colspan={1} value={projectDetail?.groupName} />
+              <Default colspan={1} value={projectDetail?.groupName} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

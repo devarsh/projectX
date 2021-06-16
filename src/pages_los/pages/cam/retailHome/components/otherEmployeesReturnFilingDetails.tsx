@@ -36,7 +36,10 @@ export const OtherEmployeesReturnFilingDetails = ({ returnFiling }) => {
               <DateFormat colspan={1} value={returnFilingDetails?.filingDate} />
               <Amount colspan={1} value={returnFilingDetails?.netProfit} />
               <Amount colspan={2} value={returnFilingDetails?.depreciation} />
-              <Amount colspan={2} value={returnFilingDetails?.otherIncome} />
+              <Amount
+                colspan={2}
+                value={returnFilingDetails?.otherIncomeAmount}
+              />
               <Amount colspan={2} value={returnFilingDetails?.totalIncome} />
             </tr>
           </>

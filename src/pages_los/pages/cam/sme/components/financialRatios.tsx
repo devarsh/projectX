@@ -4,7 +4,7 @@ import {
   printTDSForPercentage,
   convertIntoCurrency,
 } from "pages_los/pages/cam/utils";
-import { Default } from "pages_los/pages/cam/components";
+import { Default, NotAvailable } from "pages_los/pages/cam/components";
 
 export const FinancialRatios = ({ finance }) => {
   if (!Array.isArray(finance) || finance.length <= 0) {
@@ -20,7 +20,7 @@ export const FinancialRatios = ({ finance }) => {
           />
         </tr>
         <tr>
-          <Default colspan={9} value="Not Available" align="center" />
+          <NotAvailable />
         </tr>
       </>
     );

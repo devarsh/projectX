@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { MiddlewareSDK } from "registry/fns/middleware";
 import loaderGif from "assets/images/loader.gif";
 import { CAM } from "pages_los/pages/cam";
@@ -8,6 +8,9 @@ import Typography from "@material-ui/core/Typography";
 
 export const CAMMiddlewareWrapper = () => {
   const { refID } = useParams();
+  const data = useLocation();
+  const amountIn = new URLSearchParams(data?.search).get("amountIn");
+  console.log(data);
   const result = useQuery(["getCAMDataMiddleware", refID], () =>
     MiddlewareSDK.getCAMData({ refID })
   );
@@ -22,12 +25,12 @@ export const CAMMiddlewareWrapper = () => {
       }
     </span>
   ) : (
-    <CAMParent data={result.data} />
+    <CAMParent data={result.data} amountIn={amountIn} />
   );
   return renderResult;
 };
 
-export const CAMParent = ({ data, date = new Date() }) => (
+export const CAMParent = ({ data, date = new Date(), amountIn }) => (
   <div
     style={{
       maxWidth: "230mm",
@@ -53,6 +56,6 @@ export const CAMParent = ({ data, date = new Date() }) => (
         Generation Date: {date.toLocaleDateString()} {date.toLocaleTimeString()}
       </Typography>
     </div>
-    <CAM camData={data} />
+    <CAM camData={data} amountIn={amountIn ?? 1} />
   </div>
 );

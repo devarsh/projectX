@@ -1,7 +1,6 @@
 import { IncomeSummaryDetails } from "./incomeSummary";
 import {
   Default,
-  Percentage,
   Amount,
   DateFormat,
   Age,

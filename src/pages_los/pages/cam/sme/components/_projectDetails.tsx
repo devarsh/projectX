@@ -1,4 +1,9 @@
-import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
+import {
+  Default,
+  DateFormat,
+  Amount,
+  NotAvailable,
+} from "pages_los/pages/cam/components";
 export const ProjectDetails = ({ project }) => {
   if (!Array.isArray(project) || project.length <= 0) {
     return (
@@ -13,7 +18,7 @@ export const ProjectDetails = ({ project }) => {
           />
         </tr>
         <tr>
-          <Default colspan={9} align="center" value="Not Available" />
+          <NotAvailable />
         </tr>
       </>
     );
@@ -218,7 +223,7 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
         />
       </tr>
 
-      {Array.isArray(costOfProject) &&
+      {Array.isArray(costOfProject) ? (
         costOfProject.map((projectParticularData, index) => {
           return (
             <>
@@ -236,7 +241,10 @@ const ProjectParticulaDetails = ({ projectParticular }) => {
               </tr>
             </>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
       <MeansOfFinance meandOfFinanceDetails={meansOfFinance} />
       <br />
     </>
@@ -271,7 +279,7 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(meandOfFinanceDetails) &&
+      {Array.isArray(meandOfFinanceDetails) ? (
         meandOfFinanceDetails.map((meansOfFinanceData, index) => {
           return (
             <tr>
@@ -281,7 +289,10 @@ export const MeansOfFinance = ({ meandOfFinanceDetails }) => {
               <Amount colspan={3} value={meansOfFinanceData?.incurredAmount} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };
@@ -309,7 +320,7 @@ export const Machieneries = ({ machieneries }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(machieneries) &&
+      {Array.isArray(machieneries) ? (
         machieneries.map((machieneriesDetails, index) => {
           return (
             <tr key={index}>
@@ -323,7 +334,10 @@ export const Machieneries = ({ machieneries }) => {
               />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };
@@ -349,7 +363,7 @@ export const ManufacturedProduct = ({ manufacturedProduct }) => {
           align="center"
         />
       </tr>
-      {Array.isArray(manufacturedProduct) &&
+      {Array.isArray(manufacturedProduct) ? (
         manufacturedProduct.map((manufacturedProducts, index) => {
           return (
             <tr>
@@ -361,7 +375,10 @@ export const ManufacturedProduct = ({ manufacturedProduct }) => {
               />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

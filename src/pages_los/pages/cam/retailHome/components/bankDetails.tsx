@@ -1,4 +1,10 @@
-import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
+import {
+  Default,
+  Amount,
+  Percentage,
+  NotAvailable,
+  DateFormat,
+} from "pages_los/pages/cam/components";
 
 export const BankDetails = ({ bank }) => {
   if (!Array.isArray(bank) || bank.length <= 0) {
@@ -38,7 +44,7 @@ export const BankDetails = ({ bank }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(savingOrCurrentAccountDetails) &&
+      {Array.isArray(savingOrCurrentAccountDetails) ? (
         savingOrCurrentAccountDetails.map((bankDetail, index) => {
           return (
             <tr key={index}>
@@ -49,16 +55,16 @@ export const BankDetails = ({ bank }) => {
               <Amount colspan={2} value={bankDetail?.averageBalance} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
       <OtherBankAccountTypeDetails otherAccountDetails={otherAccountDetails} />
     </>
   );
 };
 
 export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
-  // if (!Array.isArray(otherAccountDetails) || otherAccountDetails.length <= 0) {
-  //   return null;
-  // }
   return (
     <>
       <br />
@@ -82,20 +88,26 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(otherAccountDetails) &&
+      {Array.isArray(otherAccountDetails) ? (
         otherAccountDetails.map((bankDetail, index) => {
           return (
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
               <Default colspan={1} value={bankDetail?.accountType} />
               <Default colspan={1} value={bankDetail?.bankName} />
-              <Default colspan={1} value={bankDetail?.outstandingAmountAsOn} />
+              <DateFormat
+                colspan={1}
+                value={bankDetail?.outstandingAmountAsOn}
+              />
               <Amount colspan={2} value={bankDetail?.outstandingAmount} />
               <Percentage colspan={1} value={bankDetail?.rateOfInterest} />
               <Amount colspan={2} value={bankDetail?.existingLoanEMI} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

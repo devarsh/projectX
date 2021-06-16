@@ -5,3 +5,4 @@ export * from "./percentage";
 export * from "./address";
 export * from "./ageCalculate";
 export * from "./numericFormat";
+export * from "./notAvailable";

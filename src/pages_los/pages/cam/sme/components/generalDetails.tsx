@@ -83,6 +83,10 @@ export const GeneralDetails = ({
           <Default colspan={7} value={general?.udhyogNumber} />
         </tr>
         <tr>
+          <Default colspan={2} value="GST No" element="th" />
+          <Default colspan={7} value={general?.gstNumber} />
+        </tr>
+        <tr>
           <Default colspan={2} value="CMR Ranking" element="th" />
           <Default colspan={7} value={general?.crmRank} />
         </tr>
@@ -116,7 +120,7 @@ export const GeneralDetails = ({
             value="Average Utilisation of Working Capital Limits"
             element="th"
           />
-          <Amount colspan={7} value={general?.limitBal} align="left" />
+          <Percentage colspan={7} value={general?.limitBal} align="left" />
         </tr>
         <tr>
           <Default
@@ -134,7 +138,7 @@ export const GeneralDetails = ({
         <tr>
           <Default
             colspan={2}
-            value="Inward cheque bounces Percentage"
+            value="Percentage of total cheque bounces"
             element="th"
           />
           <Percentage colspan={7} value={general?.chequeBouncesPer} />

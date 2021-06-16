@@ -102,7 +102,7 @@ export const OtherEmployeesOtherDetails = ({ other }) => {
       </tr>
       <tr>
         <Default colspan={2} value="Loan Amount Based on LTV" element="th" />
-        <Amount colspan={7} value={other?.newfoir} align="left" />
+        <Amount colspan={7} value={other?.loanAmountBasedOnLTV} align="left" />
       </tr>
       <tr>
         <Default colspan={2} value="Eligible Loan Amount" element="th" />

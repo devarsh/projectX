@@ -5,6 +5,7 @@ import {
   Amount,
   DateFormat,
   Age,
+  NotAvailable,
 } from "pages_los/pages/cam/components";
 
 export const ManagementDetails = ({ management }) => {
@@ -21,7 +22,7 @@ export const ManagementDetails = ({ management }) => {
           />
         </tr>
         <tr>
-          <Default colspan={9} value="Not Available" align="center" />
+          <NotAvailable />
         </tr>
       </>
     );
@@ -38,84 +39,85 @@ export const ManagementDetails = ({ management }) => {
           element="th"
         />
       </tr>
-      {management.map((data: any, index) => {
-        return (
-          <>
-            <tr>
-              <Default
-                colspan={2}
-                value="Name of the Partner/Director"
-                element="th"
-              />
-              <Default
-                colspan={7}
-                value={`${data.salutation}${" "}${data?.firstName}
+      {Array.isArray(management) &&
+        management.map((data: any, index) => {
+          return (
+            <>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Name of the Partner/Director"
+                  element="th"
+                />
+                <Default
+                  colspan={7}
+                  value={`${data.salutation}${" "}${data?.firstName}
                 ${" "}${data?.middleName}${" "}${data?.lastName}`}
-              />
-            </tr>
-            <tr>
-              <Default colspan={2} value="Birth Date" element="th" />
-              <DateFormat colspan={7} value={data?.dob} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="Age" element="th" />
-              <Age colspan={7} value={data?.dob} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="PAN No" element="th" />
-              <Default colspan={7} value={data?.panNumber} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="DIN / LLPIN No" element="th" />
-              <Default colspan={7} value={data?.dinLlPinNo} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="Credit Score" element="th" />
-              <Default colspan={7} value={data?.creditScore} />
-            </tr>
-            <tr>
-              <Default
-                colspan={2}
-                value="Educational Qualification"
-                element="th"
-              />
-              <Default colspan={7} value={data?.educationQalification} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="Experience" element="th" />
-              <Default colspan={7} value={data?.experience} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="Associate Companies" element="th" />
-              <Default colspan={7} value={data?.associatedCompany} />
-            </tr>
-            <tr>
-              <Default
-                colspan={2}
-                value="Profit Sharing / Shareholding %"
-                element="th"
-              />
-              <Percentage colspan={7} value={data?.profitSharing} />
-            </tr>
-            <tr>
-              <Default colspan={2} value="Networth" element="th" />
-              <Amount colspan={7} value={data?.netWorth} align="left" />
-            </tr>
-            <tr>
-              <Default
-                colspan={2}
-                value="Resposnibilities Handled in the Comapany"
-                element="th"
-              />
-              <Default colspan={7} value={data?.responsibility} />
-            </tr>
-            <IncomeDetails income={data?.incomeDetails ?? ""} />
+                />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Birth Date" element="th" />
+                <DateFormat colspan={7} value={data?.dob} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Age" element="th" />
+                <Age colspan={7} value={data?.dob} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="PAN No" element="th" />
+                <Default colspan={7} value={data?.panNumber} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="DIN / LLPIN No" element="th" />
+                <Default colspan={7} value={data?.dinLlPinNo} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Credit Score" element="th" />
+                <Default colspan={7} value={data?.creditScore} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Educational Qualification"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.educationQalification} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Experience" element="th" />
+                <Default colspan={7} value={data?.experience} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Associate Companies" element="th" />
+                <Default colspan={7} value={data?.associatedCompany} />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Profit Sharing / Shareholding %"
+                  element="th"
+                />
+                <Percentage colspan={7} value={data?.profitSharing} />
+              </tr>
+              <tr>
+                <Default colspan={2} value="Networth" element="th" />
+                <Amount colspan={7} value={data?.netWorth} align="left" />
+              </tr>
+              <tr>
+                <Default
+                  colspan={2}
+                  value="Resposnibilities Handled in the Comapany"
+                  element="th"
+                />
+                <Default colspan={7} value={data?.responsibility} />
+              </tr>
+              <IncomeDetails income={data?.incomeDetails ?? ""} />
 
-            <br />
-            <br />
-          </>
-        );
-      })}
+              <br />
+              <br />
+            </>
+          );
+        })}
     </>
   );
 };

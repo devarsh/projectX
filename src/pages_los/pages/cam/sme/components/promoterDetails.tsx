@@ -1,4 +1,4 @@
-import { Default } from "pages_los/pages/cam/components";
+import { Default, NotAvailable } from "pages_los/pages/cam/components";
 export const PromoterDetails = ({ promoter }) => {
   return (
     <>
@@ -18,7 +18,7 @@ export const PromoterDetails = ({ promoter }) => {
         <Default colspan={2} value="Middle Name" element="th" />
         <Default colspan={2} value="Last Name" element="th" />
       </tr>
-      {Array.isArray(promoter) &&
+      {Array.isArray(promoter) ? (
         promoter.map((promoterData, index) => {
           return (
             <>
@@ -31,7 +31,10 @@ export const PromoterDetails = ({ promoter }) => {
               </tr>
             </>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

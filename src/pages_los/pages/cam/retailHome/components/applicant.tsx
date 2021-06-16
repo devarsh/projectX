@@ -22,23 +22,6 @@ export const ApplicantDetails = ({
   return (
     <>
       <tr>
-        <Default colspan={2} value="Loan Requested" element="th" />
-        <Amount colspan={7} value={loanAmount} align="left" />
-      </tr>
-      {others.foir !== null ? (
-        <tr>
-          <Default
-            colspan={2}
-            value="FOIR or Portion of Income Considered"
-            element="th"
-          />
-          <Percentage colspan={7} value={others?.foir} />
-        </tr>
-      ) : (
-        ""
-      )}
-
-      <tr>
         <Default
           colspan={9}
           value="Applicant Details"
@@ -63,6 +46,21 @@ export const ApplicantDetails = ({
         <Default colspan={2} value="Age" element="th" />
         <Age colspan={7} value={applicant?.dob} />
       </tr>
+
+      <tr>
+        <Default colspan={2} value="Loan Requested" element="th" />
+        <Amount colspan={7} value={loanAmount} align="left" />
+      </tr>
+      {others.foir !== null ? (
+        <tr>
+          <Default
+            colspan={2}
+            value="FOIR or Portion of Income Considered"
+            element="th"
+          />
+          <Percentage colspan={7} value={others?.foir} />
+        </tr>
+      ) : null}
 
       <BankDetails bank={applicant.bankDetails} />
       <Address value={applicant.contactDetails} />

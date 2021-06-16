@@ -3,6 +3,7 @@ import {
   Amount,
   Percentage,
   DateFormat,
+  NotAvailable,
 } from "pages_los/pages/cam/components";
 
 export const BankDetails = ({ bank }) => {
@@ -37,8 +38,8 @@ export const BankDetails = ({ bank }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(savingOrCurrentAccountDetails) &&
-        savingOrCurrentAccountDetails.map((bankDetail, index) => {
+      {Array.isArray(savingOrCurrentAccountDetails) ? (
+        savingOrCurrentAccountDetails?.map((bankDetail, index) => {
           return (
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
@@ -48,7 +49,11 @@ export const BankDetails = ({ bank }) => {
               <Amount colspan={2} value={bankDetail?.averageBalance} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
+
       <OtherBankAccountTypeDetails otherAccountDetails={otherAccountDetails} />
     </>
   );
@@ -78,7 +83,7 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
           align="right"
         />
       </tr>
-      {Array.isArray(otherAccountDetails) &&
+      {Array.isArray(otherAccountDetails) ? (
         otherAccountDetails.map((bankDetail, index) => {
           return (
             <tr key={index}>
@@ -94,7 +99,10 @@ export const OtherBankAccountTypeDetails = ({ otherAccountDetails }) => {
               <Amount coslapn={1} value={bankDetail?.existingLoanEMI} />
             </tr>
           );
-        })}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

@@ -75,7 +75,7 @@ export const SalaryDetails = ({ salary }) => {
               <Default colspan={2} value="Other Income" element="th" />
               <Amount
                 colspan={7}
-                value={salaryDetails?.otherIncome}
+                value={salaryDetails?.otherIncomeAmount}
                 align="left"
               />
             </tr>

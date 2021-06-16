@@ -1,4 +1,4 @@
-import { Default, Amount } from "pages_los/pages/cam/components";
+import { Default, Amount, NotAvailable } from "pages_los/pages/cam/components";
 export const PersonalGuarantee = ({ personal }) => {
   return (
     <>
@@ -18,8 +18,8 @@ export const PersonalGuarantee = ({ personal }) => {
         <Default colspan={2} value="PAN No" element="th" />
         <Default colspan={3} value="Net Worth" element="th" align="right" />
       </tr>
-      {(Array.isArray(personal) &&
-        personal?.map((personalData, index) => {
+      {Array.isArray(personal) ? (
+        personal.map((personalData, index) => {
           return (
             <>
               <tr>
@@ -30,8 +30,10 @@ export const PersonalGuarantee = ({ personal }) => {
               </tr>
             </>
           );
-        })) ??
-        ""}
+        })
+      ) : (
+        <NotAvailable />
+      )}
     </>
   );
 };

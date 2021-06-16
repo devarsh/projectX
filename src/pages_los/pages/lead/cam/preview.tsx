@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -21,7 +21,7 @@ const generateCAMRequest = (generateFn) => (data) => {
 export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
   const { context, generateCAM } = useContext(CAMContext);
   const { enqueueSnackbar } = useSnackbar();
-
+  const [amountIn, setAmountIn] = useState(1);
   const { refID } = context;
 
   const result = useQuery<any, any, any>(
@@ -66,11 +66,16 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
         style={{ display: "flex", padding: "8px 24px" }}
         className="hideForPrint"
       >
-        <HeaderDetails rowData={result?.data?.others ?? ""} />
+        <HeaderDetails
+          rowData={result?.data?.others ?? ""}
+          setAmountIn={setAmountIn}
+          amountIn={amountIn}
+        />
 
         <div style={{ flexGrow: 1 }}></div>
         <Button
-          onClick={() => mutation.mutate(result.data)}
+          //@ts-ignore
+          onClick={() => mutation.mutate(result.data, amountIn)}
           disabled={mutation.isLoading}
           endIcon={mutation.isLoading ? <CircularProgress size={20} /> : null}
         >
@@ -87,7 +92,7 @@ export const PreviewCAM = ({ closeDialog, dataChangedRef }) => {
         ) : null}
       </DialogActions>
       <DialogContent>
-        <CAM camData={result.data} />
+        <CAM camData={result.data} amountIn={amountIn} />
       </DialogContent>
     </Fragment>
   );
