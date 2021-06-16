@@ -16,7 +16,7 @@ export const Amount = ({
   let result = "-";
   let currentFormat = Boolean(skipSymbol) ? numberFormatter : currencyFormatter;
   if (value !== null && value !== "" && !isNaN(Number(value))) {
-    result = `${currentFormat.format(value / 100000)}`;
+    result = `${currentFormat.format(value)}`;
   }
   return <Default value={result} {...others} align={align} />;
 };
