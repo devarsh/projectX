@@ -7,14 +7,17 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 
 const parseNumber = (string) => {
   let result: any = `${string}`.split("~");
-  result = result.filter((one) => one.indexOf("Phones") >= 0);
-  result = result[0].split(":");
-  result = result[1];
-  result = result.split("|");
-  result = result.map((one) => one.replaceAll("*", ""));
-  result = result.map((one) => one.replaceAll("X", ""));
-  result = result.filter((one) => Boolean(one));
-  return result;
+  result = result?.filter((one) => one.indexOf("Phones") >= 0);
+  if (result.length >= 1) {
+    result = result[0]?.split(":");
+    result = result[1];
+    result = result?.split("|");
+    result = result?.map((one) => one.replaceAll("*", ""));
+    result = result?.map((one) => one.replaceAll("X", ""));
+    result = result?.filter((one) => Boolean(one));
+    return result;
+  }
+  return;
 };
 
 const matchNumber = (mobileNumber, registeredNumbers) => {
@@ -41,9 +44,12 @@ export const Mobile = ({ flow, setFlow }) => {
       setMobileError("This field is required");
     } else if (mobile.length !== 10) {
       setMobileError("Mobile should be of 10 digits");
-    } else if (matchNumber(mobile, registeredNumbers.current) === false) {
+    } else if (
+      Array.isArray(registeredNumbers.current) &&
+      matchNumber(mobile, registeredNumbers.current) === false
+    ) {
       setMobileError(
-        "The entered number does not match the numbers in our records"
+        "The entered number does not match with the numbers in our records."
       );
     } else {
       setMobileError("");
@@ -62,10 +68,17 @@ export const Mobile = ({ flow, setFlow }) => {
         MobileNo
       </Typography>
       <br />
-      <Typography variant="subtitle2">
-        We found the numbers ending with{" "}
-        <b>{registeredNumbers.current.join(", ")}</b> registered under your PAN.
-      </Typography>
+      {Array.isArray(registeredNumbers.current) ? (
+        <Typography variant="subtitle2">
+          We found the numbers ending with{" "}
+          <b>{registeredNumbers.current.join(", ")}</b> registered under your
+          PAN
+        </Typography>
+      ) : (
+        <Typography variant="subtitle2">
+          Enter any other number that is registered under your PAN
+        </Typography>
+      )}
       <br />
       <TextField
         autoFocus
