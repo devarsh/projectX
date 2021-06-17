@@ -2,7 +2,9 @@ import { useState } from "react";
 import { SelectRenderOnly } from "components/common/select/render";
 import { KeyboardDatePicker } from "components/styledComponent/datetime";
 import Grid from "@material-ui/core/Grid";
-import { subDays } from "date-fns";
+import dateFormat from "date-fns/format";
+import subDays from "date-fns/subDays";
+import { min } from "lodash";
 
 const options = [
   { label: "All", value: "all" },
@@ -16,13 +18,15 @@ export const DateRange = ({
   column: { filterValue, id, columnName },
   dispatch,
 }) => {
-  const [minValue, setMinValue] = useState(
+  const [minValue, setMinValue] = useState<any>(
     Array.isArray(filterValue?.value)
-      ? filterValue?.value[0] ?? null
-      : filterValue?.value ?? null
+      ? new Date(filterValue?.value[0]) ?? null
+      : new Date(filterValue?.value) ?? null
   );
-  const [maxValue, setMaxValue] = useState(
-    Array.isArray(filterValue?.value) ? filterValue?.value[1] ?? null : null
+  const [maxValue, setMaxValue] = useState<any>(
+    Array.isArray(filterValue?.value)
+      ? new Date(filterValue?.value[1]) ?? null
+      : null
   );
 
   const [option, setOption] = useState(filterValue?.option ?? "all");
@@ -44,12 +48,23 @@ export const DateRange = ({
   };
 
   const handleBlur = (e) => {
+    let myMinValue = dateFormat(new Date(), "iii LLL dd yyyy HH:mm:ss xxxx");
+    let myMaxValue = dateFormat(new Date(), "iii LLL dd yyyy HH:mm:ss xxxx");
+    //@ts-ignore
+    if (minValue instanceof Date && !isNaN(minValue)) {
+      myMinValue = dateFormat(minValue, "iii LLL dd yyyy HH:mm:ss xxxx");
+    }
+    //@ts-ignore
+    if (maxValue instanceof Date && !isNaN(maxValue)) {
+      myMaxValue = dateFormat(maxValue, "iii LLL dd yyyy HH:mm:ss xxxx");
+    }
+
     if (option === "today") {
       dispatch({
         type: "setValue",
         payload: {
           condition: "equal",
-          value: minValue,
+          value: myMinValue,
           id,
           option,
           columnName,
@@ -71,7 +86,7 @@ export const DateRange = ({
         type: "setValue",
         payload: {
           condition: "between",
-          value: [minValue, maxValue],
+          value: [myMinValue, myMaxValue],
           id,
           option,
           columnName,
