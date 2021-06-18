@@ -69,6 +69,8 @@ registerFn("getTotalCostOfProject", miscSDK.getMiscVal("COSTPROJECT"));
 registerFn("getMeansOfFinance", miscSDK.getMiscVal("MEANSFINANCE"));
 registerFn("getEqualInstalmentBallooning", miscSDK.getMiscVal("EQUAL_BALLOON"));
 
+registerFn("getTaskList", miscSDK.getMiscVal("TASK_FOR"));
+
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
 registerFn("getBankSubProductType", miscSDK.getBankSubProductType);
