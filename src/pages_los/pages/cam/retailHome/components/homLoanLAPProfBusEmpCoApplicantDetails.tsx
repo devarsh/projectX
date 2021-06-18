@@ -1,8 +1,8 @@
-import { OtherEmployeesReturnFilingDetails } from "./otherEmployeesReturnFilingDetails";
-import { OtherEmployeesSalaryDetails } from "./otherEmployeesSalaryDetails";
+import { HomLoanLAPProfBusEmplReturnFilingDetails } from "./homLoanLAPProfBusEmpReturnFilingDetails";
+import { HomLoanLAPProfBusEmplSalaryDetails } from "./homLoanLAPProfBusEmplSalaryDetails";
 import { Default, Age, DateFormat } from "pages_los/pages/cam/components";
 
-export const OtherEmployeesCoApplicantDetails = ({ coApplicant }) => {
+export const HomLoanLAPProfBusEmplCoApplicantDetails = ({ coApplicant }) => {
   if (!Array.isArray(coApplicant) || coApplicant.length <= 0) {
     return (
       <>
@@ -55,10 +55,10 @@ export const OtherEmployeesCoApplicantDetails = ({ coApplicant }) => {
               <Default colspan={2} value="Age" element="th" />
               <Age colspan={7} value={coApplicantDetails?.birthDate} />
             </tr>
-            <OtherEmployeesReturnFilingDetails
+            <HomLoanLAPProfBusEmplReturnFilingDetails
               returnFiling={coApplicantDetails.returnFilingDetails}
             />
-            <OtherEmployeesSalaryDetails
+            <HomLoanLAPProfBusEmplSalaryDetails
               salary={coApplicantDetails.salaryDetails}
             />
 

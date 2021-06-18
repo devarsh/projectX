@@ -17,27 +17,51 @@ export const ReturnFilingDetails = ({ returnFiling }) => {
       </tr>
       <tr>
         <Default colspan={1} value="Sr.No" element="th" />
-        <Default colspan={1} value="Depreciation" element="th" align="right" />
-        <Default colspan={1} value="Filing Date" element="th" />
         <Default colspan={1} value="Filing Year" element="th" />
-        <Default colspan={1} value="Net Profit" element="th" />
-        <Default colspan={2} value="Other Income" element="th" align="right" />
-        <Default colspan={2} value="Total Income" element="th" align="right" />
+        <Default colspan={1} value="Filing Date" element="th" />
+        <Default colspan={1} value="Annual Net Profit" element="th" />
+        <Default
+          colspan={1}
+          value="Annual Depreciation"
+          element="th"
+          align="right"
+        />
+        <Default colspan={1} value="Other Income" element="th" />
+        <Default colspan={1} value="Other Income Source" element="th" />
+        <Default
+          colspan={1}
+          value="Total Other Income"
+          element="th"
+          align="right"
+        />
+        <Default colspan={1} value="Total Income" element="th" align="right" />
       </tr>
       {returnFiling.map((returnFilingDetails, index) => {
         return (
           <>
             <tr key={index}>
               <Default colspan={1} value={index + 1} />
-              <Amount colspan={1} value={returnFilingDetails?.depreciation} />
-              <DateFormat colspan={1} value={returnFilingDetails?.filingDate} />
               <Default colspan={1} value={returnFilingDetails.filingYear} />
+              <DateFormat colspan={1} value={returnFilingDetails?.filingDate} />
               <Amount colspan={1} value={returnFilingDetails?.netProfit} />
+              <Amount colspan={1} value={returnFilingDetails?.depreciation} />
+              {Array.isArray(returnFilingDetails?.otherIncome) ? (
+                <Default
+                  colspan={1}
+                  value={(returnFilingDetails?.otherIncome).join(", ")}
+                />
+              ) : (
+                <Default colspan={1} value={returnFilingDetails?.otherIncome} />
+              )}
+              <Default
+                colspan={1}
+                value={returnFilingDetails.otherIncomeType}
+              />
               <Amount
-                colspan={2}
+                colspan={1}
                 value={returnFilingDetails?.otherIncomeAmount}
               />
-              <Amount colspan={2} value={returnFilingDetails?.totalIncome} />
+              <Amount colspan={1} value={returnFilingDetails?.totalIncome} />
             </tr>
           </>
         );

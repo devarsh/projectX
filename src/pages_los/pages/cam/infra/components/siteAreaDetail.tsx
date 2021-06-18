@@ -35,15 +35,6 @@ export const SiteAreaDetails = ({ siteArea }) => {
         <Numeric colspan={2} value={siteArea?.siteBlock} />
       </tr>
       <tr>
-        <Default
-          colspan={9}
-          className="form-sub-heading"
-          align="center"
-          value="Project Details"
-          element="th"
-        />
-      </tr>
-      <tr>
         <Default colspan={1} value="Sr.No" element="th" />
         <Default colspan={2} value="Floor" element="th" />
         <Default

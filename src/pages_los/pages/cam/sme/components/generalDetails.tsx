@@ -66,10 +66,10 @@ export const GeneralDetails = ({
           <Default colspan={2} value="Proposed business" element="th" />
           <Default colspan={7} value={general?.businessProposed} />
         </tr>
-        <tr>
+        {/* <tr>
           <Default colspan={2} value="External credit rating" element="th" />
           <Default colspan={7} value={general?.rankExternal} />
-        </tr>
+        </tr> */}
         <tr>
           <Default colspan={2} value="MSME" element="th" />
           <Default colspan={7} value={general?.businessSize} />
@@ -90,10 +90,6 @@ export const GeneralDetails = ({
           <Default colspan={2} value="CMR Ranking" element="th" />
           <Default colspan={7} value={general?.crmRank} />
         </tr>
-        {/* <tr>
-          <th colSpan={2}>Name of Promoters / Directors</th>
-          <td colSpan={7}>{<Default value={"Not Specified"} />}</td>
-        </tr>*/}
         <tr>
           <Default colspan={2} value="Purpose of loan" element="th" />
           <Default colspan={7} value={general?.purposeLoan} />
@@ -128,8 +124,7 @@ export const GeneralDetails = ({
             value="Credit Summation in Bank in Last 12 months"
             element="th"
           />
-          {/* //value not coming from backend */}
-          <Default colspan={7} value="" />
+          <Default colspan={7} value={general?.creditSummation} />
         </tr>
         <tr>
           <Default colspan={2} value="Inward cheque bounces" element="th" />

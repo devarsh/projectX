@@ -67,6 +67,7 @@ registerFn("getPurposeOfLoanForSME", miscSDK.getMiscVal("SMEPURPOSE"));
 registerFn("getPurposeOfLoanForUnsecure", miscSDK.getMiscVal("UNSPURPOSE"));
 registerFn("getTotalCostOfProject", miscSDK.getMiscVal("COSTPROJECT"));
 registerFn("getMeansOfFinance", miscSDK.getMiscVal("MEANSFINANCE"));
+registerFn("getEqualInstalmentBallooning", miscSDK.getMiscVal("EQUAL_BALLOON"));
 
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);

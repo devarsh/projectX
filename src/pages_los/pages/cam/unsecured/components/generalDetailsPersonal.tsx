@@ -99,8 +99,8 @@ export const GeneralDetailsPersonal = ({ general }) => {
                 />
               </tr>
               <tr>
-                <Default colspan={2} value="CIBIL Score" element="th" />
-                <Default colspan={7} value="" />
+                <Default colspan={2} value="Credit Score" element="th" />
+                <Default colspan={7} value={personalDetail?.creditScore} />
               </tr>
               <tr>
                 <Default colspan={2} value="CMR Ranking" element="th" />
