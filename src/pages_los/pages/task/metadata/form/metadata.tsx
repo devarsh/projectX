@@ -52,13 +52,9 @@ export const taskAssignMetadata = {
       name: "taskFor",
       label: "Task For",
       placeholder: "Task For",
-      disableCaching: false,
+      disableCaching: true,
       defaultValue: "00",
-      options: [
-        { label: "Inquiry", value: "Inquiry" },
-        { label: "Lead", value: "Lead" },
-        { label: "General", value: "General" },
-      ],
+      options: "getTaskList",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {

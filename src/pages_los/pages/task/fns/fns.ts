@@ -1,7 +1,7 @@
 import { LOSSDK } from "registry/fns/los";
 
 export const showTaskManagementFieldForLeadID = async (_, dependentFields) => {
-  if (dependentFields["taskFor"].value === "Lead") {
+  if (dependentFields["taskFor"].value === "lead") {
     return false;
   }
   return true;
@@ -11,7 +11,7 @@ export const showTaskManagementFieldForInquiryID = async (
   _,
   dependentFields
 ) => {
-  if (dependentFields["taskFor"].value === "Inquiry") {
+  if (dependentFields["taskFor"].value === "inquiry") {
     return false;
   }
   return true;
