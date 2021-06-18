@@ -24,7 +24,7 @@ export const tabsLegal = [
     ],
   },
   {
-    label: "Fiancial",
+    label: "Financial",
     sequence: 2,
     docType: [
       { label: "ITR", type: "itr", primary: true, categoryCD: "ITR_DOC_TYPE" },
