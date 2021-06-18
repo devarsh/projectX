@@ -68,14 +68,6 @@ export const GeneralDetails = ({
           <Default colspan={7} value={general?.projectType} />
         </tr>
         <tr>
-          <Default colspan={2} value="External Credit rating" element="th" />
-          <Default colspan={7} value={general?.rankExternal} />
-        </tr>
-        <tr>
-          <Default colspan={2} value="CMR Ranking" element="th" />
-          <Default colspan={7} value={general?.crmRank} />
-        </tr>
-        <tr>
           <Default
             colspan={2}
             value="Construction Stage of the Project"

@@ -1,5 +1,5 @@
-import { OtherEmployeesReturnFilingDetails } from "./otherEmployeesReturnFilingDetails";
-import { OtherEmployeesSalaryDetails } from "./otherEmployeesSalaryDetails";
+import { HomLoanLAPProfBusEmplReturnFilingDetails } from "./homLoanLAPProfBusEmpReturnFilingDetails";
+import { HomLoanLAPProfBusEmplSalaryDetails } from "./homLoanLAPProfBusEmplSalaryDetails";
 import {
   Default,
   Age,
@@ -7,7 +7,7 @@ import {
   Amount,
 } from "pages_los/pages/cam/components";
 
-export const OtherEmployeesApplicantDetails = ({
+export const HomLoanLAPProfBusEmplApplicantDetails = ({
   applicant = {},
   loanAmount,
 }: any) => {
@@ -40,16 +40,16 @@ export const OtherEmployeesApplicantDetails = ({
       </tr>
       <tr>
         <Default colspan={2} value="Age" element="th" />
-        <Age colspan={7} value={applicant?.birthDate} />
+        <Age colspan={7} value={applicant?.dob} />
       </tr>
       <tr>
         <Default colspan={2} value="Loan Requested" element="th" />
         <Amount colspan={7} value={loanAmount} align="left" />
       </tr>
-      <OtherEmployeesReturnFilingDetails
+      <HomLoanLAPProfBusEmplReturnFilingDetails
         returnFiling={applicant.returnFilingDetails}
       />
-      <OtherEmployeesSalaryDetails salary={applicant.salaryDetails} />
+      <HomLoanLAPProfBusEmplSalaryDetails salary={applicant.salaryDetails} />
 
       <br />
     </>

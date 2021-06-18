@@ -1,11 +1,11 @@
 import {
   ApplicantDetails,
   CoApplicantDetails,
-  OtherDetails,
   OtherLRDDetails,
-  OtherEmployeesOtherDetails,
-  OtherEmployeesCoApplicantDetails,
-  OtherEmployeesApplicantDetails,
+  HomLoanLAPProfBusEmplCoApplicantDetails,
+  HomLoanLAPProfBusEmplApplicantDetails,
+  HomeLoanLAPSalariedEligiblityDetails,
+  HomeLoanLAPProfBusEligibilityDetails,
 } from "./components";
 
 export const RetailHome = ({ data, others }) => {
@@ -20,22 +20,19 @@ export const RetailHome = ({ data, others }) => {
     <table className="page">
       <tbody>
         {(others.productID === "12300001" || others.productID === "12300002") &&
-        (others.employeeCode === "01" ||
-          others.employeeCode === "03" ||
-          others.employeeCode === "04") ? (
+        (others.employeeCode === "01" || others.employeeCode === "03") ? (
           <>
-            <OtherEmployeesApplicantDetails
+            <HomLoanLAPProfBusEmplApplicantDetails
               applicant={applicantDetails}
               loanAmount={loanAmount}
             />
-            <OtherEmployeesCoApplicantDetails
+            <HomLoanLAPProfBusEmplCoApplicantDetails
               coApplicant={coApplicantDetails}
             />
-            <OtherEmployeesOtherDetails other={OthersDetails} />
+            <HomeLoanLAPProfBusEligibilityDetails other={OthersDetails} />
           </>
-        ) : (others.productID === "12300001" ||
-            others.productID === "12300002") &&
-          others.employeeCode === "02" ? (
+        ) : others.productID === "12300001" ||
+          (others.productID === "12300002" && others.employeeCode === "02") ? (
           <>
             <ApplicantDetails
               applicant={applicantDetails}
@@ -43,20 +40,18 @@ export const RetailHome = ({ data, others }) => {
               loanAmount={loanAmount}
             />
             <CoApplicantDetails coApplicant={coApplicantDetails} />
-            <OtherDetails others={OthersDetails} />
+            <HomeLoanLAPSalariedEligiblityDetails others={OthersDetails} />
           </>
         ) : others.productID === "12300003" &&
           (others.employeeCode === "01" ||
             others.employeeCode === "02" ||
-            others.employeeCode === "03" ||
-            others.employeeCode === "04") ? (
+            others.employeeCode === "03") ? (
           <>
             <ApplicantDetails
               applicant={applicantDetails}
               others={OthersDetails}
               loanAmount={loanAmount}
             />
-            <CoApplicantDetails coApplicant={coApplicantDetails} />
             <OtherLRDDetails others={OthersDetails} />
           </>
         ) : (

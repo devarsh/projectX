@@ -48,80 +48,14 @@ export const OtherLRDDetails = ({ others }) => {
         <Default colspan={7} value={others?.balanceLeasePeriodRem} />
       </tr>
       <tr>
-        <Default colspan={2} value="Rent Revision Frequency" element="th" />
-        <Default colspan={7} value={others?.rentReviFrequency} />
+        <Default colspan={2} value="Property Type" element="th" />
+        <Default colspan={7} value={others?.propertyType} />
       </tr>
-      <tr>
-        <Default
-          colspan={2}
-          value="Rent Revision Frequency (In Months)"
-          element="th"
-        />
-        <Default colspan={7} value={others?.rentReviMonth} />
-      </tr>
-      {/* <tr>
-        <th colSpan={2}>TDS Percentage</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.newclfr} />
-          }
-        </td>
-      </tr>
-      <tr>
-        <th colSpan={2}>Discount Percentage</th>
-        <td colSpan={7}>
-          {
-            //@ts-ignore
-            <Percentage value={others.newltv} />
-          }
-        </td>
-      </tr> */}
-      {others?.propertyType !== "" ? (
-        <tr>
-          <Default colspan={2} value="Property Type" element="th" />
-          <Default colspan={7} value={others?.propertyType} />
-        </tr>
-      ) : null}
 
       <tr>
         <Default colspan={2} value="Property Value" element="th" />
         <Amount colspan={7} value={others?.propertyValue} align="left" />
       </tr>
-      <tr>
-        <Default colspan={2} value="LTV" element="th" />
-        <Amount colspan={7} value={others?.ltv} align="left" />
-      </tr>
-      <tr>
-        <Default colspan={2} value="Loan Amount Based on LTV" element="th" />
-        <Amount colspan={7} value={others?.loanAmountBasedOnLTV} align="left" />
-      </tr>
-      <tr>
-        <Default
-          colspan={2}
-          value="Eligible Amount Based on Rent"
-          element="th"
-        />
-        <Amount
-          colspan={7}
-          value={others?.eligibleAmountBasedOnRent}
-          align="left"
-        />
-      </tr>
-
-      <tr>
-        <Default
-          colspan={2}
-          value="Minimum of Loan Based on LTV and Rent"
-          element="th"
-        />
-        <Amount colspan={7} value={others?.minimunLoanLTVRent} align="left" />
-      </tr>
-      <tr>
-        <Default colspan={2} value="Eligible EMI" element="th" />
-        <Amount colspan={7} value={others?.eligibleEMI} align="left" />
-      </tr>
-
       <tr>
         <Default colspan={2} value="Credit Score" element="th" />
         <Default colspan={7} value={others?.creditScore} />

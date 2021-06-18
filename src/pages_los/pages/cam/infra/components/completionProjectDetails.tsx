@@ -7,10 +7,10 @@ import {
 
 export const ProjectDetails = ({ projectCompletion }) => {
   const completedProject = projectCompletion.filter(
-    (one) => one.projectType === "Completed"
+    (one) => one.projectStatus === "Completed"
   );
   const onGoingProject = projectCompletion.filter(
-    (one) => one.projectType === "Ongoing"
+    (one) => one.projectStatus === "Ongoing"
   );
 
   return (

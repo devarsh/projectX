@@ -118,8 +118,7 @@ export const GeneralDetailsBusiness = ({ general, promoter, address }) => {
             value="Credit Summation in Bank in Last 12 months"
             element="th"
           />
-          {/* //value not coming from backend */}
-          <Default colspan={7} value="" />
+          <Default colspan={7} value={general?.creditSummation} />
         </tr>
         <tr>
           <Default colspan={2} value="Inward cheque bounces" element="th" />
