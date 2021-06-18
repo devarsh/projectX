@@ -36,7 +36,7 @@ export const verificationInitateFormMetaData: MetaDataType = {
         componentType: "select",
       },
       name: "apiType",
-      label: "API Type",
+      label: "Verification Type",
       defaultValue: "00",
       options: [
         { value: "mobile", label: "Mobile" },
