@@ -1,7 +1,7 @@
 import {
   ApplicantDetails,
   CoApplicantDetails,
-  OtherLRDDetails,
+  LRDBusProfSalaryEmpEligibilityDetails,
   HomLoanLAPProfBusEmplCoApplicantDetails,
   HomLoanLAPProfBusEmplApplicantDetails,
   HomeLoanLAPSalariedEligiblityDetails,
@@ -31,8 +31,9 @@ export const RetailHome = ({ data, others }) => {
             />
             <HomeLoanLAPProfBusEligibilityDetails other={OthersDetails} />
           </>
-        ) : others.productID === "12300001" ||
-          (others.productID === "12300002" && others.employeeCode === "02") ? (
+        ) : (others.productID === "12300001" ||
+            others.productID === "12300002") &&
+          others.employeeCode === "02" ? (
           <>
             <ApplicantDetails
               applicant={applicantDetails}
@@ -52,9 +53,10 @@ export const RetailHome = ({ data, others }) => {
               others={OthersDetails}
               loanAmount={loanAmount}
             />
-            <OtherLRDDetails others={OthersDetails} />
+            <LRDBusProfSalaryEmpEligibilityDetails others={OthersDetails} />
           </>
         ) : (
+          //temporary it's for APF, if it's not required so we can remove it
           <>
             <ApplicantDetails
               applicant={applicantDetails}
@@ -62,7 +64,7 @@ export const RetailHome = ({ data, others }) => {
               loanAmount={loanAmount}
             />
             <CoApplicantDetails coApplicant={coApplicantDetails} />
-            <OtherLRDDetails others={OthersDetails} />
+            <LRDBusProfSalaryEmpEligibilityDetails others={OthersDetails} />
           </>
         )}
       </tbody>

@@ -1,6 +1,6 @@
 import { Default, Amount, Percentage } from "pages_los/pages/cam/components";
 
-export const OtherLRDDetails = ({ others }) => {
+export const LRDBusProfSalaryEmpEligibilityDetails = ({ others }) => {
   if (typeof others !== "object") {
     return null;
   }

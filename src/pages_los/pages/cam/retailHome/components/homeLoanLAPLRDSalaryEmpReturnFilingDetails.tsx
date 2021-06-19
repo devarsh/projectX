@@ -1,9 +1,12 @@
 import { Default, DateFormat, Amount } from "pages_los/pages/cam/components";
 
-export const ReturnFilingDetails = ({ returnFiling }) => {
+export const HomeLoanLAPLRDSalaryEmpReturnFilingDetails = ({
+  returnFiling,
+}) => {
   if (!Array.isArray(returnFiling) || returnFiling.length <= 0) {
     return null;
   }
+
   return (
     <>
       <tr>

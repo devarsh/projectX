@@ -1,5 +1,5 @@
-import { ReturnFilingDetails } from "./returnFilingDetails";
-import { SalaryDetails } from "./salaryDetails";
+import { HomeLoanLAPLRDSalaryEmpReturnFilingDetails } from "./homeLoanLAPLRDSalaryEmpReturnFilingDetails";
+import { HomeLoanLAPLRDSalaryEmpSalaryDetails } from "./homeLoanLAPLRDSalaryEmpSalaryDetails";
 import {
   Default,
   Age,
@@ -62,10 +62,12 @@ export const CoApplicantDetails = ({ coApplicant }) => {
               <Default colspan={2} value="Age" element="th" />
               <Age colspan={7} value={coApplicantDetails?.birthDate} />
             </tr>
-            <ReturnFilingDetails
+            <HomeLoanLAPLRDSalaryEmpReturnFilingDetails
               returnFiling={coApplicantDetails.returnFilingDetails}
             />
-            <SalaryDetails salary={coApplicantDetails.salaryDetails} />
+            <HomeLoanLAPLRDSalaryEmpSalaryDetails
+              salary={coApplicantDetails.salaryDetails}
+            />
             <br />
           </>
         );
