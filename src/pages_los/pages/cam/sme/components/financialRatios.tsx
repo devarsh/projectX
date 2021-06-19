@@ -45,6 +45,10 @@ export const FinancialRatios = ({ finance }) => {
         />
       </tr>
       <tr>
+        <Default colspan={1} value="Source" element="th" />
+        {printTDS({ obj: finance, key: "source" })}
+      </tr>
+      <tr>
         <Default colspan={1} value="Particulars" element="th" />
         {printTDS({ obj: finance, key: "financialYear" })}
       </tr>
@@ -161,6 +165,10 @@ export const FinancialRatios = ({ finance }) => {
           element="th"
           className="largeLabel"
         />
+      </tr>
+      <tr>
+        <Default colspan={1} value="Source" element="th" />
+        {printTDS({ obj: finance, key: "source" })}
       </tr>
       <tr>
         <Default colspan={1} value="Particulars" element="th" />

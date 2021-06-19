@@ -110,5 +110,5 @@ export const calculateTolTnvQuasi = (dependentFields) => {
 export const calculateCurrentRatio = (dependentFields) => {
   const currentAssets = Number(dependentFields?.currentAssets?.value);
   const currentLiabilities = Number(dependentFields?.currentLiabilities?.value);
-  return currentAssets / currentLiabilities;
+  return Number(currentAssets / currentLiabilities).toFixed(2);
 };
