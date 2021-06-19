@@ -27,12 +27,7 @@ const CollateralSecurity = ({ collateral }) => {
     <>
       <tr>
         <Default colspan={3} value="Address of the Property" element="th" />
-        <Default
-          colspan={2}
-          value="Area of the Property"
-          element="th"
-          align="right"
-        />
+        <Default colspan={2} value="Area of the Property" element="th" />
         <Default colspan={2} value="Owner" element="th" />
         <Default colspan={2} value="Market Value" element="th" align="right" />
       </tr>
