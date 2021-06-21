@@ -1,12 +1,12 @@
-import { FC, useCallback, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import {
   KeyboardTimePicker,
   KeyboardTimePickerProps,
 } from "@material-ui/pickers";
 import Grid, { GridProps } from "@material-ui/core/Grid";
+
 import { Omit, Merge } from "../types";
-import { parseJSON } from "date-fns";
 
 type KeyboardTimePickerPropsSubset = Omit<
   KeyboardTimePickerProps,
@@ -68,14 +68,9 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
   });
   useEffect(() => {
     if (typeof value === "string") {
-      let result = parseJSON(value);
-      //@ts-ignore
-      if (isNaN(result)) {
-        result = new Date(value);
-      }
+      let result = new Date(value);
       //@ts-ignore
       if (!isNaN(result)) {
-        //result = new Date(result?.toString()?.slice(0, 24));
         handleChange(result);
       }
     }
@@ -91,14 +86,7 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
     }
   }, [isFieldFocused]);
   const isError = touched && (error ?? "") !== "";
-  const customDateChangeHandler = useCallback(
-    (date) => {
-      let result = date;
-      //result = new Date(result?.toString()?.slice(0, 24));
-      handleChange(result);
-    },
-    [handleChange]
-  );
+
   if (excluded) {
     return null;
   }
@@ -111,7 +99,8 @@ export const MyTimePicker: FC<MyTimeTimePickerAllProps> = ({
       value={value === "" ? null : value} //make sure to pass null when input is empty string
       error={!isSubmitting && isError}
       helperText={!isSubmitting && isError ? error : null}
-      onChange={customDateChangeHandler}
+      //@ts-ignore
+      onChange={handleChange}
       onBlur={handleBlur}
       disabled={isSubmitting}
       readOnly={readOnly}

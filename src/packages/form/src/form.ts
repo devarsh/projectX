@@ -23,6 +23,7 @@ import {
   UseFormHookProps,
 } from "./types";
 import { FormContext } from "./context";
+import formatDate from "date-fns/format";
 
 export const useForm = ({ onSubmit, readOnly = false }: UseFormHookProps) => {
   const formContext = useContext(FormContext);
@@ -387,10 +388,17 @@ export const useForm = ({ onSubmit, readOnly = false }: UseFormHookProps) => {
               let resultValueObj = {};
               let resultDisplayValueObj = {};
               for (const field of fieldsAggrigator) {
+                let fieldValue = field.value;
+                if (fieldValue instanceof Date) {
+                  fieldValue = formatDate(
+                    fieldValue,
+                    "iii LLL dd yyyy HH:mm:ss xxxx"
+                  );
+                }
                 resultValueObj = setIn(
                   resultValueObj,
                   field.name.replace(`${formContext.formName}/`, ""),
-                  field.value
+                  fieldValue
                 );
                 resultDisplayValueObj = setIn(
                   resultDisplayValueObj,
