@@ -1,6 +1,6 @@
 import { Default, Amount, DateFormat } from "pages_los/pages/cam/components";
 
-export const SalaryDetails = ({ salary }) => {
+export const HomeLoanLAPLRDSalaryEmpSalaryDetails = ({ salary }) => {
   if (!Array.isArray(salary) || salary.length <= 0) {
     return null;
   }

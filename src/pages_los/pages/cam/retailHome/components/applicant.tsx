@@ -1,6 +1,6 @@
 import { BankDetails } from "./bankDetails";
-import { ReturnFilingDetails } from "./returnFilingDetails";
-import { SalaryDetails } from "./salaryDetails";
+import { HomeLoanLAPLRDSalaryEmpReturnFilingDetails } from "./homeLoanLAPLRDSalaryEmpReturnFilingDetails";
+import { HomeLoanLAPLRDSalaryEmpSalaryDetails } from "./homeLoanLAPLRDSalaryEmpSalaryDetails";
 import {
   Age,
   DateFormat,
@@ -64,8 +64,10 @@ export const ApplicantDetails = ({
 
       <BankDetails bank={applicant.bankDetails} />
       <Address value={applicant.contactDetails} />
-      <ReturnFilingDetails returnFiling={applicant.returnFilingDetails} />
-      <SalaryDetails salary={applicant.salaryDetails} />
+      <HomeLoanLAPLRDSalaryEmpReturnFilingDetails
+        returnFiling={applicant.returnFilingDetails}
+      />
+      <HomeLoanLAPLRDSalaryEmpSalaryDetails salary={applicant.salaryDetails} />
     </>
   );
 };

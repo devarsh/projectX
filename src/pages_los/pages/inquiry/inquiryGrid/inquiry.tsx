@@ -9,7 +9,7 @@ import { Transition } from "pages_los/common";
 import { serverGridContextGenerator } from "./context";
 import { HeaderDetails } from "../headerDetails";
 import { DetailsTabView } from "../detailsTabView";
-import { InquiryAssignTask } from "../inquiryAssignask";
+import { InquiryAssignTask } from "../inquiryAssignTask";
 import { AssignBranch } from "../assignBranch";
 import { AssignInquiry } from "../assignInquiry";
 import { Priority } from "../priority";
