@@ -29,6 +29,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
 import { AssignTask, AssignedTask } from "pages_los/pages/task";
+import { WorkLogDetailsTabView } from "pages_los/pages/worklog";
 import Editor from "components/editor";
 import { Kanban } from "components/kanban";
 
@@ -80,6 +81,10 @@ const DashbordPages = () => {
             <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
+            <Route
+              path="/worklogManagement"
+              element={<WorkLogDetailsTabView />}
+            />
             <Route path="/profile" element={<Profile />} />
             {/*dummy routes*/}
             <Route path="/testForm" element={<TestForm />} />
