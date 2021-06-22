@@ -82,6 +82,7 @@ export const DetailsTabView: FC<{
                 dataAlwaysExists={Boolean(one.dataAlwaysExists)}
                 showDocuments={one?.document}
                 disableCache={one?.disableCache}
+                forRetail={one?.forRetail}
               />
             </TabPanel>
           ))}

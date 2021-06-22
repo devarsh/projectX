@@ -30,6 +30,7 @@ export const CRUDComponentPicker = ({
   dataAlwaysExists,
   showDocuments,
   disableCache,
+  forRetail,
 }) => {
   return componentType === "simple" ? (
     <CRUDContextProvider
@@ -53,7 +54,15 @@ export const CRUDComponentPicker = ({
         secondaryProductDisableCache={Boolean(disableCache)}
       />
     </CRUDContextProvider>
-  ) : componentType === "document" ? (
+  ) : //this is a specific change to accomdate management document at lead level only for retail types
+  componentType === "document" && forRetail === true ? (
+    <DocumentGridCRUD
+      refID={refID}
+      moduleType={moduleType}
+      productType={productType}
+      serialNo="1"
+    />
+  ) : (
     <DocumentGridCRUD refID={refID} moduleType={moduleType} />
-  ) : null;
+  );
 };
