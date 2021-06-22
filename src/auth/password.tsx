@@ -1,4 +1,4 @@
-import { Fragment, useState, useCallback } from "react";
+import { Fragment, useState, useCallback, useRef, useEffect } from "react";
 import { TextField } from "components/styledComponent/textfield";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
@@ -19,12 +19,21 @@ export const PasswordField = ({
   const handleChange = useCallback((e) => setPassword(e.target.value), [
     setPassword,
   ]);
+  const inputRef = useRef<any>(null);
+  useEffect(() => {
+    if (loginState.isError) {
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 0);
+    }
+  }, [loginState.isError]);
 
   return (
     <Fragment>
       <div className={classes.formWrap}>
         {loginType === "customer" ? (
           <TextField
+            inputRef={inputRef}
             autoFocus={true}
             key="customer"
             label="OTP"

@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useState, useEffect, useRef } from "react";
 import { TextField } from "components/styledComponent/textfield";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { GradientButton } from "components/styledComponent/button";
@@ -15,6 +15,14 @@ export const UsernameField = ({
   const handleChange = useCallback((e) => setUsername(e.target.value), [
     setUsername,
   ]);
+  const inputRef = useRef<any>(null);
+  useEffect(() => {
+    if (loginState.isError) {
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 0);
+    }
+  }, [loginState.isError]);
 
   return (
     <Fragment>
@@ -25,6 +33,7 @@ export const UsernameField = ({
       </div>
       <div className={classes.formWrap}>
         <TextField
+          inputRef={inputRef}
           autoFocus={true}
           label={
             ["employee", "partner"].indexOf(loginType) >= 0

@@ -1,73 +1,59 @@
-import { CardComponent1, CardComponent2, CardComponent3 } from "./components";
+import { BankCard } from "./components/cards";
+
+export const columns = [
+  {
+    columnID: "1",
+    name: "selection",
+    label: "Bank Selection",
+    ribbon: "green",
+    component: BankCard,
+  },
+  {
+    columnID: "2",
+    name: "login",
+    label: "Bank Login",
+    ribbon: "#0286d4",
+    component: BankCard,
+  },
+  {
+    columnID: "3",
+    name: "reject",
+    label: "Reject",
+    ribbon: "red",
+    component: BankCard,
+  },
+];
 
 export const data = [
   {
     id: 1,
-    label: "devarsh",
-    columnID: "AHD",
+    bank: "State Bank Of India",
+    branch: "Head Office",
+    columnID: "1",
   },
   {
     id: 2,
-    label: "dvija",
-    columnID: "AHD",
+    bank: "ICICI Bank Ltd",
+    branch: "JMC House",
+    columnID: "2",
   },
   {
     id: 3,
-    label: "nirali",
-    columnID: "US",
+    bank: "Kotak Mahinder Bank Ltd",
+    branch: "Drive-In Road",
+    columnID: "1",
   },
   {
     id: 4,
-    label: "harsh",
-    columnID: "US",
+    bank: "Axis Bank Ltd",
+    branch: "Drive-In Road",
+    columnID: "1",
   },
   {
     id: 5,
-    label: "aayush",
-    columnID: "US",
+    bank: "Ratnaafin NBFC Ltd",
+    branch: "Bopal Ambli",
+    columnID: "1",
   },
-  { id: 6, label: "urja", columnID: "AHD" },
-  {
-    id: 7,
-    label: "shimoli",
-    columnID: "BOM",
-  },
-  {
-    id: 8,
-    label: "rimoni",
-    columnID: "BOM",
-  },
-  {
-    id: 9,
-    label: "hriman",
-    columnID: "CN",
-  },
-  {
-    id: 10,
-    label: "aryaman",
-    columnID: "CN",
-  },
-];
-
-export const columns = [
-  {
-    label: "Ahmedabad",
-    id: "AHD",
-    component: CardComponent1,
-  },
-  {
-    label: "Mumbai",
-    id: "BOM",
-    component: CardComponent2,
-  },
-  {
-    label: "Canada",
-    id: "CN",
-    component: CardComponent3,
-  },
-  {
-    label: "USA",
-    id: "US",
-    component: CardComponent3,
-  },
+  { id: 6, bank: "Varacha Co-Op Bank Ltd", branch: "Surat", columnID: "1" },
 ];

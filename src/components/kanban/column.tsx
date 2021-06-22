@@ -1,58 +1,43 @@
-import styled from "styled-components";
+import Typograhpy from "@material-ui/core/Typography";
 import { Item } from "./item";
 import { Droppable } from "react-beautiful-dnd";
-import { Fragment } from "react";
+import {
+  ColumnWrapper,
+  Heading,
+  RoundedCount,
+  ItemsContainer,
+} from "./components";
 
-const ColumnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin: 8px;
-`;
-
-const Label = styled.div`
-  font-weight: 500;
-  padding: 8px;
-  background: #6e3545;
-  border-radius: 5px;
-  width: 100%;
-  color: white;
-`;
-
-const grid = 8;
-
-const getColumnStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-  padding: grid,
-  width: 250,
-});
-
-export const Column = ({ id, label, items, component }) => {
+export const Column = ({ columnID, label, items, ribbon, name, component }) => {
   return (
-    <Droppable droppableId={`${id}`} key={id}>
-      {(provided, snapshot) => {
+    <Droppable droppableId={`${columnID}`}>
+      {(provided) => {
         return (
-          <Fragment>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <Label>{label}</Label>
-              <ColumnWrapper
-                {...provided.droppableProps}
-                innerRef={provided.innerRef}
-                ref={provided.innerRef}
-                style={getColumnStyle(snapshot.isDraggingOver)}
-              >
-                {items.map((one, index) => (
-                  <Item
-                    key={one.id}
-                    index={index}
-                    {...one}
-                    component={component}
-                  />
-                ))}
-                {provided.placeholder}
-              </ColumnWrapper>
-            </div>
-          </Fragment>
+          <ColumnWrapper>
+            <Heading>
+              <RoundedCount>{items.length}</RoundedCount>
+              <Typograhpy variant="subtitle2" style={{ paddingLeft: "8px" }}>
+                {label}
+              </Typograhpy>
+            </Heading>
+            <ItemsContainer
+              {...provided.droppableProps}
+              innerRef={provided.innerRef}
+              ref={provided.innerRef}
+            >
+              {items.map((one, index) => (
+                <Item
+                  key={one.id}
+                  index={index}
+                  ribbon={ribbon}
+                  columnName={name}
+                  component={component}
+                  {...one}
+                />
+              ))}
+              {provided.placeholder}
+            </ItemsContainer>
+          </ColumnWrapper>
         );
       }}
     </Droppable>

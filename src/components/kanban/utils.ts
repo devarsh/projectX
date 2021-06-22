@@ -2,7 +2,7 @@ export const splitTask = (data, accessor, columns, columnAccessor) => {
   const m = new Map();
   if (
     Array.isArray(data) &&
-    data.length > 0 &&
+    //data.length > 0 &&
     Array.isArray(columns) &&
     columns.length > 0
   ) {
