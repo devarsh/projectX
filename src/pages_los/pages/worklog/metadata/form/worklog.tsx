@@ -101,6 +101,26 @@ export const worklogFormMetaData = {
           { name: "typeError", params: ["Not a valid time"] },
         ],
       },
+      dependentFields: ["startTime"],
+      validationRun: "all",
+      runValidationOnDependentFieldsChange: true,
+      validate: {
+        conditions: {
+          any: [
+            {
+              fact: "dependentFields",
+              path: "$.startTime.value",
+              operator: "lessThanDate",
+              value: {
+                fact: "currentField",
+                path: "$.value",
+              },
+            },
+          ],
+        },
+        success: "",
+        failure: "Task Start Time should be greater than to Task End Time",
+      },
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {

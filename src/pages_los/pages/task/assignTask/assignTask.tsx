@@ -34,7 +34,7 @@ export const AssignTask = ({ moduleType, isDataChangedRef, closeDialog }) => {
       onError: (error: any, { endSubmit }) => {
         let errorMsg = "Unknown Error occured";
         if (typeof error === "object") {
-          Error = error?.error_msg ?? errorMsg;
+          errorMsg = error?.error_msg ?? errorMsg;
         }
         endSubmit(false, errorMsg, error?.error_details ?? "");
       },
