@@ -311,6 +311,12 @@ export const metaData: NavBarMetaDataType = {
       icon: "cog",
       children: [
         {
+          label: "Bank Master",
+          href: "./config/bankMaster",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
           label: "Bank",
           href: "./config/banks",
           isRouterLink: true,
