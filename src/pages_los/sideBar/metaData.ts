@@ -301,6 +301,12 @@ export const metaData: NavBarMetaDataType = {
       ],
     },
     {
+      label: "Worklog Management",
+      icon: "hashtag",
+      href: "./worklogManagement",
+      isRouterLink: true,
+    },
+    {
       label: "Config Management",
       icon: "cog",
       children: [

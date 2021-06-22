@@ -47,17 +47,15 @@ export const leadTaskAssignMetadata = {
   },
   fields: [
     {
-      render: { componentType: "select" },
+      render: { componentType: "hidden" },
       name: "taskFor",
       label: "Task For",
       placeholder: "Task For",
       disableCaching: true,
-      defaultValue: "00",
-      options: "getTaskList",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "searchField" },
+      render: { componentType: "hidden" },
       name: "leadID",
       label: "Lead Number",
       placeholder: "Lead Number",
@@ -135,6 +133,11 @@ export const leadTaskAssignMetadata = {
       options: "getTaskStatus",
       defaultValue: "00",
       GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: { componentType: "spacer" },
+      name: "spacer",
+      GridProps: { xs: 12, md: 6, sm: 6 },
     },
     {
       render: { componentType: "textField" },

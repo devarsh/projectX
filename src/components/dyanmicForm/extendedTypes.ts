@@ -282,9 +282,9 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       isAllowed: (values) => {
         //@ts-ignore
         if (values.floatValue >= 999.99) {
-          return true;
+          return false;
         }
-        return false;
+        return true;
       },
     },
   },
@@ -301,10 +301,10 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
       allowEmptyFormatting: true,
       isAllowed: (values) => {
         //@ts-ignore
-        if (values.floatValue <= 999.99) {
-          return true;
+        if (values.floatValue < 999.99) {
+          return false;
         }
-        return false;
+        return true;
       },
     },
     schemaValidation: {

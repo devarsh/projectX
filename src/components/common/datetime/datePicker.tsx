@@ -1,10 +1,10 @@
-import { FC, useRef, useEffect, useCallback } from "react";
+import { FC, useRef, useEffect } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
 import { KeyboardDatePickerProps } from "@material-ui/pickers";
 import { KeyboardDatePicker } from "components/styledComponent/datetime";
 import Grid, { GridProps } from "@material-ui/core/Grid";
+
 import { Omit, Merge } from "../types";
-import { parseJSON } from "date-fns";
 
 type KeyboardDatePickerPropsSubset = Omit<
   KeyboardDatePickerProps,
@@ -66,24 +66,15 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     shouldExclude,
     runValidationOnDependentFieldsChange,
   });
-  //disableTimestamp = Boolean(disableTimestamp);
   useEffect(() => {
     if (typeof value === "string") {
-      let result = parseJSON(value);
-      //@ts-ignore
-      if (isNaN(result)) {
-        result = new Date(value);
-      }
+      let result = new Date(value);
       //@ts-ignore
       if (!isNaN(result)) {
-        result = new Date(
-          result.getTime() - result.getTimezoneOffset() * 60000
-        );
         handleChange(result);
       }
     }
   }, [value, handleChange]);
-
   const focusRef = useRef();
   useEffect(() => {
     if (isFieldFocused) {
@@ -95,19 +86,7 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
     }
   }, [isFieldFocused]);
   const isError = touched && (error ?? "") !== "";
-  const customDateChangeHandler = useCallback(
-    (date) => {
-      let result = date;
-      //@ts-ignore
-      if (result instanceof Date && !isNaN(result)) {
-        result = new Date(
-          result.getTime() - result.getTimezoneOffset() * 60000
-        );
-      }
-      handleChange(result);
-    },
-    [handleChange]
-  );
+
   if (excluded) {
     return null;
   }
@@ -120,7 +99,8 @@ export const MyDatePicker: FC<MyDataPickerAllProps> = ({
       value={value === "" ? null : value} //make sure to pass null when input is empty string
       error={!isSubmitting && isError}
       helperText={!isSubmitting && isError ? error : null}
-      onChange={customDateChangeHandler}
+      //@ts-ignore
+      onChange={handleChange}
       tabIndex={readOnly ? -1 : undefined}
       onBlur={handleBlur}
       disabled={isSubmitting}
