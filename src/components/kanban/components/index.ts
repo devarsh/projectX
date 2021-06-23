@@ -72,3 +72,9 @@ export const ItemRibbon = styled.div`
   border-bottom-right-radius: 5px;
   border: ${(props) => `1px solid ${props.color}`};
 `;
+
+export const Ellipses = styled.div`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+`;
