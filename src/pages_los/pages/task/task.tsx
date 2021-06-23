@@ -9,7 +9,7 @@ import { Transition } from "pages_los/common";
 import { serverGridContextGenerator } from "./context";
 import { AssignTask } from "./assignTask";
 import { TaskViewEdit } from "./assignTask/viewEditTask";
-import { DetailsTabView } from "pages_los/pages/task/history";
+import { HistoryGrid } from "pages_los/pages/task/history";
 import { InvalidAction } from "pages_los/common/invalidAction";
 
 export const Task = ({ gridCode, actions }: any) => {
@@ -71,11 +71,10 @@ export const Task = ({ gridCode, actions }: any) => {
             </Fragment>
           ) : (currentAction?.name ?? "") === "TaskHistory" ? (
             <Fragment>
-              <DetailsTabView
+              <HistoryGrid
                 taskID={currentAction?.rows[0].id}
                 moduleType="task"
                 closeDialog={handleDialogClose}
-                disableCache={false}
               />
             </Fragment>
           ) : (
