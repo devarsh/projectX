@@ -443,6 +443,19 @@ const MiscAPI = () => {
     }
   };
 
+  const getBanBranchkList = async (): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher("./bankBranchList", {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.branchCode,
+        label: one?.branchName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     getMiscVal,
@@ -462,6 +475,7 @@ const MiscAPI = () => {
     getCRMSubProductType,
     getRetailEmployementCode,
     getUnsecuredEmployementCode,
+    getBanBranchkList,
   };
 };
 

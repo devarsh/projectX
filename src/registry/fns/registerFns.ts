@@ -132,6 +132,7 @@ registerFn(
   "setValueOnDependentFieldsChangeOne",
   others.setValueOnDependentFieldsChangeOne
 );
+registerFn("getBankBranchList", miscSDK.getBanBranchkList);
 //Dummy only for testing
 registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
 registerFn("getMonthDifferenceInRows", others.getMonthDifferenceInRows);
