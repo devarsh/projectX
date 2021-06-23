@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import loaderGif from "assets/images/loader.gif";
 import { InitialValuesType, SubmitFnType } from "packages/form";
 import Button from "@material-ui/core/Button";
@@ -6,7 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
-import { queryClient, ClearCacheContext } from "cache";
+import { queryClient } from "cache";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
 import * as API from "./api";
@@ -51,17 +51,60 @@ export const TaskViewEdit: FC<{
   setEditFormStateFromInitValues,
   refID,
 }) => {
-  const removeCache = useContext(ClearCacheContext);
   const { enqueueSnackbar } = useSnackbar();
   const [formMode, setFormMode] = useState(defaultView);
   const moveToViewMode = useCallback(() => setFormMode("view"), [setFormMode]);
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
 
+  const mutation = useMutation(
+    updateTaskDataWrapperFn(
+      API.updateTaskFormData({
+        moduleType,
+        inquiry: refID,
+        taskID: taskID,
+        inquiryFor: inquiryFor,
+      })
+    ),
+    {
+      onError: (error: any, { endSubmit }) => {
+        let errorMsg = "Unknown Error occured";
+        if (typeof error === "object") {
+          errorMsg = error?.error_msg ?? errorMsg;
+        }
+        endSubmit(false, errorMsg, error?.error_detail ?? "");
+      },
+      onSuccess: (data, { endSubmit }) => {
+        queryClient.refetchQueries(["getTaskFormData", moduleType, taskID]);
+        endSubmit(true, "");
+        enqueueSnackbar("Task Update Successfully", {
+          variant: "success",
+        });
+        isDataChangedRef.current = true;
+        moveToViewMode();
+        if (typeof closeDialog === "function") {
+          closeDialog();
+        }
+      },
+    }
+  );
+
+  const onSubmitHandler: SubmitFnType = (
+    data,
+    displayData,
+    endSubmit,
+    setFieldError
+  ) => {
+    //@ts-ignore
+    mutation.mutate({ data, displayData, endSubmit, setFieldError });
+  };
+
   useEffect(() => {
-    removeCache?.addEntry(["getFormData", moduleType, taskID]);
-    removeCache?.addEntry(["getFormMetaData", "view"]);
-    removeCache?.addEntry(["getFormMetaData", "edit"]);
-  }, [removeCache, taskID]);
+    return () => {
+      queryClient.removeQueries(["getTaskFormData", moduleType, taskID]);
+      queryClient.removeQueries(["getTaskFormMetaData", "view", taskID]);
+      queryClient.removeQueries(["getTaskFormMetaData", "edit", taskID]);
+    };
+  }, [taskID]);
 
   const result = useQueries([
     disableCache
@@ -75,12 +118,12 @@ export const TaskViewEdit: FC<{
           queryFn: () => API.getTaskFormData({ moduleType })(taskID),
         },
     {
-      queryKey: ["getFormMetaData", "view"],
-      queryFn: () => API.getMetadata,
+      queryKey: ["getTaskFormMetaData", "view", taskID],
+      queryFn: () => API.getMetadata(),
     },
     {
-      queryKey: ["getFormMetaData", "edit"],
-      queryFn: () => API.getMetadata,
+      queryKey: ["getTaskFormMetaData", "edit", taskID],
+      queryFn: () => API.getMetadata(),
     },
   ]);
 
@@ -134,47 +177,6 @@ export const TaskViewEdit: FC<{
     }
   }
 
-  const mutation = useMutation(
-    updateTaskDataWrapperFn(
-      API.updateTaskFormData({
-        moduleType,
-        inquiry: refID,
-        taskID: taskID,
-        inquiryFor: inquiryFor,
-      })
-    ),
-    {
-      onError: (error: any, { endSubmit }) => {
-        let errorMsg = "Unknown Error occured";
-        if (typeof error === "object") {
-          errorMsg = error?.error_msg ?? errorMsg;
-        }
-        endSubmit(false, errorMsg, error?.error_detail ?? "");
-      },
-      onSuccess: (data, { endSubmit }) => {
-        queryClient.refetchQueries(["getTaskFormData", moduleType, taskID]);
-        endSubmit(true, "");
-        enqueueSnackbar("Task Update Successfully", {
-          variant: "success",
-        });
-        isDataChangedRef.current = true;
-        moveToViewMode();
-        if (typeof closeDialog === "function") {
-          closeDialog();
-        }
-      },
-    }
-  );
-
-  const onSubmitHandler: SubmitFnType = (
-    data,
-    displayData,
-    endSubmit,
-    setFieldError
-  ) => {
-    //@ts-ignore
-    mutation.mutate({ data, displayData, endSubmit, setFieldError });
-  };
   const renderResult = loading ? (
     <>
       <img src={loaderGif} alt="loader" width="50px" height="50px" />

@@ -1,45 +1,35 @@
-import { Fragment, useContext, useEffect, FC } from "react";
-import { ClearCacheContext } from "cache";
+import { Fragment, FC, useEffect } from "react";
+import { queryClient } from "cache";
 import IconButton from "@material-ui/core/IconButton";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import GridWrapper from "components/dataTableStatic";
 import { useQueries } from "react-query";
 import loaderGif from "assets/images/loader.gif";
 import { GridMetaDataType } from "components/dataTable/types";
 import * as API from "./api";
-import { Button } from "@material-ui/core";
 
-export const DetailsTabView: FC<{
+export const HistoryGrid: FC<{
   moduleType: any;
   closeDialog?: any;
-  disableCache?: boolean;
   taskID: string;
-}> = ({ moduleType, closeDialog, taskID, disableCache }) => {
-  const removeCache = useContext(ClearCacheContext);
-
+}> = ({ moduleType, closeDialog, taskID }) => {
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries(["getTaskHistoryGridData", moduleType, taskID]);
+      queryClient.removeQueries(["getTaskHistoryGridMetaData"]);
+    };
+  }, []);
   const result = useQueries([
-    disableCache
-      ? {
-          queryKey: ["getHistoryTaskFormData", moduleType, taskID],
-          queryFn: () => API.getTaskHistory({ moduleType, taskID }),
-          cacheTime: 0,
-        }
-      : {
-          queryKey: ["getTaskFormData", moduleType, taskID],
-          queryFn: () => API.getTaskHistory({ moduleType, taskID }),
-        },
     {
-      queryKey: ["getFormMetaData", "view"],
-      queryFn: () => API.getHistoryGridFormMetaData,
+      queryKey: ["getTaskHistoryGridData", moduleType, taskID],
+      queryFn: () => API.getTaskHistoryGridData({ moduleType, taskID }),
+    },
+    {
+      queryKey: ["getTaskHistoryGridMetaData"],
+      queryFn: () => API.getTaskHistoryGridMetaData,
     },
   ]);
-
-  useEffect(() => {
-    removeCache?.addEntry(["getHistoryTaskFormData", moduleType, taskID]);
-    removeCache?.addEntry(["getTaskHistoryFormMetaData"]);
-  }, [removeCache, taskID]);
 
   const loading =
     result[0].isLoading ||

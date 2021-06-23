@@ -1,1 +1,1 @@
-export { DetailsTabView } from "./history";
+export * from "./history";
