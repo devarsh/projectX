@@ -1,1 +1,1 @@
-export { BankMaster } from "./bankMaster";
+export { BankMasterWrapper as BankMaster } from "./bankMaster";
