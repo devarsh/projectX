@@ -1,17 +1,14 @@
-//import { GridMetaDataType } from "components/dataTable";
-
-export const leadGridMetaData = {
+export const leadDisbursementMetaData = {
   gridConfig: {
     dense: false,
     pageSize: [20, 30, 50],
     defaultPageSize: 20,
-    gridLabel: "Leads",
+    gridLabel: "Disbursement Leads",
     rowIdColumn: "tran_cd",
     allowGlobalFilter: true,
     allowColumnReordering: true,
     allowColumnHiding: true,
     allowKeyboardNavigation: true,
-    //filterAlwaysVisible: true,
   },
   columns: [
     {
@@ -270,62 +267,3 @@ export const leadGridMetaData = {
     },
   ],
 };
-
-/*
-{
-      accessor: "inactive_reason_cd",
-      columnName: "Inactive Reason",
-      sequence: 6,
-      width: 150,
-      minWidth: 100,
-      maxWidth: 200,
-      alignment: "right",
-      componentType: "default",
-      disableSortBy: false,
-      filterComponentType: "valueFilter",
-      isVisible: true,
-    },
-    {
-      accessor: "source_cd",
-      columnName: "Source",
-      sequence: 8,
-      width: 150,
-      minWidth: 100,
-      maxWidth: 200,
-      alignment: "right",
-      componentType: "default",
-      disableSortBy: false,
-      filterComponentType: "valueFilter",
-      isVisible: true,
-    },
-    {
-      accessor: "assigned_id",
-      columnName: "Assign ID",
-      sequence: 10,
-      width: 150,
-      minWidth: 100,
-      maxWidth: 200,
-      alignment: "right",
-      componentType: "default",
-      disableSortBy: false,
-      disableFilters: false,
-      filterComponentType: "valueFilter",
-      isVisible: true,
-    },
-    {
-      accessor: "team_lead_id",
-      columnName: "Team Lead ID",
-      sequence: 11,
-      width: 150,
-      minWidth: 100,
-      maxWidth: 200,
-      alignment: "right",
-      componentType: "default",
-      disableSortBy: false,
-      disableFilters: false,
-      filterComponentType: "valueFilter",
-      isVisible: true,
-    },
-    
-
-*/

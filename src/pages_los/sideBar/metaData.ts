@@ -256,19 +256,31 @@ export const metaData: NavBarMetaDataType = {
       children: [
         {
           label: "Leads",
-          href: "./leads",
+          href: "./lead/details",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Mandate",
-          href: "./mandate",
+          href: "./lead/mandate",
           isRouterLink: true,
           icon: "circle",
         },
         {
           label: "Bank Login",
-          href: "./bankLogin",
+          href: "./lead/bankLogin",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Sanction",
+          href: "./lead/sanction",
+          isRouterLink: true,
+          icon: "circle",
+        },
+        {
+          label: "Disbursement",
+          href: "./lead/disbursement",
           isRouterLink: true,
           icon: "circle",
         },
@@ -291,7 +303,9 @@ export const metaData: NavBarMetaDataType = {
           icon: "circle",
         },
         {
-          label: "Daily Activity",
+          label: "WorkLog",
+          href: "./task/worklog",
+          isRouterLink: true,
           icon: "circle",
         },
         {
@@ -299,12 +313,6 @@ export const metaData: NavBarMetaDataType = {
           icon: "circle",
         },
       ],
-    },
-    {
-      label: "Worklog Management",
-      icon: "hashtag",
-      href: "./worklogManagement",
-      isRouterLink: true,
     },
     {
       label: "Config Management",

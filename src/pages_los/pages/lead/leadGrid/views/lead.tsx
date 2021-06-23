@@ -1,9 +1,9 @@
-import { LeadGrid } from "./leadGrid";
+import { LeadGrid } from "../leadGrid";
 import { ActionTypes } from "components/dataTable";
 import { useContext } from "react";
 import { AuthContext } from "auth";
 
-export const Lead = () => {
+export const Leads = () => {
   //@ts-ignore
   const authCtx = useContext(AuthContext);
   const role = authCtx?.authState.role ?? [];

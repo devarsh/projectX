@@ -12,7 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { TextFieldForSelect } from "components/styledComponent/textfield";
 import { columns } from "./data";
 
-export const Kanban = () => {
+export const BankLogin = ({ refID, moduleType }) => {
   const [state, setState] = useState(data);
   const { enqueueSnackbar } = useSnackbar();
   const [transition, setTransition] = useState<any>(null);

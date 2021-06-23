@@ -16,6 +16,10 @@ import { Stage } from "../stages";
 import { CAM } from "../cam";
 import { LeadAssign } from "../leadAssign";
 import { Verification } from "../verification";
+import { BankLogin } from "../bankLogin";
+import { Mandate } from "../mandate";
+import { Sanction } from "../sanction";
+import { Disbursement } from "../disbursement";
 
 export const LeadGrid = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -97,6 +101,30 @@ export const LeadGrid = ({ gridCode, actions }) => {
             />
           ) : (currentAction?.name ?? "") === "verification" ? (
             <Verification
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+            />
+          ) : (currentAction?.name ?? "") === "bankLogin" ? (
+            <BankLogin
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+            />
+          ) : (currentAction?.name ?? "") === "mandate" ? (
+            <Mandate
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+            />
+          ) : (currentAction?.name ?? "") === "sanction" ? (
+            <Sanction
+              key={currentAction?.rows[0].id}
+              moduleType="lead"
+              refID={currentAction?.rows[0].id}
+            />
+          ) : (currentAction?.name ?? "") === "disbursement" ? (
+            <Disbursement
               key={currentAction?.rows[0].id}
               moduleType="lead"
               refID={currentAction?.rows[0].id}

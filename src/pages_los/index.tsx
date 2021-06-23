@@ -18,9 +18,13 @@ import {
   IncomingInquiry,
   UnmappedInqiry,
 } from "./pages/inquiry";
-import { Lead } from "./pages/lead";
-import { Mandate } from "./pages/mandate";
-import { BankLogin } from "./pages/bankLogin";
+import {
+  MandateLeads,
+  BankLoginLeads,
+  Leads,
+  SanctionLeads,
+  DisbursementLeads,
+} from "./pages/lead";
 import { DetailsTabViewBank } from "./pages/config/bank";
 import { UserManagement } from "./pages/config/userManagement";
 import { NewInquiry } from "./pages/newInquiry";
@@ -28,12 +32,15 @@ import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
-import { AssignTask, AssignedTask } from "pages_los/pages/task";
-import { WorkLogDetailsTabView } from "pages_los/pages/worklog";
+import {
+  AssignTask,
+  AssignedTask,
+  WorkLogDetailsTabView,
+} from "pages_los/pages/task";
+
 import { BankMaster } from "pages_los/pages/config/bankMaster";
 import { BankBranchMaster } from "pages_los/pages/config/bankBranchMaster";
 import Editor from "components/editor";
-import { Kanban } from "components/kanban";
 
 const DashbordPages = () => {
   const classes = useStyles();
@@ -76,28 +83,22 @@ const DashbordPages = () => {
               element={<UnmappedInqiry />}
             />
 
-            <Route path="/leads/*" element={<Lead />} />
-            <Route path="/mandate/*" element={<Mandate />} />
-            <Route path="/bankLogin/*" element={<BankLogin />} />
-            <Route path="/config/banks" element={<DetailsTabViewBank />} />
-            <Route path="/config/userManagement" element={<UserManagement />} />
+            <Route path="/lead/details" element={<Leads />} />
+            <Route path="/lead/mandate" element={<MandateLeads />} />
+            <Route path="/lead/bankLogin" element={<BankLoginLeads />} />
+            <Route path="/lead/sanction" element={<SanctionLeads />} />
+            <Route path="/lead/disbursement" element={<DisbursementLeads />} />
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
-            <Route
-              path="/worklogManagement"
-              element={<WorkLogDetailsTabView />}
-            />
+            <Route path="/task/worklog" element={<WorkLogDetailsTabView />} />
             <Route path="/config/bankMaster" element={<BankMaster />} />
-            <Route
-              path="/config/bankBranchMaster"
-              element={<BankBranchMaster />}
-            />
+            <Route path="/config/banks" element={<DetailsTabViewBank />} />
+            <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/profile" element={<Profile />} />
             {/*dummy routes*/}
             <Route path="/testForm" element={<TestForm />} />
             <Route path="/pages/:id" element={<Dummy />} />
             <Route path="/editor" element={<Editor />} />
-            <Route path="/kanban" element={<Kanban />} />
           </Routes>
         </Content>
       </div>
