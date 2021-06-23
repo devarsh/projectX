@@ -72,6 +72,7 @@ registerFn("getWorkBillable", miscSDK.getMiscVal("WORK_BILLABLE"));
 registerFn("getWorkType", miscSDK.getMiscVal("WORK_TYPE"));
 
 registerFn("getTaskList", miscSDK.getMiscVal("TASK_FOR"));
+registerFn("getBanksForBankBranchMaster", miscSDK.getMiscVal("BANK_MST_LIST"));
 
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);

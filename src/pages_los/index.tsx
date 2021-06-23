@@ -30,6 +30,7 @@ import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
 import { AssignTask, AssignedTask } from "pages_los/pages/task";
 import { WorkLogDetailsTabView } from "pages_los/pages/worklog";
+import { BankMaster } from "pages_los/pages/config/bankMaster";
 import Editor from "components/editor";
 import { Kanban } from "components/kanban";
 
@@ -85,6 +86,7 @@ const DashbordPages = () => {
               path="/worklogManagement"
               element={<WorkLogDetailsTabView />}
             />
+            <Route path="/config/bankMaster" element={<BankMaster />} />
             <Route path="/profile" element={<Profile />} />
             {/*dummy routes*/}
             <Route path="/testForm" element={<TestForm />} />
