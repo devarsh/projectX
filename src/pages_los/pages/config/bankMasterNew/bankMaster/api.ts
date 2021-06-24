@@ -1,13 +1,8 @@
-import { LOSSDK, crudType } from "registry/fns/los";
-import { bankBranchMasterGridMetaData } from "./metadata/grid";
-import {
-  bankBranchMasterMetadata,
-  bankBranchMasterMetadataEditView,
-} from "./metadata/form";
+import { LOSSDK } from "registry/fns/los";
+import { bankMasterGridMetaData } from "./metadata/grid";
+import { bankMasterMetadata } from "./metadata/form";
 
-export const insertBankBranchMasterData = ({ moduleType }: crudType) => async (
-  formData: any
-) => {
+export const addBank = ({ moduleType }) => async (formData: any) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/data/post`,
     {
@@ -26,14 +21,12 @@ export const insertBankBranchMasterData = ({ moduleType }: crudType) => async (
   }
 };
 
-export const getFormData = ({ moduleType }: crudType) => async (
-  serialNo?: string
-) => {
+export const getFormData = ({ moduleType }) => async (serialNo?: string) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/data/get`,
     {
       body: JSON.stringify({
-        request_data: { branchID: serialNo },
+        request_data: { bankCode: serialNo },
         channel: "W",
       }),
     }
@@ -45,7 +38,7 @@ export const getFormData = ({ moduleType }: crudType) => async (
   }
 };
 
-export const getGridData = ({ moduleType }: crudType) => async () => {
+export const getGridData = async ({ moduleType }) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/grid/data`,
     {
@@ -62,16 +55,15 @@ export const getGridData = ({ moduleType }: crudType) => async () => {
   }
 };
 
-export const updateBankBranchMasterData = ({ moduleType }: crudType) => async (
-  formData: any,
-  serialNo?: any
+export const updateBankData = ({ moduleType, bankCode }) => async (
+  formData: any
 ) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/data/put`,
     {
       body: JSON.stringify({
         request_data: {
-          branchID: serialNo,
+          bankCode: bankCode,
           ...formData,
         },
         channel: "W",
@@ -85,15 +77,13 @@ export const updateBankBranchMasterData = ({ moduleType }: crudType) => async (
   }
 };
 
-export const deleteBankBranchMasterData = ({ moduleType }: crudType) => async (
-  serialNo: any
-) => {
+export const deleteBankData = ({ moduleType, bankCode }) => async () => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/data/delete`,
     {
       body: JSON.stringify({
         request_data: {
-          branchID: serialNo,
+          bankCode: bankCode,
         },
         channel: "W",
       }),
@@ -106,26 +96,10 @@ export const deleteBankBranchMasterData = ({ moduleType }: crudType) => async (
   }
 };
 
-export const getFormMetaData = ({ moduleType }: crudType) => async (
-  metadataType: any
-) => {
-  switch (metadataType) {
-    case "edit":
-      return bankBranchMasterMetadataEditView;
-    case "view":
-      return bankBranchMasterMetadataEditView;
-    case "new":
-      return bankBranchMasterMetadata;
-    default:
-      throw { error_msg: "Invalid Module type" };
-  }
+export const getFormMetaData = () => {
+  return bankMasterMetadata;
 };
 
-export const getGridMetaData = ({ moduleType }: crudType) => async () => {
-  switch (moduleType) {
-    case "bank-branch":
-      return bankBranchMasterGridMetaData;
-    default:
-      throw { error_msg: "Invalid Module type" };
-  }
+export const getGridMetaData = () => {
+  return bankMasterGridMetaData;
 };

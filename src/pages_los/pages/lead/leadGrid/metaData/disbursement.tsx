@@ -207,7 +207,7 @@ export const leadDisbursementMetaData = {
     },
     {
       accessor: "mobile",
-      columnName: "Moibile",
+      columnName: "Mobile",
       sequence: 14,
       width: 150,
       minWidth: 100,

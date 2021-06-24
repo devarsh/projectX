@@ -27,7 +27,7 @@ export const smeGridMetaData = {
       isVisible: false,
     },
     {
-      columnName: "Vintage of Business",
+      columnName: "Age of Business",
       componentType: "default",
       accessor: "businessVintage",
       sequence: 2,
@@ -39,6 +39,7 @@ export const smeGridMetaData = {
       accessor: "departmentName",
       sequence: 3,
       alignment: "left",
+      isVisible: false,
     },
     {
       columnName: "Product Name",
@@ -68,6 +69,13 @@ export const smeGridMetaData = {
       sequence: 7,
       alignment: "left",
       isVisible: false,
+    },
+    {
+      columnName: "Bank Branch Name",
+      componentType: "default",
+      accessor: "bankBranchName",
+      sequence: 7,
+      alignment: "left",
     },
   ],
 };

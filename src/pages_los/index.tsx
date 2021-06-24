@@ -38,8 +38,7 @@ import {
   WorkLogDetailsTabView,
 } from "pages_los/pages/task";
 
-import { BankMaster } from "pages_los/pages/config/bankMaster";
-import { BankBranchMaster } from "pages_los/pages/config/bankBranchMaster";
+import { BankMasterNew } from "pages_los/pages/config/bankMasterNew/bankMasterNew";
 import Editor from "components/editor";
 
 const DashbordPages = () => {
@@ -91,7 +90,7 @@ const DashbordPages = () => {
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
             <Route path="/task/worklog" element={<WorkLogDetailsTabView />} />
-            <Route path="/config/bankMaster" element={<BankMaster />} />
+            <Route path="/config/bankMaster" element={<BankMasterNew />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/profile" element={<Profile />} />

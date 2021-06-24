@@ -325,12 +325,6 @@ export const metaData: NavBarMetaDataType = {
           icon: "circle",
         },
         {
-          label: "Bank Branch Master",
-          href: "./config/bankBranchMaster",
-          isRouterLink: true,
-          icon: "circle",
-        },
-        {
           label: "Bank",
           href: "./config/banks",
           isRouterLink: true,

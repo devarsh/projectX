@@ -52,6 +52,7 @@ export const unsecureGridMetaData = {
       accessor: "typeOfIndustry",
       sequence: 5,
       alignment: "left",
+      isVisible: false,
     },
     {
       columnName: "Sub Type Of Industry Type",
@@ -59,6 +60,7 @@ export const unsecureGridMetaData = {
       accessor: "subTypeOfIndustry",
       sequence: 6,
       alignment: "left",
+      isVisible: false,
     },
     {
       columnName: "Bank Ref code",
@@ -67,6 +69,13 @@ export const unsecureGridMetaData = {
       sequence: 7,
       alignment: "left",
       isVisible: false,
+    },
+    {
+      columnName: "Bank Branch Name",
+      componentType: "default",
+      accessor: "bankBranchName",
+      sequence: 8,
+      alignment: "left",
     },
   ],
 };
