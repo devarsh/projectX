@@ -54,14 +54,6 @@ const CollateralSecurity = ({ collateral }) => {
         />
         <Percentage colspan={1} value={collateral[0]?.collateralCoverage} />
       </tr>
-      <tr>
-        <Default colspan={8} align="end" value="FACR" element="th" />
-        <Percentage colspan={1} value={collateral[0]?.facr} />
-      </tr>
-      <tr>
-        <Default colspan={8} align="end" value="ACR" element="th" />
-        <Percentage colspan={1} value={collateral[0]?.acr} />
-      </tr>
     </>
   );
 };

@@ -156,7 +156,7 @@ const APIInterface = ({ refID, moduleType, closeDialog, isDataChangedRef }) => {
                   formDataRef.current?.processFor === "GSTR1"
                     ? "GSTR1"
                     : formDataRef.current?.processFor === "GSTR3"
-                    ? "GSTR-3B"
+                    ? "GSTR3"
                     : "All";
                 return data.filter((one) => {
                   if (one.docCategory === "GST_DOC_TYPE") {
