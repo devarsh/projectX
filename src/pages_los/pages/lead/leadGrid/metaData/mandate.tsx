@@ -209,7 +209,7 @@ export const leadMandateMetaData = {
     },
     {
       accessor: "mobile",
-      columnName: "Moibile",
+      columnName: "Mobile",
       sequence: 14,
       width: 150,
       minWidth: 100,

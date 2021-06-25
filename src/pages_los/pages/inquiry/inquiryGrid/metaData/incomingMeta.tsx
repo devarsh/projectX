@@ -37,7 +37,6 @@ export const incomingMetaData = {
       componentType: "default",
       disableSortBy: false,
       disableFilters: false,
-      filterComponentType: "valueFilter",
       isVisible: false,
     },
     {
@@ -169,6 +168,9 @@ export const incomingMetaData = {
       disableSortBy: true,
       disableFilters: true,
       filterComponentType: "rangeFilter",
+      filterProps: {
+        type: "date",
+      },
       isVisible: true,
       dateFormat: "dd/MM/yyyy",
     },

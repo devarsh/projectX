@@ -61,5 +61,12 @@ export const retailGridMetaData = {
       alignment: "left",
       isVisible: false,
     },
+    {
+      columnName: "Bank Branch Name",
+      componentType: "default",
+      accessor: "bankBranchName",
+      sequence: 7,
+      alignment: "left",
+    },
   ],
 };

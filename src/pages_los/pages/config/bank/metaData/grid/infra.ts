@@ -74,5 +74,12 @@ export const infraGridMetaData = {
       sequence: 8,
       alignment: "left",
     },
+    {
+      columnName: "Bank Branch Name",
+      componentType: "default",
+      accessor: "bankBranchName",
+      sequence: 9,
+      alignment: "left",
+    },
   ],
 };
