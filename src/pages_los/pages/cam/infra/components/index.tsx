@@ -7,3 +7,5 @@ export * from "./subProjectBreif";
 export * from "./projectParticular";
 export * from "./completionProjectDetails";
 export * from "./collateralDetails";
+export * from "./facilityPresent";
+export * from "./facilityProposed";

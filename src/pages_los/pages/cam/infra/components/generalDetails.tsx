@@ -2,6 +2,8 @@ import { PromoterDetails } from "./partnerDetails";
 import { BriefAboutProject } from "./projectBrief";
 import { ProjectParticularDetails } from "./projectParticular";
 import { SiteAreaDetails } from "./siteAreaDetail";
+import { NatureofFacilityPresentDetails } from "./facilityPresent";
+import { NatureofFacilityProposedDetails } from "./facilityProposed";
 import {
   Default,
   DateFormat,
@@ -99,6 +101,16 @@ export const GeneralDetails = ({
         <Address value={address} />
         <PromoterDetails promoter={promoter} />
         {/* <BankDetails bank={bank} /> */}
+        <NatureofFacilityPresentDetails
+          natureOfFacilityPresent={
+            general?.presentNatureOfFacilityDetails ?? ""
+          }
+        />
+        <NatureofFacilityProposedDetails
+          natureOfFacilityProposed={
+            general?.proposedNatureOfFacilityDetails ?? ""
+          }
+        />
         <BriefAboutProject project={project} />
         <ProjectParticularDetails projectParticular={projectParticular} />
         <SiteAreaDetails siteArea={siteArea} />
