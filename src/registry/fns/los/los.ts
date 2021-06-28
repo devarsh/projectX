@@ -102,6 +102,29 @@ const LOSAPI = () => {
     }
   };
 
+  const getBankSubStageCode = async (dependentFields: any, formState: any) => {
+    const { status, data } = await internalFetcher(
+      `lead/bankLogin/options/subStage`,
+      {
+        body: JSON.stringify({
+          request_data: {
+            refID: formState?.refID,
+            stageCode: dependentFields?.stageCode?.value,
+          },
+        }),
+      }
+    );
+    if (status === "success" && Array.isArray(data.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.subStageCode,
+        label: one?.subStageName,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   const getLeadEmploymentType = async (_, formState: any) => {
     const { status, data } = await internalFetcher(
       `lead/options/employmentType`,
@@ -671,6 +694,7 @@ const LOSAPI = () => {
 
     //Inquiry & Lead Stages
     getLeadSubStageCode,
+    getBankSubStageCode,
     getLeadEmploymentType,
 
     getPropertyTypeCAM,

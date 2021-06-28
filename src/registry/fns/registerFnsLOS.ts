@@ -41,6 +41,7 @@ registerFn(
 );
 
 registerFn("getLeadSubStageCode", LOSSDK.getLeadSubStageCode);
+registerFn("getBankSubStageCode", LOSSDK.getBankSubStageCode);
 registerFn("getLeadEmploymentType", LOSSDK.getLeadEmploymentType);
 registerFn(
   "getYearlyTargetUserBranchList",

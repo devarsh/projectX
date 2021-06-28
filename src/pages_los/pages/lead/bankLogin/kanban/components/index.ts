@@ -5,6 +5,7 @@ export const BoardContainer = styled.div`
   flex-direction: row;
   height: 77vh;
   overflow-x: scroll;
+  pointer-events: ${(props) => (props?.disabled ? "none" : "all")};
 `;
 
 export const ColumnWrapper = styled.div`
@@ -28,7 +29,7 @@ export const ItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const RoundedCount = styled.div`

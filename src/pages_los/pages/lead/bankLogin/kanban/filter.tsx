@@ -1,11 +1,17 @@
-import { columns } from "./data";
 import { splitTask } from "./utils";
 
-export const Filter = ({ data, children, filterValue }) => {
+export const Filter = ({
+  data,
+  children,
+  filterValue,
+  columns,
+  filterBy = [],
+  splitItemsBy,
+  itemsPriorityKey,
+}) => {
   if (typeof children === "function") {
-    let newData = filterData(data, ["bank", "branch"], filterValue);
-    let result = splitTask(newData, "columnID", columns, "columnID");
-    console.log(newData, result);
+    let newData = filterData(data, filterBy, filterValue);
+    let result = splitTask(newData, columns, splitItemsBy, itemsPriorityKey);
     return children(result);
   }
   return null;

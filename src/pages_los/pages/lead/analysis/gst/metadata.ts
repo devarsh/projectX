@@ -50,7 +50,7 @@ export const GSTAnalysisMetaData: MetaDataType = {
       options: [
         { value: "ALL", label: "ALL" },
         { value: "GSTR1", label: "GSTR-1" },
-        { value: "GSTR3", label: "GSTR-3" },
+        { value: "GSTR3", label: "GSTR-3B" },
       ],
     },
     {

@@ -1,16 +1,16 @@
 import { Draggable } from "react-beautiful-dnd";
 import ItemHolder from "assets/images/itemHolder.svg";
-import { createElement } from "react";
-import { isValidElementType } from "react-is";
+import { Card } from "./card";
 
 import { ItemWrapper, ItemDragger, ItemRibbon } from "./components";
 
 export const Item = ({
   id,
+  refID,
   index,
   ribbon,
-  component,
   columnName,
+  query,
   ...others
 }) => {
   return (
@@ -25,9 +25,14 @@ export const Item = ({
             <ItemDragger>
               <img src={ItemHolder} alt="holder" />
             </ItemDragger>
-            {isValidElementType(component)
-              ? createElement(component, { columnName, id, ...others }, null)
-              : null}
+            {/*@ts-ignore*/}
+            <Card
+              columnName={columnName}
+              id={id}
+              refID={refID}
+              query={query}
+              {...others}
+            />
             <ItemRibbon color={ribbon} />
           </ItemWrapper>
         );

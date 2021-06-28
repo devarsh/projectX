@@ -73,6 +73,7 @@ registerFn("getWorkType", miscSDK.getMiscVal("WORK_TYPE"));
 
 registerFn("getTaskList", miscSDK.getMiscVal("TASK_FOR"));
 registerFn("getBanksForBankBranchMaster", miscSDK.getMiscVal("BANK_MST_LIST"));
+registerFn("getBankStages", miscSDK.getMiscVal("BANK_STAGE"));
 
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);

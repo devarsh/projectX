@@ -8,7 +8,16 @@ import {
   ItemsContainer,
 } from "./components";
 
-export const Column = ({ columnID, label, items, ribbon, name, component }) => {
+export const Column = ({
+  itemsKey,
+  columnID,
+  refID,
+  label,
+  items,
+  ribbon,
+  name,
+  query,
+}) => {
   return (
     <Droppable droppableId={`${columnID}`}>
       {(provided) => {
@@ -27,11 +36,13 @@ export const Column = ({ columnID, label, items, ribbon, name, component }) => {
             >
               {items.map((one, index) => (
                 <Item
-                  key={one.id}
+                  key={one?.[itemsKey]}
+                  id={one?.[itemsKey]}
                   index={index}
                   ribbon={ribbon}
                   columnName={name}
-                  component={component}
+                  refID={refID}
+                  query={query}
                   {...one}
                 />
               ))}

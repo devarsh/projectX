@@ -7,7 +7,17 @@ import { BoardContainer } from "./components";
 import Button from "@material-ui/core/Button";
 import { Filter } from "./filter";
 
-export const Board = ({ data }) => {
+export const Board = ({
+  refID,
+  data,
+  columns,
+  filterBy,
+  splitItemsBy,
+  itemsPriorityKey,
+  itemsKey,
+  disabled,
+  query,
+}) => {
   const [search, setSearch] = useState("");
   return (
     <Fragment>
@@ -28,13 +38,28 @@ export const Board = ({ data }) => {
         />
         <Button variant="contained">Sancation</Button>
       </Toolbar>
-      <BoardContainer>
-        <Filter data={data} filterValue={search}>
+      <BoardContainer disabled={disabled}>
+        <Filter
+          data={data}
+          filterValue={search}
+          columns={columns}
+          filterBy={filterBy}
+          splitItemsBy={splitItemsBy}
+          itemsPriorityKey={itemsPriorityKey}
+        >
           {(filteredData) => (
             <>
-              {filteredData.map((one) => (
-                <Column key={one.columnID} {...one} />
-              ))}
+              {filteredData.map((one) => {
+                return (
+                  <Column
+                    key={one.columnID}
+                    itemsKey={itemsKey}
+                    refID={refID}
+                    query={query}
+                    {...one}
+                  />
+                );
+              })}
             </>
           )}
         </Filter>

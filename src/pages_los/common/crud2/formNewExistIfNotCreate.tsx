@@ -50,6 +50,7 @@ export const FormNewExistsIfNotCreate = ({
   const successActionAlways = useCallback(() => {
     if (typeof successAction === "function") {
       successAction();
+      result.refetch();
     }
   }, []);
 
@@ -86,7 +87,7 @@ export const FormNewExistsIfNotCreate = ({
     </>
   ) : !dataExist ? (
     <CreateFormConfirmation
-      successAction={successAction}
+      successAction={successActionAlways}
       isDataChangedRef={isDataChangedRef}
       readOnly={readOnly}
       closeDialog={closeDialog}
