@@ -92,3 +92,17 @@ export const AmountTDS = ({ obj, key }: any) => (
     <Amount colspan={3} value={obj[2]?.[key]} align="right" key={2} />
   </Fragment>
 );
+
+export const CalculateTotal = ({ obj, key }: any) => {
+  var total = 0;
+  if (!Array.isArray(obj) || obj.length <= 0) {
+    return null;
+  }
+  const amountToBeCalculate = obj.map((data) => {
+    return data?.[key];
+  });
+  for (var i = 0; i < amountToBeCalculate.length; i++) {
+    total += amountToBeCalculate[i];
+  }
+  return total;
+};
