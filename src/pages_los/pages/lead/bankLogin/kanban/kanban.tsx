@@ -14,6 +14,7 @@ import { useMutation, useQuery } from "react-query";
 import { getCorrespondingValue } from "./utils";
 import { Alert } from "components/common/alert";
 import { getBankLoginData, updateBankCategory } from "../api";
+import { queryClient } from "cache";
 
 export const Kanban = ({
   refID,
@@ -40,6 +41,9 @@ export const Kanban = ({
     if (query.isSuccess) {
       setState(query.data);
     }
+    return () => {
+      queryClient.removeQueries(["getBankLoginData", refID]);
+    };
   }, []);
 
   const confirmUpdate = () => {

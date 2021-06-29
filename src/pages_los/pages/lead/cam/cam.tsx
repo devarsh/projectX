@@ -10,6 +10,7 @@ import { ViewCAM } from "./view";
 import { PreviewCAM } from "./preview";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import { generateCAMAPIContext } from "./context";
+import { MoveToBankSelection } from "./moveToBankSelection/moveToBankSelection";
 
 const actions: ActionTypes[] = [
   {
@@ -50,6 +51,12 @@ const actions: ActionTypes[] = [
     multiple: undefined,
     alwaysAvailable: true,
   },
+  {
+    actionName: "bankSelection",
+    actionLabel: "Move To Bank Selection",
+    multiple: undefined,
+    alwaysAvailable: true,
+  },
 ];
 
 export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
@@ -85,18 +92,30 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
       />
       <Dialog
         open={Boolean(currentAction)}
-        maxWidth="xl"
-        className={classes.printLayout}
+        maxWidth={
+          currentAction?.name === "Preview" || currentAction?.name === "view"
+            ? "xl"
+            : "md"
+        }
+        className={
+          currentAction?.name === "Preview" || currentAction?.name === "View"
+            ? classes.printLayout
+            : ""
+        }
         scroll="paper"
-        PaperProps={{
-          style: {
-            margin: "0",
-            maxHeight: "100vh",
-            padding: "8px 0",
-            width: "100%",
-            height: "100%",
-          },
-        }}
+        PaperProps={
+          currentAction?.name === "Preview" || currentAction?.name === "View"
+            ? {
+                style: {
+                  margin: "0",
+                  maxHeight: "100vh",
+                  padding: "8px 0",
+                  width: "100%",
+                  height: "100%",
+                },
+              }
+            : {}
+        }
       >
         {currentAction?.name === "Download" ? (
           <DownloadCAM
@@ -113,6 +132,8 @@ export const CAM = ({ refID, moduleType, isDataChangedRef }) => {
             closeDialog={closeMyDialog}
             dataChangedRef={isMyDataChangedRef}
           />
+        ) : currentAction?.name === "bankSelection" ? (
+          <MoveToBankSelection refID={refID} closeDialog={closeMyDialog} />
         ) : (
           <InvalidAction closeDialog={closeMyDialog} />
         )}
