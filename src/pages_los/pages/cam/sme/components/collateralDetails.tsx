@@ -33,18 +33,19 @@ const CollateralSecurity = ({ collateral }) => {
         <Default colspan={2} value="Market Value" element="th" />
       </tr>
 
-      {collateral.map((collateralData) => {
-        return (
-          <>
-            <tr>
-              <Default colspan={2} value={collateralData?.propertyAddress} />
-              <Numeric colspan={3} value={collateralData?.propertyArea} />
-              <Default colspan={2} value={collateralData?.owner} />
-              <Amount colspan={2} value={collateralData?.marketValue} />
-            </tr>
-          </>
-        );
-      })}
+      {Array.isArray(collateral) &&
+        collateral.map((collateralData) => {
+          return (
+            <>
+              <tr>
+                <Default colspan={2} value={collateralData?.propertyAddress} />
+                <Numeric colspan={3} value={collateralData?.propertyArea} />
+                <Default colspan={2} value={collateralData?.owner} />
+                <Amount colspan={2} value={collateralData?.marketValue} />
+              </tr>
+            </>
+          );
+        })}
       <tr>
         <Default
           colspan={8}

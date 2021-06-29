@@ -59,6 +59,18 @@ export const assignMetaData = {
       format: "dd/MM/yyyy",
     },
     {
+      accessor: "dateDiffer",
+      columnName: "Remaining Time",
+      sequence: 8,
+      alignment: "left",
+      componentType: "dateDiffere",
+      dependencies: {
+        startDate: "entered_date",
+        endDate: "due_date",
+        completionDate: "completion_date",
+      },
+    },
+    {
       accessor: "description",
       columnName: "Task Description",
       sequence: 7,

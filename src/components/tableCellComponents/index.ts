@@ -8,6 +8,7 @@ import { EditableTextField } from "./editableTextField";
 import { EditableMaskInputField } from "./editableMaskInputField";
 import { EditableNumberFormat } from "./editableNumberFormat";
 import { ActionCellRenderer } from "./actionCellRenderer";
+import { DateDifferenceCalculatorRenderer } from "./dateDifferenceRowCellRender";
 export type CellComponentType =
   | "currency"
   | "date"
@@ -17,7 +18,8 @@ export type CellComponentType =
   | "editableSelect"
   | "editableTextField"
   | "editableMaskInputField"
-  | "editableNumberFormat";
+  | "editableNumberFormat"
+  | "dateDiffere";
 
 singletonFunctionRegisrationFactoryForTableCells.registerFn(
   "currency",
@@ -54,4 +56,8 @@ singletonFunctionRegisrationFactoryForTableCells.registerFn(
 singletonFunctionRegisrationFactoryForTableCells.registerFn(
   "action",
   ActionCellRenderer
+);
+singletonFunctionRegisrationFactoryForTableCells.registerFn(
+  "dateDiffere",
+  DateDifferenceCalculatorRenderer
 );

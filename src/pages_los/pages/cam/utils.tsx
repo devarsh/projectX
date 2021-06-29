@@ -94,15 +94,12 @@ export const AmountTDS = ({ obj, key }: any) => (
 );
 
 export const CalculateTotal = ({ obj, key }: any) => {
-  var total = 0;
   if (!Array.isArray(obj) || obj.length <= 0) {
     return null;
   }
-  const amountToBeCalculate = obj.map((data) => {
-    return data?.[key];
-  });
-  for (var i = 0; i < amountToBeCalculate.length; i++) {
-    total += amountToBeCalculate[i];
-  }
+  const total = obj.reduce((previous, one) => {
+    const accum = previous + one?.[key];
+    return accum;
+  }, 0);
   return total;
 };
