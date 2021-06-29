@@ -1,11 +1,14 @@
 import { differenceInCalendarDays } from "date-fns";
 
-export const DateCalculateRenderer = (props) => {
+export const DateDifferenceCalculatorRenderer = (props) => {
   const value = props?.cell?.row?.original ?? "";
 
   const todaysDate = new Date().getTime();
   const dueDate = new Date(value?.due_date).getTime();
-  const completionDate = new Date(value?.completion_date).getTime();
+  const completionDate = new Date(value?.completion_date);
+
+  let elapseTime1: any = differenceInCalendarDays(todaysDate, completionDate);
+  console.log(elapseTime1);
 
   let diff: any = new Date(todaysDate - dueDate);
   let result = "-";
