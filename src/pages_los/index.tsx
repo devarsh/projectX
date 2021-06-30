@@ -32,11 +32,7 @@ import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
-import {
-  AssignTask,
-  AssignedTask,
-  WorkLogDetailsTabView,
-} from "pages_los/pages/task";
+import { AssignTask, AssignedTask, WorkLog } from "pages_los/pages/task";
 
 import { BankMasterNew } from "pages_los/pages/config/bankMasterNew/bankMasterNew";
 import Editor from "components/editor";
@@ -89,7 +85,7 @@ const DashbordPages = () => {
             <Route path="/lead/disbursement" element={<DisbursementLeads />} />
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
-            <Route path="/task/worklog" element={<WorkLogDetailsTabView />} />
+            <Route path="/task/worklog" element={<WorkLog />} />
             <Route path="/config/bankMaster" element={<BankMasterNew />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />
