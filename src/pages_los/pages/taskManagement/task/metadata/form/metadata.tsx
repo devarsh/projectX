@@ -1,9 +1,10 @@
 import {
   showTaskManagementFieldForInquiryID,
+  showTaskManagementFieldForLeadID,
   postValidationSetRefID,
   getWorkerListForTaskManag,
-} from "pages_los/pages/taskManagement/fns";
-export const inquiryTaskAssignMetadata = {
+} from "../../../fns";
+export const taskAssignMetadata = {
   form: {
     name: "taskAssign",
     label: "Task Assign",
@@ -47,15 +48,30 @@ export const inquiryTaskAssignMetadata = {
   },
   fields: [
     {
-      render: { componentType: "hidden" },
+      render: { componentType: "select" },
       name: "taskFor",
       label: "Task For",
       placeholder: "Task For",
       disableCaching: true,
+      defaultValue: "00",
+      options: "getTaskList",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "hidden" },
+      render: { componentType: "searchField" },
+      name: "leadID",
+      label: "Lead Number",
+      placeholder: "Lead Number",
+      dependentFields: ["taskFor"],
+      shouldExclude: showTaskManagementFieldForLeadID,
+      GridProps: { xs: 12, md: 3, sm: 3 },
+      required: true,
+      validate: "getValidateValue",
+      searchComponent: "leadSearchComponent",
+      postValidationSetCrossFieldValues: postValidationSetRefID,
+    },
+    {
+      render: { componentType: "searchField" },
       name: "inquiryID",
       label: "Inquiry Number",
       placeholder: "Inquiry Number",
@@ -133,11 +149,6 @@ export const inquiryTaskAssignMetadata = {
       options: "getTaskStatus",
       defaultValue: "00",
       GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
-      render: { componentType: "spacer" },
-      name: "spacer",
-      GridProps: { xs: 12, md: 6, sm: 6 },
     },
     {
       render: { componentType: "textField" },

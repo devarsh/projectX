@@ -2,7 +2,7 @@ import {
   showTaskManagementFieldForLeadID,
   postValidationSetRefID,
   getWorkerListForTaskManag,
-} from "pages_los/pages/task/fns";
+} from "pages_los/pages/taskManagement/fns";
 export const leadTaskAssignMetadata = {
   form: {
     name: "taskAssign",

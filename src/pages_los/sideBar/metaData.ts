@@ -310,6 +310,8 @@ export const metaData: NavBarMetaDataType = {
         },
         {
           label: "Cold Calling",
+          href: "./task/coldCalling",
+          isRouterLink: true,
           icon: "circle",
         },
       ],
