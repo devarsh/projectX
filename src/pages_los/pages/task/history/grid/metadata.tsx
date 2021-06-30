@@ -4,7 +4,7 @@ export const historyMetaData: GridMetaDataType = {
   gridConfig: {
     dense: true,
     gridLabel: "Task History",
-    rowIdColumn: "tran_cd",
+    rowIdColumn: "serialNo",
     defaultColumnConfig: {
       width: 150,
       maxWidth: 250,
@@ -89,7 +89,7 @@ export const historyMetaData: GridMetaDataType = {
       accessor: "taskSource",
       columnName: "Source",
       sequence: 10,
-      alignment: "right",
+      alignment: "left",
       componentType: "default",
     },
     {

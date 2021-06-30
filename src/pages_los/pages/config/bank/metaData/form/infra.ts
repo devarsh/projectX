@@ -182,12 +182,45 @@ export const infraFormMetaData = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "textField" },
+      render: { componentType: "currency" },
       name: "pf",
       label: "PF",
       placeholder: "PF",
       maxLength: 100,
       GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: { componentType: "rateOfIntWithoutValidation" },
+      name: "fromPayoutRate",
+      label: "From Rate of Payout",
+      placeholder: "From Rate of Payout",
+      defaultValue: "0.00",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: { componentType: "rateOfIntWithoutValidation" },
+      name: "toPayoutRate",
+      label: "To Rate of Payout",
+      placeholder: "To Rate of Payout",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+      defaultValue: "0.00",
+      dependentFields: ["fromPayoutRate"],
+      runValidationOnDependentFieldsChange: true,
+      validate: {
+        conditions: {
+          all: [
+            {
+              fact: "dependentFields",
+              path: "$.fromPayoutRate.value",
+              operator: "lessThanInclusiveString",
+              value: { fact: "currentField", path: "$.value" },
+            },
+          ],
+        },
+        success: "",
+        failure:
+          "To Rate of Payout should be greater than From Rate of Payout.",
+      },
     },
   ],
 };
