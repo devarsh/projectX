@@ -48,7 +48,7 @@ export const assignMetaData = {
       sequence: 5,
       alignment: "left",
       componentType: "date",
-      format: "dd/MM/yyyy",
+      dateFormat: "dd/MM/yyyy",
     },
     {
       accessor: "completion_date",
@@ -56,7 +56,7 @@ export const assignMetaData = {
       sequence: 6,
       alignment: "left",
       componentType: "date",
-      format: "dd/MM/yyyy",
+      dateFormat: "dd/MM/yyyy",
     },
     {
       accessor: "dateDiffer",
@@ -105,7 +105,7 @@ export const assignMetaData = {
       sequence: 11,
       alignment: "left",
       componentType: "date",
-      format: "dd/MM/yyyy",
+      dateFormat: "dd/MM/yyyy",
     },
     {
       accessor: "flag",
