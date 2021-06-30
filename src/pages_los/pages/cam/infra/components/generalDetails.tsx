@@ -18,6 +18,7 @@ export const GeneralDetails = ({
   project,
   projectParticular,
   siteArea,
+  productCode,
 }) => {
   if (typeof general === "object") {
     return (
@@ -110,6 +111,7 @@ export const GeneralDetails = ({
           natureOfFacilityProposed={
             general?.proposedNatureOfFacilityDetails ?? ""
           }
+          productName={productCode}
         />
         <BriefAboutProject project={project} />
         <ProjectParticularDetails projectParticular={projectParticular} />

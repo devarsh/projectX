@@ -15,13 +15,6 @@ export const AssignedTask = ({}) => {
       multiple: false,
       rowDoubleClick: false,
     },
-    {
-      actionName: "AddTask",
-      actionLabel: "Add Task",
-      multiple: undefined,
-      rowDoubleClick: false,
-      alwaysAvailable: true,
-    },
   ];
   return <Task gridCode="TRN/008" actions={actions} />;
 };

@@ -26,17 +26,13 @@ export const Infra = ({ data, others }) => {
           general={generalDetails}
           promoter={promotersDetails}
           address={addressDetails}
-          // bank={managementDetails}
+          productCode={others}
           project={projectOthersDetails}
           projectParticular={projectParticularDetails}
           siteArea={siteAreaDetails}
         />
         <ProjectDetails projectCompletion={projectDetails} />
-        <CollateralDetails
-          collateral={collateralSecurity}
-          // primary={primaryCollateralSecurity}
-          // personal={personalGuaranteeSecurity}
-        />
+        <CollateralDetails collateral={collateralSecurity} />
       </tbody>
     </table>
   );

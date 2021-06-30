@@ -8,6 +8,7 @@ import { CalculateTotal } from "../../utils";
 
 export const NatureofFacilityProposedDetails = ({
   natureOfFacilityProposed,
+  productName,
 }) => {
   return (
     <>
@@ -34,7 +35,7 @@ export const NatureofFacilityProposedDetails = ({
             <>
               <tr key={index}>
                 <Default colspan={1} value={index + 1} />
-                <Default colspan={2} value={proposedDetails?.facilityType} />
+                <Default colspan={2} value={productName?.subProduct1Name} />
                 <Default colspan={1} value={proposedDetails?.newTakeover} />
                 <Percentage
                   colspan={2}
