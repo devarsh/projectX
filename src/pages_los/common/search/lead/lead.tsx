@@ -54,7 +54,6 @@ export const LeadSearch = ({ gridCode, actions, onAccept, value }) => {
 };
 
 export const LeadSearchWrapper = ({ onAccept, value }) => {
-  console.log(value);
   return (
     <LeadSearch
       gridCode="TRN/003"
