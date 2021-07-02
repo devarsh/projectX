@@ -15,6 +15,12 @@ import { ActionTypes } from "components/dataTable";
 
 const actions: ActionTypes[] = [
   {
+    actionName: "AddBranch",
+    actionLabel: "Add Branch",
+    multiple: false,
+    rowDoubleClick: false,
+  },
+  {
     actionName: "ViewDetails",
     actionLabel: "View Details",
     multiple: false,
@@ -23,12 +29,6 @@ const actions: ActionTypes[] = [
   {
     actionName: "Delete",
     actionLabel: "Delete",
-    multiple: false,
-    rowDoubleClick: false,
-  },
-  {
-    actionName: "AddBranch",
-    actionLabel: "Add Branch",
     multiple: false,
     rowDoubleClick: false,
   },
@@ -69,15 +69,9 @@ export const BankMasterNew = () => {
         setData={() => null}
         actions={actions}
         setAction={setCurrentAction}
+        defaultSortOrder={[{ id: "bankCode", desc: false }]}
       />
       <Dialog
-        fullScreen={
-          ["ViewDetails", "AddBank", "AddBranch"].indexOf(
-            currentAction?.name
-          ) >= 0
-            ? true
-            : false
-        }
         open={currentAction !== null}
         //@ts-ignore
         TransitionComponent={Transition}
@@ -87,9 +81,7 @@ export const BankMasterNew = () => {
           style:
             selectedAction.indexOf("AddBank") >= 0 ||
             selectedAction === "ViewDetails"
-              ? { width: "100%", height: "100%" }
-              : selectedAction === "Delete"
-              ? { width: "40%", height: "20%" }
+              ? { width: "100%", height: "50%" }
               : {},
         }}
       >
