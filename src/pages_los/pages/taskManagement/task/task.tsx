@@ -5,7 +5,6 @@ import {
   ServerGridContextProvider,
 } from "pages_los/common/serverGrid";
 import { ClearCacheProvider } from "cache";
-import { Transition } from "pages_los/common";
 import { serverGridContextGenerator } from "../context";
 import { AssignTask, TaskViewEdit } from "./taskCRUD";
 import { HistoryGrid } from "pages_los/pages/taskManagement/task/history";
@@ -34,17 +33,9 @@ export const Task = ({ gridCode, actions }: any) => {
         />
       </ServerGridContextProvider>
       <Dialog
-        fullScreen={
-          ["ViewDetails", "AddTask"].indexOf(currentAction?.name) >= 0
-            ? true
-            : false
-        }
         open={currentAction !== null}
-        //@ts-ignore
-        TransitionComponent={Transition}
         onClose={handleDialogClose}
         maxWidth="md"
-        PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
         <ClearCacheProvider>
           {(currentAction?.name ?? "") === "AddTask" ? (
