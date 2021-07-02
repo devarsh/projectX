@@ -20,7 +20,7 @@ export const LeadSearch = ({ gridCode, actions, onAccept, value }) => {
   let filter = Boolean(value)
     ? [
         {
-          id: "tran_cd",
+          id: "lead_no",
           value: {
             value: value,
             condition: "equal",
@@ -54,6 +54,7 @@ export const LeadSearch = ({ gridCode, actions, onAccept, value }) => {
 };
 
 export const LeadSearchWrapper = ({ onAccept, value }) => {
+  console.log(value);
   return (
     <LeadSearch
       gridCode="TRN/003"

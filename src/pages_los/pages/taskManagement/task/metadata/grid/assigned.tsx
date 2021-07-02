@@ -109,7 +109,7 @@ export const assignedMetaData = {
       accessor: "flag",
       columnName: "Source",
       sequence: 13,
-      alignment: "right",
+      alignment: "left",
       componentType: "default",
     },
   ],
