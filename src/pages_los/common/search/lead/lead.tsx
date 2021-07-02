@@ -20,7 +20,7 @@ export const LeadSearch = ({ gridCode, actions, onAccept, value }) => {
   let filter = Boolean(value)
     ? [
         {
-          id: "tran_cd",
+          id: "lead_no",
           value: {
             value: value,
             condition: "equal",

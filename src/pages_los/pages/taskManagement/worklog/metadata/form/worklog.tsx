@@ -75,7 +75,7 @@ export const worklogFormMetaData = {
       render: { componentType: "timePicker" },
       name: "startTime",
       label: "Start Time",
-      placeholder: "hours:minutes",
+      placeholder: "hours:minutes (24hr)",
       format: "HH:mm",
       required: true,
       schemaValidation: {
@@ -91,7 +91,7 @@ export const worklogFormMetaData = {
       render: { componentType: "timePicker" },
       name: "endTime",
       label: "End Time",
-      placeholder: "hours:minutes",
+      placeholder: "hours:minutes (24hr)",
       format: "HH:mm",
       required: true,
       schemaValidation: {
