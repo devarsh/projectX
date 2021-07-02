@@ -7,7 +7,7 @@ import {
 export const taskAssignmentMetadata = {
   form: {
     name: "taskAssign",
-    label: "Task Assign",
+    label: "Task Assignment",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -132,19 +132,6 @@ export const taskAssignmentMetadata = {
       placeholder: "DD/MM/YYYY",
       required: true,
       isReadOnly: true,
-      GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
-      render: { componentType: "select" },
-      name: "worker",
-      label: "Assigned",
-      defaultValue: "00",
-      required: true,
-      isReadOnly: true,
-      dependentFields: ["taskFor", "refID"],
-      validate: "getValidateValue",
-      options: getWorkerListForTaskManag,
-      disableCaching: true,
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {

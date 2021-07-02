@@ -291,13 +291,13 @@ export const metaData: NavBarMetaDataType = {
       icon: "tasks",
       children: [
         {
-          label: "Assign",
+          label: "My Task",
           href: "./task/assign",
           isRouterLink: true,
           icon: "circle",
         },
         {
-          label: "Assigned",
+          label: "Assigned Task",
           href: "./task/assigned",
           isRouterLink: true,
           icon: "circle",
@@ -310,8 +310,8 @@ export const metaData: NavBarMetaDataType = {
         },
         {
           label: "Cold Calling",
-          href: "./task/coldCalling",
-          isRouterLink: true,
+          // href: "./task/coldCalling",
+          // isRouterLink: true,
           icon: "circle",
         },
       ],

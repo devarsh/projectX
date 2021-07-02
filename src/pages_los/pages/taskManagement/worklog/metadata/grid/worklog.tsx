@@ -59,7 +59,7 @@ export const worklogGridMetaData = {
       accessor: "start_time",
       sequence: 5,
       alignment: "center",
-      dateFormat: "hh:mm aaaa",
+      dateFormat: "hh:mm aa",
     },
     {
       columnName: "End Time",
@@ -67,7 +67,7 @@ export const worklogGridMetaData = {
       accessor: "end_time",
       sequence: 6,
       alignment: "center",
-      dateFormat: "hh:mm aaaa",
+      dateFormat: "hh:mm aa",
     },
   ],
 };

@@ -8,19 +8,22 @@ export const AssignTask = () => {
       actionLabel: "View Details",
       multiple: false,
       rowDoubleClick: true,
+      shouldExclude: (rows) => {
+        let exclude = false;
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].data?.status === "Completed") {
+            exclude = true;
+            break;
+          }
+        }
+        return exclude;
+      },
     },
     {
       actionName: "TaskHistory",
       actionLabel: "History",
       multiple: false,
-      rowDoubleClick: false,
-    },
-    {
-      actionName: "AddTask",
-      actionLabel: "Add Task",
-      multiple: undefined,
-      rowDoubleClick: false,
-      alwaysAvailable: true,
+      rowDoubleClick: true,
     },
   ];
 

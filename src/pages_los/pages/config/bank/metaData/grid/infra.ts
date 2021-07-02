@@ -48,7 +48,7 @@ export const infraGridMetaData = {
     },
     {
       columnName: "Land Value(Market Value Lacs)",
-      componentType: "default",
+      componentType: "currency",
       accessor: "marketLandValue",
       sequence: 5,
       alignment: "left",

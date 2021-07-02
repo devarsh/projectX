@@ -7,7 +7,7 @@ import {
 export const taskAssignMetadata = {
   form: {
     name: "taskAssign",
-    label: "Task Assign",
+    label: "Task Assignment",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -131,7 +131,7 @@ export const taskAssignMetadata = {
     {
       render: { componentType: "autocomplete" },
       name: "worker",
-      label: "Assigned",
+      label: "Assignee",
       defaultValue: "00",
       required: true,
       dependentFields: ["taskFor", "refID"],

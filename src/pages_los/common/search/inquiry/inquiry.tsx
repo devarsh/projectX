@@ -21,7 +21,7 @@ export const InquirySearch = ({ gridCode, actions, onAccept, value }) => {
   let filter = Boolean(value)
     ? [
         {
-          id: "tran_cd",
+          id: "inquiry_no",
           value: {
             value: value,
             condition: "equal",

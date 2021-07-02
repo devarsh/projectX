@@ -6,7 +6,6 @@ export const DateDifferenceCalculatorRenderer = (props) => {
   const todaysDate = new Date().getTime();
   const dueDate: any = new Date(value?.due_date).getTime();
   const completionDate: any = new Date(value?.completion_date).getTime();
-  let diff: any = new Date(todaysDate - dueDate);
   let result = "-";
   let elapseTime: any;
 
@@ -16,25 +15,39 @@ export const DateDifferenceCalculatorRenderer = (props) => {
     elapseTime = differenceInCalendarDays(dueDate, completionDate);
   }
 
-  if (elapseTime > "0") {
+  if (value?.status === "Completed") {
+    result = result;
+  } else if (elapseTime > "0") {
     result = `${elapseTime} days over due`;
   } else if (elapseTime < "0") {
     result = `${elapseTime * -1} days left`;
-  } else if (elapseTime === "0") {
-    var msec = diff;
-    var hh = Math.floor(msec / 1000 / 60 / 60);
+  } else if (elapseTime == "0") {
+    let msec: any = new Date(todaysDate - dueDate);
+    var hh: any = Math.floor(msec / 1000 / 60 / 60);
     msec -= hh * 1000 * 60 * 60;
-    var mm = Math.floor(msec / 1000 / 60);
+    var mm: any = Math.floor(msec / 1000 / 60);
     msec -= mm * 1000 * 60;
-    result = `${hh + ":" + mm} mins`;
+    if (hh < 10) {
+      hh = `0${hh}`;
+    }
+    if (mm < 10) {
+      mm = `0${mm}`;
+    }
+    result = `${hh + ":" + mm} mins left`;
   }
+
   return (
     <span
       style={{
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
-        color: elapseTime > 0 ? "red" : elapseTime < 0 ? "green" : "gray",
+        color:
+          elapseTime > 0
+            ? "red"
+            : elapseTime < 0 || elapseTime == 0
+            ? "green"
+            : "gray",
       }}
     >
       {result}
