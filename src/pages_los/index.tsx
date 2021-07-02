@@ -32,7 +32,11 @@ import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
-import { AssignTask, AssignedTask, WorkLog } from "pages_los/pages/task";
+import { AssignTask, AssignedTask } from "pages_los/pages/taskManagement/task";
+import { WorkLog } from "pages_los/pages/taskManagement/worklog";
+// import { AssignTask, AssignedTask, WorkLog } from "pages_los/pages/task";
+// import { Worklog } from "pages_los/pages/task/worklogNew";
+import { ColdCallingView } from "pages_los/pages/taskManagement/coldCalling/views";
 
 import { BankMasterNew } from "pages_los/pages/config/bankMasterNew/bankMasterNew";
 import Editor from "components/editor";
@@ -86,6 +90,7 @@ const DashbordPages = () => {
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
             <Route path="/task/worklog" element={<WorkLog />} />
+            <Route path="/task/coldCalling" element={<ColdCallingView />} />
             <Route path="/config/bankMaster" element={<BankMasterNew />} />
             <Route path="/config/banks" element={<DetailsTabViewBank />} />
             <Route path="/config/userManagement" element={<UserManagement />} />

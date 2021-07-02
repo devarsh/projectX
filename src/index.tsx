@@ -28,16 +28,16 @@ const App = () => (
     <DndProvider backend={HTML5Backend}>
       <BrowserRouter>
         <Suspense fallback={<div>loading...</div>}>
-          <ErrorBoundary>
-            <Routes>
-              <Route path="/los/*" element={<LOS />} />
-              <Route path="/crm/*" element={<CRM />} />
-              <Route path="/verification/*" element={<Verification />} />
-              <Route path="/error/*" element={<ErrorPage />} />
-              <Route path="/middleware/*" element={<Middleware />} />
-              <Route path="*" element={<Redirect />} />
-            </Routes>
-          </ErrorBoundary>
+          {/* <ErrorBoundary> */}
+          <Routes>
+            <Route path="/los/*" element={<LOS />} />
+            <Route path="/crm/*" element={<CRM />} />
+            <Route path="/verification/*" element={<Verification />} />
+            <Route path="/error/*" element={<ErrorPage />} />
+            <Route path="/middleware/*" element={<Middleware />} />
+            <Route path="*" element={<Redirect />} />
+          </Routes>
+          {/* </ErrorBoundary> */}
         </Suspense>
       </BrowserRouter>
     </DndProvider>
