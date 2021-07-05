@@ -49,14 +49,6 @@ export const infraFormMetaData = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "textField" },
-      name: "departmentName",
-      label: "Department of the Bank",
-      placeholder: "Department of the Bank",
-      maxLength: 150,
-      GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
       render: { componentType: "select" },
       name: "projectType",
       label: "Project Type",
@@ -108,35 +100,37 @@ export const infraFormMetaData = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "textField" },
+      render: { componentType: "currencyWithoutWords" },
       name: "consTillDateSanction",
       label:
         "Experience in terms of Total Sq.Ft. Constructed till date of Sanction",
       placeholder:
         "Experience in terms of Total Sq.Ft. Constructed till date of Sanction",
-      maxLength: 50,
+      showMaxLength: false,
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
       render: { componentType: "currency" },
       name: "marketLandValue",
-      label: "Land Value(Market Value Lacs)",
-      placeholder: "Land Value(Market Value Lacs)",
+      label: "Land Value",
+      placeholder: "Land Value",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
       render: { componentType: "currency" },
       name: "constructionCost",
-      label: "Construction Cost (Lacs)",
-      placeholder: "Construction Cost (Lacs)",
+      label: "Construction Cost",
+      placeholder: "Construction Cost",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "rateOfInt" },
+      render: { componentType: "textField" },
       name: "totalUnit",
-      label: "Total no. of Units",
-      placeholder: "Total no. of Units",
+      label: "Total number of Units",
+      placeholder: "Total number of Units",
       required: true,
+      maxLength: 5,
+      showMaxLength: false,
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
@@ -156,8 +150,8 @@ export const infraFormMetaData = {
     {
       render: { componentType: "currency" },
       name: "otherCollateralValue",
-      label: "Additional Collateral Value (Lacs)",
-      placeholder: "Additional Collateral Value (Lacs)",
+      label: "Additional Collateral Value",
+      placeholder: "Additional Collateral Value",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
@@ -184,8 +178,8 @@ export const infraFormMetaData = {
     {
       render: { componentType: "currency" },
       name: "pf",
-      label: "PF",
-      placeholder: "PF",
+      label: "Processing Fees",
+      placeholder: "Processing Fees",
       maxLength: 100,
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
