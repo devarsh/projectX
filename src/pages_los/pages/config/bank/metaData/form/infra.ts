@@ -100,13 +100,13 @@ export const infraFormMetaData = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "textField" },
+      render: { componentType: "currencyWithoutWords" },
       name: "consTillDateSanction",
       label:
         "Experience in terms of Total Sq.Ft. Constructed till date of Sanction",
       placeholder:
         "Experience in terms of Total Sq.Ft. Constructed till date of Sanction",
-      maxLength: 50,
+      showMaxLength: false,
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {

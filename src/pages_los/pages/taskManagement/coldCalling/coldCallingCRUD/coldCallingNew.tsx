@@ -4,12 +4,8 @@ import { useSnackbar } from "notistack";
 import Button from "@material-ui/core/Button";
 import { useMutation } from "react-query";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
-import { coldCallingMetadata } from "../metadata/form";
+import { coldCallingMetadata } from "../metadata";
 import * as API from "./api";
-import {
-  ColdCallingAPIProvider,
-  generateColdCallingAPIContext,
-} from "./context";
 
 interface ColdCallingFormDataFnType {
   data: object;
@@ -62,7 +58,7 @@ export const AddColdCalling = ({
 
   return (
     <FormWrapper
-      key="worklog"
+      key="coldCalling"
       metaData={coldCallingMetadata as MetaDataType}
       initialValues={""}
       onSubmitHandler={onSubmitHandler}
@@ -88,21 +84,5 @@ export const AddColdCalling = ({
         );
       }}
     </FormWrapper>
-  );
-};
-
-export const WorklogWrapper = ({
-  moduleType,
-  isDataChangedRef,
-  closeDialog,
-}) => {
-  return (
-    <ColdCallingAPIProvider {...generateColdCallingAPIContext({ moduleType })}>
-      <AddColdCalling
-        moduleType={moduleType}
-        isDataChangedRef={isDataChangedRef}
-        closeDialog={closeDialog}
-      />
-    </ColdCallingAPIProvider>
   );
 };

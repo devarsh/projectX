@@ -1,1 +1,1 @@
-export * from "./views";
+export { ColdCollingWrapper as ColdCalling } from "./coldCalling";

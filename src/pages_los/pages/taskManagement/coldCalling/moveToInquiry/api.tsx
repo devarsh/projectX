@@ -22,3 +22,22 @@ export const moveToInquiry = ({ moduleType, refID }) => async (formData) => {
 };
 
 export const getMetadata = () => moveToInquiryMetaData;
+
+export const submitColdCallingToMoveToInquiry = (refID?: any) => async (
+  formData?: any
+) => {
+  const { data, status } = await LOSSDK.internalFetcher(
+    "./inquiry/main/data/post",
+    {
+      body: JSON.stringify({
+        request_data: { refID: refID, ...formData },
+        channel: "W",
+      }),
+    }
+  );
+  if (status === "success") {
+    return { status, data: data?.response_data };
+  } else {
+    return { status, data: data?.response_data };
+  }
+};

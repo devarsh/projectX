@@ -56,23 +56,6 @@ export const coldCallingMetadata = {
     },
     {
       render: {
-        componentType: "select",
-      },
-      name: "gender",
-      label: "Gender",
-      placeholder: "Gender",
-      options: "getGenderList",
-      isReadOnly: true,
-      validate: "getValidateValue",
-      defaultValue: "00",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
         componentType: "textField",
       },
       name: "firstName",
@@ -115,6 +98,23 @@ export const coldCallingMetadata = {
     },
     {
       render: {
+        componentType: "select",
+      },
+      name: "gender",
+      label: "Gender",
+      placeholder: "Gender",
+      options: "getGenderList",
+      isReadOnly: true,
+      validate: "getValidateValue",
+      defaultValue: "00",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
         componentType: "phoneNumber",
       },
       name: "mobileNo",
@@ -131,7 +131,7 @@ export const coldCallingMetadata = {
       render: {
         componentType: "textField",
       },
-      name: "emailID",
+      name: "email",
       type: "email",
       label: "Email",
       placeholder: "Email",

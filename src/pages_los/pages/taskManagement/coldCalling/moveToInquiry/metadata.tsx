@@ -1,5 +1,9 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-import { getProductSubCategory, showSubProductTypeField } from "../fns";
+import {
+  getProductSubCategory,
+  showSubProductTypeField,
+  showSMEProductTypeField,
+} from "../fns";
 
 export const moveToInquiryMetaData: MetaDataType = {
   form: {
@@ -9,8 +13,8 @@ export const moveToInquiryMetaData: MetaDataType = {
     validationRun: "onBlur",
     render: {
       ordering: "auto",
-      renderType: "tabs",
-      groups: { "0": "Personal Details", "1": "Address Details" },
+      renderType: "simple",
+      // groups: { "0": "Personal Details", "1": "Contact Details" },
       gridConfig: {
         item: {
           xs: 12,
@@ -44,10 +48,22 @@ export const moveToInquiryMetaData: MetaDataType = {
   fields: [
     {
       render: {
+        componentType: "typography",
+      },
+      name: "productDetails",
+      label: "Product Details",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+    {
+      render: {
         componentType: "select",
         group: 0,
       },
-      name: "productCategory",
+      name: "categoryID",
       label: "Product Category",
       defaultValue: "00",
       //@ts-ignore
@@ -66,10 +82,10 @@ export const moveToInquiryMetaData: MetaDataType = {
         componentType: "select",
         group: 0,
       },
-      name: "subCategory",
+      name: "productID",
       label: "Sub Category",
       defaultValue: "00",
-      dependentFields: ["productCategory"],
+      dependentFields: ["categoryID"],
       //@ts-ignore
       options: getProductSubCategory,
       disableCaching: true,
@@ -89,12 +105,13 @@ export const moveToInquiryMetaData: MetaDataType = {
       name: "productType",
       label: "Product Type",
       defaultValue: "00",
-      dependentFields: ["subCategory"],
+      dependentFields: ["productID"],
       //@ts-ignore
       options: "getProductTypeForMoveToInquiry",
       disableCaching: true,
       required: true,
       validate: "getValidateValue",
+      shouldExclude: showSMEProductTypeField,
       GridProps: {
         xs: 3,
         md: 3,
@@ -124,6 +141,30 @@ export const moveToInquiryMetaData: MetaDataType = {
     },
     {
       render: {
+        componentType: "spacer",
+        group: 0,
+      },
+      name: "spacer1",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+    {
+      render: {
+        componentType: "typography",
+      },
+      name: "personalDetails",
+      label: "Personal Details",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+    {
+      render: {
         componentType: "select",
         group: 0,
       },
@@ -134,25 +175,6 @@ export const moveToInquiryMetaData: MetaDataType = {
       defaultValue: "00",
       //@ts-ignore
       postValidationSetCrossFieldValues: "getGenderValue",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "select",
-        group: 0,
-      },
-      name: "gender",
-      label: "Gender",
-      placeholder: "Gender",
-      //@ts-ignore
-      options: "getGenderList",
-      isReadOnly: true,
-      validate: "getValidateValue",
-      defaultValue: "00",
       GridProps: {
         xs: 12,
         md: 3,
@@ -206,6 +228,42 @@ export const moveToInquiryMetaData: MetaDataType = {
     },
     {
       render: {
+        componentType: "select",
+        group: 0,
+      },
+      name: "gender",
+      label: "Gender",
+      placeholder: "Gender",
+      //@ts-ignore
+      options: "getGenderList",
+      isReadOnly: true,
+      validate: "getValidateValue",
+      defaultValue: "00",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "dob",
+        group: 0,
+      },
+      name: "dob",
+      label: "Date Of Birth",
+      placeholder: "dd/mm/yyyy",
+      format: "dd/MM/yyyy",
+      required: true,
+      GridProps: { xs: 12, md: 3, sm: 3 },
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This Field is required."] }],
+      },
+    },
+    {
+      render: {
         //@ts-ignore
         componentType: "currency",
         group: 0,
@@ -217,6 +275,18 @@ export const moveToInquiryMetaData: MetaDataType = {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "typography",
+      },
+      name: "contactDetails",
+      label: "Contact Details",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
       },
     },
     {
@@ -240,7 +310,7 @@ export const moveToInquiryMetaData: MetaDataType = {
         componentType: "textField",
         group: 1,
       },
-      name: "emailID",
+      name: "email",
       type: "email",
       label: "Email",
       placeholder: "Email",
@@ -250,15 +320,20 @@ export const moveToInquiryMetaData: MetaDataType = {
         sm: 3,
       },
     },
-
     {
       render: {
-        componentType: "textField",
+        componentType: "select",
         group: 1,
       },
-      name: "address1",
-      label: "Address Line 1",
-      placeholder: "Address Line 1",
+      name: "employementStatus",
+      label: "How Are You Currently Employed",
+      placeholder: "How Are You Currently Employed",
+      //@ts-ignore
+      options: "getEmployementCodeForMoveToInquiry",
+      dependentFields: ["categoryID", "productID"],
+      validate: "getValidateValue",
+      disableCaching: true,
+      defaultValue: "00",
       GridProps: {
         xs: 12,
         md: 3,
@@ -270,9 +345,9 @@ export const moveToInquiryMetaData: MetaDataType = {
         componentType: "textField",
         group: 1,
       },
-      name: "address2",
-      label: "Address Line 2",
-      placeholder: "Address Line 2",
+      name: "address",
+      label: "Address",
+      placeholder: "Address",
       GridProps: {
         xs: 12,
         md: 3,
@@ -345,6 +420,7 @@ export const moveToInquiryMetaData: MetaDataType = {
       name: "city",
       label: "City",
       placeholder: "City",
+      isReadOnly: true,
       GridProps: {
         xs: 12,
         md: 3,
@@ -396,22 +472,17 @@ export const moveToInquiryMetaData: MetaDataType = {
         sm: 3,
       },
     },
-    // {
-    //   render: {
-    //     componentType: "textField",
-    //   },
-    //   name: "remarks",
-    //   label: "Remarks",
-    //   required: true,
-    //   GridProps: {
-    //     xs: 6,
-    //     md: 6,
-    //     sm: 6,
-    //   },
-    //   schemaValidation: {
-    //     type: "string",
-    //     rules: [{ name: "required", params: ["This is a required field"] }],
-    //   },
-    // },
+    {
+      render: {
+        componentType: "spacer",
+        group: 1,
+      },
+      name: "spacer",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
   ],
 };

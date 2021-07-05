@@ -1,18 +1,47 @@
 import { useState, useRef, Fragment } from "react";
+import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
+import { InvalidAction } from "pages_los/common/invalidAction";
 import {
   ServerGrid,
   ServerGridContextProvider,
 } from "pages_los/common/serverGrid";
 import { ClearCacheProvider } from "cache";
 import { serverGridContextGenerator } from "../context";
-import { InvalidAction } from "pages_los/common/invalidAction";
 import {
   AddColdCalling,
   ColdCallingViewEdit,
   ColdCallingDelete,
 } from "./coldCallingCRUD";
 import { MoveToInquiry } from "./moveToInquiry";
+
+const actions: ActionTypes[] = [
+  {
+    actionName: "AddColdCalling",
+    actionLabel: "Add Cold Calling",
+    multiple: undefined,
+    rowDoubleClick: false,
+    alwaysAvailable: true,
+  },
+  {
+    actionName: "moveToInquiry",
+    actionLabel: "Move to Inquiry",
+    multiple: false,
+    rowDoubleClick: false,
+  },
+  {
+    actionName: "viewDetails",
+    actionLabel: "View Details",
+    multiple: false,
+    rowDoubleClick: true,
+  },
+  {
+    actionName: "delete",
+    actionLabel: "Delete",
+    multiple: false,
+    rowDoubleClick: false,
+  },
+];
 
 export const ColdCalling = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -77,8 +106,8 @@ export const ColdCalling = ({ gridCode, actions }) => {
           ) : (currentAction?.name ?? "") === "moveToInquiry" ? (
             <Fragment>
               <MoveToInquiry
-                // refID={currentAction?.rows[0].id}
-                tran_cd={currentAction?.rows[0].id}
+                defaultView="edit"
+                refID={currentAction?.rows[0].id}
                 moduleType="cold-calling"
                 isDataChangedRef={isDataChangedRef}
                 closeDialog={handleDialogClose}
@@ -91,4 +120,8 @@ export const ColdCalling = ({ gridCode, actions }) => {
       </Dialog>
     </Fragment>
   );
+};
+
+export const ColdCollingWrapper = () => {
+  return <ColdCalling gridCode="TRN/015" actions={actions} />;
 };

@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import loaderGif from "assets/images/loader.gif";
+import { useQuery, useMutation } from "react-query";
 import { InitialValuesType, SubmitFnType } from "packages/form";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -10,9 +11,9 @@ import { queryClient } from "cache";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
 import * as API from "./api";
-import { useQueries, useMutation } from "react-query";
+import { coldCallingMetadata } from "../metadata";
 
-interface updateTaskDataType {
+interface updateColdCallingDataType {
   data: object;
   displayData?: object;
   endSubmit?: any;
@@ -20,11 +21,11 @@ interface updateTaskDataType {
   tran_cd: string;
 }
 
-const updateTaskDataWrapperFn = (updateTaskData) => async ({
+const updateColdCallingDataWrapperFn = (updateColdCallingData) => async ({
   data,
   tran_cd,
-}: updateTaskDataType) => {
-  return updateTaskData(data, tran_cd);
+}: updateColdCallingDataType) => {
+  return updateColdCallingData(data, tran_cd);
 };
 
 export const ColdCallingViewEdit: FC<{
@@ -43,7 +44,6 @@ export const ColdCallingViewEdit: FC<{
   defaultView = "view",
   readOnly = false,
   tran_cd,
-  disableCache,
   setEditFormStateFromInitValues,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -52,7 +52,7 @@ export const ColdCallingViewEdit: FC<{
   const moveToEditMode = useCallback(() => setFormMode("edit"), [setFormMode]);
 
   const mutation = useMutation(
-    updateTaskDataWrapperFn(
+    updateColdCallingDataWrapperFn(
       API.updateColdCallingFormData({
         moduleType,
         tran_cd,
@@ -67,9 +67,13 @@ export const ColdCallingViewEdit: FC<{
         endSubmit(false, errorMsg, error?.error_detail ?? "");
       },
       onSuccess: (data, { endSubmit }) => {
-        queryClient.refetchQueries(["getTaskFormData", moduleType, tran_cd]);
+        queryClient.refetchQueries([
+          "getColdCallingFormData",
+          moduleType,
+          tran_cd,
+        ]);
         endSubmit(true, "");
-        enqueueSnackbar("Task Update Successfully", {
+        enqueueSnackbar("Update Successfully", {
           variant: "success",
         });
         isDataChangedRef.current = true;
@@ -98,87 +102,38 @@ export const ColdCallingViewEdit: FC<{
         moduleType,
         tran_cd,
       ]);
-      queryClient.removeQueries([
-        "getColdCallingFormMetaData",
-        "view",
-        tran_cd,
-      ]);
-      queryClient.removeQueries([
-        "getColdCallingFormMetaData",
-        "edit",
-        tran_cd,
-      ]);
     };
   }, [tran_cd]);
 
-  const result = useQueries([
-    disableCache
-      ? {
-          queryKey: ["getColdCallingFormData", moduleType, tran_cd],
-          queryFn: () => API.getColdCallingFormData({ moduleType })(tran_cd),
-          cacheTime: 0,
-        }
-      : {
-          queryKey: ["getColdCallingFormData", moduleType, tran_cd],
-          queryFn: () => API.getColdCallingFormData({ moduleType })(tran_cd),
-        },
-    {
-      queryKey: ["getColdCallingFormMetaData", "view", tran_cd],
-      queryFn: () => API.getMetadata(),
-    },
-    {
-      queryKey: ["getColdCallingFormMetaData", "edit", tran_cd],
-      queryFn: () => API.getMetadata(),
-    },
-  ]);
+  const result = useQuery(["getColdCallingFormData", moduleType, tran_cd], () =>
+    API.getColdCallingFormData({ moduleType })(tran_cd)
+  );
 
-  const dataUniqueKey = `${result[0].dataUpdatedAt}`;
-  const loading =
-    result[0].isLoading ||
-    result[1].isLoading ||
-    result[2].isLoading ||
-    result[0].isFetching ||
-    result[1].isFetching ||
-    result[2].isFetching;
-  let isError = result[0].isError || result[1].isError || result[2].isError;
+  const dataUniqueKey = `${result.dataUpdatedAt}`;
+  const loading = result.isLoading || result.isFetching;
+  let isError = result.isError;
   //@ts-ignore
-  let errorMsg = `${result[0].error?.error_msg} ${
-    //@ts-ignore
-    result[1].error?.error_msg
-  } ${
-    //@ts-ignore
-    result[2].error?.error_msg
-  }`;
+  let errorMsg = `${result.error?.error_msg}`;
   errorMsg = Boolean(errorMsg.trim()) ? errorMsg : "Unknown error occured";
 
-  let formEditData = result[0].data;
+  let formEditData = result.data;
 
-  let editMetaData: MetaDataType = {} as MetaDataType;
-  let viewMetaData: MetaDataType = {} as MetaDataType;
+  let viewEditMetaData: MetaDataType = {} as MetaDataType;
 
-  if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
+  if (result.isSuccess) {
     const formStateFromInitValues =
       typeof setEditFormStateFromInitValues === "function"
-        ? setEditFormStateFromInitValues(result[0].data)
+        ? setEditFormStateFromInitValues(result.data)
         : undefined;
-    viewMetaData = cloneDeep(result[1].data) as MetaDataType;
-    editMetaData = cloneDeep(result[2].data) as MetaDataType;
+    viewEditMetaData = cloneDeep(coldCallingMetadata) as MetaDataType;
 
-    editMetaData.form.formState = {
-      formCode: editMetaData.form.name,
+    viewEditMetaData.form.formState = {
+      formCode: viewEditMetaData.form.name,
       ...formStateFromInitValues,
     };
-    editMetaData.form.name = `${editMetaData.form.name}-edit`;
-    if (editMetaData?.form?.render?.renderType === "stepper") {
-      editMetaData.form.render.renderType = "tabs";
-    }
-    viewMetaData.form.formState = {
-      formCode: viewMetaData.form.name,
-      ...formStateFromInitValues,
-    };
-    viewMetaData.form.name = `${viewMetaData.form.name}-view`;
-    if (viewMetaData?.form?.render?.renderType === "stepper") {
-      viewMetaData.form.render.renderType = "tabs";
+    viewEditMetaData.form.name = `${viewEditMetaData.form.name}-edit`;
+    if (viewEditMetaData?.form?.render?.renderType === "stepper") {
+      viewEditMetaData.form.render.renderType = "tabs";
     }
   }
 
@@ -207,7 +162,7 @@ export const ColdCallingViewEdit: FC<{
   ) : formMode === "view" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${formMode}`}
-      metaData={viewMetaData as MetaDataType}
+      metaData={viewEditMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore
@@ -223,7 +178,7 @@ export const ColdCallingViewEdit: FC<{
   ) : formMode === "edit" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${formMode}`}
-      metaData={editMetaData as MetaDataType}
+      metaData={viewEditMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore

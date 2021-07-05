@@ -1,5 +1,5 @@
 import { LOSSDK } from "registry/fns/los";
-import { coldCallingMetadata } from "../metadata/form";
+import { coldCallingMetadata } from "../metadata";
 
 export const addColCalling = ({ moduleType }) => async (formData) => {
   const { data, status } = await LOSSDK.internalFetcher(
@@ -20,13 +20,13 @@ export const addColCalling = ({ moduleType }) => async (formData) => {
   }
 };
 
-export const getColdCallingFormData = ({ moduleType }) => async (taskID) => {
+export const getColdCallingFormData = ({ moduleType }) => async (tranCD) => {
   const { data, status } = await LOSSDK.internalFetcher(
     `./${moduleType}/inquiry/data/get`,
     {
       body: JSON.stringify({
         request_data: {
-          tranCD: taskID,
+          tranCD: tranCD,
         },
       }),
     }

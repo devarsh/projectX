@@ -137,10 +137,14 @@ registerFn("getBankBranchList", miscSDK.getBanBranchkList);
 
 //move to inquiry from cold calling
 
-registerFn("getMainProductList", miscSDK.getMiscVal("MAIN_PROD_MISC"));
+registerFn("getMainProductList", miscSDK.getMainProductCode);
 registerFn(
   "getProductTypeForMoveToInquiry",
   miscSDK.getProductTypeForMoveToInquiry
+);
+registerFn(
+  "getEmployementCodeForMoveToInquiry",
+  miscSDK.getEmployementCodeForMoveToInquiry
 );
 
 //Dummy only for testing

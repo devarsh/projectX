@@ -458,11 +458,11 @@ const MiscAPI = () => {
 
   //for Move to inquiry
   const getProductTypeForMoveToInquiry = async (dependentField) => {
-    if (!Boolean(dependentField?.subCategory?.value)) {
+    if (!Boolean(dependentField?.productID?.value)) {
       return [];
     }
     const { status, data } = await internalFetcher(
-      `./productType/${dependentField?.subCategory?.value}`,
+      `./productType/${dependentField?.productID?.value}`,
       {}
     );
     if (status === "success" && Array.isArray(data?.response_data)) {
@@ -471,6 +471,62 @@ const MiscAPI = () => {
         label: one?.sub_prod_desc,
       }));
       return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getMainProductCode = async (): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(`./data/MAIN_PROD_MISC`, {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      return newArray.filter((one) =>
+        one.value === "12000005" || one.value === "12000006" ? false : true
+      );
+    } else {
+      throw data?.error_data;
+    }
+  };
+
+  const getEmployementCodeForMoveToInquiry = async (
+    dependentField: any
+  ): Promise<OptionsProps[]> => {
+    const { status, data } = await internalFetcher(`./data/RETAIL_EMPL`, {});
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.data_val,
+        label: one?.display_val,
+      }));
+      if (dependentField?.categoryID?.value === "12000001") {
+        if (
+          ["12300001", "12300002", "12300003"].indexOf(
+            dependentField?.productID?.value
+          ) >= 0
+        ) {
+          return newArray.filter((one) => one.value !== "04");
+        } else {
+          return newArray.filter((one) => one.value === "04");
+        }
+      } else if (dependentField?.categoryID?.value === "12000002") {
+        if (
+          ["12300005", "12300006", "12300007", "12300008"].indexOf(
+            dependentField?.productID?.value
+          ) >= 0
+        ) {
+          return newArray.filter((one) => one.value === "01");
+        } else {
+          return newArray.filter(
+            (one) => one.value === "01" || one.value === "03"
+          );
+        }
+      } else {
+        return newArray.filter(
+          (one) => one.value === "01" || one.value === "03"
+        );
+      }
     } else {
       throw data?.error_data;
     }
@@ -498,7 +554,9 @@ const MiscAPI = () => {
     getBanBranchkList,
 
     //for Move to inquiry
+    getMainProductCode,
     getProductTypeForMoveToInquiry,
+    getEmployementCodeForMoveToInquiry,
   };
 };
 
