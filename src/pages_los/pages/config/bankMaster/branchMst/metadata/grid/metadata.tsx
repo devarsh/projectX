@@ -12,20 +12,6 @@ export const bankBranchMasterGridMetaData = {
   },
   columns: [
     {
-      columnName: "Serial No",
-      componentType: "default",
-      accessor: "branchID",
-      sequence: 0,
-      alignment: "left",
-    },
-    {
-      columnName: "Bank Code",
-      componentType: "default",
-      accessor: "bankCode",
-      sequence: 1,
-      alignment: "left",
-    },
-    {
       columnName: "Bank Name",
       componentType: "default",
       accessor: "bankName",

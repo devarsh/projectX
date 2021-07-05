@@ -1,7 +1,7 @@
 export const bankBranchMasterMetadataEditView = {
   form: {
     name: "bankBranchMasterEditView",
-    label: "Bank Branch Master",
+    label: "Branch Master",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {

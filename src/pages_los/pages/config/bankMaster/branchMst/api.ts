@@ -13,7 +13,7 @@ export const insertBranchData = ({ moduleType, refID }: crudType) => async (
     {
       body: JSON.stringify({
         request_data: {
-          bankID: refID,
+          bankCode: refID,
           ...formData,
         },
         channel: "W",
@@ -34,7 +34,7 @@ export const getFormData = ({ moduleType, refID }: crudType) => async (
     `./${moduleType}/data/get`,
     {
       body: JSON.stringify({
-        request_data: { branchID: serialNo, bankID: refID },
+        request_data: { branchID: serialNo, bankCode: refID },
         channel: "W",
       }),
     }
@@ -52,7 +52,7 @@ export const getGridData = ({ moduleType, refID }: crudType) => async () => {
     {
       body: JSON.stringify({
         request_data: {
-          bankID: refID,
+          bankCode: refID,
         },
         channel: "W",
       }),
@@ -75,7 +75,7 @@ export const updateBranchData = ({ moduleType, refID }: crudType) => async (
       body: JSON.stringify({
         request_data: {
           branchID: serialNo,
-          bankID: refID,
+          bankCode: refID,
           ...formData,
         },
         channel: "W",
@@ -98,7 +98,7 @@ export const deleteBranchData = ({ moduleType, refID }: crudType) => async (
       body: JSON.stringify({
         request_data: {
           branchID: serialNo,
-          bankID: refID,
+          bankCode: refID,
         },
         channel: "W",
       }),

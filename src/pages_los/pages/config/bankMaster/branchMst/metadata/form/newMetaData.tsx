@@ -1,7 +1,7 @@
 export const bankBranchMasterMetadata = {
   form: {
     name: "bankBranchMasterNew",
-    label: "Bank Branch Master",
+    label: "Branch Master",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {

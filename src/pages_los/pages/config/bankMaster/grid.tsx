@@ -2,7 +2,6 @@ import { useState, useRef, Fragment, useEffect, useContext } from "react";
 import { ClearCacheProvider, queryClient, ClearCacheContext } from "cache";
 import { ActionTypes } from "components/dataTable";
 import { useQuery } from "react-query";
-import { Transition } from "pages_los/common";
 import GridWrapper from "components/dataTableStatic";
 import Dialog from "@material-ui/core/Dialog";
 import { InvalidAction } from "pages_los/common/invalidAction";
@@ -85,13 +84,12 @@ export const BankMaster = () => {
       <Dialog
         open={currentAction !== null}
         //@ts-ignore
-        TransitionComponent={Transition}
         onClose={handleDialogClose}
+        fullScreen={selectedAction === "ViewBranch" ? true : false}
         maxWidth="lg"
         PaperProps={{
           style:
-            selectedAction.indexOf("AddBank") >= 0 ||
-            selectedAction === "ViewDetails"
+            selectedAction.indexOf("AddBank", "ViewDetails") >= 0
               ? { width: "100%", height: "50%" }
               : {},
         }}
