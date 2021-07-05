@@ -48,22 +48,22 @@ export const MoveToInquiry: FC<{
 
   let formEditData = result.data;
 
-  let editMetaData: MetaDataType = {} as MetaDataType;
+  let metaData: MetaDataType = {} as MetaDataType;
 
   if (result.isSuccess) {
     const formStateFromInitValues =
       typeof setEditFormStateFromInitValues === "function"
         ? setEditFormStateFromInitValues(result.data)
         : undefined;
-    editMetaData = cloneDeep(moveToInquiryMetaData) as MetaDataType;
+    metaData = cloneDeep(moveToInquiryMetaData) as MetaDataType;
 
-    editMetaData.form.formState = {
-      formCode: editMetaData.form.name,
+    metaData.form.formState = {
+      formCode: metaData.form.name,
       ...formStateFromInitValues,
     };
-    editMetaData.form.name = `${editMetaData.form.name}-edit`;
-    if (editMetaData?.form?.render?.renderType === "stepper") {
-      editMetaData.form.render.renderType = "tabs";
+    metaData.form.name = `${metaData.form.name}-edit`;
+    if (metaData?.form?.render?.renderType === "stepper") {
+      metaData.form.render.renderType = "tabs";
     }
   }
 
@@ -92,7 +92,7 @@ export const MoveToInquiry: FC<{
   ) : defaultView === "edit" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${defaultView}`}
-      metaData={editMetaData as MetaDataType}
+      metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={() => {}}
       //@ts-ignore
@@ -103,7 +103,7 @@ export const MoveToInquiry: FC<{
       {({ isSubmitting, handleSubmit }) => (
         <>
           <Button
-            onClick={handleSubmit}
+            onClick={closeDialog}
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
