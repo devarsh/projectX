@@ -109,7 +109,9 @@ export const AutocompleteRenderOnly: FC<MyAutocompleteProps> = ({
     if (
       !initDoneRef.current &&
       Boolean(_internalValue) &&
-      _options.length > 1
+      _options.length > 0 &&
+      _options[0].value !== "00" &&
+      _options[0].value !== null
     ) {
       if (!Array.isArray(_internalValue)) {
         console.log(_internalValue);

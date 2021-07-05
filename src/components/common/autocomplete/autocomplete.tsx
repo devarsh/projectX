@@ -162,11 +162,14 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
 
   //to set the default value
   useEffect(() => {
+    console.log({ value, _options, initDoneRef: initDoneRef.current });
     let _internalValue: any | any[] = value;
     if (
       !initDoneRef.current &&
       Boolean(_internalValue) &&
-      _options.length > 1
+      _options.length > 0 &&
+      _options[0].value !== "00" &&
+      _options[0].value !== null
     ) {
       if (!Array.isArray(_internalValue)) {
         _internalValue = [value];
@@ -191,6 +194,8 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
         defaultValueRef.current = answers[0];
       }
       setLastUpdatedTime(new Date().getTime());
+    } else {
+      console.log("i am going to else");
     }
   }, [loadingOptions, _options, value, multiple]);
 

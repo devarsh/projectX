@@ -25,7 +25,6 @@ import {
   SanctionLeads,
   DisbursementLeads,
 } from "./pages/lead";
-import { DetailsTabViewBank } from "./pages/config/bank";
 import { UserManagement } from "./pages/config/userManagement";
 import { NewInquiry } from "./pages/newInquiry";
 import { AuthProvider, AuthLoginController, ProtectedRoutes } from "auth";
@@ -37,8 +36,8 @@ import { WorkLog } from "pages_los/pages/taskManagement/worklog";
 // import { AssignTask, AssignedTask, WorkLog } from "pages_los/pages/task";
 // import { Worklog } from "pages_los/pages/task/worklogNew";
 import { ColdCallingView } from "pages_los/pages/taskManagement/coldCalling/views";
-
-import { BankMasterNew } from "pages_los/pages/config/bankMasterNew/bankMasterNew";
+import { BankConfigWrapper } from "./pages/config/bankConfig";
+import { BankMasterWrapper } from "pages_los/pages/config/bankMaster";
 import Editor from "components/editor";
 
 const DashbordPages = () => {
@@ -91,8 +90,8 @@ const DashbordPages = () => {
             <Route path="/task/assigned" element={<AssignedTask />} />
             <Route path="/task/worklog" element={<WorkLog />} />
             <Route path="/task/coldCalling" element={<ColdCallingView />} />
-            <Route path="/config/bankMaster" element={<BankMasterNew />} />
-            <Route path="/config/banks" element={<DetailsTabViewBank />} />
+            <Route path="/config/bankMaster" element={<BankMasterWrapper />} />
+            <Route path="/config/banks" element={<BankConfigWrapper />} />
             <Route path="/config/userManagement" element={<UserManagement />} />
             <Route path="/profile" element={<Profile />} />
             {/*dummy routes*/}

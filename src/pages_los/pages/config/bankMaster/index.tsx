@@ -1,1 +1,1 @@
-export { BankMasterWrapper as BankMaster } from "./bankMaster";
+export * from "./grid";

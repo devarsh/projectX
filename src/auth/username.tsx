@@ -19,7 +19,7 @@ export const UsernameField = ({
   useEffect(() => {
     if (loginState.isError) {
       setTimeout(() => {
-        inputRef.current.focus();
+        inputRef?.current?.focus?.();
       }, 0);
     }
   }, [loginState.isError]);

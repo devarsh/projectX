@@ -443,7 +443,7 @@ const MiscAPI = () => {
     }
   };
 
-  const getBanBranchkList = async (): Promise<OptionsProps[]> => {
+  const getBankBranchList = async (): Promise<OptionsProps[]> => {
     const { status, data } = await internalFetcher("./bankBranchList", {});
     if (status === "success" && Array.isArray(data?.response_data)) {
       const newArray = data.response_data.map((one) => ({
@@ -475,7 +475,7 @@ const MiscAPI = () => {
     getCRMSubProductType,
     getRetailEmployementCode,
     getUnsecuredEmployementCode,
-    getBanBranchkList,
+    getBankBranchList,
   };
 };
 
