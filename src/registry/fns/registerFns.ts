@@ -134,6 +134,18 @@ registerFn(
   others.setValueOnDependentFieldsChangeOne
 );
 registerFn("getBankBranchList", miscSDK.getBankBranchList);
+
+//move to inquiry from cold calling
+
+registerFn("getMainProductList", miscSDK.getMainProductCode);
+registerFn(
+  "getProductTypeForMoveToInquiry",
+  miscSDK.getProductTypeForMoveToInquiry
+);
+registerFn(
+  "getEmployementCodeForMoveToInquiry",
+  miscSDK.getEmployementCodeForMoveToInquiry
+);
 //Dummy only for testing
 registerFn("shouldExcludeDummy", others.shouldExcludeDummy);
 registerFn("getMonthDifferenceInRows", others.getMonthDifferenceInRows);

@@ -1,9 +1,6 @@
-import {
-  assignMetaData,
-  assignedMetaData,
-} from "pages_los/pages/taskManagement/task/metadata/grid";
-import { worklogGridMetaData } from "pages_los/pages/taskManagement/worklog/metadata/grid";
-import { coldCallingMetaData } from "pages_los/pages/taskManagement/coldCalling/metadata/grid";
+import { assignMetaData, assignedMetaData } from "./task/metadata/grid";
+import { worklogGridMetaData } from "./worklog/metadata/grid";
+import { coldCallingMetaData } from "./coldCalling/metadata";
 
 export const getGridFormMetaData = ({ gridCode }) => async () => {
   switch (gridCode) {

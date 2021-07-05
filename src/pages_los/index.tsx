@@ -33,9 +33,7 @@ import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
 import { AssignTask, AssignedTask } from "pages_los/pages/taskManagement/task";
 import { WorkLog } from "pages_los/pages/taskManagement/worklog";
-// import { AssignTask, AssignedTask, WorkLog } from "pages_los/pages/task";
-// import { Worklog } from "pages_los/pages/task/worklogNew";
-import { ColdCallingView } from "pages_los/pages/taskManagement/coldCalling/views";
+import { ColdCalling } from "pages_los/pages/taskManagement/coldCalling";
 import { BankConfigWrapper } from "./pages/config/bankConfig";
 import { BankMasterWrapper } from "pages_los/pages/config/bankMaster";
 import Editor from "components/editor";
@@ -89,7 +87,7 @@ const DashbordPages = () => {
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
             <Route path="/task/worklog" element={<WorkLog />} />
-            <Route path="/task/coldCalling" element={<ColdCallingView />} />
+            <Route path="/task/coldCalling" element={<ColdCalling />} />
             <Route path="/config/bankMaster" element={<BankMasterWrapper />} />
             <Route path="/config/banks" element={<BankConfigWrapper />} />
             <Route path="/config/userManagement" element={<UserManagement />} />

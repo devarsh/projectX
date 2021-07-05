@@ -19,13 +19,6 @@ export const infraGridMetaData = {
       alignment: "left",
     },
     {
-      columnName: "Department of The Bank",
-      componentType: "default",
-      accessor: "departmentName",
-      sequence: 1,
-      alignment: "left",
-    },
-    {
       columnName: "Product Name",
       componentType: "default",
       accessor: "productName",
@@ -47,7 +40,7 @@ export const infraGridMetaData = {
       alignment: "left",
     },
     {
-      columnName: "Land Value(Market Value Lacs)",
+      columnName: "Land Value",
       componentType: "currency",
       accessor: "marketLandValue",
       sequence: 5,
