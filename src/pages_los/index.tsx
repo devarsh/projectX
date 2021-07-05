@@ -36,7 +36,7 @@ import { AssignTask, AssignedTask } from "pages_los/pages/taskManagement/task";
 import { WorkLog } from "pages_los/pages/taskManagement/worklog";
 // import { AssignTask, AssignedTask, WorkLog } from "pages_los/pages/task";
 // import { Worklog } from "pages_los/pages/task/worklogNew";
-import { ColdCallingView } from "pages_los/pages/taskManagement/coldCalling/views";
+import { ColdCallingView } from "pages_los/pages/taskManagement/coldCalling";
 
 import { BankMasterNew } from "pages_los/pages/config/bankMasterNew/bankMasterNew";
 import Editor from "components/editor";

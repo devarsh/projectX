@@ -1,1 +1,1 @@
-export * from "./coldCalling";
+export * from "./views";

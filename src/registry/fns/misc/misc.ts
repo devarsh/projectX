@@ -456,6 +456,26 @@ const MiscAPI = () => {
     }
   };
 
+  //for Move to inquiry
+  const getProductTypeForMoveToInquiry = async (dependentField) => {
+    if (!Boolean(dependentField?.subCategory?.value)) {
+      return [];
+    }
+    const { status, data } = await internalFetcher(
+      `./productType/${dependentField?.subCategory?.value}`,
+      {}
+    );
+    if (status === "success" && Array.isArray(data?.response_data)) {
+      const newArray = data.response_data.map((one) => ({
+        value: one?.sub_prod_code,
+        label: one?.sub_prod_desc,
+      }));
+      return newArray;
+    } else {
+      throw data?.error_data;
+    }
+  };
+
   return {
     inititateAPI,
     getMiscVal,
@@ -476,6 +496,9 @@ const MiscAPI = () => {
     getRetailEmployementCode,
     getUnsecuredEmployementCode,
     getBanBranchkList,
+
+    //for Move to inquiry
+    getProductTypeForMoveToInquiry,
   };
 };
 

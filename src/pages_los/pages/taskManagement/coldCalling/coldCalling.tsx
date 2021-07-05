@@ -4,11 +4,15 @@ import {
   ServerGrid,
   ServerGridContextProvider,
 } from "pages_los/common/serverGrid";
-import { Transition } from "pages_los/common";
 import { ClearCacheProvider } from "cache";
 import { serverGridContextGenerator } from "../context";
 import { InvalidAction } from "pages_los/common/invalidAction";
-import { AddColdCalling } from "./coldCallingCRUD";
+import {
+  AddColdCalling,
+  ColdCallingViewEdit,
+  ColdCallingDelete,
+} from "./coldCallingCRUD";
+import { MoveToInquiry } from "./moveToInquiry";
 
 export const ColdCalling = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -35,19 +39,46 @@ export const ColdCalling = ({ gridCode, actions }) => {
       </ServerGridContextProvider>
       <Dialog
         fullScreen={
-          ["AddColdCalling"].indexOf(currentAction?.name) >= 0 ? true : false
+          ["moveToInquiry"].indexOf(currentAction?.name) >= 0 ? true : false
         }
         open={currentAction !== null}
-        //@ts-ignore
-        TransitionComponent={Transition}
         onClose={handleDialogClose}
         maxWidth="md"
-        PaperProps={{ style: { width: "100%", height: "100%" } }}
       >
         <ClearCacheProvider>
           {(currentAction?.name ?? "") === "AddColdCalling" ? (
             <Fragment>
               <AddColdCalling
+                moduleType="cold-calling"
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
+              />
+            </Fragment>
+          ) : (currentAction?.name ?? "") === "viewDetails" ? (
+            <Fragment>
+              <ColdCallingViewEdit
+                tran_cd={currentAction?.rows[0].id}
+                moduleType="cold-calling"
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
+                readOnly={false}
+                disableCache={false}
+              />
+            </Fragment>
+          ) : (currentAction?.name ?? "") === "delete" ? (
+            <Fragment>
+              <ColdCallingDelete
+                tran_cd={currentAction?.rows[0].id}
+                moduleType="cold-calling"
+                isDataChangedRef={isDataChangedRef}
+                closeDialog={handleDialogClose}
+              />
+            </Fragment>
+          ) : (currentAction?.name ?? "") === "moveToInquiry" ? (
+            <Fragment>
+              <MoveToInquiry
+                // refID={currentAction?.rows[0].id}
+                tran_cd={currentAction?.rows[0].id}
                 moduleType="cold-calling"
                 isDataChangedRef={isDataChangedRef}
                 closeDialog={handleDialogClose}

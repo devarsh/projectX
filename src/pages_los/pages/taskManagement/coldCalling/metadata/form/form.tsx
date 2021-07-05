@@ -118,7 +118,6 @@ export const coldCallingMetadata = {
         componentType: "phoneNumber",
       },
       name: "mobileNo",
-      type: "text",
       label: "Mobile No",
       placeholder: "Mobile No",
       required: true,
@@ -144,129 +143,11 @@ export const coldCallingMetadata = {
     },
     {
       render: {
-        componentType: "textField",
+        componentType: "currency",
       },
-      name: "address1",
-      label: "Address Line 1",
-      placeholder: "Address Line 1",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "address2",
-      label: "Address Line 2",
-      placeholder: "Address Line 2",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "landmark",
-      label: "Landmark",
-      placeholder: "Landmark",
-      type: "text",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "pincode",
-      },
-      name: "pincode",
-      label: "Residence Pincode",
-      placeholder: "Residence pincode",
-      required: true,
-      defaultValue: "",
-      postValidationSetCrossFieldValues: "postValidationSetPincodeDtl",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "location",
-      label: "Location",
-      placeholder: "Location",
-      dependentFields: ["pincode"],
-      required: true,
-      options: "getPincode",
-      defaultValue: "0",
-      runPostValidationHookAlways: true,
-      postValidationSetCrossFieldValues: "postValidationSetLocationDtl",
-      disableCaching: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "city",
-      label: "City",
-      placeholder: "City",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "district",
-      label: "District",
-      placeholder: "District",
-      isReadOnly: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "state",
-      label: "State",
-      placeholder: "State",
-      isReadOnly: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-      },
-      name: "country",
-      label: "Country",
-      placeholder: "Country",
-      isReadOnly: true,
+      name: "loanAmount",
+      label: "Desired Loan Amount",
+      placeholder: "Desired Loan Amount",
       GridProps: {
         xs: 12,
         md: 3,
