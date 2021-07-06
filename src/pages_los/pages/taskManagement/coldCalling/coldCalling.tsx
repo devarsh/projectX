@@ -73,6 +73,8 @@ export const ColdCalling = ({ gridCode, actions }) => {
         }
         open={Boolean(currentAction)}
         maxWidth="lg"
+        fullWidth
+        PaperProps={{ style: { height: "100%" } }}
       >
         <ClearCacheProvider>
           {(currentAction?.name ?? "") === "AddColdCalling" ? (
