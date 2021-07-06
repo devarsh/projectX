@@ -1,1 +1,1 @@
-export * from "./view";
+export { WorklogWrapper as Worklog } from "./worklog";

@@ -1,12 +1,11 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
+import { SubmitFnType } from "packages/form";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { useMutation } from "react-query";
 import { useSnackbar } from "notistack";
-import { worklogFormMetaData } from "../../../taskManagement/worklog/metadata/form";
+import { worklogFormMetaData } from "../metadata";
 import * as API from "./api";
-import { WorklogAPIProvider, generateWorklogAPIContext } from "./context";
-import { SubmitFnType } from "packages/form";
 
 interface AddWorkLogFormDataFnType {
   data: object;
@@ -37,7 +36,7 @@ export const WorklogAdd = ({ moduleType, isDataChangedRef, closeDialog }) => {
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
         isDataChangedRef.current = true;
-        enqueueSnackbar("Task Assign Successfully", {
+        enqueueSnackbar("Worklog Added Successfully", {
           variant: "success",
         });
         closeDialog();
@@ -82,21 +81,5 @@ export const WorklogAdd = ({ moduleType, isDataChangedRef, closeDialog }) => {
         );
       }}
     </FormWrapper>
-  );
-};
-
-export const WorklogWrapper = ({
-  moduleType,
-  isDataChangedRef,
-  closeDialog,
-}) => {
-  return (
-    <WorklogAPIProvider {...generateWorklogAPIContext({ moduleType })}>
-      <WorklogAdd
-        moduleType={moduleType}
-        isDataChangedRef={isDataChangedRef}
-        closeDialog={closeDialog}
-      />
-    </WorklogAPIProvider>
   );
 };

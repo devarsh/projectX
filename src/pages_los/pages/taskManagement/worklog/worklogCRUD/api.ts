@@ -1,5 +1,5 @@
 import { LOSSDK } from "registry/fns/los";
-import { worklogFormMetaData } from "../../../taskManagement/worklog/metadata/form";
+import { worklogFormMetaData } from "../metadata";
 
 export const getWorkLogData = ({ moduleType }) => async (serialNo?: string) => {
   const { data, status } = await LOSSDK.internalFetcher(

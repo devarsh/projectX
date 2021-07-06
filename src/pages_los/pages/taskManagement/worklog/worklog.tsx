@@ -1,4 +1,5 @@
 import { useState, useRef, Fragment, useEffect } from "react";
+import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
 import {
   ServerGrid,
@@ -12,6 +13,28 @@ import { WorklogViewEdit } from "./worklogCRUD/worklogViewEdit";
 import { DeleteAction } from "./worklogCRUD/worklogDelete";
 import { InvalidAction } from "pages_los/common/invalidAction";
 import dateFormat from "date-fns/format";
+
+const actions: ActionTypes[] = [
+  {
+    actionName: "ViewDetails",
+    actionLabel: "View Details",
+    multiple: false,
+    rowDoubleClick: true,
+  },
+  {
+    actionName: "Delete",
+    actionLabel: "Delete",
+    multiple: true,
+    rowDoubleClick: false,
+  },
+  {
+    actionName: "AddWorklog",
+    actionLabel: "Add Worklog",
+    multiple: undefined,
+    rowDoubleClick: false,
+    alwaysAvailable: true,
+  },
+];
 
 export const Worklog = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
@@ -48,7 +71,6 @@ export const Worklog = ({ gridCode, actions }) => {
               value: {
                 type: "date",
                 value: minValue,
-                // value: (new Date().toString(), format:"dd/MM/yyyy"),
                 condition: "equal",
                 columnName: "Tran Date",
               },
@@ -58,9 +80,7 @@ export const Worklog = ({ gridCode, actions }) => {
       </ServerGridContextProvider>
       <Dialog
         fullScreen={
-          ["ViewDetails", "Delete", "AddWorklog"].indexOf(
-            currentAction?.name
-          ) >= 0
+          ["ViewDetails", "AddWorklog"].indexOf(currentAction?.name) >= 0
             ? true
             : false
         }
@@ -69,11 +89,6 @@ export const Worklog = ({ gridCode, actions }) => {
         TransitionComponent={Transition}
         onClose={handleDialogClose}
         maxWidth="md"
-        PaperProps={
-          currentAction?.name === "Delete"
-            ? { style: { width: "50%", height: "25%" } }
-            : { style: { width: "100%", height: "100%" } }
-        }
       >
         <ClearCacheProvider>
           {(currentAction?.name ?? "") === "AddWorklog" ? (
@@ -111,4 +126,8 @@ export const Worklog = ({ gridCode, actions }) => {
       </Dialog>
     </Fragment>
   );
+};
+
+export const WorklogWrapper = () => {
+  return <Worklog gridCode="TRN/014" actions={actions} />;
 };

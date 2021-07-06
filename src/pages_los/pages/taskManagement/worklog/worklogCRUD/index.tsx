@@ -1,1 +1,1 @@
-export { WorklogWrapper as WorklogAdd } from "./worklogNew";
+export { WorklogAdd } from "./worklogAdd";

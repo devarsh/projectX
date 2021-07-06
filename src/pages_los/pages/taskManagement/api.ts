@@ -1,5 +1,5 @@
 import { assignMetaData, assignedMetaData } from "./task/metadata/grid";
-import { worklogGridMetaData } from "./worklog/metadata/grid";
+import { worklogGridMetaData } from "./worklog/metadata";
 import { coldCallingMetaData } from "./coldCalling/metadata";
 
 export const getGridFormMetaData = ({ gridCode }) => async () => {

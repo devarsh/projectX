@@ -1,5 +1,5 @@
 import { LOSSDK } from "registry/fns/los";
-import { taskAssignmentMetadata } from "../metadata/form";
+import { taskEditViewMetadata } from "../metadata/form";
 
 export const assignTask = ({ moduleType }) => async (formData) => {
   const { data, status } = await LOSSDK.internalFetcher(
@@ -59,4 +59,4 @@ export const updateTaskFormData = ({
   }
 };
 
-export const getMetadata = () => taskAssignmentMetadata;
+export const getMetadata = () => taskEditViewMetadata;
