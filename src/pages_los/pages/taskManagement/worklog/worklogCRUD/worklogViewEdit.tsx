@@ -3,6 +3,7 @@ import loaderGif from "assets/images/loader.gif";
 import { InitialValuesType, SubmitFnType } from "packages/form";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { useQuery, useMutation } from "react-query";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
@@ -10,7 +11,7 @@ import { queryClient } from "cache";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
 import * as API from "./api";
-import { useQueries, useMutation } from "react-query";
+import { worklogFormMetaData } from "../metadata";
 
 interface updateWorklogDataType {
   data: object;
@@ -43,7 +44,6 @@ export const WorklogViewEdit: FC<{
   defaultView = "view",
   readOnly = false,
   serialNo,
-  disableCache,
   setEditFormStateFromInitValues,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -53,7 +53,7 @@ export const WorklogViewEdit: FC<{
 
   const mutation = useMutation(
     updateWorklogDataWrapperFn(
-      API.updateWorkLogData({ moduleType, taskID: serialNo })
+      API.updateWorkLogData({ moduleType, tranID: serialNo })
     ),
     {
       onError: (error: any, { endSubmit }) => {
@@ -95,79 +95,38 @@ export const WorklogViewEdit: FC<{
   useEffect(() => {
     return () => {
       queryClient.removeQueries(["getWorklogFormData", moduleType, serialNo]);
-      queryClient.removeQueries(["getWorklogFormMetaData", "view", serialNo]);
-      queryClient.removeQueries(["getWorklogFormMetaData", "edit", serialNo]);
     };
   }, [serialNo]);
 
-  const result = useQueries([
-    disableCache
-      ? {
-          queryKey: ["getWorklogFormData", moduleType, serialNo],
-          queryFn: () => API.getWorkLogData({ moduleType })(serialNo),
-          cacheTime: 0,
-        }
-      : {
-          queryKey: ["getTaskFormData", moduleType, serialNo],
-          queryFn: () => API.getWorkLogData({ moduleType })(serialNo),
-        },
-    {
-      queryKey: ["getTaskFormMetaData", "view", serialNo],
-      queryFn: () => API.getFormMetaData(),
-    },
-    {
-      queryKey: ["getTaskFormMetaData", "edit", serialNo],
-      queryFn: () => API.getFormMetaData(),
-    },
-  ]);
+  const result = useQuery(["getWorklogFormData", moduleType, serialNo], () =>
+    API.getWorkLogData({ moduleType })(serialNo)
+  );
 
-  const dataUniqueKey = `${result[0].dataUpdatedAt}`;
-  const loading =
-    result[0].isLoading ||
-    result[1].isLoading ||
-    result[2].isLoading ||
-    result[0].isFetching ||
-    result[1].isFetching ||
-    result[2].isFetching;
-  let isError = result[0].isError || result[1].isError || result[2].isError;
+  const dataUniqueKey = `${result.dataUpdatedAt}`;
+  const loading = result.isLoading || result.isFetching;
+  let isError = result.isError;
   //@ts-ignore
-  let errorMsg = `${result[0].error?.error_msg} ${
-    //@ts-ignore
-    result[1].error?.error_msg
-  } ${
-    //@ts-ignore
-    result[2].error?.error_msg
-  }`;
+  let errorMsg = `${result.error?.error_msg}`;
   errorMsg = Boolean(errorMsg.trim()) ? errorMsg : "Unknown error occured";
 
-  let formEditData = result[0].data;
+  let formEditData = result.data;
 
-  let editMetaData: MetaDataType = {} as MetaDataType;
-  let viewMetaData: MetaDataType = {} as MetaDataType;
+  let editViewMetaData: MetaDataType = {} as MetaDataType;
 
-  if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
+  if (result.isSuccess) {
     const formStateFromInitValues =
       typeof setEditFormStateFromInitValues === "function"
-        ? setEditFormStateFromInitValues(result[0].data)
+        ? setEditFormStateFromInitValues(result.data)
         : undefined;
-    viewMetaData = cloneDeep(result[1].data) as MetaDataType;
-    editMetaData = cloneDeep(result[2].data) as MetaDataType;
+    editViewMetaData = cloneDeep(worklogFormMetaData) as MetaDataType;
 
-    editMetaData.form.formState = {
-      formCode: editMetaData.form.name,
+    editViewMetaData.form.formState = {
+      formCode: editViewMetaData.form.name,
       ...formStateFromInitValues,
     };
-    editMetaData.form.name = `${editMetaData.form.name}-edit`;
-    if (editMetaData?.form?.render?.renderType === "stepper") {
-      editMetaData.form.render.renderType = "tabs";
-    }
-    viewMetaData.form.formState = {
-      formCode: viewMetaData.form.name,
-      ...formStateFromInitValues,
-    };
-    viewMetaData.form.name = `${viewMetaData.form.name}-view`;
-    if (viewMetaData?.form?.render?.renderType === "stepper") {
-      viewMetaData.form.render.renderType = "tabs";
+    editViewMetaData.form.name = `${editViewMetaData.form.name}-edit`;
+    if (editViewMetaData?.form?.render?.renderType === "stepper") {
+      editViewMetaData.form.render.renderType = "tabs";
     }
   }
 
@@ -196,7 +155,7 @@ export const WorklogViewEdit: FC<{
   ) : formMode === "view" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${formMode}`}
-      metaData={viewMetaData as MetaDataType}
+      metaData={editViewMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore
@@ -212,7 +171,7 @@ export const WorklogViewEdit: FC<{
   ) : formMode === "edit" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${formMode}`}
-      metaData={editMetaData as MetaDataType}
+      metaData={editViewMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore

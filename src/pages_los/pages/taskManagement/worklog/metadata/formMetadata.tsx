@@ -119,7 +119,7 @@ export const worklogFormMetaData = {
           ],
         },
         success: "",
-        failure: "Task Start Time should be greater than to Task End Time",
+        failure: "Start Time should be greater than to End Time",
       },
       GridProps: { xs: 12, md: 3, sm: 3 },
     },

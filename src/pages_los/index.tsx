@@ -32,7 +32,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import { useStyles } from "./style";
 import TestForm from "components/dyanmicForm/test";
 import { AssignTask, AssignedTask } from "pages_los/pages/taskManagement/task";
-import { WorkLog } from "pages_los/pages/taskManagement/worklog";
+import { Worklog } from "pages_los/pages/taskManagement/worklog";
 import { ColdCalling } from "pages_los/pages/taskManagement/coldCalling";
 import { BankConfigWrapper } from "./pages/config/bankConfig";
 import { BankMasterWrapper } from "pages_los/pages/config/bankMaster";
@@ -86,7 +86,7 @@ const DashbordPages = () => {
             <Route path="/lead/disbursement" element={<DisbursementLeads />} />
             <Route path="/task/assign" element={<AssignTask />} />
             <Route path="/task/assigned" element={<AssignedTask />} />
-            <Route path="/task/worklog" element={<WorkLog />} />
+            <Route path="/task/worklog" element={<Worklog />} />
             <Route path="/task/coldCalling" element={<ColdCalling />} />
             <Route path="/config/bankMaster" element={<BankMasterWrapper />} />
             <Route path="/config/banks" element={<BankConfigWrapper />} />
