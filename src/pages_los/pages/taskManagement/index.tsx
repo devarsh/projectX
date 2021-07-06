@@ -1,2 +1,2 @@
 export * from "./task/view";
-export * from "./worklog/view";
+export * from "./worklog";
