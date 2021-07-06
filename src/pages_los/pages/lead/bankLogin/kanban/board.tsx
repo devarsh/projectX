@@ -1,11 +1,15 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import { Column } from "./column";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import Dialog from "@material-ui/core/Dialog";
+import Button from "@material-ui/core/Button";
 import { SearchBar } from "components/derived/search";
 import { BoardContainer } from "./components";
-import Button from "@material-ui/core/Button";
 import { Filter } from "./filter";
+import { ActionPicker } from "./actionPicker";
 
 export const Board = ({
   refID,
@@ -19,6 +23,16 @@ export const Board = ({
   query,
 }) => {
   const [search, setSearch] = useState("");
+  const [currentAction, setCurrentAction] = useState<any>(null);
+  const dataChangedRef = useRef(false);
+  const closeDialog = () => {
+    if (dataChangedRef.current === true) {
+      query?.refetch?.();
+      dataChangedRef.current = false;
+    }
+    setCurrentAction(null);
+  };
+
   return (
     <Fragment>
       <Toolbar
@@ -30,13 +44,43 @@ export const Board = ({
           Bank Login
         </Typography>
         <div style={{ flexGrow: 1 }} />
+        <IconButton
+          aria-label="refresh"
+          aria-controls="button"
+          aria-haspopup="false"
+          onClick={() => query?.refetch?.()}
+        >
+          <RefreshIcon />
+        </IconButton>
         <SearchBar
           margin={"none"}
           placeholder="Search Bank"
           style={{ marginLeft: "8px", marginRight: "8px" }}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button variant="contained">Sancation</Button>
+        <Button
+          variant="contained"
+          style={{ marginRight: "16px" }}
+          onClick={() =>
+            setCurrentAction({
+              name: "addBank",
+              refID: refID,
+            })
+          }
+        >
+          Add Bank
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() =>
+            setCurrentAction({
+              name: "sanction",
+              refID: refID,
+            })
+          }
+        >
+          Sancation
+        </Button>
       </Toolbar>
       <BoardContainer disabled={disabled}>
         <Filter
@@ -64,6 +108,18 @@ export const Board = ({
           )}
         </Filter>
       </BoardContainer>
+      <Dialog
+        open={Boolean(currentAction)}
+        maxWidth="md"
+        fullWidth={true}
+        PaperProps={{ style: { height: "70%" } }}
+      >
+        <ActionPicker
+          currentAction={currentAction}
+          closeDialog={closeDialog}
+          dataChangedRef={dataChangedRef}
+        />
+      </Dialog>
     </Fragment>
   );
 };

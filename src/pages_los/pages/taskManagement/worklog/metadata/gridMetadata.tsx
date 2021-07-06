@@ -3,7 +3,7 @@ export const worklogGridMetaData = {
     dense: false,
     pageSize: [20, 30, 50],
     defaultPageSize: "20",
-    gridLabel: "Todays Worklog",
+    gridLabel: "Worklog",
     rowIdColumn: "tran_cd",
     allowGlobalFilter: true,
     allowColumnReordering: true,

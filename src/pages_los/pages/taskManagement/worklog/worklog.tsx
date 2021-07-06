@@ -1,12 +1,11 @@
-import { useState, useRef, Fragment, useEffect } from "react";
+import { useState, useRef, Fragment, useContext, useEffect } from "react";
 import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
 import {
   ServerGrid,
   ServerGridContextProvider,
 } from "pages_los/common/serverGrid";
-import { ClearCacheProvider } from "cache";
-import { Transition } from "pages_los/common";
+import { ClearCacheProvider, ClearCacheContext, queryClient } from "cache";
 import { serverGridContextGenerator } from "../context";
 import { WorklogAdd } from "./worklogCRUD";
 import { WorklogViewEdit } from "./worklogCRUD/worklogViewEdit";
@@ -29,7 +28,7 @@ const actions: ActionTypes[] = [
   },
   {
     actionName: "AddWorklog",
-    actionLabel: "Add Worklog",
+    actionLabel: "Add New",
     multiple: undefined,
     rowDoubleClick: false,
     alwaysAvailable: true,
@@ -38,7 +37,6 @@ const actions: ActionTypes[] = [
 
 export const Worklog = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
-  const [minValue, setMinValue] = useState<any>(null);
   const isDataChangedRef = useRef(false);
   const myGridRef = useRef<any>(null);
   const handleDialogClose = () => {
@@ -49,12 +47,6 @@ export const Worklog = ({ gridCode, actions }) => {
       isDataChangedRef.current = false;
     }
   };
-
-  let myMinValue: any;
-  useEffect(() => {
-    myMinValue = dateFormat(new Date(), "iii LLL dd yyyy HH:mm:ss xxxx");
-    setMinValue(myMinValue);
-  }, []);
 
   return (
     <Fragment>
@@ -70,7 +62,7 @@ export const Worklog = ({ gridCode, actions }) => {
               id: "tran_date",
               value: {
                 type: "date",
-                value: minValue,
+                value: dateFormat(new Date(), "iii LLL dd yyyy HH:mm:ss xxxx"),
                 condition: "equal",
                 columnName: "Tran Date",
               },
@@ -79,52 +71,68 @@ export const Worklog = ({ gridCode, actions }) => {
         />
       </ServerGridContextProvider>
       <Dialog
-        fullScreen={
-          ["ViewDetails", "AddWorklog"].indexOf(currentAction?.name) >= 0
-            ? true
-            : false
-        }
-        open={currentAction !== null}
+        open={Boolean(currentAction)}
         //@ts-ignore
-        TransitionComponent={Transition}
-        onClose={handleDialogClose}
+        fullWidth
         maxWidth="md"
+        PaperProps={{ style: { height: "70%" } }}
       >
         <ClearCacheProvider>
-          {(currentAction?.name ?? "") === "AddWorklog" ? (
-            <Fragment>
-              <WorklogAdd
-                moduleType="worklog"
-                isDataChangedRef={isDataChangedRef}
-                closeDialog={handleDialogClose}
-              />
-            </Fragment>
-          ) : (currentAction?.name ?? "") === "ViewDetails" ? (
-            <Fragment>
-              <WorklogViewEdit
-                serialNo={currentAction?.rows[0]?.id}
-                moduleType="worklog"
-                isDataChangedRef={isDataChangedRef}
-                closeDialog={handleDialogClose}
-                readOnly={false}
-                disableCache={false}
-              />
-            </Fragment>
-          ) : (currentAction?.name ?? "") === "Delete" ? (
-            <Fragment>
-              <DeleteAction
-                worklogID={currentAction?.rows.map((one) => one.id)}
-                moduleType="worklog"
-                closeDialog={handleDialogClose}
-                isDataChangedRef={isDataChangedRef}
-              />
-            </Fragment>
-          ) : (
-            <InvalidAction closeDialog={handleDialogClose} />
-          )}
+          <WorkLogActionSelector
+            currentAction={currentAction}
+            isDataChangedRef={isDataChangedRef}
+            handleDialogClose={handleDialogClose}
+          />
         </ClearCacheProvider>
       </Dialog>
     </Fragment>
+  );
+};
+
+const WorkLogActionSelector = ({
+  currentAction,
+  isDataChangedRef,
+  handleDialogClose,
+}) => {
+  const removeCache = useContext(ClearCacheContext);
+  useEffect(() => {
+    return () => {
+      let entries = removeCache?.getEntries() as any[];
+      entries.forEach((one) => {
+        queryClient.removeQueries(one);
+      });
+    };
+  }, [removeCache]);
+  return (currentAction?.name ?? "") === "AddWorklog" ? (
+    <Fragment>
+      <WorklogAdd
+        moduleType="worklog"
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={handleDialogClose}
+      />
+    </Fragment>
+  ) : (currentAction?.name ?? "") === "ViewDetails" ? (
+    <Fragment>
+      <WorklogViewEdit
+        serialNo={currentAction?.rows[0]?.id}
+        moduleType="worklog"
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={handleDialogClose}
+        readOnly={false}
+        disableCache={false}
+      />
+    </Fragment>
+  ) : (currentAction?.name ?? "") === "Delete" ? (
+    <Fragment>
+      <DeleteAction
+        worklogID={currentAction?.rows.map((one) => one.id)}
+        moduleType="worklog"
+        closeDialog={handleDialogClose}
+        isDataChangedRef={isDataChangedRef}
+      />
+    </Fragment>
+  ) : (
+    <InvalidAction closeDialog={handleDialogClose} />
   );
 };
 

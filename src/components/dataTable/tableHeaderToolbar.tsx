@@ -65,9 +65,9 @@ export const TableHeaderToolbar = forwardRef<any, any>(
           />
         ) : null}
         <IconButton
-          aria-label="more"
-          aria-controls="long-menu"
-          aria-haspopup="true"
+          aria-label="refresh"
+          aria-controls="button"
+          aria-haspopup="false"
           //@ts-ignore
           onClick={() => ref?.current?.fetchData?.()}
         >

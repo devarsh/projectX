@@ -13,7 +13,7 @@ import { TextFieldForSelect } from "components/styledComponent/textfield";
 import { useMutation, useQuery } from "react-query";
 import { getCorrespondingValue } from "./utils";
 import { Alert } from "components/common/alert";
-import { getBankLoginData, updateBankCategory } from "../api";
+import * as API from "../api";
 import { queryClient } from "cache";
 
 export const Kanban = ({
@@ -28,9 +28,9 @@ export const Kanban = ({
   const { enqueueSnackbar } = useSnackbar();
   const [transition, setTransition] = useState<any>(null);
   const [showDialog, setShowDialog] = useState(false);
-  const query = useQuery(
+  const query = useQuery<any, any>(
     ["getBankLoginData", refID],
-    () => getBankLoginData({ refID }),
+    () => API.getBankLoginData({ refID }),
     {
       onSuccess: (data) => {
         setState(data);
@@ -112,6 +112,13 @@ export const Kanban = ({
         }}
       >
         {query?.isLoading || query?.isFetching ? <LinearProgress /> : null}
+        {query?.isError ? (
+          <Alert
+            severity="error"
+            errorDetail={query?.error?.error_detail}
+            errorMsg={query?.error?.error_msg}
+          />
+        ) : null}
         <Board
           data={state}
           columns={columns}
@@ -167,15 +174,20 @@ const DialogComponent = ({
   const [remarks, setRemarks] = useState("");
   const [error, setError] = useState("");
 
-  const mutation = useMutation(UpdateBankCategoryWrapper(updateBankCategory), {
-    onMutate: () => {
-      setError("");
-    },
-    onError: (error: any) => {},
-    onSuccess: (data) => {
-      confirmUpdate();
-    },
-  });
+  const mutation = useMutation(
+    UpdateBankCategoryWrapper(API.updateBankCategory),
+    {
+      onMutate: () => {
+        setError("");
+      },
+      onError: (error: any) => {},
+      onSuccess: (data) => {
+        confirmUpdate();
+        setRemarks("");
+        setError("");
+      },
+    }
+  );
 
   const src = columns.filter(
     (one) =>
@@ -231,7 +243,11 @@ const DialogComponent = ({
       <DialogActions>
         <Button
           color="primary"
-          onClick={rejectUpdate}
+          onClick={() => {
+            rejectUpdate();
+            setRemarks("");
+            setError("");
+          }}
           disabled={mutation?.isLoading}
         >
           Disagree

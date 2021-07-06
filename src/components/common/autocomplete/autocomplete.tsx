@@ -162,7 +162,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
 
   //to set the default value
   useEffect(() => {
-    console.log({ value, _options, initDoneRef: initDoneRef.current });
     let _internalValue: any | any[] = value;
     if (
       !initDoneRef.current &&
@@ -194,8 +193,6 @@ const MyAutocomplete: FC<MyAllAutocompleteProps> = ({
         defaultValueRef.current = answers[0];
       }
       setLastUpdatedTime(new Date().getTime());
-    } else {
-      console.log("i am going to else");
     }
   }, [loadingOptions, _options, value, multiple]);
 

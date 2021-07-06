@@ -3,7 +3,7 @@ export const assignedMetaData = {
     dense: false,
     pageSize: [20, 30, 50],
     defaultPageSize: "20",
-    gridLabel: "Assigned Task",
+    gridLabel: "Assigned Tasks",
     rowIdColumn: "tran_cd",
     allowColumnReordering: true,
     allowColumnHiding: true,

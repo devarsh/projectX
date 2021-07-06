@@ -7,7 +7,7 @@ export const AssignTask = () => {
       actionName: "ViewDetails",
       actionLabel: "View Details",
       multiple: false,
-      rowDoubleClick: true,
+      rowDoubleClick: false,
       shouldExclude: (rows) => {
         let exclude = false;
         for (let i = 0; i < rows.length; i++) {

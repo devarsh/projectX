@@ -7,7 +7,7 @@ import {
 export const taskAssignMetadata = {
   form: {
     name: "taskAssign",
-    label: "Task Assignment",
+    label: "Assign Task",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -90,15 +90,6 @@ export const taskAssignMetadata = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "textField" },
-      name: "subject",
-      label: "Subject",
-      placeholder: "Subject",
-      required: true,
-      validate: "getValidateValue",
-      GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
       render: { componentType: "select" },
       name: "type",
       label: "Type",
@@ -118,6 +109,23 @@ export const taskAssignMetadata = {
       required: true,
       validate: "getValidateValue",
       GridProps: { xs: 12, md: 3, sm: 3 },
+      dependentFields: ["type"],
+      shouldExclude: (value, dependentFields) => {
+        console.log(dependentFields?.type?.value === "01");
+        if (dependentFields?.type?.value === "01") {
+          return false;
+        }
+        return true;
+      },
+    },
+    {
+      render: { componentType: "textField" },
+      name: "subject",
+      label: "Subject",
+      placeholder: "Subject",
+      required: true,
+      validate: "getValidateValue",
+      GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
       render: { componentType: "datePicker" },
@@ -131,7 +139,7 @@ export const taskAssignMetadata = {
     {
       render: { componentType: "autocomplete" },
       name: "worker",
-      label: "Assignee",
+      label: "Assign To",
       defaultValue: "00",
       required: true,
       dependentFields: ["taskFor", "refID"],
@@ -142,12 +150,9 @@ export const taskAssignMetadata = {
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
-      render: { componentType: "select" },
+      render: { componentType: "hidden" },
       name: "status",
-      label: "Status",
-      placeholder: "Status",
-      options: "getTaskStatus",
-      defaultValue: "00",
+      defaultValue: "01",
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
@@ -158,7 +163,7 @@ export const taskAssignMetadata = {
       rowsMax: 4,
       rows: 3,
       placeholder: "Description",
-      GridProps: { xs: 12, md: 6, sm: 6 },
+      GridProps: { xs: 12, md: 12, sm: 12 },
     },
   ],
 };

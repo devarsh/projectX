@@ -48,6 +48,10 @@ export const Card = ({
     setCurrentAction(null);
   };
 
+  let stageStr: any = [stageName, subStageName];
+  stageStr = stageStr.filter((one) => Boolean(one));
+  stageStr = stageStr.join("/");
+
   return (
     <Fragment>
       <Typography variant="h6" align="left">
@@ -67,9 +71,7 @@ export const Card = ({
         align="left"
         color="textSecondary"
       >
-        {stageName}
-        {"/"}
-        {subStageName}
+        {stageStr}
       </Typography>
 
       {columnName !== "selection" ? (

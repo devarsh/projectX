@@ -6,7 +6,7 @@ import {
 export const taskEditViewMetadata = {
   form: {
     name: "taskAssign",
-    label: "Task Assignment",
+    label: "Assign Task",
     resetFieldOnUmnount: false,
     validationRun: "onBlur",
     render: {
@@ -51,7 +51,6 @@ export const taskEditViewMetadata = {
       name: "taskFor",
       label: "Task For",
       placeholder: "Task For",
-      disableCaching: true,
       defaultValue: "00",
       isReadOnly: true,
       options: "getTaskList",
@@ -150,7 +149,7 @@ export const taskEditViewMetadata = {
       rowsMax: 4,
       rows: 3,
       placeholder: "Description",
-      GridProps: { xs: 12, md: 6, sm: 6 },
+      GridProps: { xs: 12, md: 12, sm: 12 },
     },
   ],
 };

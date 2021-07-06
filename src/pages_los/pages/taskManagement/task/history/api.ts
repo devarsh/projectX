@@ -1,7 +1,4 @@
 import { LOSSDK } from "registry/fns/los";
-import { historyMetaData } from "./grid";
-
-export const getTaskHistoryGridMetaData = () => historyMetaData;
 
 export const getTaskHistoryGridData = async ({ moduleType, taskID }) => {
   const { data, status } = await LOSSDK.internalFetcher(
