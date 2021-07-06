@@ -6,11 +6,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
+import { useQuery, useMutation } from "react-query";
 import { queryClient } from "cache";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
 import * as API from "./api";
-import { useQueries, useMutation } from "react-query";
+import { taskEditViewMetadata } from "../metadata/form";
 
 interface updateTaskDataType {
   data: object;
@@ -47,7 +48,6 @@ export const TaskViewEdit: FC<{
   readOnly = false,
   taskID,
   inquiryFor,
-  disableCache,
   setEditFormStateFromInitValues,
   refID,
 }) => {
@@ -101,79 +101,38 @@ export const TaskViewEdit: FC<{
   useEffect(() => {
     return () => {
       queryClient.removeQueries(["getTaskFormData", moduleType, taskID]);
-      queryClient.removeQueries(["getTaskFormMetaData", "view", taskID]);
-      queryClient.removeQueries(["getTaskFormMetaData", "edit", taskID]);
     };
   }, [taskID]);
 
-  const result = useQueries([
-    disableCache
-      ? {
-          queryKey: ["getTaskFormData", moduleType, taskID],
-          queryFn: () => API.getTaskFormData({ moduleType })(taskID),
-          cacheTime: 0,
-        }
-      : {
-          queryKey: ["getTaskFormData", moduleType, taskID],
-          queryFn: () => API.getTaskFormData({ moduleType })(taskID),
-        },
-    {
-      queryKey: ["getTaskFormMetaData", "view", taskID],
-      queryFn: () => API.getMetadata(),
-    },
-    {
-      queryKey: ["getTaskFormMetaData", "edit", taskID],
-      queryFn: () => API.getMetadata(),
-    },
-  ]);
+  const result = useQuery(["getTaskFormData", moduleType, taskID], () =>
+    API.getTaskFormData({ moduleType })(taskID)
+  );
 
-  const dataUniqueKey = `${result[0].dataUpdatedAt}`;
-  const loading =
-    result[0].isLoading ||
-    result[1].isLoading ||
-    result[2].isLoading ||
-    result[0].isFetching ||
-    result[1].isFetching ||
-    result[2].isFetching;
-  let isError = result[0].isError || result[1].isError || result[2].isError;
+  const dataUniqueKey = `${result.dataUpdatedAt}`;
+  const loading = result.isLoading || result.isFetching;
+  let isError = result.isError;
   //@ts-ignore
-  let errorMsg = `${result[0].error?.error_msg} ${
-    //@ts-ignore
-    result[1].error?.error_msg
-  } ${
-    //@ts-ignore
-    result[2].error?.error_msg
-  }`;
+  let errorMsg = `${result.error?.error_msg}`;
   errorMsg = Boolean(errorMsg.trim()) ? errorMsg : "Unknown error occured";
 
-  let formEditData = result[0].data;
+  let formEditData = result.data;
 
-  let editMetaData: MetaDataType = {} as MetaDataType;
-  let viewMetaData: MetaDataType = {} as MetaDataType;
+  let editViewMetaData: MetaDataType = {} as MetaDataType;
 
-  if (result[1].isSuccess && result[2].isSuccess && result[0].isSuccess) {
+  if (result.isSuccess) {
     const formStateFromInitValues =
       typeof setEditFormStateFromInitValues === "function"
-        ? setEditFormStateFromInitValues(result[0].data)
+        ? setEditFormStateFromInitValues(result.data)
         : undefined;
-    viewMetaData = cloneDeep(result[1].data) as MetaDataType;
-    editMetaData = cloneDeep(result[2].data) as MetaDataType;
+    editViewMetaData = cloneDeep(taskEditViewMetadata) as MetaDataType;
 
-    editMetaData.form.formState = {
-      formCode: editMetaData.form.name,
+    editViewMetaData.form.formState = {
+      formCode: editViewMetaData.form.name,
       ...formStateFromInitValues,
     };
-    editMetaData.form.name = `${editMetaData.form.name}-edit`;
-    if (editMetaData?.form?.render?.renderType === "stepper") {
-      editMetaData.form.render.renderType = "tabs";
-    }
-    viewMetaData.form.formState = {
-      formCode: viewMetaData.form.name,
-      ...formStateFromInitValues,
-    };
-    viewMetaData.form.name = `${viewMetaData.form.name}-view`;
-    if (viewMetaData?.form?.render?.renderType === "stepper") {
-      viewMetaData.form.render.renderType = "tabs";
+    editViewMetaData.form.name = `${editViewMetaData.form.name}-edit`;
+    if (editViewMetaData?.form?.render?.renderType === "stepper") {
+      editViewMetaData.form.render.renderType = "tabs";
     }
   }
 
@@ -202,7 +161,7 @@ export const TaskViewEdit: FC<{
   ) : formMode === "view" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${formMode}`}
-      metaData={viewMetaData as MetaDataType}
+      metaData={editViewMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore
@@ -218,7 +177,7 @@ export const TaskViewEdit: FC<{
   ) : formMode === "edit" ? (
     <FormWrapper
       key={`${dataUniqueKey}-${formMode}`}
-      metaData={editMetaData as MetaDataType}
+      metaData={editViewMetaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
       onSubmitHandler={onSubmitHandler}
       //@ts-ignore

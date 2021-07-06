@@ -5,11 +5,6 @@ import { useMutation } from "react-query";
 import { useSnackbar } from "notistack";
 import { taskAssignMetadata } from "../metadata/form";
 import * as API from "./api";
-import {
-  AssignTaskAPIContext,
-  AssignTaskAPIProvider,
-  generateAssignTaskAPIContext,
-} from "./context";
 import { SubmitFnType } from "packages/form";
 
 interface TaskAssignFormDataFnType {
@@ -86,21 +81,5 @@ export const AssignTask = ({ moduleType, isDataChangedRef, closeDialog }) => {
         );
       }}
     </FormWrapper>
-  );
-};
-
-export const AssignTaskWrapper = ({
-  moduleType,
-  isDataChangedRef,
-  closeDialog,
-}) => {
-  return (
-    <AssignTaskAPIProvider {...generateAssignTaskAPIContext({ moduleType })}>
-      <AssignTask
-        moduleType={moduleType}
-        isDataChangedRef={isDataChangedRef}
-        closeDialog={closeDialog}
-      />
-    </AssignTaskAPIProvider>
   );
 };

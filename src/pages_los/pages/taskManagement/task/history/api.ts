@@ -1,5 +1,5 @@
 import { LOSSDK } from "registry/fns/los";
-import { historyMetaData } from "pages_los/pages/taskManagement/task/history/grid";
+import { historyMetaData } from "./grid";
 
 export const getTaskHistoryGridMetaData = () => historyMetaData;
 

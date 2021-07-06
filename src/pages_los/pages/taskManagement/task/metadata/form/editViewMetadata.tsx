@@ -2,9 +2,8 @@ import {
   showTaskManagementFieldForInquiryID,
   showTaskManagementFieldForLeadID,
   postValidationSetRefID,
-  getWorkerListForTaskManag,
 } from "../../../fns";
-export const taskAssignmentMetadata = {
+export const taskEditViewMetadata = {
   form: {
     name: "taskAssign",
     label: "Task Assignment",

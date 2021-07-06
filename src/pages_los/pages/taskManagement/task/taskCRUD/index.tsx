@@ -1,2 +1,2 @@
-export { AssignTaskWrapper as AssignTask } from "./assignTask";
+export { AssignTask } from "./assignTask";
 export * from "./viewEditTask";
