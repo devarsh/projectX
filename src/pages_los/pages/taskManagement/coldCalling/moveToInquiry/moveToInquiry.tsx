@@ -1,16 +1,30 @@
-import { useEffect, FC } from "react";
+import { FC, useEffect } from "react";
 import loaderGif from "assets/images/loader.gif";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined";
-import { useQuery } from "react-query";
-import { InitialValuesType } from "packages/form";
+import { useMutation, useQuery } from "react-query";
+import { InitialValuesType, SubmitFnType } from "packages/form";
+import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
-import { queryClient } from "cache";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { moveToInquiryMetaData } from "./metadata";
 import * as API from "../coldCallingCRUD/api";
+import * as API2 from "./api";
+
+interface MoveToInquiryFnDataType {
+  data: object;
+  displayData?: object;
+  endSubmit?: any;
+  setFieldError?: any;
+}
+
+const moveToInquiryDataFnWrapper = (moveToInquiryFn) => async ({
+  data,
+}: MoveToInquiryFnDataType) => {
+  return moveToInquiryFn(data);
+};
 
 export const MoveToInquiry: FC<{
   moduleType: any;
@@ -20,23 +34,51 @@ export const MoveToInquiry: FC<{
   setEditFormStateFromInitValues?: any;
   readOnly?: boolean;
   disableCache?: boolean;
-  refID: any;
+  tran_cd: any;
 }> = ({
   moduleType,
   isDataChangedRef,
   closeDialog,
   defaultView,
   setEditFormStateFromInitValues,
-  refID,
+  tran_cd,
 }) => {
-  useEffect(() => {
-    return () => {
-      queryClient.removeQueries(["getColdCallingFormData", moduleType, refID]);
-    };
-  }, [refID]);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const result = useQuery(["getColdCallingFormData", moduleType, refID], () =>
-    API.getColdCallingFormData({ moduleType })(refID)
+  const mutation = useMutation(
+    moveToInquiryDataFnWrapper(
+      API2.moveColdCallingToInquiry({ moduleType, tranCD: tran_cd })
+    ),
+    {
+      onError: (error: any, { endSubmit }) => {
+        let errorMsg = "Unknown Error occured";
+        if (typeof error === "object") {
+          errorMsg = error?.error_msg ?? errorMsg;
+        }
+        endSubmit(false, errorMsg, error?.error_detail ?? "");
+      },
+      onSuccess: (data, { endSubmit }) => {
+        endSubmit(true, "");
+        enqueueSnackbar(`Successfully moved to Inquiry`, {
+          variant: "success",
+        });
+        isDataChangedRef.current = true;
+        closeDialog();
+      },
+    }
+  );
+
+  const onSubmitHandler: SubmitFnType = (
+    data,
+    displayData,
+    endSubmit,
+    setFieldError
+  ) => {
+    mutation.mutate({ data, displayData, endSubmit, setFieldError });
+  };
+
+  const result = useQuery(["getColdCallingFormData", moduleType, tran_cd], () =>
+    API.getColdCallingFormData({ moduleType })(tran_cd)
   );
 
   const dataUniqueKey = `${result.dataUpdatedAt}`;
@@ -47,7 +89,6 @@ export const MoveToInquiry: FC<{
   errorMsg = Boolean(errorMsg.trim()) ? errorMsg : "Unknown error occured";
 
   let formEditData = result.data;
-
   let metaData: MetaDataType = {} as MetaDataType;
 
   if (result.isSuccess) {
@@ -94,7 +135,7 @@ export const MoveToInquiry: FC<{
       key={`${dataUniqueKey}-${defaultView}`}
       metaData={metaData as MetaDataType}
       initialValues={formEditData as InitialValuesType}
-      onSubmitHandler={() => {}}
+      onSubmitHandler={onSubmitHandler}
       //@ts-ignore
       displayMode={defaultView}
       disableGroupErrorDetection={false}
@@ -103,7 +144,7 @@ export const MoveToInquiry: FC<{
       {({ isSubmitting, handleSubmit }) => (
         <>
           <Button
-            onClick={closeDialog}
+            onClick={handleSubmit}
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >

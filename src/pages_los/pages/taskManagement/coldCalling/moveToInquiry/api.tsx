@@ -15,7 +15,8 @@ export const moveToInquiry = ({ moduleType, refID }) => async (formData) => {
     }
   );
   if (status === "success") {
-    return data?.response_data;
+    const { status, ...others } = data?.response_data;
+    return { ...others, status: status };
   } else {
     throw data?.error_data;
   }
@@ -23,21 +24,21 @@ export const moveToInquiry = ({ moduleType, refID }) => async (formData) => {
 
 export const getMetadata = () => moveToInquiryMetaData;
 
-export const submitColdCallingToMoveToInquiry = (refID?: any) => async (
+export const moveColdCallingToInquiry = ({ moduleType, tranCD }: any) => async (
   formData?: any
 ) => {
   const { data, status } = await LOSSDK.internalFetcher(
-    "./inquiry/main/data/post",
+    `./${moduleType}/inquiry/data/moved`,
     {
       body: JSON.stringify({
-        request_data: { refID: refID, ...formData },
+        request_data: { tranCD: tranCD, ...formData },
         channel: "W",
       }),
     }
   );
   if (status === "success") {
-    return { status, data: data?.response_data };
+    return data?.response_data;
   } else {
-    return { status, data: data?.response_data };
+    throw data?.error_data;
   }
 };
