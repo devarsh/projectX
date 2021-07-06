@@ -21,7 +21,6 @@ registerFn("getTaskType", miscSDK.getMiscVal("TASK_TYPE"));
 registerFn("getTaskStatus", miscSDK.getMiscVal("TASK_STATUS"));
 registerFn("getRetailEmployee", miscSDK.getRetailEmployementCode);
 registerFn("getUnsecuredEmployee", miscSDK.getUnsecuredEmployementCode);
-// registerFn("getUnsecuredEmployee", miscSDK.getMiscVal("UNSECURED_EMPL"));
 registerFn("getSMEEmployee", miscSDK.getMiscVal("SME_EMPL"));
 registerFn("getSMEBusinessEmployee", miscSDK.getMiscVal("SME_EMPL_01"));
 registerFn("getLoanPurpose", miscSDK.getMiscVal("LOAN_PURPOSE"));
@@ -74,6 +73,10 @@ registerFn("getWorkType", miscSDK.getMiscVal("WORK_TYPE"));
 registerFn("getTaskList", miscSDK.getMiscVal("TASK_FOR"));
 registerFn("getBanksForBankBranchMaster", miscSDK.getMiscVal("BANK_MST_LIST"));
 registerFn("getBankStages", miscSDK.getMiscVal("BANK_STAGE"));
+
+registerFn("getProcessNameList", miscSDK.getMiscVal("CC_PROCESS_NAME"));
+registerFn("getColdCallingStatus", miscSDK.getMiscVal("CC_STATUS"));
+registerFn("getFollowupType", miscSDK.getMiscVal("CC_FOLLOW_UP"));
 
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);

@@ -1,4 +1,5 @@
 import { useState, useRef, Fragment } from "react";
+import { ClearCacheProvider } from "cache";
 import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
 import { InvalidAction } from "pages_los/common/invalidAction";
@@ -6,7 +7,6 @@ import {
   ServerGrid,
   ServerGridContextProvider,
 } from "pages_los/common/serverGrid";
-import { ClearCacheProvider } from "cache";
 import { serverGridContextGenerator } from "../context";
 import {
   AddColdCalling,
@@ -18,7 +18,7 @@ import { MoveToInquiry } from "./moveToInquiry";
 const actions: ActionTypes[] = [
   {
     actionName: "AddColdCalling",
-    actionLabel: "Add Cold Calling",
+    actionLabel: "Add New",
     multiple: undefined,
     rowDoubleClick: false,
     alwaysAvailable: true,
@@ -38,7 +38,7 @@ const actions: ActionTypes[] = [
   {
     actionName: "delete",
     actionLabel: "Delete",
-    multiple: false,
+    multiple: true,
     rowDoubleClick: false,
   },
 ];
@@ -47,6 +47,7 @@ export const ColdCalling = ({ gridCode, actions }) => {
   const [currentAction, setCurrentAction] = useState<null | any>(null);
   const isDataChangedRef = useRef(false);
   const myGridRef = useRef<any>(null);
+
   const handleDialogClose = () => {
     setCurrentAction(null);
     if (isDataChangedRef.current === true) {
@@ -70,9 +71,8 @@ export const ColdCalling = ({ gridCode, actions }) => {
         fullScreen={
           ["moveToInquiry"].indexOf(currentAction?.name) >= 0 ? true : false
         }
-        open={currentAction !== null}
-        onClose={handleDialogClose}
-        maxWidth="md"
+        open={Boolean(currentAction)}
+        maxWidth="lg"
       >
         <ClearCacheProvider>
           {(currentAction?.name ?? "") === "AddColdCalling" ? (
@@ -97,7 +97,7 @@ export const ColdCalling = ({ gridCode, actions }) => {
           ) : (currentAction?.name ?? "") === "delete" ? (
             <Fragment>
               <ColdCallingDelete
-                tran_cd={currentAction?.rows[0].id}
+                tran_cd={currentAction?.rows.map((one) => one.id)}
                 moduleType="cold-calling"
                 isDataChangedRef={isDataChangedRef}
                 closeDialog={handleDialogClose}
@@ -107,7 +107,7 @@ export const ColdCalling = ({ gridCode, actions }) => {
             <Fragment>
               <MoveToInquiry
                 defaultView="edit"
-                refID={currentAction?.rows[0].id}
+                tran_cd={currentAction?.rows[0].id}
                 moduleType="cold-calling"
                 isDataChangedRef={isDataChangedRef}
                 closeDialog={handleDialogClose}

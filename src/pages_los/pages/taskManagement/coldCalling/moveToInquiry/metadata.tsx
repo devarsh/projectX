@@ -14,7 +14,6 @@ export const moveToInquiryMetaData: MetaDataType = {
     render: {
       ordering: "auto",
       renderType: "simple",
-      // groups: { "0": "Personal Details", "1": "Contact Details" },
       gridConfig: {
         item: {
           xs: 12,
@@ -257,10 +256,6 @@ export const moveToInquiryMetaData: MetaDataType = {
       format: "dd/MM/yyyy",
       required: true,
       GridProps: { xs: 12, md: 3, sm: 3 },
-      schemaValidation: {
-        type: "string",
-        rules: [{ name: "required", params: ["This Field is required."] }],
-      },
     },
     {
       render: {
@@ -271,10 +266,15 @@ export const moveToInquiryMetaData: MetaDataType = {
       name: "loanAmount",
       label: "Desired Loan Amount",
       placeholder: "Desired Loan Amount",
+      required: true,
       GridProps: {
         xs: 12,
         md: 3,
         sm: 3,
+      },
+      schemaValidation: {
+        type: "string",
+        rules: [{ name: "required", params: ["This Field is required."] }],
       },
     },
     {
@@ -333,6 +333,7 @@ export const moveToInquiryMetaData: MetaDataType = {
       dependentFields: ["categoryID", "productID"],
       validate: "getValidateValue",
       disableCaching: true,
+      required: true,
       defaultValue: "00",
       GridProps: {
         xs: 12,
@@ -474,14 +475,14 @@ export const moveToInquiryMetaData: MetaDataType = {
     },
     {
       render: {
-        componentType: "spacer",
-        group: 1,
+        componentType: "hidden",
+        group: 0,
       },
-      name: "spacer",
+      name: "status",
       GridProps: {
         xs: 12,
-        md: 12,
-        sm: 12,
+        md: 3,
+        sm: 3,
       },
     },
   ],

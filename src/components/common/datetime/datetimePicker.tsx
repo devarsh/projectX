@@ -1,9 +1,7 @@
 import { FC, useRef, useEffect } from "react";
 import { useField, UseFieldHookProps } from "packages/form";
-import {
-  KeyboardDateTimePicker,
-  KeyboardDateTimePickerProps,
-} from "@material-ui/pickers";
+import { KeyboardDateTimePickerProps } from "@material-ui/pickers";
+import { KeyboardDateTimePicker } from "components/styledComponent/datetime";
 import Grid, { GridProps } from "@material-ui/core/Grid";
 
 import { Omit, Merge } from "../types";
@@ -104,6 +102,7 @@ export const MyDateTimePicker: FC<MyDateTimePickerAllProps> = ({
       onBlur={handleBlur}
       disabled={isSubmitting}
       readOnly={readOnly}
+      InputLabelProps={{ shrink: true }}
       InputProps={{
         readOnly: readOnly,
         ...InputProps,
