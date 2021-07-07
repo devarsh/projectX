@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "react-query";
 import { InitialValuesType, SubmitFnType } from "packages/form";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
+import { queryClient } from "cache";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { moveToInquiryMetaData } from "./metadata";
 import * as API from "../coldCallingCRUD/api";
@@ -44,6 +45,26 @@ export const MoveToInquiry: FC<{
   tran_cd,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries([
+        "getColdCallingFormData",
+        moduleType,
+        tran_cd,
+      ]);
+      queryClient.removeQueries([
+        "getColdCallingFormMetaData",
+        "view",
+        tran_cd,
+      ]);
+      queryClient.removeQueries([
+        "getColdCallingFormMetaData",
+        "edit",
+        tran_cd,
+      ]);
+    };
+  }, [tran_cd]);
 
   const mutation = useMutation(
     moveToInquiryDataFnWrapper(
