@@ -53,16 +53,7 @@ export const MoveToInquiry: FC<{
         moduleType,
         tran_cd,
       ]);
-      queryClient.removeQueries([
-        "getColdCallingFormMetaData",
-        "view",
-        tran_cd,
-      ]);
-      queryClient.removeQueries([
-        "getColdCallingFormMetaData",
-        "edit",
-        tran_cd,
-      ]);
+      queryClient.removeQueries(["getColdCallingFormMetaData", tran_cd]);
     };
   }, [tran_cd]);
 
