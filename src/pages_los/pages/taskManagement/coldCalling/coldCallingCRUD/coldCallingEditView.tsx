@@ -73,7 +73,7 @@ export const ColdCallingViewEdit: FC<{
           tran_cd,
         ]);
         endSubmit(true, "");
-        enqueueSnackbar("Update Successfully", {
+        enqueueSnackbar("Cold Calling Update Successfully", {
           variant: "success",
         });
         isDataChangedRef.current = true;

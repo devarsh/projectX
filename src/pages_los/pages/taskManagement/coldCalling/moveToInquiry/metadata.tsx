@@ -69,7 +69,6 @@ export const moveToInquiryMetaData: MetaDataType = {
       options: "getMainProductList",
       validate: "getValidateValue",
       required: true,
-      disableCaching: true,
       GridProps: {
         xs: 3,
         md: 3,
