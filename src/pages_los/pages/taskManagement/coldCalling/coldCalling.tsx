@@ -73,7 +73,7 @@ export const ColdCalling = ({ gridCode, actions }) => {
           ["moveToInquiry"].indexOf(currentAction?.name) >= 0 ? true : false
         }
         open={Boolean(currentAction)}
-        maxWidth="md"
+        maxWidth="lg"
       >
         <ClearCacheProvider>
           <ColdCallingActions
