@@ -1,5 +1,5 @@
-import { useState, useRef, Fragment } from "react";
-import { ClearCacheProvider } from "cache";
+import { useState, useRef, Fragment, useContext, useEffect } from "react";
+import { ClearCacheProvider, ClearCacheContext, queryClient } from "cache";
 import { ActionTypes } from "components/dataTable";
 import Dialog from "@material-ui/core/Dialog";
 import { InvalidAction } from "pages_los/common/invalidAction";
@@ -77,50 +77,71 @@ export const ColdCalling = ({ gridCode, actions }) => {
         PaperProps={{ style: { height: "100%" } }}
       >
         <ClearCacheProvider>
-          {(currentAction?.name ?? "") === "AddColdCalling" ? (
-            <Fragment>
-              <AddColdCalling
-                moduleType="cold-calling"
-                isDataChangedRef={isDataChangedRef}
-                closeDialog={handleDialogClose}
-              />
-            </Fragment>
-          ) : (currentAction?.name ?? "") === "viewDetails" ? (
-            <Fragment>
-              <ColdCallingViewEdit
-                tran_cd={currentAction?.rows[0].id}
-                moduleType="cold-calling"
-                isDataChangedRef={isDataChangedRef}
-                closeDialog={handleDialogClose}
-                readOnly={false}
-                disableCache={false}
-              />
-            </Fragment>
-          ) : (currentAction?.name ?? "") === "delete" ? (
-            <Fragment>
-              <ColdCallingDelete
-                tran_cd={currentAction?.rows.map((one) => one.id)}
-                moduleType="cold-calling"
-                isDataChangedRef={isDataChangedRef}
-                closeDialog={handleDialogClose}
-              />
-            </Fragment>
-          ) : (currentAction?.name ?? "") === "moveToInquiry" ? (
-            <Fragment>
-              <MoveToInquiry
-                defaultView="edit"
-                tran_cd={currentAction?.rows[0].id}
-                moduleType="cold-calling"
-                isDataChangedRef={isDataChangedRef}
-                closeDialog={handleDialogClose}
-              />
-            </Fragment>
-          ) : (
-            <InvalidAction closeDialog={handleDialogClose} />
-          )}
+          <ColdCallingActions
+            currentAction={currentAction}
+            isDataChangedRef={isDataChangedRef}
+            handleDialogClose={handleDialogClose}
+          />
         </ClearCacheProvider>
       </Dialog>
     </Fragment>
+  );
+};
+
+const ColdCallingActions = ({
+  currentAction,
+  isDataChangedRef,
+  handleDialogClose,
+}) => {
+  const removeCache = useContext(ClearCacheContext);
+  useEffect(() => {
+    return () => {
+      let entries = removeCache?.getEntries() as any[];
+      entries.forEach((one) => {
+        queryClient.removeQueries(one);
+      });
+    };
+  }, [removeCache]);
+  return (currentAction?.name ?? "") === "AddColdCalling" ? (
+    <Fragment>
+      <AddColdCalling
+        moduleType="cold-calling"
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={handleDialogClose}
+      />
+    </Fragment>
+  ) : (currentAction?.name ?? "") === "viewDetails" ? (
+    <Fragment>
+      <ColdCallingViewEdit
+        tran_cd={currentAction?.rows[0].id}
+        moduleType="cold-calling"
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={handleDialogClose}
+        readOnly={false}
+        disableCache={false}
+      />
+    </Fragment>
+  ) : (currentAction?.name ?? "") === "delete" ? (
+    <Fragment>
+      <ColdCallingDelete
+        tran_cd={currentAction?.rows.map((one) => one.id)}
+        moduleType="cold-calling"
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={handleDialogClose}
+      />
+    </Fragment>
+  ) : (currentAction?.name ?? "") === "moveToInquiry" ? (
+    <Fragment>
+      <MoveToInquiry
+        defaultView="edit"
+        tran_cd={currentAction?.rows[0].id}
+        moduleType="cold-calling"
+        isDataChangedRef={isDataChangedRef}
+        closeDialog={handleDialogClose}
+      />
+    </Fragment>
+  ) : (
+    <InvalidAction closeDialog={handleDialogClose} />
   );
 };
 

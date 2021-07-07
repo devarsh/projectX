@@ -59,9 +59,12 @@ export const MoveToInquiry: FC<{
       },
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
-        enqueueSnackbar(`Successfully moved to Inquiry`, {
-          variant: "success",
-        });
+        enqueueSnackbar(
+          `ColdCallingNo. ${tran_cd} moved to Inquiry with InquiryNo. ${data?.inquiryNo}`,
+          {
+            variant: "success",
+          }
+        );
         isDataChangedRef.current = true;
         closeDialog();
       },
