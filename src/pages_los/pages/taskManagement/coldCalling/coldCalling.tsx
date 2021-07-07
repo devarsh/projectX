@@ -12,6 +12,7 @@ import {
   AddColdCalling,
   ColdCallingViewEdit,
   ColdCallingDelete,
+  Header,
 } from "./coldCallingCRUD";
 import { MoveToInquiry } from "./moveToInquiry";
 
@@ -112,6 +113,11 @@ const ColdCallingActions = ({
     </Fragment>
   ) : (currentAction?.name ?? "") === "viewDetails" ? (
     <Fragment>
+      <Header
+        headerDetail={currentAction?.rows}
+        closeDialog={handleDialogClose}
+      />
+
       <ColdCallingViewEdit
         tran_cd={currentAction?.rows[0].id}
         moduleType="cold-calling"
@@ -132,6 +138,10 @@ const ColdCallingActions = ({
     </Fragment>
   ) : (currentAction?.name ?? "") === "moveToInquiry" ? (
     <Fragment>
+      <Header
+        headerDetail={currentAction?.rows}
+        closeDialog={handleDialogClose}
+      />
       <MoveToInquiry
         defaultView="edit"
         tran_cd={currentAction?.rows[0].id}

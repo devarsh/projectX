@@ -52,3 +52,10 @@ export const showSMEProductTypeField = async (_, dependentFields) => {
   }
   return false;
 };
+
+export const showLocationField = async (_, dependentFields) => {
+  if (!Boolean(dependentFields["pincode"].value)) {
+    return true;
+  }
+  return false;
+};

@@ -1,3 +1,5 @@
+import { showLocationField } from "../fns";
+
 export const coldCallingMetadata = {
   form: {
     name: "coldCalling",
@@ -46,6 +48,95 @@ export const coldCallingMetadata = {
       render: {
         componentType: "typography",
       },
+      name: "productDetails",
+      label: "Product Details",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "categoryID",
+      label: "Product Category",
+      placeholder: "Product Category",
+      options: "getMainProductList",
+      defaultValue: "00",
+      required: true,
+      validate: "getValidateValue",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "process",
+      label: "Process Name",
+      placeholder: "Process Name",
+      options: "getProcessNameList",
+      defaultValue: "00",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "datetimePicker",
+      },
+      name: "nextFollowupDate",
+      label: "Next Followup Date",
+      placeholder: "dd/mm/yyyy HH:MM",
+      format: "dd/MM/yyyy HH:mm",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "status",
+      label: "Status",
+      placeholder: "Status",
+      options: "getColdCallingStatus",
+      defaultValue: "00",
+      required: true,
+      validate: "getValidateValue",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "leadPriority",
+      label: "Priority",
+      placeholder: "Priority",
+      options: "getLeadPriority",
+      defaultValue: "00",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: {
+        componentType: "select",
+      },
+      name: "followupType",
+      label: "Followup Type",
+      placeholder: "Followup Type",
+      options: "getFollowupType",
+      defaultValue: "00",
+      GridProps: { xs: 12, md: 3, sm: 3 },
+    },
+    {
+      render: {
+        componentType: "typography",
+      },
       name: "personalDetails",
       label: "Personal Details",
       GridProps: {
@@ -63,7 +154,7 @@ export const coldCallingMetadata = {
       options: "getSalutation",
       defaultValue: "00",
       required: true,
-      validate: "getValidatevalue",
+      validate: "getValidateValue",
       postValidationSetCrossFieldValues: "getGenderValue",
       GridProps: {
         xs: 12,
@@ -79,7 +170,7 @@ export const coldCallingMetadata = {
       label: "First Name",
       placeholder: "First Name",
       required: true,
-      validate: "getValidatevalue",
+      validate: "getValidateValue",
       maxLength: 150,
       showMaxLength: false,
       GridProps: {
@@ -111,7 +202,7 @@ export const coldCallingMetadata = {
       label: "Last Name",
       placeholder: "Last Name",
       required: true,
-      validate: "getValidatevalue",
+      validate: "getValidateValue",
       maxLength: 150,
       showMaxLength: false,
       GridProps: {
@@ -129,7 +220,6 @@ export const coldCallingMetadata = {
       placeholder: "Gender",
       options: "getGenderList",
       isReadOnly: true,
-      validate: "getValidateValue",
       defaultValue: "00",
       GridProps: {
         xs: 12,
@@ -173,105 +263,19 @@ export const coldCallingMetadata = {
       label: "Desired Loan Amount",
       placeholder: "Desired Loan Amount",
       required: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "typography",
-      },
-      name: "productDetails",
-      label: "Product Details",
-      GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
-      },
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "categoryID",
-      label: "Product Category",
-      placeholder: "Product Category",
-      options: "getMainProductList",
-      defaultValue: "00",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "process",
-      label: "Process Name",
-      placeholder: "Process Name",
-      options: "getProcessNameList",
-      defaultValue: "00",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "datetimePicker",
-      },
-      name: "nextFollowupDate",
-      label: "Next Followup Date",
-      placeholder: "dd/mm/yyyy HH:MM",
-      format: "dd/MM/yyyy HH:mm aa",
-      GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "status",
-      label: "Status",
-      placeholder: "Status",
-      options: "getColdCallingStatus",
-      defaultValue: "00",
-      required: true,
       validate: "getValidateValue",
-      GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
-      render: {
-        componentType: "select",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
       },
-      name: "leadPriority",
-      label: "Priority",
-      placeholder: "Priority",
-      options: "getLeadPriority",
-      defaultValue: "00",
-      GridProps: { xs: 12, md: 3, sm: 3 },
-    },
-    {
-      render: {
-        componentType: "select",
-      },
-      name: "followupType",
-      label: "Followup Type",
-      placeholder: "Followup Type",
-      options: "getFollowupType",
-      defaultValue: "00",
-      GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
       render: {
         componentType: "typography",
       },
       name: "addressDetails",
-      label: "Address Details",
+      label: "Contact Details",
       GridProps: {
         xs: 12,
         md: 12,
@@ -309,12 +313,11 @@ export const coldCallingMetadata = {
     {
       render: {
         //@ts-ignore
-        componentType: "pincode",
+        componentType: "pincodeNoValidation",
       },
       name: "pincode",
       label: "Postal Code",
       placeholder: "Postal Code",
-      required: true,
       //@ts-ignore
       postValidationSetCrossFieldValues: "postValidationSetPincodeDtl",
       GridProps: {
@@ -331,14 +334,11 @@ export const coldCallingMetadata = {
       label: "Location",
       placeholder: "Location",
       dependentFields: ["pincode"],
-      required: true,
       //@ts-ignore
       options: "getPincode",
       defaultValue: "00",
-      //@ts-ignore
-      runPostValidationHookAlways: true,
-      //@ts-ignore
       postValidationSetCrossFieldValues: "postValidationSetLocationDtl",
+      shouldExclude: showLocationField,
       disableCaching: true,
       GridProps: {
         xs: 12,
@@ -354,6 +354,8 @@ export const coldCallingMetadata = {
       label: "City",
       placeholder: "City",
       isReadOnly: true,
+      dependentFields: ["pincode"],
+      shouldExclude: showLocationField,
       GridProps: {
         xs: 12,
         md: 3,
@@ -369,6 +371,8 @@ export const coldCallingMetadata = {
       label: "District",
       placeholder: "District",
       isReadOnly: true,
+      dependentFields: ["pincode"],
+      shouldExclude: showLocationField,
       GridProps: {
         xs: 12,
         md: 3,
@@ -383,6 +387,8 @@ export const coldCallingMetadata = {
       label: "State",
       placeholder: "State",
       isReadOnly: true,
+      dependentFields: ["pincode"],
+      shouldExclude: showLocationField,
       GridProps: {
         xs: 12,
         md: 3,
@@ -397,6 +403,8 @@ export const coldCallingMetadata = {
       label: "Country",
       placeholder: "Country",
       isReadOnly: true,
+      dependentFields: ["pincode"],
+      shouldExclude: showLocationField,
       GridProps: {
         xs: 12,
         md: 3,

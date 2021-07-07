@@ -151,10 +151,7 @@ export const MoveToInquiry: FC<{
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            Save
-          </Button>
-          <Button onClick={closeDialog} disabled={isSubmitting}>
-            Cancel
+            Move
           </Button>
         </>
       )}

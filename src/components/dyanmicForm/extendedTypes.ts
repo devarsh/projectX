@@ -359,4 +359,18 @@ export const extendedMetaData: ExtendedFieldMetaDataTypeOptional = {
     enableNumWords: true,
     maxLength: 10,
   },
+  pincodeNoValidation: {
+    render: {
+      componentType: "numberFormat",
+    },
+    FormatProps: {
+      format: "######",
+      isAllowed: (values) => {
+        if (values.floatValue === 0) {
+          return false;
+        }
+        return true;
+      },
+    },
+  },
 };
