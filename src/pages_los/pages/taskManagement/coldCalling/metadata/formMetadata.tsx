@@ -413,6 +413,17 @@ export const coldCallingMetadata = {
     },
     {
       render: {
+        componentType: "spacer",
+      },
+      name: "spacer",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+    {
+      render: {
         componentType: "checkbox",
       },
       name: "doNotCall",

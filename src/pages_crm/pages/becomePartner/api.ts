@@ -14,6 +14,6 @@ export const submitBecomePartnerData = async (formData?: any) => {
   if (status === "success") {
     return { status, data: data?.response_data };
   } else {
-    return { status, data: data?.response_data };
+    return { status, data: data?.error_data };
   }
 };

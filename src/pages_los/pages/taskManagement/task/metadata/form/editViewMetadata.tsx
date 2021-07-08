@@ -2,6 +2,7 @@ import {
   showTaskManagementFieldForInquiryID,
   showTaskManagementFieldForLeadID,
   postValidationSetRefID,
+  showOtherTaskTypeField,
 } from "../../../fns";
 export const taskEditViewMetadata = {
   form: {
@@ -121,6 +122,8 @@ export const taskEditViewMetadata = {
       isReadOnly: true,
       validate: "getValidateValue",
       GridProps: { xs: 12, md: 3, sm: 3 },
+      dependentFields: ["type"],
+      shouldExclude: showOtherTaskTypeField,
     },
     {
       render: { componentType: "datePicker" },

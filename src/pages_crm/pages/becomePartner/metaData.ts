@@ -89,7 +89,7 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Salutation",
       placeholder: "Select Salutation",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
       GridProps: {
         xs: 12,
         md: 3,
@@ -237,11 +237,11 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Residence Pincode",
       placeholder: "Residence pincode",
       required: true,
-      defaultValue: "",
+      defaultValue: "00",
       validate: "getValidateValue",
       runPostValidationHookAlways: true,
       //@ts-ignore
-      postValidationSetCrossFieldValues: "getPincodeDtl",
+      postValidationSetCrossFieldValues: "postValidationSetPincodeDtl",
       GridProps: {
         xs: 12,
         md: 3,
@@ -255,12 +255,15 @@ export const becomePartnerMetaData: MetaDataType = {
       name: "location",
       label: "Location",
       placeholder: "Location",
+      dependentFields: ["pincode"],
       required: true,
-      defaultValue: "0",
-      runPostValidationHookAlways: true,
       validate: "getValidateValue",
       //@ts-ignore
-      postValidationSetCrossFieldValues: "getLocationDtl",
+      options: "getPincode",
+      defaultValue: "00",
+      //@ts-ignore
+      postValidationSetCrossFieldValues: "postValidationSetLocationDtl",
+      disableCaching: true,
       GridProps: {
         xs: 12,
         md: 3,
@@ -521,7 +524,7 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Bank Account Type",
       placeholder: "A/C type",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
       //@ts-ignore
       options: "getAccountType",
       validate: "getValidateValue",
@@ -557,7 +560,7 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Education Qualification",
       placeholder: "Education qualification",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
       //@ts-ignore
       options: "getEducationDtl",
       validate: "getValidateValue",
@@ -578,7 +581,7 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Select Channel Type",
       placeholder: "Select channel type",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
       //@ts-ignore
       options: "getChannelType",
       validate: "getValidateValue",
@@ -597,7 +600,7 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Primary Business Interest",
       placeholder: "Primary business interest",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
       multiple: true,
       showCheckbox: true,
       //@ts-ignore
@@ -617,7 +620,7 @@ export const becomePartnerMetaData: MetaDataType = {
       name: "nominee_flag",
       label: "Do you want to add Nominee Details",
       placeholder: "Add nominee",
-      defaultValue: "0",
+      defaultValue: "00",
       GridProps: {
         xs: 12,
         md: 3,
@@ -676,7 +679,7 @@ export const becomePartnerMetaData: MetaDataType = {
       label: "Relationship",
       placeholder: "relationship with nominee",
       required: true,
-      defaultValue: "0",
+      defaultValue: "00",
       GridProps: {
         xs: 12,
         md: 3,
