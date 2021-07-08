@@ -69,7 +69,6 @@ export const moveToInquiryMetaData: MetaDataType = {
       options: "getMainProductList",
       validate: "getValidateValue",
       required: true,
-      disableCaching: true,
       GridProps: {
         xs: 3,
         md: 3,
@@ -174,6 +173,8 @@ export const moveToInquiryMetaData: MetaDataType = {
       defaultValue: "00",
       //@ts-ignore
       postValidationSetCrossFieldValues: "getGenderValue",
+      required: true,
+      validate: "getValidateValue",
       GridProps: {
         xs: 12,
         md: 3,
@@ -189,6 +190,9 @@ export const moveToInquiryMetaData: MetaDataType = {
       label: "First Name",
       placeholder: "First Name",
       maxLength: 150,
+      required: true,
+      validate: "getValidateValue",
+      showMaxLength: false,
       GridProps: {
         xs: 12,
         md: 3,
@@ -204,6 +208,7 @@ export const moveToInquiryMetaData: MetaDataType = {
       label: "Middle Name",
       placeholder: "Middle Name",
       maxLength: 150,
+      showMaxLength: false,
       GridProps: {
         xs: 12,
         md: 3,
@@ -219,6 +224,9 @@ export const moveToInquiryMetaData: MetaDataType = {
       label: "Last Name",
       placeholder: "Last Name",
       maxLength: 150,
+      required: true,
+      validate: "getValidateValue",
+      showMaxLength: false,
       GridProps: {
         xs: 12,
         md: 3,
@@ -236,7 +244,6 @@ export const moveToInquiryMetaData: MetaDataType = {
       //@ts-ignore
       options: "getGenderList",
       isReadOnly: true,
-      validate: "getValidateValue",
       defaultValue: "00",
       GridProps: {
         xs: 12,
@@ -314,6 +321,8 @@ export const moveToInquiryMetaData: MetaDataType = {
       type: "email",
       label: "Email",
       placeholder: "Email",
+      required: true,
+      validate: "getValidateValue",
       GridProps: {
         xs: 12,
         md: 3,

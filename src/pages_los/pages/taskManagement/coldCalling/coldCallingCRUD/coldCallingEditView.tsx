@@ -73,7 +73,7 @@ export const ColdCallingViewEdit: FC<{
           tran_cd,
         ]);
         endSubmit(true, "");
-        enqueueSnackbar("Update Successfully", {
+        enqueueSnackbar("Cold Calling Update Successfully", {
           variant: "success",
         });
         isDataChangedRef.current = true;
@@ -171,9 +171,6 @@ export const ColdCallingViewEdit: FC<{
       disableGroupExclude={true}
     >
       {!readOnly ? <Button onClick={moveToEditMode}>Edit</Button> : null}
-      {typeof closeDialog === "function" ? (
-        <Button onClick={closeDialog}>Cancel</Button>
-      ) : null}
     </FormWrapper>
   ) : formMode === "edit" ? (
     <FormWrapper
@@ -194,9 +191,6 @@ export const ColdCallingViewEdit: FC<{
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
             Save
-          </Button>
-          <Button onClick={moveToViewMode} disabled={isSubmitting}>
-            Cancel
           </Button>
         </>
       )}

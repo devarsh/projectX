@@ -39,7 +39,7 @@ export const AddColdCalling = ({
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
         isDataChangedRef.current = true;
-        enqueueSnackbar("Added Successfully", {
+        enqueueSnackbar("ColdCalling Added Successfully", {
           variant: "success",
         });
         closeDialog();

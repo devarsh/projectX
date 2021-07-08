@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "react-query";
 import { InitialValuesType, SubmitFnType } from "packages/form";
 import { useSnackbar } from "notistack";
 import { cloneDeep } from "lodash-es";
+import { queryClient } from "cache";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { moveToInquiryMetaData } from "./metadata";
 import * as API from "../coldCallingCRUD/api";
@@ -45,6 +46,17 @@ export const MoveToInquiry: FC<{
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries([
+        "getColdCallingFormData",
+        moduleType,
+        tran_cd,
+      ]);
+      queryClient.removeQueries(["getColdCallingFormMetaData", tran_cd]);
+    };
+  }, [tran_cd]);
+
   const mutation = useMutation(
     moveToInquiryDataFnWrapper(
       API2.moveColdCallingToInquiry({ moduleType, tranCD: tran_cd })
@@ -59,9 +71,12 @@ export const MoveToInquiry: FC<{
       },
       onSuccess: (data, { endSubmit }) => {
         endSubmit(true, "");
-        enqueueSnackbar(`Successfully moved to Inquiry`, {
-          variant: "success",
-        });
+        enqueueSnackbar(
+          `ColdCallingNo. ${tran_cd} moved to Inquiry with InquiryNo. ${data?.inquiryNo}`,
+          {
+            variant: "success",
+          }
+        );
         isDataChangedRef.current = true;
         closeDialog();
       },
@@ -148,10 +163,7 @@ export const MoveToInquiry: FC<{
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            Save
-          </Button>
-          <Button onClick={closeDialog} disabled={isSubmitting}>
-            Cancel
+            Move
           </Button>
         </>
       )}
