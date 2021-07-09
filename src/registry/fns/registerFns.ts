@@ -78,6 +78,9 @@ registerFn("getProcessNameList", miscSDK.getMiscVal("CC_PROCESS_NAME"));
 registerFn("getColdCallingStatus", miscSDK.getMiscVal("CC_STATUS"));
 registerFn("getFollowupType", miscSDK.getMiscVal("CC_FOLLOW_UP"));
 
+registerFn("getEliteSeviceName", miscSDK.getMiscVal("ELITE_SERVICES"));
+registerFn("getEliteSeviceLumsumPer", miscSDK.getMiscVal("ELITE_SERV_CHRG"));
+
 registerFn("getProductType", miscSDK.getProductType);
 registerFn("getProductTypeForBank", miscSDK.getProductTypeForBank);
 registerFn("getBankSubProductType", miscSDK.getBankSubProductType);

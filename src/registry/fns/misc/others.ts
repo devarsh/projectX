@@ -62,7 +62,6 @@ export const getGenderValue = async (field) => {
 export const getYesOrNoOptions = () => {
   return new Promise((res) => {
     res([
-      { label: "Select option", value: "0" },
       { label: "Yes", value: "Y" },
       { label: "No", value: "N" },
     ]);

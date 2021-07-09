@@ -92,7 +92,7 @@ export const CorpositoryAPIInterface = ({
       <AppBar position="relative" color="secondary">
         <Toolbar>
           <Typography component="div" variant="h6">
-            Corpository API Calling Interface
+            Analysis
           </Typography>
           <div style={{ flexGrow: 1 }} />
           <Button onClick={closeDialog}>Close</Button>

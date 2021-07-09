@@ -8,20 +8,20 @@ export const MandateLeads = () => {
   //   const authCtx = useContext(AuthContext);
   //   const role = authCtx?.authState.role ?? [];
   const actions: ActionTypes[] = [
+    // {
+    //   actionName: "taskAssign",
+    //   actionLabel: "Assign Task",
+    //   multiple: false,
+    //   rowDoubleClick: false,
+    // },
+    // {
+    //   actionName: "stages",
+    //   actionLabel: "Lead Stages",
+    //   multiple: false,
+    //   rowDoubleClick: false,
+    // },
     {
-      actionName: "taskAssign",
-      actionLabel: "Assign Task",
-      multiple: false,
-      rowDoubleClick: false,
-    },
-    {
-      actionName: "stages",
-      actionLabel: "Lead Stages",
-      multiple: false,
-      rowDoubleClick: false,
-    },
-    {
-      actionName: "mandate",
+      actionName: "viewMandate",
       actionLabel: "Mandate",
       multiple: false,
       rowDoubleClick: true,
