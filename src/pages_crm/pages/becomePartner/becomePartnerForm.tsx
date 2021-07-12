@@ -1,46 +1,56 @@
-import { memo, Fragment, FC } from "react";
+import { FC } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 import { useNavigate } from "react-router-dom";
 import FormWrapper, { MetaDataType } from "components/dyanmicForm";
 import { InitialValuesType } from "packages/form";
 import { becomePartnerMetaData } from "./metaData";
 import * as API from "./api";
 
-const MemoizedFormWrapper = memo(FormWrapper);
-
 interface BecomePartnerFormProps {
   metaData: MetaDataType;
   initialValues?: InitialValuesType;
 }
 
-const BecomePartnerForm: FC<BecomePartnerFormProps> = ({
-  metaData,
-  initialValues,
-}) => {
+const BecomePartnerForm: FC<BecomePartnerFormProps> = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler = async (values, _, submitEnd) => {
-    const data = await API.submitBecomePartnerData(values);
+    const data: any = await API.submitBecomePartnerData(values);
     if (data.status === "success") {
       submitEnd(true);
       navigate("./thankyou");
     } else {
-      //Todo: Need to set server error received in API
-      submitEnd(false, "Error submitting form");
+      let errorMsg = data?.data?.error_msg ?? "Unknown Error occured";
+      submitEnd(false, errorMsg);
     }
   };
-  const result = /*!isMetaDataValid(metaData)*/ !true ? (
-    <span>Error loading form</span>
-  ) : (
-    <Fragment>
-      <MemoizedFormWrapper
-        metaData={metaData}
-        initialValues={initialValues}
-        onSubmitHandler={onSubmitHandler}
-      />
-    </Fragment>
+  return (
+    <FormWrapper
+      key="becomePartner"
+      metaData={becomePartnerMetaData as MetaDataType}
+      initialValues={""}
+      onSubmitHandler={onSubmitHandler}
+      displayMode={"new"}
+      disableGroupErrorDetection={true}
+      disableGroupExclude={true}
+      hideDisplayModeInTitle={true}
+    >
+      {({ isSubmitting, handleSubmit }) => {
+        return (
+          <>
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
+            >
+              Save
+            </Button>
+          </>
+        );
+      }}
+    </FormWrapper>
   );
-
-  return result;
 };
 
 export const BecomePartnerFormWrapper = () => {

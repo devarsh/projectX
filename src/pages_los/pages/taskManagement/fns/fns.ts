@@ -17,6 +17,13 @@ export const showTaskManagementFieldForInquiryID = async (
   return true;
 };
 
+export const showOtherTaskTypeField = async (_, dependentFields) => {
+  if (dependentFields?.type?.value === "01") {
+    return false;
+  }
+  return true;
+};
+
 export const postValidationSetRefID = async (fieldData) => {
   const refID = fieldData.incomingMessage?.refID;
   return {

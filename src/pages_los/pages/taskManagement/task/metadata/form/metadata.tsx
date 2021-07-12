@@ -3,6 +3,7 @@ import {
   showTaskManagementFieldForLeadID,
   postValidationSetRefID,
   getWorkerListForTaskManag,
+  showOtherTaskTypeField,
 } from "../../../fns";
 export const taskAssignMetadata = {
   form: {
@@ -110,13 +111,7 @@ export const taskAssignMetadata = {
       validate: "getValidateValue",
       GridProps: { xs: 12, md: 3, sm: 3 },
       dependentFields: ["type"],
-      shouldExclude: (value, dependentFields) => {
-        console.log(dependentFields?.type?.value === "01");
-        if (dependentFields?.type?.value === "01") {
-          return false;
-        }
-        return true;
-      },
+      shouldExclude: showOtherTaskTypeField,
     },
     {
       render: { componentType: "textField" },

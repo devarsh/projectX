@@ -111,11 +111,14 @@ export const LeadGrid = ({ gridCode, actions }) => {
               moduleType="lead"
               refID={currentAction?.rows[0].id}
             />
-          ) : (currentAction?.name ?? "") === "mandate" ? (
+          ) : (currentAction?.name ?? "") === "viewMandate" ? (
             <Mandate
               key={currentAction?.rows[0].id}
               moduleType="lead"
+              productType="mandate"
               refID={currentAction?.rows[0].id}
+              isDataChangedRef={isDataEditedRef}
+              closeDialog={handleDialogClose}
             />
           ) : (currentAction?.name ?? "") === "sanction" ? (
             <Sanction

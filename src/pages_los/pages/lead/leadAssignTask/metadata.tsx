@@ -2,6 +2,7 @@ import {
   showTaskManagementFieldForLeadID,
   postValidationSetRefID,
   getWorkerListForTaskManag,
+  showOtherTaskTypeField,
 } from "pages_los/pages/taskManagement/fns";
 export const leadTaskAssignMetadata = {
   form: {
@@ -102,6 +103,8 @@ export const leadTaskAssignMetadata = {
       required: true,
       validate: "getValidateValue",
       GridProps: { xs: 12, md: 3, sm: 3 },
+      dependentFields: ["type"],
+      shouldExclude: showOtherTaskTypeField,
     },
     {
       render: { componentType: "datePicker" },
@@ -110,12 +113,19 @@ export const leadTaskAssignMetadata = {
       format: "dd/MM/yyyy",
       placeholder: "DD/MM/YYYY",
       required: true,
+      schemaValidation: {
+        type: "date",
+        rules: [
+          { name: "typeError", params: ["Must be a valid date"] },
+          { name: "required", params: ["This Field is required"] },
+        ],
+      },
       GridProps: { xs: 12, md: 3, sm: 3 },
     },
     {
       render: { componentType: "autocomplete" },
       name: "worker",
-      label: "Assigned",
+      label: "Assign To",
       defaultValue: "00",
       required: true,
       dependentFields: ["taskFor", "refID"],
