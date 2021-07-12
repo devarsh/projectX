@@ -1,5 +1,4 @@
 import { MetaDataType } from "components/dyanmicForm/types";
-import { setOriginalNode } from "typescript";
 
 export const mandateMetaData: MetaDataType = {
   form: {
@@ -58,6 +57,94 @@ export const mandateMetaData: MetaDataType = {
         xs: 12,
         md: 12,
         sm: 12,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "rateOfInt",
+        group: 0,
+      },
+      name: "totalFeeAtSanctionInPercent",
+      label: "% of Total Fees at the time of Sanction",
+      placeholder: "% of Total Fees at the time of Sanction",
+      required: true,
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "currency",
+        group: 0,
+      },
+      name: "advanceAmount",
+      label: "Advance Amount",
+      placeholder: "Advance Amount",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "select",
+        group: 0,
+      },
+      name: "anyBankAproached",
+      label: "Bank to be approched mentioned",
+      placeholder: "Bank to be approched mentioned",
+      defaultValue: "00",
+      required: true,
+      validate: "getValidateValue",
+      //@ts-ignore
+      options: "getYesOrNoOptions",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        componentType: "spacer",
+        group: 0,
+      },
+      name: "spacer",
+      GridProps: {
+        xs: 12,
+        md: 12,
+        sm: 12,
+      },
+    },
+    {
+      render: {
+        componentType: "textField",
+        group: 0,
+      },
+      name: "bankNames",
+      label: "Bank to be approched",
+      placeholder: "Bank to be approched",
+      multiline: true,
+      rows: 3,
+      rowsMax: 3,
+      maxLength: 500,
+      dependentFields: ["anyBankAproached"],
+      shouldExclude: (_, dependentFields) => {
+        if (dependentFields["anyBankAproached"].value === "Y") {
+          return false;
+        }
+        return true;
+      },
+      GridProps: {
+        xs: 12,
+        md: 6,
+        sm: 6,
       },
     },
     {
@@ -155,49 +242,40 @@ export const mandateMetaData: MetaDataType = {
     {
       render: {
         //@ts-ignore
-        componentType: "rateOfInt",
-        group: 0,
-      },
-      name: "totalFeeAtSanctionInPercent",
-      label: "% of Total Fees at the time of Sanction",
-      placeholder: "% of Total Fees at the time of Sanction",
-      required: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "rateOfInt",
-        group: 0,
-      },
-      name: "totalFeeAtDisbursementInPercent",
-      label: "% of Total Fees at the time of Disbursement",
-      placeholder: "% of Total Fees at the time of Disbursement",
-      required: true,
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
         componentType: "select",
         group: 2,
       },
       name: "anyDisbursementDetails",
-      label: "Do you want to Add Disbursement",
-      placeholder: "Do you want to Add Disbursement",
+      label: "Do you want to Add addtional Disbursement",
+      placeholder: "Do you want to Add additional Disbursement",
       defaultValue: "00",
       required: true,
       validate: "getValidateValue",
       //@ts-ignore
       options: "getYesOrNoOptions",
+      GridProps: {
+        xs: 12,
+        md: 3,
+        sm: 3,
+      },
+    },
+    {
+      render: {
+        //@ts-ignore
+        componentType: "rateOfInt",
+        group: 2,
+      },
+      name: "totalFeeAtDisbursementInPercent",
+      label: "% of Total Fees at the time of Disbursement",
+      placeholder: "% of Total Fees at the time of Disbursement",
+      required: true,
+      dependentFields: ["anyDisbursementDetails"],
+      shouldExclude: (_, dependentFields) => {
+        if (dependentFields["anyDisbursementDetails"].value === "N") {
+          return false;
+        }
+        return true;
+      },
       GridProps: {
         xs: 12,
         md: 3,
@@ -285,26 +363,6 @@ export const mandateMetaData: MetaDataType = {
     },
     {
       render: {
-        //@ts-ignore
-        componentType: "select",
-        group: 3,
-      },
-      name: "anyEliteServices",
-      label: "Do you want to Add Elite Services",
-      placeholder: "Do you want to Add Elite Services",
-      defaultValue: "00",
-      required: true,
-      validate: "getValidateValue",
-      //@ts-ignore
-      options: "getYesOrNoOptions",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
         componentType: "arrayField",
         group: 3,
       },
@@ -312,19 +370,23 @@ export const mandateMetaData: MetaDataType = {
       removeRowFn: "deleteAssignArrayFieldData",
       arrayFieldIDName: "lineNo",
       label: "Elite Services Details",
-      dependentFields: ["anyEliteServices"],
-      shouldExclude: (_, dependentFields) => {
-        if (dependentFields["anyEliteServices"].value === "Y") {
-          return false;
-        }
-        return true;
-      },
       GridProps: {
         xs: 12,
         md: 12,
         sm: 12,
       },
       _fields: [
+        {
+          render: {
+            componentType: "hidden",
+          },
+          name: "serialNo",
+          GridProps: {
+            xs: 12,
+            md: 3,
+            sm: 3,
+          },
+        },
         {
           render: {
             //@ts-ignore
@@ -389,78 +451,6 @@ export const mandateMetaData: MetaDataType = {
           },
         },
       ],
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "currency",
-        group: 0,
-      },
-      name: "advanceAmount",
-      label: "Advance Amount",
-      placeholder: "Advance Amount",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        //@ts-ignore
-        componentType: "select",
-        group: 0,
-      },
-      name: "anyBankAproached",
-      label: "Bank to be approched mentioned",
-      placeholder: "Bank to be approched mentioned",
-      defaultValue: "00",
-      required: true,
-      validate: "getValidateValue",
-      //@ts-ignore
-      options: "getYesOrNoOptions",
-      GridProps: {
-        xs: 12,
-        md: 3,
-        sm: 3,
-      },
-    },
-    {
-      render: {
-        componentType: "spacer",
-        group: 0,
-      },
-      name: "spacer",
-      GridProps: {
-        xs: 12,
-        md: 12,
-        sm: 12,
-      },
-    },
-    {
-      render: {
-        componentType: "textField",
-        group: 0,
-      },
-      name: "bankNames",
-      label: "Bank to be approched",
-      placeholder: "Bank to be approched",
-      multiline: true,
-      rows: 3,
-      rowsMax: 3,
-      maxLength: 500,
-      dependentFields: ["anyBankAproached"],
-      shouldExclude: (_, dependentFields) => {
-        if (dependentFields["anyBankAproached"].value === "Y") {
-          return false;
-        }
-        return true;
-      },
-      GridProps: {
-        xs: 12,
-        md: 6,
-        sm: 6,
-      },
     },
   ],
 };
